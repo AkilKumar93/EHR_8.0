@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ObjectProcessHistoryBilling, Acurus.Capella.Core" table="object_process_history_billing" lazy="true">
+    <id name="Id" column="Object_Process_History_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Wf_Object_ID" column="Wf_Object_ID" />
+    <property name="Process_Name" column="Process_Name" />
+    <property name="Process_Start_Date_And_Time" column="Process_Start_Date_And_Time" />
+    <property name="Process_End_Date_And_Time" column="Process_End_Date_And_Time" />
+    <property name="Obj_Type" column="Obj_Type" />
+    <property name="Obj_Sub_Type" column="Obj_Sub_Type" />
+    <property name="Comments" column="Comments" />
+    <property name="User_Name" column="User_Name" />
+    <property name="DOOS" column="DOOS" />
+    <property name="Batch_Name" column="Batch_Name" />
+    <property name="Doc_Name" column="Doc_Name" />
+    <property name="Demos_Enc_PPLine_Comp" column="Demos_Enc_PPLine_Comp" />
+    <property name="Wf_Obj_Amount" column="Wf_Obj_Amount" />
+    <property name="Sub_Batch_Range" column="Sub_Batch_Range" />
+    <property name="Doc_Type" column="Doc_Type" />
+    <property name="Doc_Sub_Type" column="Doc_Sub_Type" />
+    <property name="Completed_List" column="Completed_List" />
+    <property name="Duplicate_Demos_Enc_PPLine" column="Duplicate_Demos_Enc_PPLine" />
+    <property name="Duplicate_Amount" column="Duplicate_Amount" />
+    <property name="Batch_Name_in_Billing" column="Batch_Name_in_Billing" />
+    <property name="Print_Name_in_Billing" column="Print_Name_in_Billing" />
+    <property name="Report_Verified" column="Report_Verified" />
+  </class>
+</hibernate-mapping>

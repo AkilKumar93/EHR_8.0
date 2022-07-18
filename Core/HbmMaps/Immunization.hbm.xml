@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Immunization, Acurus.Capella.Core" table="immunization" lazy="true">
+    <id name="Id" column="Immunization_Id">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Procedure_Code" column="Procedure_Code" />
+    <property name="CVX_Code" column="CVX_Code" />
+    <property name="Immunization_Description" column="Immunization_Description" />
+    <property name="Immunization_Source" column="Immunization_Source" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_Id" column="Physician_Id" />
+    <property name="Encounter_Id" column="Encounter_Id" />
+    <property name="Dose" column="Dose" />
+    <property name="Dose_No" column="Dose_No" />
+    <property name="Given_By" column="Given_By" />
+    <property name="Location" column="Location" />
+    <property name="Lot_Number" column="Lot_Number" />
+    <property name="Manufacturer" column="Manufacturer" />
+    <property name="Date_on_Vis" column="Date_on_Vis" />
+    <property name="Route_of_Administration" column="Route_of_Administration" />
+    <property name="Notes" column="Notes" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Visit_Date" column="Visit_Date" />
+    <property name="Expiry_Date" column="Expiry_Date" />
+    <property name="VIS_Given_Date" column="Vis_Given_Date" />
+    <property name="Given_Date" column="Given_Date" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Vfc" column="Vfc" />
+    <property name="Is_VIS_Given" column="Is_VIS_Given" />
+    <property name="Authorization_Required" column="Authorization_Required" />
+    <property name="MVX_Code" column="MVX_Code" />
+    <property name="Administered_Amount" column="Administered_Amount" />
+    <property name="Administered_Unit" column="Administered_Unit" />
+    <property name="CVX_Code_Description" column="CVX_Code_Description" />
+    <property name="Administered_Unit_Identifier" column="Administered_Unit_Identifier" />
+    <property name="Vaccine_In_House" column="Vaccine_In_House" />
+    <property name="Immunization_Group_ID" column="Immunization_Group_ID" />
+    <property name="Facility_Name" column="Facility_Name" />
+    <property name="NDC" column="NDC" />
+    <property name="File_Management_Index_Id" column="File_Management_Index_Id" />
+    <property name="Vaccine_Type" column="Vaccine_Type" />
+
+	  <property name="Refused_Administration" column="Refused_Administration" />
+	  <property name="Eligibility_Captured" column="Eligibility_Captured" />
+	  <property name="Immunization_Information_Source" column="Immunization_Information_Source" />
+	  <property name="Observation" column="Observation" />
+	  <property name="Is_Administration_Refused" column="Is_Administration_Refused" />
+    <property name="Immunization_Evidence" column="Immunization_Evidence" />
+    <property name="Snomed_Code" column="Snomed_Code" />
+    <property name="Document_Type" column="Document_Type"/>
+    <property name="Is_Deleted" column="Is_Deleted"/>
+  </class>
+</hibernate-mapping>

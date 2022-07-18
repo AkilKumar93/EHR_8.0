@@ -1,0 +1,11 @@
+/EHR-Capella5.0.sln/1.5.16.3.6.1.168.1.10.1.2.4.52.1.36.1.2.1.12.1/Mon Mar 22 08:58:38 2021//TBRANCH_CAPELLA_CMG_6_1_0_1_43_0_20220715
+/EHR-Capella5.0.suo/1.12.16.3.148.1.10.1.10.2.2.4.32.1.20.3.36.2.2.2/Sat Sep 19 08:36:38 2020/-kb/TBRANCH_CAPELLA_CMG_6_1_0_1_43_0_20220715
+D/Core////
+D/DataAccess////
+D/DownloadRCopia////
+D/GenerateCCD////
+D/ImmunizationSubmission////
+D/Lab_Agent////
+D/PatientPortal////
+D/UI////
+D/UI.csproj_deploy////

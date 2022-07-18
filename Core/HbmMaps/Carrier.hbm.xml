@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Carrier, Acurus.Capella.Core" table="carrier" lazy="true">
+    <id name="Id" column="Carrier_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Carrier_Name" column="Carrier_Name" />
+    <property name="Carrier_Code" column="Carrier_Code" />
+    <property name="NAIC_ID" column="NAIC_ID" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Carrier_Reference_ID" column="Carrier_Reference_ID" />
+    <property name="Is_Externel_Phy_ID_Provided" column="Is_Externel_Phy_ID_Provided" />
+    <property name="Is_Phy_Service_Type_Req" column="Is_Phy_Service_Type_Req" />
+    <property name="Sort_Order" column="Sort_Order"></property>
+    <property name="Claim_Receiver_Name" column="Claim_Receiver_Name" />
+    <property name="Claim_Receiver_ID" column="Claim_Receiver_ID" />
+    <property name="Claim_Settings" column="Claim_Settings"></property>
+    <property name="Is_Active" column="Is_Active"></property>
+  </class>
+</hibernate-mapping>
+

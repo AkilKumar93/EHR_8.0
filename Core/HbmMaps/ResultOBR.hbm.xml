@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ResultOBR, Acurus.Capella.Core" table="result_obr" lazy="true">
+    <id name="Id" column="Result_OBR_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Result_Master_ID" column="Result_Master_ID" />
+    <property name="OBR_Segment_Type_ID" column="OBR_Segment_Type_ID" />
+    <property name="OBR_Sequence_Number" column="OBR_Sequence_Number" />
+    <property name="OBR_Specimen_ID" column="OBR_Specimen_ID" />
+    <property name="OBR_Instituition_ID" column="OBR_Instituition_ID" />
+    <property name="OBR_Labcorp_Specimen_Number" column="OBR_Labcorp_Specimen_Number" />
+    <property name="OBR_Labcorp_Specimen_Instituition_Number" column="OBR_Labcorp_Specimen_Instituition_Number" />
+    <property name="OBR_Observation_Battery_Identifier" column="OBR_Observation_Battery_Identifier" />
+    <property name="OBR_Observation_Battery_Text" column="OBR_Observation_Battery_Text" />
+    <property name="OBR_Name_Of_Coding_System" column="OBR_Name_Of_Coding_System" />
+    <property name="OBR_Priority" column="OBR_Priority" />
+    <property name="OBR_Description_Not_Available" column="OBR_Description_Not_Available" />
+    <property name="OBR_Specimen_Collection_Date_And_Time" column="OBR_Specimen_Collection_Date_And_Time" />
+    <property name="OBR_Specimen_Collection_End_Time" column="OBR_Specimen_Collection_End_Time" />
+    <property name="OBR_Specimen_Collection_Volume" column="OBR_Specimen_Collection_Volume" />
+    <property name="OBR_Collector_Identifier" column="OBR_Collector_Identifier" />
+    <property name="OBR_Action_Code" column="OBR_Action_Code" />
+    <property name="OBR_Danger_Code" column="OBR_Danger_Code" />
+    <property name="OBR_Relevant_Clinical_Information" column="OBR_Relevant_Clinical_Information" />
+    <property name="OBR_Date_And_Time_Specimen_Receipt_In_lab" column="OBR_Date_And_Time_Specimen_Receipt_In_lab" />
+    <property name="OBR_Source_Of_Specimen" column="OBR_Source_Of_Specimen" />
+    <property name="OBR_Ordering_Provider_ID" column="OBR_Ordering_Provider_ID" />
+    <property name="OBR_Order_Call_Back_Phone" column="OBR_Order_Call_Back_Phone" />
+    <property name="OBR_Alternate_Unique_Foreign_Accession_ID" column="OBR_Alternate_Unique_Foreign_Accession_ID" />
+    <property name="OBR_Requester_Field" column="OBR_Requester_Field" />
+    <property name="OBR_Producer_Field" column="OBR_Producer_Field" />
+    <property name="OBR_Producer_Field2" column="OBR_Producer_Field2" />
+    <property name="OBR_Date_And_Time_Observation_Reported" column="OBR_Date_And_Time_Observation_Reported" />
+    <property name="OBR_Producer_Charge" column="OBR_Producer_Charge" />
+    <property name="OBR_Producer_Section_ID" column="OBR_Producer_Section_ID" />
+    <property name="OBR_Order_Result_Status" column="OBR_Order_Result_Status" />
+  </class>
+</hibernate-mapping>
+

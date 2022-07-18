@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ProcedureAuthorization, Acurus.Capella.Core" table="procedure_authorization" lazy="true">
+    <composite-id>
+      <key-property name="Procedure_Code" column="Procedure_Code"/>
+      <key-property name="Insurance_Plan_ID" column="Insurance_Plan_ID" />
+    </composite-id>
+   
+    <version name="Version"></version>
+    <property name="Modifier" column="Modifier" />
+    <property name="Is_Auth_Required" column="Is_Auth_Required" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <!--Janani - Main - 30 Jul 2011 - Start-->
+    <property name="Sort_Order" column="Sort_Order" />
+    <!--Janani - Main - 30 Jul 2011 - End-->
+  </class>
+
+</hibernate-mapping>

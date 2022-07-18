@@ -1,0 +1,10 @@
+ <entry typeCode="DRIV">
+ <act classCode="ACT" moodCode="INT">
+  <templateId root="2.16.840.1.113883.10.20.22.4.20" /> 
+  <code xsi:type="CE" nullFlavor="NI" /> 
+ <text>
+  <reference value="#Section48087363" /> 
+  </text>
+  <statusCode code="completed" /> 
+  </act>
+  </entry>

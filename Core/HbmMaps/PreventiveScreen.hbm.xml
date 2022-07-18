@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PreventiveScreen, Acurus.Capella.Core" table="preventive_screening" lazy="true">
+    <id name="Id" column="Preventive_Screening_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Encounter_ID" column="Encounter_ID" not-null="true" />
+    <property name="Human_ID" column="Human_ID" not-null="true" />
+    <property name="Physician_ID" column="Physician_ID" not-null="true" />
+    <property name="Preventive_Service" column="Preventive_Service" not-null="true" />
+    <property name="Preventive_Service_Value" column="Preventive_Service_Value" not-null="true" />
+    <property name="Status" column="Status" not-null="true" />
+    <property name="Preventive_Screening_Notes" column="Preventive_Screening_Notes" not-null="true" />
+    <property name="Created_By" column="Created_By" not-null="true" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" not-null="true" />
+    <property name="Modified_By" column="Modified_By" not-null="true" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" not-null="true" />
+    <property name="Preventive_Screening_Lookup_ID" column="Preventive_Screening_Lookup_ID" not-null="true" />
+    <!--<property name="Completed_Date" column="Completed_Date" not-null="true" />
+    <property name="Value" column="Value" not-null="true" />-->
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+<entry typeCode="DRIV">
+ <substanceAdministration classCode="SBADM" moodCode="EVN"  negationInd="true">
+  <templateId root="e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"/>
+ <id root="e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92" />
+<statusCode code="completed" />
+<effectiveTime xsi:type="IVL_TS" value="1) 1999112) 1998123) 1997" />
+<routeCode code="IM" displayName="Intramuscular injection" codeSystemName="RouteOfAdministration" codeSystem="2.16.840.1.113883.5.112"></routeCode>
+<consumable>
+                <manufacturedProduct>
+  <templateId root="2.16.840.1.113883.10.20.1.53" />
+<manufacturedMaterial classCode="1) 882) 333) 09" >
+
+<code code="213169" displayName="1) Influenza virus vaccine2) Pneumococcal polysaccharide vaccine3) Tetanus and diphtheria toxoids" codeSystem="2.16.840.1.113883.6.59" codeSystemName="RxNorm">
+ <originalText>
+                        <reference value="1) Influenza virus vaccine2) Pneumococcal polysaccharide vaccine3) Tetanus and diphtheria toxoids" />
+                      </originalText>
+ </code>
+                    
+                  </manufacturedMaterial>
+                </manufacturedProduct>
+              </consumable>
+     </substanceAdministration>
+          </entry>

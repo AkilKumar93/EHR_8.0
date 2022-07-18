@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Assessment</title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
+    <script src="JScripts/jQueryAngular.js"></script>
+    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+    <script src="JScripts/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js", "JScripts/JSAvoidRightClick.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            JSElement.async = false;
+            document.getElementsByTagName('head')[0].appendChild(JSElement);
+        }
+    </script>
+    <script src="JScripts/jsAssessmentNew.js?v=8.28"></script>
+
+
+
+    <style>
+        .chkbx {
+            width: 10%;
+            height: 34px;
+            text-align: center;
+        }
+
+        .ValueICD {
+            width: 25%;
+            height: 34px;
+        }
+
+        .DescpICD {
+            width: 64.99%;
+            height: 34px;
+        }
+
+        .ICDValue {
+            display: none;
+        }
+
+        summary {
+            background-color: #F7E9BF;
+            padding: 5px 10px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        #AssessmentHead, #AssessmentBody {
+            display: block;
+        }
+
+        #AssessmentBody {
+            height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        #AssessmentQuestionnaire {
+            height: 50px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /*th {
+            background-color: #bfdbff !important;
+            color: black !important;
+            border-bottom: 1px solid !important;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+
+        td {
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 14px !important;
+        }*/
+
+        .AssessmentCombobox {
+            width: 10%;
+        }
+
+        .AssessmentCombobox1 {
+            width: 6%;
+        }
+
+        .AssesssmentTextBox1 {
+            width: 30%;
+        }
+
+        .AssesssmentTextBox {
+            width: 20%;
+        }
+
+        /*th {
+            margin: 1%;
+            background-color: #808080;
+            color: white;
+        }*/
+
+        .panel {
+            color: #808080;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border: 1px solid;
+            margin-left: 2px;
+            margin-right: 2px;
+            height: 590px;
+        }
+
+        /*.panel-heading {
+            background-color: #bfdbff !important;
+            border-bottom: 1px solid !important;
+            padding: 5px 5px;
+        }*/
+
+        .table {
+            margin-top: 1px;
+            margin-bottom: 5px;
+            border: 1px solid !important;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        .table-bordered {
+            padding: 5px 5px;
+            border-color: black !important;
+            border: 1px solid !important;
+        }
+
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .panelProblemList {
+            border: 1px solid;
+            width: 500px;
+            height: 100px;
+            overflow: scroll;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+
+
+        .panel-default {
+            border: 1px solid !important;
+            border-color: black !important;
+        }
+
+        #divMultipleICD9Modal .modal .fade .In {
+            display: block !important;
+        }
+
+        .check {
+            display: block;
+        }
+
+
+
+
+
+
+        .panel-body {
+            padding: 5px !important;
+        }
+
+        .Bordercolor {
+            border: 1px solid !important;
+            border-color: black !important;
+        }
+
+        input::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        li:hover {
+            background-color: #DEF;
+            cursor: pointer;
+        }
+
+        [contenteditable=plaintext-only]:empty:before {
+            content: 'Type your General Notes Here....';
+            display: block;
+            color: #999 !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="AngularDiv" ng-app="Assessmentapp" ng-controller="assessmentCtrl">
+        <div class="panel-body">
+            <!--<div id="divFavICDSearch">
+                <table style="width:100%;border-collapse:separate;border-spacing:0 0.4em;">
+                    <tr>
+                        <td colspan="4">
+                            <table style="border-collapse:separate;border-spacing:0 0.5em;">
+                                <tr>
+                                    <td style="width:100px;">
+                                        <span >ICD9 Code</span>
+                                    </td>
+                                    <td style="width:150px;">
+
+                                        <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:150px;border:1px solid;" placeholder="Type your ICD9 Code  here .." id="txtICD9Code">
+
+                                    </td>
+                                    <td style="width:150px;text-align: center!important;">
+                                        <span >ICD9 Description</span>
+                                    </td>
+                                    <td style="width:620px;">
+                                        <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:620px;border:1px solid;" placeholder="Type your ICD9 description here .." id="txtICD9Desc">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width:100px;">
+                                        <span >ICD10 Code</span>
+                                    </td>
+
+                                    <td style="width:150px;">
+
+                                        <input type="text" ng-disabled="EnableScreen == 'Disable'"  style="width:150px;border:1px solid;" id="txtICD10" placeholder="Type your ICD10 code here .." />
+
+                                    </td>
+                                    <td style="width:120px;text-align: center!important;">
+                                        <span >ICD10 Description</span>
+                                    </td>
+
+                                    <td style="width:620px;">
+
+                                        <input type="text" ng-disabled="EnableScreen == 'Disable'" style="width:620px;border:1px solid;"  id="txtDescription" placeholder="Type your ICD10 description here .." />
+
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="panelProblemList panel-default">
+                                <div ng-disabled="EnableScreen == 'Disable'" class="panel-headingProblemList" style="height:38px;">
+                                    <span style="vertical-align:-webkit-baseline-middle;">Incomplete ICD10 – ProblemList\PFSH</span>
+                                    <a style="float:right;padding:4px 10px!important;" ng-disabled="EnableScreen == 'Disable'" ng-click="EnableScreen == 'Disable'?'return false': OpenQuestionnaire()" class="btn btn-primary Bordercolor">
+                                        <span ng-disabled="EnableScreen == 'Disable'" class="glyphicon glyphicon-arrow-down"></span>
+                                    </a>
+                                </div>
+                                <table id="ICDDescQuestionnaire">
+                                    <tr ng-repeat="role in FromProblemList">
+                                        <td>
+                                            <input type="checkbox" ng-disabled="EnableScreen == 'Disable'" checklist-model="user.roles" ng-checked="true" checklist-value="role"> {{role.ICDCODE}}-{{role.ICDDescription}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            <textarea type="text" onchange="SaveEnable()" onkeyup="SaveEnable()" onfocus="RightClickMenu();" ng-disabled="EnableScreen == 'Disable'" name="ASSESSMENT GENERAL NOTES" id="txtGeneralNotes" class="Bordercolor" textmode="MultiLine" style="width:480px !important;height:100px;top:10px;resize:none;" maxlength="32767" nospell="true" placeholder="Type your General Notes Here...."></textarea>
+                        </td>
+                        <td>
+                            <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;cursor:pointer;    padding: 4px 4px 4px 4px !important;color: #fff;font-size: 12px; border-radius: 2px;" id="GeneralNotes" align="centre" font-bold="false" title="Drop down" onclick="callweb(this, 'ASSESSMENT GENERAL NOTES', 'txtGeneralNotes');" ng-style="{'background' : ButtonBG }">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>-->
+            <div id="divFavICDSearch">
+                <table style="width:100%;border-collapse:separate;border-spacing:0 0.4em;">
+                    <tbody>
+                        <tr>
+                            <td style="width: 10%;">
+                                <span class="Editabletxtbox">ICD10 Code</span>
+                            </td>
+                            <td style="width: 25%;">
+                                <input type="text" ng-disabled="EnableScreen == 'Disable'" style="border:1px solid;width: 90%;" id="txtICD10" placeholder="Type your ICD10 code here .." class="ui-autocomplete-input Editabletxtbox" autocomplete="off"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible">1 result is available, use up and down arrow keys to navigate.</span>
+                                <datalist id="dlstICD10"></datalist>
+                            </td>
+                            <td style="width: 5%;"></td>
+                            <td style="width: 12%;">
+                                <span>ICD10 Description</span>
+                            </td>
+                            <td style="width: 48%;">
+                                <input type="text" ng-disabled="EnableScreen == 'Disable'" style="border:1px solid;width: 90%;" id="txtDescription" placeholder="Type your ICD10 description here .." class="ui-autocomplete-input Editabletxtbox" autocomplete="off"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="panelProblemList panel-default">
+                                    <div ng-disabled="EnableScreen == 'Disable'" class="AssementPanel" style="height: 38px;">
+                                        <span style="vertical-align: -webkit-baseline-middle;" class="spanstyle">
+                                            Incomplete ICD10 – ProblemList\PFSH
+                                        </span><a style="float: right;padding:4px 10px !important;" ng-disabled="EnableScreen == 'Disable'" ng-click="EnableScreen == 'Disable'?'return false': OpenQuestionnaire()" class="btn glyphiconstyle">
+                                            <span ng-disabled="EnableScreen == 'Disable'" class="glyphicon glyphicon-arrow-down"></span>
+                                        </a>
+                                    </div>
+                                    <table id="ICDDescQuestionnaire">
+                                        <tr ng-repeat="role in FromProblemList">
+                                            <td>
+                                                <input type="checkbox" ng-disabled="EnableScreen == 'Disable'" checklist-model="user.roles" ng-checked="true" checklist-value="role"> {{role.ICDCODE}}-{{role.ICDDescription}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                            <td style="width:5%"></td>
+                            <td colspan="2">
+                                <textarea type="text" onchange="SaveEnable()" onkeyup="SaveEnable()" onfocus="RightClickMenu();" ng-disabled="EnableScreen == 'Disable'" name="ASSESSMENT GENERAL NOTES" id="txtGeneralNotes" class="Bordercolor Editabletxtbox" textmode="MultiLine" style="width: 630px !important;height:100px;top:10px;resize:none;" maxlength="32767" nospell="true" placeholder="Type your General Notes Here...."></textarea>
+                                <a class=" fa fa-plus" style="margin-left: 12px;margin-top:36px !important;text-decoration: none;position: absolute;cursor: pointer;color: rgb(255, 255, 255);font-size: 12px;border-radius: 2px;padding: 4px !important;background: rgb(109, 171, 247);" id="GeneralNotes" align="centre" font-bold="false" title="Drop down" onclick="callweb(this, 'ASSESSMENT GENERAL NOTES', 'txtGeneralNotes');" ng-style="{'background' : ButtonBG }"></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <table id="tblCurrICDs" class="table Gridbodystyle" style="height:444px;">
+                <thead id="AssessmentHead" class="Gridheaderstyle">
+                    <tr style="width:100%" class="Gridheaderstyle">
+                        <th style="width:3.8%;">Del.</th>
+                        <th style="width:3.8%; ">Pri.</th>
+                        <th style="width:7%;">Chro. <input ng-disabled="EnableScreen == 'Disable'" type="checkbox" id="chkChronic" ng-click="CheckAllChronic()" /> </th>
+                        <th style="width:7%;">Prob. <input ng-disabled="EnableScreen == 'Disable'" type="checkbox" id="chkProblem" ng-click="CheckAllProblem()" /> </th>
+                        <th style="width:10%; ">ICD  10</th>
+                        <th align="left" style="width:26%;">ICD  10   Description</th>
+                        <th style="width:10%;">Status</th>
+                        <th style="width:34%;">Notes</th>
+                        <th style="width:1%;display:none;">ProblemListID</th>
+                        <th style="width:1%;display:none;">AssessmentListID</th>
+                        <th style="width:1%;display:none;">Version</th>
+                        <th style="width:1%;display:none;">ProblemListVersion</th>
+                        <th style="width:1%;display:none;">IncompleteICDCode</th>
+                        <th style="width:1%;display:none;">ParentICD</th>
+                        <th style="width:4%;">Ref.</th>
+                        <th style="width:1%;display:none;">Created_by</th>
+                        <th style="width:1%;display:none;">Created_date</th>
+                        <th style="width:1%;display:none;">Updated</th>
+                        <th style="width:1%;display:none;">Orig_Status</th>
+                    </tr>
+                </thead>
+                <tbody id="AssessmentBody">
+                    <tr style="width:100%;" ng-repeat="a in AssessmentTable|orderBy:orderByField:reverseSort" class="Editabletxtbox Gridbodystyle">
+                        <td style="width:4%;"><img id=" followbutton" ng-disabled="EnableScreen == 'Disable'" src="Resources/Delete-Blue.png" ng-click="EnableScreen == 'Disable'?'return false': Save($index)" /> </td>
+                        <td style="width:6%;"><input type="radio" ng-disabled="EnableScreen == 'Disable'" name="Primary" onchange="ChangeEnable(this);" ng-checked="a.IsPrimary=='Y'" ng-attr-data-primaryonload="{{a.IsPrimary=='Y'?'true':'false'}}" /></td>
+                        <td style="width:7%;"><input type="checkbox" ng-disabled="EnableScreen == 'Disable'" onchange="ChangeEnable(this);" ng-checked="a.CheckBoxCheck=='CHRONIC'||a.CheckBoxCheck=='BOTH'" /></td>
+                        <td style="width:6%;"><input type="checkbox" ng-disabled="EnableScreen == 'Disable'" onchange="chkStatusChange(this);" ng-checked="a.CheckBoxCheck=='PROBLEM'||a.CheckBoxCheck=='BOTH'" /></td>
+                        <td style="width:6%;">{{ a.ICDCode  }}</td>
+                        <td align="left" style="width:30%;">{{ a.ICDDescription}}</td>
+                        <td align="center">
+                            <select ng-model="a.StatusSelected" ng-disabled="EnableScreen == 'Disable'" onchange="cboStatusChange(this);" style="width:100px;">
+                                <option ng-repeat="Status in Statuses" style="color:black;" ng-selected="{{a.StatusSelected==Status}}" value="{{Status}}">{{Status}}</option>
+                            </select>
+                            <!--<select ng-disabled="EnableScreen == 'Disable'" onchange="cboStatusChange(this);" style="width:100px;">
+                                <option value=""></option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Stable'" value="Stable">Stable</option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Improved'" value="Improved">Improved</option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Worsening'" value="Worsening">Worsening</option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Suspected'" value="Suspected">Suspected</option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Controlled'" value="Controlled">Controlled</option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Resolved'" value="Resolved">Resolved</option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Uncontrolled'" value="Uncontrolled">Uncontrolled</option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Improving'" value="Improving">Improving</option>
+                                <option style="color:black;" ng-selected="a.Comboboxvalue=='Remission'" value="Remission">Remission</option>
+                            </select>-->
+                        </td>
+                        <td>
+                            <textarea type="text" id="{{$index}}" onfocus="RightClickMenu();" onchange="SaveEnable()" onkeyup="SaveEnable()" ng-disabled="EnableScreen == 'Disable'" name="ASSESSMENT NOTES" style="resize:none; height:40px;width:330px;position:relative;" textmode="MultiLine" maxlength="32767" nospell="true">{{a.Notes}}</textarea>
+                        </td>
+                        <td>
+                            <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;cursor:pointer;  padding: 4px 4px 4px 4px !important;color: #fff;font-size: 12px; border-radius: 2px;margin-top:10px" ng-style="{'background' : ButtonBG }" id="{{$index}}" align="centre" font-bold="false" title="Drop down" onclick="callweb(this, 'ASSESSMENT NOTES',id);">
+                            </a>
+                        </td>
+                        <td style="width:1%; display:none">{{a.ProblemListID}}</td>
+                        <td style="width:1%;display:none">{{a.AssessmentID}}</td>
+                        <td style="width:1%;display:none">{{a.iVersion}}</td>
+                        <td style="width:1%;display:none">{{a.iProblemListVersion}}</td>
+                        <td style="width:1%;display:none;">{{a.IncompleteICDCode}}</td>
+                        <td style="width:1%;display:none;">{{a.ICD9Code}}</td>
+                        <td style="width:1%;display:none;">{{a.ICD9Desc}}</td>
+                        <td style="width:1%;display:none;">{{a.Color}}</td>
+                        <td style="width:1%;display:none;">{{a.ParentICD}}</td>
+                        <td style="padding-top:12px;width:3%;">
+                            <a href="https://apps.nlm.nih.gov/medlineplus/services/mpconnect.cfm?mainSearchCriteria.v.cs=2.16.840.1.113883.6.90&informationRecipient.languageCode.c=en&mainSearchCriteria.v.c='+{{a.ICDCode}} +'" target="_blank" data-toggle="tooltip" title="Print Education Material"><i class="glyphicon glyphicon-info-sign bgcolorass" style="font-size: 22px;margin-top: 2px;"></i></a><!-- BugID:48550 -->
+                        </td>
+                        <td style="width:1%;display:none;">{{a.Created_by}}</td>
+                        <td style="width:1%;display:none;">{{a.Created_date}}</td>
+                        <td style="width:1%;display:none;">{{a.Updated}}</td>
+                        <td style="width:1%;display:none;">{{a.Orig_Status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--</div>-->
+        <div style="float: left; padding-left: 6px !important;">
+            <button type="button" ng-disabled="EnableScreen == 'Disable'" id="btnFormView" ng-click="OpenFormView()" class="btn aspbluebutton aspresizedbluebutton">Favorite ICD Sheet</button>
+            <button type="button" ng-disabled="EnableScreen == 'Disable'" id="btnCalculators" ng-click="OpenCalculatorLink()" class="btn aspbluebutton aspresizedbluebutton">Calculators</button>
+            <label style="font-weight:normal;" id="lblStatus"><input type="checkbox" ng-disabled="EnableScreen == 'Disable'" onchange="chkstatus_change(this)" id="chkStable" />Check all other Status as Stable</label>
+        </div>
+
+        <div id="divButtonsPanel" style="float: right; padding-right: 6px !important;">
+            <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="btnPotentailDiagnosis_Click()" id="btnPotentailDiagnosis" class="btn aspbluebutton aspresizedbluebutton">Potential Diagnosis</button>
+            <button id="btnPlan" ng-disabled="EnableScreen == 'Disable'" style="display:none !important;" onclick="OpenPlanScreen()" type="button" class="btn aspbluebutton">Plan</button>
+            <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="CopyPrevious()" id="btnCopyPrevious" class="btn aspbluebutton aspresizedbluebutton">Copy Previous</button>
+            <button type="button" ng-disabled="EnableScreen == 'Disable'" ng-click="SaveAssessment()" id="btnSave" class="btn aspgreenbutton aspresizedgreenbutton">Save</button>
+            <button type="button" ng-disabled="EnableScreen == 'Disable'" id="btnClearAll" ng-click="ClearAllAssessmentTable()" class="btn aspredbutton aspresizedredbutton">Clear All</button>
+        </div>
+
+        <div id="divdetails" class="modal modal-wide fade">
+            <div class="modal-dialog" style="width: 95%; margin-top: 5%;">
+                <div class="modal-content" style="display: inline-grid;">
+
+                    <div class="modal-header" style="height: 46px;background-color: #E6D090;border-top-left-radius: 7px;border-top-right-radius: 7px;color: #00437D;font-weight: 900!important;">
+                        <div style="margin-top: -12px;">
+                            <div class="col-xs-8">
+                                <h4 style="font-weight: 600;color: #666666;" class="Editabletxtbox">ICD 9 to 10 Conversion</h4>
+                            </div>
+                            <div class="col-xs-4" style="margin-top:11px;padding: 1px;">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body" id="divbody">
+                        <div class="container" style="width:100%;height:400px;">
+                            <table class="table table-bordered Gridbodystyle" style="margin-bottom:0px;">
+                                <thead style="background-color:#015aa7;color:white;" class="Gridheaderstyle">
+                                    <tr style="width:100%;">
+                                        <th style="width:10%; text-align:center;">Select</th>
+                                        <th style="width:25%;">ICD 10</th>
+                                        <th style="width:64.99%;">ICD 10 Description</th>
+                                        <th style="display:none;">Notes</th>
+                                        <th style="display:none;">ProblemListID</th>
+                                        <th style="display:none;">AssessmentID</th>
+                                        <th style="display:none;">ProblemListVersion</th>
+                                        <th style="display:none;">AssessmentVersion</th>
+                                        <th style="display:none;">ICD9Code</th>
+                                        <th style="display:none;">ICD9Desc</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div id="divtblContainer" style="width:100%;height:360px;overflow-y:auto;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="height: 56px;">
+                        <button id="ok" type="button" class="btn btn-success btn-sm" style="margin-top: -10px;" ng-click="LoadICD10toAssessmentTable()">Continue</button>
+                        <button id="cancel" class="btn btn-danger btn-sm" style="margin-top: -10px;" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="divPlanScreen" class="modal modal-wide fade">
+            <div class="modal-dialog" style="width: 95%;">
+                <div class="modal-content">
+                    <div class="modal-header" style="height:46px;">
+                        <a style="font-size:larger;color:black;" class="modal-title" id="myModalLabel">Add or Update Plan</a>
+                        <button type="button" id="btnPlanClose" style="color:black !important;" class="close Bordercolor" data-dismiss="modal" onclick="ClosePlanScreen()" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body" id="divPlanBody" style="height:420px;overflow-y:auto;">
+                        <iframe style="width: 100%; height: 380px; border: none;" id="divPlanBodyProcessFrame"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="divCalculator" class="modal modal-wide fade">
+            <div class="modal-dialog" style="width: 52%;">
+                <div class="modal-content">
+                    <div class="modal-header" style="height:50px;">
+                        <a style="font-size:larger;color:black;" class="modal-title" id="myModalLabel">Calculators</a>
+                        <button type="button" id="btnCalculator" style="color:black !important;" class="close Bordercolor" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body" id="divCalculator" style="height:160px;overflow-y:auto;">
+                        <p class="spanstyle">FRAX Tool: <a class="alinkstyle" onclick="window.open('http://www.shef.ac.uk/FRAX/'); return false;">http://www.shef.ac.uk/FRAX/</a></p>
+                        <p class="spanstyle">MACIS Calculator: <a class="alinkstyle" onclick="window.open('http://www.nucmed.com/'); return false;">http://www.nucmed.com/</a></p>
+                        <p class="spanstyle"> Creatinine Clearance calculator: <a class="alinkstyle" onclick="window.open('https://www.mcw.edu/calculators/creatinine.htm'); return false;">https://www.mcw.edu/calculators/creatinine.htm</a></p>
+                        <p class="spanstyle">ASCVD-Risk-Estimator: <a class="alinkstyle" onclick="window.open('http://tools.acc.org/ASCVD-Risk-Estimator-Plus/#!/calculate/estimate/'); return false;">http://tools.acc.org/ASCVD-Risk-Estimator-Plus/#!/calculate/estimate/</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="divMultipleICD9ModalQuestionnaire" class="modal fade" style="border: 1px solid !important; border-color: black !important; overflow-x: hidden; overflow-y: auto;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <label id="lblQuestionnaire" class="spanstyle">Please select the Diagnosis related to:</label>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+
+                            <table id="tblQuestionnaire" class="table-bordered">
+                                <tr ng-repeat="name in ColumnName" class="Gridheaderstyle">
+                                    <th style="width:20%; word-wrap:break-word;white-space:normal;font-weight:normal;  vertical-align: middle;">{{name.Select}} </th>
+                                    <th style="width:15%;word-wrap:break-word;white-space:normal;font-weight:normal;   vertical-align: middle;">{{name.ICD}} </th>
+                                    <th style="width:65%;word-wrap:break-word;white-space:normal;font-weight:normal;   vertical-align: middle;">{{name.ICDDesc}}</th>
+                                    <th style="display:none;">{{name.LeafNode}}</th>
+                                    <th style="display:none">{{name.CheckLeafNode}}</th>
+                                    <th style="display:none;">{{name.MutullayExclusive}}</th>
+                                </tr>
+                                <tbody id="AssessmentQuestionnaire" class="Gridbodystyle">
+                                    <tr ng-repeat="x in Questionnaire">
+                                        <td style="width:20%;"><input ng-checked="x.ICDCode==x.CheckLeafNode" ng-click="x.MutuallyExclusive=='Y'?CheckedQuestionnaire($index):null" type="checkbox" /></td>
+                                        <td style="width:15%;">{{ x.ICDCode  }}</td>
+                                        <td style="width:65%;">{{ x.ICDDescription}}</td>
+                                        <td style="display:none">{{x.LeafNode}}</td>
+                                        <td style="display:none">{{x.CheckLeafNode}}</td>
+                                        <td style="display:none">{{x.MutuallyExclusive}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn aspbluebutton" id="btnOKICD9Modal" ng-click="OpenSkipQuestionnaire()">Skip</button>
+                        <button type="button" class="btn aspbluebutton" id="btnOKICD9Modal" ng-click="OpenBackQuestionnaire()">Back</button>
+                        <button type="button" class="btn aspbluebutton" id="btnCancelICD9Modal" ng-click="OpenNextQuestionnaire()">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

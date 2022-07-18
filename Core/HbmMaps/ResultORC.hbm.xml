@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ResultORC, Acurus.Capella.Core" table="result_orc" lazy="true">
+    <id name="Id" column="Result_ORC_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Result_Master_ID" column="Result_Master_ID" />
+    
+    <property name="ORC_Segment_Type_ID" column="ORC_Segment_Type_ID" />
+    <property name="ORC_Order_Control" column="ORC_Order_Control" />
+    <property name="ORC_Specimen_ID" column="ORC_Specimen_ID" />
+    <property name="ORC_Instituition_ID" column="ORC_Instituition_ID" />
+    <property name="ORC_Filler_Accession_ID" column="ORC_Filler_Accession_ID" />
+    <property name="ORC_Owner_Of_Accession" column="ORC_Owner_Of_Accession" />
+    <property name="ORC_Placer_Group_Number" column="ORC_Placer_Group_Number" />
+    <property name="ORC_Order_Status" column="ORC_Order_Status" />
+    <property name="ORC_Response_Flag" column="ORC_Response_Flag" />
+    <property name="ORC_Quantity" column="ORC_Quantity" />
+    <property name="ORC_Parent" column="ORC_Parent" />
+    <property name="ORC_Date_And_Time_Of_Transaction" column="ORC_Date_And_Time_Of_Transaction" />
+    <property name="ORC_Entered_By" column="ORC_Entered_By" />
+    <property name="ORC_Verified_By" column="ORC_Verified_By" />
+    <property name="ORC_Ordering_Provider_ID" column="ORC_Ordering_Provider_ID" />
+    <property name="ORC_Ordering_Provider_Last_Name" column="ORC_Ordering_Provider_Last_Name" />
+    <property name="ORC_Ordering_Provider_First_Initial" column="ORC_Ordering_Provider_First_Initial" />
+    <property name="ORC_Ordering_Provider_Middle_Initial" column="ORC_Ordering_Provider_Middle_Initial" />
+    <property name="ORC_Ordering_Provider_Suffix" column="ORC_Ordering_Provider_Suffix" />
+    <property name="ORC_Ordering_Provider_Prefix" column="ORC_Ordering_Provider_Prefix" />
+    <property name="ORC_Ordering_Provider_Degree" column="ORC_Ordering_Provider_Degree" />
+    <property name="ORC_Source_Table" column="ORC_Source_Table" />
+  </class>
+</hibernate-mapping>
+

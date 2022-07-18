@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.AuthorizationICD, Acurus.Capella.Core" table="authorization_icd" lazy="true">
+    <id name="Id" column="Authorization_ICD_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Authorization_ID" column="Authorization_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="ICD" column="ICD" />
+    <property name="ICD_Description" column="ICD_Description" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Is_Delete" column="Is_Delete" />
+  </class>
+</hibernate-mapping>
+

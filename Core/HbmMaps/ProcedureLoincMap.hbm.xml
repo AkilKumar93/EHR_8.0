@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ProcedureLoincMap, Acurus.Capella.Core" table="procedure_loinc_map" lazy="true">
+    <id name="Id" column="Procedure_Loinc_Map_Id">
+      <generator class="assigned" />
+    </id>
+    <property name="MapSetName" column="Mapset_Name" />
+    <property name="MapSetType" column="Mapset_Type" />
+    <property name="MapSetSeparatorCode" column="Mapset_Seperator_Code" />
+    <property name="Loinc_Num" column="Loinc_Num" />
+    <property name="Procedure_Code" column="Procedure_Code" />
+    <property name="Sort_Order" column="Sort_Order" />
+  </class>
+</hibernate-mapping>

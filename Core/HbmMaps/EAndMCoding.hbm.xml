@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.EAndMCoding, Acurus.Capella.Core" table="e_m_coding" lazy="true">
+    <id name="Id" column="E_M_Coding_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Procedure_Code" column="Procedure_Code" />
+    <property name="Procedure_Code_Description" column="Procedure_Code_Description" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Units" column="Units" />
+    <property name="Charge_Amount" column="Charge_Amount" />
+    <property name="Modifier1" column="Modifier1" />
+    <property name="Modifier2" column="Modifier2" />
+    <property name="Modifier3" column="Modifier3" />
+    <property name="Modifier4" column="Modifier4" />
+    <property name="Modifier1_Description" column="Modifier1_Description" />
+    <property name="Modifier2_Description" column="Modifier2_Description" />
+    <property name="Modifier3_Description" column="Modifier3_Description" />
+    <property name="Modifier4_Description" column="Modifier4_Description" />
+    <property name="Is_Delete" column="Is_Delete" />
+    <property name="Diagnosis_Pointer_1" column="Diagnosis_Pointer_1" />
+    <property name="Diagnosis_Pointer_2" column="Diagnosis_Pointer_2" />
+    <property name="Diagnosis_Pointer_3" column="Diagnosis_Pointer_3" />
+    <property name="Diagnosis_Pointer_4" column="Diagnosis_Pointer_4" />
+    <property name="Diagnosis_Pointer_5" column="Diagnosis_Pointer_5" />
+    <property name="Diagnosis_Pointer_6" column="Diagnosis_Pointer_6" />
+    <property name="Sort_Order" column="Sort_Order" />
+  </class>
+</hibernate-mapping>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WL5G3N0:definitions xmlns:WL5G3N2="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:WL5G3N1="urn:cdc:iisb:2011" xmlns="" name="IISServiceNew" targetNamespace="urn:cdc:iisb:2011" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/">
+  <WL5G3N0:types>
+    <xsd:schema xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="urn:cdc:iisb:2011" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsaw="http://www.w3.org/2005/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" elementFormDefault="qualified" targetNamespace="urn:cdc:iisb:2011" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:complexType name="connectivityTestRequestType">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="echoBack" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="connectivityTestResponseType">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="return" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="submitSingleMessageRequestType">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="username" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="password" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="facilityID" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="hl7Message" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="submitSingleMessageResponseType">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="return" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="soapFaultType">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="Code" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="Reason" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Detail" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="UnsupportedOperationFaultType">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="Code" type="xsd:integer" />
+          <xsd:element fixed="UnsupportedOperation" name="Reason" />
+          <xsd:element minOccurs="1" name="Detail" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SecurityFaultType">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="Code" type="xsd:integer" />
+          <xsd:element fixed="Security" name="Reason" />
+          <xsd:element minOccurs="1" name="Detail" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MessageTooLargeFaultType">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" name="Code" type="xsd:integer" />
+          <xsd:element fixed="MessageTooLarge" name="Reason" />
+          <xsd:element minOccurs="1" name="Detail" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="connectivityTest" type="tns:connectivityTestRequestType" />
+      <xsd:element name="connectivityTestResponse" type="tns:connectivityTestResponseType" />
+      <xsd:element name="submitSingleMessage" type="tns:submitSingleMessageRequestType" />
+      <xsd:element name="submitSingleMessageResponse" type="tns:submitSingleMessageResponseType" />
+      <xsd:element name="fault" type="tns:soapFaultType" />
+      <xsd:element name="UnsupportedOperationFault" type="tns:UnsupportedOperationFaultType" />
+      <xsd:element name="SecurityFault" type="tns:SecurityFaultType" />
+      <xsd:element name="MessageTooLargeFault" type="tns:MessageTooLargeFaultType" />
+    </xsd:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="connectivityTest_Message">
+    <WL5G3N0:documentation>connectivity test request</WL5G3N0:documentation>
+    <WL5G3N0:part name="parameters" element="WL5G3N1:connectivityTest" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="connectivityTestResponse_Message">
+    <WL5G3N0:documentation>connectivity test response</WL5G3N0:documentation>
+    <WL5G3N0:part name="parameters" element="WL5G3N1:connectivityTestResponse" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="submitSingleMessage_Message">
+    <WL5G3N0:documentation>submit single message request.</WL5G3N0:documentation>
+    <WL5G3N0:part name="parameters" element="WL5G3N1:submitSingleMessage" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="submitSingleMessageResponse_Message">
+    <WL5G3N0:documentation>submit single message response</WL5G3N0:documentation>
+    <WL5G3N0:part name="parameters" element="WL5G3N1:submitSingleMessageResponse" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="UnknownFault_Message">
+    <WL5G3N0:part name="fault" element="WL5G3N1:fault" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="UnsupportedOperationFault_Message">
+    <WL5G3N0:part name="fault" element="WL5G3N1:UnsupportedOperationFault" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="SecurityFault_Message">
+    <WL5G3N0:part name="fault" element="WL5G3N1:SecurityFault" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="MessageTooLargeFault_Message">
+    <WL5G3N0:part name="fault" element="WL5G3N1:MessageTooLargeFault" />
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="IIS_PortType">
+    <WL5G3N0:operation name="connectivityTest">
+      <WL5G3N0:documentation>the connectivity test</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N1:connectivityTest_Message" />
+      <WL5G3N0:output message="WL5G3N1:connectivityTestResponse_Message" />
+      <WL5G3N0:fault name="UnknownFault" message="WL5G3N1:UnknownFault_Message" />
+      <WL5G3N0:fault name="UnsupportedOperationFault" message="WL5G3N1:UnsupportedOperationFault_Message" />
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="submitSingleMessage">
+      <WL5G3N0:documentation>submit single message</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N1:submitSingleMessage_Message" />
+      <WL5G3N0:output message="WL5G3N1:submitSingleMessageResponse_Message" />
+      <WL5G3N0:fault name="UnknownFault" message="WL5G3N1:UnknownFault_Message" />
+      <WL5G3N0:fault name="SecurityFault" message="WL5G3N1:SecurityFault_Message" />
+      <WL5G3N0:fault name="MessageTooLargeFault" message="WL5G3N1:MessageTooLargeFault_Message" />
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="client_Binding_Soap12" type="WL5G3N1:IIS_PortType">
+    <WL5G3N2:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <WL5G3N0:operation name="connectivityTest">
+      <WL5G3N2:operation soapAction="urn:cdc:iisb:2011:connectivityTest" />
+      <WL5G3N0:input>
+        <WL5G3N2:body use="literal" />
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body use="literal" />
+      </WL5G3N0:output>
+      <WL5G3N0:fault name="UnknownFault">
+        <WL5G3N2:fault use="literal" name="UnknownFault" namespace="" />
+      </WL5G3N0:fault>
+      <WL5G3N0:fault name="UnsupportedOperationFault">
+        <WL5G3N2:fault use="literal" name="UnsupportedOperationFault" namespace="" />
+      </WL5G3N0:fault>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="submitSingleMessage">
+      <WL5G3N2:operation soapAction="urn:cdc:iisb:2011:submitSingleMessage" />
+      <WL5G3N0:input>
+        <WL5G3N2:body use="literal" />
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body use="literal" />
+      </WL5G3N0:output>
+      <WL5G3N0:fault name="UnknownFault">
+        <WL5G3N2:fault use="literal" name="UnknownFault" namespace="" />
+      </WL5G3N0:fault>
+      <WL5G3N0:fault name="SecurityFault">
+        <WL5G3N2:fault use="literal" name="SecurityFault" namespace="" />
+      </WL5G3N0:fault>
+      <WL5G3N0:fault name="MessageTooLargeFault">
+        <WL5G3N2:fault use="literal" name="MessageTooLargeFault" namespace="" />
+      </WL5G3N0:fault>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="client_Service">
+    <WL5G3N0:port name="client_Port_Soap12" binding="WL5G3N1:client_Binding_Soap12">
+      <WL5G3N2:address location="https://cair.cdph.ca.gov:443/CAPRD-WS/IISService" />
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>

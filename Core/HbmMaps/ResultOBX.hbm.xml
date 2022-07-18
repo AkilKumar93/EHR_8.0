@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ResultOBX, Acurus.Capella.Core" table="result_obx" lazy="true">
+    <id name="Id" column="Result_OBX_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Result_Master_ID" column="Result_Master_ID" />
+    <property name="Result_OBR_ID" column="Result_OBR_ID" />
+    <property name="OBX_Segment_Type_ID" column="OBX_Segment_Type_ID" />
+    <property name="OBX_Sequence_Number" column="OBX_Sequence_Number" />
+    <property name="OBX_Value_Type" column="OBX_Value_Type" />
+    <property name="OBX_Observation_Identifier" column="OBX_Observation_Identifier" />
+    <property name="OBX_Observation_Text" column="OBX_Observation_Text" />
+    <property name="OBX_Name_Of_Coding_System" column="OBX_Name_Of_Coding_System" />
+    <property name="OBX_Loinc_Identifier" column="OBX_Loinc_Identifier" />
+    <property name="OBX_Loinc_Observation_Text" column="OBX_Loinc_Observation_Text" />
+    <property name="OBX_Name_Of_Alternate_Coding_System" column="OBX_Name_Of_Alternate_Coding_System" />
+    <property name="OBX_Observation_Sub_ID" column="OBX_Observation_Sub_ID" />
+    <property name="OBX_Observation_Value" column="OBX_Observation_Value" />
+    <property name="OBX_Units" column="OBX_Units" />
+    <property name="OBX_Reference_Range" column="OBX_Reference_Range" />
+    <property name="OBX_Abnormal_Flag" column="OBX_Abnormal_Flag" />
+    <property name="OBX_Probability" column="OBX_Probability" />
+    <property name="OBX_NatureOf_Abnormal_Test" column="OBX_NatureOf_Abnormal_Test" />
+    <property name="OBX_Observation_Result_Status" column="OBX_Observation_Result_Status" />
+    <property name="OBX_Date_Of_Last_Change_In_Reference_Range_Or_Units" column="OBX_Date_Of_Last_Change_In_Reference_Range_Or_Units" />
+    <property name="OBX_User_Defined_Access_Checks" column="OBX_User_Defined_Access_Checks" />
+    <property name="OBX_Date_And_Time_Of_Observation" column="OBX_Date_And_Time_Of_Observation" />
+    <property name="OBX_Producer_ID" column="OBX_Producer_ID" />
+    <property name="OBX_Responsible_Observer" column="OBX_Responsible_Observer" />
+    <property name="OBX_Observation_Method" column="OBX_Observation_Method" />
+    <property name="OBX_Equipment_Instance" column="OBX_Equipment_Instance" />
+    <property name="OBX_Date_And_Time_Of_Analysis" column="OBX_Date_And_Time_Of_Analysis" />
+    <property name="OBX_Reserved_for_harmonization1" column="OBX_Reserved_for_harmonization1" />
+    <property name="OBX_Reserved_for_harmonization2" column="OBX_Reserved_for_harmonization2" />
+    <property name="OBX_Reserved_for_harmonization3" column="OBX_Reserved_for_harmonization3" />
+    <property name="OBX_Performing_Organization_Name" column="OBX_Performing_Organization_Name" />
+    <property name="OBX_Performing_Organization_Address" column="OBX_Performing_Organization_Address" />
+    <property name="OBX_Performing_Organization_Medical_Director" column="OBX_Performing_Organization_Medical_Director" />
+  </class>
+</hibernate-mapping>
+

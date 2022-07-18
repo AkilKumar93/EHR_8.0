@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Blockdays, Acurus.Capella.Core" table="block_days" lazy="true">
+    <id name="Id" column="Block_Days_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Facility_Name" column="Facility_Name" />
+    <property name="Block_Date" column="Block_Date" />
+    <property name="From_Time" column="From_Time" />
+    <property name="To_Time" column="To_Time" />
+    <property name="Reason" column="Reason" />
+    <property name="From_Date_Choosen" column="From_Date_Choosen" />
+    <property name="To_Date_Choosen" column="To_Date_Choosen" />
+    <property name="Day_Choosen" column="Day_Choosen" />
+    <property name="Block_Type" column="Block_Type" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Blockdays_Group_ID" column="Blockdays_Group_ID" />
+    <property name="Is_Delete" column="Is_Delete" />
+    <property name="Machine_Technician_Library_ID" column="Machine_Technician_Library_ID" />
+    <property name="Is_Alternate_Weeks" column="Is_Alternate_Weeks" />
+    <property name="Is_Alternate_Months" column="Is_Alternate_Months" />
+  </class>
+</hibernate-mapping>

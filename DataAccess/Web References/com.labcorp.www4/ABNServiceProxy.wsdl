@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns2="http://databeans.abn.labcorp.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:intf="http://services.abn.labcorp.com" xmlns:impl="http://services.abn.labcorp.com" targetNamespace="http://services.abn.labcorp.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://databeans.abn.labcorp.com">
+      <xsd:complexType name="AbnRequestType">
+        <xsd:sequence>
+          <xsd:element name="accountNumber" nillable="true" type="xsd:string" />
+          <xsd:element maxOccurs="unbounded" name="diagCodes" nillable="true" type="xsd:string" />
+          <xsd:element maxOccurs="unbounded" name="testCodes" nillable="true" type="xsd:string" />
+          <xsd:element name="patientName" nillable="true" type="xsd:string" />
+          <xsd:element name="identificationNumber" nillable="true" type="xsd:string" />
+          <xsd:element name="sourceName" nillable="true" type="xsd:string" />
+          <xsd:element name="sourceVersion" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbnResponseType">
+        <xsd:sequence>
+          <xsd:element name="isABNRequired" nillable="true" type="xsd:boolean" />
+          <xsd:element maxOccurs="unbounded" name="messages" nillable="true" type="tns2:Message" />
+          <xsd:element maxOccurs="unbounded" name="abnTests" nillable="true" type="tns2:AbnTest" />
+          <xsd:element maxOccurs="unbounded" name="nonSpecificDiagnosisCodes" nillable="true" type="xsd:string" />
+          <xsd:element maxOccurs="unbounded" name="invalidDiagnosisCodes" nillable="true" type="xsd:string" />
+          <xsd:element name="abnContents" type="xsd:base64Binary" />
+          <xsd:element name="contentType" nillable="true" type="xsd:string" />
+          <xsd:element name="estCost" type="xsd:int" />
+          <xsd:element name="outputType" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Message">
+        <xsd:sequence>
+          <xsd:element name="code" nillable="true" type="xsd:string" />
+          <xsd:element name="text" nillable="true" type="xsd:string" />
+          <xsd:element name="type" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbnTest">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" name="freqCpts" nillable="true" type="tns2:AbnCpt" />
+          <xsd:element maxOccurs="unbounded" name="medNecCpts" nillable="true" type="tns2:AbnCpt" />
+          <xsd:element name="testCode" nillable="true" type="xsd:string" />
+          <xsd:element name="ruoDesc" nillable="true" type="xsd:string" />
+          <xsd:element name="ruoDescNotFound" type="xsd:boolean" />
+          <xsd:element name="ruoIndicator" type="xsd:boolean" />
+          <xsd:element name="ruoPrice" type="xsd:int" />
+          <xsd:element name="ruoPriceNotFound" type="xsd:boolean" />
+          <xsd:element name="testDesc" nillable="true" type="xsd:string" />
+          <xsd:element name="testPrice" type="xsd:int" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbnCpt">
+        <xsd:sequence>
+          <xsd:element name="code" nillable="true" type="xsd:string" />
+          <xsd:element name="desc" nillable="true" type="xsd:string" />
+          <xsd:element name="price" type="xsd:int" />
+          <xsd:element name="descNotFound" type="xsd:boolean" />
+          <xsd:element name="priceNotFound" type="xsd:boolean" />
+          <xsd:element name="multiplier" type="xsd:int" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://services.abn.labcorp.com">
+      <xsd:import namespace="http://databeans.abn.labcorp.com" />
+      <xsd:element name="checkABN">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="abnRequest" nillable="true" type="tns2:AbnRequestType" />
+            <xsd:element name="includeABNContent" type="xsd:boolean" />
+            <xsd:element name="includeDetails" type="xsd:boolean" />
+            <xsd:element name="nbrOfPrintCopies" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="checkABNResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="checkABNReturn" nillable="true" type="tns2:AbnResponseType" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="checkABNRequest">
+    <wsdl:part name="parameters" element="impl:checkABN" />
+  </wsdl:message>
+  <wsdl:message name="checkABNResponse">
+    <wsdl:part name="parameters" element="impl:checkABNResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ABNServiceProxy">
+    <wsdl:operation name="checkABN">
+      <wsdl:input name="checkABNRequest" message="impl:checkABNRequest" />
+      <wsdl:output name="checkABNResponse" message="impl:checkABNResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ABNServiceProxySoapBinding" type="impl:ABNServiceProxy">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="checkABN">
+      <wsdlsoap:operation soapAction="checkABN" />
+      <wsdl:input name="checkABNRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="checkABNResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ABNServiceProxyService">
+    <wsdl:port name="ABNServiceProxy" binding="impl:ABNServiceProxySoapBinding">
+      <wsdlsoap:address location="https://www4.labcorp.com:443/Abn/services/ABNServiceProxy" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

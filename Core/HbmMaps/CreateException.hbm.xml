@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.CreateException, Acurus.Capella.Core" table="coding_feedback" lazy="true">
+    <id name="Id" column="Coding_Feedback_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Enounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />    
+    <property name="FeedBack" column="FeedBack" />
+    <property name="Issues" column="Issues" />
+    <property name="FeedBack_ProvidedBy" column="FeedBack_Provided_By" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  </class>
+</hibernate-mapping>

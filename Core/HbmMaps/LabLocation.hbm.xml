@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.LabLocation, Acurus.Capella.Core" table="lab_location" lazy="true">
+    <id name="Id" column="Lab_Location_ID">
+      <generator class="identity" />
+    </id>
+
+    <property name="Location_Name" column="Location_Name" />
+    <property name="Lab_ID" column="Lab_ID" />
+    <property name="Street_Address1" column="Street_Address1" />
+    <property name="Street_Address2" column="Street_Address2" />
+    <property name="City" column="City" />
+    <property name="State" column="State" />
+    <property name="ZipCode" column="ZipCode" />
+    <property name="Phone_No" column="Phone_No" />    
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Lab_NPI" column="Lab_NPI" />
+    <property name="Suit_Number" column="Suit_Number" />
+    <property name="E_Mail" column="E_Mail" />
+    <!--Janani - Main - 30 Jul 2011 - Start-->
+    <property name="Sort_Order" column="Sort_Order" />
+    <!--Janani - Main - 30 Jul 2011 - End-->
+    <property name="Fax_No" column="Fax_No" />
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.OrdersQuestionSetCytology, Acurus.Capella.Core" table="orders_question_set_cytology" lazy="true">
+    <id name="Id" column="Orders_Question_Sets_Cytology_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Order_ID" column="Order_ID" />
+    <property name="Gyn_Source_Cervical" column="Gyn_Source_Cervical" />
+    <property name="Gyn_Source_Endocervical" column="Gyn_Source_Endocervical" />
+    <property name="Gyn_Source_Labia_Vulva" column="Gyn_Source_Labia_Vulva" />
+    <property name="Gyn_Source_Vaginal" column="Gyn_Source_Vaginal" />
+    <property name="Gyn_Source_Endometrial" column="Gyn_Source_Endometrial" />
+    <property name="Gyn_Source_Hysterectomy_Supracervical" column="Gyn_Source_Hysterectomy_Supracervical" />
+    <property name="Collection_Technique_Swab_Spatula" column="Collection_Technique_Swab_Spatula" />
+    <property name="Collection_Technique_Brush_Spatula" column="Collection_Technique_Brush_Spatula" />
+    <property name="Collection_Technique_Spatula_Alone" column="Collection_Technique_Spatula_Alone" />
+    <property name="Collection_Technique_Brush_Alone" column="Collection_Technique_Brush_Alone" />
+    <property name="Collection_Technique_Broom_Alone" column="Collection_Technique_Broom_Alone" />
+    <property name="Collection_Technique_Other" column="Collection_Technique_Other" />
+    <property name="LMP_Meno_Date" column="LMP_Meno_Date" />
+    <property name="Previous_Treatment_None" column="Previous_Treatment_None" />
+    <property name="Previous_Treatment_Hyst" column="Previous_Treatment_Hyst" />
+    <property name="Previous_Treatment_Coniza" column="Previous_Treatment_Coniza" />
+    <property name="Previous_Treatment_Colp_BX" column="Previous_Treatment_Colp_BX" />
+    <property name="Previous_Treatment_Laser_Vap" column="Previous_Treatment_Laser_Vap" />
+    <property name="Previous_Treatment_Cyro" column="Previous_Treatment_Cyro" />
+    <property name="Previous_Treatment_Radiation" column="Previous_Treatment_Radiation" />
+    <property name="Previous_Cytology_Info_Negative" column="Previous_Cytology_Info_Negative" />
+    <property name="Previous_Cytology_Info_Atypical" column="Previous_Cytology_Info_Atypical" />
+    <property name="Previous_Cytology_Info_Dysplasia" column="Previous_Cytology_Info_Dysplasia" />
+    <property name="Previous_Cytology_Info_Ca_In_Situ" column="Previous_Cytology_Info_Ca_In_Situ" />
+    <property name="Previous_Cytology_Info_Invasive" column="Previous_Cytology_Info_Invasive" />
+    <property name="Previous_Cytology_Info_Other" column="Previous_Cytology_Info_Other" />
+    <property name="Previous_Cytology_Info_Dates_Results" column="Previous_Cytology_Info_Dates_Results" />
+    <property name="Other_Patient_Info_Pregnant" column="Other_Patient_Info_Pregnant" />
+    <property name="Other_Patient_Info_Lactating" column="Other_Patient_Info_Lactating" />
+    <property name="Other_Patient_Info_Oral_Contraceptives" column="Other_Patient_Info_Oral_Contraceptives" />
+    <property name="Other_Patient_Info_Menopausal" column="Other_Patient_Info_Menopausal" />
+    <property name="Other_Patient_Info_Estro_RX" column="Other_Patient_Info_Estro_RX" />
+    <property name="Other_Patient_Info_PMP_Bleeding" column="Other_Patient_Info_PMP_Bleeding" />
+    <property name="Other_Patient_Info_Post_Part" column="Other_Patient_Info_Post_Part" />
+    <property name="Other_Patient_Info_IUD" column="Other_Patient_Info_IUD" />
+    <property name="Other_Patient_Info_All_Other_Pat" column="Other_Patient_Info_All_Other_Pat" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  </class>
+
+</hibernate-mapping>

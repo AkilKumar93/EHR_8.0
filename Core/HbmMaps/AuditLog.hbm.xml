@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella.Core">
+  <class name="Acurus.Capella.Core.DomainObjects.AuditLog,Acurus.Capella.Core" table="audit_log" lazy="true">
+    <id name="Id" column="Audit_Log_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Entity_Name" column="Entity_Name" />
+    <!--<property name="Entity_Attribute" column="Entity_Attribute" />-->
+    <property name="Entity_Id" column="Entity_Id" />
+    <property name="Transaction_By" column="Transaction_By" />
+    <property name="Transaction_Date_And_Time" column="Transaction_Date_And_Time" />   
+    <property name="Transaction_Type" column="Transaction_Type" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Old_Value" column="Old_Value" />
+    <property name="New_Value" column="New_Value" />
+    <property name="Attribute" column="Attribute" />
+
+
+  </class>
+</hibernate-mapping>

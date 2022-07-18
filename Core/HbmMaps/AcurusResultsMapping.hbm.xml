@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.AcurusResultsMapping, Acurus.Capella.Core" table="acurus_results_mapping" lazy="true">
+    <id name="Acurus_Result_Code" column="Acurus_Result_Code">
+      <generator class="assigned" />
+    </id>
+
+    <!--//Acurus_Result_Code, Acurus_Result_Description, Lab_ID, Lab_Result_Code, Lab_Result_Description, CPT_Code, Units, Range, Gender-->
+    <property name="Acurus_Result_Description" column="Acurus_Result_Description" />
+    <property name="Lab_ID" column="Lab_ID" />   
+    <property name="Lab_Result_Code" column="Lab_Result_Code" />
+    <property name="Lab_Result_Description" column="Lab_Result_Description" />    
+    <property name="Sort_Order" column="Sort_Order" />
+  </class>
+</hibernate-mapping>
+
+ <!--Removed For this Bug ID 44845
+ <property name="Order_Code" column="Order_Code" />
+ <property name="Order_Code_Description" column="Order_Code_Description" />
+ <property name="CPT_Code" column="CPT_Code" />-->

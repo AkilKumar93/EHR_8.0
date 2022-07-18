@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.OrdersQuestionSetBloodLead, Acurus.Capella.Core" table="orders_question_set_blood_lead" lazy="true">
+    <id name="Id" column="Order_Question_Set_Blood_Lead_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Order_ID" column="Order_ID" />
+    <property name="Blood_Lead_Type" column="Blood_Lead_Type" />
+    <property name="Blood_Lead_Type_HL7_Value" column="Blood_Lead_Type_HL7_Value" />
+    <property name="Blood_Lead_Type_Purpose" column="Blood_Lead_Type_Purpose" />
+    <property name="Blood_Lead_Type_Purpose_HL7_Value" column="Blood_Lead_Type_Purpose_HL7_Value" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  </class>
+</hibernate-mapping>

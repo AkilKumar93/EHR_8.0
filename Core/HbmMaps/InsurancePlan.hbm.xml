@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.InsurancePlan, Acurus.Capella.Core" table="insurance_plan" lazy="true">
+    <id name="Id" column="Insurance_Plan_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Payer_Rec_Code" column="Payer_Rec_Code" />
+    <property name="Payer_Addrress1" column="Payer_Addrress1" />
+    <property name="Payer_Addrress2" column="Payer_Addrress2" />
+    <property name="Payer_City" column="Payer_City" />
+    <property name="Payer_State" column="Payer_State" />
+    <property name="Payer_Zip" column="Payer_Zip" />
+    <property name="Payer_Phone_Number" column="Payer_Phone_Number" />
+    <property name="Office_Number" column="Office_Number " />
+    <property name="Payer_Notes" column="Payer_Notes" />
+    <property name="External_Plan_Number" column="External_Plan_Number" />
+    <property name="Ins_Plan_Name" column="Insurance_Plan_Name" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Form_Number" column="Form_Number" />
+    <property name="Format_File_Number" column="Format_File_Number" />
+    <property name="Emc_ID1" column="Emc_ID1" />
+    <property name="Emc_ID2" column="Emc_ID2" />
+    <property name="Govt_Type" column="Govt_Type" />
+    <property name="Fax_Number" column="Fax_Number" />
+    <property name="Eligibility_Phone_Number" column="Eligibility_Phone_Number" />
+    <property name="Active" column="Active" />
+    <property name="Carrier_ID" column="Carrier_ID" />
+    <property name="Financial_Class_Name" column="Financial_Class_Name" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Is_Workers_Comp" column="Is_Workers_Comp" />
+    <property name="Claim_Attention" column="Claim_Attention" />
+    <property name="Claim_Address" column="Claim_Address" />
+    <property name="Claim_City" column="Claim_City" />
+    <property name="Claim_State" column="Claim_State" />
+    <property name="Claim_ZipCode" column="Claim_ZipCode" />
+    <bag name="CarrierBag" cascade="all" lazy="false" inverse="true">
+      <key column="Carrier_ID" />
+      <one-to-many class="Acurus.Capella.Core.DomainObjects.Carrier, Acurus.Capella.Core" />
+    </bag>
+
+  </class>
+</hibernate-mapping>

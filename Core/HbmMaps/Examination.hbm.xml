@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Examination, Acurus.Capella.Core" table="examination" lazy="true">
+    <id name="Id" column="Examination_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="System_Name" column="System_Name" />
+    <property name="Condition_Name" column="Condition_Name" />
+    <property name="Status" column="Status" />
+    <property name="Examination_Notes" column="Examination_Notes" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Exam_Lookup_Id" column="Exam_Lookup_Id" />
+    <property name="Category" column="Category" />
+    <property name="Short_Description" column="Short_Description" />
+  </class>
+</hibernate-mapping>
+

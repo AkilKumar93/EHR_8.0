@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Loinc, Acurus.Capella.Core" table="loinc" lazy="true">
+    <id name="Id" column="Loinc_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Loinc_Num" column="Loinc_Num" />
+    <property name="Component" column="Component" />
+    <property name="Property" column="Property" />
+    <property name="Time_Aspct" column="Time_Aspct" />
+    <property name="System" column="System" />
+    <property name="Scale_Typ" column="Scale_Typ" />
+    <property name="Method_Typ" column="Method_Typ" />
+    <property name="Relat_NMS" column="Relat_NMS" />
+    <property name="Class" column="Class" />
+    <property name="Source" column="Source" />
+    <property name="Dt_Last_Ch" column="Dt_Last_Ch" />
+    <property name="Chng_Type" column="Chng_Type" />
+    <property name="Comments" column="Comments" />
+    <property name="AnswerList" column="Answer_List" />
+    <property name="Status" column="Status" />
+    <property name="Map_To" column="Map_To" />
+    <property name="Scope" column="Scope" />
+    <property name="Consumer_Name" column="Consumer_Name" />
+    <property name="IPCC_Units" column="Ipcc_units" />
+    <property name="Reference" column="Reference" />
+    <property name="Exact_Cmp_Sy" column="Exact_Cmp_Sy" />
+    <property name="Molar_Mass" column="Molar_Mass" />
+    <property name="ClassType" column="Class_Type" />
+    <property name="Formula" column="Formula" />
+    <property name="Species" column="Species" />
+    <property name="Exmpl_Answers" column="Exmpl_Answers" />
+    <property name="AcsSym" column="Acssym" />
+    <property name="Base_Name" column="Base_Name" />
+    <property name="Final" column="Final" />
+    <property name="Naaccr_ID" column="Naaccr_Id" />
+    <property name="Code_Table" column="Code_Table" />
+    <property name="SetRoot" column="Set_Root" />
+    <property name="Panelelements" column="Panel_Elements" />
+    <property name="Survey_Quest_Text" column="Survey_Quest_Text" />
+    <property name="Survey_Quest_Src" column="Survey_Quest_Src" />
+    <property name="UnitsRequired" column="Units_Required" />
+    <property name="Submitted_Units" column="Submitted_Units" />
+    <property name="RelatedNames2" column="Related_Names2" />
+    <property name="ShortName" column="Short_Name" />
+    <property name="Order_Obs" column="Order_Obs" />
+    <property name="CDISCCode" column="Cdisc_Common_Tests" />
+    <property name="HL7_Field_SubField_ID" column="HL7_Field_Subfield_Id" />
+    <property name="External_Copyright_Notice" column="External_Copyright_Notice" />
+    <property name="Example_Units" column="Example_Units" />
+    <property name="Inpc_Percentage" column="Inpc_Percentage" />
+    <property name="Long_Common_Name" column="Long_Common_Name" />
+    <property name="HL7_V2_DataType" column="HL7_V2_Data_Type" />
+    <property name="HL7_V3_DataType" column="HL7_V3_Data_Type" />
+    <property name="Curated_Range_And_Units" column="Curated_Range_And_Units" />
+    <property name="Document_Sections" column="Document_Section" />
+    <property name="Definition_Description_Help" column="Definition_Description_Help" />
+    <property name="Example_Ucum_Units" column="Example_Ucum_Units" />
+    <property name="Example_Si_Ucum_Units" column="Example_Si_Ucum_Units" />
+    <property name="Status_Reason" column="Status_Reason" />
+    <property name="Status_Text" column="Status_Text" />
+    <!--<property name="Special_Explanation" column="Special_Explanation" />-->
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="Change_Reason_Public" column="Change_Reason_Public" />
+    <property name="Common_Test_Rank" column="Common_Test_Rank" />
+
+    
+    
+  </class>
+</hibernate-mapping>

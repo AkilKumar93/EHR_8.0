@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ChargeLineItem, Acurus.Capella.Core" table="charge_line_item" lazy="true">
+    <id name="Id" column="Charge_Line_Item_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    
+    <property name="Charge_Header_ID" column="Charge_Header_ID"/>
+    <property name="From_DOS" column="From_DOS"/>
+    <property name="To_DOS" column="To_DOS"/>
+    <property name="Place_of_Service" column="Place_of_Service"/>
+    <property name="EMG" column="EMG"/>
+    <property name="Procedure_Code" column="Procedure_Code"/>
+    <property name="Modifier1" column="Modifier1"/>
+    <property name="Modifier2" column="Modifier2"/>
+    <property name="Modifier3" column="Modifier3"/>
+    <property name="Modifier4" column="Modifier4"/>
+    <property name="Diagnosis_Pointer" column="Diagnosis_Pointer"/>   
+    <property name="Charge_Amount" column="Charge_Amount"/>
+    <property name="Units" column="Units"/>
+    <property name="EPSDT" column="EPSDT"/>
+    <property name="FP" column="FP"/>
+    <property name="Rendering_Provider_ID" column="Rendering_Provider_ID"/>
+    <property name="NDC_Code" column="NDC_Code"/>
+    <property name="NDC_Units" column="NDC_Units"/>
+    <property name="Charge_Notes" column="Charge_Notes"/>
+    <property name="Bill_Destination" column="Bill_Destination"/>    
+    <property name="Pat_Insured_Plan_ID" column="Pat_Insured_Plan_ID"/>    
+    <property name="Bill_To_ID" column="Bill_To_ID"/>
+    <property name="Account_Transaction_ID" column="Account_Transaction_ID"/>
+    <property name="Pat_Other_Insured_Plan_ID" column="Pat_Other_Insured_Plan_ID"/>    
+    <property name="Created_By" column="Created_By"/>
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time"/>
+    <property name="Modified_By" column="Modified_By"/>
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time"/>
+    <property name="Deleted" column="Deleted"/>
+    <property name="Sort_Order" column="Sort_Order"/>
+    <property name="Additional_ICD" column="Additional_ICD"/>
+    <property name="Charge_Header_Identifier" column="Charge_Header_Identifier"/>
+  </class>
+</hibernate-mapping>

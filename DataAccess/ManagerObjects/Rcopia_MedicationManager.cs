@@ -1,0 +1,469 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Acurus.Capella.Core.DomainObjects;
+using Acurus.Capella.Core.DTO;
+using NHibernate;
+using NHibernate.Criterion;
+using System.Linq;
+
+namespace Acurus.Capella.DataAccess.ManagerObjects
+{
+    public partial interface IRcopia_MedicationManager : IManagerBase<Rcopia_Medication, ulong>
+    {
+        ulong AppendToRcopia_Medication(Rcopia_Medication objMedication, string MACAddress);
+        Rcopia_Medication UpdateToRcopia_Medication(Rcopia_Medication objMedication, string MACAddress);
+        IList<Rcopia_Medication> GetRcopiaMedicationRecords(IList<ulong> ulRcopia_ID);
+        IList<Rcopia_Medication> GetRCopiaMedByHumanID(ulong ulHumanID);
+        void InsertOrUpdateMedication(IList<Rcopia_Medication> ilstMedication, string sUserName, string MACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID);
+        IList<Rcopia_Medication> GetRxNormByHumanID(ulong ulHumanID);
+        IList<Rcopia_Medication> GetRmedicationByHumanID(string ulHumanID);
+        IList<Rcopia_Medication> GetMedicationByHumanID(ulong ulHumanID);
+    }
+
+    public partial class Rcopia_MedicationManager : ManagerBase<Rcopia_Medication, ulong>, IRcopia_MedicationManager
+    {
+        #region Constructors
+
+        public Rcopia_MedicationManager()
+            : base()
+        {
+
+        }
+        public Rcopia_MedicationManager
+            (INHibernateSession session)
+            : base(session)
+        {
+
+        }
+        #endregion
+
+        #region Methods
+
+        //public void InsertOrUpdateMedication(IList<Rcopia_Medication> ilstMedication, string sUserName, string MACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID)
+        //{
+        //    if (ilstMedication.Count > 0)
+        //    {
+        //        IList<Rcopia_Medication> Rcopia_MedicationList = new List<Rcopia_Medication>();
+        //        IList<Rcopia_Medication> Rcopia_MedicationUpdateList = new List<Rcopia_Medication>();
+
+        //        for (int i = 0; i < ilstMedication.Count; i++)
+        //        {
+        //            if (ilstMedication[i].Human_ID != 0)
+        //            {
+        //                Rcopia_Medication objMedication = GetRcopiaMedicationRecords(ilstMedication[i].Id);
+        //                if (objMedication == null)
+        //                {
+        //                    if (Rcopia_MedicationList.Count > 0)
+        //                    {
+        //                        if (!Rcopia_MedicationList.Any(item => item.Id == ilstMedication[i].Id))
+        //                        {
+        //                            if (Rcopia_MedicationUpdateList.Count > 0)
+        //                            {
+        //                                if (!Rcopia_MedicationUpdateList.Any(item => item.Id == ilstMedication[i].Id))
+        //                                {
+        //                                    //ilstMedication[i].Created_Date_And_Time = DateTime.Now;
+        //                                    //ilstMedication[i].Created_Date_And_Time = DateTime.UtcNow;
+        //                                    ilstMedication[i].Created_Date_And_Time = dtClientDate;
+        //                                    ilstMedication[i].Created_By = sUserName;
+        //                                    ilstMedication[i].Facility_Name = sFacilityName;
+        //                                    ilstMedication[i].Encounter_ID = EncID;
+        //                                    ilstMedication[i].Status = "ACTIVE";
+        //                                    Rcopia_MedicationList.Add(ilstMedication[i]);
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                //ilstMedication[i].Created_Date_And_Time = DateTime.Now;
+        //                                //ilstMedication[i].Created_Date_And_Time = DateTime.UtcNow;
+        //                                ilstMedication[i].Created_Date_And_Time = dtClientDate;
+        //                                ilstMedication[i].Created_By = sUserName;
+        //                                ilstMedication[i].Facility_Name = sFacilityName;
+        //                                ilstMedication[i].Encounter_ID = EncID;
+        //                                ilstMedication[i].Status = "ACTIVE";
+
+        //                                Rcopia_MedicationList.Add(ilstMedication[i]);
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        //ilstMedication[i].Created_Date_And_Time = DateTime.Now;
+        //                        //ilstMedication[i].Created_Date_And_Time = DateTime.UtcNow;
+        //                        ilstMedication[i].Created_Date_And_Time = dtClientDate;
+        //                        ilstMedication[i].Created_By = sUserName;
+        //                        ilstMedication[i].Facility_Name = sFacilityName;
+        //                        ilstMedication[i].Encounter_ID = EncID;
+        //                        ilstMedication[i].Status = "ACTIVE";
+        //                        Rcopia_MedicationList.Add(ilstMedication[i]);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    //objMedication.Modified_Date_And_Time = DateTime.Now;
+        //                    //objMedication.Modified_Date_And_Time = DateTime.UtcNow;
+        //                    objMedication.Modified_Date_And_Time = dtClientDate;
+        //                    objMedication.Modified_By = sUserName;
+        //                    objMedication.Facility_Name = sFacilityName;
+        //                    objMedication.Encounter_ID = EncID;
+        //                    ilstMedication[i].Status = "ACTIVE";
+        //                    Rcopia_Medication objUpdateMedication = UpdateMedicationObject(objMedication, ilstMedication[i]);
+        //                    Rcopia_MedicationUpdateList.Add(objUpdateMedication);
+        //                }
+        //            }
+        //        }
+        //        ulong EncounterORHumanId = 0;
+        //        if (Rcopia_MedicationList.Count > 0)
+        //            EncounterORHumanId = Rcopia_MedicationList[0].Human_ID;
+        //        else
+        //            EncounterORHumanId = Rcopia_MedicationUpdateList[0].Human_ID;
+        //        //SaveUpdateDelete_DBAndXML_WithTransaction(ref Rcopia_MedicationList, ref Rcopia_MedicationUpdateList, null, MACAddress, true, true, EncounterORHumanId, string.Empty);
+        //        SaveUpdateDeleteWithTransaction(ref Rcopia_MedicationList, Rcopia_MedicationUpdateList, null, MACAddress);
+
+        //            var newList = Rcopia_MedicationList.Concat(Rcopia_MedicationUpdateList);
+        //            IList<Rcopia_Medication> combinedList = newList.ToList<Rcopia_Medication>();
+
+        //            var query = combinedList.GroupBy(p => p.Human_ID).Select(g => g.First()).ToList();
+        //            IList<Rcopia_Medication> MyRCopiaList = query.ToList<Rcopia_Medication>();
+
+        //            for (int iCount = 0; iCount <= MyRCopiaList.Count - 1; iCount++)
+        //            {
+        //                IList<Rcopia_Medication> rcopiaMedList = GetMedicationByHumanID(MyRCopiaList[iCount].Human_ID);
+        //                GenerateXml XMLObj = new GenerateXml();
+
+        //                ulong uHuman_id = MyRCopiaList[iCount].Human_ID;
+        //                List<object> lstObj = new List<object>();
+
+        //                for (int i = 0; i < rcopiaMedList.Count; i++)
+        //                {
+        //                    lstObj.Add(rcopiaMedList[i]);
+        //                    lstObj = lstObj.Cast<object>().ToList();
+        //                }
+        //                if (rcopiaMedList.Count>0)
+        //                    XMLObj.GenerateXmlSaveRCopia(lstObj, uHuman_id, string.Empty, true, false, false, true);
+        //            }
+
+               
+        //        //if (Rcopia_MedicationList.Count > 0)
+        //        //{
+        //        //    for (int i = 0; i < Rcopia_MedicationList.Count; i++)
+        //        //    {
+        //        //        ulong uHuman_id = Rcopia_MedicationList[i].Human_ID;
+        //        //        List<object> lstObj = new List<object>();
+        //        //        lstObj.Add(Rcopia_MedicationList[i]);
+        //        //        lstObj = lstObj.Cast<object>().ToList();
+        //        //        XMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty);
+        //        //    }
+        //        //}
+        //        //if (Rcopia_MedicationUpdateList.Count > 0)
+        //        //{
+        //        //    for (int i = 0; i < Rcopia_MedicationUpdateList.Count; i++)
+        //        //    {
+        //        //        ulong uHuman_id = Rcopia_MedicationUpdateList[i].Human_ID;
+        //        //        List<object> lstObj = new List<object>();
+        //        //        lstObj.Add(Rcopia_MedicationUpdateList[i]);
+        //        //        lstObj = lstObj.Cast<object>().ToList();
+        //        //        XMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty);
+        //        //    }
+        //        //}
+        //    }
+        //}
+
+        public void InsertOrUpdateMedication(IList<Rcopia_Medication> ilstMedication, string sUserName, string MACAddress, DateTime dtClientDate, string sFacilityName, ulong EncID)
+        {
+            if (ilstMedication.Count > 0)
+            {
+                IList<Rcopia_Medication> Rcopia_MedicationList = new List<Rcopia_Medication>();
+                IList<Rcopia_Medication> Rcopia_MedicationUpdateList = new List<Rcopia_Medication>();
+
+                List<ulong> RcopiaID = ilstMedication.Select(x => x.Id).ToList<ulong>();
+
+                IList<Rcopia_Medication> lstMedication = GetRcopiaMedicationRecords(RcopiaID);
+
+                Rcopia_Medication objMedication = null;
+
+                for (int i = 0; i < ilstMedication.Count; i++)
+                {
+                    if (ilstMedication[i].Human_ID != 0)
+                    {
+                        IList<Rcopia_Medication> med = (from m in lstMedication where m.Id == ilstMedication[i].Id select m).ToList<Rcopia_Medication>();
+                        if (med != null && med.Count > 0)
+                            objMedication = (Rcopia_Medication)med[0];
+                        else
+                            objMedication = null;
+                        if (objMedication == null)
+                        {
+                            if (Rcopia_MedicationList.Count > 0)
+                            {
+                                if (!Rcopia_MedicationList.Any(item => item.Id == ilstMedication[i].Id))
+                                {
+                                    if (Rcopia_MedicationUpdateList.Count > 0)
+                                    {
+                                        if (!Rcopia_MedicationUpdateList.Any(item => item.Id == ilstMedication[i].Id))
+                                        {
+                                            //ilstMedication[i].Created_Date_And_Time = DateTime.Now;
+                                            //ilstMedication[i].Created_Date_And_Time = DateTime.UtcNow;
+                                            ilstMedication[i].Created_Date_And_Time = dtClientDate;
+                                            ilstMedication[i].Created_By = sUserName;
+                                            ilstMedication[i].Facility_Name = sFacilityName;
+                                            ilstMedication[i].Encounter_ID = EncID;
+                                            ilstMedication[i].Status = "ACTIVE";
+                                            Rcopia_MedicationList.Add(ilstMedication[i]);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //ilstMedication[i].Created_Date_And_Time = DateTime.Now;
+                                        //ilstMedication[i].Created_Date_And_Time = DateTime.UtcNow;
+                                        ilstMedication[i].Created_Date_And_Time = dtClientDate;
+                                        ilstMedication[i].Created_By = sUserName;
+                                        ilstMedication[i].Facility_Name = sFacilityName;
+                                        ilstMedication[i].Encounter_ID = EncID;
+                                        ilstMedication[i].Status = "ACTIVE";
+
+                                        Rcopia_MedicationList.Add(ilstMedication[i]);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //ilstMedication[i].Created_Date_And_Time = DateTime.Now;
+                                //ilstMedication[i].Created_Date_And_Time = DateTime.UtcNow;
+                                ilstMedication[i].Created_Date_And_Time = dtClientDate;
+                                ilstMedication[i].Created_By = sUserName;
+                                ilstMedication[i].Facility_Name = sFacilityName;
+                                ilstMedication[i].Encounter_ID = EncID;
+                                ilstMedication[i].Status = "ACTIVE";
+                                Rcopia_MedicationList.Add(ilstMedication[i]);
+                            }
+                        }
+                        else
+                        {
+                            //objMedication.Modified_Date_And_Time = DateTime.Now;
+                            //objMedication.Modified_Date_And_Time = DateTime.UtcNow;
+                            objMedication.Modified_Date_And_Time = dtClientDate;
+                            objMedication.Modified_By = sUserName;
+                            objMedication.Facility_Name = sFacilityName;
+                            objMedication.Encounter_ID = EncID;
+                            ilstMedication[i].Status = "ACTIVE";
+                            Rcopia_Medication objUpdateMedication = UpdateMedicationObject(objMedication, ilstMedication[i]);
+                            Rcopia_MedicationUpdateList.Add(objUpdateMedication);
+                        }
+                    }
+                }
+                ulong EncounterORHumanId = 0;
+                if (Rcopia_MedicationList.Count > 0)
+                    EncounterORHumanId = Rcopia_MedicationList[0].Human_ID;
+                else if (Rcopia_MedicationUpdateList.Count > 0)
+                    EncounterORHumanId = Rcopia_MedicationUpdateList[0].Human_ID;
+                if (EncounterORHumanId !=0)
+                    SaveUpdateDelete_DBAndXML_WithTransaction(ref Rcopia_MedicationList, ref Rcopia_MedicationUpdateList, null, MACAddress, true, true, EncounterORHumanId, string.Empty);
+                //SaveUpdateDeleteWithTransaction(ref Rcopia_MedicationList, Rcopia_MedicationUpdateList, null, MACAddress);
+
+                //var newList = Rcopia_MedicationList.Concat(Rcopia_MedicationUpdateList);
+                //IList<Rcopia_Medication> combinedList = newList.ToList<Rcopia_Medication>();
+
+                //var query = combinedList.GroupBy(p => p.Human_ID).Select(g => g.First()).ToList();
+                //IList<Rcopia_Medication> MyRCopiaList = query.ToList<Rcopia_Medication>();
+
+                //for (int iCount = 0; iCount <= MyRCopiaList.Count - 1; iCount++)
+                //{
+                //    IList<Rcopia_Medication> rcopiaMedList = GetMedicationByHumanID(MyRCopiaList[iCount].Human_ID);
+                //    GenerateXml XMLObj = new GenerateXml();
+
+                //    ulong uHuman_id = MyRCopiaList[iCount].Human_ID;
+                //    List<object> lstObj = new List<object>();
+
+                //    for (int i = 0; i < rcopiaMedList.Count; i++)
+                //    {
+                //        lstObj.Add(rcopiaMedList[i]);
+                //        lstObj = lstObj.Cast<object>().ToList();
+                //    }
+                //    if (rcopiaMedList.Count > 0)
+                //        XMLObj.GenerateXmlSaveRCopia(lstObj, uHuman_id, string.Empty, true, false, false, true);
+                //}
+
+
+                //if (Rcopia_MedicationList.Count > 0)
+                //{
+                //    for (int i = 0; i < Rcopia_MedicationList.Count; i++)
+                //    {
+                //        ulong uHuman_id = Rcopia_MedicationList[i].Human_ID;
+                //        List<object> lstObj = new List<object>();
+                //        lstObj.Add(Rcopia_MedicationList[i]);
+                //        lstObj = lstObj.Cast<object>().ToList();
+                //        XMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty);
+                //    }
+                //}
+                //if (Rcopia_MedicationUpdateList.Count > 0)
+                //{
+                //    for (int i = 0; i < Rcopia_MedicationUpdateList.Count; i++)
+                //    {
+                //        ulong uHuman_id = Rcopia_MedicationUpdateList[i].Human_ID;
+                //        List<object> lstObj = new List<object>();
+                //        lstObj.Add(Rcopia_MedicationUpdateList[i]);
+                //        lstObj = lstObj.Cast<object>().ToList();
+                //        XMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty);
+                //    }
+                //}
+            }
+        }
+
+
+
+        public ulong AppendToRcopia_Medication(Rcopia_Medication objMedication, string MACAddress)
+        {
+            IList<Rcopia_Medication> Rcopia_MedicationList = new List<Rcopia_Medication>();
+            Rcopia_MedicationList.Add(objMedication);
+            // SaveUpdateDeleteWithTransaction(ref Rcopia_MedicationList, null, null, MACAddress);
+            return Rcopia_MedicationList[0].Id;
+        }
+
+        public Rcopia_Medication UpdateToRcopia_Medication(Rcopia_Medication objMedication, string MACAddress)
+        {
+            IList<Rcopia_Medication> Rcopia_MedicationList = new List<Rcopia_Medication>();
+            Rcopia_MedicationList.Add(objMedication);
+            IList<Rcopia_Medication> Rcopia_MedicationListadd = null;
+            SaveUpdateDeleteWithTransaction(ref Rcopia_MedicationListadd, Rcopia_MedicationList, null, MACAddress);
+            //Rcopia_Medication ReturnMedication = GetRcopiaMedicationRecords(objMedication.Id);
+            return Rcopia_MedicationList[0];
+        }
+
+        public IList<Rcopia_Medication> GetRcopiaMedicationRecords(IList<ulong> ulRcopia_ID)
+        {
+            IList<Rcopia_Medication> objMedication = new List<Rcopia_Medication>();
+            //ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = mySession.CreateCriteria(typeof(Rcopia_Medication)).Add(Expression.In("Id", ulRcopia_ID.ToArray()));
+                if (crit.List<Rcopia_Medication>().Count > 0)
+                {
+                    objMedication = crit.List<Rcopia_Medication>();
+                }
+                mySession.Close();
+            }
+            return objMedication;
+        }
+
+        public Rcopia_Medication UpdateMedicationObject(Rcopia_Medication objMedication, Rcopia_Medication objUpdateMedication)
+        {
+            objMedication.Action = objUpdateMedication.Action;
+            objMedication.Brand_Name = objUpdateMedication.Brand_Name;
+            objMedication.Comments = objUpdateMedication.Comments;
+            objMedication.Dose = objUpdateMedication.Dose;
+            objMedication.Dose_Other = objUpdateMedication.Dose_Other;
+            objMedication.Dose_Timing = objUpdateMedication.Dose_Timing;
+            objMedication.Dose_Unit = objUpdateMedication.Dose_Unit;
+            objMedication.Drug = objUpdateMedication.Drug;
+            objMedication.Duration = objUpdateMedication.Duration;
+            objMedication.Fill_Date = objUpdateMedication.Fill_Date;
+            objMedication.First_DataBank_Med_ID = objUpdateMedication.First_DataBank_Med_ID;
+            objMedication.Form = objUpdateMedication.Form;
+            objMedication.Generic_Name = objUpdateMedication.Generic_Name;
+            objMedication.Height = objUpdateMedication.Height;
+            objMedication.Intended_Use = objUpdateMedication.Intended_Use;
+            objMedication.Last_Modified_By = objUpdateMedication.Last_Modified_By;
+            objMedication.Last_Modified_Date = objUpdateMedication.Last_Modified_Date;
+            objMedication.NDC_ID = objUpdateMedication.NDC_ID;
+            objMedication.Other_Notes = objUpdateMedication.Other_Notes;
+            objMedication.Patient_Notes = objUpdateMedication.Patient_Notes;
+            objMedication.Quantity = objUpdateMedication.Quantity;
+            objMedication.Quantity_Unit = objUpdateMedication.Quantity_Unit;
+            objMedication.Refills = objUpdateMedication.Refills;
+            objMedication.Route = objUpdateMedication.Route;
+            objMedication.Sig_Changed_Date = objUpdateMedication.Sig_Changed_Date;
+            objMedication.Start_Date = objUpdateMedication.Start_Date;
+            objMedication.Stop_Date = objUpdateMedication.Stop_Date;
+            objMedication.Stop_Reason = objUpdateMedication.Stop_Reason;
+            objMedication.Strength = objUpdateMedication.Strength;
+            objMedication.Substitution_Permitted = objUpdateMedication.Substitution_Permitted;
+            objMedication.Weight = objUpdateMedication.Weight;
+            objMedication.Medication_Order = objUpdateMedication.Medication_Order;
+            objMedication.ICD_Code = objUpdateMedication.ICD_Code;
+            objMedication.ICD_Code_Description = objUpdateMedication.ICD_Code_Description;
+            objMedication.Deleted = objUpdateMedication.Deleted;
+
+            objMedication.Pharmacy_Address1 = objUpdateMedication.Pharmacy_Address1;
+            objMedication.Pharmacy_Address2 = objUpdateMedication.Pharmacy_Address2;
+            objMedication.Pharmacy_City = objUpdateMedication.Pharmacy_City;
+            objMedication.Pharmacy_CrossStreet = objUpdateMedication.Pharmacy_CrossStreet;
+            objMedication.Pharmacy_Electronic = objUpdateMedication.Pharmacy_Electronic;
+            objMedication.Pharmacy_Fax = objUpdateMedication.Pharmacy_Fax;
+            objMedication.Pharmacy_Is24Hour = objUpdateMedication.Pharmacy_Is24Hour;
+            objMedication.Pharmacy_Level3 = objUpdateMedication.Pharmacy_Level3;
+            objMedication.Pharmacy_Name = objUpdateMedication.Pharmacy_Name;
+            objMedication.Pharmacy_Phone = objUpdateMedication.Pharmacy_Phone;
+            objMedication.Pharmacy_State = objUpdateMedication.Pharmacy_State;
+            objMedication.Pharmacy_Zip = objUpdateMedication.Pharmacy_Zip;
+
+            return objMedication;
+        }
+
+        public IList<Rcopia_Medication> GetRCopiaMedByHumanID(ulong ulHumanID)
+        {
+            IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                //ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+                //  ISQLQuery sql = session.GetISession().CreateSQLQuery("select m.* from rcopia_medication m where m.Human_ID='"+ulHumanID+"' group by m.last_modified_date").AddEntity("m",typeof(Rcopia_Medication));
+                ICriteria crit = mySession.CreateCriteria(typeof(Rcopia_Medication)).Add(Expression.Eq("Human_ID", ulHumanID)).Add(Expression.Eq("Deleted", "N"));
+                rcopiaMedicationList = crit.List<Rcopia_Medication>();
+                mySession.Close();
+            }
+            return rcopiaMedicationList;
+        }
+
+        public IList<Rcopia_Medication> GetRxNormByHumanID(ulong ulHumanID)
+        {
+            IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                //ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+                ISQLQuery sql = session.GetISession().CreateSQLQuery("select m.* from rcopia_medication m where m.Human_ID='" + ulHumanID + "' and Deleted='N' group by m.Rxnorm_ID").AddEntity("m", typeof(Rcopia_Medication));
+                // ICriteria crit = mySession.CreateCriteria(typeof(Rcopia_Medication)).Add(Expression.Eq("Human_ID", ulHumanID)).Add(Expression.Eq("Deleted", "N"));
+                rcopiaMedicationList = sql.List<Rcopia_Medication>();
+                mySession.Close();
+            }
+            return rcopiaMedicationList;
+        }
+
+        public IList<Rcopia_Medication> GetRmedicationByHumanID(string ulHumanID)
+        {
+            IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                //ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+                ISQLQuery sql = session.GetISession().CreateSQLQuery("select m.* from rcopia_medication m where m.Human_ID in ('" + ulHumanID + "')").AddEntity("m", typeof(Rcopia_Medication));
+                // ICriteria crit = mySession.CreateCriteria(typeof(Rcopia_Medication)).Add(Expression.Eq("Human_ID", ulHumanID)).Add(Expression.Eq("Deleted", "N"));
+                rcopiaMedicationList = sql.List<Rcopia_Medication>();
+                mySession.Close();
+            }
+            return rcopiaMedicationList;
+        }
+        public IList<Rcopia_Medication> GetMedicationByHumanID(ulong ulHumanID)
+        {
+            IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = mySession.CreateCriteria(typeof(Rcopia_Medication)).Add(Expression.Eq("Human_ID", ulHumanID));
+                rcopiaMedicationList = crit.List<Rcopia_Medication>();
+                mySession.Close();
+            }
+            return rcopiaMedicationList;
+        }
+        public IList<Rcopia_Medication> GetMaxID()
+        {
+            IList<Rcopia_Medication> rcopiaMedicationList = new List<Rcopia_Medication>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                //ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+                ISQLQuery sql = session.GetISession().CreateSQLQuery("select m.* from rcopia_medication m order by rcopia_id desc limit 1 ").AddEntity("m", typeof(Rcopia_Medication));
+                // ICriteria crit = mySession.CreateCriteria(typeof(Rcopia_Medication)).Add(Expression.Eq("Human_ID", ulHumanID)).Add(Expression.Eq("Deleted", "N"));
+                rcopiaMedicationList = sql.List<Rcopia_Medication>();
+                mySession.Close();
+            }
+            return rcopiaMedicationList;
+        }
+        #endregion
+    }
+}

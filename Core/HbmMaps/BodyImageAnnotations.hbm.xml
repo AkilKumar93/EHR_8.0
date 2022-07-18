@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.BodyImageAnnotations, Acurus.Capella.Core" table="body_image_annotations" lazy="true">
+    <id name="Id" column="Annotation_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Template_Name" column="Template_Name" />
+    <property name="Annotation_Type" column="Annotation_Type" />
+    <property name="Annotation_Data" column="Annotation_Data" />
+  </class>
+</hibernate-mapping>

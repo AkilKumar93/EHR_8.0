@@ -1,0 +1,541 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <style>
+        body {
+            height: 420px;
+            width: 900px;
+            font-family: 'Source Sans Pro';
+        }
+
+        span.MacraMeasure {
+            cursor: pointer;
+            width: 447px !important;
+            font-size: 18px;
+            display: inline-block;
+            padding: 7.5px 7.5px 7.5px 20.5px;
+            border-radius: 8px;
+        }
+
+        #MeasureDetails {
+            border: 3px solid antiquewhite;
+            border-radius: 9px;
+        }
+
+        #MeasureHeadings {
+            border: 3px solid white;
+        }
+
+        #MeasureDetails, #MeasureHeadings {
+            height: 100%;
+            width: 49%;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+            #MeasureHeadings > fieldset, #MeasureDetails > fieldset {
+                height: 97%;
+                border: none;
+            }
+
+        .dataContainer {
+            height: 97%;
+            padding: 1.5px 2px 1.5px 2px;
+            overflow-y: auto;
+        }
+
+        span.MacraMeasure:hover {
+            background-color: antiquewhite !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #c3bfbf;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #707070;
+            border-radius: 6px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #3d3c3a;
+            }
+
+        #MeasureHeadings > fieldset > div > div > p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #MeasureDetails > div > div > ul > li {
+            list-style-type: decimal;
+        }
+
+            #MeasureDetails > div > div > ul > li > ul > li {
+                list-style-type: disc;
+            }
+    </style>
+    <script src="JScripts/jquery-1.11.3.min.js"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <link href="CSS/jquery-ui.min.css" rel="stylesheet">
+    <script src="JScripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JsMACRA_Measures.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            JSElement.async = false;
+            document.getElementsByTagName('head')[0].appendChild(JSElement);
+        }
+    </script>
+</head>
+<body>
+    <div id="MeasureHeadings" style="float:left;width: 54.6%;overflow-x: hidden;">
+        <fieldset style="margin-top:-24px;">
+            <legend></legend>
+            <div class="dataContainer" style="height: 452px;width: 473px;">
+                <div class="Diagnostic_Order" style="display: none;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="Diagnostic_Order_Hemoglobin_A1c_PoorControl" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Diabetes : Hemoglobin A1c (HbA1c) Poor Control (>9%) (NQF 0059)</span>
+                    <br>
+                    <span class="MacraMeasure" name="Diagnostic_Order_Breast_Cancer_Screening" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Breast Cancer Screening (NQF 2372)</span>
+                    <br>
+                </div>
+                <div class="Immunization_Injection" style="display: none;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="Immunization_Injection_Pneumonia_Vaccination" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Pneumococcal Vaccination Status for Older Adults (NQF 0043)</span>
+                    <br>
+                    <span class="MacraMeasure" name="Immunization_Injection_Preventive_Care_Screening_TobaccoUse_Screening_Influenza_Immunization" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Preventive Care and Screening: Influenza Immunization (NQF 0041)</span>
+                    <br>
+                </div>
+                <div class="Vitals" style="display: none;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="Vitals_Preventive_Care_Screening_BMI" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Preventive Care and Screening : Body Mass Index (BMI) Screening and Follow-Up Plan (NQF 0421)</span>
+                    <br>
+                    <span class="MacraMeasure" name="Vitals_Hemoglobin_A1c_PoorControl" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Diabetes : Hemoglobin A1c (HbA1c) Poor Control (>9%) (NQF 0059)</span>
+                    <br>
+                    <span class="MacraMeasure" name="Vitals_Controlling_High_Blood_Pressure" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Controlling High Blood Pressure (NQF 0018)</span>
+                    <br>
+                    <span class="MacraMeasure" name="Vitals_Preventive_Care_Screening_BloodPressure_and_FollowUp_Documented" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Preventive Care and Screening : Screening for High Blood Pressure and Follow-Up Documented</span>
+                    <br>
+                    <span class="MacraMeasure" name="Vitals_Breast_Cancer_Screening" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Breast Cancer Screening (NQF 2372)</span>
+                    <br>
+                </div>
+                <div class="General_Plan" style="display: none;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="General_Plan_Preventive_Care_Screening_BMI" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up Plan (NQF 0421)</span>
+                    <br>
+                    <span class="MacraMeasure" name="General_Plan_Patient_Specific_Education" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> ACI_TRANS_PSE_1: Patient-Specific Education</span>
+                    <br>
+                </div>
+                <div class="Care_Plan" style="display: none;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="Care_Plan_Hemoglobin_A1c_PoorControl" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;">Diabetes : Hemoglobin A1c (HbA1c) Poor Control (>9%) (NQF 0059)</span>
+                    <br>
+                    <span class="MacraMeasure" name="Care_Plan_Preventive_Care_Screening_BloodPressure_and_FollowUp_Documented" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;">Preventive Care and Screening : Screening for High Blood Pressure and Follow-Up Documented</span>
+                    <br>
+                    <span class="MacraMeasure" name="Care_Plan_Preventive_Care_Screening_TobaccoUse_Screening_Cessation_Intervention" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Preventive Care and Screening : Tobacco Use : Screening and Cessation Intervention (NQF 0028)</span>
+                    <br>
+                    <span class="MacraMeasure" name="Care_Plan_fall_screening_and_assessment_programs" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> IA_PSPA_21: Implementation of fall screening and assessment programs</span>
+                    <br>
+                </div>
+                <div class="Assessment" style="display: none;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="Assessment_Controlling_High_Blood_Pressure" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;">Controlling High Blood Pressure (NQF 0018)</span>
+                    <br>
+                </div>
+                <div class="Serv_Proc_Codes" style="display: block;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="Serv_Proc_Codes_Pneumonia_Vaccination" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;">Pneumococcal Vaccination Status for Older Adults (NQF 0043)</span>
+                    <br>
+                </div>
+                <div class="Social_History" style="display: block;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="Social_History_Preventive_Care_Screening_TobaccoUse_Screening_Cessation_Intervention" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Preventive Care and Screening : Tobacco Use : Screening and Cessation Intervention (NQF 0028)</span>
+                    <br>
+                </div>
+                <div class="Non_Drug_Allergy_History" style="display: block;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="Non_Drug_Allergy_History_Preventive_Care_Screening_Influenza_Immunization" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Preventive Care and Screening: Influenza Immunization (NQF 0041)</span>
+                    <br>
+                </div>
+                <div class="eRx" style="display: block;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="eRx_Documentation_of_Current_Medications" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Documentation of Current Medications in the Medical Record</span>
+                    <br>
+                    <span class="MacraMeasure" name="eRx_Preventive_Care_Screening_TobaccoUse_Screening_Influenza_Immunization" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Preventive Care and Screening: Influenza Immunization (NQF 0041)</span>
+                    <br>
+                    <span class="MacraMeasure" name="eRx_e_Prescribing" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> ACI_TRANS_EP_1: e-Prescribing</span>
+                    <br>
+                </div>
+                <div class="ChiefComplaints" style="display: block;">
+                    <p><u>MACRA Measures</u></p>
+                    <span class="MacraMeasure" name="ChiefComplaints_Documentation_of_Current_Medications" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-weight: normal;"> Documentation of Current Medications in the Medical Record</span>
+                    <br>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div id="MeasureDetails" style="float:right;width: 44%;">
+        <fieldset>
+            <legend></legend>
+            <div class="dataContainer" style="overflow-y:auto;">
+                <div class="Diagnostic_Order" style="display: block;">
+                    <div class="Diagnostic_Order_Hemoglobin_A1c_PoorControl" style="display: none;">
+                        <h3 style="color:brown;"> Diabetes : Hemoglobin A1c (HbA1c) Poor Control (>9%) (NQF 0059)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients 18-75 years of age with diabetes, who had hemoglobin A1c > 9.0% during the measurement period.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients 18 - 75 years of age with diabetes Order HBA1C every 3 months</li>
+                            <li>Reduce Blood sugar level for patients whose HBA1C is greater than 9 %</li>
+                            <li>Diabetes self-management education, appropriate glucose monitoring and effective doses of multiple glucose-lowering agents including insulin.</li>
+                        </ul>
+                    </div>
+                    <div class="Diagnostic_Order_Breast_Cancer_Screening" style="display: none;">
+                        <h3 style="color:brown;"> Breast Cancer Screening (NQF 2372)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of women 50 - 74 years of age who had a mammogram to screen for breast cancer.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Women with one or more mammograms during the measurement period or 15 months prior to the measurement period.</li>
+                            <li>Women who had a bilateral mastectomy or who have a history of a bilateral mastectomy or for whom there is evidence of a right and a left unilateral mastectomy -<b>Excluded from the Denominator.</b></li>
+                            <li>The intent of the measure is that starting at age 50 women should have one or more mammograms every 24 months with a 3 month grace period.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="Immunization_Injection" style="display: block;">
+                    <div class="Immunization_Injection_Pneumonia_Vaccination" style="display: none;">
+                        <h3 style="color:brown;"> Pneumococcal Vaccination Status for Older Adults (NQF 0043)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients 65 years of age and older who have ever received a pneumococcal vaccine.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients 65 years of age and older, Order Pneumoccoccal Vaccine (<b>PCV13 or PPSV23</b> vaccine (or both)</li>
+                            <li>According to ACIP recommendations, patients should receive both vaccines</li>
+                            <li>The order and timing of the vaccinations depends on certain patient characteristics</li>
+                        </ul>
+                    </div>
+                    <div class="Immunization_Injection_Preventive_Care_Screening_TobaccoUse_Screening_Influenza_Immunization" style="display: none;">
+                        <h3 style="color:brown;">  Preventive Care and Screening: Influenza Immunization (NQF 0041)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 6 months and older seen for a visit between October 1 and March 31 who received an influenza immunization OR who reported previous receipt of an influenza immunization.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients who received an influenza immunization OR who reported previous receipt of an influenza immunization.</li>
+                            <li><b>Previous Receipt </b>– Receipt of the current season’s influenza immunization from another provider OR from same provider prior to the visit to which the measure is applied (typically, prior vaccination would include influenza vaccine given since August 1st).</li>
+                            <li> Annual influenza vaccination is the most effective method for preventing influenza virus infection and its complications. Influenza vaccine is recommended for all persons aged ≥ 6 months who do not have contraindications to vaccination.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="Vitals" style="display: block;">
+                    <div class="Vitals_Preventive_Care_Screening_BMI" style="display: none;">
+                        <h3 style="color:brown;"> Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up Plan (NQF 0421)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 18 years and older with a BMI documented during the current encounter or during the previous six months AND with a BMI outside of normal parameters, a follow-up plan is documented during the encounter or during the previous six months of the current encounter.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li><b>Height and Weight - </b>An eligible professional or their staff is required to measure both height and weight. Both height and weight must be measured within six months of the current encounter and may be obtained from separate encounters. Self-reported values cannot be used. </li>
+                            <li><b>Follow-Up Plan - </b>If the most recent documented BMI is outside of normal parameters, then a follow-up plan is documented during the encounter or during the previous six months of the current encounter.The documented follow-up plan must be based on the most recent documented BMI, outside of normal parameters, example: “Patient referred to nutrition counseling for BMI above or below normal parameters”. (See Definitions for examples of follow-up plan treatments).</li>
+                        </ul>
+                    </div>
+                    <div class="Vitals_Hemoglobin_A1c_PoorControl" style="display: none;">
+                        <h3 style="color:brown;"> Diabetes : Hemoglobin A1c (HbA1c) Poor Control (>9%) (NQF 0059)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients 18-75 years of age with diabetes, who had hemoglobin A1c > 9.0% during the measurement period.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients 18 - 75 years of age with diabetes Order HBA1C every 3 months</li>
+                            <li>Reduce Blood sugar level for patients whose HBA1C is greater than 9 %</li>
+                            <li>Diabetes self-management education, appropriate glucose monitoring and effective doses of multiple glucose-lowering agents including insulin.</li>
+                        </ul>
+                    </div>
+                    <div class="Vitals_Controlling_High_Blood_Pressure" style="display: none;">
+                        <h3 style="color:brown;"> Controlling High Blood Pressure (NQF 0018)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients 18 - 85 years of age who had a diagnosis of hypertension and whose blood pressure was adequately controlled (< 140/90 mmHg) during the measurement period.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>To describe both systolic and diastolic blood pressure values, each must be reported separately</li>
+                            <li>Blood pressure readings from the patient's home (including readings directly from monitoring devices) are not acceptable.</li>
+                            <li>
+                                The following criteria are not consider as valid
+                                <b>Blood Pressure reading</b>
+                                <ul>
+                                    <li>Blood pressure readings from the patient's home (including readings directly from monitoring devices).</li>
+                                    <li>Taken during an outpatient visit which was for the sole purpose of having a diagnostic test or surgical procedure performed (e.g., sigmoidoscopy, removal of a mole).</li>
+                                    <li>Obtained the same day as a major diagnostic or surgical procedure (e.g., stress test, administration of IV contrast for a radiology procedure, endoscopy).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="Vitals_Preventive_Care_Screening_BloodPressure_and_FollowUp_Documented" style="display: none;">
+                        <h3 style="color:brown;">  Preventive Care and Screening : Screening for High Blood Pressure and Follow-Up Documented</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 18 years and older seen during the reporting period who were screened for high blood pressure AND a recommended follow-up plan is documented based on the current blood pressure (BP) reading as indicated.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients who were screened for high blood pressure AND have a recommended follow-up plan documented, as indicated, if the blood pressure is pre-hypertensive or hypertensive.</li>
+                            <li>To describe both systolic and diastolic blood pressure values, each must be reported separately.</li>
+                            <li>Blood pressure readings from the patient's home (including readings directly from monitoring devices) are not acceptable.</li>
+                            <li>
+                                The following criterias not consider as valid
+                                <b>Blood Pressure reading</b>
+                                <ul>
+                                    <li>Blood pressure readings from the patient's home (including readings directly from monitoring devices).</li>
+                                    <li>Taken during an outpatient visit which was for the sole purpose of having a diagnostic test or surgical procedure performed (e.g., sigmoidoscopy, removal of a mole).</li>
+                                    <li>Obtained the same day as a major diagnostic or surgical procedure (e.g., stress test, administration of IV contrast for a radiology procedure, endoscopy).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="Vitals_Breast_Cancer_Screening" style="display: none;">
+                        <h3 style="color:brown;"> Breast Cancer Screening (NQF 2372)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of women 50 - 74 years of age who had a mammogram to screen for breast cancer.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Women with one or more mammograms during the measurement period or 15 months prior to the measurement period.</li>
+                            <li>Women who had a bilateral mastectomy or who have a history of a bilateral mastectomy or for whom there is evidence of a right and a left unilateral mastectomy -<b>Excluded from the Denominator.</b></li>
+                            <li>The intent of the measure is that starting at age 50 women should have one or more mammograms every 24 months with a 3 month grace period.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="General_Plan" style="display: block;">
+                    <div class="General_Plan_Preventive_Care_Screening_BMI" style="display: none;">
+                        <h3 style="color:brown;"> Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up Plan (NQF 0421)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 18 years and older with a BMI documented during the current encounter or during the previous six months AND with a BMI outside of normal parameters, a follow-up plan is documented during the encounter or during the previous six months of the current encounter.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li><b>Height and Weight - </b>An eligible professional or their staff is required to measure both height and weight. Both height and weight must be measured within six months of the current encounter and may be obtained from separate encounters. Self-reported values cannot be used. </li>
+                            <li><b>Follow-Up Plan - </b>If the most recent documented BMI is outside of normal parameters, then a follow-up plan is documented during the encounter or during the previous six months of the current encounter.The documented follow-up plan must be based on the most recent documented BMI, outside of normal parameters, example: “Patient referred to nutrition counseling for BMI above or below normal parameters”. (See Definitions for examples of follow-up plan treatments).</li>
+                        </ul>
+                    </div>
+                    <div class="General_Plan_Patient_Specific_Education" style="display: none;">
+                        <h3 style="color:brown;"> ACI_TRANS_PSE_1: Patient-Specific Education</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>The MIPS eligible clinician must use clinically relevant information from CEHRT to identify patient-specific educational resources and provide access to those materials to at least one unique patient seen by the MIPS eligible clinician.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>The MIPS eligible clinician must use clinically relevant information from CEHRT to identify patient-specific educational resources and provide access to those materials to at least one unique patient seen by the MIPS eligible clinician.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="Care_Plan" style="display: block;">
+                    <div class="Care_Plan_Hemoglobin_A1c_PoorControl" style="display: none;">
+                        <h3 style="color:brown;"> Diabetes : Hemoglobin A1c (HbA1c) Poor Control (>9%) (NQF 0059)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients 18-75 years of age with diabetes, who had hemoglobin A1c > 9.0% during the measurement period.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients 18 - 75 years of age with diabetes Order HBA1C every 3 months</li>
+                            <li>Reduce Blood sugar level for patients whose HBA1C is greater than 9 %</li>
+                            <li>Diabetes self-management education, appropriate glucose monitoring and effective doses of multiple glucose-lowering agents including insulin.</li>
+                        </ul>
+                    </div>
+                    <div class="Care_Plan_Preventive_Care_Screening_BloodPressure_and_FollowUp_Documented" style="display: none;">
+                        <h3 style="color:brown;">  Preventive Care and Screening : Screening for High Blood Pressure and Follow-Up Documented</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 18 years and older seen during the reporting period who were screened for high blood pressure AND a recommended follow-up plan is documented based on the current blood pressure (BP) reading as indicated.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients who were screened for high blood pressure AND have a recommended follow-up plan documented, as indicated, if the blood pressure is pre-hypertensive or hypertensive.</li>
+                            <li>To describe both systolic and diastolic blood pressure values, each must be reported separately.</li>
+                            <li>Blood pressure readings from the patient's home (including readings directly from monitoring devices) are not acceptable.</li>
+                            <li>
+                                The following criterias not consider as valid
+                                <b>Blood Pressure reading</b>
+                                <ul>
+                                    <li>Blood pressure readings from the patient's home (including readings directly from monitoring devices).</li>
+                                    <li>Taken during an outpatient visit which was for the sole purpose of having a diagnostic test or surgical procedure performed (e.g., sigmoidoscopy, removal of a mole).</li>
+                                    <li>Obtained the same day as a major diagnostic or surgical procedure (e.g., stress test, administration of IV contrast for a radiology procedure, endoscopy).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="Care_Plan_Preventive_Care_Screening_TobaccoUse_Screening_Cessation_Intervention" style="display: none;">
+                        <h3 style="color:brown;">  Preventive Care and Screening : Tobacco Use : Screening and Cessation Intervention (NQF 0028)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 18 years and older who were screened for tobacco use one or more times within 24 months AND who received cessation counseling intervention if identified as a tobacco user.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients 18 years of age and older, screen for Tobacco use and perform tobacco cessation intervention if <b>identified</b> as a tobacco user.</li>
+                            <li><b>Tobacco Cessation Intervention</b> – Includes brief counseling (3 minutes or less), and/or pharmacotherapy.</li>
+                            <li>Services typically provided under CPT codes 99406 and 99407 satisfy the requirement of tobacco cessation intervention, as these services provide tobacco cessation counseling for 3-10 minutes.</li>
+                        </ul>
+                    </div>
+                    <div class="Care_Plan_fall_screening_and_assessment_programs" style="display: none;">
+                        <h3 style="color:brown;"> IA_PSPA_21: Implementation of fall screening and assessment programs</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Implementation of fall screening and assessment programs to identify patients at risk for falls and address modifiable risk factors (e.g., Clinical decision support/prompts in the electronic health record that help manage the use of medications, such as benzodiazepines, that increase fall risk).
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li><b>Implementation of a Falls Screening and Assessment</b>- Implementation of a falls screening and assessment program that uses valid and reliable tools to identify patients at risk for falls and address modifiable risk factors, for example, the STEADI program for identification of falls risk;</li>
+                            <li><b>Implementation Progress</b>- Documentation of progress made on falls screening and assessment after implementation of tool.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="Serv_Proc_Codes" style="display: block;">
+                    <div class="Serv_Proc_Codes_Pneumonia_Vaccination" style="display: none;">
+                        <h3 style="color:brown;"> Pneumococcal Vaccination Status for Older Adults (NQF 0043)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients 65 years of age and older who have ever received a pneumococcal vaccine.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients 65 years of age and older, Order Pneumoccoccal Vaccine (<b>PCV13 or PPSV23</b> vaccine (or both)</li>
+                            <li>According to ACIP recommendations, patients should receive both vaccines</li>
+                            <li>The order and timing of the vaccinations depends on certain patient characteristics</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="Social_History" style="display: block;">
+                    <div class="Social_History_Preventive_Care_Screening_Cessation_Intervention" style="display: none;">
+                        <h3 style="color:brown;">  Preventive Care and Screening : Tobacco Use : Screening and Cessation Intervention (NQF 0028)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 18 years and older who were screened for tobacco use one or more times within 24 months AND who received cessation counseling intervention if identified as a tobacco user.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients 18 years of age and older, screen for Tobacco use and perform tobacco cessation intervention if <b>identified</b> as a tobacco user.</li>
+                            <li><b>Tobacco Cessation Intervention</b> – Includes brief counseling (3 minutes or less), and/or pharmacotherapy.</li>
+                            <li>Services typically provided under CPT codes 99406 and 99407 satisfy the requirement of tobacco cessation intervention, as these services provide tobacco cessation counseling for 3-10 minutes.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="Non_Drug_Allergy_History" style="display: block;">
+                    <div class="Non_Drug_Allergy_History_Preventive_Care_Screening_TobaccoUse_Screening_Influenza_Immunization" style="display: none;">
+                        <h3 style="color:brown;">  Preventive Care and Screening: Influenza Immunization (NQF 0041)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 6 months and older seen for a visit between October 1 and March 31 who received an influenza immunization OR who reported previous receipt of an influenza immunization.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients who received an influenza immunization OR who reported previous receipt of an influenza immunization.</li>
+                            <li><b>Previous Receipt </b>– Receipt of the current season’s influenza immunization from another provider OR from same provider prior to the visit to which the measure is applied (typically, prior vaccination would include influenza vaccine given since August 1st).</li>
+                            <li> Annual influenza vaccination is the most effective method for preventing influenza virus infection and its complications. Influenza vaccine is recommended for all persons aged ≥ 6 months who do not have contraindications to vaccination.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="eRx" style="display: block;">
+                    <div class="eRx_Documentation_of_Current_Medications" style="display: none;">
+                        <h3 style="color:brown;">  Documentation of Current Medications in the Medical Record (NQF 0419)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of visits for patients aged 18 years and older for which the eligible clinician attests to documenting a list of current medications using all immediate resources available on the date of the encounter. This list must include ALL known prescriptions, over-the-counters, herbals, and vitamin/mineral/dietary (nutritional) supplements AND must contain the medications’ name, dosage, frequency and route of administration.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li><b>Current Medications</b> – Medications the patient is presently taking including all prescriptions, over-the- counters, herbals and vitamin/mineral/dietary (nutritional) supplements with each medication’s name, dosage, frequency and administered route.</li>
+                            <li><b>Route</b> – Documentation of the way the medication enters the body (some examples include but are not limited to: oral, sublingual, subcutaneous injections, and/or topical).</li>
+                            <li>Clinician must document in the medical record they obtained, updated, or reviewed a medication list on the date of the encounter.</li>
+                        </ul>
+                    </div>
+                    <div class="eRx_Preventive_Care_Screening_TobaccoUse_Screening_Influenza_Immunization" style="display: none;">
+                        <h3 style="color:brown;">  Preventive Care and Screening: Influenza Immunization (NQF 0041)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of patients aged 6 months and older seen for a visit between October 1 and March 31 who received an influenza immunization OR who reported previous receipt of an influenza immunization.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>Patients who received an influenza immunization OR who reported previous receipt of an influenza immunization.</li>
+                            <li><b>Previous Receipt </b>– Receipt of the current season’s influenza immunization from another provider OR from same provider prior to the visit to which the measure is applied (typically, prior vaccination would include influenza vaccine given since August 1st).</li>
+                            <li> Annual influenza vaccination is the most effective method for preventing influenza virus infection and its complications. Influenza vaccine is recommended for all persons aged ≥ 6 months who do not have contraindications to vaccination.</li>
+                        </ul>
+                    </div>
+                    <div class="eRx_e_Prescribing" style="display: none;">
+                        <h3 style="color:brown;"> ACI_TRANS_EP_1: e-Prescribing</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using certified EHR technology.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li>At least one permissible prescription written by the MIPS eligible clinician is queried for a drug formulary and transmitted electronically using CEHRT.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="ChiefComplaints" style="display: block;">
+                    <div class="ChiefComplaints_Documentation_of_Current_Medications" style="display: none;">
+                        <h3 style="color:brown;">  Documentation of Current Medications in the Medical Record (NQF 0419)</h3>
+                        <p>
+                            <b>DESCRIPTION : </b>Percentage of visits for patients aged 18 years and older for which the eligible clinician attests to documenting a list of current medications using all immediate resources available on the date of the encounter. This list must include ALL known prescriptions, over-the-counters, herbals, and vitamin/mineral/dietary (nutritional) supplements AND must contain the medications’ name, dosage, frequency and route of administration.
+                        </p>
+                        <p>
+                            <h2>Points To Remember:</h2>
+                        </p>
+                        <ul>
+                            <li><b>Current Medications</b> – Medications the patient is presently taking including all prescriptions, over-the- counters, herbals and vitamin/mineral/dietary (nutritional) supplements with each medication’s name, dosage, frequency and administered route.</li>
+                            <li><b>Route</b> – Documentation of the way the medication enters the body (some examples include but are not limited to: oral, sublingual, subcutaneous injections, and/or topical).</li>
+                            <li>Clinician must document in the medical record they obtained, updated, or reviewed a medication list on the date of the encounter.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</body>
+</html>

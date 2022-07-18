@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.GrowthChart_Lookup, Acurus.Capella.Core" table="growthchart_lookup" lazy="true">
+    <id name="Id" column="Growthchart_Lookup_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Gender" column="Gender" />
+    <property name="Category" column="Category" />
+    <property name="X_Axis_Unit" column="X_Axis_Unit" />
+    <property name="X_Axis_Value" column="X_Axis_Value" />
+    <property name="Y_Axis_Unit" column="Y_Axis_Unit" />
+    <property name="Percentile_3" column="Percentile_3" />
+    <property name="Percentile_5" column="Percentile_5" />
+    <property name="Percentile_10" column="Percentile_10" />
+    <property name="Percentile_25" column="Percentile_25" />
+    <property name="Percentile_50" column="Percentile_50" />
+    <property name="Percentile_75" column="Percentile_75" />
+    <property name="Percentile_85" column="Percentile_85" />
+    <property name="Percentile_90" column="Percentile_90" />
+    <property name="Percentile_95" column="Percentile_95" />
+    <property name="Percentile_97" column="Percentile_97" />
+    <property name="X_Axis_Start" column="X_Axis_Start" />
+    <property name="X_Axis_End" column="X_Axis_End" />
+    <property name="X_Axis_Interval" column="X_Axis_Interval" />
+    <property name="Y_Axis_Start" column="Y_Axis_Start" />
+    <property name="Y_Axis_End" column="Y_Axis_End" />
+    <property name="Y_Axis_Interval" column="Y_Axis_Interval" />
+  </class>
+</hibernate-mapping>

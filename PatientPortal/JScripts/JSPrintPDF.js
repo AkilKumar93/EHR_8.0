@@ -1,0 +1,146 @@
+﻿function btnClick(sender, args) 
+{
+var iFrame=document.getElementById("PDFLOAD");
+iFrame.contentWindow.print();
+//window.print();
+return false;
+//window.print(); //Commanded By Manimaran for bugid:28722
+}
+function GetRadWindow() {
+    var oWindow = null;
+    if (window.radWindow) oWindow = window.radWindow;
+    else if (window.frameElement != null && window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+    return oWindow;
+}
+function RadTabStrip2_TabSelected(sender,args)
+{
+    sender.set_enabled(false);
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+   // document.getElementById('divLoading').style.display = "block";
+}
+function PDF_Load() {
+    //document.getElementById('divLoading').style.display = "none";
+    
+    if (window.parent.document.activeElement.contentDocument!=undefined && window.parent.document.activeElement.contentDocument.URL.indexOf("frmGrowthChart") > -1) {
+        if (window.innerHeight >= 780)
+            $('#PDFLOAD').height(600);
+        else
+            if (window.innerHeight >= 550 && window.innerHeight <= 799)
+                $('#PDFLOAD').height(508)
+            else
+                $('#PDFLOAD').height(400);
+    }
+     {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+}
+
+
+function btnFaxClick(sender, args) {
+    debugger;
+    //var re = /%20/gi;
+    //var vFaxSubject = "";
+    //var vlocation = window.location.href.split('&');
+    //for (var l = 0; l < vlocation.length; l++) {
+    //    if (vlocation[l].indexOf("FaxSubject=") > -1) {
+    //        vFaxSubject = vlocation[l].split("=")[1].replace(/%20/gi, ' ');
+    //    }
+    //}
+    //var vfindid = $($($(top.window.document).find("iframe")[0].contentDocument).find('.tab-content')).find('.tab-pane.active').attr('id'); //=="tbOrders";
+    var vscreen="";
+    var vcontent = $($(top.window.document).find("iframe")[0].contentDocument).find('.tab-content');
+    if (vcontent != undefined && vcontent.length !=0)
+     vscreen = $($($(vcontent).find('.tab-pane.active')).find('.clsIframe')[0].contentDocument).find('#myTabs li.active a')[0].innerText;
+
+    var FaxSubject = JSON.parse(localStorage.getItem("FaxSubject1"));
+    //var FaxSubject = localStorage['FaxSubject1'];
+    var vFaxSubject = "";
+    var vTabstrip = $($($($("#RadTabStrip2").find('.rtsLevel1')).find('ul>li>a')));//.length;//[1].className
+    if (vTabstrip != undefined > 0) {
+        for (var i = 0; i < vTabstrip.length; i++) {
+            if (vTabstrip[i].className == "rtsLink rtsSelected") {
+                if (vscreen != undefined && vscreen == 'Referral Order') {
+                    if (vTabstrip[i].innerText.split(".pdf")[0].split('PM').length > 1)
+                        vFaxSubject = vTabstrip[i].innerText.split(".pdf")[0].split('PM')[0] + " PM";
+                    else if (vTabstrip[i].innerText.split(".pdf")[0].split('AM').length > 1)
+                        vFaxSubject = vTabstrip[i].innerText.split(".pdf")[0].split('AM')[0] + " AM";
+                }
+                else if (vscreen != undefined && vscreen == 'Immunization/Injection') {
+                    if (vTabstrip[i].innerText.split(".pdf")[0].split('PM').length > 1)
+                        vFaxSubject = vTabstrip[i].innerText.split(".pdf")[0].split('PM')[0] + " PM";
+                    else if (vTabstrip[i].innerText.split(".pdf")[0].split('AM').length > 1)
+                        vFaxSubject = vTabstrip[i].innerText.split(".pdf")[0].split('AM')[0] + " AM";
+                }
+                else if (vscreen != undefined && vscreen == 'Diagnostic Order') {
+                    debugger;
+                    var vname="" ;
+                    if (vTabstrip[i].innerText.split(".pdf")[0].split('_ACUR')[1] != undefined) {
+                        for (var k = 0; k < FaxSubject.split("|").length; k++) {
+                            if (k == 0) {
+                                if (FaxSubject.split("|")[0].split("$")[1].split("_")[0] == vTabstrip[i].innerText.split(".pdf")[0].split('_ACUR')[1]) {
+                                    vname = FaxSubject.split("|")[0].split("$")[0] + "_" + FaxSubject.split("|")[0].split("$")[1].split("_")[1] + "_" + FaxSubject.split("|")[0].split("$")[1].split("_")[2];
+                                    break;
+                                }
+                            }
+                            else {
+                                if (FaxSubject.split("|")[k].split("_")[0] == vTabstrip[i].innerText.split(".pdf")[0].split('_ACUR')[1]) {
+                                    vname = FaxSubject.split("|")[0].split("$")[0] + "_" + FaxSubject.split("|")[k].split("_")[1] + "_" + FaxSubject.split("|")[k].split("_")[2];
+                                    break;
+                                }
+                            }
+                        }
+                        vFaxSubject = "Order_" + vTabstrip[i].innerText.split(".pdf")[0].split('_')[vTabstrip[i].innerText.split(".pdf")[0].split('_').length - 1] + vname;
+                    }
+                    else {
+                        var vDIAGNOSTIC = vTabstrip[i].innerText.split(".pdf")[0].split("DIAGNOSTIC_ORDER");
+                        var vcreatedate = "";
+                        var vlab = "";
+                        if (vDIAGNOSTIC != undefined) {
+                            vcreatedate = vTabstrip[i].innerText.split(".pdf")[0].split("DIAGNOSTIC_ORDER")[1].split("_")[vDIAGNOSTIC[1].split("_").length - 1];
+                            vlab = vTabstrip[i].innerText.split(".pdf")[0].split("DIAGNOSTIC_ORDER")[1].split("_")[vDIAGNOSTIC[1].split("_").length - 3];
+                        }
+                        vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + "_" + vlab + "_" + vcreatedate;                       
+                    }
+                    
+                }
+                else if (vscreen != undefined && FaxSubject == undefined) {
+                    vFaxSubject = vTabstrip[i].innerText;
+                }
+                else if (vscreen != undefined && vscreen == 'DME Order' && vTabstrip[i].innerText.split(".pdf")[0].split('_')[0] != undefined) {
+                    //vFaxSubject = "DMEOrder_" + vTabstrip[i].innerText.split(".pdf")[0].split('_')[0] + FaxSubject
+                    var vDIAGNOSTIC = vTabstrip[i].innerText.split(".pdf")[0].split("DME_ORDER");
+                    var vcreatedate = "";
+                    var vlab = "";
+                    if (vDIAGNOSTIC != undefined) {
+                        vcreatedate = vTabstrip[i].innerText.split(".pdf")[0].split("DME_ORDER")[1].split("_")[vDIAGNOSTIC[1].split("_").length - 1];
+                        vlab = vTabstrip[i].innerText.split(".pdf")[0].split("DME_ORDER")[1].split("_")[vDIAGNOSTIC[1].split("_").length - 2];
+                    }
+                    var vname = "";
+                    if (FaxSubject.split("_")[1] != undefined)
+                        vname = FaxSubject.split("_")[1];
+                    vFaxSubject = "DME_Order_" + vname + "_" + vlab + "_" + vcreatedate;
+                }
+                    //else if (vTabstrip[i].innerText.split(".pdf")[0].split('_ACUR')[1] != undefined)
+                    //    vFaxSubject = "Order_" + vTabstrip[i].innerText.split(".pdf")[0].split('_')[vTabstrip[i].innerText.split(".pdf")[0].split('_').length - 1] + FaxSubject;
+                //else if (vTabstrip[i].innerText.split(".pdf")[0].split('_')[0] != undefined)
+                //    vFaxSubject = "DMEOrder_" + vTabstrip[i].innerText.split(".pdf")[0].split('_')[0] + FaxSubject
+                
+
+                break;
+            }
+        }
+    }
+    localStorage['FaxSubject'] = "";
+    localStorage['FaxSubject'] = vFaxSubject;
+    localStorage.setItem("IsMenuEFax", "N");
+    $(top.window.document).find("#TabFax").modal({ backdrop: "static", keyboard: false }, 'show');
+    $(top.window.document).find("#TabFax").css({"z-index:":"5001"});
+    $(top.window.document).find("#TabModalEFaxTitle")[0].textContent = "Efax";
+    $(top.window.document).find("#TabmdldlgEFax")[0].style.width = "880px";
+    $(top.window.document).find("#TabmdldlgEFax")[0].style.height = "825px";
+    $(top.window.document).find("#TabmdldlgEFax").css({ "margin-left": "300px"});
+    var sPath = ""
+    sPath = "frmEFax.aspx?DMEOrder=" + document.getElementById('FaxCurrentFileName').value;
+    $(top.window.document).find("#TabEFaxFrame")[0].style.height = "560px";
+    $(top.window.document).find("#TabEFaxFrame")[0].contentDocument.location.href = sPath;
+    $(top.window.document).find("#TabFax").one("hidden.bs.modal", function (e) {
+    });
+}

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.CallLog, Acurus.Capella.Core" table="Call_Log" lazy="true">
+    <id name="Id" column="Call_Log_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Parent_Object_ID" column="Parent_Object_ID" />
+    <property name="DOOS" column="DOOS" />
+    <property name="Batch_Name" column="Batch_Name" />
+    <property name="Sub_Batch_Range" column="Sub_Batch_Range" />
+    <property name="Doc_Name" column="Doc_Name" />
+    <property name="Patient_Name" column="Patient_Name" />
+    <property name="DOS" column="DOS" />
+    <property name="Procedure_Code" column="Procedure_Code" />
+    <property name="Page_Number" column="Page_Number" />
+    <property name="Account_Number" column="Account_Number" />
+    <property name="Type_of_Call" column="Type_of_Call" />
+    <property name="DOB" column="DOB" />
+    <property name="SSN" column="SSN" />
+    <property name="Gender" column="Gender" />
+    <property name="Tax_ID" column="Tax_ID" />
+    <property name="Facility_Name" column="Facility_Name" />
+    <property name="Requested_By" column="Requested_By" />
+    <property name="Insurance_ID" column="Insurance_ID" />
+    <property name="Web_Status" column="Web_Status" />
+    <property name="Time_Checked" column="Time_Checked" />
+    <property name="Call_Ref_Number" column="Call_Ref_Number" />
+    <property name="Customer_Rep" column="Customer_Rep" />
+    <property name="HMO_Name" column="HMO_Name" />
+    <property name="Group_Number" column="Group_Number" />
+    <property name="Eligibility_Date" column="Eligibility_Date" />
+    <property name="PCP" column="PCP" />
+    <property name="Claim_Mailing_Address" column="Claim_Mailing_Address" />
+    <property name="Subscriber" column="Subscriber" />
+    <property name="Co_Pay" column="Co_Pay" />
+    <property name="Primary_Secondary" column="Primary_Secondary" />
+    <property name="Caller_Name" column="Caller_Name" />
+    <!--<property name="Reason_For_Client" column="Reason_For_Client" />-->
+    <!--<property name="Comments" column="Comments" />-->
+    <property name="Call_Log_Status" column="Call_Log_Status" />
+    <property name="Insurance_Name" column="Insurance_Name" />
+    <property name="Group_Id" column="Group_ID" />
+    <property name="Billed_Charge" column="Billed_Charge" />
+    <property name="Rendering_NPI" column="Rendering_NPI" />
+    <property name="Chk_Int_War_No" column="Chk_Int_War_No" />
+    <property name="WorkSetAmt" column="WorkSetAmt" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Charge_Header_ID" column="Charge_Header_ID" />
+    <property name="Plan_Added_in_MM" column="Plan_Added_in_MM" />
+    <property name="Internal_Reference_ID" column="Internal_Reference_ID" />
+    <property name="Comments_Message_ID" column="Comments_Message_ID" />
+    <property name="Review_Comments_Message_ID" column="Review_Comments_Message_ID" />
+    <property name="Internal_Response_Message_ID" column="Internal_Response_Message_ID" />
+    <property name="Client_Response_Message_ID" column="Client_Response_Message_ID" />
+    <property name="Charge_Line_Item_ID" column="Charge_Line_Item_ID" />
+    <property name="EOB_Claim_ID" column="EOB_Claim_ID" />
+    <property name="Field_Name" column="Field_Name" />    
+    <property name="Reason_Code" column="Reason_Code" />
+    <property name="Reason_Sub_Code" column="Reason_Sub_Code" />
+    <property name="Insurance_Type" column="Insurance_Type" />
+    <property name="Exc_Category" column="Exc_Category" />
+  </class>
+</hibernate-mapping>

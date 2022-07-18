@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PhysicianLibrary, Acurus.Capella.Core" table="physician_library" lazy="true">
+    <id name="Id" column="Physician_Library_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <!--<property name="PhyId" column="Physician_Library_ID" />-->
+    <property name="PhyPrefix" column="Physician_Prefix" />
+    <property name="PhyFirstName" column="Physician_First_Name" />
+    <property name="PhyMiddleName" column="Physician_Middle_Name" />
+    <property name="PhyLastName" column="Physician_Last_Name" />
+    <property name="PhySuffix" column="Physician_Suffix" />
+    <property name="PhyPrimaryCodeType" column="Physician_Primary_Code_Type" />
+    <property name="PhyPrimaryIDCode" column="Physician_Primary_ID_Code" />
+    <property name="PhyAddress1" column="Physician_Address1" />
+    <property name="PhyAddress2" column="Physician_Address2" />
+    <property name="PhyCity" column="Physician_City" />
+    <property name="PhyState" column="Physician_State" />
+    <property name="PhyZip" column="Physician_Zip" />
+    <property name="PhyTelephone" column="Physician_Telephone" />
+    <property name="PhyFax" column="Physician_Fax" />
+    <property name="PhyEMail" column="Physician_EMail" />
+    <property name="PhyType" column="Physician_Type" />
+    <property name="PhyNotes" column="Physician_Notes" />
+    <property name="PhyNPI" column="Physician_NPI" />
+    <property name="PhyQual" column="Physician_Qual" />
+    <property name="PhyOtherID" column="Physician_Other_ID" />
+    <property name="ChangedDateAndTime" column="Modified_Date_And_Time" />
+    <property name="CreatedDateAndTime" column="Created_Date_And_Time" />
+    <property name="PhyColor" column="Physician_Color" />
+    <property name="PhyTemplate" column="Physician_Template" />
+    <property name="State_License_Number" column="State_License_Number" />
+    <property name="Group_TaxID_Number" column="Group_TaxID_Number" />
+    <property name="Medicare_Provider_Number_or_CCN_Number" column="Medicare_Provider_Number_or_CCN_Number" />
+    <property name="Medical_Provider_Number" column="Medical_Provider_Number" />
+    <property name="Medical_Submitter_Number" column="Medical_Submitter_Number" />
+    <property name="Physician_SSN_Number" column="Physician_SSN_Number" />
+    <property name="Physician_Number1" column="Physician_Number1" />
+    <property name="Physician_Number2" column="Physician_Number2" />
+    <property name="Physician_Number3" column="Physician_Number3" />
+    <property name="Physician_Number4" column="Physician_Number4" />
+    <property name="Sort_Order" column="Sort_Order"></property>
+    <property name="Category" column="Category"></property>
+    <property name="Encounter_Mode" column="Encounter_Mode"></property>
+    <property name="Is_Active" column="Is_Active"></property>
+    <property name="Physician_Password" column="Physician_Password"></property>
+    <property name="Taxonomy_Code" column="Taxonomy_Code"></property>
+    <property name="Taxonomy_Description" column="Taxonomy_Description"></property>
+    <property name="Physician_EMail_Password" column="Physician_EMail_Password"></property>
+    <property name="Physician_EMail_Port" column="Physician_EMail_Port"></property>
+    <property name="Physician_Other_EMail_Username" column="Physician_Other_EMail_Username"></property>
+    <property name="Physician_Other_EMail_Password" column="Physician_Other_EMail_Password"></property>
+    <property name="Physician_Other_EMail_Port" column="Physician_Other_EMail_Port"></property>
+    <property name="Company" column="Company"></property>
+    <property name="Created_By" column="Created_By"></property>
+    <property name="Modified_By" column="Modified_By"></property>
+    <property name="Mail_Server_Address" column="Mail_Server_Address"></property>
+    <property name="Physician_MDoffice_EMail_Username" column="Physician_MDoffice_EMail_Username"></property>
+    <property name="Physician_MDoffice_EMail_Password" column="Physician_MDoffice_EMail_Password"></property>
+    <property name="Physician_Other_EMail_Server_Address" column="Physician_Other_EMail_Server_Address"></property>
+
+
+    
+  </class>
+</hibernate-mapping>
+

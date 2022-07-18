@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.OrdersRequiredForms, Acurus.Capella.Core" table="orders_required_forms" lazy="true">
+    <id name="Id" column="Orders_Required_Forms_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Order_Id" column="Order_ID" />
+    <property name="CPT" column="CPT" />
+    <property name="Form_Name" column="Form_Name" />
+    <property name="Form_Required" column="Form_Required" />
+    <property name="Form_Available" column="Form_Available" />
+    <property name="Additional_Information" column="Additional_Information" />
+    <property name="Version" column="Version" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Cpt_Description" column="Cpt_Description" />
+  </class>
+</hibernate-mapping>

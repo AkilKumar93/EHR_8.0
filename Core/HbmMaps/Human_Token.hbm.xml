@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Human_Token, Acurus.Capella.Core" table="human_token" lazy="true">
+    <id name="Id" column="Human_Token_Id">
+      <generator class="identity" />
+    </id>
+   
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Token" column="Token" />
+    <property name="Result" column="Result" />
+    <property name="Patient_Status" column="Patient_Status" />
+    <property name="Account_Status" column="Account_Status" />
+    <property name="Human_Type" column="Human_Type" />
+    <property name="Legal_Org" column="Legal_Org" />
+    <property name="Primary_Carrier_ID" column="Primary_Carrier_ID" />
+    
+  </class>
+</hibernate-mapping>

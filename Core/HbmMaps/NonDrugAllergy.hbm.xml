@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.NonDrugAllergy, Acurus.Capella.Core" table="non_drug_allergy_history" lazy="true">
+    <id name="Id" column="Non_Drug_Allergy_History_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Non_Drug_Allergy_History_Master_ID" column="Non_Drug_Allergy_History_Master_ID" />
+    <property name="Non_Drug_Allergy_History_Info" column="Non_Drug_Allergy_History_Info" />
+    <property name="Is_Present" column="Is_Present" />
+    <property name="Description" column="Description" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Encounter_Id" column="Encounter_ID" />
+    <property name="Snomed_Code" column="Snomed_Code" not-null="true" /><!--//BugID:47705-->
+  </class>
+</hibernate-mapping>

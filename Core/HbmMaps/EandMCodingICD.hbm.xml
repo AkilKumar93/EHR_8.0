@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.EandMCodingICD, Acurus.Capella.Core" table="e_m_coding_icd" lazy="true">
+    <id name="Id" column="E_M_Coding_ICD_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <!--<property name="E_M_Coding_ID" column="E_M_Coding_ID" />-->
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="ICD" column="ICD" />
+    <property name="ICD_Description" column="ICD_Description" />
+    <property name="ICD_Category" column="ICD_Category" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Source" column="Source" />
+    <property name="Source_ID" column="Source_ID" />
+    <property name="ICD_Type" column="ICD_Type" />
+    <property name="Is_Delete" column="Is_Delete" />
+    <property name="Sequence" column="Sequence" />
+  </class>
+</hibernate-mapping>
+

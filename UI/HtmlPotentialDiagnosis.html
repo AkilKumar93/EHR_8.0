@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            JSElement.async = false;
+            document.getElementsByTagName('head')[0].appendChild(JSElement);
+        }
+        </script>
+       
+    <script src="JScripts/jQueryAngular.js"></script>
+    <script src="JScripts/jquery-ui.js"></script>
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+    <script src="JScripts/bootstrap.min.js"></script>
+    <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
+      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <script src="jscripts/JSPotentialDiagnosis.js?v=2" type="text/javascript"></script>
+    <style>
+        .panel {
+            color: #808080;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border: 1px solid;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        .panel-heading {
+            border-bottom: 1px solid !important;
+            padding: 3px 15px;
+        }
+
+        .panel-default {
+            border: 1px solid !important;
+            border-color: black !important;
+        }
+
+        .table {
+            margin-top: 1px;
+            margin-bottom: 5px;
+            border: 1px solid !important;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        tr {
+            border: .2pt;
+        }
+
+        /*td {
+            color: black !important;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 14px !important;
+        }*/
+
+        .table > tbody > tr > td {
+            border-bottom: 1px solid #ddd !important;
+            border-top: 0px !important;
+        }
+
+        /*th {
+            background-color: #bfdbff !important;
+            color: black !important;
+            border-bottom: 1px solid !important;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            text-align: center;
+            width: 100%;
+        }*/
+
+        /*#PotentialBody {
+            height: 500px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }*/
+        #PotentialBody {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        #PotentialHead, #PotentialBody {
+            display: block;
+        }
+
+        .Listdiv li {
+            padding: 4px;
+            margin: 0px;
+        }
+
+            .Listdiv li:hover {
+                background: #bce8f1;
+            }
+
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #c3bfbf;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #707070;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #3d3c3a;
+            }
+
+        .BackColor {
+            color: #0002fd !important;
+        }
+        /*@media (max-height: 530px) {
+            #tblPotential {
+                height: 256px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+        }*/
+        @media (min-height: 640px) {
+            #PotentialBody {
+                height: 500px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .tblPotential {
+                height: 524px;
+            }
+        }
+
+        @media (min-height: 540px) and (max-height: 639px) {
+            #PotentialBody {
+                height: 530px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .tblPotential {
+                height: 569px;
+            }
+        }
+
+        @media (max-height: 539px) {
+            #PotentialBody {
+                height: 300px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .tblPotential {
+                height: 339px;
+            }
+        }
+    </style>
+    <title></title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+</head>
+<body>
+    <div id="AngularDiv" ng-app="AppPotentialDiagnosis" ng-controller="CtrlPotentialDiagnosis">
+        <div style="width:98%;padding-left:20px;">
+            <div id="SearchICD" style="width:100%;">
+                <table style="width:100%;margin-top:6px;">
+                    <tr style="border-bottom: 1em solid white;" id="trSelectParameters">
+                        <td style="width:5%;"><label id="lblICD10" style="width:95%;" class="LabelStyleBold">ICD10</label></td>
+                        <td style="width:35%;"><input type="text" id="txtICD10" style="width:95%;border: 1px solid #ccc;border-radius: 2px;" class="Editabletxtbox" placeholder="Type your ICD10 code here .." /></td>
+                        <td style="width:15%;"><label id="lblICD10Description" style="width:95%;" class="LabelStyle">ICD10 Description</label></td>
+                        <td style="width:45%;">
+                            <input type="text" style="width:100%;border: 1px solid #ccc;border-radius: 2px;" id="txtDescription" class="Editabletxtbox" placeholder="Type your ICD10 description here .." />
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <table id="tblPotential" style="width:100%;overflow:auto" class="table">
+                <thead id="PotentialHead" style="width:100%" ng-repeat="b in PotentialHeadListTable" class="Gridheaderstyle">
+                    <tr style="width:100%;">
+                        <th style="width:2%;text-align:center;" ng-hide="b.EnableColumn==''">Del</th>
+                        <th style="width:2%;text-align:center;" ng-hide="b.EnableColumn=='disabled'">Sel</th>
+                        <th style="width:10%;text-align:center;">ICD Code</th>
+                        <th style="width:33%;text-align:center;">ICD Description</th>
+                        <th style="width:25%;text-align:center;">Source</th>
+                        <th style="width:28%;text-align:center;">Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="PotentialBody" class="Gridbodystyle">
+                    <tr style="width:100%!important" ng-repeat="a in PotentialListTable">
+                        <td style="width:2%;text-align:center;" ng-hide="a.EnableColumn==''">
+                            <img id="{{$index}}" src="Resources/Delete-Blue.png" ng-click="ICDDelete(this)" />
+                        </td>
+                        <td style="width:2%;text-align:center;" ng-hide="a.EnableColumn=='disabled'">
+                            <input type="checkbox" id="chkSelect" class="chkSelect" ng-click="chkSelect_Change(this)" ng-hide="a.EnableColumn=='disabled'" ng-disabled="a.AssessmentICD == true" ng-checked="a.AssessmentICD == true" /><!-- ng-disabled="a.EnableColumn=='disabled'?'disabled':''" />-->
+                        </td>
+                        <td style="width:10%;text-align:center;" ng-class="{BackColor:a.MoveToAssessment == 'Y' && a.EnableColumn==''}">{{ a.ICD10Code  }}</td>
+                        <td style="width:33%;text-align:center;" ng-class="{BackColor:a.MoveToAssessment == 'Y' && a.EnableColumn==''}">{{ a.ICD10Description}}</td>
+                        <td style="display:none">{{ a.ID  }}</td>
+                        <td style="width:25%;text-align:center;" ng-class="{BackColor:a.MoveToAssessment == 'Y' && a.EnableColumn==''}">
+                            <textarea id="{{$index}}" name="Source" class="Editabletxtbox" textmode="MultiLine" style="resize:none;position: static;height: 38px;width: 75%;" maxlength="32767" onkeyup="SetSaveEnabled()" ng-disabled="a.EnableColumn=='disabled'?'':'disabled'">{{ a.source}}</textarea>
+                            <div class="col-6-btns" id="{{$index}}" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 4px; ">
+                                <a class="fa fa-plus pbDropdownBackground" style="margin-top: 4px;margin-right: 14px;margin-left: -19px;text-decoration:none;padding: 6px 7px 4px 6px !important; font-size: 12px;border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="OpenDropDown(this);" ng-disabled="a.EnableColumn=='disabled'?'':'disabled'">
+                                </a>
+                            </div>
+                            <select multiple id="{{$index}}" style="width: 75%;margin-right: 17px;margin-top: -6px;-webkit-appearance: none;display: none;" class="Editabletxtbox" onchange="SetSaveEnabled()" ng-model="a.SelectedValue" ng-disabled="a.EnableColumn=='disabled'?'':'disabled'" ng-click="SelectedValue(this)">
+                                <option ng-selected="a.SelectedValue=='Past Medical History'" ng-click="SetSaveEnabled()" value="Past Medical History">Past Medical History</option>
+                                <option ng-selected="a.SelectedValue=='Assessment'" ng-click="SetSaveEnabled()" value="Assessment">Assessment</option>
+                                <option ng-selected="a.SelectedValue=='ROS'" ng-click="SetSaveEnabled()" value="ROS">ROS</option>
+                                <option ng-selected="a.SelectedValue=='Medication'" ng-click="SetSaveEnabled()" value="Medication">Medication</option>
+                                <option ng-selected="a.SelectedValue=='Lab Results'" ng-click="SetSaveEnabled()" value="Lab Results">Lab Results</option>
+                                <option ng-selected="a.SelectedValue=='Diagnostic Test'" ng-click="SetSaveEnabled()" value="Diagnostic Test">Diagnostic Test</option>
+                            </select>
+                        </td>
+                        <td style="width:28%;text-align:left;" ng-class="{BackColor:a.MoveToAssessment == 'Y' && a.EnableColumn==''}">
+                            <!--<textarea type="text" id="txtNotes" ng-disabled="a.EnableColumn=='disabled'?'':'disabled'" onchange="SetSaveEnabled()" onkeyup="SetSaveEnabled()" name="NOTES" style="resize:none;" maxlength="32767">{{a.Notes}}</textarea>-->
+                            <textarea ng-disabled="a.EnableColumn=='disabled'?'':'disabled'" onchange="SetSaveEnabled()" onkeyup="SetSaveEnabled()" name="POTENTIAL DIAGNOSIS NOTES" class="actcmpt" textmode="MultiLine"
+                                      id="{{'txtNotes'+$index}}" class="Editabletxtbox" style="resize:none;width:74%;text-align:left!important;"
+                                      maxlength="32767">{{a.Notes}}</textarea>
+                            <div id="{{'lstNotes'+$index}}" class="col-6-btns" style=" width: 22px;float: right !important;margin-top: 12px;text-align:left;height:70px!important;" ng-disabled="a.EnableColumn=='disabled'?'':'disabled'">
+                                <a class=" fa fa-plus pbDropdownBackground" style="margin-top:-1px;margin-left:-38px;margin-right: -1px;text-decoration:none; padding: 6px 7px 4px 6px !important;font-size: 12px; border-radius: 2px;"
+                                   id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="GetNotesList(this,'POTENTIAL DIAGNOSIS NOTES');" ng-disabled="a.EnableColumn=='disabled'?'':'disabled'">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">{{ a.Version  }}</td>
+                        <td style="display:none">{{ a.MoveToAssessment  }}</td>
+                        <td style="display:none">{{ a.VersionYear  }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width:100%;height:50px;padding:5px;" id="tblPotentialFooter">
+                <tr>
+                    <td style="text-align:left;width:75%"></td>
+                    <td style="text-align:center;"><button id="btnMoveToAssessment" style="width:96%;display:none !important;" class="aspbluebutton"  type="button">Move To Assessment</button></td>
+                    <td style="text-align:center;" id="clmSave"><button id="btnSave" class="aspgreenbutton" style="width:100%" type="button" ng-click="SavePotentialDiagnosisList()">Save</button></td>
+                    <td style="text-align:right;padding-right:6px;"><button id="btnCloseModal" class="aspredbutton" style="width:95%" type="button" ng-click="CloseModal();">Close</button></td>
+                </tr>
+            </table>
+        </div>
+        <div id="dvdialog" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">
+            <p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">
+                There are unsaved changes.Do you want to save them?
+            </p>
+
+        </div>
+
+    </div>
+</body>
+</html>

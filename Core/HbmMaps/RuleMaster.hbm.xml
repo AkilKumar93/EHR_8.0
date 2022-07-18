@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.RuleMaster, Acurus.Capella.Core" table="rule_master" lazy="true">
+    <id name="Id" column="Rule_Master_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Rule_Name" column="Rule_Name" />
+    <property name="Rule_Description" column="Rule_Description" />
+    <property name="From_Age" column="From_Age" />
+    <property name="To_Age" column="To_Age" />
+    <property name="Gender" column="Gender" />
+    <property name="Expected_Action" column="Expected_Action" />
+    <property name="Alert" column="Alert" />
+    <property name="Frequency" column="Frequency" />
+    <property name="Is_Status" column="Is_Status" />
+    <property name="Last_Run_Date" column="Last_Run_Date" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Age_In" column="Age_In" />
+	<property name="Physician_ID" column="Physician_ID" />
+	<property name="Race" column="Race" />
+    <property name="Ethnicity" column="Ethnicity" />
+	<property name="Communication" column="Communication" />
+    <property name="Legal_Org" column="Legal_Org" />
+    
+  </class>
+</hibernate-mapping>

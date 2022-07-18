@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.TreatmentPlan, Acurus.Capella.Core" table="treatment_plan" lazy="true">
+    <id name="Id" column="Treatment_Plan_Id">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Encounter_Id" column="Encounter_Id" />
+    <property name="Human_ID" column="Human_Id" />
+    <property name="Physician_Id" column="Physician_Id" />
+    <property name="Plan" column="Plan" />
+    <!--<property name="Physician_Attestation" column="Physician_Attestation" />-->
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Addendum_Plan" column="Addendum_Plan" />
+    <property name="Plan_Type" column="Plan_Type" />
+    <property name="Source_ID" column="Source_ID"/>
+    <property name="Plan_For_Plan" column="Plan_For_Plan"/>
+    <property name="Plan_Reference" column="Plan_Reference"/>
+    <property name="Followup_Plan_Snomed" column="Followup_Plan_Snomed"/>
+    <property name="Corrections_to_be_made" column="Corrections_to_be_made"/>
+    <property name="Amendment_Type" column="Amendment_Type"/>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,677 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Acurus.Capella.PatientPortal</RootNamespace>
+    <AssemblyName>Acurus.Capella.PatientPortal</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.5.60919.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\UI\bin\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime, Version=3.1.0.39271, Culture=neutral, PublicKeyToken=3a9cab8f8d22bfb7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\01_10_2021_BRANCH_CAPELLA_CMG_6_1_0_1_28_0_20211015\EHR-CAPELLA5.0\PatientPortal\bin\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="EMRDirect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\01_10_2021_BRANCH_CAPELLA_CMG_6_1_0_1_28_0_20211015\EHR-CAPELLA5.0\PatientPortal\bin\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL" />
+    <Reference Include="itextsharp, Version=5.0.1.1, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="LinFu.DynamicProxy, Version=1.0.3.14911, Culture=neutral, PublicKeyToken=62a6874124340d6e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\01_10_2021_BRANCH_CAPELLA_CMG_6_1_0_1_28_0_20211015\EHR-CAPELLA5.0\PatientPortal\bin\LinFu.DynamicProxy.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
+    <Reference Include="NHibernate.ByteCode.LinFu, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.Design, Version=2013.3.1114.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Telerik.Web.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI, Version=2020.1.114.45, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins, Version=2020.1.114.45, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Telerik.Web.UI.Skins.dll</HintPath>
+    </Reference>
+    <Reference Include="TimePicker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d25e9f59e49c4d2f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\UI\bin\TimePicker.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Acurus.Capella.Core.dll" />
+    <Content Include="bin\Acurus.Capella.Core.pdb" />
+    <Content Include="bin\Acurus.Capella.DataAccess.dll" />
+    <Content Include="bin\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Acurus.Capella.PatientPortal.dll" />
+    <Content Include="bin\Acurus.Capella.PatientPortal.pdb" />
+    <Content Include="bin\Antlr3.Runtime.dll" />
+    <Content Include="bin\EMRDirect.dll" />
+    <Content Include="bin\hibernate.cfg.xml" />
+    <Content Include="bin\Iesi.Collections.dll" />
+    <Content Include="bin\Iesi.Collections.xml" />
+    <Content Include="bin\Ionic.Zip.Reduced.dll" />
+    <Content Include="bin\itextsharp.dll" />
+    <Content Include="bin\LinFu.DynamicProxy.dll" />
+    <Content Include="bin\log4net.dll" />
+    <Content Include="bin\Microsoft.Office.Interop.Excel.dll" />
+    <Content Include="bin\Microsoft.Office.Interop.Word.dll" />
+    <Content Include="bin\Microsoft.Vbe.Interop.dll" />
+    <Content Include="bin\mysql.data.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\NHibernate.ByteCode.LinFu.dll" />
+    <Content Include="bin\NHibernate.ByteCode.LinFu.xml" />
+    <Content Include="bin\NHibernate.dll" />
+    <Content Include="bin\nunit.framework.dll" />
+    <Content Include="bin\nunit.framework.xml" />
+    <Content Include="bin\nunit.mocks.dll" />
+    <Content Include="bin\office.dll" />
+    <Content Include="bin\Telerik.Web.Design.dll" />
+    <Content Include="bin\Telerik.Web.UI.dll" />
+    <Content Include="bin\Telerik.Web.UI.Skins.dll" />
+    <Content Include="ConfigXML\Doctype.xml" />
+    <Content Include="ConfigXML\Facility_Library.xml" />
+    <Content Include="ConfigXML\PhysicianAddressDetails.xml" />
+    <Content Include="ConfigXML\PhysicianFacilityMapping.xml" />
+    <Content Include="ConfigXML\staticlookup.xml" />
+    <Content Include="CSS\bootstrap-datetimepicker.min.css" />
+    <Content Include="CSS\bootstrap.min.css" />
+    <Content Include="CSS\bootstrap.min.js" />
+    <Content Include="CSS\CommonStyle.css" />
+    <Content Include="CSS\CssNotify.css" />
+    <Content Include="CSS\DatePicker.css" />
+    <Content Include="CSS\datetimepicker.css" />
+    <Content Include="CSS\datetimepicker.js" />
+    <Content Include="CSS\ElementStyles.css" />
+    <Content Include="CSS\font-awesome.css" />
+    <Content Include="CSS\jquery-ui.css" />
+    <Content Include="CSS\jquery-ui.min.css" />
+    <Content Include="CSS\jqx.base.min.css" />
+    <Content Include="CSS\metro.css" />
+    <Content Include="CSS\moment.js" />
+    <Content Include="CSS\ScanningAndIndexing.css" />
+    <Content Include="CSS\style.css" />
+    <Content Include="ErrorMessage.xml" />
+    <Content Include="ErrorPage.aspx" />
+    <Content Include="frmChangePassword.aspx" />
+    <Content Include="frmClinicalSummary.aspx" />
+    <Content Include="frmDLC.aspx" />
+    <Content Include="frmForgotPassword.aspx" />
+    <Content Include="frmGenerateLink.aspx" />
+    <Content Include="frmImageViewer.aspx" />
+    <Content Include="frmMailBox.aspx" />
+    <Content Include="frmMailMessage.aspx" />
+    <Content Include="frmOnlineDocuments.aspx" />
+    <Content Include="frmPrintPDF.aspx" />
+    <Content Include="frmSendHealthRecord.aspx" />
+    <Content Include="frmSessionExpired.aspx" />
+    <Content Include="frmSummaryOfCare.aspx" />
+    <Content Include="frmValidationArea.aspx" />
+    <Content Include="frmViewResult.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="JScripts\bootstrap.min.js" />
+    <Content Include="JScripts\jquery-1.11.3.min.js" />
+    <Content Include="JScripts\jquery-2.1.3.js" />
+    <Content Include="JScripts\jquery-2.2.3.js" />
+    <Content Include="JScripts\jquery-ui.js" />
+    <Content Include="JScripts\jquery-ui.min1.10.2.js" />
+    <Content Include="JScripts\jquery.datetimepicker.js" />
+    <Content Include="JScripts\JSAvoidRightClick.js" />
+    <Content Include="JScripts\jsBulkAccess.js" />
+    <Content Include="JScripts\JSClinicalSummary.js" />
+    <Content Include="JScripts\JSCustomDLC.js" />
+    <Content Include="JScripts\JSErrorMessage.js" />
+    <Content Include="JScripts\JSImageViewer.js" />
+    <Content Include="JScripts\JSMailBox.js" />
+    <Content Include="JScripts\JSMessage.js" />
+    <Content Include="JScripts\JSModalWindow.js" />
+    <Content Include="JScripts\JSOnlineDocuments.js" />
+    <Content Include="JScripts\JSPatientPortal.js" />
+    <Content Include="JScripts\JSPrintPDF.js" />
+    <Content Include="JScripts\JSValidationArea.js" />
+    <Content Include="JScripts\Lazyload.js" />
+    <Content Include="JScripts\metro.js" />
+    <Content Include="JScripts\tooltip.min.js" />
+    <Content Include="Resources\16_16.ico" />
+    <Content Include="Resources\articleicon.png" />
+    <Content Include="Resources\Email.png" />
+    <Content Include="Resources\loadimage.gif" />
+    <Content Include="SampleXML\Allergies_Nullflavor.xml" />
+    <Content Include="SampleXML\AllergyEntry.txt" />
+    <Content Include="SampleXML\AllergytoEggs.xml" />
+    <Content Include="SampleXML\Allergy_Entry.xml" />
+    <Content Include="SampleXML\Bilateral_Mastectomy.xml" />
+    <Content Include="SampleXML\BMI_CDT_Stage3_CAT1.xml" />
+    <Content Include="SampleXML\CarePlan.xml" />
+    <Content Include="SampleXML\Care_Plan_Sample.xml" />
+    <Content Include="SampleXML\CatIII_Stage3_Measeure_Header_count.xml" />
+    <Content Include="SampleXML\CCD_Sample.xml" />
+    <Content Include="SampleXML\CCR.xsl" />
+    <Content Include="SampleXML\CDA.xsl" />
+    <Content Include="SampleXML\CDA_original.xsl" />
+    <Content Include="SampleXML\ClinicalInstruction.txt" />
+    <Content Include="SampleXML\CMS122Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS125Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS127Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS127v1_Header.xml" />
+    <Content Include="SampleXML\CMS138Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS138v1_Header.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_Assertion.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_I.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_Loinc.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_MedicationOrder.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_MedicationOrder_I.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_Nullflavor.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_patientDead.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_ProblemConcern.xml" />
+    <Content Include="SampleXML\CMS138v5_stage3_procActivity.xml" />
+    <Content Include="SampleXML\CMS147Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS148v1_Header.xml" />
+    <Content Include="SampleXML\CMS155v1_Header.xml" />
+    <Content Include="SampleXML\CMS165stage3_Header.xml" />
+    <Content Include="SampleXML\CMS165v1_Header.xml" />
+    <Content Include="SampleXML\CMS22Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS22_Medication_cat1_Stage3.xml" />
+    <Content Include="SampleXML\CMS65v2_Header.xml" />
+    <Content Include="SampleXML\CMS68v2_Header.xml" />
+    <Content Include="SampleXML\CMS68v6Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS69Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS69v1_Header.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_I.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_LoincBMI.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_MedOrder.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_MedOrderNA.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_NullFlvr.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_PlanfCareNA.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_ProblemConcern.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_ProcActivityNA.xml" />
+    <Content Include="SampleXML\CMS69v5_stage3_Snomed.xml" />
+    <Content Include="SampleXML\CMS75v1_Header.xml" />
+    <Content Include="SampleXML\CognitiveFunction.xml" />
+    <Content Include="SampleXML\CognitiveFunction_DP.xml" />
+    <Content Include="SampleXML\Communication147.xml" />
+    <Content Include="SampleXML\ControllingBP_Gcode_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\ControllingBP_Kidney_Edu_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\Controlling_BP_Snomed_CAT_I_Stage3.xml" />
+    <Content Include="SampleXML\Controlling_BP_Snomed_Visit_CAT1_Stage3.xml" />
+    <Content Include="SampleXML\Controlling_HP_Kidney_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\CurrentMedication_Reviewed_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\CurrentMedication_VisitCode_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\CurrentMedication_Visit_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\Current_Medications_CAT_I_Stage3.xml" />
+    <Content Include="SampleXML\Current_Medications_CAT_I_Stage3_I.xml" />
+    <Content Include="SampleXML\Current_Medications_CAT_I_Stage3_II_NullFlvr.xml" />
+    <Content Include="SampleXML\Current_Smoker.xml" />
+    <Content Include="SampleXML\Denominator.xml" />
+    <Content Include="SampleXML\DenominatorStage3.xml" />
+    <Content Include="SampleXML\Denominator_Exception.xml" />
+    <Content Include="SampleXML\Denominator_ExceptionStage3.xml" />
+    <Content Include="SampleXML\Denominator_Exclusion.xml" />
+    <Content Include="SampleXML\Denominator_ExclusionStage3.xml" />
+    <Content Include="SampleXML\DiabetesHba1c.xml" />
+    <Content Include="SampleXML\EhinicityStage3.xml" />
+    <Content Include="SampleXML\Encounter.xml" />
+    <Content Include="SampleXML\Encounter147.xml" />
+    <Content Include="SampleXML\Encounter22.xml" />
+    <Content Include="SampleXML\EncounterDiagnosis.xml" />
+    <Content Include="SampleXML\Encounter_69.xml" />
+    <Content Include="SampleXML\Encounter_Section_CAT_I.xml" />
+    <Content Include="SampleXML\Encounter_Section_CAT_I_Stage3.xml" />
+    <Content Include="SampleXML\Encounter_Section_Mammogram.xml" />
+    <Content Include="SampleXML\Encounter_Section_Mammogram.xml.xml" />
+    <Content Include="SampleXML\Ethinicity_Supplement.xml" />
+    <Content Include="SampleXML\FacetoFace.xml" />
+    <Content Include="SampleXML\FindAndReplace.ascx" />
+    <Content Include="SampleXML\FunctionalStatus.xml" />
+    <Content Include="SampleXML\Goals.xml" />
+    <Content Include="SampleXML\Goal_Section.xml" />
+    <Content Include="SampleXML\Hba1cSnomed.xml" />
+    <Content Include="SampleXML\hbalcwithoutnegnation.xml" />
+    <Content Include="SampleXML\HealthConcern.xml" />
+    <Content Include="SampleXML\HealthConcern_Careplan.xml" />
+    <Content Include="SampleXML\Health_Status_Evaluation.xml" />
+    <Content Include="SampleXML\Health_Status_Evaluation_Last_Entry_Section.xml" />
+    <Content Include="SampleXML\Hemodialysis.xml" />
+    <Content Include="SampleXML\Hemodialysis2.xml" />
+    <Content Include="SampleXML\HighBPI10.xml" />
+    <Content Include="SampleXML\Historyofbilateralmastectomy.xml" />
+    <Content Include="SampleXML\HP_BP_NotPerformed_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\HP_Exception_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\HP_Exception_Snomed_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\HP_FollowpSnomed_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\HP_Reason_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\HP_SnomedCodeVisit_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\HP_SnomedCode_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\ICD_influenza.xml" />
+    <Content Include="SampleXML\Immunization.txt" />
+    <Content Include="SampleXML\Immunization.xml" />
+    <Content Include="SampleXML\Implant.xml" />
+    <Content Include="SampleXML\Influenza.xml" />
+    <Content Include="SampleXML\InfluenzaAllergy.xml" />
+    <Content Include="SampleXML\Influenzafavour.xml" />
+    <Content Include="SampleXML\InfluenzaNotNull.xml" />
+    <Content Include="SampleXML\InfluenzaSnomedCAT1.xml" />
+    <Content Include="SampleXML\Influenza_CVX_Cat1_Stage3.xml" />
+    <Content Include="SampleXML\Influenza_encounter.xml" />
+    <Content Include="SampleXML\Instructions.xml" />
+    <Content Include="SampleXML\Intervention.xml" />
+    <Content Include="SampleXML\IPP.xml" />
+    <Content Include="SampleXML\IPPStage3.xml" />
+    <Content Include="SampleXML\LeftMastectomy.xml" />
+    <Content Include="SampleXML\MammogramLoinc.xml" />
+    <Content Include="SampleXML\MammogramLoinc1.xml" />
+    <Content Include="SampleXML\MammogramLoinc2.xml" />
+    <Content Include="SampleXML\Medication.xml" />
+    <Content Include="SampleXML\MedicationAdministration.xml" />
+    <Content Include="SampleXML\MedicationEntry.txt" />
+    <Content Include="SampleXML\Medication_Admin_Pneu_Vac.xml" />
+    <Content Include="SampleXML\Medication_Admin_Pneu_Vac_Stage3.xml" />
+    <Content Include="SampleXML\MentalStatus.xml" />
+    <Content Include="SampleXML\Numerator.xml" />
+    <Content Include="SampleXML\NumeratorStage3.xml" />
+    <Content Include="SampleXML\OBS_BMI_Cat1_Stag3.xml" />
+    <Content Include="SampleXML\OBS_BMI_Diet_CatI_Stage3.xml" />
+    <Content Include="SampleXML\OBS_BMI_ICD_CATI_Stage3.xml" />
+    <Content Include="SampleXML\OBS_Contoll_HBP_Exclusion_Stage3.xml" />
+    <Content Include="SampleXML\OBS_controlling_BP_Stage3.xml" />
+    <Content Include="SampleXML\OBS_Dental Carries.xml" />
+    <Content Include="SampleXML\OBS_Diabetes.xml" />
+    <Content Include="SampleXML\OBS_Diagnosis Active.xml" />
+    <Content Include="SampleXML\OBS_HB1AC_CMS_122_Stage3.xml" />
+    <Content Include="SampleXML\OBS_HB1AC_LOINC_STAGE3.xml" />
+    <Content Include="SampleXML\OBS_HBP_Followup_CMS22_Stage3.xml" />
+    <Content Include="SampleXML\OBS_High_BP_Followup_Snomed_Stage3.xml" />
+    <Content Include="SampleXML\OBS_Influenza_CatI_Stage3.xml" />
+    <Content Include="SampleXML\OBS_Lab result.xml" />
+    <Content Include="SampleXML\OBS_Phy Exam_Finding_BMI.xml" />
+    <Content Include="SampleXML\OBS_Physical Exam_Finding_BP_Diastolic.xml" />
+    <Content Include="SampleXML\OBS_Physical Exam_Finding_BP_Systolic.xml" />
+    <Content Include="SampleXML\OBS_PREGNANCY.xml" />
+    <Content Include="SampleXML\OBS_PREGNANCY_DX.xml" />
+    <Content Include="SampleXML\OBS_Tobacco use.xml" />
+    <Content Include="SampleXML\PatientTransfer.xml" />
+    <Content Include="SampleXML\Payer_Stage3.xml" />
+    <Content Include="SampleXML\Payer_Supplement.xml" />
+    <Content Include="SampleXML\Plan.xml" />
+    <Content Include="SampleXML\PreviousRec.xml" />
+    <Content Include="SampleXML\Problem.xml" />
+    <Content Include="SampleXML\ProblemEntry.txt" />
+    <Content Include="SampleXML\ProblemlistNullflavor.xml" />
+    <Content Include="SampleXML\Procedure Performed _current med_documented.xml" />
+    <Content Include="SampleXML\ProcedureEntry.txt" />
+    <Content Include="SampleXML\ProcedurePerformed.xml" />
+    <Content Include="SampleXML\Procedures.xml" />
+    <Content Include="SampleXML\Procedure_Activity_Act.xml" />
+    <Content Include="SampleXML\QRDAStage3_CAT_III_Header.xml" />
+    <Content Include="SampleXML\QRDA_CAT_III_Header.xml" />
+    <Content Include="SampleXML\QRDA_CAT_III_Header_Old.xml" />
+    <Content Include="SampleXML\Race_Stage3.xml" />
+    <Content Include="SampleXML\Race_Supplement.xml" />
+    <Content Include="SampleXML\ReasonforReferral.xml" />
+    <Content Include="SampleXML\ReasonForVisit.txt" />
+    <Content Include="SampleXML\Reference_Obs.xml" />
+    <Content Include="SampleXML\Refusednegation.xml" />
+    <Content Include="SampleXML\Refused_Influenza.xml" />
+    <Content Include="SampleXML\Refused_medical_reason.xml" />
+    <Content Include="SampleXML\Reporting Stratum.xml" />
+    <Content Include="SampleXML\Reporting Stratum1.xml" />
+    <Content Include="SampleXML\Result.xml" />
+    <Content Include="SampleXML\ResultEntry.txt" />
+    <Content Include="SampleXML\RightMastectomy.xml" />
+    <Content Include="SampleXML\RiskCategory.xml" />
+    <Content Include="SampleXML\Sex_Supplement.xml" />
+    <Content Include="SampleXML\Sex_Supplement_Stage3.xml" />
+    <Content Include="SampleXML\SocialHistory.txt" />
+    <Content Include="SampleXML\SocialHistory.xml" />
+    <Content Include="SampleXML\SocialHistoryTobacco.xml" />
+    <Content Include="SampleXML\staticlookup.xml" />
+    <Content Include="SampleXML\Substance administration.xml" />
+    <Content Include="SampleXML\Surgery.xml" />
+    <Content Include="SampleXML\Test.txt" />
+    <Content Include="SampleXML\Test1.txt" />
+    <Content Include="SampleXML\Tobbacco.xml" />
+    <Content Include="SampleXML\TreatmentPlan.xml" />
+    <Content Include="SampleXML\Unilateral_Mastectomy.xml" />
+    <Content Include="SampleXML\UnspecifiedLateralityMas.xml" />
+    <Content Include="SampleXML\Vitals.txt" />
+    <Content Include="SampleXML\VitalSign.xml" />
+    <Content Include="SampleXML\XML Master Template.xml" />
+    <Content Include="SampleXML\XML Master Template_Stage3Measure.xml" />
+    <Content Include="Service References\PatientPortalServiceReference\configuration.svcinfo" />
+    <Content Include="Service References\PatientPortalServiceReference\configuration91.svcinfo" />
+    <Content Include="Service References\PatientPortalServiceReference\PatientPortalWebService.disco" />
+    <Content Include="Service References\PatientPortalServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </Content>
+    <Content Include="UserControls\CustomDLC.ascx" />
+    <Content Include="UserControls\CustomDLCNew.ascx" />
+    <Content Include="UserControls\CustomPhrases.ascx" />
+    <Content Include="Viewimg.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="webfrmBulkAccess.aspx" />
+    <Content Include="webfrmLogin.aspx" />
+    <Content Include="webfrmLogout.aspx" />
+    <Content Include="webfrmPatientPortal.aspx" />
+    <Content Include="webfrmRegistration.aspx" />
+    <Content Include="WebServices\PatientPortalWebService.asmx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ErrorPage.aspx.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorPage.aspx.designer.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\ApplicationObject.cs" />
+    <Compile Include="Extensions\ClientSession.cs" />
+    <Compile Include="Extensions\SecurityServiceUtility.cs" />
+    <Compile Include="Extensions\TIF.cs" />
+    <Compile Include="Extensions\UIManager.cs" />
+    <Compile Include="Extensions\UNCAccessWithCredentials.cs" />
+    <Compile Include="frmChangePassword.aspx.cs">
+      <DependentUpon>frmChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmChangePassword.aspx.designer.cs">
+      <DependentUpon>frmChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmClinicalSummary.aspx.cs">
+      <DependentUpon>frmClinicalSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmClinicalSummary.aspx.designer.cs">
+      <DependentUpon>frmClinicalSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmDLC.aspx.cs">
+      <DependentUpon>frmDLC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmDLC.aspx.designer.cs">
+      <DependentUpon>frmDLC.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmForgotPassword.aspx.cs">
+      <DependentUpon>frmForgotPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmForgotPassword.aspx.designer.cs">
+      <DependentUpon>frmForgotPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmGenerateLink.aspx.cs">
+      <DependentUpon>frmGenerateLink.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmGenerateLink.aspx.designer.cs">
+      <DependentUpon>frmGenerateLink.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmImageViewer.aspx.cs">
+      <DependentUpon>frmImageViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmImageViewer.aspx.designer.cs">
+      <DependentUpon>frmImageViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMailBox.aspx.cs">
+      <DependentUpon>frmMailBox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMailBox.aspx.designer.cs">
+      <DependentUpon>frmMailBox.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMailMessage.aspx.cs">
+      <DependentUpon>frmMailMessage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMailMessage.aspx.designer.cs">
+      <DependentUpon>frmMailMessage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmOnlineDocuments.aspx.cs">
+      <DependentUpon>frmOnlineDocuments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmOnlineDocuments.aspx.designer.cs">
+      <DependentUpon>frmOnlineDocuments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrintPDF.aspx.cs">
+      <DependentUpon>frmPrintPDF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmPrintPDF.aspx.designer.cs">
+      <DependentUpon>frmPrintPDF.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSendHealthRecord.aspx.cs">
+      <DependentUpon>frmSendHealthRecord.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSendHealthRecord.aspx.designer.cs">
+      <DependentUpon>frmSendHealthRecord.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSessionExpired.aspx.cs">
+      <DependentUpon>frmSessionExpired.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSessionExpired.aspx.designer.cs">
+      <DependentUpon>frmSessionExpired.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmSummaryOfCare.aspx.cs">
+      <DependentUpon>frmSummaryOfCare.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmSummaryOfCare.aspx.designer.cs">
+      <DependentUpon>frmSummaryOfCare.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmValidationArea.aspx.cs">
+      <DependentUpon>frmValidationArea.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmValidationArea.aspx.designer.cs">
+      <DependentUpon>frmValidationArea.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmViewResult.aspx.cs">
+      <DependentUpon>frmViewResult.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmViewResult.aspx.designer.cs">
+      <DependentUpon>frmViewResult.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FTPImageProcess.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HL7Generator.cs" />
+    <Compile Include="PDFGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\PatientPortalServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomDLC.ascx.cs">
+      <DependentUpon>CustomDLC.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\CustomDLC.ascx.designer.cs">
+      <DependentUpon>CustomDLC.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomDLCNew.ascx.cs">
+      <DependentUpon>CustomDLCNew.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\CustomDLCNew.ascx.designer.cs">
+      <DependentUpon>CustomDLCNew.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CustomPhrases.ascx.cs">
+      <DependentUpon>CustomPhrases.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\CustomPhrases.ascx.designer.cs">
+      <DependentUpon>CustomPhrases.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UtilityManager.cs" />
+    <Compile Include="Viewimg.aspx.cs">
+      <DependentUpon>Viewimg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Viewimg.aspx.designer.cs">
+      <DependentUpon>Viewimg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="webfrmBulkAccess.aspx.cs">
+      <DependentUpon>webfrmBulkAccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webfrmBulkAccess.aspx.designer.cs">
+      <DependentUpon>webfrmBulkAccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="webfrmLogin.aspx.cs">
+      <DependentUpon>webfrmLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webfrmLogin.aspx.designer.cs">
+      <DependentUpon>webfrmLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="webfrmLogout.aspx.cs">
+      <DependentUpon>webfrmLogout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webfrmLogout.aspx.designer.cs">
+      <DependentUpon>webfrmLogout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="webfrmPatientPortal.aspx.cs">
+      <DependentUpon>webfrmPatientPortal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webfrmPatientPortal.aspx.designer.cs">
+      <DependentUpon>webfrmPatientPortal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="webfrmRegistration.aspx.cs">
+      <DependentUpon>webfrmRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="webfrmRegistration.aspx.designer.cs">
+      <DependentUpon>webfrmRegistration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebServices\PatientPortalWebService.asmx.cs">
+      <DependentUpon>PatientPortalWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{E18E1AC7-9FA4-4753-B45A-BEFDFB6F3D6F}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{243F40A0-A885-45BE-9F4E-F4E48D76C11A}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PatientPortalServiceReference\PatientPortalWebService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59064</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:59071/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

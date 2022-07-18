@@ -1,0 +1,144 @@
+﻿ <entry typeCode="DRIV">
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.1.27" />
+              <!-- Problem act template -->
+              <id root="6a2fa88d-4174-4909-aece-db44b60a3abb" />
+              <code nullFlavor="NA" />
+              <performer typeCode="PRF">
+                <assignedEntity>
+                  <id extension="PseudoMD-2" root="2.16.840.1.113883.3.72.5.2" />
+                  <addr />
+                  <telecom />
+                </assignedEntity>
+              </performer>
+              <entryRelationship typeCode="SUBJ">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.1.28" assigningAuthorityName="CCD" />
+                  <!--Problem observation template - NOT episode template-->
+                  <id root="d11275e7-67ae-11db-bd13-0800200c9a66" />
+                  <code code="64572001" displayName="Condition" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" />
+                  <text>
+                    <reference value="#CondID-1" />
+                  </text>
+                  <statusCode code="completed" />
+                  <effectiveTime>
+                    <low value="20100109" />
+                  </effectiveTime>
+                  <value xsi:type="CD" displayName="Acute Appendicitis" code="74400008" codeSystemName="SNOMED" codeSystem="2.16.840.1.113883.6.96" />
+                  <entryRelationship typeCode="REFR">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.1.50" />
+                      <!-- Problem status observation template -->
+                      <code code="33999-4" codeSystem="2.16.840.1.113883.6.1" displayName="Status" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CE" code="413322009" codeSystem="2.16.840.1.113883.6.96" displayName="Resolved" />
+                    </observation>
+                  </entryRelationship>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>
+ <entry typeCode="DRIV">
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.3.88.11.83.7" assigningAuthorityName="HITSP C83" />
+              <templateId root="2.16.840.1.113883.10.20.1.27" assigningAuthorityName="CCD" />
+              <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1" assigningAuthorityName="IHE PCC" />
+              <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2" assigningAuthorityName="IHE PCC" />
+              <!-- Problem act template -->
+              <id root="ec8a6ff8-ed4b-4f7e-82c3-e98e58b45de7" />
+              <code nullFlavor="NA" />
+              <statusCode code="active" />
+              <effectiveTime>
+                <low nullFlavor="UNK" />
+              </effectiveTime>
+              <entryRelationship typeCode="SUBJ" inversionInd="false">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.1.28" assigningAuthorityName="CCD" />
+                  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5" assigningAuthorityName="IHE PCC" />
+                  <!--Problem observation template -->
+                  <id root="ab1791b0-5c71-11db-b0de-0800200c9a66" />
+                  <code displayName="Condition" code="64572001" codeSystemName="SNOMED-CT" codeSystem="2.16.840.1.113883.6.96" />
+                  <text>
+                    <reference value="#CondID-2" />
+                  </text>
+                  <statusCode code="completed" />
+                  <effectiveTime>
+                    <low value="20090709" />
+                    <high nullFlavor="UNK" />
+                  </effectiveTime>
+                  <value xsi:type="CD" displayName="Cerebrovascular Accident (Stroke)" code="230690007" codeSystemName="SNOMED" codeSystem="2.16.840.1.113883.6.96" />
+                  <entryRelationship typeCode="REFR">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.1.50" />
+                      <!-- Problem status observation template -->
+                      <code code="33999-4" codeSystem="2.16.840.1.113883.6.1" displayName="Status" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CE" code="413322009" codeSystem="2.16.840.1.113883.6.96" displayName="Resolved" />
+                    </observation>
+                  </entryRelationship>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>
+          <entry typeCode="DRIV">
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.3.88.11.83.7" assigningAuthorityName="HITSP C83" />
+              <templateId root="2.16.840.1.113883.10.20.1.27" assigningAuthorityName="CCD" />
+              <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1" assigningAuthorityName="IHE PCC" />
+              <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.2" assigningAuthorityName="IHE PCC" />
+              <!-- Problem act template -->
+              <id root="d11275e9-67ae-11db-bd13-0800200c9a66" />
+              <code nullFlavor="NA" />
+              <statusCode code="active" />
+              <effectiveTime>
+                <low nullFlavor="UNK" />
+              </effectiveTime>
+              <entryRelationship typeCode="SUBJ" inversionInd="false">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.1.28" assigningAuthorityName="CCD" />
+                  <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5" assigningAuthorityName="IHE PCC" />
+                  <!-- Problem observation template -->
+                  <id root="9d3d416d-45ab-4da1-912f-4583e0632000" />
+                  <code displayName="Condition" code="64572001" codeSystemName="SNOMED-CT" codeSystem="2.16.840.1.113883.6.96" />
+                  <text>
+                    <reference value="#CondID-3" />
+                  </text>
+                  <statusCode code="completed" />
+                  <effectiveTime>
+                    <low value="20090330" />
+                    <high nullFlavor="UNK" />
+                  </effectiveTime>
+                  <value xsi:type="CD" displayName="Diabetes Mellitus, Type 2" code="44054006" codeSystemName="SNOMED" codeSystem="2.16.840.1.113883.6.96" />
+                  <entryRelationship typeCode="REFR">
+                    <observation classCode="OBS" moodCode="EVN">
+                      <templateId root="2.16.840.1.113883.10.20.1.50" />
+                      <!-- Problem status observation template -->
+                      <code code="33999-4" codeSystem="2.16.840.1.113883.6.1" displayName="Status" />
+                      <statusCode code="completed" />
+                      <value xsi:type="CE" code="55561003" codeSystem="2.16.840.1.113883.6.96" displayName="Active" />
+                    </observation>
+                  </entryRelationship>
+                </observation>
+              </entryRelationship>
+              <entryRelationship typeCode="SUBJ" inversionInd="true">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.1.41" assigningAuthorityName="CCD" />
+                  <!-- Episode observation template -->
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" />
+                  <statusCode code="completed" />
+                  <value xsi:type="CD" displayName="Clinical finding" code="404684003" codeSystemName="SNOMED" codeSystem="2.16.840.1.113883.6.96">
+                    <qualifier>
+                      <name code="246456000" displayName="Episodicity" />
+                      <value code="288527008" displayName="New episode" codeSystemName="SNOMED" codeSystem="2.16.840.1.113883.6.96" />
+                    </qualifier>
+                  </value>
+                  <entryRelationship typeCode="SAS">
+                    <act classCode="ACT" moodCode="EVN">
+                      <id root="ec8a6ff8-ed4b-4f7e-82c3-e98e58b45de7" />
+                      <code nullFlavor="NA" />
+                    </act>
+                  </entryRelationship>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>

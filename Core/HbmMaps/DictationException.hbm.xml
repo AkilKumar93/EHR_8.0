@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  
+  <class name="Acurus.Capella.Core.DomainObjects.DictationException, Acurus.Capella.Core" table="dictation_exception" lazy="true">
+    
+    <id name="Id" column="Exception_ID">
+      <generator class="identity" />
+    </id>
+    
+    <version name="Version"/>
+    <property name="Exception_ID" column="Exception_ID" />
+    <property name="File_Name" column="File_Name" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Header" column="Header" />
+    <property name="Sub_Header" column="Sub_Header" />
+    <property name="Data" column="Data" />    
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />    
+    
+  </class>
+  
+</hibernate-mapping>

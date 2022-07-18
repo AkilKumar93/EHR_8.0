@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Context, Acurus.Capella.Core" table="context" lazy="true">
+    <id name="Id" column="Context_Id">
+      <generator class="identity" />
+    </id>
+    <property name="Context_Name" column="Context_Name" />
+    <property name="Context_Company_Name" column="Context_Company_Name" />
+    <property name="Context_Phone_Number" column="Context_Phone_Number" />
+    <property name="Context_Fax_Number" column="Context_Fax_Number" />
+    <property name="Context_Email" column="Context_Email" />
+  </class>
+  </hibernate-mapping>

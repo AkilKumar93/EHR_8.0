@@ -1,0 +1,415 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Phone Encounter</title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <script src="JScripts/jquery.js"></script>
+    <script src="JScripts/jQueryAngular.js"></script>
+    <script src="JScripts/jquery-ui.js"></script>
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+    <script src="JScripts/bootstrap.min.js"></script>
+    <!--<script src="JScripts/jquery.datetimepicker.js" type="text/javascript"></script>-->
+    <link rel="stylesheet" href="CSS/datetimepicker.css" />
+    <script src='JScripts/jquery.datetimepicker.js'></script>
+    <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
+    <!--<link href="CSS/style.css" rel="stylesheet" type="text/css" />-->
+    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <script src="JScripts/JSModalWindow.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            JSElement.async = false;
+            document.getElementsByTagName('head')[0].appendChild(JSElement);
+        }
+    </script>
+    <script src="JScripts/JSPhoneEncounter.js?v=34.00"></script>
+
+    <style>
+        @media screen and (min-width: 0px) and (max-width: 720px) {
+
+            .mobile-hide {
+                display: none;
+            }
+        }
+
+        @media screen and (min-height: 0px) and (max-height: 720px) {
+
+            .mobile-hide {
+                display: none;
+            }
+        }
+
+        .panel {
+            /*color: #808080;*/
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border: 1px solid;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        .panel-heading {
+            border-right: 1px solid !important;
+            border-bottom-left-radius: 3px !important;
+            border-top-right-radius: 0px !important;
+            padding: 3px 15px;
+            float: left !important;
+            width: 2% !important;
+            height: 100%;
+        }
+
+        .panel-default {
+            border: 1px solid !important;
+            border-color: black !important;
+        }
+
+        .table {
+            margin-top: 1px;
+            margin-bottom: 5px;
+            border: 1px solid !important;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+
+        #EandMCodingCPTHead, #EandMCodingCPTBody, #EandMCodingICDHead, #EandMCodingICDBody {
+            display: block;
+        }
+
+        #EandMCodingCPTBody {
+            height: 222px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        #EandMCodingICDBody {
+            height: 115px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+
+        .Listdiv li {
+            padding: 4px;
+            margin: 0px;
+        }
+
+            .Listdiv li:hover {
+                background: #bce8f1;
+            }
+
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-size: 11px !important;
+        }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 6px !important;
+        }
+
+        .panel-body {
+            padding: 0.5%;
+            width: 96.9% !important;
+            float: right !important;
+        }
+
+        #tag:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <!--<script type="text/javascript">
+        $(function() {
+            $('#txtCalldate').datetimepicker({
+                changeMonth: true,
+                changeYear: true
+
+            });
+            //$('#txtCalldate').datetimepicker({
+            //    format:'Y-m-d H:i',
+            //    inline:true
+            //});
+        });
+    </script>-->
+</head>
+<!--<body onload="GetWin(); OpenNotificationPopUp('SERV.PROC/CODES');">-->
+<body onload=" { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); GetWin(); OpenNotificationPopUp('SERV.PROC/CODES'); }">
+    <div id="AngularDiv" ng-app="PhoneEncounterapp" ng-controller="PhoneEncounterCtrl" style="height:730px;">
+
+        <!--<div class="panel panel-default">-->
+        <!--<table id="tblPhEnc" style="width: 100%; ">-->
+        <table>
+            <tr>
+                <td style="width: 100%; border: hidden;" align="center" valign="top">
+                    <!--id="tdPhEnc"-->
+                    <fieldset class="panel panel-success" style="border-color: black !important; text-align: left; padding: 10px; vertical-align: top; width: 1170px; height: 185px; margin-left: 11px;" id="fldsetPhEnc">
+                        <legend style="font-size: small; font-weight: bold; width: 110px; height: 13px; border-bottom: none; vertical-align: top;">Phone Encounter</legend>
+                        <div id="divPatientstrip" runat="server" class=" pnlBarGroup Editabletxtbox " style="height: 21px; margin-top: -28px; vertical-align: middle; padding-top: 4px; position: relative; padding-left: 0px; border: 0px !important;"></div>
+                        <div id="divContactDetailstrip" runat="server" class=" pnlBarGroup Editabletxtbox " style="height: 21px; margin-top: 0px; vertical-align: middle; padding-top: 4px; position: relative; padding-left: 0px; border: 0px !important;"></div>
+                        <table style="width: 100%; height: 125px; margin-top: 7px;" id="tbl">
+                            <tr>
+                                <td style="font-size: small;width: 9%;">
+                                    <label id="lblCallSpokenTo" class="Editabletxtbox">Relationship</label>
+                                </td>
+                                <td style="width: 17%;">
+                                    <select id="cboCallSpokenTo" style="width: 95%;height: 21px;" class="Editabletxtbox" onchange="cboCallSpokenTo_SelectedIndexChanged();">
+                                        <option value=""></option>
+                                        <option value="Self">Self</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Father">Father</option>
+                                        <option value="Mother">Mother</option>
+                                        <option value="Brother">Brother</option>
+                                        <option value="Sister">Sister</option>
+                                        <option value="Son">Son</option>
+                                        <option value="Daughter">Daughter</option>
+                                        <option value="Aunt">Aunt</option>
+                                        <option value="Uncle">Uncle</option>
+                                        <option value="Grand Father">Grand Father</option>
+                                        <option value="Grand Mother">Grand Mother</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Nephew">Nephew</option>
+                                        <option value="Niece">Niece</option>
+                                        <option value="Grand Son">Grand Son</option>
+                                        <option value="Grand Daughter">Grand Daughter</option>
+                                        <option value="Friend">Friend</option>
+                                        <option value="PCP">PCP</option>
+                                        <option value="SPL">SPL</option>
+                                    </select>
+                                </td>
+                                <td style="font-size: small;width: 9%;">
+                                    <label id="lblCallerName" class="MandLabelstyle">Call Spoken To*</label>
+                                </td>
+                                <td style="width: 17%;">
+                                    <input type="text" id="txtCallerName" style="width: 95%;height: 21px;" class="Editabletxtbox" onfocus="txtCallerName_OnFocus"
+                                           onmouseout="txtCallerName_OnMouseOut" onmouseover="txtCallerName_OnMouseOver" onkeypress="EnableSave();" />
+                                </td>
+                                <td style="width:2%;"></td>
+                                <td style="font-size: small;width:6%;">
+                                    <label id="lblcabture" class="MandLabelstyle">Call Date*</label>
+                                </td>
+                                <td style="width: 15%;">
+                                    <input type="text" style="width: 95%;" id="txtCalldate" onkeydown="return false" textmode="Date" autocomplete="off" class="Editabletxtbox" onkeypress="EnableSave();" />
+                                </td>
+                                <td style="width: 8%;">
+                                    <label id="lblCallDuration" class="MandLabelstyle">Call Duration*</label>
+                                </td>
+                                <td style="width: 17%;">
+                                    <select id="cboCallDuration" style=" height: 21px;width: 30%;" class="Editabletxtbox">
+                                        <option value="5-10">5-10</option>
+                                        <option value="11-20">11-20</option>
+                                        <option value="21-30">21-30</option>
+                                        <option value=">30">>30</option>
+                                    </select>
+                                    &nbsp;<label id="lblCallMins" class="Editabletxtbox">Mins</label>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td style="width: 9%;">
+                                    <div style="margin-top: -28px !important;">
+                                        <label id="lblSelectPhysician" class="Editabletxtbox">DOS - Physician</label>
+                                    </div>
+                                <td colspan="3">
+                                    <div style="margin-top: -32px !important;">
+                                        <select id="cboSelectPhysician" style="width:83%;height: 21px;" class="Editabletxtbox"></select><!--onchange="CboPhysicianChange();"-->
+                                        <input type="checkbox" id="chkPhyShowall" onchange="PhysicianShowall();" />
+                                        <label id="lblShowAll" class="Editabletxtbox">ShowAll</label>
+                                    </div>
+                                </td>
+                                <td style="width:2%;"></td>
+                                <td style="width: 6%;">
+                                    <div style="margin-top: -29px !important;">
+                                        <label id="lblPlan" style="margin-left: 15px;" class="Editabletxtbox">Plan</label>
+                                        <input type="hidden" id="hdnMessageType" />
+                                    </div>
+                                </td>
+                                <td colspan="4">
+                                    <textarea class=" followup editabletxtbox" style="width: 94%;margin-left: 0px;height: 62px;resize: none;vertical-align:bottom;" id="txtNotes" data-src="TREATMENT PLAN NOTES" onclick="EnableSave();"></textarea>
+                                    <div class="col-6-btns" style="float:right !important;margin-top: 13px !important; margin-right: 0px;">
+                                        <a class="fa fa-plus pbDropdownBackground" style="text-decoration:none;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="FollowupNotes(this, 'TREATMENT PLAN NOTES', 'txtNotes');"> </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </td>
+            </tr>
+        </table>
+        <!--</div>-->
+        <!--<div id="check">
+            <iframe id="eandmcodingscreen" height="100%" width="100%" src="htmlEandMCoding.html"></iframe>
+        </div>-->
+        <div id="divCPTPanel" class="panel panel-default" style="padding:0px;height: 304px;width:1170px;margin-left: 11px;">
+            <div class="panel-headingserv">
+                <div style="transform: rotate(270deg);margin-left: -124px;display: inline-block;font-size: 13px;width: 245px;font-weight: bold;letter-spacing: 1px;margin-top: 35px;color:red;">CPTs</div>
+            </div>
+            <div class="panel-body">
+                <table id="CPTDetails" style="width:100%;">
+                    <tr>
+                        <td style="width:90px;">
+                            <span mand="Yes">CPT Code*</span>
+                        </td>
+                        <td style="width:245px;">
+                            <input type="text" style="width:240px;border:1px solid;" id="txtCPT" class="Editabletxtbox" placeholder="Type your CPT Code here .." onkeypress="EnableSave()" />
+                        </td>
+                        <td style="width:130px;">
+                            <span mand="Yes">CPT Description*</span>
+                        </td>
+                        <td style="width:450px;">
+                            <input type="text" style="width:100%;" id="txtCPTDescription" placeholder="Type your CPT Description here .." class="Editabletxtbox" onkeypress="EnableSave()" />
+                        </td>
+                        <td align="right" style="width:120px;">
+                            <button type="button" id="btnFavCPTSheet" class="btn icdsheetstyle" ng-click="OpenFormViewCPT()">CPT Sheet</button>
+                        </td>
+                    </tr>
+                </table>
+                <div style="margin-top: 0.5%;margin-bottom: 0.5%;"></div>
+                <table id="tblEandMCodingCPT" class="table Gridbodystyle" style="height:257px;">
+
+                    <thead id="EandMCodingCPTHead" class="Gridheaderstyle">
+                        <tr style="width:100%" class="Gridheaderstyle">
+                            <th style="width:2%;">Del.</th>
+                            <th style="width:6%;text-align:center">CPT</th>
+                            <th style="width:35%;text-align:center">Description</th>
+                            <th style="width:2%;text-align:center">Units</th>
+                            <th style="width:27%;text-align:center">Modifiers</th>
+                            <th colspan="6" style="width: 24%; color: blue;">Associated Dx Pointer [for coders]</th>
+                        </tr>
+                    </thead>
+                    <tbody id="EandMCodingCPTBody" class="Editabletxtbox">
+                        <tr style="width:100%;" ng-repeat="a in EandMCodingCPTTable|orderBy:orderByFieldCPT:reverseSort">
+                            <td style="width:2%;text-align:center;"><img id="followbutton" title="Delete" ng-src={{a.btnDelete}} ng-click="a.EnableScreen=='disabled'?'return false':CPTDelete($index)" src="Resources/Delete-Blue.png" /> </td>
+                            <td style="width:6%;">{{ a.CPTCode  }}</td>
+                            <td style="width:43%;font-size:12px !important;">{{ a.CPTDesc  }}</td>
+                            <td style="width:2%;" align="center">
+                                <input id="txtUnits" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtUnits_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" value="{{a.Units}}" />
+                            </td>
+                            <td style="width:27%;">
+                                <select ng-model="a.Modifier1" style="width:50px;" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" onchange="EnableSaveButton()">
+                                    <option value=""></option>
+                                    <option ng-repeat="Modifier in Modifiers1" ng-selected="{{a.Modifier1==Modifier}}">{{Modifier}}</option>
+                                </select>
+                                <select ng-model="a.Modifier2" style="width:50px;" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" onchange="EnableSaveButton()">
+                                    <option value=""></option>
+                                    <option ng-repeat="Modifier in Modifiers2" ng-selected="{{a.Modifier2==Modifier}}">{{Modifier}}</option>
+                                </select>
+                                <select ng-model="a.Modifier3" style="width:50px;" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" onchange="EnableSaveButton()">
+                                    <option value=""></option>
+                                    <option ng-repeat="Modifier in Modifiers3" ng-selected="{{a.Modifier3==Modifier}}">{{Modifier}}</option>
+                                </select>
+                                <select ng-model="a.Modifier4" style="width:50px;" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" onchange="EnableSaveButton()">
+                                    <option value=""></option>
+                                    <option ng-repeat="Modifier in Modifiers4" ng-selected="{{a.Modifier4==Modifier}}">{{Modifier}}</option>
+                                </select>
+                            </td>
+                            <td style="width:4%;" align="center"><input id="txt1${{a.Order}}${{a.CPTCode}}" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" /></td>
+                            <td style="width:4%;" align="center"><input id="txt2${{a.Order}}${{a.CPTCode}}" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" /></td>
+                            <td style="width:4%;" align="center"><input id="txt3${{a.Order}}${{a.CPTCode}}" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" /></td>
+                            <td style="width:4%;" align="center"><input id="txt4${{a.Order}}${{a.CPTCode}}" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" /></td>
+                            <td style="width:4%;" align="center"><input id="txt5${{a.Order}}${{a.CPTCode}}" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" /></td>
+                            <td style="width:4%;" align="center"><input id="txt6${{a.Order}}${{a.CPTCode}}" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtDiaPointer_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" /></td>
+                            <td style="display:none">{{a.EandMCPTID}}</td>
+                            <td style="display:none">{{a.CPTVersion}}</td>
+                            <td style="display:none">{{a.Order}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="divICDPanel" class="panel panel-default" style="height: 200px;width:1170px;margin-left: 11px;">
+            <div class="panel-headingserv">
+                <div style="transform: rotate(270deg);margin-left: -124px;display: inline-block;font-size: 13px;width: 245px;font-weight: bold;letter-spacing: 1px;color:red;">ICDs</div>
+            </div>
+            <div class="panel-body">
+                <table id="ICDDetails" style="width:100%;" class="Gridbodystyle">
+                    <tr>
+                        <td style="width:90px;">
+                            <span mand="Yes">ICD Code*</span>
+                        </td>
+                        <td style="width:245px;">
+                            <input type="text" style="width:240px;border:1px solid;" id="txtICD10" placeholder="Type your ICD code here .." class="Editabletxtbox" onkeypress="EnableSave()" />
+                            <datalist id="dlstICD10"></datalist>
+                        </td>
+                        <td style="width:130px;">
+                            <span mand="Yes">ICD Description*</span>
+                        </td>
+                        <td style="width:450px;">
+                            <input type="text" style="width: 100%;" id="txtDescription" placeholder="Type your ICD description here .." class="Editabletxtbox" onkeypress="EnableSave()" />
+                        </td>
+                        <td align="right" style="width:120px">
+                            <button type="button" id="btnFavICDSheet" class="btn icdsheetstyle" ng-click="OpenFormViewICD()">ICD Sheet</button>
+                        </td>
+                    </tr>
+                </table>
+                <div style="margin-top: 0.5%;margin-bottom: 0.5%;"></div>
+                <table id="tblEandMCodingICD" class="table Gridbodystyle" style="height:110px;">
+
+                    <thead id="EandMCodingICDHead" class="Gridheaderstyle">
+                        <tr style="width:100%" class="Gridheaderstyle">
+                            <th style="width:2%;">Del.</th>
+                            <th style="width:4%;">Pri.</th>
+                            <th style="width:5%;">S#</th>
+                            <th style="width:6%;text-align:center">ICD</th>
+                            <th style="width:83%;text-align:center">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="EandMCodingICDBody" class="Editabletxtbox">
+                        <tr style="width:100%;" ng-repeat="a in EandMCodingICDTable|orderBy:orderByFieldICD:reverseSort">
+                            <td style="width:2%;text-align:center;"><img id="followbutton" title="Delete" ng-src={{a.btnDelete}} ng-click="a.EnableScreen=='disabled'?'return false':ICDDelete($index)" src="Resources/Delete-Blue.png" /> </td>
+                            <td style="width:4%;" align="center"><input type="radio" name="Primary" class="IsPrimary" ng-checked="a.IsPrimary=='Pri'" ng-click="EnableSaveButton()" ng-disabled="a.EnablePriRbtn=='disabled'?'disabled':''" /></td>
+                            <td style="width:5%;">B{{$index+1}}</td>
+                            <td style="width:6%;text-align:center;" id="ICD">{{ a.ICDCode  }}</td>
+                            <td style="width:83%;">{{ a.ICDDescription  }}</td>
+                            <td style="display:none">{{a.EandMICDID}}</td>
+                            <td style="display:none">{{a.ICDVersion}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div>
+            <table style="width:100%">
+                <tr>
+                    <td style="width:8%">
+                        <label id="lblPassword" class="MandLabelstyle" style="width: 80px; margin-top: 9px; margin-left: 11px;">Password*</label>
+                    </td>
+                    <td>
+                        <input type="Password" id="txtPassword" style="width: 160px;" class="Editabletxtbox" onkeypress="EnableSave();">
+                    </td>
+                    <td>
+                        <div id="divButtonsPanel" style="float:right;">
+                            <button style="visibility:hidden;" type="button" ng-click="btnSubAllForSuperbill_Click(this,'Y')" id="btnSave" class="btn aspresizedbluebutton" disabled="true">Save & Submit All for ESuperbill</button>
+                            <button type="button" id="btnOpenPatientChart" class="btn aspresizedbluebutton" style="width: 140px; margin-right: 1px;" onclick="btnpatientChart_Click();">Open Patient Chart</button>
+                            <button type="button" ng-click="btnSubAllForSuperbill_Click(this,'N')" id="btnSaveOnly" class="btn aspresizedgreenbutton" style="margin-right: 1px;" disabled="true">Save</button>
+                            <button id="btnClose" class="btn aspredbutton aspresizedredbutton" onclick="autoSave();">Close</button>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="dvdialog" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">
+            <p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">
+                There are unsaved changes.Do you want to save them?
+            </p>
+
+        </div>
+        <label id="hdnFaciltyName" style="visibility:hidden;"></label>
+        <label id="hdnProvID" style="visibility:hidden;"></label>
+        <label id="hdnPatientName" style="visibility:hidden;"></label>
+        <label id="hdnPatientDOB" style="visibility:hidden;"></label>
+    </div>
+</body>
+</html>

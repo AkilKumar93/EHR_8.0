@@ -1,0 +1,50 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+<entry typeCode="DRIV">
+  <encounter classCode="ENC" moodCode="EVN">
+    <!-- [C-CDA R1.1] Encounter Activities-->
+    <templateId root="2.16.840.1.113883.10.20.22.4.49" />
+    <!-- [C-CDA R2.1] Encounter Activities (V3)-->
+    <templateId root="2.16.840.1.113883.10.20.22.4.49" extension="2015-08-01" />
+    <id root="8768367b-6d20-1014-8431-f591a5b72c7c" />
+    <code code="99213" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT-4" displayName="Office outpatient visit 15 minutes" />
+    <effectiveTime value="" />
+    <participant typeCode="LOC">
+      <participantRole classCode="SDLOC">
+        <!--Service Delivery Location  maps to Hospital Unit -->
+        <!-- <code code="1160-1" codeSystem="2.16.840.1.113883.1.11.20275" codeSystemName="HealthcareServiceLocation"  displayName="" />-->
+        <code code="1120-5" codeSystem="2.16.840.1.113883.1.11.20275" codeSystemName="HealthcareServiceLocation"  displayName="General internal medicine clinic" />
+      </participantRole>
+    </participant>
+    <entryRelationship typeCode="COMP">
+      <act classCode="ACT" moodCode="EVN">
+        <!-- [C-CDA R1.1] Encounter Diagnosis -->
+        <templateId root="2.16.840.1.113883.10.20.22.4.80" />
+        <!-- [C-CDA R2.1] Encounter Diagnosis (V3) -->
+        <templateId root="2.16.840.1.113883.10.20.22.4.80" extension="2015-08-01" />
+        <code code="29308-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Diagnosis" />
+        <entryRelationship typeCode="SUBJ">
+          <observation classCode="OBS" moodCode="EVN" negationInd="false">
+            <!-- [C-CDA R1.1] Problem Observation -->
+            <templateId root="2.16.840.1.113883.10.20.22.4.4" />
+            <!-- [C-CDA R2.1] Problem Observation (V3) -->
+            <templateId root="2.16.840.1.113883.10.20.22.4.4" extension="2015-08-01" />
+            <!-- [eICR R2 STU1.1] Initial Case Report Trigger Code Problem Observation -->
+            <templateId root="2.16.840.1.113883.10.20.15.2.3.3" extension="2016-12-01" />
+            <id root="87683719-6d20-1014-8431-f591a5b72c7c" />
+            <code code="29308-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Diagnosis">
+              <translation code="282291009" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Diagnosis" />
+            </code>
+            <statusCode code="completed" />
+            <effectiveTime>
+              <low value="" />
+            </effectiveTime>
+            <!-- Trigger code -->
+            <value xsi:type="CD" code="" displayName=""  codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" sdtc:valueSet=""
+              sdtc:valueSetVersion="" />
+          </observation>
+        </entryRelationship>
+      </act>
+    </entryRelationship>
+  </encounter>
+</entry>
+</ClinicalDocument>

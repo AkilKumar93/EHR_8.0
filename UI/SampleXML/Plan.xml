@@ -1,0 +1,28 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <entry>
+    <procedure classCode="PROC" moodCode="EVN" negationInd="true">
+      <templateId root="2.16.840.1.113883.10.20.22.4.14"/>
+      <id root="d5b614bd-01ce-410d-8727-e1fd01dcc72a" />
+      <code code="71388002" codeSystem="2.16.840.1.113883.6.96"   displayName=""> <!--Procedure-->
+        <originalText>
+          <reference value="" /><!--#Proc1 Code-->
+        </originalText>
+      </code>
+      <statusCode code="completed" />
+      <effectiveTime nullFlavor="NA" />
+      <participant typeCode="DEV">
+        <participantRole classCode="MANU">
+          <templateId root="2.16.840.1.113883.10.20.22.4.37"/>
+          <id nullFlavor="NA" root="2.16.840.1.113883.3.3719"/>
+          <playingDevice>
+            <code code="40388003" codeSystem="2.16.840.1.113883.6.96"
+              displayName=""/><!--Implant device Name-->
+          </playingDevice>
+          <scopingEntity>
+            <id root="2.16.840.1.113883.3.3719"/>
+          </scopingEntity>
+        </participantRole>
+      </participant>
+    </procedure>
+  </entry>
+</ClinicalDocument>

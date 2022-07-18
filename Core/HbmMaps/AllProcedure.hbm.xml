@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.AllProcedureCode, Acurus.Capella.Core" table="procedure_code_library" lazy="true">
+    <composite-id>
+      <key-property name="procedure_code" column="procedure_code"/>
+      <key-property name="Modifier" column="Modifier" />
+    </composite-id>
+
+    <property name="Procedure_Charge" column="Procedure_Charge" />
+    <property name="Procedure_Allowed" column="Procedure_Allowed" />
+    <property name="Procedure_Adjust" column="Procedure_Adjust" />
+    <property name="Procedure_Code_Description" column="Procedure_Code_Description" />
+    <property name="Procedure_Contract_ID" column="Procedure_Contract_ID" />
+    <property name="Procedure_CMN_Req" column="Procedure_CMN_Req" />
+    <property name="Procedure_Type" column="Procedure_Type" />
+    <property name="Procedure_Product_Code" column="Procedure_Product_Code" />
+    <property name="CVX_Code" column="CVX_Code" />
+    <property name="CVX_Code_description" column="CVX_Code_description" />
+    <property name="Order_Group_Nam" column="Order_Group_Nam" />
+    <property name="sort_order" column="sort_order" />
+    <property name="Created_By" column="Created_By"/>
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time"/>
+    <property name="Modified_By" column="Modified_By"/>
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time"/>
+    
+  </class>
+</hibernate-mapping>

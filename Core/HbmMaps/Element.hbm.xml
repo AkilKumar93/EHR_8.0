@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Element, Acurus.Capella.Core" table="Element" lazy="true">
+    <!--<id name="Id" column="SCN_ID">
+      <generator class="native" />
+    </id>-->
+    <composite-id>
+      <key-property name="SCN_ID" column="SCN_ID"/>      
+      <key-property name="Element_Name" column="Element_Name" />
+    </composite-id>
+    <property name="Element_Type" column="Element_Type" />
+    <!--<property name="Element_Name" column="Element_Name" />-->
+    <property name="Target_SCN_ID" column="Target_SCN_ID" />
+    <property name="Display_Text" column="Display_Text" />
+    <property name="Scn_Controls_Style_ID" column="Scn_Controls_Style_ID" />
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ObjectProcessHistory, Acurus.Capella.Core" table="object_process_history" lazy="true">
+    <id name="Id" column="Object_Process_History_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Wf_Object_ID" column="Wf_Object_ID" />
+    <property name="Process_Name" column="Process_Name" />
+    <property name="Process_Start_Date_And_Time" column="Process_Start_Date_And_Time" />
+    <property name="Process_End_Date_And_Time" column="Process_End_Date_And_Time" />
+    <property name="Obj_Type" column="Obj_Type" />
+    <property name="Obj_Sub_Type" column="Obj_Sub_Type" />
+    <property name="Comments" column="Comments" />
+    <property name="User_Name" column="User_Name" />
+    <property name="Obj_System_ID" column="Obj_System_ID" />
+    
+  </class>
+</hibernate-mapping>

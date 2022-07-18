@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ImmunizationSubmissionLog, Acurus.Capella.Core" table="immunization_submission_log" lazy="true">
+    <id name="Id" column="Immunization_Submission_Log_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Control_ID" column="Control_ID" />
+    <property name="Submission_Result_Type" column="Submission_Result_Type" />
+    <property name="Result_Message" column="Result_Message" />
+    <!--<property name="Response_Message" column="Response_Message" />
+    <property name="Created_By" column="Created_By" />-->
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />    
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Orders, Acurus.Capella.Core" table="orders" lazy="true">
+    <id name="Id" column="Order_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Lab_Procedure" column="Lab_Procedure" />
+    <property name="Order_Code_Type" column="Order_Code_Type" />
+    
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Lab_Procedure_Description" column="Lab_Procedure_Description" />
+    <property name="Order_Submit_ID" column="Order_Submit_ID" />
+    <property name="Orders_Question_Set_Segment" column="Orders_Question_Set_Segment" />
+    <property name="CMG_Encounter_ID" column="CMG_Encounter_ID" />
+    <property name="Quantity" column="Quantity" />
+    <property name="Prior_Auth_Req" column="Prior_Auth_Req" />
+    <property name="Beyond_Qty_Limit" column="Beyond_Qty_Limit" />
+    <property name="Custom_Item" column="Custom_Item" />
+    <property name="Justification" column="Justification" />
+    
+    
+  </class>
+
+</hibernate-mapping>

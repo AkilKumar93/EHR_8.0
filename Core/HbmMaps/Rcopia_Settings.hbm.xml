@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Rcopia_Settings, Acurus.Capella.Core" table="rcopia_settings" lazy="true">
+    <id name="Id" column="Rcopia_Settings_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Request_Message_ID" column="Request_Message_ID" />
+    <property name="Vendor_Name" column="Vendor_Name" />
+    <property name="Vendor_Password" column="Vendor_Password" />
+    <property name="Application" column="Application" />
+    <property name="Rcopia_Version" column="Rcopia_Version" />
+    <property name="Practice_Name" column="Practice_Name" />
+    <property name="Station" column="Station" />
+    <property name="System_Name" column="System_Name" />
+    <property name="Rcopia_Practice_User_name" column="Rcopia_Practice_User_name" />
+    <property name="Synchronous" column="Synchronous" />
+    <property name="Check_Eligibilityt" column="Check_Eligibility" />
+    <property name="Command" column="Command" />
+    <property name="Legal_Org" column="Legal_Org" />
+  </class>
+</hibernate-mapping>

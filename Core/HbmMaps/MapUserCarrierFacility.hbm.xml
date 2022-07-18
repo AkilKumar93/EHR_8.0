@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.MapUserCarrierFacility, Acurus.Capella.Core" table="map_user_carrier_facility" lazy="true">
+    <id name="Id" column="Map_User_Carrier_Facility_ID">
+      <generator class="identity" />
+    </id>
+    <property name="User_Name" column="User_Name" />
+    <property name="Carrier_ID" column="Carrier_ID" />
+    <property name="Facility_Name" column="Facility_Name" />
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ScnTab, Acurus.Capella.Core" table="scn_tab" lazy="true">
+    <!--<id name="Id" column="SCN_ID">
+      <generator class="native" />
+    </id>-->
+    <composite-id>
+      <key-property name="SCN_ID" column="SCN_ID" />
+      <key-property name="SCN_Name" column="SCN_Name" />
+    </composite-id>
+    
+    <property name="Parent_SCN_ID" column="Parent_SCN_ID" />    
+    <property name="Assigned_Physician_Editable" column="Assigned_Physician_Editable" />
+    <property name="Is_UBAC_Or_PBAC" column="Is_RBAC_Or_PBAC" />
+  
+</class>
+</hibernate-mapping>

@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="cda.xsl"?>
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="urn:hl7-org:v3"
+ xmlns:voc="urn:hl7-org:v3/voc"
+ xmlns:sdtc="urn:hl7-org:sdtc">
+  <!-- QRDA Header -->
+  <realmCode code="US"/>
+  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+  <!-- US Realm Header Template Id -->
+  <templateId root="2.16.840.1.113883.10.20.22.1.1"/>
+  <!-- QRDA templateId -->
+  <templateId root="2.16.840.1.113883.10.20.24.1.1"/>
+  <!-- QDM-based QRDA templateId -->
+  <templateId root="2.16.840.1.113883.10.20.24.1.2"/>
+  <!-- This is the globally unique identifier for this QRDA document -->
+  <id root="5b010313-eff2-432c-9909-6193d8416fac"/>
+  <!-- QRDA document type code -->
+  <code code="55182-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Quality Measure Report"/>
+  <title>QRDA Incidence Report</title>
+  <!-- This is the document creation time -->
+  <effectiveTime value=""/>
+  <!--Acurus-Generated Date and Time-->
+  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+  <languageCode code="eng"/>
+  <!-- reported patient -->
+  <recordTarget>
+    <patientRole>
+      <!--Acurus-Data of the Patient-->
+      <!-- id root="Cypress" extension="53da7f611d41c83bee0000b6"/ -->
+      <!-- Fake Medicare HIC number -->
+      <id extension="" root="2.16.840.1.113883.4.572"/>
+      <!--Acurus-Primary Insurance - Policy holder id for the Patient from the Pat_insured_plan table-->
+      <addr use="HP">
+         <!--Acurus-Address Line 1 from human table-->
+        <streetAddressLine></streetAddressLine>
+        <!--Acurus-City from human table-->
+        <city>Bedford</city>
+        <!--Acurus-State from human table-->
+        <state>MA</state>
+        <!--Acurus-Zip Code from human table-->
+        <postalCode>01730</postalCode>
+        <country>US</country>
+      </addr>
+      <!--Acurus-Work Phone No.from human table-->
+      <telecom use="WP" value=""/>
+       <patient>
+        <name>
+          <!--Acurus-First Name from human table-->
+          <given></given>
+          <!--Acurus-LAst Name from human table-->
+          <family></family>
+        </name>
+        <!--Acurus-Sex from human table. If FEMALE, it is "F", If MALE, it is "M"-->
+        <administrativeGenderCode code="" codeSystem="2.16.840.1.113883.5.1" codeSystemName="HL7 AdministrativeGender"/>
+        <!--Acurus-Birth_Date from human table in the format yyyymmddhhmmss-->
+        <birthTime value=""/>
+        <!--Acurus-Race from human table. Each race would have a LOINC code with it use the default column in the static lookup table-->
+        <raceCode code="" displayName="" codeSystemName="CDC Race and Ethnicity" codeSystem="2.16.840.1.113883.6.238"/>
+        <!--Acurus-Ethinicity from human table, each ethinicity would have a LOINC code with it  use the default column in the static lookup table-->
+        <ethnicGroupCode code="" displayName="" codeSystemName="CDC Race and Ethnicity" codeSystem="2.16.840.1.113883.6.238"/>
+        <languageCommunication>
+          <templateId root="2.16.840.1.113883.3.88.11.83.2" assigningAuthorityName="HITSP/C83"/>
+          <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.1" assigningAuthorityName="IHE/PCC"/>
+          <languageCode code="eng"/>
+        </languageCommunication>
+      </patient>
+    </patientRole>
+  </recordTarget>
+  <!-- Example of an author who is a device -->
+  <author>
+    <!--Acurus-Generated Date and Time in the format yyyymmddhhmmss-->
+    <time value=""/>
+        <assignedAuthor>
+      <!-- id extension="Cypress" root="2.16.840.1.113883.19.5"/ -->
+      <!-- NPI -->
+      <!--Acurus-Provider NPI from Physician library for the Provider chosen in the Measure Calculator screen-->
+      <id extension="" root="2.16.840.1.113883.4.6"/>
+      <addr>
+        <!--Acurus-Address Line 1 of the Provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <streetAddressLine></streetAddressLine>
+        <!--Acurus-city of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <city></city>
+       <!--Acurus-State of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <state></state>
+        <!--Acurus-Zip code of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <postalCode></postalCode>
+       <country>US</country>
+      </addr>
+     <!--Acurus-Phone # of the provider or the Provider chosen in the Measure Calculator screen-->
+     <telecom use="WP" value=""/>
+      <assignedAuthoringDevice>
+        <manufacturerModelName>Cypress</manufacturerModelName >
+        <softwareName>Cypress</softwareName >
+      </assignedAuthoringDevice >
+    </assignedAuthor>
+  </author>
+  <custodian>
+    <assignedCustodian>
+      <representedCustodianOrganization>
+        <id root="2.16.840.1.113883.19.5"/>
+        <!--Acurus-Take any Company for testing purpose:-->
+        <name>CHAPARRAL MEDICAL GROUP INC</name>
+        <!--Acurus-Telephone # of Chapparal MEdical Group for testing purpose:-->
+        <telecom use="WP" value=""/>
+        <addr>
+          <streetAddressLine>1904 N ORANGE GROVE AVE CHAPARRAL MEDICAL GROUP</streetAddressLine>
+          <!--Acurus-Address Line 1 of the CMG for testing purpose:-->
+          <city>POMONA</city>
+          <!--Acurus-City of the CMG for testing purpose:-->
+          <state>CA</state>
+          <!--Acurus-State of the Provider for testing purpose:-->
+          <postalCode></postalCode>
+          <!--Acurus-Zip Code of the Provider for testing purpose:-->
+          <country>US</country>
+        </addr>
+      </representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+  <legalAuthenticator>
+    <time value="20140731174208"/>
+    <signatureCode code="S"/>
+    <assignedEntity>
+      <id root="bc01a5d1-3a34-4286-82cc-43eb04c972a7"/>
+      <addr>
+        <!--Acurus-Address Line 1 of the Provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <streetAddressLine></streetAddressLine>
+        <!--Acurus-city of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <city></city>
+        <!--Acurus-State of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <state></state>
+        <!--Acurus-Zip code of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <postalCode></postalCode>
+        <country>US</country>
+      </addr>
+      <telecom use="WP" value=""/>
+      <!--Acurus-Phone # of the provider-->
+      <assignedPerson>
+        <name>
+          <!--Acurus-Last name of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+          <given></given>
+          <!--Acurus-First of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+          <family></family>
+         </name>
+      </assignedPerson>
+      <representedOrganization>
+        <id root="2.16.840.1.113883.19.5"/>
+        <name>Cypress</name>
+      </representedOrganization>
+    </assignedEntity>
+  </legalAuthenticator>
+  <!-- TODO: This is where the provider information will go.
+       It is currently hard coded, but should be replaced with the providers
+       and the time over which they are performing. -->
+  <documentationOf typeCode="DOC">
+    <serviceEvent classCode="PCPR">
+      <!-- care provision -->
+      <effectiveTime>
+        <!--Acurus-First DOS available in the Encounter table for the provider-->
+        <low value=""/>
+        <!--Acurus-Latest DOS available in the Encounter table for the provider-->
+        <high value=""/>
+        </effectiveTime>
+      <!-- You can include multiple performers, each with an NPI, TIN, CCN. -->
+      <performer typeCode="PRF">
+        <time>
+          <!--Acurus-First DOS available in the Encounter table for the provider-->
+          <low value=""/>
+          <!--Acurus-First DOS available in the Encounter table for the provider-->
+          <high value=""/>
+                  </time>
+        <assignedEntity>
+          <!-- This is the provider NPI -->
+          <!--Acurus-Provider NPI from Physician library for the Provider chosen in the Measure Calculator screen-->
+          <id root="2.16.840.1.113883.4.6" extension="" />
+                   <representedOrganization>
+            <!-- This is the organization TIN -->
+            <id root="2.16.840.1.113883.4.2" extension="954292715" />
+            <!--Acurus - TIN of Chapparal MEdical Group-->
+            <!-- This is the organization CCN -->
+            <!--This is available only for hospitals
+            <id root="2.16.840.1.113883.4.336" extension="54321" />-->
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+    </serviceEvent>
+  </documentationOf>
+  <component>
+    <structuredBody>
+      <component>
+        <section>
+          <!-- 
+            *****************************************************************
+            Measure Section- Acurus (No change)
+            *****************************************************************
+          -->
+          <!-- This is the templateId for Measure Section -->
+          <templateId root="2.16.840.1.113883.10.20.24.2.2"/>
+          <!-- This is the templateId for Measure Section QDM -->
+          <templateId root="2.16.840.1.113883.10.20.24.2.3"/>
+          <!-- This is the LOINC code for "Measure document". This stays the same for all measure section required by QRDA standard -->
+          <code code="55186-1" codeSystem="2.16.840.1.113883.6.1"/>
+          <title>Measure Section</title>
+          <text>
+            <table border="1" width="100%">
+              <thead>
+                <tr>
+                  <th>eMeasure Title</th>
+                  <th>Version neutral identifier</th>
+                  <th>eMeasure Version Number</th>
+                  <th>Version specific identifier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Children Who Have Dental Decay or Cavities</td>
+                  <td>61947125-4376-4A7B-AB7A-AC2BE9BD9138</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-8F2F5AD054E2</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Controlling High Blood Pressure</td>
+                  <td>ABDC37CC-BAC6-4156-9B91-D1BE2C8B7268</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-66BC02DA4DEE</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Hemoglobin A1c Test for Pediatric Patients</td>
+                  <td>95FB767E-0CB2-4778-B5FF-6BA9A53FA28E</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-61EF9907211D</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Pneumonia Vaccination Status for Older Adults</td>
+                  <td>59657B9B-01BF-4979-A090-8534DA1D0516</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-66A79D4A4A23</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Documentation of Current Medications in the Medical Record</td>
+                  <td>9A032D9C-3D9B-11E1-8634-00237D5BF174</td>
+                  <td>3</td>
+                  <td>40280381-3E93-D1AF-013E-A36090B72CC8</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up</td>
+                  <td>9A031BB8-3D9B-11E1-8634-00237D5BF174</td>
+                  <td>2</td>
+                  <td>40280381-3E93-D1AF-013E-D6E2B772150D</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Weight Assessment and Counseling for Nutrition and Physical Activity for Children and Adolescents</td>
+                  <td>0B63F730-25D6-4248-B11F-8C09C66A04EB</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-5D530FD26D47</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Hypertension: Improvement in Blood Pressure</td>
+                  <td>1D8363CE-A529-490B-8C98-9B54AA75DA06</td>
+                  <td>3</td>
+                  <td>40280381-3E93-D1AF-013E-A4CAFFEF4684</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention</td>
+                  <td>E35791DF-5B25-41BB-B260-673337BC44A8</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-5CD94A4D64FA</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </text>
+          <!-- 1..* Organizers, each containing a reference to an eMeasure -->
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3D61-56A7-013E-8F2F5AD054E2"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Children Who Have Dental Decay or Cavities</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="61947125-4376-4A7B-AB7A-AC2BE9BD9138"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="2"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3D61-56A7-013E-66BC02DA4DEE"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Controlling High Blood Pressure</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="ABDC37CC-BAC6-4156-9B91-D1BE2C8B7268"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="2"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3D61-56A7-013E-61EF9907211D"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Hemoglobin A1c Test for Pediatric Patients</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="95FB767E-0CB2-4778-B5FF-6BA9A53FA28E"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="2"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3D61-56A7-013E-66A79D4A4A23"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Pneumonia Vaccination Status for Older Adults</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="59657B9B-01BF-4979-A090-8534DA1D0516"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="2"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3E93-D1AF-013E-A36090B72CC8"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Documentation of Current Medications in the Medical Record</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="9A032D9C-3D9B-11E1-8634-00237D5BF174"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="3"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3E93-D1AF-013E-D6E2B772150D"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="9A031BB8-3D9B-11E1-8634-00237D5BF174"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="2"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3D61-56A7-013E-5D530FD26D47"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Weight Assessment and Counseling for Nutrition and Physical Activity for Children and Adolescents</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="0B63F730-25D6-4248-B11F-8C09C66A04EB"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="2"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3E93-D1AF-013E-A4CAFFEF4684"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Hypertension: Improvement in Blood Pressure</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="1D8363CE-A529-490B-8C98-9B54AA75DA06"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="3"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+          <entry>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+              <!-- This is the templateId for Measure Reference -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.98"/>
+              <!-- This is the templateId for eMeasure Reference QDM -->
+              <templateId root="2.16.840.1.113883.10.20.24.3.97"/>
+              <statusCode code="completed"/>
+              <!-- Containing isBranch external references -->
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOC" moodCode="EVN">
+                  <!-- SHALL: This is the version specific identifier for eMeasure: QualityMeasureDocument/id it is a GUID-->
+                  <id root="40280381-3D61-56A7-013E-5CD94A4D64FA"/>
+                  <!-- SHOULD This is the title of the eMeasure -->
+                  <text>Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention</text>
+                  <!-- SHOULD: setId is the eMeasure version neutral id  -->
+                  <setId root="E35791DF-5B25-41BB-B260-673337BC44A8"/>
+                  <!-- This is the sequential eMeasure Version number -->
+                  <versionNumber value="2"/>
+                </externalDocument>
+              </reference>
+            </organizer>
+          </entry>
+        </section>
+      </component>
+      <component>
+        <section>
+          <!-- This is the templateId for Reporting Parameters section -->
+          <templateId root="2.16.840.1.113883.10.20.17.2.1"/>
+          <code code="55187-9" codeSystem="2.16.840.1.113883.6.1"/>
+          <title>Reporting Parameters</title>
+          <text>
+            <list>
+              <item></item>
+              <!--Acurus- IN THE FORMAT Reporting Parameter From dATE and To Date CHOSEN IN MEAsURE CALCULATOR-->
+            </list>
+          </text>
+          <entry typeCode="DRIV">
+            <act classCode="ACT" moodCode="EVN">
+              <!-- This is the templateId for Reporting Parameteres Act -->
+              <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+              <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters"/>
+              <effectiveTime>
+                <!--Acurus-Reporting Parameter: from Date Chosen in measure caculator-->
+                <low value="20120101000000"/>
+                <!--Acurus-Reporting Parameter: To Date chosen in measure caculator-->
+                <high value="20121231235900"/> 
+
+              </effectiveTime>
+            </act>
+          </entry>
+        </section>
+      </component>
+      <component>
+        <section>
+          <!-- This is the templateId for Patient Data section -->
+          <templateId root="2.16.840.1.113883.10.20.17.2.4"/>
+          <!-- This is the templateId for Patient Data QDM section -->
+          <templateId root="2.16.840.1.113883.10.20.24.2.1"/>
+          <code code="55188-7" codeSystem="2.16.840.1.113883.6.1"/>
+          <title>Patient Data</title>
+          <text>
+
+          </text>
+
+          <Test>
+            
+          </Test>
+
+
+          <entry>
+            <!--Acurus- For Testing Treat this as STATIC, for live we need to map each code to insurance plan table and derive this section based on the Patient primary insurance-->
+            <!-- Patient Characteristic Payer -->
+            <observation classCode="OBS" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.24.3.55"/>
+              <id root="1.3.6.1.4.1.115" extension="524c84d11d41c80bf10001a2"/>
+              <code code="48768-6" codeSystemName="LOINC" codeSystem="2.16.840.1.113883.6.1" displayName="Payment source"/>
+              <statusCode code="completed"/>
+              <value code="349" codeSystem="2.16.840.1.113883.3.221.5" xsi:type="CD" sdtc:valueSet="2.16.840.1.114222.4.11.3591">
+                <originalText></originalText>
+              </value>
+            </observation>
+          </entry>
+        
+        </section>
+      </component>
+    </structuredBody>
+  </component>
+</ClinicalDocument>
+

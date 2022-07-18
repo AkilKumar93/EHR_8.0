@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PhysicianPOV, Acurus.Capella.Core" table="physician_pov" lazy="true">
+    <id name="Id" column="Physician_POV_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Phy_ID" column="Physician_ID" />
+    <property name="Purpose_of_Visit" column="Purpose_of_Visit" />
+    <property name="Duration" column="Duration" />
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="Default_Value" column="Default_Value" />
+    <property name="Description" column="Description" />
+    <property name="Block_Category" column="Block_Category" />
+    <property name="Is_Active" column="Is_Active" />
+    <property name="Legal_Org" column="Legal_Org" />
+  </class>
+</hibernate-mapping>
+

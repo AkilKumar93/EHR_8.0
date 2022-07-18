@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Test_Lookup, Acurus.Capella.Core" table="test_lookup" lazy="true">
+    <id name="Id" column="Test_Lookup_Id">
+      <generator class="assigned" />
+    </id>
+    <property name="Category" column="Category" />
+    <property name="Test_Name" column="Test_Name" />
+    <property name="Question_Name" column="Question_Name" />
+    <!--<property name="Normal_System_Status" column="Normal_System_Status" />-->
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="User_Name" column="User_Name" />
+    <property name="Options" column="Options" />
+    <!--<property name="Default_Value" column="Default_Value" />-->
+    <property name="Status" column="Status" />
+    <property name="Is_Score" column="Is_Score" />
+    <property name="Is_Status" column="Is_Status" />
+    <!--<property name="Is_Notes" column="Is_Notes" />-->
+    <property name="Maximum_Score" column="Maximum_Score" />
+    <!--<property name="Score" column="Score" />-->
+  </class>
+</hibernate-mapping>
+

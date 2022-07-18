@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ProcessMaster, Acurus.Capella.Core" table="process_master" lazy="true">
+    <id name="Process_Name" column="Process_Name">
+      <generator class="assigned" />
+    </id>
+    <property name="Process_Type" column="Process_Type" />
+    <property name="User_Id_Expression" column="User_Id_Expression" />
+    <property name="Process_Color" column="Process_Color" />
+    <property name="Scn_Name" column="Scn_Name" />
+    <property name="User_Previlage" column="User_Previlage" />
+    <property name="Wait_Process" column="Wait_Process" />
+    <property name="Is_Encounter_Process" column="Is_Encounter_Process" />
+    <property name="Tag_Name" column="Tag_Name" />
+    <property name="Is_Hold_Process" column="Is_Hold_Process" />
+    <property name="Equivalant_Allocation_Process" column="Equivalant_Allocation_Process" />
+    <property name="Is_Back_Push_Allowed" column="Is_Back_Push_Allowed" />
+    <!--<property name="Is_General_Q_Process" column="Is_General_Q_Process" />-->
+    <property name="Is_Addendum_Allowed" column="Is_Addendum_Allowed" />
+    <property name="Is_Deleted_Process" column="Is_Deleted_Process" />
+  </class>
+</hibernate-mapping>
+

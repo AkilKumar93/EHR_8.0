@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <link href='CSS/bootstrap.min.css' rel='Stylesheet' />
+    <link href='CSS/jquery-ui.css' rel='Stylesheet' />
+    <link href='CSS/font-awesome.css' rel='stylesheet' type='text/css' />
+    <link href='CSS/style.css' rel='stylesheet' type='text/css' />
+    <style>
+        body {
+            font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 13px !important;
+        }
+
+        .panel-heading {
+            padding: 6px 14px !important;
+        }
+
+        .panel-body {
+            padding: 0px 15px 10px 14px;
+        }
+
+        .imgPos {
+            width: 5% !important;
+        }
+
+        td, th {
+            text-align: center !important;
+            vertical-align: middle !important;
+            padding:2.5px 2.5px 2.5px 2.5px;
+        }
+
+        tbody {
+            height: 100px;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-family: serif;
+            font-weight: bold;
+            font-size: x-large;
+            text-align: center;
+        }
+
+        textarea {
+            resize: none;
+            border-radius: 6px;
+            height: 86%;
+            width: 100%;
+        }
+
+        #tblDrugDuplicate, #tblDrugInteraction, #tblDrugList {
+            margin-bottom: 11px;
+            margin-top: 11px;
+        }
+
+        table, th, td {
+            border: 1px solid #7ba9e4 !important;
+            border-collapse: collapse;
+        }
+        .ui-dialog-titlebar-close {
+            display: none;
+        }
+
+        .ui-widget {
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+            float: none !important;
+            margin-left: 45px !important;
+              font-size: 12px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane button {
+            width: 60px !important;
+        }
+
+        .ui-dialog .ui-dialog-titlebar {
+            padding: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-title {
+            font-size: 12px !important;
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+            height: 155px;
+            border: 2px solid;
+            border-radius: 13px;
+            top: 504px !important;
+            left: 568px !important;
+        }
+
+        .ui-dialog .ui-dialog-content {
+            min-height: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane {
+          margin-top:-16px!important;
+         border-width:0px!important;
+        }
+        
+           .ui-widget-header, .ui-state-default, ui-button {
+            font-weight: bold !important;
+            font-size: 12px !important;
+            font-family: sans-serif;
+        }
+         .ui-widget-overlay{
+            opacity:0!important;
+        }
+         .ui-dialog .ui-dialog-title {
+    float: left!important;
+    margin: .1em 0!important;
+    white-space: nowrap!important;
+    width: 90%!important;
+    overflow: hidden!important;
+    text-overflow: ellipsis!important;
+}
+          .txtarea{ width:38%; position:relative !important;}
+          .datecontrol{
+              width:98%;
+              padding:6px 6px 6px 6px !important;
+          }
+            li:hover {
+            background-color: #DEF;
+        }
+    </style>
+</head>
+<body>
+    <div style="height:640px;">
+        <div style="height:600px;overflow-y:auto;padding-left:20px;">
+            <table id="tblDrugBody">
+                <thead>
+                    <tr style="height:35px;width:100%;background-color:#BFDBFF !important;font-weight:bold;font-size:13px;">
+                        <td style="width:5%;">Stop</td>
+                        <td style="width:5%">Retain</td>
+                        <td style="width:10%;">Drug</td>
+                        <td style="width:30%;">Message</td>
+                        <td style="width:20%;">Medication Notes</td>
+                        <td style="width:10%;">Stop Date</td>
+                        <td style="width:20%;">Stop/Retain Notes</td>
+                        <td style="display:none;">ID</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div style="height: 39px;float: right;margin-right: 10px;margin-bottom: 0px;">
+            <input type="button" class="btn btn-success" value="Save" style="padding-left: 12px;margin-left: 8px;margin-top:12px;" onclick="submit()" id="btnSave" />
+            <input type="button" class="btn btn-danger" value="Clear All" style="padding-left: 12px;margin-left: 8px;margin-top:12px;" onclick="ClearAllInReconcilation()" />
+            <input type="button" class="btn btn-primary" value="Close" style="padding-left: 12px;margin-left: 8px;margin-top:12px;" onclick="Cancel()" />
+        </div>
+        <div id="dvdialogMedReconcile" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">
+            <p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">
+                There are unsaved changes.Do you want to save them?
+            </p>
+        </div>
+    </div>
+
+    <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="JScripts/jquery-ui.min.js"></script>
+    <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js","JScripts/JSMaskedinput.js", "JScripts/jsReconciliationCommon.js", "JScripts/jsMedicalReconciliation.js"];
+    for (var i = 0; i < JSFiles.length; i++) {
+    var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+    var JSElement = document.createElement('script');
+    JSElement.src = JSLink;
+    document.getElementsByTagName('body')[0].appendChild(JSElement);
+    }
+    </script>
+</body>
+</html>
+

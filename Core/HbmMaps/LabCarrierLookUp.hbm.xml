@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.LabCarrierLookUp, Acurus.Capella.Core" table="lab_carrier_lookup" lazy="true">
+    <id name="Id" column="Lab_Carrier_Lookup_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Ins_Plan_ID" column="Insurance_Plan_ID" />
+    <property name="LCA_Carrier_Code" column="LCA_Carrier_Code" />
+    <property name="LCA_Plan_Type" column="LCA_Plan_Type" />
+    <property name="Plan_Attention" column="Plan_Attention" />
+    <!--Janani - Main - 30 Jul 2011 - Start-->
+    <property name="Sort_Order" column="Sort_Order" />
+    <!--Janani - Main - 30 Jul 2011 - End-->
+    <property name="Lab_ID" column="Lab_ID" />
+  </class>
+</hibernate-mapping>
+

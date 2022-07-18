@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Eligibility_Verification, Acurus.Capella.Core" table="eligibility_verification" lazy="true">
+    <id name="Id" column="Eligibility_Verification_ID">
+      <generator class="identity" />
+    </id>
+
+    <version name ="Version"/>
+    <property name="Insurance_Plan_Name" column="Insurance_Plan_Name" />
+    <property name="Payer_Name" column="Payer_Name" />
+    <property name="Policy_Holder_ID" column="Policy_Holder_ID" />
+    <property name="Group_Number" column="Group_Number" />
+    <property name="PCP_Copay" column="PCP_Copay" />
+    <property name="SPC_Copay" column="SPC_Copay" />
+    <property name="Deductible_For_Plan" column="Deductible_For_Plan" />
+    <property name="Deductible_Met_So_Far" column="Deductible_Met_So_Far" />
+    <property name="Coinsurance" column="Coinsurance" />
+    <property name="Effective_Date" column="Effective_Date" />
+    <property name="Termination_Date" column="Termination_Date" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Demo_Note" column="Demo_Note" />
+    <property name="Call_Ref_Number" column="Call_Ref_Number" />
+    <property name="Call_Rep_Name" column="Call_Rep_Name" />
+    <property name="Eligibility_Verified_By" column="Eligibility_Verified_By" />
+    <property name="Eligibility_Verified_Date" column="Eligibility_Verified_Date" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Eligibility_Type" column="Eligibility_Type" />
+    <property name="Hyperlink" column="Hyperlink" />
+    <property name="Insurance_Plan_ID" column="Insurance_Plan_ID" />
+    <property name="Comments" column="Comments" />
+    <property name="Eligibility_Status" column="Eligibility_Status" />
+    <property name="File_Management_Index_ID" column="File_Management_Index_ID" />
+    <!--add-->
+
+    <property name="Eligibility_Check_Mode" column="Eligibility_Check_Mode"/>
+    <property name="Response_Message" column="Response_Message"/>
+    <property name="Response_File_Location" column="Response_File_Location"/>
+    <property name="Insurance_Type" column="Insurance_Type" />
+    <property name="Requested_By" column="Requested_By"/>
+    <property name="Response_Received_On" column="Response_Received_On"/>
+    <property name="Requested_For_From_Date" column="Requested_For_From_Date"/>
+    <property name="Requested_For_To_Date" column="Requested_For_To_Date" />
+    <property name="Service_Type_Code" column="Service_Type_Code" />
+    <property name="Service_Type" column="Service_Type"/>
+    <property name="TRN02TraceNumber1" column="TRN02TraceNumber1" />
+
+
+    <property name="Plan_Type" column="Plan_Type"></property>
+    <property name="Plan_Number" column="Plan_Number"></property>
+    <property name="Subscriber_ID" column="Subscriber_ID"></property>
+    <property name="Organization" column="Organization"></property>
+    <property name="Subscriber_Name" column="Subscriber_Name"></property>
+    <property name="PCP_Name" column="PCP_Name"></property>
+    <property name="PCP_NPI" column="PCP_NPI"></property>
+    <property name="Relationship_to_Subscriber" column="Relationship_to_Subscriber"></property>
+    <property name="PCP_Effective_Date" column="PCP_Effective_Date"></property>
+    <property name="Group_Name" column="Group_Name"></property>
+    <property name="IPA_Name" column="IPA_Name"></property>
+    <property name="PCP_Office_Visit_InNet_Copay" column="PCP_Office_Visit_InNet_Copay"></property>
+    <property name="PCP_Office_Visit_OutNet_Copay" column="PCP_Office_Visit_OutNet_Copay"></property>
+    <property name="PCP_Office_Visit_InNet_CoIns" column="PCP_Office_Visit_InNet_CoIns"></property>
+    <property name="PCP_Office_Visit_OutNet_CoIns" column="PCP_Office_Visit_OutNet_CoIns"></property>
+    <property name="Specialty_Office_Visit_InNet_Copay" column="Specialty_Office_Visit_InNet_Copay"></property>
+    <property name="Specialty_Office_Visit_OutNet_Copay" column="Specialty_Office_Visit_OutNet_Copay"></property>
+    <property name="Specialty_Office_Visit_InNet_CoIns" column="Specialty_Office_Visit_InNet_CoIns"></property>
+    <property name="Specialty_Office_Visit_OutNet_CoIns" column="Specialty_Office_Visit_OutNet_CoIns"></property>
+    <property name="Inj_Medication_InNet_Copay" column="Inj_Medication_InNet_Copay"></property>
+    <property name="Inj_Medication_OutNet_Copay" column="Inj_Medication_OutNet_Copay"></property>
+    <property name="Inj_Medication_InNet_CoIns" column="Inj_Medication_InNet_CoIns"></property>
+    <property name="Inj_Medication_OutNet_CoIns" column="Inj_Medication_OutNet_CoIns"></property>
+    <property name="Urgent_Care_InNet_Copay" column="Urgent_Care_InNet_Copay"></property>
+    <property name="Urgent_Care_OutNet_Copay" column="Urgent_Care_OutNet_Copay"></property>
+    <property name="Urgent_Care_InNet_CoIns" column="Urgent_Care_InNet_CoIns"></property>
+    <property name="Urgent_Care_OutNet_CoIns" column="Urgent_Care_OutNet_CoIns"></property>
+    <property name="PCP_InNetwork_Copay_Message" column="PCP_InNetwork_Copay_Message"></property>
+    <property name="PCP_OutNetwork_Copay_Message" column="PCP_OutNetwork_Copay_Message"></property>
+    <property name="Ind_per_plan_InNet_Deductible" column="Ind_per_plan_InNet_Deductible"></property>
+    <property name="Ind_per_plan_OutNet_Deductible" column="Ind_per_plan_OutNet_Deductible"></property>
+    <property name="Ind_per_plan_InNet_Out_of_Pocket" column="Ind_per_plan_InNet_Out_of_Pocket"></property>
+    <property name="Ind_per_plan_OutNet_Out_of_Pocket" column="Ind_per_plan_OutNet_Out_of_Pocket"></property>
+    <property name="Ind_met_InNet_Deductible" column="Ind_met_InNet_Deductible"></property>
+    <property name="Ind_met_OutNet_Deductible" column="Ind_met_OutNet_Deductible"></property>
+    <property name="Ind_met_InNet_Out_of_Pocket" column="Ind_met_InNet_Out_of_Pocket"></property>
+    <property name="Ind_met_OutNet_Out_of_Pocket" column="Ind_met_OutNet_Out_of_Pocket"></property>
+    <property name="Family_per_plan_InNet_Deductible" column="Family_per_plan_InNet_Deductible"></property>
+    <property name="Family_per_plan_OutNet_Deductible" column="Family_per_plan_OutNet_Deductible"></property>
+    <property name="Family_per_plan_InNet_Out_of_Pocket" column="Family_per_plan_InNet_Out_of_Pocket"></property>
+    <property name="Family_per_plan_OutNet_Out_of_Pocket" column="Family_per_plan_OutNet_Out_of_Pocket"></property>
+    <property name="Family_met_InNet_Deductible" column="Family_met_InNet_Deductible"></property>
+    <property name="Family_met_OutNet_Deductible" column="Family_met_OutNet_Deductible"></property>
+    <property name="Family_met_InNet_Out_of_Pocket" column="Family_met_InNet_Out_of_Pocket"></property>
+    <property name="Family_met_OutNet_Out_of_Pocket" column="Family_met_OutNet_Out_of_Pocket"></property>
+    <property name="Deductible_InNetwork_Message" column="Deductible_InNetwork_Message"></property>
+    <property name="Deductible_OutNetwork_Message" column="Deductible_OutNetwork_Message"></property>
+    <property name="Batch_ID" column="Batch_ID"></property>
+
+
+  </class>
+</hibernate-mapping>
+

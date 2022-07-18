@@ -1,0 +1,1436 @@
+﻿body {
+}
+
+/*Vitals  start*/
+.MacraLabelStyle {
+    color: #6504d0;
+    background-color: White;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    border-style: none;
+    display: inline-block;
+}
+select {
+background:White;
+}
+
+select :disabled{
+background:rgb(235,235,228);
+}
+.pbDropdownstyle {
+    padding: 8px;
+    width: 36px;
+}
+
+.LabelStyle {
+    color: black;
+    background-color: White;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    border-style: none;
+}
+
+.manredforstar {
+    color: red;
+}
+
+.btncolor:active,
+.btncolor:focus {
+    border-color: #ccc !important;
+}
+
+.btncolor:hover {
+    border-color: #ccc !important;
+}
+
+.btn-default:hover {
+    border-color: #ccc !important;
+}
+
+.highlight {
+    background-color: #F3C55A !important;
+}
+
+.aspSelectedRow{
+   background: #abdbf5 !important;
+}
+
+.RadListBox_Default .rlbGroup .rlbSelected {
+    background: #c5c5c5 !important;
+}
+
+.rgSelectedRow {
+    background: #F3C55A !important;
+    color: black !important;
+}
+
+.glyphiconstyle {
+    background-color: #286090 !important;
+    color: white;
+}
+
+.nonEditabletxtbox {
+    background-color: #bfdbff !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.grouplablestyle {
+    font-size: 13px;
+    color: black !important;
+    background-color: #bfdbff;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    border-width: 1px;
+}
+
+.vitalheadertext1 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 26px;
+    font-size: 13px;
+    width: 144px;
+    margin-left: 10px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.vitalheadertext2 {
+    width: 100px;
+    height: 26px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.vitalheadertext2 {
+    width: 180px;
+    height: 26px;
+    font-size: small;
+    padding-left: 1%;
+    font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+}
+
+.vitalheadertext3 {
+    height: 26px;
+    width: 220px;
+    font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+}
+
+/*Vitals End*/
+
+
+/*Common style start(vitals,CC)*/
+
+/*page body backgroud color*/
+.bodybackground {
+    background-color: #bfdbff;
+}
+/*Manatory lable style*/
+.MandLabelstyle {
+    color: red !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    border-style: none;
+    font-weight: normal;
+}
+/* color for star in the mandatory label*/
+.manredforstar {
+    color: red !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+}
+/* for text box in edit mode*/
+.Editabletxtbox {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    font-weight: normal;
+    /*background: white !important;*/
+}
+
+/*span style*/
+.spanstyle {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    font-weight: normal;
+    color: black !important;
+}
+/*lable in bold style */
+
+.LabelStyleBold {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    font-weight: bold;
+}
+.LabelStyleBoldMand {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    font-weight: bold;
+    color:red;
+}
+
+/* div hedinging*/
+.grouplablestyle {
+    font-size: 13px;
+    color: black;
+    background-color: #bfdbff;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    border-width: 1px;
+}
+
+.displaynonestyle {    /*paste*/
+    display: none !important;
+}
+
+.divgroupstyle {
+    padding: 3px 7px;
+    font-size: 13px;
+    /*color: white;*/
+    color: black;
+    background-color: #bfdbff;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    border-width: 1px;
+    border-color: #bfdbff;
+    height: 25px;
+}
+
+/* Plus icon style*/
+.pbDropdownBackground {
+    background: #6DABF7 !important;
+    padding: 5px 8px 5px 8px !important;
+    font-size: 10px !important;
+    color: #fff !important;
+    border-radius: 2px !important;
+    margin-top: 5px !important;
+}
+
+/*auto complete listox style*/
+.ui-widget {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+}
+
+/* plus icon in disable state style*/
+.ui-widgetdisable {
+    background: #6D7777 !important;
+    padding: 5px 8px 5px 8px;
+    font-size: 10px;
+    color: #fff;
+    border-radius: 2px;
+    margin-top: 5px;
+}
+
+.pbDropdownBackgrounddisable {         /*pasted*/
+    background: #6D7777 !important;
+    padding: 5px 8px 5px 8px !important;
+    font-size: 10px !important;
+    color: #fff !important;
+    border-radius: 2px !important;
+    margin-top: 5px !important;
+}
+
+/*telerik combobox */
+.RadComboBoxDropDown_Default {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+}
+
+/*telerik list box*/
+.RadListBox_Default .rlbGroup {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+}
+
+/*for plus icon*/
+.col-6-btn a {
+    /*background:#7095a0; */
+    background: #6DABF7;
+    padding: 5px 8px 5px 8px;
+    font-size: 10px;
+    color: #fff;
+    border-radius: 2px;
+    margin-top: 5px;
+}
+
+/*table header*/
+.RadGrid_Default .rgHeader, .RadGrid_Default th.rgResizeCol, .RadGrid_Default .rgHeaderWrapper {
+    background: #bfdbff !important;
+}
+
+.Gridheaderstyle {
+    /*border: 1px solid #bfdbff !important;
+    border-right: 1px solid #bfdbff !important;
+    border-left: 1px solid #bfdbff !important;*/
+    background-color: #bfdbff !important;
+    background-image: none !important;
+    font-weight: bold;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+
+.RadGrid_Transparent .rgHeader, .RadGrid_Transparent th.rgResizeCol, .RadGrid_Transparent .rgHeaderWrapper {
+    background: #bfdbff !important;
+}
+
+.Gridbodystyle {
+    border: 1px solid #f0f0f0 !important;
+    color: #3a3a3a;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+#gvEnterDetails th {
+    border-left: 1px dotted #a4a4a4 !important;
+    border-right: 1px dotted #a4a4a4 !important;
+}
+
+#gvEnterDetails td {
+    border-left: 1px dotted #a4a4a4 !important;
+    border-right: 1px dotted #a4a4a4 !important;
+}
+
+/*.Gridbodystyle tr:nth-child(even) {               /*pasted*/
+        /*border: 1px solid #000000 !important;*/
+        /*color: #3a3a3a !important;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+        font-size: 13px !important;
+}*/
+
+.Gridbodystyle tr:nth-child(even) {
+        background-color: #ffffff;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+        font-size: 13px !important;
+}
+
+.ui-autocomplete {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+ }
+
+.Gridbodystyle tr:nth-child(odd) {
+        background-color: #ffffff;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+        font-size: 13px !important;
+}
+/*Autocomplete list box style*/
+
+.riTextBox {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px;
+}
+
+.RadGrid .rgHeader,
+.RadGrid th.rgResizeCol,
+.RadGrid .rgRow td,
+.RadGrid .rgAltRow td,
+.RadGrid .rgFooter td {
+    border-left: 1px dotted #a4a4a4 !important;
+    border-right: 1px dotted #a4a4a4 !important;
+}
+
+.RadGrid th {
+    border: 1px solid #828282 !important;
+}
+/*table body*/
+
+.htmlbtnstyle {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 15px !important;
+    background-color: #3276b1 !important;
+    border-color: #285e8e !important;
+    Color: white !important;
+}
+/* a tag style*/
+.alinkstyle {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    color: #337ab7 !important;
+}
+/* Telerik button in Red color*/
+html .RadButton.RadButton_Default.rbLinkButton.redbutton {
+    color: #fff !important;
+    background-color: #c9302c !important;
+    border-color: #ac2925 !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+/* Telerik button in green color*/
+html .RadButton.RadButton_Default.rbLinkButton.greenbutton {
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.ruButton ruBrowse {
+    color: #fff;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+/* Telerik button in blue color*/
+html .RadButton.RadButton_Default.rbLinkButton.bluebutton {
+    color: #fff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+/*check box list font style*/
+.chkitems {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+/* Tab style*/
+.tabstyle {
+    /*border-bottom: 1px solid black !important;*/
+    /*border: 2px solid #bfdbff;*/
+    /*font-weight: 400;*/
+    display: inline-block;
+    margin-bottom: 0;
+    margin-left: 2px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    /*padding: 3px 3px;*/
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    user-select: none;
+    border-color: #adadad;
+    background-color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    font-weight: bold;
+    color: white !important;
+}
+
+/* Disbled Telerik button in green color*/
+html .RadButton.RadButton_Default.rbLinkButton[disabled].greenbutton {
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    opacity: .65 !important;
+}
+
+/* Disbled Telerik button in red color*/
+html .RadButton.RadButton_Default.rbLinkButton[disabled].redbutton {
+    color: #fff !important;
+    background-color: #c9302c !important;
+    border-color: #ac2925 !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    opacity: .65 !important;
+}
+
+/*small telerik button*/
+.teleriknormalbuttonstyle {
+    height: 15px !important;
+    padding: 4px 12px !important;
+    font-size: 12px !important;
+}
+
+/* Disbled Telerik button in blue color*/
+html .RadButton.RadButton_Default.rbLinkButton[disabled].bluebutton {
+    color: #fff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    opacity: .65 !important;
+}
+
+input[disabled].aspredbutton {
+    color: #fff !important;
+    background-color: #c9302c !important;
+    border-color: #ac2925 !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    opacity: .65 !important;
+}
+
+input[disabled].aspgreenbutton {
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    opacity: .65 !important;
+}
+
+input[disabled].aspbluebutton {
+    color: #fff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    opacity: .65 !important;
+}
+
+/* small asp/html(disabled) button in blue color*/
+
+input[disabled].aspresizedbluebutton {
+    color: #fff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 4px 12px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    height: 25px !important;
+    opacity: .65 !important;
+}
+
+input[disabled].aspresizedredbutton {
+    color: #fff !important;
+    background-color: #c9302c !important;
+    border-color: #ac2925 !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 4px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    height: 25px !important;
+    opacity: .65 !important;
+}
+
+input[disabled].aspresizedgreenbutton {
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 4px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    height: 25px !important;
+    opacity: .65 !important;
+}
+
+.aspredbutton {
+    color: #fff !important;
+    background-color: #c9302c !important;
+    border-color: #ac2925 !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.aspgreenbutton {
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.aspbluebutton {
+    color: #fff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.aspresizedbluebutton {
+    color: #fff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 4px 12px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    height: 25px !important;
+}
+
+/* small  asp/html button in red color*/
+
+.aspresizedredbutton {
+    color: #fff !important;
+    background-color: #c9302c !important;
+    border-color: #ac2925;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 4px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    height: 25px !important;
+}
+
+/* small  asp/html button in green color*/
+
+.aspresizedgreenbutton {
+    color: #fff!important;
+    background-color: #5cb85c!important;
+    border-color: #4cae4c!important;
+    display: inline-block!important;
+    margin-bottom: 0!important;
+    font-weight: 400!important;
+    text-align: center!important;
+    vertical-align: middle!important;
+    cursor: pointer!important;
+    background-image: none!important;
+    border: 1px solid transparent!important;
+    white-space: nowrap!important;
+    padding: 4px 12px!important;
+    font-size: 14px!important;
+    line-height: 1.42857143!important;
+    border-radius: 6px!important;
+    font-size: 12px!important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 25px!important;
+}
+
+/* Chief Complaints Start*/
+
+.CCmandLabel {
+    width: 100%;
+    color: red;
+    font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: normal;
+}
+
+.legendschedulerborder {
+    width: inherit; /* Or auto */
+    padding: 0 10px; /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.legendschedulerborderPhysician {
+    width: inherit; /* Or auto */
+    padding: 0 10px; /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    font-size: 13px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color:red;
+}
+
+
+.legendschedulerborderPhysicianNonMand {
+    width: inherit; /* Or auto */
+    padding: 0 10px; /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    font-size: 13px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.boosterIconstyle {
+    margin-top: -13px;
+    margin-left: -99px;
+    font-size: 16px;
+    height: 48px;
+    width: 303px;
+    font-weight: bold;
+    color: #6504d0;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.CCbodystyle {
+    background-color: White;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    width: 100%;
+}
+
+.Editabletxtboxcc {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+
+.clinicltrend {
+    padding-bottom: 12px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px !important;
+    font-weight: bold;
+}
+
+/*Login Starts*/
+.panel-heading {
+    color: black !important;
+    background-color: #bfdbff !important;
+    border-color: #bfdbff !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    border-top-right-radius: 10px !important;
+    border-top-left-radius: 10px !important;
+}
+
+.Loginboder {
+    border: 1px solid transparent !important;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-color: #bfdbff !important;
+}
+
+.logoEHR {
+    height: 24px !important;
+    width: 300px !important;
+    background-color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-weight: bold !important;
+    font-size: medium !important;
+    color: #008000;
+}
+
+.logoLogin {
+    text-align: center;
+    font-weight: bold;
+    color: #428bca;
+    font-size: 25px !important;
+     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.logocolor {
+    color: Red;
+    height: 36px !important;
+    background-color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-weight: bold !important;
+    font-size: xx-large !important;
+}
+
+.logoleft {
+    content: url("../Resources/capella_logo.png");
+}
+
+.logoRight {
+    content: url("../Resources/CMG_Logo.png");
+}
+
+.pagerLink {
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: normal;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.42857143;
+    color: #333;
+}
+
+/*Rxhistory*/
+.tdDrugNameRxStyle {
+    width: 10%;
+    color: red;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+}
+
+.vitalheadertext2 {
+    width: 180px;
+    height: 26px;
+    font-size: small;
+    padding-left: 1%;
+    font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+}
+
+.vitalheadertext3 {
+    height: 26px;
+    width: 220px;
+    font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+}
+
+.lblProcedurecss {
+    color: #FF3300 !important;
+}
+
+/*drugAllergy*/
+.panelborder {
+    margin-bottom: 5px !important;
+    border-color: #bfdbff !important;
+    border: 1px solid transparent !important;
+}
+
+/*Session*/
+.tablebordered {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: solid #bfdbff;
+    border-spacing: 0px;
+    width: 480px;
+    height: 200px;
+    border-collapse: separate;
+}
+
+/*service procedure*/
+.panel-headingserv {
+    color: black !important;
+    background-color: #f5f5f5 !important;
+    border-right: 1px solid !important;
+    border-bottom-left-radius: 3px !important;
+    border-top-right-radius: 0px !important;
+    padding: 3px 15px;
+    float: left !important;
+    width: 2% !important;
+    height: 100%;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.icdsheetstyle {
+    color: #fff;
+    background-color: #31b0d5;
+    border-color: #269ab !important;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.default {
+    color: black !important;
+    background-color: white !important;
+}
+
+.header {
+    background-color: #bfdbff !important;
+    border: 1px solid #000000;
+    /*background-color: green !important;*/
+    background-image: none !important;
+    font-weight: bold;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+
+.liencounter {
+    /*border-bottom: 1px solid black !important;*/
+    /*border: 2px solid #bfdbff;*/
+    /*font-weight: 400;*/
+    display: inline-block;
+    margin-bottom: 0;
+    margin-left: 2px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    /*padding: 3px 3px;*/
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    user-select: none;
+    border-color: #adadad;
+    background-color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    font-weight: bold;
+}
+
+.btncolor {
+    color: white !important;
+    background-color: #3276b1 !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    background-color: #C1C2D0 !important;
+    color: black !important;
+}
+
+.pnlBarGroup {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    color: #3276b1 !important;
+    font-weight: bold;
+}
+
+/*Efax*/
+.panel-head {
+    color: black !important;
+    background-color: #bfdbff !important;
+    border-color: #bfdbff !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    vertical-align: middle;
+    height: 42px;
+    padding: 10px 15px;
+    border-top-right-radius: 4px !important;
+    border-top-left-radius: 4px !important;
+}
+
+.panelborderbox {
+    border-color: #bfdbff !important;
+    /* border: 1px solid transparent !important;
+       margin-bottom: 5px !important;*/
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-top-right-radius: 4px !important;
+    border-top-left-radius: 4px !important;
+}
+.bgcolorass {         /*paste*/
+    color: rgb(51, 122, 183) !important;
+    /*rgb(51, 122, 183);*/
+}
+/*Assessment
+*/
+
+.AssementPanel {
+    color: black !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 14px !important;
+    background-color: #bfdbff !important;
+    padding: 2px 5px;
+    border: 1px solid !important;
+}
+
+.RadGrid_Vista .rgHeader, .RadGrid_Vista th.rgResizeCol, .RadGrid_Vista .rgHeaderWrapper {
+    border: 1px solid;
+    border-color: #fff #dcf2fc #3c7fb1 #8bbdde;
+    border-top-width: 0;
+    /*background: 0 -2300px repeat-x #f0f0f0 !important url(WebResource.axd?d=6kezwgQYXeveYxak98kAlXaliQyKZkW2ur0gob81r4zM7bypU5MtGrJPj…Do2ccjoOrZpv2M2YRBZ-TIAaSWeAePyjbI8qNv2wAQO6tFVhCDxs1&t=635243090770000000);*/
+    background: 0 -2300px repeat-x #f0f0f0 !important;
+}
+
+.RadGrid_Vista .rgSelectedRow td {
+    border-bottom-color: #ecece3;
+    background: #F3C55A !important;
+}
+/*Cere plan*/
+
+.Planheadingexam {
+    background-color: #deeab5 !important;
+    padding: 2px 10px !important;
+    color: black !important;
+    font-weight: 700 !important;
+    height: 30px !important;
+    width: 100% !important;
+    text-shadow: rgb(207, 228, 207) -1px 0px, rgb(207, 228, 207) 0px 1px, rgb(207, 228, 207) 1px 0px, rgb(207, 228, 207) 0px -1px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 17px !important;
+    font-variant: small-caps !important;
+    border: 0px !important;
+}
+
+.tableheadingexam {
+    background-color: #add8e6;
+    font-weight: 600;
+    text-align: center;
+    color: black !important;
+}
+
+.tableheadingplan {
+    background-color: #bfdbff;
+    font-weight: 600;
+    text-align: center;
+    color: black !important;
+}
+
+.Headergroupstyle {
+    font-size: 13px;
+    color: black;
+    background-color: #bfdbff !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    border-width: 1px;
+    border-color: black;
+    Width: 100%;
+}
+
+/*Appointments*/
+.panel-headApp {
+    color: Black !important;
+    background-color: #bfdbff !important;
+    border-color: #bfdbff !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.patientchart {
+    font-size: 13px;
+    color: black;
+    background-color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+}
+
+.patientchartformat {
+    font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+div#ctl00_C5POBody_dvCheck > div > ul > li > span {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 15.3px;
+}
+
+.colored {
+    background-color: #bfdbff  !important;
+    padding: 3px;
+    border-radius: 3px;
+    color: white;
+    font-weight: bold;
+}
+
+.patientchartfontfamily {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+
+.fontcolor {
+    color: black !important;
+}
+/*Master page Menu*/
+.navstyle {
+    color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    background-color: #236b8e;
+    /*236b8e*/
+
+}
+
+
+/*Master page Menu*/
+.navstyle {
+    color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    background-color: #236b8e;
+    /*236b8e*/
+}
+
+.navhover {
+    /*4f94cd*/
+    background-color: #4f94cd;
+    color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.navhover {
+    /*4f94cd*/
+    background-color: #4f94cd;
+    color: white !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+
+.navheader {
+    background-color: #fbfbfb !important;
+    font-size: small !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.fontcolorgreen {
+    color: black !important;
+}
+
+/*Notifications*/
+.macraWarning {
+    background-color: #eadff5;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    color: #4e349e;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.clickherelink {
+    color: #0606ff;
+    font-weight: bold;
+}
+
+.stage2warning {
+    background-color: #d9edf7;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    color: #31708f;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    border-color: #bce8f1;
+}
+
+.mandatoryalert {
+    background-color: #f2dede;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    color: #a94442;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    border-color: #ebccd1;
+}
+
+.stage3warning {
+    background-color: #579a3a;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+/*btncolorMyQ {
+    color: white !important;
+    background-color: #bfdbff !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+}*/
+
+.spannoteindexing {
+    color: #2c34ec;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px !important;
+}
+
+.highlightFilesIndexing {
+    background-color: #c4e9f1;
+}
+
+.btncolorMyQ {
+    background-color: #bfdbff !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    color: black !important;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    border-color: #ccc!important;
+}
+a[disabled].alinkstyle {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    color: black !important;
+}
+
+
+a[disabled].pbDropdownBackground {         /*pasted*/
+    background: #6D7777 !important;
+    padding: 5px 8px 5px 8px !important;
+    font-size: 10px !important;
+    color: #fff !important;
+    border-radius: 2px !important;
+    margin-top: 5px !important;
+}
+
+.verti {
+            transform: rotate(315deg);
+        }
+
+.vertiAlign{
+            transform: rotate(270deg);
+        }
+input#btnSaveForRecurring_input 
+{
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 0px 15px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    height:30px !important;
+    margin-top: -3px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+
+
+input#btnSaveForNonRecur_input 
+{
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+    display: inline-block !important;
+    margin-bottom: 0 !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    white-space: nowrap !important;
+    padding: 0px 15px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    height:30px !important;
+    margin-top: -3px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.panel-headApprecolor {
+    color: Black !important;
+    background-color:#d9edf7 !important;
+    border-color: #bce8f1 !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    padding: 6px 10px !important;
+
+}
+/*Authorization*/
+.panel-headingauth {
+    color: black !important;
+    background-color: #bfdbff !important;
+    /*border-right: 1px solid !important;*/
+    border-bottom-left-radius: 3px !important;
+    border-top-right-radius: 0px !important;
+    padding: 3px 15px;
+    float: left !important;
+    width: 2% !important;
+    height: 100%;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+
+}

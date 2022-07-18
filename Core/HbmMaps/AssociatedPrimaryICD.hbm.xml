@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.AssociatedPrimaryICD, Acurus.Capella.Core" table="associated_primary_icd" lazy="true">
+    <id name="Id" column="Associated_Primary_ICD_ID">
+      <generator class="identity" />
+    </id>
+    <property name="ICD_9" column="All_ICD" />
+    <property name="Associated_ICD_9" column="Associated_ICD" />
+    <property name="Associated_ICD_9_Description" column="Associated_ICD_Description" />
+    <property name="Mutually_Exclusive" column="Mutually_Exclusive" />
+    <property name="HCC_Category" column="HCC_Category" />
+    <property name="Leaf_Node" column="Leaf_Node" />
+    <property name="Prefix" column="Prefix" />
+  </class>
+</hibernate-mapping>

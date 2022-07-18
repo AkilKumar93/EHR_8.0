@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PastMedicalHistory, Acurus.Capella.Core" table="past_medical_history" lazy="true">
+    <id name="Id" column="Past_Medcial_History_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Past_Medical_Info" column="Past_Medical_Info" />
+    <property name="From_Date" column="From_Date" />
+    <property name="To_Date" column="To_Date" />
+    <property name="Notes" column="Notes" />
+    <property name="Is_present" column="Is_present" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="AHA_Question_ICD" column="AHA_Question_ICD" />
+    <property name="Is_Mandatory" column="Is_Mandatory" />
+    <property name="Encounter_Id" column="Encounter_ID" />
+    <property name="Past_Medical_History_Master_ID" column="Past_Medical_History_Master_ID" />
+    <!--<bag name="ProblemListBag" cascade="all" lazy="false" inverse="true" >
+      <key column="Reference_ID" />
+      <one-to-many class="Acurus.Capella.Core.DomainObjects.ProblemList, Acurus.Capella.Core" />
+    </bag>-->
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,54 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  	<entry>
+						<!-- Outcome Observation -->
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.10.20.22.4.144"/>
+							<id root="0aaaa123-24e2-46b3-9d49-6b753c712dec"/>
+							<code code="" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName=""/>
+							<statusCode code="completed"/>
+							<effectiveTime value=""/>
+							<value xsi:type="PQ" value="" unit="%"/>
+							<author>
+								<time value=""/>
+								<!-- This author points to the author in the header of the document -->
+								<assignedAuthor>
+									<id root="20cf14fb-b65c-4c8c-a54d-b0cca834c18c"/>
+								</assignedAuthor>
+							</author>
+							<!-- This Outcome Observation HAS REASON Intervention -->
+							<entryRelationship typeCode="RSON">
+								<!-- Entry Reference template -->
+								<act classCode="ACT" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.22.4.122"/>
+									<!-- This id points back to an already defined Intervention in the Interventions Section -->
+									<id root="b3c091b3-f9a4-41e4-a8e4-2d1b11f2eb22"/>
+									<code nullFlavor="NP"/>
+									<statusCode code="completed"/>
+								</act>
+							</entryRelationship>
+							<!-- This Outcome Observation EVALUATES a Goal (Pulse ox reading of 95 evaluates the goal of Pulse ox reading > 92)-->
+							<entryRelationship typeCode="GEVL">
+								<!-- Entry Reference template -->
+								<act classCode="ACT" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.22.4.122"/>
+									<!-- This id points back to an already defined Goal 
+                                        (pulse ox reading > 92) in the Goals Section -->
+									<id root="3700b3b0-fbed-11e2-b778-0800200c9a66"/>
+									<code nullFlavor="NP"/>
+									<statusCode code="completed"/>
+								</act>
+							</entryRelationship>
+							<!-- This Outcome Observation SUPPORTS the Progress Toward Goal Observation -->
+							<entryRelationship typeCode="SPRT" inversionInd="true">
+								<!-- Progress Toward Goal Observation template -->
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.10.20.22.4.110"/>
+									<id root="2afcf057-aae4-47cf-bfee-b7498e300424"/>
+									<code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+									<statusCode code="completed"/>
+									<value xsi:type="CD" code="390802008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Goal achieved"/>
+								</observation>
+							</entryRelationship>
+						</observation>
+					</entry>
+</ClinicalDocument>

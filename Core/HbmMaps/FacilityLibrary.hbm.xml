@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.FacilityLibrary, Acurus.Capella.Core" table="facility_library" lazy="true">
+    <id name="Fac_Name" column="Facility_Name">
+      <generator class="assigned" />
+    </id>
+    <version name="Version"></version>
+    <!--<property name="Fac_Name" column="Facility_Name" />-->
+    <property name="Fac_Primary_Code_Type" column="Facility_Primary_Code_Type" />
+    <property name="Fac_Primary_ID_Code" column="Facility_Primary_ID_Code" />
+    <property name="Fac_Address1" column="Facility_Address1" />
+    <property name="Fac_Address2" column="Facility_Address2" />
+    <property name="Fac_City" column="Facility_City" />
+    <property name="Fac_State" column="Facility_State" />
+    <property name="Fac_Zip" column="Facility_Zip" />
+    <property name="Fac_Specality_Code" column="Facility_Specality_Code" />
+    <property name="Fac_Telephone" column="Facility_Telephone" />
+    <property name="Fac_Fax" column="Facility_Fax" />
+    <property name="Fac_Email" column="Facility_Email" />
+    <property name="Fac_Type" column="Facility_Type" />
+    <property name="Fac_Notes" column="Facility_Notes" />
+    <property name="Fac_NPI" column="Facility_NPI" />
+    <property name="Fac_Qual" column="Facility_Qual" />
+    <property name="Fac_Other_ID" column="Facility_Other_ID" />
+    <property name="Changed_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Slot_Length" column="Slot_Length" />
+    <property name="Start_Time" column="Start_Time" />
+    <property name="End_Time" column="End_Time" />
+    <property name="Time_Zone" column="Time_Zone" />
+    <property name="Is_Room_In_Needed" column="Is_Room_In_Needed"></property>
+    <property name="POS" column="POS"></property>
+    <property name="POS_Description" column="POS_Description"></property>
+    <property name="Created_By" column="Created_By"></property>
+    <property name="Modified_By" column="Modified_By"></property>
+    <property name="LabCorp_Account_Number" column="LabCorp_Account_Number"></property>
+    <property name="Quest_Account_Number" column="Quest_Account_Number"></property>
+    <property name="Sort_Order" column="Sort_Order"></property>
+    <property name="HosporClinic" column="HosporClinic"></property>
+    <property name="County" column="County"></property>
+    <property name="Short_Name" column="Short_Name"></property>
+    <property name="Fac_Type_Abbr" column="Fac_Type_Abbr"></property>
+    <property name="Taxonomy_Code" column="Taxonomy_Code"></property>
+    <property name="Taxonomy_Description" column="Taxonomy_Description"></property>
+    <property name="Healthcare_Service_Location_Code" column="Healthcare_Service_Location_Code"></property>
+    <property name="Is_Ancillary" column="Is_Ancillary"></property>
+    <property name="Legal_Org" column="Legal_Org"></property>
+  </class>
+</hibernate-mapping>
+

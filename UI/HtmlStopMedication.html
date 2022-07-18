@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+    <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
+    <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />
+    <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
+      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <!--<script src="JScripts/JSErrorMessage.js" type="text/javascript"></script>
+    <script src="JScripts/JSStopMedication.js"></script>
+    <script src="JScripts/JSMaskedinput.js" type="text/javascript"></script>
+    <script src="JScripts/JSModalWindow.js" type="text/javascript"></script>
+   
+    <script src="JScripts/JSCustomDLC.js" type="text/javascript"></script>
+    <script src="JScripts/JSAvoidRightClick.js" type="text/javascript"></script>
+    <script src="JScripts/jsCustomAutoCompleteCombobox.js" type="text/javascript"></script>-->
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js", "JScripts/JSMaskedinput.js", "JScripts/JSCustomDLC.js", "JScripts/JSAvoidRightClick.js", "JScripts/jsCustomAutoCompleteCombobox.js", "JScripts/JSEditAppointment.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            JSElement.async = false;
+            document.getElementsByTagName('head')[0].appendChild(JSElement);
+        }
+    </script>
+    <script type="text/javascript">
+       function StopMedi() {
+            $("span[mand=Yes]").addClass('MandLabelstyle');
+
+            $("span[mand=Yes]").each(function () {
+                $(this).html($(this).html().replace("*", "<span class='manredforstar'>*</span>"));
+            });
+
+            $("textarea[id *= txtDLC]").removeClass('DlcClass');
+
+            $("textarea[id *= txtDLC]").addClass('Editabletxtbox');
+            $('#pbDropdownNotes').addClass('pbDropdownBackground');
+
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #c3bfbf;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #707070;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #3d3c3a;
+            }
+
+        input::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        #tblMedicationDetails th, #tblMedicationDetails td {
+            border-top: none !important;
+            border-left: none !important;
+        }
+
+        .panel-heading {
+            padding: 3px 7px;
+            background-color: #BFDBFF !important;
+            color: #000000 !important;
+        }
+
+        .panel-info {
+            border: 1px solid #808080;
+        }
+
+        table#tblRxHistory th {
+            text-align: center;
+            background-color: #BFDBFF !important;
+            border-color: #808080;
+            color: #4E4E4E;
+            vertical-align: middle;
+            border-top: 1px solid #808080 !important;
+        }
+
+        tbody#tbodyRxMed td, table#tblRxHistory td {
+            text-align: center;
+            background-color: white;
+            border: 1px solid #808080;
+            color: #4E4E4E;
+            padding: 6px 2px 3px 2px;
+        }
+
+        #pnlDrugs .panel-body {
+            padding: 5px !important;
+            border: 1px solid #808080;
+            font-size: smaller !important;
+        }
+
+        #pnlDrugs p {
+            padding: 5px;
+            margin-bottom: 0px;
+            border-bottom: 1px solid #808080;
+            background-color: #ffffff;
+        }
+
+            #pnlDrugs p:hover {
+                /*border: 1px solid #fbe086;*/
+                background-color: #fdfef6;
+            }
+
+        span, p, a:hover {
+            cursor: pointer;
+        }
+
+        li:hover {
+            background-color: #DEF;
+        }
+
+        .panel {
+            margin-bottom: 12px !important;
+        }
+
+        .custom-combobox {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .custom-combobox-toggle {
+            padding: 8px 6px !important;
+            display: table-cell !important;
+            width: 30px;
+            font-size: 10px !important;
+        }
+
+        .custom-combobox-input {
+            border: 1px solid #ccc !important;
+            border-radius: 3px;
+            margin: 1px 0px;
+            height: 30px !important;
+            padding: 5px 10px;
+        }
+
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    </style>
+
+</head>
+<body onload="StopMedi()">
+    <div>
+        <table style="width: 92%;height:180px;">
+            <tr>
+                <td class="Editabletxtbox">Drug Name</td>
+                <td>
+                    <input type="text" id="DrugName" disabled="disabled" style="width: 92%;" class="nonEditabletxtbox"/>
+                </td>
+                <!--<td>Stop Reason</td>
+        <td>
+            <select id="selStopReason" class="form-control" style="width: 92%;">
+                <option value="Completaion Of Therapy"></option>
+                <option value="Completaion Of Therapy">Completaion Of Therapy</option>
+                <option value="Adverse reaction">Adverse reaction</option>
+                <option value="Dosage Change">Dosage Change</option>
+                <option value="Formulary Compliance">Formulary Compliance</option>
+                <option value="Lack of efficacy">Lack of efficacy</option>
+                <option value="High Cost">High Cost</option>
+                <option value="Duplicate Therapy">Duplicate Therapy</option>
+                <option value="Other,Specify:">Other,Specify:</option>
+            </select>
+        </td>-->
+            </tr>
+            
+            <tr>
+                <td class="Editabletxtbox">Stop Date</td>
+                <td class="Editabletxtbox">
+                    <input type="text" id="dtpStopDate" placeholder="yyyy-MMM-dd" class="form-control datecontrol" style="width: 92%;"/>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="Editabletxtbox" ><span mand="Yes">Notes*</span></td>
+                <td>
+                    <textarea id="RxHistoryNotes" class="Editabletxtbox" name="Medication Notes" textmode="MultiLine" style="position: static; display: inline-block; width: 80%; resize: none;" maxlength="255"></textarea>
+                    <div class="col-6-btns" style="width: 30%; float: right !important; margin-right:-31px; margin-top: 15px;">
+                        <a class=" fa fa-plus" style="margin-left: 1px; margin-right: -1px; text-decoration: none; padding: 4px 4px 4px 4px !important;  border-radius: 2px;" id="pbDropdownNotes" align="centre" font-bold="false" title="Drop down" onclick="callweb(this, 'Medication Notes', 'RxHistoryNotes');"></a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan="2">
+                    <input type="button" class="aspgreenbutton" disabled="disabled" value="Save" onclick="btnSave();" id="btnSave" />
+                    <input type="button" class="aspredbutton" value="Close" id="btnClose" onclick="btnclose();" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="divStopMedication" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">
+        <p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">
+            There are unsaved changes.Do you want to save them?
+        </p>
+    </div>
+</body>
+</html>

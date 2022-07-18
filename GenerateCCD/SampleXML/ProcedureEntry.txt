@@ -1,0 +1,43 @@
+﻿   <entry typeCode="DRIV">
+            <procedure classCode="PROC" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.1.29" assigningAuthorityName="HL7 CCD" />
+              <!-- Procedure activity template -->
+              <id />
+              <code code="44950" displayName="Emergency Appendectomy" codeSystem="2.16.840.1.113883.6.82" codeSystemName="CPT-5">
+                <originalText>
+                  <reference value="#ProcID-1" />
+                </originalText>
+                <translation code="47.09" displayName="Emergency Appendectomy" codeSystem="2.16.840.1.113883.6.42" codeSystemName="ICD-9" />
+              </code>
+              <statusCode code="completed"/>
+              <effectiveTime value="20100109"></effectiveTime>
+              <targetSiteCode>
+                <originalText>Coronary Arteries</originalText>
+              </targetSiteCode>
+              <participant typeCode="LOC">
+                <templateId root="2.16.840.1.113883.10.20.1.45" assigningAuthorityName="CCD" />
+                <participantRole classCode="SDLOC">
+                  <addr>
+                    <streetAddressLine>5544 Sutter Street</streetAddressLine>
+                    <city>Williamsport</city>
+                    <state>PA</state>
+                    <postalCode>17701</postalCode>
+                  </addr>
+                  <playingEntity classCode="PLC">
+                    <name>Metropolitan Clinic</name>
+                  </playingEntity>
+                </participantRole>
+              </participant>
+              <!--A CCR "Type" observation has no equivalent explicit representation in CCD, so we follow the CCD specification for a general "Status" observation and represent "Type" as follows.-->
+              <entryRelationship typeCode="REFR">
+                <observation classCode="OBS" moodCode="EVN">
+                  <code>
+                    <originalText>Type</originalText>
+                  </code>
+                  <value xsi:type="CD">
+                    <originalText>Surgical</originalText>
+                  </value>
+                </observation>
+              </entryRelationship>
+            </procedure>
+          </entry>

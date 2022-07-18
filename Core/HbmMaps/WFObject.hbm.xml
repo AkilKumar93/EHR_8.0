@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.WFObject, Acurus.Capella.Core" table="wf_object" lazy="true">
+    <id name="Id" column="WF_Object_Id">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    
+    <property name="Obj_Type" column="Obj_Type" />
+    <property name="Obj_Sub_Type" column="Obj_Sub_Type" />
+    <property name="Obj_System_Id" column="Obj_System_Id" />
+    <property name="Current_Process" column="Current_Process" />
+    <property name="Current_Arrival_Time" column="Current_Arrival_Time" />
+    <property name="Current_Owner" column="Current_Owner" />
+    <property name="Priority" column="Priority" />
+    <property name="Fac_Name" column="Facility_Name" />
+    <property name="Parent_Obj_Type" column="Parent_Obj_Type" />
+    <property name="Parent_Obj_System_Id" column="Parent_Obj_System_Id" />
+    <property name="Process_Allocation" column="Process_Allocation" />
+    <property name="Doc_Type" column="Doc_Type" />
+    <property name="Doc_Sub_Type" column="Doc_Sub_Type" />
+    <property name="Is_Default_MyQ_LineItem" column="Is_Default_MyQ_LineItem" />
+    <property name="Is_Abnormal" column="Is_Abnormal" />
+  </class>
+</hibernate-mapping>
+
+

@@ -1,0 +1,475 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Exam</title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: White;
+                z-index: 99;
+                -moz-opacity: 0.8;
+                min-height: 100%;
+                width: 100%;
+            }
+
+            .nav > li > a {
+                padding: 5px 9px !important;
+            }
+
+            ul {
+                margin-top: 4px !important;
+                margin-bottom: 2px !important;
+                height: 32px !important;
+                margin-left: -48px !important;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+                /*background-color: rgb(191, 219, 255) !important;*/
+               
+            }
+
+        a {
+            /*background-color: #f5f4f4 !important;
+            font-weight: bold;
+            padding-top: 3px !important;
+            font-size: small;
+            font-weight: bold;*/
+            color: black !important;
+            border-color: #adadad;
+        }
+
+            .nav-tabs {
+                border-bottom: 0px !important;
+            }
+
+            .container {
+                margin-right: 0px !important;
+                margin-left: 36px !important;
+            }
+            .disableTab{
+            background-color:#a4a4a4!important;
+            cursor:default!important;
+            border-radius:6px;
+            text-decoration: none;	
+            pointer-events: none;	
+        }
+
+    </style>
+    <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />   
+      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" /> 
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs" id="myTabs">
+                    <li class="active tabstyle">
+                        <a href="#generalwithspeciality" data-toggle="tab">General With Specialty</a>
+                    </li>
+                    <li class="tabstyle" id="ExamFocused" >
+                        <a href="#Focused" data-toggle="tab">Focused</a>
+                    </li>
+                    <li class="tabstyle">
+                        <a href="#UploadViewPhotos" data-toggle="tab">Upload & View Photos</a>
+                       
+                    </li>
+                    <li class="tabstyle" disabled>
+                        <a style="background-color:#a4a4a4!important;cursor: default !important; text-decoration: none; pointer-events: none;" href='#'  disabled='disabled' onclick="return false;">
+                            Body Image
+                        </a>
+
+                        <!--href=" #bodyimage"-->
+
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="generalwithspeciality" runat="server" data-src="General_With_Specialty.html">
+                        <iframe src="" class="clsIframe" style=" height:620px ; width: 100%; margin-left: -48px;margin-top:-2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    </div>
+
+                    <div class="tab-pane" id="Focused" runat="server" data-src="Exam_Focused.html">
+                        <iframe src="" class="clsIframe" style=" height: 620px; width: 100%; margin-left: -48px;margin-top:-2px !important" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    </div>
+                    <div class="tab-pane" id="UploadViewPhotos" runat="server" data-src="frmExamPhotos.aspx?Category=UPLOAD & VIEW PHOTOS">
+                        <iframe src="" class="clsIframe" style=" height: 620px; width: 100%; margin-left: -48px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                    </div>
+                    <div class="tab-pane" style="display:none;" id="BodyImage" runat="server" data-src="frmBodyImage.aspx?Category=BODY IMAGE">
+                        <iframe src="" class="clsIframe" style=" height: 650px; width: 100%; margin-left: -48px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="btnHiddenExam" style="display:none;"></button>
+    </div>
+    <script src="JScripts/jquery-1.11.3.min.js"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <script src="JScripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    var JSFiles = ["JScripts/JSErrorMessage.js"];
+    for (var i = 0; i < JSFiles.length; i++) {
+        var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+        var JSElement = document.createElement('script');
+        JSElement.src = JSLink;
+        document.getElementsByTagName('body')[0].appendChild(JSElement);
+    }
+        var Sessionvalues;
+        var CurTab;
+        var PrevTab;
+        var bExamCancel = false;
+        var isFocusedDisabled="False";
+        $(document).ready(function () {
+
+            if ($("ul#myTabs li.active").length != 0) {             
+
+                if (localStorage.getItem("bSave") == "true") {
+                    var target = $('#myTabs a:first').tab('show');
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                }
+                else {
+                    if (localStorage.getItem("PrevSubTab") == "General With Speciality") {
+                        var target = $('#myTabs a:first').tab('show');
+                        localStorage.setItem("PrevSubTab", target[0].innerText);
+                        paneID = $(target).attr('href');
+                        localStorage.setItem("bSave", "true");
+                    }
+                    else if (localStorage.getItem("PrevSubTab") == "Focused") {
+                        var target = $('#myTabs li:eq(1) a').tab('show')
+                        localStorage.setItem("PrevSubTab", target[0].innerText);
+                        paneID = $(target).attr('href');
+                        localStorage.setItem("bSave", "true");
+                    }
+                    else if (localStorage.getItem("PrevSubTab") == "Upload & View Photos") {
+                        var target = $('#myTabs li:eq(2) a').tab('show')
+                        localStorage.setItem("PrevSubTab", target[0].innerText);
+                        paneID = $(target).attr('href');
+                        localStorage.setItem("bSave", "true");
+                    }
+                    else if (localStorage.getItem("PrevSubTab") == "Body Image") {
+                        var target = $('#myTabs li:eq(3) a').tab('show')
+                        localStorage.setItem("PrevSubTab", target[0].innerText);
+                        paneID = $(target).attr('href');
+                        localStorage.setItem("bSave", "true");
+                    }
+                    else {
+                        var target = $('#myTabs a:first').tab('show');
+                        localStorage.setItem("PrevSubTab", target[0].innerText);
+                        paneID = $(target).attr('href');
+                        localStorage.setItem("bSave", "true");
+                    }
+                }
+
+                $('#myTabs li a').click(function () {
+                    if (this.hash == "#BodyImage")//to disable BodyImage Tab
+                        event.stopPropagation();
+                    else if (isFocusedDisabled == "True" && this.innerText == "Focused")
+                    {
+                        event.stopPropagation();
+                    }
+                    else
+                        if ($("ul#myTabs li.active a")[0].innerText != this.innerText)
+                        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                })
+                $.ajax({
+                    type: "POST",
+                    url: "WebServices/ExamService.asmx/LoadExamTab",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        //Sessionvalues = (data.d);
+                        var result = $.parseJSON(data.d);
+                        Sessionvalues = (result.sExamValues);
+                        if (result.sExamValues == "error")
+                        {
+                            alert("Cannot Load.Please re-login and retry.If issue continues Please Contact Support")
+                        } else {
+                            isFocusedDisabled = result.DisableTab;
+                            if (result.DisableTab == "True")//#Focused
+                            {
+                                $('#ExamFocused').removeClass('tabstyle');
+                                $("#ExamFocused").addClass('disableTab');
+                                $("#ExamFocused a").removeAttr("href");
+                            }
+                            // src = $(paneID).attr('data-src') + "?" + (data.d);
+                            src = $(paneID).attr('data-src') + "?" + (result.sExamValues);                            
+                            $(paneID + " iframe").attr("src", src);
+                        }
+                       
+                    },
+
+                    error: function OnError(xhr) {
+                        if (xhr.responseText != null && xhr.responseText != undefined && xhr.responseText != "") 
+                            {
+                                var log = JSON.parse(xhr.responseText);
+                                console.log(log);
+                                if (xhr.status == 999)
+                                    window.location = xhr.statusText;
+                                else
+                                    alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                   "Message: " + log.Message);
+                            }
+                         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+                    }
+                });
+
+            }
+            $("#btnHiddenExam").click(function () {
+                var PrevTabtxt = sessionStorage.getItem('Exam_PrevTabText');
+                $("a:contains('" + PrevTabtxt + "')").tab('show');
+            });
+        });
+
+        $('.nav-tabs a').on('shown.bs.tab', function (event) {
+            if (this.hash == "#BodyImage")//to disable BodyImage Tab
+                event.stopPropagation();
+            else{
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+                CurTab = $(event.target);         // active tab
+                PrevTab = $(event.relatedTarget);  // previous tab 
+                sessionStorage.setItem("AutoSave_Exam", "false");
+                localStorage.setItem("PrevSubTab", CurTab[0].innerText);
+                if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
+                        event.preventDefault();
+                        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                        //  window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                        //$(dvdialog).dialog("close");
+                        //$(dvdialog).remove();
+                        sessionStorage.setItem("AutoSave_Exam", "true");
+                        if (PrevTab[0].innerText == "General With Specialty") {
+                            var prevTabtxt = $(PrevTab).text();
+                            sessionStorage.setItem('Exam_PrevTabText', prevTabtxt);
+                            $('.clsIframe').contents()[0].all.namedItem('btnSave').click();
+                            if (localStorage.getItem("bSave") == "true") {
+                                paneID = $(event.target).attr('href');
+                                sessionStorage.setItem('Exam_paneID', paneID);
+                                if (paneID == "#Focused")
+                                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                                else
+                                    src = $(paneID).attr('data-src');
+                                sessionStorage.setItem('Exam_src', src);
+                                $(paneID + " iframe").attr("src", src);
+                            }
+                            else {
+                                bExamCancel = true;
+                                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                                PrevTab.tab('show');
+                                return;
+                            }
+                        }
+                        else if (PrevTab[0].innerText == "Focused") {
+                            var prevTabtxt = $(PrevTab).text();
+                            sessionStorage.setItem('Exam_PrevTabText', prevTabtxt);
+                            $('.clsIframe').contents()[1].all.namedItem('btnSave').click();
+                            if (localStorage.getItem("bSave") == "true") {
+                                paneID = $(event.target).attr('href');
+                                sessionStorage.setItem('Exam_paneID', paneID);
+                                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                                sessionStorage.setItem('Exam_src', src);
+                                $(paneID + " iframe").attr("src", src);
+                            }
+                            else {
+                                bExamCancel = true;
+                                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                                PrevTab.tab('show');
+                                return;
+                            }
+
+                        }
+                        else if (PrevTab[0].innerText == "Upload & View Photos") {
+                            var prevTabtxt = $(PrevTab).text();
+                            sessionStorage.setItem('Exam_PrevTabText', prevTabtxt);
+                            $('.clsIframe').contents()[2].all.namedItem('btnSave').click();
+                            if (localStorage.getItem("bSave") == "true") {
+                                paneID = $(event.target).attr('href');
+                                sessionStorage.setItem('Exam_paneID', paneID);
+                                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                                sessionStorage.setItem('Exam_src', src);
+                                $(paneID + " iframe").attr("src", src);
+                            }
+                            else {
+                                bExamCancel = true;
+                                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                                PrevTab.tab('show');
+                                return;
+                            }
+
+                        }
+                        else if (PrevTab[0].innerText == "Body Image") {
+                            $('.clsIframe').contents()[3].all.namedItem('btnSave')[1].click();
+                            if (localStorage.getItem("bSave") == "true") {
+                                paneID = $(event.target).attr('href');
+                                src = $(paneID).attr('data-src');
+                                $(paneID + " iframe").attr("src", src);
+                            }
+                            else {
+                                bExamCancel = true;
+                                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                                PrevTab.tab('show');
+                                return;
+                            }
+                        }
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        return;
+
+                    // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+                    //event.preventDefault();
+                    //$(top.window.document).find("body").append("<div id='dvdialog' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
+                    //            "<p style='font-family: Verdana,Arial,sans-serif; font-size: 13.5px;'>There are unsaved changes.Do you want to save them?</p></div>");
+                    //dvdialog = window.parent.parent.parent.parent.document.getElementsByTagName('div').namedItem('dvdialog');
+                    //$(dvdialog).dialog({
+                    //    modal: true,
+                    //    title: "Capella -EHR",
+                    //    position: {
+                    //        my: 'left' + " " + 'center',
+                    //        at: 'center' + " " + 'center + 100px'
+
+                    //    },
+                    //    buttons: {
+                    //        "Yes": function () {
+                    //            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+                    //            //  window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //            $(dvdialog).dialog("close");
+                    //            $(dvdialog).remove();
+                    //            sessionStorage.setItem("AutoSave_Exam", "true");
+                    //            if (PrevTab[0].innerText == "General With Specialty") {
+                    //                var prevTabtxt = $(PrevTab).text();
+                    //                sessionStorage.setItem('Exam_PrevTabText', prevTabtxt);
+                    //                $('.clsIframe').contents()[0].all.namedItem('btnSave').click();
+                    //                if (localStorage.getItem("bSave") == "true") {
+                    //                    paneID = $(event.target).attr('href');
+                    //                    sessionStorage.setItem('Exam_paneID', paneID);
+                    //                    if (paneID == "#Focused")
+                    //                        src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                    //                    else
+                    //                        src = $(paneID).attr('data-src');
+                    //                    sessionStorage.setItem('Exam_src', src);
+                    //                    $(paneID + " iframe").attr("src", src);
+                    //                }
+                    //                else {
+                    //                    bExamCancel = true;
+                    //                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //                    PrevTab.tab('show');
+                    //                    return;
+                    //                }
+                    //            }
+                    //            else if (PrevTab[0].innerText == "Focused") {
+                    //                var prevTabtxt = $(PrevTab).text();
+                    //                sessionStorage.setItem('Exam_PrevTabText', prevTabtxt);
+                    //                $('.clsIframe').contents()[1].all.namedItem('btnSave').click();
+                    //                if (localStorage.getItem("bSave") == "true") {
+                    //                    paneID = $(event.target).attr('href');
+                    //                    sessionStorage.setItem('Exam_paneID', paneID);
+                    //                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                    //                    sessionStorage.setItem('Exam_src', src);
+                    //                    $(paneID + " iframe").attr("src", src);
+                    //                }
+                    //                else {
+                    //                    bExamCancel = true;
+                    //                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //                    PrevTab.tab('show');
+                    //                    return;
+                    //                }
+
+                    //            }
+                    //            else if (PrevTab[0].innerText == "Upload & View Photos") {
+                    //                var prevTabtxt = $(PrevTab).text();
+                    //                sessionStorage.setItem('Exam_PrevTabText', prevTabtxt);
+                    //                $('.clsIframe').contents()[2].all.namedItem('btnSave').click();
+                    //                if (localStorage.getItem("bSave") == "true") {
+                    //                    paneID = $(event.target).attr('href');
+                    //                    sessionStorage.setItem('Exam_paneID', paneID);
+                    //                    src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                    //                    sessionStorage.setItem('Exam_src', src);
+                    //                    $(paneID + " iframe").attr("src", src);
+                    //                }
+                    //                else {
+                    //                    bExamCancel = true;
+                    //                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //                    PrevTab.tab('show');
+                    //                    return;
+                    //                }
+
+                    //            }
+                    //            else if (PrevTab[0].innerText == "Body Image") {
+                    //                $('.clsIframe').contents()[3].all.namedItem('btnSave')[1].click();
+                    //                if (localStorage.getItem("bSave") == "true") {
+                    //                    paneID = $(event.target).attr('href');
+                    //                    src = $(paneID).attr('data-src');
+                    //                    $(paneID + " iframe").attr("src", src);
+                    //                }
+                    //                else {
+                    //                    bExamCancel = true;
+                    //                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //                    PrevTab.tab('show');
+                    //                    return;
+                    //                }
+                    //            }
+                    //             {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+                    //            return;
+                    //        },
+                    //        "No": function () {
+                    //            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+                    //            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //            localStorage.setItem("bSave", "true");
+                    //            $(dvdialog).dialog("close");
+                    //            $(dvdialog).remove();
+                    //            paneID = $(event.target).attr('href');
+                    //            if (paneID == "#Focused" || paneID == "#generalwithspeciality")
+                    //                src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                    //            else
+                    //                src = $(paneID).attr('data-src');
+                    //            $(paneID + " iframe").attr("src", src);
+
+                    //        },
+                    //        "Cancel": function () {
+                    //            //{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+                    //            bExamCancel = true;
+                    //            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //            $(dvdialog).dialog("close");
+                    //            $(dvdialog).remove();
+                    //            PrevTab.tab('show');
+                    //            return;
+
+                    //        }
+                    //    }
+                    //});
+
+                }
+                else {
+
+                    if ($(".ui-dialog").is(":visible")) {
+                        $(dvdialog).dialog("close");
+                        $(dvdialog).remove();
+                    }
+                    if (bExamCancel == false) {
+                        paneID = $(event.target).attr('href');
+                        if (paneID == "#Focused" || paneID == "#generalwithspeciality")
+                            src = $(paneID).attr('data-src') + "?" + Sessionvalues;
+                        else
+                            src = $(paneID).attr('data-src');
+
+                        $(paneID + " iframe").attr("src", src);
+                    } else {
+                        localStorage.setItem("bSave", "false");
+                        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
+                        bExamCancel = false;
+                         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+                    }
+
+                }
+            }
+
+        });
+     
+    </script>
+   
+</body>
+</html>

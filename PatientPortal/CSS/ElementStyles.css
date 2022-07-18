@@ -1,0 +1,804 @@
+﻿
+body
+{
+	font-family: "Segoe UI" , Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+.displayNone
+{
+	display: none;
+}
+.gridview
+{
+	background-color: White;
+	margin-right: 0px;
+}
+.gridview th
+{
+	background-image: url(../Resources/GRid_Header_Image_New.jpg);
+	color: White;
+	border-width: 0px;
+}
+.gridview table
+{
+	padding: 0px;
+	margin: 0px;
+	border: solid 1px #26A1B3;
+	border-spacing: 2px;
+	border-collapse: separate;
+}
+.gridview td
+{
+	color: Black;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.Panel legend
+{
+	font-weight: bold;
+}
+
+.gridSelectedRow
+{
+	background: #abdbf5 0 -3900px repeat-x url('../Resources/sprite.gif' );
+	font-weight: bold;
+}
+.GridHeaderRow
+{
+	color: #333;
+	border: 1px solid;
+	border-color: #fff #dcf2fc #3c7fb1 #8bbdde;
+	border-top-width: 0;
+	background: #abdbf5 0 -3900px repeat-x url(                                                    '../Resources/sprite.gif' );
+}
+/*Telerik Radcss Vista Skin*/
+
+/*global*/
+
+.Radcss_Vista
+{
+	border: 1px solid #9cb6c5;
+	background: #fff;
+	color: #333;
+	cursor: default;
+}
+.Radcss_Vista:Hover
+{
+	cursor: hand;
+}
+
+.Radcss_Vista, .Radcss_Vista .rgMasterTable, .Radcss_Vista .rgDetailTable, .Radcss_Vista .rgGroupPanel table, .Radcss_Vista .rgCommandRow table, .Radcss_Vista .rgEditForm table, .Radcss_Vista .rgPager table, .cssToolTip_Vista
+{
+	font: 12px/16px "segoe ui" ,arial,sans-serif;
+}
+
+.Radcss_Vista .rgHeader:first-child, .Radcss_Vista th.rgResizeCol:first-child, .Radcss_Vista .rgFilterRow > td:first-child, .Radcss_Vista .rgRow > td:first-child, .Radcss_Vista .rgAltRow > td:first-child
+{
+	border-left-width: 0;
+	padding-left: 8px;
+}
+
+.Radcss_Vista .rgAdd, .Radcss_Vista .rgRefresh, .Radcss_Vista .rgEdit, .Radcss_Vista .rgDel, .Radcss_Vista .rgFilter, .Radcss_Vista .rgPagePrev, .Radcss_Vista .rgPageNext, .Radcss_Vista .rgPageFirst, .Radcss_Vista .rgPageLast, .Radcss_Vista .rgExpand, .Radcss_Vista .rgCollapse, .Radcss_Vista .rgSortAsc, .Radcss_Vista .rgSortDesc, .Radcss_Vista .rgUpdate, .Radcss_Vista .rgCancel, .Radcss_Vista .rgUngroup, .Radcss_Vista .rgExpXLS, .Radcss_Vista .rgExpDOC, .Radcss_Vista .rgExpPDF, .Radcss_Vista .rgExpCSV
+{
+	background-image: url(                                                    '../Resources/sprite.gif' );
+}
+
+/*header*/
+
+.Radcss_Vista .rgHeaderDiv
+{
+	background: #ebeef6 0 -7750px repeat-x url(                                                    '../Resources/sprite.gif' );
+}
+.rgTwoLines .rgHeaderDiv
+{
+	background-position: 0 -7250px;
+}
+
+.Radcss_Vista .rgHeader, .Radcss_Vista th.rgResizeCol, .Radcss_Vista .rgMultiHeaderRow th.rgHeader, .Radcss_Vista .rgMultiHeaderRow th.rgResizeCol
+{
+	border: 1px solid;
+	border-color: #fff #dcf2fc #3c7fb1 #8bbdde;
+	border-top-width: 0;
+	background: 0 -2300px repeat-x #a6d9f4 url(                                                    '../Resources/sprite.gif' );
+}
+
+.Radcss_Vista th.rgSorted
+{
+	border-bottom-color: #79b3d8;
+	background-color: #d9ecf6;
+	background-position: 0 -2600px;
+}
+
+.Radcss_Vista .rgHeader, .Radcss_Vista .rgHeader a
+{
+	color: #333;
+}
+
+/*rows*/
+
+.Radcss_Vista .rgRow td, .Radcss_Vista .rgAltRow td, .Radcss_Vista .rgEditRow td, .Radcss_Vista .rgFooter td
+{
+	border-style: solid;
+	border-width: 0 1px 1px;
+}
+
+.Radcss_Vista .rgRow td, .Radcss_Vista .rgAltRow td
+{
+	border-color: #fff #fff #fff #ededed;
+}
+
+.Radcss_Vista .rgRow .rgSorted, .Radcss_Vista .rgAltRow .rgSorted
+{
+	background-color: #f2f3f5;
+}
+
+.Radcss_Vista .rgSelectedRow .rgSorted, .Radcss_Vista .rgActiveRow .rgSorted, .Radcss_Vista .rgHoveredRow .rgSorted, .Radcss_Vista .rgEditRow .rgSorted
+{
+	background-color: transparent;
+}
+
+.Radcss_Vista .rgRow a, .Radcss_Vista .rgAltRow a, .Radcss_Vista .rgEditRow a, .Radcss_Vista .rgFooter a, .Radcss_Vista .rgEditForm a
+{
+	color: #06c;
+}
+
+.Radcss_Vista .rgMasterTable .rgSelectedCell, .Radcss_Vista .rgSelectedRow
+{
+	background: #abdbf5 0 -3900px repeat-x url(                                                    '../Resources/sprite.gif' );
+}
+* + html .Radcss_Vista .rgSelectedRow .rgSorted
+{
+	background-color: #abdbf5;
+}
+* html .Radcss_Vista .rgSelectedRow .rgSorted
+{
+	background-color: #abdbf5;
+}
+
+.Radcss_Vista .rgMasterTable .rgActiveCell, .Radcss_Vista .rgActiveRow, .Radcss_Vista .rgHoveredRow
+{
+	background: #d7f0fc 0 -2900px repeat-x url(                                                    '../Resources/sprite.gif' );
+}
+* + html .Radcss_Vista .rgActiveRow .rgSorted, * + html .Radcss_Vista .rgHoveredRow .rgSorted
+{
+	background-color: #d7f0fc;
+}
+* html .Radcss_Vista .rgActiveRow .rgSorted, * html .Radcss_Vista .rgHoveredRow .rgSorted
+{
+	background-color: #d7f0fc;
+}
+
+.Radcss_Vista .rgEditRow
+{
+	background: #96cfee 0 -4900px repeat-x url(                                                    '../Resources/sprite.gif' );
+}
+* + html .Radcss_Vista .rgEditRow .rgSorted
+{
+	background-color: #96cfee;
+}
+* html .Radcss_Vista .rgEditRow .rgSorted
+{
+	background-color: #96cfee;
+}
+
+.Radcss_Vista .rgSelectedRow td, .Radcss_Vista .rgActiveRow td, .Radcss_Vista .rgHoveredRow td, .Radcss_Vista .rgEditRow td
+{
+	border-left-width: 0;
+	border-right-width: 0;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.Radcss_Vista .rgSelectedRow td
+{
+	border-bottom-color: #d7f0fc;
+}
+
+.Radcss_Vista .rgActiveRow td, .Radcss_Vista .rgHoveredRow td
+{
+	border-bottom-color: #99defd;
+}
+
+.Radcss_Vista .rgEditRow td
+{
+	border-bottom-color: #96cfee;
+}
+
+.Radcss_Vista .rgDrag
+{
+	background-image: url(                                                    'Resources/rgDrag.gif' );
+}
+
+/*footer*/
+
+.Radcss_Vista .rgFooterDiv, .Radcss_Vista .rgFooter
+{
+	background: #e0e5f5;
+}
+
+.Radcss_Vista .rgFooter td
+{
+	border-top-width: 1px;
+	border-color: #aec5d1 #e0e5f5 #fff #e0e5f5;
+}
+
+/*status*/
+
+.Radcss_Vista .rgPager .rgStatus
+{
+	border: 1px solid;
+	border-color: #aec5d1 #9cb6c5 #fff #9cb6c5;
+	border-left-width: 0;
+}
+
+.Radcss_Vista .rgStatus div
+{
+	background-image: url(                                                    'Common/loading_small.gif' );
+}
+
+/*pager*/
+
+.Radcss_Vista .rgPager
+{
+	background: #eff7fc;
+}
+
+.Radcss_Vista td.rgPagerCell
+{
+	border: 1px solid;
+	border-color: #aec5d1 #fff #fff;
+	border-right-width: 0;
+}
+
+.Radcss_Vista .rgInfoPart
+{
+	color: #8a8a8a;
+}
+
+.Radcss_Vista .rgInfoPart strong
+{
+	color: #4c4e54;
+}
+
+.Radcss_Vista .rgPageFirst
+{
+	background-position: 0 -550px;
+}
+.Radcss_Vista .rgPageFirst:hover
+{
+	background-position: 0 -600px;
+}
+.Radcss_Vista .rgPagePrev
+{
+	background-position: 0 -700px;
+}
+.Radcss_Vista .rgPagePrev:hover
+{
+	background-position: 0 -750px;
+}
+.Radcss_Vista .rgPageNext
+{
+	background-position: 0 -850px;
+}
+.Radcss_Vista .rgPageNext:hover
+{
+	background-position: 0 -900px;
+}
+.Radcss_Vista .rgPageLast
+{
+	background-position: 0 -1000px;
+}
+.Radcss_Vista .rgPageLast:hover
+{
+	background-position: 0 -1050px;
+}
+
+.Radcss_Vista .rgPager .rgPagerButton
+{
+	border-color: #a6d9f4;
+	background: #acdbf5 repeat-x 0 -1550px url(                                                    '../Resources/sprite.gif' );
+	color: #000;
+	font: 12px/12px "segoe ui" ,arial,sans-serif;
+}
+
+.Radcss_Vista .rgNumPart a:hover, .Radcss_Vista .rgNumPart a:hover span, .Radcss_Vista .rgNumPart a.rgCurrentPage, .Radcss_Vista .rgNumPart a.rgCurrentPage span
+{
+	background: no-repeat url(                                                    '../Resources/sprite.gif' );
+}
+
+.Radcss_Vista .rgNumPart a
+{
+	color: #000;
+}
+
+.Radcss_Vista .rgNumPart a:hover
+{
+	background-position: 100% -1250px;
+	color: #06c;
+}
+
+.Radcss_Vista .rgNumPart a:hover span
+{
+	background-position: 0 -1150px;
+}
+
+.Radcss_Vista .rgNumPart a.rgCurrentPage, .Radcss_Vista .rgNumPart a.rgCurrentPage:hover
+{
+	background-position: 100% -1450px;
+	color: #000;
+}
+
+.Radcss_Vista .rgNumPart a.rgCurrentPage span, .Radcss_Vista .rgNumPart a.rgCurrentPage:hover span
+{
+	background-position: 0 -1350px;
+}
+
+/*sorting, reordering*/
+
+.Radcss_Vista .rgHeader .rgSortAsc
+{
+	background-position: 3px -248px;
+	height: 10px;
+}
+
+.Radcss_Vista .rgHeader .rgSortDesc
+{
+	background-position: 3px -198px;
+	height: 10px;
+}
+
+.cssReorderTop_Vista, .cssReorderBottom_Vista
+{
+	height: 11px;
+	background: 0 0 no-repeat url(                                                    '../Resources/sprite.gif' );
+}
+
+.cssReorderBottom_Vista
+{
+	background-position: 0 -50px;
+}
+
+/*filtering*/
+
+.Radcss_Vista .rgFilterRow
+{
+	background: #ebeef6;
+}
+
+.Radcss_Vista .rgFilterRow td
+{
+	border-left: 1px solid #ededed;
+	border-right: 1px solid #fff;
+}
+
+.Radcss_Vista .rgFilter
+{
+	background-position: 0 -300px;
+}
+
+.Radcss_Vista .rgFilter:hover
+{
+	background-position: 0 -350px;
+}
+
+.Radcss_Vista .rgFilterActive, .Radcss_Vista .rgFilterActive:hover
+{
+	background-position: 0 -400px;
+}
+
+.Radcss_Vista .rgFilterBox
+{
+	border-color: #abadb3 #dbdfe6 #e3e9ef #e2e3ea;
+	font: 12px "segoe ui" ,arial,sans-serif;
+	color: #333;
+}
+
+/*filter context menu*/
+
+.RadMenu_Vista .rgHCMClear, .RadMenu_Vista .rgHCMFilter
+{
+	border-color: #707070;
+	background: #cfcfcf center -23px repeat-x url(                                                    'FormDecorator/ButtonSprites.gif' );
+	color: #000;
+	font-family: "segoe ui" ,arial,sans-serif;
+}
+
+.RadMenu_Vista .rgHCMClear:hover, .RadMenu_Vista .rgHCMFilter:hover
+{
+	border-color: #3c7fb1;
+	background-position: center -67px;
+	background-color: #a7d9f5;
+}
+
+/*context menu*/
+
+.cssContextMenu_Vista .rmLeftImage
+{
+	background-image: url(                                                    '../Common/Resources/contextMenu.gif' );
+}
+
+.cssContextMenu_Vista .rgHCMSortAsc .rmLeftImage
+{
+	background-position: 0 0;
+}
+
+.cssContextMenu_Vista .rgHCMSortDesc .rmLeftImage
+{
+	background-position: 0 -40px;
+}
+
+.cssContextMenu_Vista .rgHCMUnsort .rmLeftImage
+{
+	background-position: 0 -80px;
+}
+
+.cssContextMenu_Vista .rgHCMGroup .rmLeftImage
+{
+	background-position: 0 -120px;
+}
+
+.cssContextMenu_Vista .rgHCMUngroup .rmLeftImage
+{
+	background-position: 0 -160px;
+}
+
+.cssContextMenu_Vista .rgHCMCols .rmLeftImage
+{
+	background-position: 0 -200px;
+}
+
+.cssContextMenu_Vista .rgHCMFilter .rmLeftImage
+{
+	background-position: 0 -240px;
+}
+
+.cssContextMenu_Vista .rgHCMUnfilter .rmLeftImage
+{
+	background-position: 0 -280px;
+}
+
+/*grouping*/
+
+.Radcss_Vista .rgGroupPanel
+{
+	border: 1px solid;
+	border-color: #eaedf6 #f2f5fa #9cb6c5;
+	background: #e6ebf5 0 -1900px repeat-x url(                                                    '../Resources/sprite.gif' );
+}
+
+.Radcss_Vista .rgGroupPanel td
+{
+	border: 0;
+	border-bottom: 1px solid #f2f5fa;
+	padding: 0;
+}
+
+.Radcss_Vista .rgGroupPanel td td
+{
+	border: 0;
+	padding: 2px 3px 1px;
+}
+
+.Radcss_Vista .rgGroupPanel td td td
+{
+	padding: 0;
+}
+
+.Radcss_Vista .rgGroupPanel .rgSortAsc
+{
+	background-position: 4px -144px;
+}
+
+.Radcss_Vista .rgGroupPanel .rgSortDesc
+{
+	background-position: 4px -94px;
+}
+
+.Radcss_Vista .rgUngroup
+{
+	background-position: 0 -7200px;
+}
+
+.Radcss_Vista .rgGroupItem
+{
+	border: 1px solid;
+	border-color: #8a929e #9298a1 #9298a1;
+	background: #e6ebf5 0 -7000px repeat-x url(                                                    '../Resources/vista.gif' );
+}
+
+.Radcss_Vista .rgGroupHeader
+{
+	background: 0 -6489px repeat-x url(                                                    '../Resources/sprite.gif' );
+	font-size: 1.1em;
+	line-height: 21px;
+	color: #039;
+}
+
+.Radcss_Vista .rgGroupHeader td
+{
+	padding: 0 8px;
+}
+
+.Radcss_Vista .rgGroupHeader .rgGroupCol
+{
+	background: #fff none;
+}
+
+.Radcss_Vista .rgExpand
+{
+	background-position: 5px -496px;
+}
+
+.Radcss_Vista .rgCollapse
+{
+	background-position: 3px -444px;
+}
+
+.Radcss_Vista .rgGroupHeader .rgExpand, .Radcss_Vista .rgGroupHeader .rgCollapse
+{
+	background-color: #fff;
+}
+
+.Radcss_Vista .rgGroupHeader td p, .Radcss_Vista .rgGroupHeader td div div
+{
+	background: #fff;
+}
+
+/*editing*/
+
+.Radcss_Vista .rgEditForm
+{
+	border-bottom: 1px solid #ededed;
+}
+
+.Radcss_Vista .rgUpdate
+{
+	background-position: 0 -1800px;
+}
+
+.Radcss_Vista .rgCancel
+{
+	background-position: 0 -1850px;
+}
+
+/*hierarchy*/
+
+.Radcss_Vista .rgDetailTable
+{
+	border-color: #ededed;
+}
+
+/*command row*/
+
+.Radcss_Vista .rgCommandRow
+{
+	background: #4e96aa 0 0 repeat-x url(                                                    '../Resources/rgCommandRow.gif' );
+	color: #fff;
+}
+
+.Radcss_Vista .rgCommandCell
+{
+	border: 0;
+	padding: 0;
+}
+
+.Radcss_Vista thead .rgCommandCell
+{
+	border-bottom: 1px solid #3c7fb1;
+}
+
+.Radcss_Vista tfoot .rgCommandCell, .Radcss_Vista .rgMasterTable > tbody > tr.rgCommandRow .rgCommandCell
+{
+	border-top: 1px solid #3c7fb1;
+}
+
+.Radcss_Vista .rgCommandTable td
+{
+	border: 0;
+	padding: 2px 7px;
+}
+
+.Radcss_Vista .rgCommandTable
+{
+	border: 1px solid;
+	border-color: #b2ccd8 #75a4b7 #95c3ce;
+}
+
+.Radcss_Vista .rgCommandRow a
+{
+	color: #fff;
+	text-decoration: none;
+}
+
+.Radcss_Vista .rgAdd
+{
+	margin-right: 3px;
+	background-position: 0 -1650px;
+}
+
+.Radcss_Vista .rgRefresh
+{
+	margin-right: 3px;
+	background-position: 0 -1600px;
+}
+
+.Radcss_Vista .rgEdit
+{
+	background-position: 0 -1700px;
+}
+
+.Radcss_Vista .rgDel
+{
+	background-position: 0 -1750px;
+}
+
+.Radcss_Vista .rgExpXLS, .Radcss_Vista .rgExpDOC, .Radcss_Vista .rgExpPDF, .Radcss_Vista .rgExpCSV
+{
+	background-image: url(                                                    'Resources/export.gif' );
+}
+
+.Radcss_Vista .rgExpXLS
+{
+	background-position: 0 0;
+}
+.Radcss_Vista .rgExpDOC
+{
+	background-position: 0 -50px;
+}
+.Radcss_Vista .rgExpPDF
+{
+	background-position: 0 -100px;
+}
+.Radcss_Vista .rgExpCSV
+{
+	background-position: 0 -150px;
+}
+
+/*multirow select*/
+
+.rgCellSelectorArea_Vista, .cssRowSelector_Vista
+{
+	background: #039;
+}
+
+/*row drag n drop*/
+
+.cssItemDropIndicator_Vista
+{
+	border-top: 1px dashed #039;
+}
+
+/*tooltip*/
+
+.cssToolTip_Vista
+{
+	border: 1px solid #767676;
+	padding: 3px;
+	background: #e4e5f0;
+	color: #000;
+}
+
+/*rtl*/
+
+.RadcssRTL_Vista .rgHeader:first-child, .RadcssRTL_Vista th.rgResizeCol:first-child, .RadcssRTL_Vista .rgFilterRow > td:first-child, .RadcssRTL_Vista .rgRow > td:first-child, .RadcssRTL_Vista .rgAltRow > td:first-child
+{
+	border-left-width: 1px;
+	padding-left: 7px;
+}
+
+.RadcssRTL_Vista .rgPageFirst
+{
+	background-position: 0 -1000px;
+}
+.RadcssRTL_Vista .rgPageFirst:hover
+{
+	background-position: 0 -1050px;
+}
+.RadcssRTL_Vista .rgPagePrev
+{
+	background-position: 0 -850px;
+}
+.RadcssRTL_Vista .rgPagePrev:hover
+{
+	background-position: 0 -900px;
+}
+.RadcssRTL_Vista .rgPageNext
+{
+	background-position: 0 -700px;
+}
+.RadcssRTL_Vista .rgPageNext:hover
+{
+	background-position: 0 -750px;
+}
+.RadcssRTL_Vista .rgPageLast
+{
+	background-position: 0 -550px;
+}
+.RadcssRTL_Vista .rgPageLast:hover
+{
+	background-position: 0 -600px;
+}
+
+.RadcssRTL_Vista .rgExpand
+{
+	background-position: -20px -496px;
+}
+.cc
+{
+	background: #fff;
+}
+
+input[type=text]:focus, input[type=password]:focus
+{
+	border-width: thin;
+	border-width: 1px;
+	border-color: #515151;
+}
+input[type=text]:Hover
+{
+	border-width: thin;
+	border-width: 1px;
+	border-color: #515151;
+}
+
+input[type=text]:Read
+{
+	border-width: thin;
+	border-width: 1px;
+	border-color: #d0d0d0;
+}
+input[type=text], input[type=password]
+{
+	border-top-style: outset;
+	border-left-style: outset;
+	border-collapse: collapse;
+	border-width: thin;
+	border-width: 1px;
+	border-color: #B8B8B8;
+	border-top-color: #B8B8B8;
+	color: #000;
+	font: 12px "segoe ui" ,arial,sans-serif;
+}
+input[type=submit]:hover
+{
+	background-image: url(../Resources/RadButton_Hover.png);
+	border-width: thin;
+	border-width: 1px;
+	cursor: pointer;
+}
+input[type=submit]:focus
+{
+	background-image: url(../Resources/RadButton_Hover.png);
+	border-width: thin;
+	border-width: 1px;
+	cursor: pointer;
+}
+
+input[type=submit]
+{
+	border-top-style: outset;
+	border-left-style: outset;
+	border-collapse: collapse;
+	border-width: thin;
+	border-width: 1px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: inherit;
+	font: 12px "segoe ui" ,arial,sans-serif;
+	background-image: url(../Resources/RadButton.png);
+}
+
+input[type=submit][disabled="disabled"]
+{
+	border-width: thin;
+	border-width: 1px;
+	background-image: none;
+	cursor: auto;
+}
+.styled-select
+{
+	background-color: Red;
+}
+

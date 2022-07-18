@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ChargeHeader, Acurus.Capella.Core" table="charge_header" lazy="true">
+    <id name="Id" column="Charge_Header_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Batch_ID" column="Batch_ID" />
+
+    <property name="Encounter_ID" column="Encounter_ID" />
+
+    <!--<property name="Voucher_No" column="Voucher_No" />-->
+
+
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Patient_Condition_Rel_To_Emp" column="Patient_Condition_Rel_To_Emp" />
+    <property name="Patient_Condition_Rel_To_AutoAcc" column="Patient_Condition_Rel_To_AutoAcc" />
+    <property name="Patient_Condition_Rel_To_OtherAcc" column="Patient_Condition_Rel_To_OtherAcc" />
+    <property name="Place_AutoAcc" column="Place_AutoAcc" />
+    <property name="Date_of_Current_Illness" column="Date_of_Current_Illness" />
+    <property name="Other_Date" column="Other_Date" />
+    <property name="Dates_Patient_Unable_to_work_From" column="Dates_Patient_Unable_to_work_From" />
+    <property name="Dates_Patient_Unable_to_work_To" column="Dates_Patient_Unable_to_work_To" />
+    <property name="Referring_Provider_ID" column="Referring_Provider_ID" />
+    <property name="Hosp_Dates_From" column="Hosp_Dates_From" />
+    <property name="Hosp_Dates_To" column="Hosp_Dates_To" />
+    <property name="Reserved_Box_19" column="Reserved_Box_19" />
+    <property name="Outside_Lab" column="Outside_Lab" />
+    <property name="Lab_Charge_Amount" column="Lab_Charge_Amount" />
+    <property name="Resubmission_Code" column="Resubmission_Code" />
+    <property name="Original_Ref_No" column="Original_Ref_No" />
+    <property name="Billing_Provider_ID" column="Billing_Provider_ID" />
+    <property name="Appt_Facility_Name" column="Appt_Facility_Name" />
+    <property name="Prior_Auth_No" column="Prior_Auth_No" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Reserved_Box_10d" column="Reserved_Box_10d" />
+    <property name="Resubmission_Text" column="Resubmission_Text" />
+    <property name="Claim_Codes" column="Claim_Codes" />
+    <property name="Other_Claim_ID" column="Other_Claim_ID" />
+    <property name="Ref_Prov_Type" column="Ref_Prov_Type" />
+    <property name="Current_Illness_Qualifier" column="Current_Illness_Qualifier" />
+    <property name="Other_Date_Qualifier" column="Other_Date_Qualifier" />
+    <property name="Additional_Claim_Info" column="Additional_Claim_Info" />
+    <property name="ICD_Type" column="ICD_Type" />
+    <property name="Diagnosis1" column="Diagnosis1"/>
+    <property name="Diagnosis2" column="Diagnosis2"/>
+    <property name="Diagnosis3" column="Diagnosis3"/>
+    <property name="Diagnosis4" column="Diagnosis4"/>
+    <property name="Diagnosis5" column="Diagnosis5"/>
+    <property name="Diagnosis6" column="Diagnosis6"/>
+    <property name="Diagnosis7" column="Diagnosis7"/>
+    <property name="Diagnosis8" column="Diagnosis8"/>
+    <property name="Diagnosis9" column="Diagnosis9"/>
+    <property name="Diagnosis10" column="Diagnosis10"/>
+    <property name="Diagnosis11" column="Diagnosis11"/>
+    <property name="Diagnosis12" column="Diagnosis12"/>
+    <property name="Hold_Claim" column="Hold_Claim"/>
+    <property name="Group_ID" column="Group_ID"/>
+    <property name="Billing_Facility" column="Billing_Facility"/>
+    <property name="Encounter_Provider_ID" column="Encounter_Provider_ID"/>
+    <property name="Charge_Header_Identifier" column="Charge_Header_Identifier"/>
+    <property name="Encounter_Type" column="Encounter_Type"/>
+    <property name="Is_Delete" column="Is_Delete" />
+    <property name="Internal_Reference_ID" column="Internal_Reference_ID" />
+  </class>
+</hibernate-mapping>

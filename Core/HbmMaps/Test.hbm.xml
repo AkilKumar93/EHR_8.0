@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Test, Acurus.Capella.Core" table="test" lazy="true">
+    <id name="Id" column="Test_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Test_Name" column="Test_Name" />
+    <property name="Question_Name" column="Question_Name" />
+    <property name="Status" column="Status" />
+    <property name="Test_Notes" column="Test_Notes" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Test_Lookup_Id" column="Test_Lookup_Id" />
+    <property name="Category" column="Category" />
+    <property name="Score" column="Score" />
+  </class>
+</hibernate-mapping>
+
+

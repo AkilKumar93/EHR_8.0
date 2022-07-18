@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ResultMaster, Acurus.Capella.Core" table="result_master" lazy="true">
+    <id name="Id" column="Result_Master_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Result_Received_Date" column="Result_Received_Date" />
+    <property name="Order_ID" column="Order_ID" />
+    <property name="MSH_Segment_Type_ID" column="MSH_Segment_Type_ID" />
+    <property name="MSH_Delimiter" column="MSH_Delimiter" />
+    <property name="MSH_Sending_Application" column="MSH_Sending_Application" />
+    <property name="MSH_Sending_Facility" column="MSH_Sending_Facility" />
+    <property name="MSH_Receiving_Application" column="MSH_Receiving_Application" />
+    <property name="MSH_Receiveing_Facility" column="MSH_Receiveing_Facility" />
+    <property name="MSH_Date_And_Time_Of_Message" column="MSH_Date_And_Time_Of_Message" />
+    <property name="MSH_Security" column="MSH_Security" />
+    <property name="MSH_Message_Type" column="MSH_Message_Type" />
+    <property name="MSH_Message_Control_ID" column="MSH_Message_Control_ID" />
+    <property name="MSH_Processing_ID" column="MSH_Processing_ID" />
+    <property name="MSH_HL7_Version" column="MSH_HL7_Version" />
+    <property name="PID_Segment_Type_ID" column="PID_Segment_Type_ID" />
+    <property name="PID_Sequence_Number" column="PID_Sequence_Number" />
+    <property name="PID_External_Patient_ID" column="PID_External_Patient_ID" />
+    <property name="PID_Lab_Assigned_Patient_ID" column="PID_Lab_Assigned_Patient_ID" />
+    <property name="PID_Alternate_Patient_ID" column="PID_Alternate_Patient_ID" />
+    <property name="PID_Patient_Last_Name" column="PID_Patient_Last_Name" />
+    <property name="PID_Patient_First_Name" column="PID_Patient_First_Name" />
+    <property name="PID_Patient_Middle_Name" column="PID_Patient_Middle_Name" />
+    <property name="PID_Mother_Maiden_Name" column="PID_Mother_Maiden_Name" />
+    <property name="PID_Patient_Date_Of_Birth" column="PID_Patient_Date_Of_Birth" />
+    <property name="PID_Patient_Gender" column="PID_Patient_Gender" />
+    <property name="PID_Patient_Alias" column="PID_Patient_Alias" />
+    <property name="PID_Patient_Race" column="PID_Patient_Race" />
+    <property name="PID_Patient_Address1" column="PID_Patient_Address1" />
+    <property name="PID_Patient_Address2" column="PID_Patient_Address2" />
+    <property name="PID_Patient_City" column="PID_Patient_City" />
+    <property name="PID_Patient_State" column="PID_Patient_State" />
+    <property name="PID_Patient_Zip" column="PID_Patient_Zip" />
+    <property name="PID_Patient_Country_Code" column="PID_Patient_Country_Code" />
+    <property name="PID_Patient_Home_Phone" column="PID_Patient_Home_Phone" />
+    <property name="PID_Patient_Work_Phone" column="PID_Patient_Work_Phone" />
+    <property name="PID_Patient_Language" column="PID_Patient_Language" />
+    <property name="PID_Patient_Marital_Status" column="PID_Patient_Marital_Status" />
+    <property name="PID_Patient_Religion" column="PID_Patient_Religion" />
+    <property name="PID_Labcorp_Customer_ID" column="PID_Labcorp_Customer_ID" />
+    <property name="PID_Check_Digit" column="PID_Check_Digit" />
+    <property name="PID_Check_Digit_Scheme" column="PID_Check_Digit_Scheme" />
+    <property name="PID_Bill_Code" column="PID_Bill_Code" />
+    <property name="PID_ABN_Flag" column="PID_ABN_Flag" />
+    <property name="PID_Status_Of_Specimen" column="PID_Status_Of_Specimen" />
+    <property name="PID_Fasting" column="PID_Fasting" />
+    <property name="PID_Patient_SSN" column="PID_Patient_SSN" />
+    <property name="Result_Review_Comments" column="Result_Review_Comments" />
+    <property name="Result_Review_Date" column="Result_Review_Date" />
+    <property name="Result_Review_By" column="Result_Review_By" />
+    <property name="MSH_Message_Type_Inner_Segment" column="MSH_Message_Type_Inner_Segment" />
+    <property name="Reviewed_Provider_Sign_ID" column="Reviewed_Provider_Sign_ID" />
+    <property name="Lab_ID" column="Lab_ID" />
+    <property name="Is_Electronic_Mode" column="Is_Electronic_Mode" />
+    <property name="Is_Filled" column="Is_Filled" />
+    <property name="MA_Notes" column="MA_Notes" />
+    <property name="File_Name" column="File_Name" />
+    <property name="Matching_Patient_Id" column="Matching_Patient_Id" />
+  </class>
+</hibernate-mapping>
+

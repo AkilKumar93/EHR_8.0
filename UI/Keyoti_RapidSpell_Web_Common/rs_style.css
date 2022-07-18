@@ -1,0 +1,69 @@
+.inlineTB{
+	font-family: Arial, Helvetica, Sans-serif ; 
+	font-size: 10pt;
+	color:	black;
+}
+
+.RS_MultiLineTB{
+	margin:0px;
+	padding:2px;
+	font-family: 'Microsoft Sans Serif';
+	font-size: 10pt;
+	word-wrap: break-word;
+
+}
+
+
+
+
+.RS_SingleLineTB{
+	margin:0px;
+	padding:2px;
+
+	font-family: 'Microsoft Sans Serif';
+	font-size: 10pt;
+	OVERFLOW: hidden;
+	white-space: nowrap;
+}
+
+
+.RS_SingleLineTB_Disabled{
+	margin:0px;
+	padding:2px;
+	font-family: 'Microsoft Sans Serif';
+	font-size: 10pt;
+	color: #ACA899;
+		OVERFLOW: hidden;
+	white-space: nowrap;
+	
+}
+.RS_MultiLineTB_Disabled{
+	margin:0px;
+	padding:2px;
+	font-family: 'Microsoft Sans Serif';
+	font-size: 10pt;
+	color: #ACA899;
+		OVERFLOW: hidden;
+	
+	word-wrap: break-word;
+}
+
+
+.oldBrowserBox{
+	OVERFLOW: scroll;
+	border:1px solid #7F9DB9; padding: 2px;
+	Z-INDEX: 900;
+	background-color: White;
+	resize: none;
+/*	margin:1px;*/
+}
+
+.rs_err_hl
+{
+	background-image: url(underline.png);
+	background-position: bottom;
+	background-repeat: repeat-x;
+	cursor: pointer;
+	cursor: hand;
+}
+

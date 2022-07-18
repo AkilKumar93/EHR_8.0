@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PatientInsuredPlan, Acurus.Capella.Core" table="pat_insured_plan" lazy="true">
+    <id name="Id" column="Pat_Insured_Plan_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Insured_Human_ID" column="Insured_Human_ID" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Insurance_Plan_ID" column="Insurance_Plan_ID" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Group_Number" column="Group_Number" />
+    <property name="Policy_Holder_ID" column="Policy_Holder_ID" />
+    <property name="Effective_Start_Date" column="Effective_Start_Date" />
+    <property name="Termination_Date" column="Termination_Date" />
+    <property name="PCP_Copay" column="PCP_Copay" />
+    <property name="Specialist_Copay" column="Specialist_Copay" />
+    <property name="Deductible" column="Deductible" />
+    <property name="Co_Insurance" column="Coinsurance" />
+    <property name="Insurance_Type" column="Insurance_Type" />
+    <property name="Assignment" column="Assignment" />
+    <property name="Relationship" column="Relationship" />
+    <property name="Active" column="Active" />
+    <property name="PCP_ID" column="PCP_ID" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Relationship_No" column="Relationship_No" />
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="PCP_Name" column="PCP_Name" />
+    <property name="PCP_NPI" column="PCP_NPI" />
+    <property name="Deductible_Met_So_Far" column="Deductible_Met_So_Far" />
+  </class>
+</hibernate-mapping>

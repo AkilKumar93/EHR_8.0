@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ActivityLog, Acurus.Capella.Core" table="activity_log" lazy="true">
+    <id name="Id" column="Activity_Log_ID">
+      <generator class="identity" />
+    </id>   
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Activity_Type" column="Activity_Type" />
+    <property name="Activity_Date_And_Time" column="Activity_Date_And_Time" />
+    <property name="Sent_To" column="Sent_To" />
+    <property name="Subject" column="Subject" />
+    <property name="Message" column="Message" />
+    <property name="From_Address" column="From_Address" />
+    <property name="Role" column="Role" />
+    <property name="Encrypted_Message" column="Encrypted_Message" />
+    <property name="Activity_By" column="Activity_By" />
+    <property name="Fax_Sender_Name" column="Fax_Sender_Name" />
+    <property name="Fax_Recipient_Name" column="Fax_Recipient_Name" />
+    <property name="Fax_Sender_Company" column="Fax_Sender_Company" />
+    <property name="Fax_Recipient_Company" column="Fax_Recipient_Company" />
+    <property name="Fax_Sender_Number" column="Fax_Sender_Number" />
+    <property name="Fax_Recipient_Number" column="Fax_Recipient_Number" />
+    <property name="Fax_File_Path" column="Fax_File_Path" />
+    <property name="Fax_Status" column="Fax_Status" />
+    <property name="Fax_Recipient_Category" column="Fax_Recipient_Category" />
+    <property name="Fax_Priority" column="Fax_Priority" />
+    <property name="Fax_Cover_Page_Template_Name" column="Fax_Cover_Page_Template_Name" />
+    <property name="Error_Description" column="Error_Description" />
+    <property name="Is_Pdf_Moved" column="Is_Pdf_Moved" />
+    <property name="Group_ID" column="Group_ID" />
+    <property name="Fax_Sent_File_Path" column="Fax_Sent_File_Path" />    
+  </class>
+</hibernate-mapping>

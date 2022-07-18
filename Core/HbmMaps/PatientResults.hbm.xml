@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PatientResults, Acurus.Capella.Core" table="patient_results" lazy="true">
+    <id name="Id" column="Patient_Results_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Loinc_Identifier" column="Loinc_Identifier" />
+    <property name="Loinc_Observation" column="Loinc_Observation" />
+    <property name="Abnormal_Flags" column="Abnormal_Flags" />
+    <property name="Value" column="Value" />
+    <property name="Units" column="Units" />
+    <property name="Reference_Range" column="Reference_Range" />
+    <property name="Vitals_Group_ID" column="Vitals_Group_ID" />
+    <property name="Notes" column="Notes" />
+    <!--<property name="Vitals_Taken_Date" column="Vitals_Taken_Date" />-->
+    <property name="Captured_date_and_time" column="Captured_date_and_time" />
+    <property name="Results_Type" column="Results_Type" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Acurus_Result_Code" column="Acurus_Result_Code" />
+    <property name="Acurus_Result_Description" column="Acurus_Result_Description" />
+    <property name="Result_Master_ID" column="Result_Master_ID" />
+    <property name="Result_OBX_ID" column="Result_OBX_ID" />
+    <property name="Is_Sent_to_Rcopia" column="Is_Sent_to_Rcopia" />
+    <property name="Snomed_Code" column="Snomed_Code" />
+    <!--<property name="Reason_For_Not_Performed" column="Reason_For_Not_Performed" />-->
+
+    
+
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.OrdersQuestionSetAOE, Acurus.Capella.Core" table="orders_question_set_aoe" lazy="true">
+    <id name="Id" column="Orders_Question_Set_AOE_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="AOE_Question" column="AOE_Question" />
+    <property name="AOE_Value" column="AOE_Value" />
+    <property name="Orders_ID" column="Orders_ID" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="AOE_Identifier" column="AOE_Identifier" />
+<property name="Order_Code" column="Order_Code" />
+  </class>
+
+</hibernate-mapping>

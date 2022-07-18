@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" id="PFSHhtml">
+<head>
+    <title>PFSH</title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: White;
+            z-index: 99;
+            -moz-opacity: 0.8;
+            min-height: 100%;
+            width: 100%;
+        }
+
+        .nav > li > a {
+            padding: 5px 9px !important;
+        }
+
+        ul {
+            margin-top: 4px !important;
+            margin-bottom: 2px !important;
+            height: 32px !important;
+            margin-left: -48px !important;
+        }
+
+        /*.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+            /*background-color: rgb(191, 219, 255) !important;*/
+            /*background-color: rgba(193, 194, 208, 0.98) !important;
+        }*/
+
+        a {
+           
+            color: black !important;
+            
+        }
+
+        .nav-tabs {
+            border-bottom: 0px !important;
+        }
+
+        .container {
+            margin-right: 0px !important;
+            width: 100% !important;
+        }
+
+        select [disabled="disabled"] {
+            border: 1px solid gray;
+            color: Gray;
+            background-color: #dddddd;
+        }
+
+        .ui-dialog-titlebar-close {
+            display: none;
+        }
+
+        .ui-widget {
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+            float: none !important;
+            margin-left: 45px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane button {
+            width: 60px !important;
+        }
+
+        .ui-dialog .ui-dialog-titlebar {
+            padding: 0px !important;
+        }
+
+        /*.ui-dialog .ui-dialog-title {
+            font-size: 12px !important;
+            font-family: Verdana,Arial,sans-serif !important;
+        }*/
+
+        .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+            height: 155px;
+            border: 2px solid;
+            border-radius: 13px;
+            top: 504px !important;
+            left: 568px !important;
+        }
+
+        .disableTab {
+            background-color: #a4a4a4 !important;
+            cursor: default !important;
+        }
+
+        .ui-dialog .ui-dialog-content {
+            min-height: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane {
+            margin-top: -10px !important;
+            /*padding: 0px !important ;*/
+        }
+
+        .ui-widget-content {
+            border: 0px !important;
+        }
+
+        .ui-widget-header, .ui-state-default, ui-button {
+            font-weight: bold !important;
+            font-size: 12px !important;
+            font-family: sans-serif;
+        }
+
+
+        .ui-widget {
+            border: 1px solid #adadad !important;
+            background-color: #F7F7F7;
+        }
+
+        #myTabs {
+            margin-left: 0px !important;
+        }
+    </style>
+    <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />
+      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <script src="JScripts/jquery-1.11.3.min.js"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <script src="JScripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <form id="PFSHfrm">
+        <div style="margin-top:3px;">
+            <label id="lblSourceOfInfo" style="margin-left:5px;font-weight:500!important">Source Of Information</label>
+            <select id="cboSourceOfInformation" style="border: 1px solid #ccc;border-radius: 3px;margin-left: 4px;" runat="server" onchange="EnablePFSH();">
+                <option value="Self">Self</option>
+                <option value="Spouse">Spouse</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Brother">Brother</option>
+                <option value="Sister">Sister</option>
+                <option value="Son">Son</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Aunt">Aunt</option>
+                <option value="Uncle">Uncle</option>
+                <option value="Grand Father">Grand Father</option>
+                <option value="Grand Mother">Grand Mother</option>
+                <option value="Other">Other</option>
+                <option value="Nephew">Nephew</option>
+                <option value="Niece">Niece</option>
+                <option value="Grand Son">Grand Son</option>
+                <option value="Grand Daughter">Grand Daughter</option>
+                <option value="Friend">Friend</option>
+            </select>
+            <input type="text" id="txtSourceOfInformation" style="visibility:hidden;height:20px" />
+            <label id="lblSelectPhysician"  style="margin-left:5px;font-weight:500!important;" hidden="hidden" class="spanstyle">Select Physician</label>
+            <select id="cboPhysician" hidden="hidden" style="width:440px;" onchange="PhysicianSelected(this)"></select>
+            <input type="checkbox" id="chkShowAllPhysician" value="Show All Physician" hidden="hidden" onclick="LoadPhysicianList(this)" /><label id="lblShowAllPhysician" hidden="hidden" style="font-weight:500!important;">Show All Physician</label>
+            <input type="button" class="aspresizedbluebutton" value="PFSH Verified" id="btnPFSHVerified" style="float: right;" />
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" style="padding-left:5px!important;">
+                    <ul class="nav nav-tabs" id="myTabs">
+                        <li class="active tabstyle" id="tabStripPFSH_tbPastMedHis">
+                            <a href="#pastmedHis" data-toggle="tab">Past Medical History</a>
+                        </li>
+                        <li class="tabstyle" id="tabStripPFSH_tbSurgProc">
+                            <a href="#surgproc" data-toggle="tab">Surg./Proc.</a>
+                        </li>
+                        <li class="tabstyle" id="tabStripPFSH_tbHospHis">
+                            <a href="#hospHis" data-toggle="tab">Hospitalization History</a>
+                        </li>
+                        <li class="tabstyle" id="tabStripPFSH_tbFamHis">
+                            <a href="#famHis" data-toggle="tab">Family History</a>
+                        </li>
+                        <li class="tabstyle" id="tabStripPFSH_tbSocialHistory">
+                            <a href="#socialHistory" data-toggle="tab" style="color:#6504d0!important;">Social History</a>
+                        </li>
+                        <!--<li id="tabStripPFSH_tbRxH" class="tabstyle" >
+                            <a href="#RxH" data-toggle="tab">Rx History</a>
+                        </li>-->
+                        <li class="tabstyle" id="tabStripPFSH_tbNdDugAllergy">
+                            <a href="#NdDugAllergy" data-toggle="tab" style="color:#6504d0!important;">Non Drug Allergy</a>
+                        </li>
+                        <!--<li id="tabStripPFSH_tbDA" class="tabstyle">
+                            <a href="#DA" data-toggle="tab">Drug Allergy</a>
+                        </li>-->
+                        <li class="tabstyle" id="tabStripPFSH_tbImmHis">
+                            <a href="#immHis" data-toggle="tab" style="color:#6504d0!important;">Immunization History</a>
+                        </li>
+                        <li class="tabstyle" id="tabStripPFSH_tbAD">
+                            <a href="#ad" data-toggle="tab">AD</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="pastmedHis" data-src="Past_Medical_History.html">
+                            <iframe src="" class="clsIframe" style=" height:600px ; width: 97%;margin-top:-2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                        </div>
+                        <div class="tab-pane" id="surgproc" runat="server" data-src="frmHistorySurgical.aspx">
+                            <iframe src="" class="clsIframe" style=" height: 600px; width: 99%;" width="100%" height="100%" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="hospHis" runat="server" data-src="frmHistoryHospitalization.aspx">
+                            <iframe src="" class="clsIframe" style=" height: 600px; width: 99%;margin-top:-9px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="famHis" runat="server" data-src="frmHistoryFamily.aspx">
+                            <iframe src="" class="clsIframe" style=" height: 600px; width: 99%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="socialHistory" runat="server" data-src="frmHistorySocial.aspx">
+                            <iframe src="" class="clsIframe" style=" height: 600px; width: 101%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <!--<div class="tab-pane" id="RxH" runat="server" data-src="frmRxHistory.aspx">
+                            <iframe src="" class="clsIframe" id="iframeRxHistory" style=" height: 600px; width: 99%" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>-->
+                        <div class="tab-pane" id="NdDugAllergy" runat="server" data-src="frmHistoryNonDrugAllergy.aspx">
+                            <iframe src="" class="clsIframe" style=" height: 600px; width: 99%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <!--<div class="tab-pane" id="DA" runat="server" data-src="HtmlDrugAllergy.html">
+                            <iframe src="" class="clsIframe" style=" height: 600px; width: 104%; margin-left: -15px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>-->
+                        <div class="tab-pane" id="immHis" runat="server" data-src="frmImmunizationHistory.aspx">
+                            <iframe src="" class="clsIframe" style=" height: 632px; width: 99%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="ad" runat="server" data-src="frmOtherHistory.aspx">
+                            <iframe src="" class="clsIframe" style=" height: 600px; width: 99%;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="hdnSocialHistoryMandatory" />
+            <input type="hidden" id="hdntxtOthersValue" />
+            <button type="button" id="btnHiddenPFSH" style="display:none;"></button>
+        </div>
+        <button id="btnClose" onclick="return CloseWnd()" style="margin-left:1085px" class="btn btn-primary aspredbutton aspresizedredbutton ">Close</button>
+    </form>
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSPFSH.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            document.getElementsByTagName('body')[0].appendChild(JSElement);
+        }
+    </script>
+
+</body>
+</html>

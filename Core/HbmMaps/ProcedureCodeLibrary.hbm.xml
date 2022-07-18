@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ProcedureCodeLibrary, Acurus.Capella.Core" table="procedure_code_library" lazy="true">
+    <composite-id>
+      <key-property name="Procedure_Code" column="Procedure_Code"/>
+      <key-property name="Modifier" column="Modifier" />
+    </composite-id>
+    
+    <version name="Version"></version>
+    <property name="Procedure_Description" column="Procedure_Code_Description" />
+    <property name="Procedure_CMN_Req" column="Procedure_CMN_Req" />
+    <property name="Procedure_Type" column="Procedure_Type" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Procedure_Product_Code" column="Procedure_Product_Code" />
+    <property name="CVX_Code" column="CVX_Code" />
+    <property name="Procedure_Charge" column="Procedure_Charge" />
+    <property name="Procedure_Contract_ID" column="Procedure_Contract_ID" />
+    <property name="CVX_Code_Description" column="CVX_Code_Description" />
+    <property name="Procedure_Allowed" column="Procedure_Allowed" />
+    <property name="Procedure_Adjust" column="Procedure_Adjust" />
+
+    <property name="Order_Group_Name" column="Order_Group_Name" />
+    <property name="Sort_Order" column="Sort_Order"></property>
+    <property name="Short_Description" column="Short_Description"></property>
+    <property name="From_Date" column="From_Date" />
+    <property name="To_Date" column="To_Date" />
+    <property name="Is_Active" column="Is_Active" />
+    <property name="Category" column="Category" />
+    <property name="Default_Dose" column="Default_Dose" />
+  </class>
+</hibernate-mapping>
+

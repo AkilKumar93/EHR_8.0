@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.RuleLabResultReminder, Acurus.Capella.Core" table="rule_lab_result_reminder" lazy="true">
+    <id name="Id" column="Rule_Lab_Result_Reminder_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Rule_Master_ID" column="Rule_Master_ID" />
+    <property name="Lab_Result_Name" column="Lab_Result_Name" />
+    <property name="Loinc" column="Loinc" />
+    <property name="Lab_Result_Operator" column="Lab_Result_Operator" />
+    <property name="Value" column="Value" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  </class>
+</hibernate-mapping>

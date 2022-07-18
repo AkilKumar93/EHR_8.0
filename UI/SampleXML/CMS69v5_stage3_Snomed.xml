@@ -1,0 +1,46 @@
+﻿<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="urn:hl7-org:v3"
+ xmlns:voc="urn:hl7-org:v3/voc"
+ xmlns:sdtc="urn:hl7-org:sdtc">
+  <entry>
+    <act classCode="ACT" moodCode="RQO" >
+      <!-- Plan of Care Activity Act template -->
+      <templateId root="2.16.840.1.113883.10.20.22.4.39" extension="2014-06-09"/>
+      <!-- Intervention Order template -->
+      <templateId root="2.16.840.1.113883.10.20.24.3.31" extension="2016-02-01"/>
+      <id root="1.3.6.1.4.1.115" extension="5a394ae26362390456393ee8"/>
+      <code code="" codeSystem="2.16.840.1.113883.6.96"
+      sdtc:valueSet="2.16.840.1.113883.3.600.1.1528">
+        <originalText>Intervention, Order: Below Normal Follow Up</originalText>
+        <translation code="V65.3" codeSystem="2.16.840.1.113883.6.103"/>
+        <translation code="Z71.3" codeSystem="2.16.840.1.113883.6.90"/>
+        <translation code="S9470" codeSystem="2.16.840.1.113883.6.285"/>
+      </code>
+      <text>Intervention, Order: Below Normal Follow Up</text>
+      <statusCode code="active"/>
+      <effectiveTime>
+        <low value=''/>
+        <high value=''/>
+      </effectiveTime>
+      <author>
+        <templateId root="2.16.840.1.113883.10.20.22.4.119"/>
+        <time value=''/>
+        <assignedAuthor>
+          <id root="cb801e08-2859-47a6-bbfa-0a1cc1d0edcc"/>
+        </assignedAuthor>
+      </author>
+      <entryRelationship typeCode="RSON">
+        <observation classCode="OBS" moodCode="EVN">
+          <templateId root="2.16.840.1.113883.10.20.24.3.88" extension="2014-12-01"/>
+          <id root="1.3.6.1.4.1.115" extension="3A7914149F55C2DD5D1AB91C9DF79B80"/>
+          <code code="77301-0" codeSystem="2.16.840.1.113883.6.1" displayName="reason" codeSystemName="LOINC"/>
+          <statusCode code="completed"/>
+          <effectiveTime>
+            <low value=''/>
+          </effectiveTime>
+          <value xsi:type="CD" code="248342006" codeSystem="2.16.840.1.113883.6.96" sdtc:valueSet="2.16.840.1.113883.3.600.2388"/>
+        </observation>
+      </entryRelationship>
+    </act>
+  </entry>
+</ClinicalDocument>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ProblemList, Acurus.Capella.Core" table="problem_list" lazy="true">
+    <id name="Id" column="Problem_List_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Reference_Source" column="Reference_Source" />
+    <property name="ICD" column="ICD" />
+    <property name="Problem_Description" column="Problem_Description" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Status" column="Status" />
+    <property name="Date_Diagnosed" column="Date_Diagnosed" />
+    <property name="Rcopia_ID" column="Rcopia_ID" />
+    <property name="Last_Modified_By" column="Last_Modified_By" />
+    <property name="Last_Modified_Date" column="Last_Modified_Date" />
+    <property name="Is_Active" column="Is_Active" />
+
+    <property name="Version_Year" column="Version_Year" />
+    <property name="ICD_9" column="ICD_9" />
+    <property name="ICD_9_Description" column="ICD_9_Description" />
+    <property name="Resolved_Date" column="Resolved_Date" />
+    <property name="Is_Health_Concern" column="Is_Health_Concern" />
+  </class>
+</hibernate-mapping>

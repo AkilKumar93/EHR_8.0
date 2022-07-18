@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Workset_proc_alloc, Acurus.Capella.Core" table="workset_proc_alloc" lazy="true">
+    <id name="Id" column="Workset_Proc_Alloc_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="DOOS" column="DOOS" />
+    <property name="Batch_Name" column="Batch_Name" />
+    <property name="Process_Name" column="Process_Name" />
+    <property name="Doc_Name" column="Doc_Name" />
+    <property name="Sub_Batch_Range" column="Sub_Batch_Range" />
+    <property name="Doc_Type" column="Doc_Type" />
+    <property name="Doc_Sub_Type" column="Doc_Sub_Type" />
+    <property name="Allocated_To" column="Allocated_To" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" /> 
+  </class>
+</hibernate-mapping>

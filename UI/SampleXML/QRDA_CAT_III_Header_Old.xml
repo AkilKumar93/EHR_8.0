@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xmlns:cda="urn:hl7-org:v3">
+  <!-- QRDA Header -->
+  <realmCode code="US"/>
+  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+  <!-- US Realm Header Template Id -->
+  <templateId root="2.16.840.1.113883.10.20.27.1.1"/>
+  <!-- QRDA templateId -->
+  <templateId root="2.16.840.1.113883.10.20.24.1.1"/>
+  <!-- QDM-based QRDA templateId -->
+  <templateId root="2.16.840.1.113883.10.20.24.1.2"/>
+  <!-- This is the globally unique identifier for this QRDA document -->
+  <id root="5b010313-eff2-432c-9909-6193d8416fac"/>
+  <!-- QRDA document type code -->
+  <code code="55184-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="QRDA Category III Summary report"/>
+  <title>QRDA Category III Calculated Summary report</title>
+  <!-- This is the document creation time -->
+  <!--Acurus-Generated Date and Time-->
+  <effectiveTime value=""/>
+  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+  <languageCode code="eng"/>
+  <!-- reported patient -->
+  <recordTarget>
+    <patientRole>
+      <id nullFlavor="NA"/>
+    </patientRole>
+  </recordTarget>
+  <!-- Example of an author who is a device -->
+  <author>
+    <!--Acurus-Generated Date and Time in the format yyyymmddhhmmss-->
+    <time value=""/>
+    <assignedAuthor>
+      <!--Acurus-Provider NPI from Physician library for the Provider chosen in the Measure Calculator screen-->
+      <id root="2.16.840.1.113883.4.6" extension="" assigningAuthorityName="NPI"/>
+      <assignedPerson>
+        <name>
+          <!--Acurus-Last name of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+          <given></given>
+          <!--Acurus-First of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+          <family></family>
+        </name>
+      </assignedPerson>
+      <representedOrganization>
+        <!-- This is the organization TIN -->
+        <!--Acurus - TIN and name of Chapparal MEdical Group currently hard coded, need to use company concept for live production-->
+        <id root="2.16.840.1.113883.19.5" extension="954292715"/>
+        <name>CHAPPARAL MEDICAL GROUP</name>
+      </representedOrganization>
+    </assignedAuthor>
+  </author>
+  <custodian>
+    <assignedCustodian>
+      <representedCustodianOrganization>
+        <id root="2.16.840.1.113883.19.5"/>
+        <!--Acurus-Take any Company for testing purpose:-->
+        <name>CHAPARRAL MEDICAL GROUP INC</name>
+        <!--Acurus-Telephone # of Chapparal MEdical Group for testing purpose:-->
+        <telecom use="WP" value="111-111-1111"/>
+        <addr>
+          <!--Acurus-Address Line 1 of the CMG for testing purpose:-->
+          <streetAddressLine></streetAddressLine>
+          <city></city>
+          <!--Acurus-City of the CMG for testing purpose:-->
+          <state></state>
+          <!--Acurus-State of the Provider for testing purpose:-->
+          <postalCode></postalCode>
+          <!--Acurus-Zip Code of the Provider for testing purpose:-->
+          <country>US</country>
+        </addr>
+      </representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+  <informationRecipient>
+    <intendedRecipient>
+      <id root="2.16.840.1.113883.3.249.7" extension="CPC"/>
+    </intendedRecipient>
+  </informationRecipient>
+  <legalAuthenticator>
+    <!--Acurus-Generated Date and Time-->
+    <time value=""/>
+    <signatureCode code="S"/>
+    <assignedEntity>
+      <id root="bc01a5d1-3a34-4286-82cc-43eb04c972a7"/>
+      <addr>
+        <!--Acurus-Address Line 1 of the Provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <streetAddressLine></streetAddressLine>
+        <!--Acurus-city of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <city></city>
+        <!--Acurus-State of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <state></state>
+        <!--Acurus-Zip code of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+        <postalCode></postalCode>
+        <country>US</country>
+      </addr>
+      <telecom use="WP" value="111-111-1111"/>
+      <!--Acurus-Phone # of the provider-->
+      <assignedPerson>
+        <name>
+          <!--Acurus-Last name of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+          <given></given>
+          <!--Acurus-First of the provider from Physician library for the Provider chosen in the Measure Calculator screen-->
+          <family></family>
+        </name>
+      </assignedPerson>
+      <representedOrganization>
+        <id root="2.16.840.1.113883.19.5"/>
+        <name>Cypress</name>
+      </representedOrganization>
+    </assignedEntity>
+  </legalAuthenticator>
+  <!-- TODO: This is where the provider information will go.
+       It is currently hard coded, but should be replaced with the providers
+       and the time over which they are performing. -->
+  <documentationOf typeCode="DOC">
+    <serviceEvent classCode="PCPR">
+      <!-- care provision -->
+      <effectiveTime>
+        <!--Acurus-First DOS available in the Encounter table for the provider-->
+        <low value=""/>
+        <!--Acurus-Latest DOS available in the Encounter table for the provider-->
+        <high value=""/>
+      </effectiveTime>
+      <!-- You can include multiple performers, each with an NPI, TIN, CCN. -->
+      <performer typeCode="PRF">
+        <time>
+          <!--Acurus-First DOS available in the Encounter table for the provider-->
+          <low value=""/>
+          <!--Acurus-First DOS available in the Encounter table for the provider-->
+          <high value=""/>
+        </time>
+        <assignedEntity>
+          <!-- This is the provider NPI -->
+          <!--Acurus-Provider NPI from Physician library for the Provider chosen in the Measure Calculator screen-->
+          <id root="2.16.840.1.113883.4.6" extension="" />
+          <representedOrganization>
+            <!-- This is the organization TIN -->
+            <id root="2.16.840.1.113883.4.2" extension="954292715" />
+            <!--Acurus - TIN of Chapparal MEdical Group-->
+            <!-- This is the organization CCN -->
+            <!--This is available only for hospitals
+            <id root="2.16.840.1.113883.4.336" extension="54321" />-->
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+    </serviceEvent>
+  </documentationOf>
+  <component>
+    <structuredBody>
+      <component>
+        <section>
+          <!--Reporting Parameters Section template ID-->
+          <templateId root="2.16.840.1.113883.10.20.17.2.1" />
+          <!-- QRDA Category III Reporting Parameters Section template ID -->
+          <templateId root="2.16.840.1.113883.10.20.27.2.2" />
+          <!--Category III Reporting Parameters (CMS EP) template ID-->
+          <templateId root="2.16.840.1.113883.10.20.27.2.6" />
+          <code code="55187-9" codeSystem="2.16.840.1.113883.6.1" />
+          <title>Reporting Parameters</title>
+          <text>
+            <list>
+              <!--Acurus- IN THE FORMAT Reporting Parameter From dATE and To Date CHOSEN IN MEAsURE CALCULATOR-->
+              <item></item>
+            </list>
+          </text>
+          <entry typeCode="DRIV">
+            <!-- Reporting Parameters Act (CMS EP) -->
+            <act classCode="ACT" moodCode="EVN">
+              <!-- Reporting Parameters Act template ID -->
+              <templateId root="2.16.840.1.113883.10.20.17.3.8"/>
+              <!--Reporting Parameters Act (CMS EP) template ID-->
+              <templateId root="2.16.840.1.113883.10.20.27.3.23"/>
+              <id root="55a43e20-6463-46eb-81c3-9a3a1ad41225"/>
+              <code code="252116004" codeSystem="2.16.840.1.113883.6.96" displayName="Observation Parameters" />
+              <effectiveTime>
+                <!--Acurus- The low value is the start date of the reporting period -->
+                <low value=""/>
+                <!-- Acurus-The high value is the end date of the reporting period -->
+                <high value=""/>
+              </effectiveTime>
+            </act>
+          </entry>
+        </section>
+      </component>
+      <component>
+        <!-- QRDA Category III Measure Section (CMS EP) -->
+        <section>
+          <!-- Measure Section template ID -->
+          <templateId root="2.16.840.1.113883.10.20.24.2.2" />
+          <!-- QRDA Category III Measure Section template ID -->
+          <templateId root="2.16.840.1.113883.10.20.27.2.1" />
+          <!-- QRDA Category III Measure Section (CMS EP) template ID -->
+          <templateId root="2.16.840.1.113883.10.20.24.2.3" />
+          <code code="55186-1" codeSystem="2.16.840.1.113883.6.1"/>
+          <title>Measure Section</title>
+          <text>
+            <table border="1" width="100%">
+              <thead>
+                <tr>
+                  <th>eMeasure Title</th>
+                  <th>Version neutral identifier</th>
+                  <th>Version specific identifier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Children Who Have Dental Decay or Cavities</td>
+                  <td>61947125-4376-4A7B-AB7A-AC2BE9BD9138</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-8F2F5AD054E2</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Controlling High Blood Pressure</td>
+                  <td>ABDC37CC-BAC6-4156-9B91-D1BE2C8B7268</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-66BC02DA4DEE</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Hemoglobin A1c Test for Pediatric Patients</td>
+                  <td>95FB767E-0CB2-4778-B5FF-6BA9A53FA28E</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-61EF9907211D</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Pneumonia Vaccination Status for Older Adults</td>
+                  <td>59657B9B-01BF-4979-A090-8534DA1D0516</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-66A79D4A4A23</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Documentation of Current Medications in the Medical Record</td>
+                  <td>9A032D9C-3D9B-11E1-8634-00237D5BF174</td>
+                  <td>3</td>
+                  <td>40280381-3E93-D1AF-013E-A36090B72CC8</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Preventive Care and Screening: Body Mass Index (BMI) Screening and Follow-Up</td>
+                  <td>9A031BB8-3D9B-11E1-8634-00237D5BF174</td>
+                  <td>2</td>
+                  <td>40280381-3E93-D1AF-013E-D6E2B772150D</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Weight Assessment and Counseling for Nutrition and Physical Activity for Children and Adolescents</td>
+                  <td>0B63F730-25D6-4248-B11F-8C09C66A04EB</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-5D530FD26D47</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Hypertension: Improvement in Blood Pressure</td>
+                  <td>1D8363CE-A529-490B-8C98-9B54AA75DA06</td>
+                  <td>3</td>
+                  <td>40280381-3E93-D1AF-013E-A4CAFFEF4684</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Preventive Care and Screening: Tobacco Use: Screening and Cessation Intervention</td>
+                  <td>E35791DF-5B25-41BB-B260-673337BC44A8</td>
+                  <td>2</td>
+                  <td>40280381-3D61-56A7-013E-5CD94A4D64FA</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </text>
+          <!--acurus- Need to insert the measures-->
+          <CATIIILOAD>
+            
+          </CATIIILOAD>
+        </section>
+      </component>
+    </structuredBody>
+  </component>
+</ClinicalDocument>

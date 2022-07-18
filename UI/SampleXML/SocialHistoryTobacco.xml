@@ -1,0 +1,17 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <entry typeCode="DRIV">
+    <observation classCode="OBS" moodCode="EVN">
+      <!-- ** Tobacco use (V2) ** -->
+      <templateId root="2.16.840.1.113883.10.20.22.4.85"/>
+      <id root="45efb604-7049-4a2e-ad33-d38556c9636c"/>
+      <code code="11367-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName=""/>
+      <statusCode code="completed"/>
+      <effectiveTime>
+        <low value=""/>
+      </effectiveTime>
+      <value xsi:type="CD" code="428071000124103" displayName="" codeSystem="2.16.840.1.113883.6.96"/>
+    </observation>
+  </entry>
+</ClinicalDocument>
+
+

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.FileManagementIndex, Acurus.Capella.Core" table="file_management_index" lazy="true">
+    <id name="Id" column="File_Management_Index_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Document_Date" column="Document_Date" />
+    <property name="Document_Type" column="Doc_Type" />
+    <property name="Document_Sub_Type" column="Doc_Sub_Type" />
+    <property name="File_Path" column="File_Path" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Printed_Date_And_Time" column="Printed_Date_And_Time" />
+    <property name="File_Version" column="File_Version" />
+    <property name="Source" column="Source" />
+    <property name="Relationship" column="Relationship" />
+    <property name="Given_To" column="Given_To" />
+    <property name="Scan_Index_Conversion_ID" column="Scan_Index_Conversion_ID" />
+    <property name="Order_ID" column="Order_ID" />
+    <property name="Result_Master_ID" column="Result_Master_ID" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Workset_ID" column="Workset_ID" />
+    <property name="Appointment_Date" column="Appointment_Date" />
+    <property name="Facility_Name" column="Facility_Name" />
+    <property name="Appointment_Provider_ID" column="Appointment_Provider_ID" />
+    <property name="Document_To_Date" column="Document_To_Date" />
+    <property name="Generate_Link_File_Path" column="Generate_Link_File_Path" />
+    <property name="Exam_Photos_Notes" column="Exam_Photos_Notes" />
+    <property name="Is_Delete" column="Is_Delete" />
+    <property name="Batch_Status" column="Batch_Status" />
+  </class>
+</hibernate-mapping>

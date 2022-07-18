@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PreventiveScreenLookup, Acurus.Capella.Core" table="preventive_screening_lookup" lazy="true">
+    <id name="Id" column="Preventive_Screening_Lookup_ID">
+      <generator class="identity" />
+    </id>
+
+    <property name="Field_Name" column="Field_Name" not-null="true" />
+    <property name="Value" column="Value" not-null="true" />
+    <property name="Sort_Order" column="Sort_Order" not-null="true" />
+    <property name="Parent_Preventive_Screen_Lookup_ID" column="Parent_Preventive_Screening_Lookup_ID" not-null="true" />
+    <property name="Options" column="Options" not-null="true" />
+    <property name="Status" column="Status" not-null="true" />
+    <property name="Depending_Value" column="Depending_Value" not-null="true" />
+    <property name="Description" column="Description" not-null="true" />
+  </class>
+</hibernate-mapping>

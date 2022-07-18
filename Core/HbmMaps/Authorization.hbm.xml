@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Authorization, Acurus.Capella.Core" table="authorization" lazy="true">
+    <id name="Id" column="Authorization_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Authorization_No" column="Authorization_No" />
+    <property name="Valid_From_Date" column="Valid_From_Date" />
+    <property name="Valid_To_Date" column="Valid_To_Date" />
+    <property name="Insurance_Plan_ID" column="Insurance_Plan_ID" />    
+    <property name="Payer_Name" column="Payer_Name" />
+    <property name="Insurance_Plan_Name" column="Insurance_Plan_Name" />
+    <property name="PCP_ID" column="PCP_ID" />
+    <property name="PCP_Name" column="PCP_Name" />
+    <property name="Referred_To_Provider" column="Referred_To_Provider" />
+    <property name="Referred_From_Provider" column="Referred_From_Provider" />
+    <property name="Authorization_Category" column="Authorization_Category" />
+    <property name="Referred_To_Facility" column="Referred_To_Facility" />
+    <property name="POS" column="POS" />
+    <property name="Authorization_Notes" column="Authorization_Notes" />
+    <property name="ICD1" column="ICD1" />
+    <property name="ICD2" column="ICD2" />
+    <property name="ICD3" column="ICD3" />
+    <property name="ICD4" column="ICD4" />
+    <property name="ICD5" column="ICD5" />
+    <property name="ICD6" column="ICD6" />
+    <property name="ICD7" column="ICD7" />
+    <property name="ICD8" column="ICD8" />
+    <property name="ICD9" column="ICD9" />
+    <property name="ICD10" column="ICD10" />
+    <property name="ICD11" column="ICD11" />
+    <property name="ICD12" column="ICD12" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  
+    <!-- 
+    <property name="Encounter_ID" column="Encounter_ID" /> 
+    <property name="CPT_Code" column="CPT_Code" />
+    <property name="CPT_Description" column="CPT_Description" />
+    <property name="Status" column="Status" />
+   
+    <property name="Approved_Quantity" column="Approved_Quantity" />
+    <property name="Comments" column="Comments" />
+    <property name="ICD" column="ICD" />
+    <property name="ICD_Description" column="ICD_Description" />
+   
+   
+    <property name="Referred_To_Facility" column="Referred_To_Facility" />
+    <property name="Referred_To_Specialty" column="Referred_To_Specialty" />
+  
+    <property name="Auth_No" column="Auth_No" />
+    <property name="From_Date" column="From_Date" />
+    <property name="To_Date" column="To_Date" />
+    <property name="Number_Of_Visits_Requested" column="Number_Of_Visits_Requested" />
+    <property name="Number_Of_Visits_Approved" column="Number_Of_Visits_Approved" />
+    <property name="Number_Of_Visits_Used" column="Number_Of_Visits_Used" />
+   
+    <property name="Request_Date" column="Request_Date" />
+    <property name="Authorization_Status" column="Authorization_Status" />   
+    <property name="Is_Active" column="Is_Active" />
+    <property name="Auth_Type" column="Auth_Type" />
+    <property name="Number_Of_Visits_Used_Temp" column="Number_Of_Visits_Used_Temp" />
+    <property name="Appointment_Date" column="Appointment_Date" />
+    <property name="Is_Current_Appointment" column="Is_Current_Appointment" />
+    -->
+  </class>
+</hibernate-mapping>
+

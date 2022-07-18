@@ -1,0 +1,16 @@
+<entry typeCode ="DRIV">
+<act classCode="ACT" moodCode="EVN">
+ <templateId root="2.16.840.1.113883.10.20.1.30" />
+<templateId root="2.16.840.1.113883.10.20.1.30" />
+<code displayName="Documentation procedure" code="23745001"  codeSystem="2.16.840.1.113883.6.96" />
+<statusCode code="completed" />
+ <entryRelationship typeCode="RSON" inversionInd="false">
+<act classCode="ACT" moodCode="EVN">
+ <templateId root="2.16.840.1.113883.10.20.1.30" />
+<id root="2.16.840.1.113883.10.20.1.30" />
+<code displayName="Transfer of care" code="308292007"  codeSystem="2.16.840.1.113883.6.96" />
+ <statusCode code="completed" />
+</act>
+ </entryRelationship>
+ </act>
+   </entry>

@@ -1,0 +1,58 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <entry typeCode="DRIV">
+    <act classCode="ACT" moodCode="EVN">
+      <!-- ** Allergy Concern Act (V3) ** -->
+      <templateId root="2.16.840.1.113883.10.20.22.4.30" extension="2015-08-01"/>
+      <!--Critical Change-->
+      <templateId root="2.16.840.1.113883.10.20.22.4.30"/>
+      <id root="36e3e930-7b15-11db-9fe1-0800200c9a66"/>
+      <code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+      <!-- The statusCode represents the need to continue tracking the allergy -->
+      <!-- This is of ongoing concern to the provider -->
+      <statusCode code="active"/>
+      <effectiveTime>
+        <!-- The low value represents when the allergy was first recorded in the patient's chart -->
+        <low nullFlavor="NA"/>
+      </effectiveTime>
+      <entryRelationship typeCode="SUBJ">
+        <!-- using negationInd="true" to signify that there are is NO food allergy (disorder) allergy -db -->
+        <observation classCode="OBS" moodCode="EVN" negationInd="true">
+          <!-- ** Allergy observation (V2) ** -->
+          <templateId root="2.16.840.1.113883.10.20.22.4.7" extension="2014-06-09"/>
+          <templateId root="2.16.840.1.113883.10.20.22.4.7"/>
+          <id root="4adc1020-7b16-11db-9fe1-0800200c9a66"/>
+          <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+          <statusCode code="completed"/>
+          <effectiveTime nullFlavor="NA"/>
+          <!-- We cannot use the No known Food Allergy value/@code 429625007 
+									required by the test data as it is not part of the valueSet required 
+									(Allergy/Adverse Event Type 2.16.840.1.113883.3.88.12.3221.6.2 DYNAMIC CONF:1098-7390 -db -->
+          <!--
+									<value xsi:type="CD" code="429625007"
+										displayName="No known Food Allergy"
+										codeSystem="2.16.840.1.113883.6.96"
+										codeSystemName="SNOMED-CT">
+										<originalText>
+											<reference value="#reaction1"/>
+										</originalText>
+									</value>
+									-->
+          <!-- using Food allergy (disorder) along with negationInd instead -db -->
+          <value xsi:type="CD" code="419199007"
+            displayName="Allergy to substance (disorder)"
+            codeSystem="2.16.840.1.113883.6.96"
+            codeSystemName="SNOMED-CT">
+          </value>
+          <!-- In C-CDA R2 the participant is required. The SNOMED code ="105590001" displayName="Substance" could be used in the participant-->
+          <participant typeCode="CSM">
+            <participantRole classCode="MANU">
+              <playingEntity classCode="MMAT">
+                <code nullFlavor="NA"/>
+              </playingEntity>
+            </participantRole>
+          </participant>
+        </observation>
+      </entryRelationship>
+    </act>
+  </entry>
+</ClinicalDocument>

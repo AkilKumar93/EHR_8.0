@@ -1,0 +1,61 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <entry typeCode="DRIV">
+    <!-- Problem Concern Act pg 444, 445-->
+    <act classCode="ACT" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
+      <templateId root="2.16.840.1.113883.10.20.22.4.3" extension="2015-08-01"/>
+      <id root="36e3e930-7b14-11db-9fe1-0800200c9a66"/>
+      <code code="CONC" codeSystem="2.16.840.1.113883.5.6"/>
+      <statusCode code=""/>
+      <effectiveTime>
+        <low value=""/>
+      </effectiveTime>
+      <entryRelationship typeCode="SUBJ">
+        <!--Problem Observation pg 446-->
+        <observation classCode="OBS" moodCode="EVN" negationInd="true">
+          <templateId root="2.16.840.1.113883.10.20.22.4.4"/>
+          <templateId root="2.16.840.1.113883.10.20.22.4.4" extension="2015-08-01"/>
+          <id root="d11275e7-67ae-11db-bd13-0800200c9a66"/>
+          <code code="409586006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Complaint">
+            <translation code="75321-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Clinical finding"/>
+          </code>
+          <text></text>
+          <statusCode code="completed"/>
+          <effectiveTime>
+            <low value=""/>
+            <high value=""/>
+          </effectiveTime>
+          <value xsi:type="CD" code="" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName=""/>
+
+          <entryRelationship typeCode="SUBJ" inversionInd="true">
+            <!--Age Observation pg 297-->
+            <observation classCode="OBS" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.31"/>
+              <code code="445518008" codeSystem="2.16.840.1.113883.6.96"/>
+              <statusCode code="completed"/>
+              <value xsi:type="PQ" value="" unit="a" />
+            </observation>
+          </entryRelationship>
+          <entryRelationship typeCode="REFR">
+            <!--Problem Status pg 451-->
+            <observation classCode="OBS" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.6"/>
+              <code code="33999-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Status"/>
+              <statusCode code="completed"/>
+              <value xsi:type="CD" code="55561003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="active"/>
+            </observation>
+          </entryRelationship>
+          <entryRelationship typeCode="REFR">
+            <!--Health Status pg 368-->
+            <observation classCode="OBS" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.5"/>
+              <code code="11323-3" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health status"/>
+              <statusCode code="completed"/>
+              <value xsi:type="CD" code="313386006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="In Remission"/>
+            </observation>
+          </entryRelationship>
+        </observation>
+      </entryRelationship>
+    </act>
+  </entry>
+</ClinicalDocument>

@@ -1,0 +1,780 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>PreventiveScreenPlan</title>
+    <link href="CSS/style.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+    <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
+    <style>
+        td {
+            text-align: left;
+            padding: 8px 8px 4px 8px !important;
+            border-top: 0px !important;
+        }
+
+        th {
+            background-color: lightblue;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        i {
+            background: #6DABF7;
+            padding: 5px 8px 5px 8px;
+            font-size: 10px;
+            color: #fff;
+            margin: 2px;
+        }
+
+        label {
+            font-weight: lighter !important;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        textarea {
+            width: 93%;
+            height: 45px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            resize: none;
+            margin-left: 12px;
+            margin-top: 5px;
+        }
+
+        .glyphicon {
+            vertical-align: top;
+            margin-top: 2.75%;
+            padding: 5px;
+            background-color: #0693ad;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .txtarea {
+            width: 38%;
+            position: relative !important;
+            /*padding-top: 10px;
+               padding-left: 9px;*/
+        }
+
+        .SelectStyle {
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 154px;
+        }
+
+        .lbl {
+            width: 420px;
+            font-size: small;
+            color: black;
+            font-family: sans-serif;
+            text-wrap: normal;
+            margin-left: -29px;
+        }
+
+        .panel-heading {
+            background-color: #DEEAB5 !important;
+            padding: 2px 10px !important;
+            color: black !important;
+            font-weight: 700 !important;
+            height: 30px !important;
+            width: 100% !important;
+            text-shadow: rgb(207, 228, 207) -1px 0px, rgb(207, 228, 207) 0px 1px, rgb(207, 228, 207) 1px 0px, rgb(207, 228, 207) 0px -1px !important;
+            font-family: sans-serif !important;
+            font-size: 17px !important;
+            font-variant: small-caps !important;
+            border: 0px !important;
+        }
+
+        .panel-info {
+            border: 0px !important;
+        }
+
+        .panel {
+            /* margin-bottom: 20px; */
+            background-color: #fff;
+            border: 0px solid transparent !important;
+        }
+
+        li:hover {
+            background-color: #DEF;
+        }
+    </style>
+    <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />
+</head>
+<body onload="LoadPage();">
+    <div style="display:block;width:100%;border:1px solid white">
+        <table style="width:100%;">
+            <thead style="width:100%;">
+                <tr style="border-bottom: 0px solid white;width:100%;height:34px;">
+                    <th style="width: 44%;border-right: 2px solid white;">
+                        <b style="text-align: center">Preventive Screening Services</b>
+                    </th>
+                    <th style="width: 18%; text-align: center;border-right: 2px solid white;">
+                        <b>Status</b>
+                    </th>
+                    <th style="text-align: center; width: 50%;border-right: 2px solid white;">
+                        <b>Recommendations</b>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="mainContainer" style="display:block;height:495px;width:99%;overflow-y:auto;border-bottom: double lightblue;margin-left:5px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">Age Related Services</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients 50 yrs and older: Flexible Sigmoidoscopy within the last 5 years/Colonoscopy within the last 10 years/Fecal occult blood in within the last 12 months" style="color:black;">Patients 50 yrs and older: Flexible Sigmoidoscopy within the last 5 years/Colonoscopy within the last 10 years/Fecal occult blood in within the last 12 months</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients 50 yrs and older: Flexible Sigmoidoscopy within the last 5 years/Colonoscopy within the last 10 years/Fecal occult blood in within the last 12 months" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd4" name="preventive_service_value-Patients 50 yrs and older: Flexible Sigmoidoscopy within the last 5 years/Colonoscopy within the last 10 years/Fecal occult blood in within the last 12 months" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Patients 50 yrs and older: Flexible Sigmoidoscopy within the last 5 years/Colonoscopy within the last 10 years/Fecal occult blood in within the last 12 months', 'txtRecomnd4');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients 60 years and older:Pneumococcal Vaccine ever?" style="color:black;">Patients 60 years and older:Pneumococcal Vaccine ever?</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients 60 years and older:Pneumococcal Vaccine ever?" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd5" name="preventive_service_value-Patients 60 years and older:Pneumococcal Vaccine ever?" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Patients 60 years and older:Pneumococcal Vaccine ever?', 'txtRecomnd5');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients 65 yrs and older:Asked if they have urinary problems / incontinence and advised or refer as appropriate" style="color:black;">Patients 65 yrs and older:Asked if they have urinary problems / incontinence and advised or refer as appropriate</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients 65 yrs and older:Asked if they have urinary problems / incontinence and advised or refer as appropriate" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd6" name="preventive_service_value-Patients 65 yrs and older:Asked if they have urinary problems / incontinence and advised or refer as appropriate" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Patients 65 yrs and older:Asked if they have urinary problems / incontinence and advised or refer as appropriate', 'txtRecomnd6');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients 65 yrs and older:Test for glaucoma by ophthalmologist or optometrist" style="color:black;">Patients 65 yrs and older:Test for glaucoma by ophthalmologist or optometrist</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients 65 yrs and older:Test for glaucoma by ophthalmologist or optometrist" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd7" name="preventive_service_value-Patients 65 yrs and older:Test for glaucoma by ophthalmologist or optometrist" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Patients 65 yrs and older:Test for glaucoma by ophthalmologist or optometrist', 'txtRecomnd7');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info FEMALE">
+            <div class="panel-heading">Female Only</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblBone density test 6 months after hip fracture or on medication to treat or prevent osteoporosis" style="color:black;">Bone density test 6 months after hip fracture or on medication to treat or prevent osteoporosis</label>
+                        </td>
+                        <td>
+                            <select id="cboBone density test 6 months after hip fracture or on medication to treat or prevent osteoporosis" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd8" name="preventive_service_value-Bone density test 6 months after hip fracture or on medication to treat or prevent osteoporosis" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Bone density test 6 months after hip fracture or on medication to treat or prevent osteoporosis', 'txtRecomnd8');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblWomen over 50-74 yrs : Mammogram within the last 12 months" style="color:black;">Women over 50-74 yrs : Mammogram within the last 12 months</label>
+                        </td>
+                        <td>
+                            <select id="cboWomen over 50-74 yrs : Mammogram within the last 12 months" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd9" name="preventive_service_value-Women over 50-74 yrs : Mammogram within the last 12 months" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Women over 50-74 yrs : Mammogram within the last 12 months', 'txtRecomnd9');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblWomen 65 yrs or older:Bone Density Test (from age 65 and after)" style="color:black;">Women 65 yrs or older:Bone Density Test (from age 65 and after)</label>
+                        </td>
+                        <td>
+                            <select id="cboWomen 65 yrs or older:Bone Density Test (from age 65 and after)" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd10" name="preventive_service_value-Women 65 yrs or older:Bone Density Test (from age 65 and after)" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Women 65 yrs or older:Bone Density Test (from age 65 and after)', 'txtRecomnd10');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Member With Cardiovascular Disease</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients with cardiovascular conditions.Lab test for LDL-C within the last 12 months" style="color:black;">Patients with cardiovascular conditions.Lab test for LDL-C within the last 12 months</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients with cardiovascular conditions.Lab test for LDL-C within the last 12 months" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd11" name="preventive_service_value-Patients with cardiovascular conditions.Lab test for LDL-C within the last 12 months" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Patients with cardiovascular conditions.Lab test for LDL-C within the last 12 months', 'txtRecomnd11');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients with cardiovascular conditions.Most current LDL-C value within the last 12 months is <100mg/dL" style="color:black;">Patients with cardiovascular conditions.Most current LDL-C value within the last 12 months is &lt;100mg/dL</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients with cardiovascular conditions.Most current LDL-C value within the last 12 months is <100mg/dL" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd12" name="preventive_service_value-Patients with cardiovascular conditions.Most current LDL-C value within the last 12 months is <100mg/dL" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this, 'preventive_service_value-Patients with cardiovascular conditions.Most current LDL-C value within the last 12 months is <100mg/dL', 'txtRecomnd12');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblHospitalized and discharged with diagnosis of AMI within the last 12 months:On beta blockers for at least 6 months from discharge" style="color:black;">Hospitalized and discharged with diagnosis of AMI within the last 12 months:On beta blockers for at least 6 months from discharge</label>
+                        </td>
+                        <td>
+                            <select id="cboHospitalized and discharged with diagnosis of AMI within the last 12 months:On beta blockers for at least 6 months from discharge" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd13" name="preventive_service_value-Hospitalized and discharged with diagnosis of AMI within the last 12 months:On beta blockers for at least 6 months from discharge" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Hospitalized and discharged with diagnosis of AMI within the last 12 months:On beta blockers for at least 6 months from discharge', 'txtRecomnd13');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Member with Diabetes</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblLab test for HbA1c within the last 12 months" style="color:black;">Lab test for HbA1c within the last 12 months</label>
+                        </td>
+                        <td>
+                            <select id="cboLab test for HbA1c within the last 12 months" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd14" name="preventive_service_value-Lab test for HbA1c within the last 12 months" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Lab test for HbA1c within the last 12 months', 'txtRecomnd14');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblMost current HbA1c value within the last 12 months is <8.0" style="color:black;">Most current HbA1c value within the last 12 months is <8.0</label>
+                        </td>
+                        <td>
+                            <select id="cboMost current HbA1c value within the last 12 months is <8.0" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd15" name="preventive_service_value-Most current HbA1c value within the last 12 months is <8.0" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Most current HbA1c value within the last 12 months is <8.0', 'txtRecomnd15');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblRetinal eye exam within the last 12 months" style="color:black;">Retinal eye exam within the last 12 months</label>
+                        </td>
+                        <td>
+                            <select id="cboRetinal eye exam within the last 12 months" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd16" name="preventive_service_value-Retinal eye exam within the last 12 months" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Retinal eye exam within the last 12 months', 'txtRecomnd16');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblLab test for LDL-C within the last 12 months" style="color:black;">Lab test for LDL-C within the last 12 months</label>
+                        </td>
+                        <td>
+                            <select id="cboLab test for LDL-C within the last 12 months" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd17" name="preventive_service_value-Lab test for LDL-C within the last 12 months" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Lab test for LDL-C within the last 12 months', 'txtRecomnd17');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblMost current  LDL-C within the last 12 months is <100mg/dL" style="color:black;">Most current  LDL-C within the last 12 months is &lt;100mg/dL</label>
+                        </td>
+                        <td>
+                            <select id="cboMost current  LDL-C within the last 12 months is <100mg/dL" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd18" name="preventive_service_value-Most current  LDL-C within the last 12 months is <100mg/dL" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Most current  LDL-C within the last 12 months is <100mg/dL', 'txtRecomnd18');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblMicroalbumin test within the last 12 months OR patient on ACE or ARB currently" style="color:black;">Microalbumin test within the last 12 months OR patient on ACE or ARB currently</label>
+                        </td>
+                        <td>
+                            <select id="cboMicroalbumin test within the last 12 months OR patient on ACE or ARB currently" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd19" name="preventive_service_value-Microalbumin test within the last 12 months OR patient on ACE or ARB currently" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Microalbumin test within the last 12 months OR patient on ACE or ARB currently', 'txtRecomnd19');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblMed.Adherence Diabetes Medications (PDC)" style="color:black;">Med.Adherence Diabetes Medications (PDC)</label>
+                        </td>
+                        <td>
+                            <select id="cboMed.Adherence Diabetes Medications (PDC)" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd20" name="preventive_service_value-Med.Adherence Diabetes Medications (PDC)" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Med.Adherence Diabetes Medications (PDC)', 'txtRecomnd20');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Members with Hypertension</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblMost current BP  is" style="color:black;">Most current BP  is</label>
+                        </td>
+                        <td>
+                            <select id="cboMost current BP  is" class="combo SelectStyle">
+                                <option> </option>
+                                <option> &lt;140/90-Yes</option>
+                                <option> &lt;140/90-No</option>
+                                <option> &lt;150/90-Yes</option>
+                                <option> &lt;150/90-No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd21" name="preventive_service_value-Most current BP  is" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Most current BP  is', 'txtRecomnd21');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblMed.Adherence Hypertension ACEI/ARB (PDC)" style="color:black;">Med.Adherence Hypertension ACEI/ARB (PDC)</label>
+                        </td>
+                        <td>
+                            <select id="cboMed.Adherence Hypertension ACEI/ARB (PDC)" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option>No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd22" name="preventive_service_value-Med.Adherence Hypertension ACEI/ARB (PDC)" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Med.Adherence Hypertension ACEI/ARB (PDC)', 'txtRecomnd22');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Member with Rheumatoid Arthritis</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients with diagnoses of RA trial of (DMARDs)" style="color:black;">Patients with diagnoses of RA trial of (DMARDs)</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients with diagnoses of RA trial of (DMARDs)" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd24" name="preventive_service_value-Patients with diagnoses of RA trial of (DMARDs)" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Patients with diagnoses of RA trial of (DMARDs)', 'txtRecomnd24');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Members with COPD</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblHas a spirometry test to confirm diagnosis" style="color:black;">Has a spirometry test to confirm diagnosis</label>
+                        </td>
+                        <td>
+                            <select id="cboHas a spirometry test to confirm diagnosis" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd25" name="preventive_service_value-Has a spirometry test to confirm diagnosis" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Has a spirometry test to confirm diagnosis', 'txtRecomnd25');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Members on Certain Medications</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients on ACE Inhibitor or ARBs/ OR Diuretics for 6 months or more: have these labs within the last 12 months:Bun; Creatinine; Potassium" style="color:black;">Patients on ACE Inhibitor or ARBs/ OR Diuretics for 6 months or more: have these labs within the last 12 months:Bun; Creatinine; Potassium</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients on ACE Inhibitor or ARBs/ OR Diuretics for 6 months or more: have these labs within the last 12 months:Bun; Creatinine; Potassium" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd1" name="preventive_service_value-Patients on ACE Inhibitor or ARBs/ OR Diuretics for 6 months or more: have these labs within the last 12 months:Bun; Creatinine; Potassium" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick=" callweb(this,'preventive_service_value-Patients on ACE Inhibitor or ARBs/ OR Diuretics for 6 months or more: have these labs within the last 12 months:Bun; Creatinine; Potassium', 'txtRecomnd1');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatients on Anticonvulsants for 6 months or more should have a  blood level of that medication" style="color:black;">Patients on Anticonvulsants for 6 months or more should have a  blood level of that medication</label>
+                        </td>
+                        <td>
+                            <select id="cboPatients on Anticonvulsants for 6 months or more should have a  blood level of that medication" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd2" name="preventive_service_value-Patients on Anticonvulsants for 6 months or more should have a  blood level of that medication" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick=" callweb(this,'preventive_service_value-Patients on Anticonvulsants for 6 months or more should have a  blood level of that medication', 'txtRecomnd2');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblPatient with Atrial Fibrillation on Anticoagulants" style="color:black;">Patient with Atrial Fibrillation on Anticoagulants</label>
+                        </td>
+                        <td>
+                            <select id="cboPatient with Atrial Fibrillation on Anticoagulants" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd3" name="preventive_service_value-Patient with Atrial Fibrillation on Anticoagulants" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick=" callweb(this,'preventive_service_value-Patient with Atrial Fibrillation on Anticoagulants', 'txtRecomnd3');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Member with Dyslipidemia</div>
+            <div>
+                <table style="width:100%;height:87%;">
+                    <tr style="width:100%;height:75%;">
+                        <td class="lbl" style="width:445px;">
+                            <label id="lblMed.Adherence Cholesterol Statins(PDC)" style="color:black;">Med.Adherence Cholesterol Statins(PDC)</label>
+                        </td>
+                        <td>
+                            <select id="cboMed.Adherence Cholesterol Statins(PDC)" class="combo SelectStyle">
+                                <option> </option>
+                                <option>Yes</option>
+                                <option> No</option>
+                            </select>
+                        </td>
+                        <td class="txtarea">
+                            <textarea class="actcmpt" id="txtRecomnd23" name="preventive_service_value-Med.Adherence Cholesterol Statins(PDC)" textmode="MultiLine" style="position: static;font-family: Microsoft Sans Serif; font-size: 8.5pt;" maxlength="32767"></textarea>
+                            <div class="col-6-btns" style=" width: 24px;float: right !important;margin-right: -7px;margin-top: 10px; ">
+                                <a class=" fa fa-plus" style="margin-left: -1px;margin-right: -1px;text-decoration:none;    padding: 4px 4px 4px 4px !important; background: #6DABF7; color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="callweb(this,'preventive_service_value-Med.Adherence Cholesterol Statins(PDC)', 'txtRecomnd23');">
+                                </a>
+                            </div>
+                        </td>
+                        <td style="display:none">
+                            <label class="lblversion"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    &nbsp;
+    <div class="row" style="padding: 0px 5px 15px 5px !important;border-bottom:0px !important">
+        <div class="col-md-6" style="margin-left:10px">
+            <input type="checkbox" id="chkSystem" onclick="chkSystem_CheckedChanged()" /><span style="font-size: small">All other Preventive Screening are discussed and found to be No</span>
+        </div>
+        <div class="col-md-6" style="width:400px;margin-left:80px">
+            <input type="button" class="btn btn-primary" id="btnCopyPrevious" value="Copy Previous Plan" onclick="CopyPreviousPreventiveScreenPlan();" style="width:150px;padding-left:10px;padding-top:5px" />
+
+            <input type="button" class="btn btn-success" id="btnSave" value="Save" style="width: 100px;padding-top:5px" onclick="SavePreventiveScreenPlan();" />
+
+            <input type="button" class="btn btn-danger" id="btnClearAll" value="Clear All" onclick="Clear();" style="width: 100px;padding-top:5px" />
+        </div>
+    </div>
+    <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+    <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
+    <!--<script type='text/javascript' src="JavaScriptSpellCheck/include.js"></script>-->
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSPreventiveScreenPlan.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            document.getElementsByTagName('body')[0].appendChild(JSElement);
+        }
+    </script>
+</body>
+</html>

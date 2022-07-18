@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.AddException, Acurus.Capella.Core" table="Exception" lazy="true">
+    <id name="Id" column="Exception_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Parent_Object_ID" column="Parent_Object_ID" />
+    <property name="DOOS" column="DOOS" />
+    <property name="Batch_Name" column="Batch_Name" />
+    <property name="Sub_Batch_Range" column="Sub_Batch_Range" />
+    <property name="Doc_Name" column="Doc_Name" />
+    <property name="Patient_Name" column="Patient_Name" />
+    <property name="DOS" column="DOS" />
+    <property name="Procedure_Code" column="Procedure_Code" />
+    <property name="Page_Number" column="Page_Number" />
+    <property name="Account_Number" column="Account_Number" />
+    <property name="Field_Name" column="Field_Name" />
+    <property name="Exc_Sub_Category" column="Exc_Sub_Category" />
+    <property name="Exc_Category" column="Exc_Category" />
+    <!--<property name="Issues" column="Issues" />
+    <property name="Raised_By" column="Raised_By" />
+    <property name="Reviewed_By" column="Reviewed_By" />
+    <property name="Review_Feedback" column="Review_Feedback" />
+    <property name="Feedback_From_Client" column="Feedback_From_Client" />
+    <property name="Feedback_By" column="Feedback_By" />-->
+    <property name="Status_Date" column="Status_Date" />
+    <property name="Chk_Int_War_No" column="Chk_Int_War_No" />
+    <property name="WorkSetAmt" column="WorkSetAmt" />
+    <property name="Secondary_Insurance" column="Secondary_Insurance" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Feedback_Date" column="Feedback_Date" />
+    <property name="Group_ID" column="Group_ID" />
+    <property name="Billed_Charge" column="Billed_Charge" />
+    <property name="Insurance_Name" column="Insurance_Name" />
+    <property name="Reason_Code" column="Reason_Code" />
+    <property name="Client_Category" column="Client_Category" />
+    <property name="Client_Sub_Category" column="Client_Sub_Category" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Facility_Name" column="Facility_Name" />
+    <property name="Charge_Header_ID" column="Charge_Header_ID" />
+    <property name="Modifier" column="Modifier" />
+    <property name="Denial_Category" column="Denial_Category" />
+    <property name="Denial_Date" column="Denial_Date" />
+    <property name="Contact_Person" column="Contact_Person" />
+    <property name="Internal_Reference_ID" column="Internal_Reference_ID" />
+    <property name="Comments_Message_ID" column="Comments_Message_ID" />
+    <property name="Review_Comments_Message_ID" column="Review_Comments_Message_ID" />
+    <property name="Internal_Response_Message_ID" column="Internal_Response_Message_ID" />
+    <property name="Client_Response_Message_ID" column="Client_Response_Message_ID" />
+    <property name="Tertiary_Insurance" column="Tertiary_Insurance" />
+    <property name="Charge_Line_Item_ID" column="Charge_Line_Item_ID" />
+    <property name="EOB_Claim_ID" column="EOB_Claim_ID" />
+    <property name="Reason_Sub_Code" column="Reason_Sub_Code" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Batch_Human_Map_ID" column="Batch_Human_Map_ID" />
+    
+  </class>
+</hibernate-mapping>

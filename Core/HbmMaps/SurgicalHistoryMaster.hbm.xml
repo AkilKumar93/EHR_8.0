@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.SurgicalHistoryMaster, Acurus.Capella.Core" table="surgical_history_master" lazy="true">
+    <id name="Id" column="Surgical_History_Master_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Surgery_Name" column="Surgery_Name" />
+    <property name="Date_Of_Surgery" column="Date_Of_Surgery" />
+    <property name="Description" column="Description" />
+    <property name="Is_Present" column="Is_Present" />
+    <property name="Is_Deleted" column="Is_Deleted" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.FamilyDiseaseMaster, Acurus.Capella.Core" table="family_history_disease_master" lazy="true">
+    <id name="Id" column="Family_History_Disease_Master_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Family_History_ID" column="Family_History_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Disease" column="Disease" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Recodes" column="Recodes" />
+    <property name="Family_History_Master_ID" column="Family_History_Master_ID" />
+    
+  </class>
+</hibernate-mapping>

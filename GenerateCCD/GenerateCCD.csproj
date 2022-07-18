@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0CA37093-52CC-4995-8F55-7FFE8239841B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Acurus.Capella.GenerateCCD</RootNamespace>
+    <AssemblyName>Acurus.Capella.GenerateCCD</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>Acurus.Capella.GenerateCCD.Program</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="itextsharp, Version=5.0.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="mysql.data, Version=5.0.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\mysql.data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HL7Generator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilityManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="bin\Release\Acurus.Capella.GenerateCCD.exe.config" />
+    <None Include="bin\Release\Acurus.Capella.GenerateCCD.vshost.exe.config" />
+    <None Include="bin\Release\Acurus.Capella.GenerateCCD.vshost.exe.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\DataAccess\hibernate.cfg.xml">
+      <Link>bin\Debug\hibernate.cfg.xml</Link>
+    </Content>
+    <Content Include="bin\Debug\itextsharp.dll" />
+    <Content Include="bin\Debug\SampleXML\AllergyEntry.txt" />
+    <Content Include="bin\Debug\SampleXML\Allergy_Entry.xml" />
+    <Content Include="bin\Debug\SampleXML\BMI_CDT_Stage3_CAT1.xml" />
+    <Content Include="bin\Debug\SampleXML\CarePlan.xml" />
+    <Content Include="bin\Debug\SampleXML\Care_Plan_Sample.xml" />
+    <Content Include="bin\Debug\SampleXML\CatIII_Stage3_Measeure_Header_count.xml" />
+    <Content Include="bin\Debug\SampleXML\CCD_Sample.xml" />
+    <Content Include="bin\Debug\SampleXML\CCR.xsl" />
+    <Content Include="bin\Debug\SampleXML\CDA.xsl" />
+    <Content Include="bin\Debug\SampleXML\ClinicalInstruction.txt" />
+    <Content Include="bin\Debug\SampleXML\CMS122Stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS125Stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS127Stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS127v1_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS138Stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS138v1_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS147Stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS148v1_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS155v1_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS165stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS165v1_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS22Stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS65v2_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS68v2_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS68v6Stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS69Stage3_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS69v1_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CMS75v1_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\CognitiveFunction.xml" />
+    <Content Include="bin\Debug\SampleXML\CognitiveFunction_DP.xml" />
+    <Content Include="bin\Debug\SampleXML\Current_Medications_CAT_I_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\Current_Medications_CAT_I_Stage3_I.xml" />
+    <Content Include="bin\Debug\SampleXML\Current_Medications_CAT_I_Stage3_II_NullFlvr.xml" />
+    <Content Include="bin\Debug\SampleXML\Current_Smoker.xml" />
+    <Content Include="bin\Debug\SampleXML\Denominator.xml" />
+    <Content Include="bin\Debug\SampleXML\DenominatorStage3.xml" />
+    <Content Include="bin\Debug\SampleXML\Denominator_Exception.xml" />
+    <Content Include="bin\Debug\SampleXML\Denominator_ExceptionStage3.xml" />
+    <Content Include="bin\Debug\SampleXML\Denominator_Exclusion.xml" />
+    <Content Include="bin\Debug\SampleXML\Denominator_ExclusionStage3.xml" />
+    <Content Include="bin\Debug\SampleXML\Encounter.xml" />
+    <Content Include="bin\Debug\SampleXML\EncounterDiagnosis.xml" />
+    <Content Include="bin\Debug\SampleXML\Encounter_Section_CAT_I.xml" />
+    <Content Include="bin\Debug\SampleXML\Encounter_Section_CAT_I_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\Encounter_Section_Mammogram.xml" />
+    <Content Include="bin\Debug\SampleXML\Encounter_Section_Mammogram.xml.xml" />
+    <Content Include="bin\Debug\SampleXML\Ethinicity_Supplement.xml" />
+    <Content Include="bin\Debug\SampleXML\FacetoFace.xml" />
+    <Content Include="bin\Debug\SampleXML\FindAndReplace.ascx" />
+    <Content Include="bin\Debug\SampleXML\FunctionalStatus.xml" />
+    <Content Include="bin\Debug\SampleXML\Goals.xml" />
+    <Content Include="bin\Debug\SampleXML\Goal_Section.xml" />
+    <Content Include="bin\Debug\SampleXML\HealthConcern.xml" />
+    <Content Include="bin\Debug\SampleXML\HealthConcern_Careplan.xml" />
+    <Content Include="bin\Debug\SampleXML\Health_Status_Evaluation.xml" />
+    <Content Include="bin\Debug\SampleXML\Health_Status_Evaluation_Last_Entry_Section.xml" />
+    <Content Include="bin\Debug\SampleXML\Immunization.txt" />
+    <Content Include="bin\Debug\SampleXML\Immunization.xml" />
+    <Content Include="bin\Debug\SampleXML\Implant.xml" />
+    <Content Include="bin\Debug\SampleXML\Instructions.xml" />
+    <Content Include="bin\Debug\SampleXML\Intervention.xml" />
+    <Content Include="bin\Debug\SampleXML\IPP.xml" />
+    <Content Include="bin\Debug\SampleXML\IPPStage3.xml" />
+    <Content Include="bin\Debug\SampleXML\Medication.xml" />
+    <Content Include="bin\Debug\SampleXML\MedicationAdministration.xml" />
+    <Content Include="bin\Debug\SampleXML\MedicationEntry.txt" />
+    <Content Include="bin\Debug\SampleXML\Medication_Admin_Pneu_Vac.xml" />
+    <Content Include="bin\Debug\SampleXML\Medication_Admin_Pneu_Vac_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\MentalStatus.xml" />
+    <Content Include="bin\Debug\SampleXML\Numerator.xml" />
+    <Content Include="bin\Debug\SampleXML\NumeratorStage3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_BMI_Cat1_Stag3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_BMI_Diet_CatI_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_BMI_ICD_CATI_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Contoll_HBP_Exclusion_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_controlling_BP_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Dental Carries.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Diabetes.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Diagnosis Active.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_HB1AC_CMS_122_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_HB1AC_LOINC_STAGE3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_HBP_Followup_CMS22_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_High_BP_Followup_Snomed_Stage3.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Lab result.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Phy Exam_Finding_BMI.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Physical Exam_Finding_BP_Diastolic.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Physical Exam_Finding_BP_Systolic.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_PREGNANCY.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_PREGNANCY_DX.xml" />
+    <Content Include="bin\Debug\SampleXML\OBS_Tobacco use.xml" />
+    <Content Include="bin\Debug\SampleXML\Payer_Supplement.xml" />
+    <Content Include="bin\Debug\SampleXML\Plan.xml" />
+    <Content Include="bin\Debug\SampleXML\Problem.xml" />
+    <Content Include="bin\Debug\SampleXML\ProblemEntry.txt" />
+    <Content Include="bin\Debug\SampleXML\Procedure Performed _current med_documented.xml" />
+    <Content Include="bin\Debug\SampleXML\ProcedureEntry.txt" />
+    <Content Include="bin\Debug\SampleXML\ProcedurePerformed.xml" />
+    <Content Include="bin\Debug\SampleXML\Procedures.xml" />
+    <Content Include="bin\Debug\SampleXML\Procedure_Activity_Act.xml" />
+    <Content Include="bin\Debug\SampleXML\QRDAStage3_CAT_III_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\QRDA_CAT_III_Header.xml" />
+    <Content Include="bin\Debug\SampleXML\QRDA_CAT_III_Header_Old.xml" />
+    <Content Include="bin\Debug\SampleXML\Race_Supplement.xml" />
+    <Content Include="bin\Debug\SampleXML\ReasonforReferral.xml" />
+    <Content Include="bin\Debug\SampleXML\ReasonForVisit.txt" />
+    <Content Include="bin\Debug\SampleXML\Reference_Obs.xml" />
+    <Content Include="bin\Debug\SampleXML\Reporting Stratum.xml" />
+    <Content Include="bin\Debug\SampleXML\Reporting Stratum1.xml" />
+    <Content Include="bin\Debug\SampleXML\Result.xml" />
+    <Content Include="bin\Debug\SampleXML\ResultEntry.txt" />
+    <Content Include="bin\Debug\SampleXML\Sex_Supplement.xml" />
+    <Content Include="bin\Debug\SampleXML\SocialHistory.txt" />
+    <Content Include="bin\Debug\SampleXML\SocialHistory.xml" />
+    <Content Include="bin\Debug\SampleXML\SocialHistoryTobacco.xml" />
+    <Content Include="bin\Debug\SampleXML\staticlookup.xml" />
+    <Content Include="bin\Debug\SampleXML\Substance administration.xml" />
+    <Content Include="bin\Debug\SampleXML\Test.txt" />
+    <Content Include="bin\Debug\SampleXML\Tobbacco.xml" />
+    <Content Include="bin\Debug\SampleXML\TreatmentPlan.xml" />
+    <Content Include="bin\Debug\SampleXML\Unilateral_Mastectomy.xml" />
+    <Content Include="bin\Debug\SampleXML\Vitals.txt" />
+    <Content Include="bin\Debug\SampleXML\VitalSign.xml" />
+    <Content Include="bin\Debug\SampleXML\XML Master Template.xml" />
+    <Content Include="bin\Debug\SampleXML\XML Master Template_Stage3Measure.xml" />
+    <Content Include="bin\itextsharp.dll" />
+    <Content Include="bin\Release\Acurus.Capella.Core.dll" />
+    <Content Include="bin\Release\Acurus.Capella.Core.pdb" />
+    <Content Include="bin\Release\Acurus.Capella.DataAccess.dll" />
+    <Content Include="bin\Release\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Release\Acurus.Capella.DataAccess.XmlSerializers.dll" />
+    <Content Include="bin\Release\Acurus.Capella.GenerateCCD.exe" />
+    <Content Include="bin\Release\Acurus.Capella.GenerateCCD.pdb" />
+    <Content Include="bin\Release\Acurus.Capella.GenerateCCD.vshost.exe" />
+    <Content Include="bin\Release\Antlr3.Runtime.dll" />
+    <Content Include="bin\Release\Iesi.Collections.dll" />
+    <Content Include="bin\Release\itextsharp.dll" />
+    <Content Include="bin\Release\log4net.dll" />
+    <Content Include="bin\Release\NHibernate.dll" />
+    <Content Include="SampleXML\AllergyEntry.txt" />
+    <Content Include="SampleXML\Allergy_Entry.xml" />
+    <Content Include="SampleXML\BMI_CDT_Stage3_CAT1.xml" />
+    <Content Include="SampleXML\CarePlan.xml" />
+    <Content Include="SampleXML\Care_Plan_Sample.xml" />
+    <Content Include="SampleXML\CatIII_Stage3_Measeure_Header_count.xml" />
+    <Content Include="SampleXML\CCD_Sample.xml" />
+    <Content Include="SampleXML\CCR.xsl" />
+    <Content Include="SampleXML\CDA.xsl" />
+    <Content Include="SampleXML\ClinicalInstruction.txt" />
+    <Content Include="SampleXML\CMS122Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS125Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS127Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS127v1_Header.xml" />
+    <Content Include="SampleXML\CMS138Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS138v1_Header.xml" />
+    <Content Include="SampleXML\CMS147Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS148v1_Header.xml" />
+    <Content Include="SampleXML\CMS155v1_Header.xml" />
+    <Content Include="SampleXML\CMS165stage3_Header.xml" />
+    <Content Include="SampleXML\CMS165v1_Header.xml" />
+    <Content Include="SampleXML\CMS22Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS65v2_Header.xml" />
+    <Content Include="SampleXML\CMS68v2_Header.xml" />
+    <Content Include="SampleXML\CMS68v6Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS69Stage3_Header.xml" />
+    <Content Include="SampleXML\CMS69v1_Header.xml" />
+    <Content Include="SampleXML\CMS75v1_Header.xml" />
+    <Content Include="SampleXML\CognitiveFunction.xml" />
+    <Content Include="SampleXML\CognitiveFunction_DP.xml" />
+    <Content Include="SampleXML\Current_Medications_CAT_I_Stage3.xml" />
+    <Content Include="SampleXML\Current_Medications_CAT_I_Stage3_I.xml" />
+    <Content Include="SampleXML\Current_Medications_CAT_I_Stage3_II_NullFlvr.xml" />
+    <Content Include="SampleXML\Current_Smoker.xml" />
+    <Content Include="SampleXML\Denominator.xml" />
+    <Content Include="SampleXML\DenominatorStage3.xml" />
+    <Content Include="SampleXML\Denominator_Exception.xml" />
+    <Content Include="SampleXML\Denominator_ExceptionStage3.xml" />
+    <Content Include="SampleXML\Denominator_Exclusion.xml" />
+    <Content Include="SampleXML\Denominator_ExclusionStage3.xml" />
+    <Content Include="SampleXML\Encounter.xml" />
+    <Content Include="SampleXML\EncounterDiagnosis.xml" />
+    <Content Include="SampleXML\Encounter_Section_CAT_I.xml" />
+    <Content Include="SampleXML\Encounter_Section_CAT_I_Stage3.xml" />
+    <Content Include="SampleXML\Encounter_Section_Mammogram.xml" />
+    <Content Include="SampleXML\Encounter_Section_Mammogram.xml.xml" />
+    <Content Include="SampleXML\Ethinicity_Supplement.xml" />
+    <Content Include="SampleXML\FacetoFace.xml" />
+    <Content Include="SampleXML\FindAndReplace.ascx" />
+    <Content Include="SampleXML\FunctionalStatus.xml" />
+    <Content Include="SampleXML\Goals.xml" />
+    <Content Include="SampleXML\Goal_Section.xml" />
+    <Content Include="SampleXML\HealthConcern.xml" />
+    <Content Include="SampleXML\HealthConcern_Careplan.xml" />
+    <Content Include="SampleXML\Health_Status_Evaluation.xml" />
+    <Content Include="SampleXML\Health_Status_Evaluation_Last_Entry_Section.xml" />
+    <Content Include="SampleXML\Immunization.txt" />
+    <Content Include="SampleXML\Immunization.xml" />
+    <Content Include="SampleXML\Implant.xml" />
+    <Content Include="SampleXML\Instructions.xml" />
+    <Content Include="SampleXML\Intervention.xml" />
+    <Content Include="SampleXML\IPP.xml" />
+    <Content Include="SampleXML\IPPStage3.xml" />
+    <Content Include="SampleXML\Medication.xml" />
+    <Content Include="SampleXML\MedicationAdministration.xml" />
+    <Content Include="SampleXML\MedicationEntry.txt" />
+    <Content Include="SampleXML\Medication_Admin_Pneu_Vac.xml" />
+    <Content Include="SampleXML\Medication_Admin_Pneu_Vac_Stage3.xml" />
+    <Content Include="SampleXML\MentalStatus.xml" />
+    <Content Include="SampleXML\Numerator.xml" />
+    <Content Include="SampleXML\NumeratorStage3.xml" />
+    <Content Include="SampleXML\OBS_BMI_Cat1_Stag3.xml" />
+    <Content Include="SampleXML\OBS_BMI_Diet_CatI_Stage3.xml" />
+    <Content Include="SampleXML\OBS_BMI_ICD_CATI_Stage3.xml" />
+    <Content Include="SampleXML\OBS_Contoll_HBP_Exclusion_Stage3.xml" />
+    <Content Include="SampleXML\OBS_controlling_BP_Stage3.xml" />
+    <Content Include="SampleXML\OBS_Dental Carries.xml" />
+    <Content Include="SampleXML\OBS_Diabetes.xml" />
+    <Content Include="SampleXML\OBS_Diagnosis Active.xml" />
+    <Content Include="SampleXML\OBS_HB1AC_CMS_122_Stage3.xml" />
+    <Content Include="SampleXML\OBS_HB1AC_LOINC_STAGE3.xml" />
+    <Content Include="SampleXML\OBS_HBP_Followup_CMS22_Stage3.xml" />
+    <Content Include="SampleXML\OBS_High_BP_Followup_Snomed_Stage3.xml" />
+    <Content Include="SampleXML\OBS_Lab result.xml" />
+    <Content Include="SampleXML\OBS_Phy Exam_Finding_BMI.xml" />
+    <Content Include="SampleXML\OBS_Physical Exam_Finding_BP_Diastolic.xml" />
+    <Content Include="SampleXML\OBS_Physical Exam_Finding_BP_Systolic.xml" />
+    <Content Include="SampleXML\OBS_PREGNANCY.xml" />
+    <Content Include="SampleXML\OBS_PREGNANCY_DX.xml" />
+    <Content Include="SampleXML\OBS_Tobacco use.xml" />
+    <Content Include="SampleXML\Payer_Supplement.xml" />
+    <Content Include="SampleXML\Plan.xml" />
+    <Content Include="SampleXML\Problem.xml" />
+    <Content Include="SampleXML\ProblemEntry.txt" />
+    <Content Include="SampleXML\Procedure Performed _current med_documented.xml" />
+    <Content Include="SampleXML\ProcedureEntry.txt" />
+    <Content Include="SampleXML\ProcedurePerformed.xml" />
+    <Content Include="SampleXML\Procedures.xml" />
+    <Content Include="SampleXML\Procedure_Activity_Act.xml" />
+    <Content Include="SampleXML\QRDAStage3_CAT_III_Header.xml" />
+    <Content Include="SampleXML\QRDA_CAT_III_Header.xml" />
+    <Content Include="SampleXML\QRDA_CAT_III_Header_Old.xml" />
+    <Content Include="SampleXML\Race_Supplement.xml" />
+    <Content Include="SampleXML\ReasonforReferral.xml" />
+    <Content Include="SampleXML\ReasonForVisit.txt" />
+    <Content Include="SampleXML\Reference_Obs.xml" />
+    <Content Include="SampleXML\Reporting Stratum.xml" />
+    <Content Include="SampleXML\Reporting Stratum1.xml" />
+    <Content Include="SampleXML\Result.xml" />
+    <Content Include="SampleXML\ResultEntry.txt" />
+    <Content Include="SampleXML\Sex_Supplement.xml" />
+    <Content Include="SampleXML\SocialHistory.txt" />
+    <Content Include="SampleXML\SocialHistory.xml" />
+    <Content Include="SampleXML\SocialHistoryTobacco.xml" />
+    <Content Include="SampleXML\Substance administration.xml" />
+    <Content Include="SampleXML\Test.txt" />
+    <Content Include="SampleXML\Tobbacco.xml" />
+    <Content Include="SampleXML\TreatmentPlan.xml" />
+    <Content Include="SampleXML\Unilateral_Mastectomy.xml" />
+    <Content Include="SampleXML\Vitals.txt" />
+    <Content Include="SampleXML\VitalSign.xml" />
+    <Content Include="SampleXML\XML Master Template.xml" />
+    <Content Include="SampleXML\XML Master Template_Stage3Measure.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{e18e1ac7-9fa4-4753-b45a-befdfb6f3d6f}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{243f40a0-a885-45be-9f4e-f4e48d76c11a}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

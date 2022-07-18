@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.OrdersQuestionSetAfp, Acurus.Capella.Core" table="orders_question_set_afp" lazy="true">
+    <id name="Id" column="Orders_Question_Set_AFP_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"></version>
+    <property name="Order_ID" column="Order_ID" />
+    <property name="Insulin_Dependent" column="Insulin_Dependent" />
+    <property name="Gestational_Age_Weeks" column="Gestational_Age_Weeks" />
+    <property name="Gestational_Age_Days" column="Gestational_Age_Days" />
+    <property name="Gestational_Age_Decimal_Form" column="Gestational_Age_Decimal_Form" />
+    <property name="Gestational_Age_Date_Of_Calculation" column="Gestational_Age_Date_Of_Calculation" />
+    <property name="GA_Calculation_Method_LMP" column="GA_Calculation_Method_LMP" />
+    <property name="LMP_Date" column="LMP_Date" />
+    <property name="GA_Calculation_Method_Ultrasound" column="GA_Calculation_Method_Ultrasound" />
+    <property name="Ultrasound_Date" column="Ultrasound_Date" />
+    <property name="GA_Calculation_Method_EDD_EDC" column="GA_Calculation_Method_EDD_EDC" />
+    <property name="EDD_EDC_Date" column="EDD_EDC_Date" />
+    <property name="Number_Of_Fetuses" column="Number_Of_Fetuses" />
+    <property name="Routine_Screening" column="Routine_Screening" />
+    <property name="Previous_Neural_Tube_Defects" column="Previous_Neural_Tube_Defects" />
+    <property name="Advanced_Maternal_Age" column="Advanced_Maternal_Age" />
+    <property name="History_Of_Down_Syndrome" column="History_Of_Down_Syndrome" />
+    <property name="History_Of_Cystic_Fibrosis" column="History_Of_Cystic_Fibrosis" />
+    <property name="Other_Indications" column="Other_Indications" />
+    <property name="Additional_Information" column="Additional_Information" />
+    <property name="Previously_Elevated_AFP" column="Previously_Elevated_AFP" />
+    <property name="Reason_For_Repeat_Early_GA" column="Reason_For_Repeat_Early_GA" />
+    <property name="Reason_For_Repeat_Hemolyzed" column="Reason_For_Repeat_Hemolyzed" />
+    <property name="Ultrasound_Measurement_Crown_Rump_Length" column="Ultrasound_Measurement_Crown_Rump_Length" />
+    <property name="Ultrasound_Measurement_Crown_Rump_Length_Date" column="Ultrasound_Measurement_Crown_Rump_Length_Date" />
+    <property name="Ultrasound_Measurement_Crown_Rump_Length_For_Twin_B" column="Ultrasound_Measurement_Crown_Rump_Length_For_Twin_B" />
+    <property name="Nuchal_Translucency" column="Nuchal_Translucency" />
+    <property name="Nuchal_Translucency_For_Twin_B" column="Nuchal_Translucency_For_Twin_B" />
+    <property name="Donor_Egg" column="Donor_Egg" />
+    <property name="Age_Of_Egg_Donor" column="Age_Of_Egg_Donor" />
+    <property name="Prior_Down_Syndrome_ONTD_Screening_On_Current_Pregnancy" column="Prior_Down_Syndrome_ONTD_Screening_On_Current_Pregnancy" />
+    <property name="Prior_First_Trimester_Testing" column="Prior_First_Trimester_Testing" />
+    <property name="Prior_Second_Trimester_Testing" column="Prior_Second_Trimester_Testing" />
+    <property name="FHX_NTD" column="FHX_NTD" />
+    <property name="Prior_Pregnancy_With_Down_Syndrome" column="Prior_Pregnancy_With_Down_Syndrome" />
+    <property name="Chorionicity_Monochorionic" column="Chorionicity_Monochorionic" />
+    <property name="Chorionicity_Dichorionic" column="Chorionicity_Dichorionic" />
+    <property name="Chorionicity_Unknown" column="Chorionicity_Unknown" />
+    <property name="Sonographer_Last_Name" column="Sonographer_Last_Name" />
+    <property name="Sonographer_First_Name" column="Sonographer_First_Name" />
+    <property name="Sonographer_ID_Number" column="Sonographer_ID_Number" />
+    <property name="Credentialed_By_NTQR" column="Credentialed_By_NTQR" />
+    <property name="Credentialed_By_FMF" column="Credentialed_By_FMF" />
+    <property name="Credentialed_By_Other_Organization" column="Credentialed_By_Other_Organization" />
+    <property name="Site_Number" column="Site_Number" />
+    <property name="Reading_Physician_ID" column="Reading_Physician_ID" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  </class>
+
+</hibernate-mapping>

@@ -1,0 +1,533 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{243F40A0-A885-45BE-9F4E-F4E48D76C11A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Acurus.Capella.DataAccess</RootNamespace>
+    <AssemblyName>Acurus.Capella.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.1.0.39271, Culture=neutral, PublicKeyToken=3a9cab8f8d22bfb7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RequiredDLLs\NHibernate\Required_Bins\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RequiredDLLs\NHibernate\Required_Bins\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="LinFu.DynamicProxy, Version=1.0.3.14911, Culture=neutral, PublicKeyToken=62a6874124340d6e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RequiredDLLs\NHibernate\Required_For_LazyLoading\LinFu\LinFu.DynamicProxy.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RequiredDLLs\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="mysql.data, Version=5.0.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\mysql.data.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RequiredDLLs\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.LinFu, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RequiredDLLs\NHibernate\Required_For_LazyLoading\LinFu\NHibernate.ByteCode.LinFu.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RequiredDLLs\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RequiredDLLs\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuditInterceptor.cs" />
+    <Compile Include="ManagerObjects\ABI_ResultsManager.cs" />
+    <Compile Include="ManagerObjects\AccountTransactionArcManager.cs" />
+    <Compile Include="ManagerObjects\AccountTransactionManager.cs" />
+    <Compile Include="ManagerObjects\ActivityLogManager.cs" />
+    <Compile Include="ManagerObjects\AcurusResultsMappingManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManagerObjects\AddendumNotesManager.cs" />
+    <Compile Include="ManagerObjects\AdvanceDirectiveManager.cs" />
+    <Compile Include="ManagerObjects\AdvanceDirectiveMasterManager.cs" />
+    <Compile Include="ManagerObjects\AllICD_9Manager.cs" />
+    <Compile Include="ManagerObjects\All_DrugManager.cs" />
+    <Compile Include="ManagerObjects\AOELookUpManager.cs" />
+    <Compile Include="ManagerObjects\AppointmentLookupManager.cs" />
+    <Compile Include="ManagerObjects\AssessmentManager.cs" />
+    <Compile Include="ManagerObjects\AssessmentVitalsLookupManager.cs" />
+    <Compile Include="ManagerObjects\AssociatedPrimaryICDManager.cs" />
+    <Compile Include="ManagerObjects\AuditLogManager.cs" />
+    <Compile Include="ManagerObjects\AuthorizationEncounterManager.cs" />
+    <Compile Include="ManagerObjects\AuthorizationICDManager.cs" />
+    <Compile Include="ManagerObjects\AuthorizationManager.cs" />
+    <Compile Include="ManagerObjects\AuthorizationProcedureManager.cs" />
+    <Compile Include="ManagerObjects\BlockdaysManager.cs" />
+    <Compile Include="ManagerObjects\CarePlanLookupManager.cs" />
+    <Compile Include="ManagerObjects\CarePlanManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManagerObjects\CarrierManager.cs" />
+    <Compile Include="ManagerObjects\CDSRuleMasterManager.cs" />
+    <Compile Include="ManagerObjects\ChargeHeaderManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManagerObjects\CheckArcManager.cs" />
+    <Compile Include="ManagerObjects\CheckManager.cs" />
+    <Compile Include="ManagerObjects\ChiefComplaintsManager.cs" />
+    <Compile Include="ManagerObjects\ClientManager.cs" />
+    <Compile Include="ManagerObjects\ContextManager.cs" />
+    <Compile Include="ManagerObjects\CorrectedDBEntriesManager.cs" />
+    <Compile Include="ManagerObjects\CreateExceptionManager.cs" />
+    <Compile Include="ManagerObjects\DictationExceptionManager.cs" />
+    <Compile Include="ManagerObjects\DocumentManager.cs" />
+    <Compile Include="ManagerObjects\EandMCodingICDManager.cs" />
+    <Compile Include="ManagerObjects\EAndMCodingManager.cs" />
+    <Compile Include="ManagerObjects\ElementManager.cs" />
+    <Compile Include="ManagerObjects\Eligibility_VerficationManager.cs" />
+    <Compile Include="ManagerObjects\EncounterManager.cs" />
+    <Compile Include="ManagerObjects\ErrorLogManager.cs" />
+    <Compile Include="ManagerObjects\ExaminationManager.cs" />
+    <Compile Include="ManagerObjects\ExamLookupManager.cs" />
+    <Compile Include="ManagerObjects\FacilityManager.cs" />
+    <Compile Include="ManagerObjects\FamilyDiseaseManager.cs" />
+    <Compile Include="ManagerObjects\FamilyDiseaseMasterManager.cs" />
+    <Compile Include="ManagerObjects\FamilyHistoryManager.cs" />
+    <Compile Include="ManagerObjects\FamilyHistoryMasterManager.cs" />
+    <Compile Include="ManagerObjects\FileManagementIndexManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManagerObjects\FinancialClassesManager.cs" />
+    <Compile Include="ManagerObjects\FlowSheetTemplateManager.cs" />
+    <Compile Include="ManagerObjects\GeneralNotesManager.cs" />
+    <Compile Include="ManagerObjects\GrowthChartLookupManager.cs" />
+    <Compile Include="ManagerObjects\HealthcareQuestionnaireManager.cs" />
+    <Compile Include="ManagerObjects\HospitalizationHistoryManager.cs" />
+    <Compile Include="ManagerObjects\HospitalizationHistoryMasterManager.cs" />
+    <Compile Include="ManagerObjects\HumanManager.cs" />
+    <Compile Include="ManagerObjects\Human_TokenManager.cs" />
+    <Compile Include="ManagerObjects\ImmunizationHistoryManager.cs" />
+    <Compile Include="ManagerObjects\ImmunizationManager.cs" />
+    <Compile Include="ManagerObjects\ImmunizationMasterHistoryManager.cs" />
+    <Compile Include="ManagerObjects\ImmunizationSubmissionLogManager.cs" />
+    <Compile Include="ManagerObjects\InHouseProcedureManager.cs" />
+    <Compile Include="ManagerObjects\InsurancePlanManager.cs" />
+    <Compile Include="ManagerObjects\LabCarrierLookUpManager.cs" />
+    <Compile Include="ManagerObjects\LabcorpSettingsManager.cs" />
+    <Compile Include="ManagerObjects\LabInsurancePlanManager.cs" />
+    <Compile Include="ManagerObjects\LabLocationManager.cs" />
+    <Compile Include="ManagerObjects\LabManager.cs" />
+    <Compile Include="ManagerObjects\ManagerBase.cs" />
+    <Compile Include="ManagerObjects\ManagerFactory.cs" />
+    <Compile Include="ManagerObjects\MapFacilityPhysicianManager.cs" />
+    <Compile Include="ManagerObjects\MapPhysicianPhysicianAssitantManager.cs" />
+    <Compile Include="ManagerObjects\MapVitalsPhysicianManager.cs" />
+    <Compile Include="ManagerObjects\MasterTableListManager.cs" />
+    <Compile Include="ManagerObjects\MasterVitalsMananger.cs" />
+    <Compile Include="ManagerObjects\MeasuresRuleMasterManager.cs" />
+    <Compile Include="ManagerObjects\MessageManager.cs" />
+    <Compile Include="ManagerObjects\NonDrugAllergyManager.cs" />
+    <Compile Include="ManagerObjects\NonDrugAllergyMasterManager.cs" />
+    <Compile Include="ManagerObjects\NotificationManager.cs" />
+    <Compile Include="ManagerObjects\ObjectBillingManager.cs" />
+    <Compile Include="ManagerObjects\ObjectManager.cs" />
+    <Compile Include="ManagerObjects\ObjectMasterManager.cs" />
+    <Compile Include="ManagerObjects\ObjectProcessHistoryManager.cs" />
+    <Compile Include="ManagerObjects\OrderCodeLibraryManager.cs" />
+    <Compile Include="ManagerObjects\OrderComponentsManager.cs" />
+    <Compile Include="ManagerObjects\OrdersAssessmentManager.cs" />
+    <Compile Include="ManagerObjects\OrdersManager.cs" />
+    <Compile Include="ManagerObjects\OrdersProblemListManager.cs" />
+    <Compile Include="ManagerObjects\OrdersQuestionSetAfpManager.cs" />
+    <Compile Include="ManagerObjects\OrdersQuestionSetAOEManager.cs" />
+    <Compile Include="ManagerObjects\OrdersQuestionSetBloodLeadManager.cs" />
+    <Compile Include="ManagerObjects\OrdersQuestionSetCytologyManager.cs" />
+    <Compile Include="ManagerObjects\OrdersRequiredFormsManager.cs" />
+    <Compile Include="ManagerObjects\OrdersSubmitManager.cs" />
+    <Compile Include="ManagerObjects\PastMedicalHistoryManager.cs" />
+    <Compile Include="ManagerObjects\PastMedicalHistoryMasterManager.cs" />
+    <Compile Include="ManagerObjects\PatGuarantorManager.cs" />
+    <Compile Include="ManagerObjects\PatientInsuredPlanManager.cs" />
+    <Compile Include="ManagerObjects\PatientNotesManager.cs" />
+    <Compile Include="ManagerObjects\PercentileLookUpManager.cs" />
+    <Compile Include="ManagerObjects\PhysicianICD_9Manager.cs" />
+    <Compile Include="ManagerObjects\PhysicianManager.cs" />
+    <Compile Include="ManagerObjects\PhysicianPatientManager.cs" />
+    <Compile Include="ManagerObjects\PhysicianPatientMasterManager.cs" />
+    <Compile Include="ManagerObjects\PhysicianPOVManager.cs" />
+    <Compile Include="ManagerObjects\PhysicianProcedureManager.cs" />
+    <Compile Include="ManagerObjects\PhysicianResultsManager.cs" />
+    <Compile Include="ManagerObjects\PhysicianSpecialtyManager.cs" />
+    <Compile Include="ManagerObjects\Physician_DrugManager.cs" />
+    <Compile Include="ManagerObjects\PlanCPTFormRequiredManager.cs" />
+    <Compile Include="ManagerObjects\PotentialDiagnosisManager.cs" />
+    <Compile Include="ManagerObjects\PPHeaderArcManager.cs" />
+    <Compile Include="ManagerObjects\PPHeaderManager.cs" />
+    <Compile Include="ManagerObjects\PPLineItemArcManager.cs" />
+    <Compile Include="ManagerObjects\PPLineItemManager.cs" />
+    <Compile Include="ManagerObjects\PQRIManager.cs" />
+    <Compile Include="ManagerObjects\PQRI_DataManager.cs" />
+    <Compile Include="ManagerObjects\PQRI_MeasureManager.cs" />
+    <Compile Include="ManagerObjects\PrescriptionManager.cs" />
+    <Compile Include="ManagerObjects\PreventiveScreenLookupManager.cs" />
+    <Compile Include="ManagerObjects\PreventiveScreenManager.cs" />
+    <Compile Include="ManagerObjects\ProblemListManager.cs" />
+    <Compile Include="ManagerObjects\ProcedureAuthorizationManager.cs" />
+    <Compile Include="ManagerObjects\ProcedureCodeLibraryManager.cs" />
+    <Compile Include="ManagerObjects\ProcedureCodeRuleMasterManager.cs" />
+    <Compile Include="ManagerObjects\ProcessMasterManager.cs" />
+    <Compile Include="ManagerObjects\ProcessScnTabManager.cs" />
+    <Compile Include="ManagerObjects\ProcUserManager.cs" />
+    <Compile Include="ManagerObjects\ProviderReviewTrackerManager.cs" />
+    <Compile Include="ManagerObjects\QuestionnaireLookupManager.cs" />
+    <Compile Include="ManagerObjects\Quest_Lab_Response_LogManager.cs" />
+    <Compile Include="ManagerObjects\Rcopia_AllergyManager.cs" />
+    <Compile Include="ManagerObjects\Rcopia_MedicationManager.cs" />
+    <Compile Include="ManagerObjects\Rcopia_Prescription_ListManager.cs" />
+    <Compile Include="ManagerObjects\Rcopia_SettingsManager.cs" />
+    <Compile Include="ManagerObjects\Rcopia_Update_InfoManager.cs" />
+    <Compile Include="ManagerObjects\ReferralOrderManager.cs" />
+    <Compile Include="ManagerObjects\ReferralOrdersAssessmentManager.cs" />
+    <Compile Include="ManagerObjects\RegisteredNetworkManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManagerObjects\RegistryLogManager.cs" />
+    <Compile Include="ManagerObjects\RequestSentLogManager.cs" />
+    <Compile Include="ManagerObjects\ResponseReceivedLogManager.cs" />
+    <Compile Include="ManagerObjects\ResultLookupManager.cs" />
+    <Compile Include="ManagerObjects\ResultMasterManager.cs" />
+    <Compile Include="ManagerObjects\ResultNTEManager.cs" />
+    <Compile Include="ManagerObjects\ResultOBRManager.cs" />
+    <Compile Include="ManagerObjects\ResultOBXManager.cs" />
+    <Compile Include="ManagerObjects\ResultORCManager.cs" />
+    <Compile Include="ManagerObjects\ResultZEFManager.cs" />
+    <Compile Include="ManagerObjects\ResultZPSManager.cs" />
+    <Compile Include="ManagerObjects\RoomInLookupManager.cs" />
+    <Compile Include="ManagerObjects\ROSManager.cs" />
+    <Compile Include="ManagerObjects\RuleLabResultReminderManager.cs" />
+    <Compile Include="ManagerObjects\RuleMasterManager.cs" />
+    <Compile Include="ManagerObjects\RuleMedicationAndAllergyManager.cs" />
+    <Compile Include="ManagerObjects\RuleMedicationManager.cs" />
+    <Compile Include="ManagerObjects\RuleProblemManager.cs" />
+    <Compile Include="ManagerObjects\ScanManager.cs" />
+    <Compile Include="ManagerObjects\Scan_IndexManager.cs" />
+    <Compile Include="ManagerObjects\ScnTabManager.cs" />
+    <Compile Include="ManagerObjects\SocialHistoryManager.cs" />
+    <Compile Include="ManagerObjects\SocialHistoryMasterManager.cs" />
+    <Compile Include="ManagerObjects\SpirometryManager.cs" />
+    <Compile Include="ManagerObjects\StateManager.cs" />
+    <Compile Include="ManagerObjects\StaticLookupManager.cs" />
+    <Compile Include="ManagerObjects\SurgicalHistoryManager.cs" />
+    <Compile Include="ManagerObjects\SurgicalHistoryMasterManager.cs" />
+    <Compile Include="ManagerObjects\TestLookupManager.cs" />
+    <Compile Include="ManagerObjects\TestManager.cs" />
+    <Compile Include="ManagerObjects\TreatmentPlanManager.cs" />
+    <Compile Include="ManagerObjects\UserLookupManager.cs" />
+    <Compile Include="ManagerObjects\UserManager.cs" />
+    <Compile Include="ManagerObjects\UserScnTabManager.cs" />
+    <Compile Include="ManagerObjects\UserSessionManager.cs" />
+    <Compile Include="ManagerObjects\VaccineAdminProcedureMappingManager.cs" />
+    <Compile Include="ManagerObjects\VaccineInfoStatementManager.cs" />
+    <Compile Include="ManagerObjects\VaccineInfoStatementProcedureManager.cs" />
+    <Compile Include="ManagerObjects\VaccineManufacturerCodesManager.cs" />
+    <Compile Include="ManagerObjects\VisitPaymentArcManager.cs" />
+    <Compile Include="ManagerObjects\VisitPaymentHistoryArcManager.cs" />
+    <Compile Include="ManagerObjects\VisitPaymentHistoryManager.cs" />
+    <Compile Include="ManagerObjects\VisitPaymentManager.cs" />
+    <Compile Include="ManagerObjects\VitalsManager.cs" />
+    <Compile Include="ManagerObjects\WFObjectManager.cs" />
+    <Compile Include="ManagerObjects\WorkFlowManager.cs" />
+    <Compile Include="ManagerObjects\WorkflowTypeMasterManager.cs" />
+    <Compile Include="ManagerObjects\WorksetProcAllocManager.cs" />
+    <Compile Include="NHibernateSession.cs" />
+    <Compile Include="NHibernateSessionManager.cs" />
+    <Compile Include="NHibernateSessionUtility.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RCopiaGenerateXML.cs" />
+    <Compile Include="RCopiaSessionManager.cs" />
+    <Compile Include="RCopiaTransactionManager.cs" />
+    <Compile Include="RCopiaXMLResponseProcess.cs" />
+    <Compile Include="Web References\AuditLogService\Reference.cs" />
+    <Compile Include="Web References\AuditLogService_Testing\Reference.cs" />
+    <Compile Include="Web References\AuditLog_DevService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\AuditLog_TestService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\QuestResultService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\QuestWebServices\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\com.labcorp.www4\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\Acurus.Capella.DataAccess.dll" />
+    <Content Include="bin\Debug\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Release\Acurus.Capella.Core.dll" />
+    <Content Include="bin\Release\Acurus.Capella.Core.pdb" />
+    <Content Include="bin\Release\Acurus.Capella.DataAccess.dll" />
+    <Content Include="bin\Release\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Release\Antlr3.Runtime.dll" />
+    <Content Include="bin\Release\hibernate.cfg.xml" />
+    <Content Include="bin\Release\Iesi.Collections.dll" />
+    <Content Include="bin\Release\Iesi.Collections.xml" />
+    <Content Include="bin\Release\LinFu.DynamicProxy.dll" />
+    <Content Include="bin\Release\log4net.dll" />
+    <Content Include="bin\Release\mysql.data.dll" />
+    <Content Include="bin\Release\NHibernate.ByteCode.LinFu.dll" />
+    <Content Include="bin\Release\NHibernate.ByteCode.LinFu.xml" />
+    <Content Include="bin\Release\NHibernate.dll" />
+    <Content Include="bin\Release\nunit.framework.dll" />
+    <Content Include="bin\Release\nunit.mocks.dll" />
+    <Content Include="hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web References\AuditLogService\ES_AuditLogging.disco" />
+    <Content Include="Web References\AuditLogService_Testing\ES_AuditLogging.disco" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Web References\AuditLogService\ES_AuditLogging.wsdl" />
+    <None Include="Web References\AuditLogService\Reference.map" />
+    <None Include="Web References\AuditLogService_Testing\ES_AuditLogging.wsdl" />
+    <None Include="Web References\AuditLogService_Testing\Reference.map" />
+    <None Include="Web References\AuditLog_DevService\ES_AuditLogging.disco" />
+    <None Include="Web References\AuditLog_TestService\ES_AuditLogging.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://172.18.1.116:180/Audit/ES_AuditLogging.asmx%3fop=InsertAuditLoggingDetails">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AuditLog_DevService\</RelPath>
+      <UpdateFromURL>http://172.18.1.116:180/Audit/ES_AuditLogging.asmx%3fop=InsertAuditLoggingDetails</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Acurus_Capella_DataAccess_AuditLog_DevService_Enterprise_x0020_Audit_x0020_Logging_x0020_Web_x0020_Service</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.101.6:8088/enterprise_services/ES_AuditLogging.asmx%3fop=InsertAuditLoggingDetails">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AuditLog_TestService\</RelPath>
+      <UpdateFromURL>http://192.168.101.6:8088/enterprise_services/ES_AuditLogging.asmx%3fop=InsertAuditLoggingDetails</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Acurus_Capella_DataAccess_AuditLog_TestService_Enterprise_x0020_Audit_x0020_Logging_x0020_Web_x0020_Service</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://cert.hub.care360.com/orders/service%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\QuestWebServices\</RelPath>
+      <UpdateFromURL>https://cert.hub.care360.com/orders/service%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Acurus_Capella_DataAccess_com_care360_hub_cert_OrderService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://cert.hub.care360.com/resultsHub/observations/hl7%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\QuestResultService\</RelPath>
+      <UpdateFromURL>https://cert.hub.care360.com/resultsHub/observations/hl7%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Acurus_Capella_DataAccess_QuestResultService_ResultsService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://www4.labcorp.com/Abn/services/ABNServiceProxy/wsdl/ABNServiceProxy.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\com.labcorp.www4\</RelPath>
+      <UpdateFromURL>https://www4.labcorp.com/Abn/services/ABNServiceProxy/wsdl/ABNServiceProxy.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Acurus_Capella_DataAccess_com_labcorp_www4_ABNServiceProxyService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AuditLog_DevService\ES_AuditLogging.wsdl" />
+    <None Include="Web References\AuditLog_DevService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AuditLog_TestService\ES_AuditLogging.wsdl" />
+    <None Include="Web References\AuditLog_TestService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\QuestResultService\hl7.wsdl" />
+    <None Include="Web References\QuestResultService\HL7ResultsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\QuestResultService\ProviderAccount.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\QuestResultService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\QuestResultService\ResultsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\QuestWebServices\OrderResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\QuestWebServices\OrderSupportServiceResponse1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\QuestWebServices\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\QuestWebServices\service.wsdl" />
+    <None Include="Web References\com.labcorp.www4\AbnResponseType.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\com.labcorp.www4\ABNServiceProxy.wsdl" />
+    <None Include="Web References\com.labcorp.www4\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{E18E1AC7-9FA4-4753-B45A-BEFDFB6F3D6F}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

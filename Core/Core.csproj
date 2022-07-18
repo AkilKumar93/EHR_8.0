@@ -1,0 +1,762 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E18E1AC7-9FA4-4753-B45A-BEFDFB6F3D6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Acurus.Capella.Core</RootNamespace>
+    <AssemblyName>Acurus.Capella.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessBase.cs" />
+    <Compile Include="DomainObjects\ABI_Results.cs" />
+    <Compile Include="DomainObjects\AccountTransaction.cs" />
+    <Compile Include="DomainObjects\AccountTransactionArc.cs" />
+    <Compile Include="DomainObjects\ActivityLog.cs" />
+    <Compile Include="DomainObjects\AcurusResultsMapping.cs" />
+    <Compile Include="DomainObjects\AddendumNotes.cs" />
+    <Compile Include="DomainObjects\AddException.cs" />
+    <Compile Include="DomainObjects\AdvanceDirective.cs" />
+    <Compile Include="DomainObjects\AdvanceDirectiveMaster.cs" />
+    <Compile Include="DomainObjects\Allergy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\AllICD.cs" />
+    <Compile Include="DomainObjects\AllICD_9.cs" />
+    <Compile Include="DomainObjects\AllProcedure.cs" />
+    <Compile Include="DomainObjects\All_Drug.cs" />
+    <Compile Include="DomainObjects\AOELookUp.cs" />
+    <Compile Include="DomainObjects\AppointmentLookup.cs" />
+    <Compile Include="DomainObjects\Assessment.cs" />
+    <Compile Include="DomainObjects\AssessmentVitalsLookup.cs" />
+    <Compile Include="DomainObjects\AssociatedPrimaryICD.cs" />
+    <Compile Include="DomainObjects\AuditLog.cs" />
+    <Compile Include="DomainObjects\Authorization.cs" />
+    <Compile Include="DomainObjects\AuthorizationEncounter.cs" />
+    <Compile Include="DomainObjects\AuthorizationICD.cs" />
+    <Compile Include="DomainObjects\AuthorizationProcedure.cs" />
+    <Compile Include="DomainObjects\Batch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\Blockdays.cs" />
+    <Compile Include="DomainObjects\BodyImageAnnotations.cs" />
+    <Compile Include="DomainObjects\CallLog.cs" />
+    <Compile Include="DomainObjects\CarePlan.cs" />
+    <Compile Include="DomainObjects\CarePlanLookup.cs" />
+    <Compile Include="DomainObjects\Carrier.cs" />
+    <Compile Include="DomainObjects\CDSRuleMaster.cs" />
+    <Compile Include="DomainObjects\ChargeHeader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\ChargeLineItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\Check.cs" />
+    <Compile Include="DomainObjects\CheckArc.cs" />
+    <Compile Include="DomainObjects\ChiefComplaints.cs" />
+    <Compile Include="DomainObjects\Client.cs" />
+    <Compile Include="DomainObjects\Context.cs" />
+    <Compile Include="DomainObjects\DictationData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DictationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\ErrorLog.cs" />
+    <Compile Include="DomainObjects\FamilyDiseaseMaster.cs" />
+    <Compile Include="DomainObjects\FamilyHistoryMaster.cs" />
+    <Compile Include="DomainObjects\HospitalizationHistoryMaster.cs" />
+    <Compile Include="DomainObjects\Human_Token.cs" />
+    <Compile Include="DomainObjects\ICD9ICD10Mapping.cs" />
+    <Compile Include="DomainObjects\ImmunizationMasterHistory.cs" />
+    <Compile Include="DomainObjects\ImmunizationSubmissionLog.cs" />
+    <Compile Include="DomainObjects\InHouseProcedure.cs" />
+    <Compile Include="DomainObjects\LabSettings.cs" />
+    <Compile Include="DomainObjects\Loinc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\MapUserCarrierFacility.cs" />
+    <Compile Include="DomainObjects\MapVitalsPhysician.cs" />
+    <Compile Include="DomainObjects\CorrectedDBEntries.cs" />
+    <Compile Include="DomainObjects\CreateException.cs" />
+    <Compile Include="DomainObjects\Documents.cs" />
+    <Compile Include="DomainObjects\DynamicScreen.cs" />
+    <Compile Include="DomainObjects\EAndMCoding.cs" />
+    <Compile Include="DomainObjects\EandMCodingICD.cs" />
+    <Compile Include="DomainObjects\Exam_Lookup.cs" />
+    <Compile Include="DomainObjects\FieldLookup.cs" />
+    <Compile Include="DomainObjects\FileManagementIndex.cs" />
+    <Compile Include="DomainObjects\FinancialClasses.cs" />
+    <Compile Include="DomainObjects\FlowSheetTemplate.cs" />
+    <Compile Include="DomainObjects\GeneralNotes.cs" />
+    <Compile Include="DomainObjects\GrowthChart_Lookup.cs" />
+    <Compile Include="DomainObjects\Healthcare_Questionnaire.cs" />
+    <Compile Include="DomainObjects\ImmunizationHistory.cs" />
+    <Compile Include="DomainObjects\LabCarrierLookUp.cs" />
+    <Compile Include="DomainObjects\LabInsurancePlan.cs" />
+    <Compile Include="DomainObjects\LabLocationProcedure.cs" />
+    <Compile Include="DomainObjects\MapPhysicianPhysicianAssistant.cs" />
+    <Compile Include="DomainObjects\MasterTableList.cs" />
+    <Compile Include="DomainObjects\MasterVitals.cs" />
+    <Compile Include="DomainObjects\MeasuresRuleMaster.cs" />
+    <Compile Include="DomainObjects\Message.cs" />
+    <Compile Include="DomainObjects\ModifierLibrary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\NonDrugAllergyMaster.cs" />
+    <Compile Include="DomainObjects\Notification.cs" />
+    <Compile Include="DomainObjects\ObjectProcessHistory.cs" />
+    <Compile Include="DomainObjects\ObjectProcessHistoryBilling.cs" />
+    <Compile Include="DomainObjects\ObjectProcessHistoryBillingTemp.cs" />
+    <Compile Include="DomainObjects\OrderCodeLibrary.cs" />
+    <Compile Include="DomainObjects\Orders.cs" />
+    <Compile Include="DomainObjects\OrdersAssessment.cs" />
+    <Compile Include="DomainObjects\OrdersProblemList.cs" />
+    <Compile Include="DomainObjects\OrdersQuestionSetAfp.cs" />
+    <Compile Include="DomainObjects\OrdersQuestionSetAOE.cs" />
+    <Compile Include="DomainObjects\OrdersQuestionSetBloodLead.cs" />
+    <Compile Include="DomainObjects\OrdersQuestionSetCytology.cs" />
+    <Compile Include="DomainObjects\OrderComponents.cs" />
+    <Compile Include="DomainObjects\OrdersRequiredForms.cs" />
+    <Compile Include="DomainObjects\PastMedicalHistoryMaster.cs" />
+    <Compile Include="DomainObjects\PatGuarantor.cs" />
+    <Compile Include="DomainObjects\PatientNotes.cs" />
+    <Compile Include="DomainObjects\PatientResults.cs" />
+    <Compile Include="DomainObjects\OrdersSubmit.cs" />
+    <Compile Include="DomainObjects\PercentileLookUp.cs" />
+    <Compile Include="DomainObjects\PhysicianICD_9.cs" />
+    <Compile Include="DomainObjects\PhysicianPatient.cs" />
+    <Compile Include="DomainObjects\PhysicianPatientMaster.cs" />
+    <Compile Include="DomainObjects\PhysicianProcedure.cs" />
+    <Compile Include="DomainObjects\PhysicianResults.cs" />
+    <Compile Include="DomainObjects\PhysicianSpecialty.cs" />
+    <Compile Include="DomainObjects\Physician_Drug.cs" />
+    <Compile Include="DomainObjects\PlanCPTFormRequired.cs" />
+    <Compile Include="DomainObjects\PotentialDiagnosis.cs" />
+    <Compile Include="DomainObjects\PPHeader.cs" />
+    <Compile Include="DomainObjects\PPHeaderArc.cs" />
+    <Compile Include="DomainObjects\PPLineItem.cs" />
+    <Compile Include="DomainObjects\PPLineItemArc.cs" />
+    <Compile Include="DomainObjects\PQRI.cs" />
+    <Compile Include="DomainObjects\PQRI_Measure.cs" />
+    <Compile Include="DomainObjects\PQRI_Data.cs" />
+    <Compile Include="DomainObjects\Prescription.cs" />
+    <Compile Include="DomainObjects\PreventiveScreen.cs" />
+    <Compile Include="DomainObjects\PreventiveScreenLookup.cs" />
+    <Compile Include="DomainObjects\ProcedureAuthorization.cs" />
+    <Compile Include="DomainObjects\ProcedureCodeLibrary.cs" />
+    <Compile Include="DomainObjects\ProcedureCodeRuleMaster.cs" />
+    <Compile Include="DomainObjects\ProcedureLoincMap.cs" />
+    <Compile Include="DomainObjects\ProcessScnTab.cs" />
+    <Compile Include="DomainObjects\process_scn_tab.cs" />
+    <Compile Include="DomainObjects\ProviderReviewRuleMaster.cs" />
+    <Compile Include="DomainObjects\ProviderReviewTracker.cs" />
+    <Compile Include="DomainObjects\Qc_Err.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\Questionnaire_Lookup.cs" />
+    <Compile Include="DomainObjects\Quest_Lab_Response_Log.cs" />
+    <Compile Include="DomainObjects\Rcopia_Allergy.cs" />
+    <Compile Include="DomainObjects\Rcopia_Medication.cs" />
+    <Compile Include="DomainObjects\Rcopia_Prescription_List.cs" />
+    <Compile Include="DomainObjects\Rcopia_Settings.cs" />
+    <Compile Include="DomainObjects\Rcopia_Update_info.cs" />
+    <Compile Include="DomainObjects\ReasonCodeLookup.cs" />
+    <Compile Include="DomainObjects\ReferralOrder.cs" />
+    <Compile Include="DomainObjects\ReferralOrdersAssessment.cs" />
+    <Compile Include="DomainObjects\RegisteredNetwork.cs" />
+    <Compile Include="DomainObjects\RegistryLog.cs" />
+    <Compile Include="DomainObjects\Request_Sent_Log.cs" />
+    <Compile Include="DomainObjects\Response_Received_Log.cs" />
+    <Compile Include="DomainObjects\ResultLookup.cs" />
+    <Compile Include="DomainObjects\ResultMaster.cs" />
+    <Compile Include="DomainObjects\ResultNTE.cs" />
+    <Compile Include="DomainObjects\ResultOBR.cs" />
+    <Compile Include="DomainObjects\ResultOBX.cs" />
+    <Compile Include="DomainObjects\ResultORC.cs" />
+    <Compile Include="DomainObjects\ResultSPM.cs" />
+    <Compile Include="DomainObjects\ResultZEF.cs" />
+    <Compile Include="DomainObjects\ResultZPS.cs" />
+    <Compile Include="DomainObjects\role_scn_tab.cs" />
+    <Compile Include="DomainObjects\RoomInLookup.cs" />
+    <Compile Include="DomainObjects\RuleLabResultReminder.cs" />
+    <Compile Include="DomainObjects\RuleMaster.cs" />
+    <Compile Include="DomainObjects\RuleMedication.cs" />
+    <Compile Include="DomainObjects\RuleMedicationAndAllergy.cs" />
+    <Compile Include="DomainObjects\RuleProblem.cs" />
+    <Compile Include="DomainObjects\Scan.cs" />
+    <Compile Include="DomainObjects\scan_index.cs" />
+    <Compile Include="DomainObjects\SocialHistoryMaster.cs" />
+    <Compile Include="DomainObjects\Spirometry.cs" />
+    <Compile Include="DomainObjects\Statement_Chargeline.cs" />
+    <Compile Include="DomainObjects\StaticLookup.cs" />
+    <Compile Include="DomainObjects\SurgicalHistoryMaster.cs" />
+    <Compile Include="DomainObjects\Element.cs" />
+    <Compile Include="DomainObjects\ScnTab.cs" />
+    <Compile Include="DomainObjects\Test.cs" />
+    <Compile Include="DomainObjects\Test_Lookup.cs" />
+    <Compile Include="DomainObjects\TreatmentPlan.cs" />
+    <Compile Include="DomainObjects\UserLookup.cs" />
+    <Compile Include="DomainObjects\UserScnTab.cs" />
+    <Compile Include="DomainObjects\UserSession.cs" />
+    <Compile Include="DomainObjects\user_scn_tab.cs" />
+    <Compile Include="DomainObjects\VaccineAdminProcedureMapping.cs" />
+    <Compile Include="DomainObjects\VaccineInfoStatement.cs" />
+    <Compile Include="DomainObjects\VaccineInfoStatementProcedure.cs" />
+    <Compile Include="DomainObjects\VaccineManufacturerCodes.cs" />
+    <Compile Include="DomainObjects\VisitPayment.cs" />
+    <Compile Include="DomainObjects\VisitPaymentArc.cs" />
+    <Compile Include="DomainObjects\VisitPaymentHistory.cs" />
+    <Compile Include="DomainObjects\VisitPaymentHistoryArc.cs" />
+    <Compile Include="DomainObjects\WFObject.cs" />
+    <Compile Include="DomainObjects\Eligibility_Verification.cs" />
+    <Compile Include="DomainObjects\Encounter.cs" />
+    <Compile Include="DomainObjects\Examination.cs" />
+    <Compile Include="DomainObjects\FacilityLibrary.cs" />
+    <Compile Include="DomainObjects\FamilyDisease.cs" />
+    <Compile Include="DomainObjects\FamilyHistory.cs" />
+    <Compile Include="DomainObjects\HospitalizationHistory.cs" />
+    <Compile Include="DomainObjects\Human.cs" />
+    <Compile Include="DomainObjects\Immunization.cs" />
+    <Compile Include="DomainObjects\InsurancePlan.cs" />
+    <Compile Include="DomainObjects\Lab.cs" />
+    <Compile Include="DomainObjects\LabLocation.cs" />
+    <Compile Include="DomainObjects\User.cs" />
+    <Compile Include="DomainObjects\MapFacilityPhysician.cs" />
+    <Compile Include="DomainObjects\NonDrugAllergy.cs" />
+    <Compile Include="DomainObjects\ObjectMaster.cs" />
+    <Compile Include="DomainObjects\PastMedicalHistory.cs" />
+    <Compile Include="DomainObjects\PatientInsuredPlan.cs" />
+    <Compile Include="DomainObjects\PhysicianPOV.cs" />
+    <Compile Include="DomainObjects\PhysicianLibrary.cs" />
+    <Compile Include="DomainObjects\ProblemList.cs" />
+    <Compile Include="DomainObjects\ProcessMaster.cs" />
+    <Compile Include="DomainObjects\ProcUser.cs" />
+    <Compile Include="DomainObjects\ROS.cs" />
+    <Compile Include="DomainObjects\SocialHistory.cs" />
+    <Compile Include="DomainObjects\State.cs" />
+    <Compile Include="DomainObjects\SurgicalHistory.cs" />
+    <Compile Include="DomainObjects\WorkFlow.cs" />
+    <Compile Include="DomainObjects\WorkFlowTypeMaster.cs" />
+    <Compile Include="DomainObjects\workset_proc_alloc.cs" />
+    <Compile Include="DTO\ABIResultsDTO.cs" />
+    <Compile Include="DTO\AuthorizationDTO.cs" />
+    <Compile Include="DTO\CallQcExceptionDto.cs" />
+    <Compile Include="DTO\CarePlanDTO.cs" />
+    <Compile Include="DTO\ChargeLineItemTransactionDTO.cs" />
+    <Compile Include="DTO\CheckOutDTO.cs" />
+    <Compile Include="DTO\CheckoutOrdersDTO.cs" />
+    <Compile Include="DTO\CheckOutPrintOrdersDTO.cs" />
+    <Compile Include="DTO\CodingExceptionDTO.cs" />
+    <Compile Include="DTO\DiagnosticDTO.cs" />
+    <Compile Include="DTO\FamilyDTO.cs" />
+    <Compile Include="DTO\FileManagementDTO.cs" />
+    <Compile Include="DTO\FillAppointment.cs" />
+    <Compile Include="DTO\FillAppointmentSlot.cs" />
+    <Compile Include="DTO\FillAssessment.cs" />
+    <Compile Include="DTO\FillBlockDays.cs" />
+    <Compile Include="DTO\FillCarrier.cs" />
+    <Compile Include="DTO\FillChiefComplaint.cs" />
+    <Compile Include="DTO\FillClinicalSummary.cs" />
+    <Compile Include="DTO\FillDocuments.cs" />
+    <Compile Include="DTO\FillEandMCoding.cs" />
+    <Compile Include="DTO\FillEncounterandWFObject.cs" />
+    <Compile Include="DTO\FillExaminationScreen.cs" />
+    <Compile Include="DTO\FillHealthcareQuestionnaire.cs" />
+    <Compile Include="DTO\FillHumanDTO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DTO\FillLabOrder.cs" />
+    <Compile Include="DTO\FillLogin.cs" />
+    <Compile Include="DTO\FillLookupDetails.cs" />
+    <Compile Include="DTO\FillNewEditAppointment.cs" />
+    <Compile Include="DTO\FillOrderException.cs" />
+    <Compile Include="DTO\FillOrdersManagementDTO.cs" />
+    <Compile Include="DTO\FillOtherHistory.cs" />
+    <Compile Include="DTO\FillPatientChart.cs" />
+    <Compile Include="DTO\FillPatientSummaryBarDTO.cs" />
+    <Compile Include="DTO\FillPhysicianUser.cs" />
+    <Compile Include="DTO\FillPrintRecipt.cs" />
+    <Compile Include="DTO\FillQuickPatient.cs" />
+    <Compile Include="DTO\FillQuickPatientArc.cs" />
+    <Compile Include="DTO\FillReferralOrder.cs" />
+    <Compile Include="DTO\FillResultDTO.cs" />
+    <Compile Include="DTO\FillResultMasterAndEntry.cs" />
+    <Compile Include="DTO\FillROS.cs" />
+    <Compile Include="DTO\FillTestScreen.cs" />
+    <Compile Include="DTO\FillTreatmentPlan.cs" />
+    <Compile Include="DTO\FillWillingonCancel.cs" />
+    <Compile Include="DTO\FindPhysican.cs" />
+    <Compile Include="DTO\FollowUpEncounterDTO.cs" />
+    <Compile Include="DTO\GeneratePatientListsDTO.cs" />
+    <Compile Include="DTO\GenerateXml.cs" />
+    <Compile Include="DTO\HospitalizationDTO.cs" />
+    <Compile Include="DTO\HumanDTO.cs" />
+    <Compile Include="DTO\ImmunizationDTO.cs" />
+    <Compile Include="DTO\ImmunizationHistoryDTO.cs" />
+    <Compile Include="DTO\InHouseProcedureDTO.cs" />
+    <Compile Include="DTO\LoginDTO.cs" />
+    <Compile Include="DTO\MoveVerificationDTO.cs" />
+    <Compile Include="DTO\MyQ.cs" />
+    <Compile Include="DTO\MyQBilling.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DTO\MyQueueCountDTO.cs" />
+    <Compile Include="DTO\NonDrugHistoryDTO.cs" />
+    <Compile Include="DTO\OfficeManagerDTO.cs" />
+    <Compile Include="DTO\OrderLabDetailsDTO.cs" />
+    <Compile Include="DTO\OrdersDTO.cs" />
+    <Compile Include="DTO\OrderSpecimenDTO.cs" />
+    <Compile Include="DTO\PatientDetailDto.cs" />
+    <Compile Include="DTO\PatientPane.cs" />
+    <Compile Include="DTO\PatientResultsDTO.cs" />
+    <Compile Include="DTO\PayerLibraryDTO.cs" />
+    <Compile Include="DTO\PhysicianFacilityDTO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DTO\AppointmentPreChecks.cs" />
+    <Compile Include="DTO\PQRIDTO.cs" />
+    <Compile Include="DTO\PQRIResultDTO.cs" />
+    <Compile Include="DTO\PreventiveScreenDTO.cs" />
+    <Compile Include="DTO\ProblemHistoryDTO.cs" />
+    <Compile Include="DTO\ProcUserDTO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DTO\QuestionsDTO.cs" />
+    <Compile Include="DTO\Rcopia_NotificationDTO.cs" />
+    <Compile Include="DTO\ReferralOrderDTO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DTO\ResultEntryDTO.cs" />
+    <Compile Include="DTO\RuleDTO.cs" />
+    <Compile Include="DTO\Scan_IndexDTO.cs" />
+    <Compile Include="DTO\SelectPayerDTO.cs" />
+    <Compile Include="DTO\SocialHistoryDTO.cs" />
+    <Compile Include="DTO\SummaryOfCareDTO.cs" />
+    <Compile Include="DTO\SuperBillDTO.cs" />
+    <Compile Include="DTO\SurgicalHistoryDTO.cs" />
+    <Compile Include="DTO\UserPermissionDTO.cs" />
+    <Compile Include="DTO\FillLabAgentDTO.cs" />
+    <!--<Compile Include="Util\InValidClientFaultException.cs" />-->
+    <Compile Include="DTO\VisitPaymentDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\AddException.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AdvanceDirective.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Allergy.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AllICD_9.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\All_Drug.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AppointmentLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Assessment.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AssessmentVitalsLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AssociatedPrimaryICD.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AuditLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Batch.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Blockdays.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CallLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CarePlan.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CarePlanLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Carrier.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ChargeHeader.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ChargeLineItem.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Check.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ChiefComplaints.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CorrectedDBEntries.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CreateException.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\DynamicScreen.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\EAndMCoding.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Element.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Eligibility_Verification.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Encounter.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Examination.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Exam_Lookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\FacilityLibrary.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\FamilyDisease.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\FamilyHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\FinancialClasses.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\FlowSheetTemplate.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\GeneralNotes.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\GrowthChart_Lookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\HospitalizationHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\HqlQueries.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HbmMaps\Human.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Immunization.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\InsurancePlan.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Lab.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\LabInsurancePlan.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\LabLocation.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\MapFacilityPhysician.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\MapPhysicianPhysicianAssistant.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\MasterTableList.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Message.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\NonDrugAllergy.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ObjectMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ObjectProcessHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ObjectProcessHistoryBilling.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\OrderCodeLibrary.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Orders.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\OrdersAssessment.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\OrdersProblemList.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PastMedicalHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PatientInsuredPlan.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PhysicianICD_9.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PhysicianLibrary.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PhysicianPatient.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PhysicianPOV.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PhysicianProcedure.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PhysicianSpecialty.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PreventiveScreen.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PreventiveScreenLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ProblemList.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ProcedureAuthorization.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ProcedureCodeLibrary.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ProcessMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ProcUser.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\QcErr.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ReferralOrder.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ReferralOrdersAssessment.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\RoomInLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ROS.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Scan.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\scan_index.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ScnTab.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\SocialHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\State.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\StaticLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\SurgicalHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\TreatmentPlan.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\User.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\UserLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\UserSession.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\VisitPayment.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\WFObject.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\WorkFlow.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\workset_proc_alloc.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\PQRI_Measure.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PQRI_Data.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\OrdersQuestionSetBloodLead.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\OrdersQuestionSetAfp.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\OrdersQuestionSetCytology.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\Healthcare_Questionnaire.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ImmunizationHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PQRI.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Questionnaire_Lookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Test.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\FileManagementIndex.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ResultMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ResultNTE.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ResultOBR.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ResultOBX.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ResultORC.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ResultZPS.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Rcopia_Update_Info.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\LabCarrierLookUp.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Loinc.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ProcedureLoincMap.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Document.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\RuleMedication.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Test_Lookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\VaccineInfoStatement.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\VaccineInfoStatementProcedure.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\VaccineManufacturerCodes.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Rcopia_Allergy.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Rcopia_Medication.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Rcopia_Prescription_List.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Rcopia_Settings.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\RuleMaster.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\RuleProblem.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\RuleMedicationAndAllergy.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\RuleLabResultReminder.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\Prescription.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\MapVitalsPhysician.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\MasterVitals.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\PercentileLookUp.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\ResultZEF.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\InHouseProcedure.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\AccountTransaction.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\PPHeader.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PPLineItem.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\LabSettings.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\ABI_Results.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\Spirometry.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\Physician_Drug.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\PatientResults.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\ProcedureCodeRuleMaster.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\OrdersSubmit.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\OrdersQuestionSetAOE.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\AOELookUp.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\OrderComponents.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\AddendumNotes.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\PhysicianResults.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\AcurusResultsMapping.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\PlanCPTFormRequired.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\OrdersRequiredForms.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\DictationException.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\AllICD.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AllProcedure.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Authorization.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AuthorizationEncounter.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AuthorizationICD.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AuthorizationProcedure.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PatGuarantor.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\patient_notes.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\role_scn_tab.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\ObjectProcessHistoryBillingTemp.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\ICD9ICD10Mapping.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HbmMaps\WorkFlowTypeMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ActivityLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\BodyImageAnnotations.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CDSRuleMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Context.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AdvanceDirectiveMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\AccountTransactionArc.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\CheckArc.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\EandMCodingICD.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Client.hbm.xml" />
+    <Content Include="bin\Debug\Acurus.Capella.Core.dll" />
+    <Content Include="bin\Debug\Acurus.Capella.Core.pdb" />
+    <Content Include="bin\log4net.dll" />
+    <Content Include="bin\Release\Acurus.Capella.Core.dll" />
+    <Content Include="bin\Release\Acurus.Capella.Core.pdb" />
+    <Content Include="HbmMaps\ErrorLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Human_Token.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Notification.hbm.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="HbmMaps\ImmunizationSubmissionLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\FamilyHistoryMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\HospitalizationHistoryMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PastMedicalHistoryMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\FamilyDiseaseMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ImmunizationMasterHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\NonDrugAllergyMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\MapUserCarrierFacility.hbm.xml" />
+    <Content Include="HbmMaps\PatientMessage.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PhysicianPatientMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\SocialHistoryMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\SurgicalHistoryMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PPHeaderArc.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\PPLineItemArc.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ProcessScnTab.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ResultLookup.hbm.xml" />
+    <Content Include="HbmMaps\UserScnTab.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\VisitPaymentArc.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\VisitPaymentHistory.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\VisitPaymentHistoryArc.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\VaccineAdminProcedureMapping.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Rcopia_Medication_ACS.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Request_Sent_Log.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HbmMaps\Response_Received_Log.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HbmMaps\ProviderReviewRuleMaster.hbm.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="HbmMaps\ProviderReviewTracker.hbm.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="HbmMaps\PotentialDiagnosis.hbm.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="HbmMaps\RegistryLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Quest_Lab_Response_Log.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\RegisteredNetwork.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ReasonCodeLookup.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ResultSPM.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\MeasureRuleMaster.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\user_scn_tab.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\ErrorLog.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Definitions\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

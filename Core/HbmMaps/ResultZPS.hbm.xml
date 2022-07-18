@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ResultZPS, Acurus.Capella.Core" table="result_zps" lazy="true">
+    <id name="Id" column="Result_ZPS_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Result_Master_ID" column="Result_Master_ID" />
+    <property name="ZPS_Segment_Type_ID" column="ZPS_Segment_Type_ID" />
+    <property name="ZPS_Sequence_Number" column="ZPS_Sequence_Number" />
+    <property name="ZPS_Facility_Mnemonic" column="ZPS_Facility_Mnemonic" />
+    <property name="ZPS_Facility_Name" column="ZPS_Facility_Name" />
+    <property name="ZPS_Facility_Address" column="ZPS_Facility_Address" />
+    <property name="ZPS_Facility_Other_Designation" column="ZPS_Facility_Other_Designation" />
+    <property name="ZPS_Facility_City" column="ZPS_Facility_City" />
+    <property name="ZPS_Facility_State" column="ZPS_Facility_State" />
+    <property name="ZPS_Facility_Zip" column="ZPS_Facility_Zip" />
+    <property name="ZPS_Facility_Phone_Number" column="ZPS_Facility_Phone_Number" />
+    <property name="ZPS_Facility_Contact" column="ZPS_Facility_Contact" />
+    <property name="ZPS_Facility_Director_Title" column="ZPS_Facility_Director_Title" />
+    <property name="ZPS_Facility_Director_Last_Name" column="ZPS_Facility_Director_Last_Name" />
+    <property name="ZPS_Facility_Director_First_Name" column="ZPS_Facility_Director_First_Name" />
+    <property name="ZPS_Facility_Director_Middle_Initial" column="ZPS_Facility_Director_Middle_Initial" />
+    <property name="ZPS_Facility_Director_Suffix" column="ZPS_Facility_Director_Suffix" />
+    <property name="ZPS_Facility_Director_Prefix" column="ZPS_Facility_Director_Prefix" />
+    <property name="ZPS_Facility_Director_Degree" column="ZPS_Facility_Director_Degree" />
+  </class>
+</hibernate-mapping>
+

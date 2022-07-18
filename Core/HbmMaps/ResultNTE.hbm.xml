@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ResultNTE, Acurus.Capella.Core" table="result_nte" lazy="true">
+    <id name="Id" column="Result_NTE_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Result_Master_ID" column="Result_Master_ID" />
+    <property name="Result_OBR_ID" column="Result_OBR_ID" />
+    <property name="Result_OBX_ID" column="Result_OBX_ID" />
+    <property name="Comment_Type" column="Comment_Type" />
+    <property name="NTE_Segment_Type_ID" column="NTE_Segment_Type_ID" />
+    <property name="NTE_Sequence_Number" column="NTE_Sequence_Number" />
+    <property name="NTE_Comment_Source" column="NTE_Comment_Source" />
+    <property name="NTE_Comment_Text" column="NTE_Comment_Text" />
+  </class>
+</hibernate-mapping>
+

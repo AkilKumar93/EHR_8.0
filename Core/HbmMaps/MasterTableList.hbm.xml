@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.MasterTableList, Acurus.Capella.Core" table="master_table_list" lazy="true" >
+    <id name="Id" column="Master_Table_List_Id">
+      <generator class="identity" />
+    </id>
+    <property name="Table_Name" column="Table_Name" />
+    <property name="Bucket_Number" column="Bucket_Number" />
+    <property name="Table_Comment" column="Table_Comment" />
+    <property name="Manager_Object_Name" column="Manager_Object_Name" />
+    <property name="Domain_Object_Name" column="Domain_Object_Name" />
+    <property name="Is_Audit_Trail" column="Is_Audit_Trail" />
+    <property name="Deleted_Attribute" column="Deleted_Attribute" />
+  </class>
+</hibernate-mapping>

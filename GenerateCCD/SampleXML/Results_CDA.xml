@@ -1,0 +1,33 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <entry typeCode="DRIV">
+    <organizer classCode="BATTERY" moodCode="EVN">
+      <!-- [C-CDA R1.1] Result Organizer -->
+      <templateId root="2.16.840.1.113883.10.20.22.4.1" />
+      <!-- [C-CDA R2.1] Result Organizer (V3) -->
+      <templateId root="2.16.840.1.113883.10.20.22.4.1" extension="2015-08-01" />
+      <id root="876838d8-6d20-1014-8431-f591a5b72c7c" />
+      <code code="" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+        displayName="" />
+      <statusCode code="completed" />
+      <effectiveTime>
+        <low value="" />
+        <high value="" />
+      </effectiveTime>
+      <component>
+        <!-- This observation is a non-trigger code result observation -->
+        <observation classCode="OBS" moodCode="EVN">
+          <!-- [C-CDA R1.1] Result Observation -->
+          <templateId root="2.16.840.1.113883.10.20.22.4.2" />
+          <!-- [C-CDA R2.1] Result Observation (V3) -->
+          <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01" />
+          <id root="8768391a-6d20-1014-8431-f591a5b72c7c" />
+          <code code="" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"
+            displayName="" />
+          <statusCode code="completed" />
+          <effectiveTime value="" />
+          <value xsi:type="BL" value="true" />
+        </observation>
+      </component>
+    </organizer>
+  </entry>
+</ClinicalDocument>

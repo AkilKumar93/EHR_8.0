@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.CDSRuleMaster, Acurus.Capella.Core" table="cds_rule_master" lazy="true">
+    <id name="Id" column="CDS_Rule_Master_ID">
+      <generator class="identity" />
+    </id>
+    <!--<version name ="Version"/>-->
+    <property name="Message" column="Message" />
+    <property name="Clinincal_Decision_Name" column="Clinincal_Decision_Name" />
+    <property name="Rules" column="Rules" />
+    <property name="Source_Attributes" column="Source_Attributes" />
+    <property name="Developer" column="Developer" />
+    <property name="Funding_Source" column="Funding_Source" />
+    <property name="Where_Criteria" column="Where_Criteria" />
+    <property name="Link_Data" column="Link_Data" />
+    <property name="Release_Date" column="Release_Date" />
+    <property name="Entity_Name" column="Entity_Name" />
+    <property name="SCN_Name" column="SCN_Name" />
+    <property name="Is_Manage_CDS_Allowed" column="Is_Manage_CDS_Allowed" />
+    <property name="Status" column="Status" />
+    <property name="Classification" column="Classification" />
+    <property name="Rules_Description" column="Rules_Description" />
+    <property name="Role_Privilege" column="Role_Privilege" />
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="Resolve_Screen" column="Resolve_Screen" />
+    <property name="Physician_Specialty" column="Physician_Specialty" />
+    <!--<property name="Exception_Provider" column="Exception_Provider" />-->    
+  </class>
+</hibernate-mapping>

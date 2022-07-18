@@ -1,0 +1,49 @@
+<entry typeCode="DRIV">
+ <organizer classCode="CLUSTER" moodCode="EVN">
+  <templateId root="2.16.840.1.113883.10.20.22.4.26" /> 
+  <id root="BA1F2FA1-7A91-4A74-8258-9C1077613220" /> 
+  <code xsi:type="CE" code="46680005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Vital signs" /> 
+  <statusCode code="completed" /> 
+  <effectiveTime value="20100806120000" /> 
+ <component>
+ <observation classCode="OBS" moodCode="EVN">
+  <templateId root="2.16.840.1.113883.10.20.22.4.27" /> 
+  <id root="54512C8D-A758-4097-9D07-A057612A8907" extension="8480-6" /> 
+  <code xsi:type="CE" code="8480-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Blood Pressure" /> 
+  <statusCode code="completed" /> 
+  <effectiveTime value="20100806120000" /> 
+  <value xsi:type="PQ" value="140" unit="mm[Hg]" /> 
+  </observation>
+  </component>
+ <component>
+ <observation classCode="OBS" moodCode="EVN">
+  <templateId root="2.16.840.1.113883.10.20.22.4.27" /> 
+  <id root="54512C8D-A758-4097-9D07-A057612A8907" extension="8302-2" /> 
+  <code xsi:type="CE" code="8302-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Height" /> 
+  <statusCode code="completed" /> 
+  <effectiveTime value="20100806120000" /> 
+  <value xsi:type="PQ" value="64" unit="[in_us]" /> 
+  </observation>
+  </component>
+ <component>
+ <observation classCode="OBS" moodCode="EVN">
+  <templateId root="2.16.840.1.113883.10.20.22.4.27" /> 
+  <id root="54512C8D-A758-4097-9D07-A057612A8907" extension="3141-9" /> 
+  <code xsi:type="CE" code="3141-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Weight" /> 
+  <statusCode code="completed" /> 
+  <effectiveTime value="20100806120000" /> 
+  <value xsi:type="PQ" value="192" unit="[lb_av]" /> 
+  </observation>
+  </component>
+ <component>
+ <observation classCode="OBS" moodCode="EVN">
+  <templateId root="2.16.840.1.113883.10.20.22.4.27" /> 
+  <id root="54512C8D-A758-4097-9D07-A057612A8907" extension="39156-5" /> 
+  <code xsi:type="CE" code="39156-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="BMI" /> 
+  <statusCode code="completed" /> 
+  <effectiveTime value="20100806120000" /> 
+  <value xsi:type="PQ" value="32.9531" unit="kg/m2" /> 
+  </observation>
+  </component>
+  </organizer>
+  </entry>

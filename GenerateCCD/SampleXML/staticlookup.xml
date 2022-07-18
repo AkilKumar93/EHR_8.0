@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <VitalList>
+
+    <Vital  Name="VITALS LIMIT LEVEL" value="BP-Sitting Sys/Dia" Description="120/80" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Respiratory Rate" Description="12-18" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Pulse" Description="60-80" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Body Temperature" Description="97.8-99.1" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Pulse Oximetry" Description="70-100" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Heart Rate" Description="60-80" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="BMI" Description="18.6-24.9" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="BP-Standing Sys/Dia" Description="120/80" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="BP-Lying Sys/Dia" Description="120/80" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="BMI Status" Description="Normal Weight" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="HbA1C Status" Description="Non Diabetic" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="eGFR Status" Description="Normal/CKD Stage 1" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Blood Pressure" Description="120/80" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Temperature" Description="97.8-99.1" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Blood Sugar-Post Prandial Status" Description="Normal" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Blood Sugar-Fasting Status" Description="Normal" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="HbA1C Status$" Description="Non Diabetic" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="eGFR Status$" Description="Normal/CKD Stage 1" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Blood Sugar-Post Prandial Status$" Description="Normal" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Blood Sugar-Fasting Status$" Description="Normal" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="HbA1C StatusSecond" Description="Non Diabetic" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="eGFR StatusSecond" Description="Normal/CKD Stage 1" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Blood Sugar-Post Prandial StatusSecond" Description="Normal" />
+    <Vital  Name="VITALS LIMIT LEVEL" value="Blood Sugar-Fasting StatusSecond" Description="Normal" />
+
+  </VitalList> 
+
+  <ReasonNotPerformedList>
+    <ReasonNotPerformed Field_Name="MEDICATION REASON NOT PERFORMED" Value="Procedure contraindicated" Description="183932001" Sort_Order="1"/>
+    <ReasonNotPerformed Field_Name="MEDICATION REASON NOT PERFORMED" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
+    <ReasonNotPerformed Field_Name="MEDICATION REASON NOT PERFORMED" Value="Treatment not tolerated" Description="407563006" Sort_Order="3"/>
+    <ReasonNotPerformed Field_Name="MEDICATION REASON NOT PERFORMED" Value="Procedure not indicated" Description="428119001" Sort_Order="4"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Refusal of treatment by patient" Description="105480006" Sort_Order="1"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Treatment not tolerated" Description="407563006" Sort_Order="3"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Procedure refused" Description="183944003" Sort_Order="4"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Treatment not tolerated" Description="407563006" Sort_Order="5"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Procedure not indicated" Description="428119001" Sort_Order="6"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Procedure refused for religious reason" Description="183945002" Sort_Order="7"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Patient non-compliant - refused access to services" Description="413310006" Sort_Order="8"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Patient non-compliant - refused intervention / support" Description="413311005" Sort_Order="9"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BMI" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="10"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Procedure contraindicated" Description="183932001" Sort_Order="1"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="3"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Treatment not tolerated" Description="407563006" Sort_Order="4"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Procedure not indicated" Description="428119001" Sort_Order="5"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Refusal of treatment by patient" Description="105480006" Sort_Order="6"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Procedure refused" Description="183944003" Sort_Order="7"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Procedure refused for religious reason" Description="183945002" Sort_Order="8"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Patient non-compliant - refused access to services" Description="413310006" Sort_Order="9"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-SITTING SYS/DIA" Value="Patient non-compliant - refused intervention / support" Description="413311005" Sort_Order="10"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Procedure contraindicated" Description="183932001" Sort_Order="1"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="3"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Treatment not tolerated" Description="407563006" Sort_Order="4"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Procedure not indicated" Description="428119001" Sort_Order="5"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Refusal of treatment by patient" Description="105480006" Sort_Order="6"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Procedure refused" Description="183944003" Sort_Order="7"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Procedure refused for religious reason" Description="183945002" Sort_Order="8"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Patient non-compliant - refused access to services" Description="413310006" Sort_Order="9"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-STANDING SYS/DIA" Value="Patient non-compliant - refused intervention / support" Description="413311005" Sort_Order="10"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Procedure contraindicated" Description="183932001" Sort_Order="1"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="3"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Treatment not tolerated" Description="407563006" Sort_Order="4"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Procedure not indicated" Description="428119001" Sort_Order="5"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Refusal of treatment by patient" Description="105480006" Sort_Order="6"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Procedure refused" Description="183944003" Sort_Order="7"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Procedure refused for religious reason" Description="183945002" Sort_Order="8"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Patient non-compliant - refused access to services" Description="413310006" Sort_Order="9"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR BP-LYING SYS/DIA" Value="Patient non-compliant - refused intervention / support" Description="413311005" Sort_Order="10"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Terminal illness" Description="300936002" Sort_Order="1"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Procedure contraindicated" Description="183932001" Sort_Order="2"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Treatment not tolerated" Description="407563006" Sort_Order="3"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Treatment not indicated" Description="183964008" Sort_Order="4"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Drug treatment not indicated" Description="183966005" Sort_Order="5"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Failure in dosage" Description="216952002" Sort_Order="6"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Absent response to treatment" Description="266721009" Sort_Order="7"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Late effect of medical and surgical care complication" Description="269191009" Sort_Order="8"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Drug therapy discontinued" Description="274512008" Sort_Order="9"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Drug resistance" Description="31438003" Sort_Order="10"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Complication of medical care" Description="35688006" Sort_Order="11"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Treatment modification" Description="371133007" Sort_Order="12"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Medical contraindication" Description="397745006" Sort_Order="13"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Not indicated" Description="410534003" Sort_Order="14"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Contraindicated" Description="410536001" Sort_Order="15"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Drug allergy" Description="416098002" Sort_Order="16"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Procedure discontinued" Description="416406003" Sort_Order="17"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Procedure not indicated" Description="428119001" Sort_Order="18"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Treatment changed" Description="445528004" Sort_Order="19"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Drug intolerance" Description="59037007" Sort_Order="20"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Adverse reaction to drug" Description="62014003" Sort_Order="21"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR TOBACCO USE AND EXPOSURE" Value="Drug interaction" Description="79899007" Sort_Order="22"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Refusal of treatment by patient" Description="105480006" Sort_Order="1"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Treatment not tolerated" Description="407563006" Sort_Order="3"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Procedure refused" Description="183944003" Sort_Order="4"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Treatment not tolerated" Description="407563006" Sort_Order="5"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Procedure not indicated" Description="428119001" Sort_Order="6"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Procedure refused for religious reason" Description="183945002" Sort_Order="7"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Patient non-compliant - refused access to services" Description="413310006" Sort_Order="8"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Patient non-compliant - refused intervention / support" Description="413311005" Sort_Order="9"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="10"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Refusal of treatment by patient" Description="105480006" Sort_Order="1"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Medical contraindication" Description="397745006" Sort_Order="2"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR HEIGHT" Value="Treatment not tolerated" Description="407563006" Sort_Order="3"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Procedure refused" Description="183944003" Sort_Order="4"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Treatment not tolerated" Description="407563006" Sort_Order="5"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Procedure not indicated" Description="428119001" Sort_Order="6"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Procedure refused for religious reason" Description="183945002" Sort_Order="7"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Patient non-compliant - refused access to services" Description="413310006" Sort_Order="8"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Patient non-compliant - refused intervention / support" Description="413311005" Sort_Order="9"/>
+    <ReasonNotPerformed Field_Name="REASON NOT PERFORMED FOR WEIGHT" Value="Patient non-compliant - refused service" Description="413312003" Sort_Order="10"/>
+
+  </ReasonNotPerformedList>
+
+  <FollowupList>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Giving encouragement to exercise" Description="304549008" Sort_Order="1" Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Dietary management education, guidance, and counseling" Description="424753004" Sort_Order="2"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Lifestyle education regarding diet" Description="443288003" Sort_Order="3"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Weight monitoring" Description="307818003" Sort_Order="4"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Prescribed dietary intake" Description="361231003" Sort_Order="5"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Dietary needs education " Description="370847001" Sort_Order="6"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Exercise promotion: strength training " Description="386291006" Sort_Order="7"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Exercise promotion: stretching " Description="386292004" Sort_Order="8"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Nutrition therapy" Description="386373004" Sort_Order="9"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Prescribed activity/exercise education " Description="386463000" Sort_Order="10"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Prescribed diet education " Description="386464006" Sort_Order="11"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Special diet education " Description="410177006" Sort_Order="12"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Nutrition / feeding management" Description="413315001" Sort_Order="13"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Feeding regime" Description="418995006" Sort_Order="14"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Physical therapy education, guidance and counseling " Description="424203006" Sort_Order="15"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BMI" Value="Physical therapy procedure" Description="91251008" Sort_Order="16"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Lifestyle education regarding hypertension" Description="443402002" Sort_Order="1"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Weight-reducing diet education" Description="266724001" Sort_Order="2"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Exercises education, guidance, and counseling" Description="410289001" Sort_Order="3"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Dietary management education, guidance, and counseling" Description="424753004" Sort_Order="4"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Lifestyle education regarding diet" Description="443288003" Sort_Order="5"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Nutrition education" Description="61310001" Sort_Order="6"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Lifestyle education" Description="313204009" Sort_Order="7"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Hypertension education" Description="39155009" Sort_Order="8"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Prescribed dietary intake" Description="361231003" Sort_Order="9"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Dietary needs education" Description="370847001" Sort_Order="10"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Prescribed diet education" Description="386464006" Sort_Order="11"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Dietary compliance education" Description="410114009" Sort_Order="12"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Nutrition care education" Description="410171007" Sort_Order="13"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Special diet education" Description="410177006" Sort_Order="14"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Nutritionist education, guidance, and counseling" Description="410270001" Sort_Order="15"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Nutrition / feeding management" Description="413315001" Sort_Order="16"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Feeding regime" Description="418995006" Sort_Order="17"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Diet education" Description="11816003" Sort_Order="18"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Dietary regime" Description="182922004" Sort_Order="19"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Dietary prophylaxis" Description="182954008" Sort_Order="20"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Low carbohydrate diet - prophylaxis" Description="182955009" Sort_Order="21"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Low calorie diet - prophylaxis" Description="182956005" Sort_Order="22"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Unsaturated fat diet - prophylaxis" Description="182960008" Sort_Order="23"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Low fat diet education" Description="183061003" Sort_Order="24"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Low carbohydrate diet education" Description="183065007" Sort_Order="25"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Vegetarian diet education" Description="183070000" Sort_Order="26"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Vegan diet education" Description="183071001" Sort_Order="27"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Sugar-free diet education" Description="281085002" Sort_Order="28"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Dietary treatment for disorder" Description="284071006" Sort_Order="29"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Obesity diet education" Description="284352003" Sort_Order="30"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Dietary education for disorder" Description="304491008" Sort_Order="31"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Alcoholism counseling" Description="24165007" Sort_Order="32"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Patient referral for alcoholism rehabilitation" Description="38670004" Sort_Order="33"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to community alcohol team" Description="390857005" Sort_Order="34"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Alcohol abuse prevention education" Description="408947007" Sort_Order="35"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Counseling about alcohol consumption" Description="413473000" Sort_Order="36"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to community drug and alcohol team" Description="417096006" Sort_Order="37"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to specialist alcohol treatment service" Description="431260004" Sort_Order="38"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Recommendation to exercise" Description="281090004" Sort_Order="39"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Exercise education" Description="304507003" Sort_Order="40"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Giving encouragement to exercise" Description="304549008" Sort_Order="41"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Exercise promotion: strength training" Description="386291006" Sort_Order="42"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Exercise promotion: stretching" Description="386292004" Sort_Order="43"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Nutrition therapy" Description="386373004" Sort_Order="44"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Prescribed activity/exercise education" Description="386463000" Sort_Order="45"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Urgent referral" Description="134403003" Sort_Order="46"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to general medical service" Description="183516009" Sort_Order="47"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to general practitioner" Description="183561008" Sort_Order="48"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to hypertension clinic" Description="183856001" Sort_Order="49"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to service" Description="306206005" Sort_Order="50"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to doctor" Description="306253008" Sort_Order="51"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to general physician" Description="308470006" Sort_Order="52"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Follow-up obesity assessment" Description="170795002" Sort_Order="53"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Target weight discussed" Description="268523001" Sort_Order="54"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Refer to weight management program" Description="408289007" Sort_Order="55"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Weight control education" Description="410200000" Sort_Order="56"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Referral to dietetics service" Description="306163007" Sort_Order="57"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR BP SYS/DIA" Value="Patient referral to dietitian" Description="103699006" Sort_Order="58"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Smoking cessation education" Description="225323000" Sort_Order="3"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Referral to stop-smoking clinic" Description="315232003" Sort_Order="12"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Smoking effects education" Description="225324006" Sort_Order="13"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Pregnancy smoking education" Description="171055003" Sort_Order="4"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Smoking monitoring invitation" Description="310429001" Sort_Order="5"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Smoking cessation assistance" Description="384742004" Sort_Order="6"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Stop smoking monitoring first letter" Description="185792005" Sort_Order="7"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Stop smoking monitoring second letter" Description="185793000" Sort_Order="8"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Stop smoking monitoring third letter" Description="185794006" Sort_Order="9"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Stop smoking monitoring verbal invite" Description="185795007" Sort_Order="10"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Stop smoking monitoring telephone invite" Description="185796008" Sort_Order="11"  Default_Value="N"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Cessation counseling visit; intermediate - 3 to 10 mins" Description="99406" Sort_Order="1"  Default_Value="Y"/>
+    <Followup Field_Name="FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION" Value="Cessation counseling visit; intensive - More than 10 minutes" Description="99407" Sort_Order="2"  Default_Value="N"/>
+    <Followup Field_Name="CARE_PLAN_VALUE-INABILITY TO AMBULATE" Value="Dependence on Cane" Description="105504002" Sort_Order="0"  Default_Value="N"/>
+    <Followup Field_Name="CARE_PLAN_VALUE-INABILITY TO AMBULATE" Value="Dependence on Wheelchair" Description="105503008" Sort_Order="0"  Default_Value="N"/>
+    <Followup Field_Name="CARE_PLAN_VALUE-MEMORY DEFICIT" Value="Amnesia" Description="48167000" Sort_Order="0"  Default_Value="N"/>
+  </FollowupList>
+  <FollowupReasonnotperformedList>
+    <FollowupReasonnotperformed Field_Name="FOLLOWUP_REASON_NOT_PERFORMED FOR BMI" Value="Procedure contraindicated" Description="183932001" Sort_Order="1" Default_Value="N"/>
+    <FollowupReasonnotperformed Field_Name="FOLLOWUP_REASON_NOT_PERFORMED FOR BMI" Value="Medical contraindication" Description="397745006" Sort_Order="2"  Default_Value="N"/>
+    <FollowupReasonnotperformed Field_Name="FOLLOWUP_REASON_NOT_PERFORMED FOR BMI" Value="Treatment not tolerated" Description="407563006" Sort_Order="3"  Default_Value="N"/>
+    <FollowupReasonnotperformed Field_Name="FOLLOWUP_REASON_NOT_PERFORMED FOR BMI" Value="Procedure not indicated" Description="428119001" Sort_Order="4"  Default_Value="N"/>
+  </FollowupReasonnotperformedList>
+  
+  
+  <MammogramTypeList>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram diagnostic limited" Description="24604-1" Sort_Order="4"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram diagnostic" Description="24605-8" Sort_Order="1"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram screening" Description="24606-6" Sort_Order="2"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram limited" Description="24610-8" Sort_Order="5"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram screening" Description="26175-0" Sort_Order="6"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram screening" Description="26176-8" Sort_Order="7"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram screening" Description="26177-6" Sort_Order="3"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram limited" Description="26287-3" Sort_Order="8"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram limited" Description="26289-9" Sort_Order="9"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram limited" Description="26291-5" Sort_Order="10"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram diagnostic" Description="26346-7" Sort_Order="11"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram diagnostic" Description="26347-5" Sort_Order="12"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram diagnostic" Description="26348-3" Sort_Order="13"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram diagnostic limited" Description="26349-1" Sort_Order="14"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram diagnostic limited" Description="26350-9" Sort_Order="15"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram diagnostic limited" Description="26351-7" Sort_Order="16"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram 4 views" Description="36319-2" Sort_Order="17"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram" Description="36625-2" Sort_Order="18"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram" Description="36626-0" Sort_Order="19"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram" Description="36627-8" Sort_Order="20"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram 2 views" Description="36642-7" Sort_Order="21"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram axillary" Description="36962-9" Sort_Order="22"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram magnification" Description="37005-6" Sort_Order="23"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram MLO" Description="37006-4" Sort_Order="24"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram roll" Description="37016-3" Sort_Order="25"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram roll" Description="37017-1" Sort_Order="26"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram tangential" Description="37028-8" Sort_Order="27"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram tangential" Description="37029-6" Sort_Order="28"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram tangential" Description="37030-4" Sort_Order="29"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram true lateral" Description="37037-9" Sort_Order="30"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram true lateral" Description="37038-7" Sort_Order="31"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram XCCL" Description="37052-8" Sort_Order="32"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram XCCL" Description="37053-6" Sort_Order="33"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram grid" Description="37539-4" Sort_Order="34"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram magnification" Description="37542-8" Sort_Order="35"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram magnification" Description="37543-6" Sort_Order="36"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram spot" Description="37551-9" Sort_Order="37"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram spot" Description="37552-7" Sort_Order="38"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram spot compression" Description="37553-5" Sort_Order="39"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram magnification and spot" Description="37554-3" Sort_Order="40"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram 2 views" Description="37768-9" Sort_Order="41"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram magnification and spot" Description="37769-7" Sort_Order="42"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram tangential" Description="37770-5" Sort_Order="43"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram true lateral" Description="37771-3" Sort_Order="44"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram XCCL" Description="37772-1" Sort_Order="45"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram magnification" Description="37773-9" Sort_Order="46"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram" Description="37774-7" Sort_Order="47"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram roll" Description="37775-4" Sort_Order="48"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram nipple profile" Description="38067-5" Sort_Order="49"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant Mammogram" Description="38070-9" Sort_Order="50"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant - bilateral Mammogram" Description="38071-7" Sort_Order="51"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant - left Mammogram" Description="38072-5" Sort_Order="52"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram W air" Description="38090-7" Sort_Order="53"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram W air" Description="38091-5" Sort_Order="54"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram spot" Description="38807-4" Sort_Order="55"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant - right Mammogram" Description="38820-7" Sort_Order="56"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram magnification and spot" Description="38854-6" Sort_Order="57"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram true lateral" Description="38855-3" Sort_Order="58"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast FFD mammogram Post Localization" Description="39150-8" Sort_Order="59"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast FFD mammogram diagnostic" Description="39152-4" Sort_Order="60"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast FFD mammogram screening" Description="39153-2" Sort_Order="61"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral FFD mammogram diagnostic" Description="39154-0" Sort_Order="62"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right FFD mammogram diagnostic" Description="42168-5" Sort_Order="63"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left FFD mammogram diagnostic" Description="42169-3" Sort_Order="64"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral FFD mammogram screening" Description="42174-3" Sort_Order="65"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram Post Wire Placement" Description="42415-0" Sort_Order="66"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram Post Wire Placement" Description="42416-8" Sort_Order="67"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - bilateral Mammogram Single view" Description="46335-6" Sort_Order="68"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left Mammogram Single view" Description="46336-4" Sort_Order="69"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right Mammogram Single view" Description="46337-2" Sort_Order="70"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - unilateral Mammogram Single view" Description="46338-0" Sort_Order="71"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - unilateral Mammogram" Description="46339-8" Sort_Order="72"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast FFD mammogram" Description="46342-2" Sort_Order="73"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - unilateral Mammogram diagnostic" Description="46350-5" Sort_Order="74"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant - bilateral Mammogram displacement" Description="46351-3" Sort_Order="75"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - right FFD mammogram screening" Description="46354-7" Sort_Order="76"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - left FFD mammogram screening" Description="46355-4" Sort_Order="77"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast - unilateral Mammogram screening" Description="46356-2" Sort_Order="78"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Implant - unilateral Mammogram" Description="46380-2" Sort_Order="79"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant - bilateral Mammogram diagnostic" Description="48475-8" Sort_Order="80"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant - bilateral Mammogram screening" Description="48492-3" Sort_Order="81"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant - left Mammogram diagnostic" Description="69150-1" Sort_Order="82"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast Mammogram Post Wire Placement" Description="69251-7" Sort_Order="83"/>
+    <MammogramType Field_Name="LAST MAMMOGRAM TEST" Value="Breast implant - right Mammogram diagnostic" Description="69259-0" Sort_Order="84"/>
+  </MammogramTypeList>
+
+  <FoodAllergySnomedList>
+    <FoodAllergySnomed Field_Name="FOOD" Value="Egg Protein" Description="213020009" Sort_Order="1"/>
+    <FoodAllergySnomed Field_Name="FOOD" Value="Eggs" Description="91930004" Sort_Order="1"/>
+  </FoodAllergySnomedList>
+
+  <BpStatusBasedFollowUpValueList>
+    <BpStatusBasedFollowUpValue Field_Name="Pre-Hypertensive" Type="Months" Value="11"></BpStatusBasedFollowUpValue>
+    <BpStatusBasedFollowUpValue Field_Name="First Hypertensive" Type="Weeks" Value="4"></BpStatusBasedFollowUpValue>
+  </BpStatusBasedFollowUpValueList>
+
+  <FlowSheetList>
+    <FlowSheet Field_Name="Weight" value="Weight (lbs)" intervals="50, 150, 250, 350, 450" Ydisplayformat="#" YDisplayText="Weight" xDisplayFormat="MM/DD/YYYY" xDisplayText="Date and Time" ValueSets="1" />
+    <FlowSheet Field_Name="BMI" value="BMI" intervals="15, 20, 25, 30, 35, 40, 45, 50,55,60,65,70,75,80,85" Ydisplayformat="#"  YDisplayText="BMI" xDisplayFormat="MM/DD/YYYY" xDisplayText="Date and Time" ValueSets="1" />
+    <FlowSheet Field_Name="BP-Sitting Sys/Dia" value="BP-Sys/Dia (mm/Hg)" intervals="10,50,90,130,170,210,250,290,330,370" Ydisplayformat="#"  YDisplayText="BP-Sitting(Sys)|BP-Sitting(Dia)" xDisplayFormat="MM/DD/YYYY" xDisplayText="Date and Time" ValueSets="2"/>
+    <FlowSheet Field_Name="HbA1C" value="HbA1c (%)" intervals="4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0" Ydisplayformat="#.0"  YDisplayText="HbA1C" xDisplayFormat="MM/DD/YYYY" xDisplayText="Date and Time" ValueSets="1"/>
+  </FlowSheetList>
+  <FlowSheetPeriodList>
+    <FlowSheetPeriod value="18 Months"/>
+    <FlowSheetPeriod value="5 Years"/>
+    <FlowSheetPeriod value="> 5 Years"/>
+  </FlowSheetPeriodList>
+
+
+
+  <DemographicsList>
+
+
+    <Demographics Field_Name="SEXUAL ORIENTATION" Value="" Description="" Sort_Order="1"  Default_Value="Y"/>
+    <Demographics Field_Name="SEXUAL ORIENTATION" Value="Straight or heterosexual" Description="20430005" Sort_Order="2"  Default_Value="N"/>
+    <Demographics Field_Name="SEXUAL ORIENTATION" Value="Lesbian, gay or homosexual" Description="38628009" Sort_Order="3"  Default_Value="N"/>
+    <Demographics Field_Name="SEXUAL ORIENTATION" Value="Bisexual" Description="42035005" Sort_Order="4"  Default_Value="N"/>
+    <Demographics Field_Name="SEXUAL ORIENTATION" Value="Something else, please describe" Description="99407" Sort_Order="5"  Default_Value="N"/>
+    <Demographics Field_Name="SEXUAL ORIENTATION" Value="Don't know" Description="99407" Sort_Order="6"  Default_Value="N"/>
+    <Demographics Field_Name="SEXUAL ORIENTATION" Value="Choose not to disclose" Description="99407" Sort_Order="7"  Default_Value="N"/>
+
+    <Demographics Field_Name="GENDER IDENTITY" Value="" Description="" Sort_Order="1"  Default_Value="Y"/>
+    <Demographics Field_Name="GENDER IDENTITY" Value="Male" Description="446151000124109" Sort_Order="2"  Default_Value="N"/>
+    <Demographics Field_Name="GENDER IDENTITY" Value="Female" Description="446141000124107" Sort_Order="3"  Default_Value="N"/>
+    <Demographics Field_Name="GENDER IDENTITY" Value="Female-to-Male (FTM)/Transgender Male/Trans Man" Description="407377005" Sort_Order="4"  Default_Value="N"/>
+    <Demographics Field_Name="GENDER IDENTITY" Value="Male-to-Female(MTF)/TransgenderFemale/Trans Woman" Description="407376001" Sort_Order="5"  Default_Value="N"/>
+    <Demographics Field_Name="GENDER IDENTITY" Value="Genderqueer, neither exclusively male nor female" Description="446131000124102" Sort_Order="6"  Default_Value="N"/>
+    <Demographics Field_Name="GENDER IDENTITY" Value="Additional gender category or other, please specify" Description="" Sort_Order="7"  Default_Value="N"/>
+    <Demographics Field_Name="GENDER IDENTITY" Value="Choose not to disclose" Description="" Sort_Order="8"  Default_Value="N"/>
+
+    <Demographics Field_Name="PATIENT SUFFIX" Value="" Description="Empty" Sort_Order="1"  Default_Value="N"/>
+    <Demographics Field_Name="PATIENT SUFFIX" Value="Jr" Description="Junior" Sort_Order="2"  Default_Value="N"/>
+    <Demographics Field_Name="PATIENT SUFFIX" Value="Sr" Description="Senior" Sort_Order="3"  Default_Value="N"/>
+  </DemographicsList>
+
+  <AssessmentStatusDefaulted value="No"/>
+  <AssessmentStatusList>
+    <AssessmentStatus Name="Status" value="" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Stable" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Improved" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Worsening" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Suspected" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Controlled" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Resolved" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Uncontrolled" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Improving" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Remission" is_required="Yes"/>
+    <AssessmentStatus Name="Status" value="Confirmed" is_required="No"/>
+  </AssessmentStatusList>
+  <AssessmentStatusDefaultList>
+    <AssessmentStatusDefault Name="OTHERS" value="Suspected"/>
+    <AssessmentStatusDefault Name="ASSESSMENT" value="Confirmed"/>
+  </AssessmentStatusDefaultList>
+  
+  <!--Used for CCD,TOC measures to get the snomed code for cpt.-->
+  <procedurecodelist>
+    <procedure code="E0570" snomedcode="175135009"/>
+    <procedure code="33210" snomedcode="56251003"/>
+  </procedurecodelist>
+  <HospitalizationHistoryList>
+    <HospitalizationHistory Field_Name="Discharged to home or self care (routine discharge)" value="01"/>
+    <HospitalizationHistory Field_Name="Discharged/transferred to another short term general hospital for inpatient care" value="02"/>
+    <HospitalizationHistory Field_Name="Discharged/transferred to skilled nursing facility (SNF)" value="03"/>
+    <HospitalizationHistory Field_Name="Discharged/transferred to an intermediate care facility (ICF)" value="04"/>
+    <HospitalizationHistory Field_Name="Discharged/transferred to another type of institution for inpatient care or referred for outpatient services to another institution" value="05"/>
+    <HospitalizationHistory Field_Name="Discharged/transferred to home under care of organized home health service organization" value="06"/>
+    <HospitalizationHistory Field_Name="Left against medical advice or discontinued care" value="07"/>
+    <HospitalizationHistory Field_Name="Discharged/transferred to home under care of Home IV provider" value="08"/>
+    <HospitalizationHistory Field_Name="Admitted as an inpatient to this hospital" value="09"/>
+    <HospitalizationHistory Field_Name="Discharge to be defined at state level, if necessary" value="10"/>
+    <HospitalizationHistory Field_Name="Expired (i.e. dead)" value="20"/>
+    <HospitalizationHistory Field_Name="Expired to be defined at state level, if necessary" value="21"/>
+    <HospitalizationHistory Field_Name="Still patient or expected to return for outpatient services (i.e. still a patient)" value="30"/>
+    <HospitalizationHistory Field_Name="Still patient to be defined at state level, if necessary (i.e. still a patient)" value="31"/>
+    <HospitalizationHistory Field_Name="Expired (i.e. died) at home" value="40"/>
+    <HospitalizationHistory Field_Name="Expired (i.e. died) in a medical facility; e.g., hospital, SNF, ICF, or free standing hospice" value="41"/>
+    <HospitalizationHistory Field_Name="Expired (i.e. died) - place unknown" value="42"/>
+  </HospitalizationHistoryList>
+
+  <cptsnomedList>
+    <cptsnomed cpt="99215" snomedcode="390906007"/>
+    <cptsnomed cpt="99205" snomedcode="308335008"/>
+    <cptsnomed cpt="99202" snomedcode="19681004"/>
+    <cptsnomed cpt="99284" snomedcode="4525004"/>
+    <cptsnomed cpt="R69" snomedcode="300936002"/>
+    <cptsnomed cpt="99304" snomedcode="18170008"/>
+    <cptsnomed cpt="G9642" snomedcode="230060001"/>
+    <cptsnomed cpt="99211" snomedcode="12843005"/>
+    <cptsnomed cpt="99381" snomedcode="185349003"/>
+    <cptsnomed cpt="T50.B95" snomedcode="420113004"/>
+     <cptsnomed cpt="90630" snomedcode="86198006"/>
+    <cptsnomed cpt="Z28.29" snomedcode="315640000"/>
+    <cptsnomed cpt="Z91.012" snomedcode="91930004"/>
+    <cptsnomed cpt="90935" snomedcode="302497006"/>
+    <cptsnomed cpt="Z88.7" snomedcode="294647003"/>
+    <cptsnomed cpt="Z28.21" snomedcode="105480006"/>
+    <cptsnomed cpt="" snomedcode="293112000"/><!--T50.B95-->
+    <cptsnomed cpt="" snomedcode="213020009"/><!--Z91.012-->
+  </cptsnomedList>
+
+
+  <ErrorFileNamesList>
+
+    <ErrorFileNames>NT_BadXml_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_AllergyConcernElements_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_AllergyIntoleranceObservationElements_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_AllergySectionCode_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_DocCode_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_DocEffectiveTime_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_DocTypeId_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_EthnicityCodeSystem_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_EthnicityCode_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_GenderCodeSystem_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_GenderCode_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_MedicationActivityElements_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_MedicationInformationElements_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_MedicationSectionCode_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_MedicationSectionTemplateId_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_PatientFirstName_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_PatientLastName_r1_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_PatientMiddleName_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_PatientPreviousName_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_PatientSuffix_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_PreferredLanguageCodeSystem_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_ProblemConcernElements_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_ProblemObservationElements_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_ProblemSectionCode_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_ProblemSectionTemplateId_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Bad_RaceCodeSystem_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CCDS_Sample1_r21_v3.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CCDS_Sample2_r21_v3.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CCDS_Sample3_r21_v3.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CCDS_Sample4_r21_v3.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CCDS_Sample5_r21_v3.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Missing_PatientLastName_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_Missing_PatientName_r11_v2.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CP_Sample1_r21_v5.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CP_Sample2_r21_v4.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CP_Sample3_r21_v4.xml</ErrorFileNames>
+    <ErrorFileNames>NT_CP_Sample4_r21_v4.xml</ErrorFileNames>
+
+  </ErrorFileNamesList>
+</root>

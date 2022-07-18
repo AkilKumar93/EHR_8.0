@@ -1,0 +1,38 @@
+﻿<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="urn:hl7-org:v3"
+ xmlns:voc="urn:hl7-org:v3/voc"
+ xmlns:sdtc="urn:hl7-org:sdtc">
+  <entry>
+    <observation classCode="OBS" moodCode="EVN">
+      <!-- consolidation CDA Allergy Observation template -->
+      <templateId root="2.16.840.1.113883.10.20.22.4.7" extension="2014-06-09"/>
+      <templateId root="2.16.840.1.113883.10.20.24.3.46" extension="2016-02-01"/>
+      <id root="1.3.6.1.4.1.115" extension="5a169a8b1d41c804569564aa"/>
+      <code code="ASSERTION"
+            displayName="Assertion"
+            codeSystem="2.16.840.1.113883.5.4"
+            codeSystemName="ActCode"/>
+      <statusCode code="completed"/>
+      <effectiveTime>
+        <low value=''/>
+      </effectiveTime>
+      <value xsi:type="CD"
+             code="59037007"
+             displayName="Drug intolerance"
+             codeSystem="2.16.840.1.113883.6.96"
+             codeSystemName="SNOMED CT"/>
+
+      <participant typeCode="CSM">
+        <participantRole classCode="MANU">
+          <playingEntity classCode="MMAT">
+            <code code="" codeSystem="2.16.840.1.113883.12.292"
+      sdtc:valueSet="">
+              <originalText></originalText>
+            </code>
+            <name>Immunization, Intolerance: Influenza Vaccine</name>
+          </playingEntity>
+        </participantRole>
+      </participant>
+    </observation>
+  </entry>
+</ClinicalDocument>

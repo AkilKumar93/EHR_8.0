@@ -1,0 +1,140 @@
+/Allergies_Nullflavor.xml///1515154701////
+/AllergyEntry.txt///1515154704////
+/Allergy_Entry.xml///1515154702////
+/BMI_CDT_Stage3_CAT1.xml///1515154702////
+/CCD_Sample.xml///1515154662////
+/CCR.xsl///1515154703////
+/CDA.xsl///1515154703////
+/CDA_Case_Reporting_Sample.xml///1515488429////
+/CDA_original.xsl///1515154701////
+/CMS122Stage3_Header.xml///1515154702////
+/CMS125Stage3_Header.xml///1515154702////
+/CMS127Stage3_Header.xml///1515154702////
+/CMS127v1_Header.xml///1515154703////
+/CMS138Stage3_Header.xml///1515154702////
+/CMS138v1_Header.xml///1515154703////
+/CMS147Stage3_Header.xml///1515154702////
+/CMS148v1_Header.xml///1515154703////
+/CMS155v1_Header.xml///1515154703////
+/CMS165stage3_Header.xml///1515154702////
+/CMS165v1_Header.xml///1515154702////
+/CMS22Stage3_Header.xml///1515154702////
+/CMS65v2_Header.xml///1515154703////
+/CMS68v2_Header.xml///1515154703////
+/CMS68v6Stage3_Header.xml///1515154702////
+/CMS69Stage3_Header.xml///1515154702////
+/CMS69v1_Header.xml///1515154703////
+/CMS75v1_Header.xml///1515154703////
+/CarePlan.xml///1515154704////
+/Care_Plan_Sample.xml///1515154702////
+/CatIII_Stage3_Measeure_Header_count.xml///1515154702////
+/ClinicalInstruction.txt///1515154704////
+/CognitiveFunction.xml///1515154703////
+/CognitiveFunction_DP.xml///1515154703////
+/Current_Medications_CAT_I_Stage3.xml///1515154702////
+/Current_Medications_CAT_I_Stage3_I.xml///1515154702////
+/Current_Medications_CAT_I_Stage3_II_NullFlvr.xml///1515154702////
+/Current_Smoker.xml///1515154701////
+/Denominator.xml///1515154703////
+/DenominatorStage3.xml///1515154702////
+/Denominator_Exception.xml///1515154703////
+/Denominator_ExceptionStage3.xml///1515154702////
+/Denominator_Exclusion.xml///1515154703////
+/Denominator_ExclusionStage3.xml///1515154702////
+/Encounter.xml///1515154703////
+/EncounterDiagnosis.xml///1515154702////
+/Encounter_CDA.xml///1515317303////
+/Encounter_CDA_Loinc.xml///1515319371////
+/Encounter_Section_CAT_I.xml///1515154703////
+/Encounter_Section_CAT_I_Stage3.xml///1515154702////
+/Encounter_Section_Mammogram.xml///1515154701////
+/Encounter_Section_Mammogram.xml.xml///1515154702////
+/Ethinicity_Supplement.xml///1515154703////
+/FacetoFace.xml///1515154701////
+/FindAndReplace.ascx///1515154704////
+/FunctionalStatus.xml///1515154703////
+/Goal_Section.xml///1515154702////
+/Goals.xml///1515154703////
+/HealthConcern.xml///1515154703////
+/HealthConcern_Careplan.xml///1515154702////
+/Health_Status_Evaluation.xml///1515154702////
+/Health_Status_Evaluation_Last_Entry_Section.xml///1515154703////
+/ICD_influenza.xml///1515154701////
+/IPP.xml///1515154703////
+/IPPStage3.xml///1515154702////
+/Immunization.txt///1515154704////
+/Immunization.xml///1515154702////
+/Implant.xml///1515154702////
+/Influenza.xml///1515154701////
+/InfluenzaAllergy.xml///1515154701////
+/InfluenzaSnomedCAT1.xml///1515154701////
+/Influenza_CVX_Cat1_Stage3.xml///1515154701////
+/Instructions.xml///1515154704////
+/Intervention.xml///1515154703////
+/Medication.xml///1515154702////
+/MedicationAdministration.xml///1515154704////
+/MedicationEntry.txt///1515154704////
+/Medication_Admin_Pneu_Vac.xml///1515154703////
+/Medication_Admin_Pneu_Vac_Stage3.xml///1515154702////
+/Medication_CDA.xml///1515154662////
+/MentalStatus.xml///1515154703////
+/Numerator.xml///1515154703////
+/NumeratorStage3.xml///1515154702////
+/OBS_BMI_Cat1_Stag3.xml///1515154701////
+/OBS_BMI_Diet_CatI_Stage3.xml///1515154701////
+/OBS_BMI_ICD_CATI_Stage3.xml///1515154701////
+/OBS_Contoll_HBP_Exclusion_Stage3.xml///1515154701////
+/OBS_Dental Carries.xml///1515154703////
+/OBS_Diabetes.xml///1515154703////
+/OBS_Diagnosis Active.xml///1515154703////
+/OBS_HB1AC_CMS_122_Stage3.xml///1515154701////
+/OBS_HB1AC_LOINC_STAGE3.xml///1515154702////
+/OBS_HBP_Followup_CMS22_Stage3.xml///1515154702////
+/OBS_High_BP_Followup_Snomed_Stage3.xml///1515154702////
+/OBS_Influenza_CatI_Stage3.xml///1515154701////
+/OBS_Lab result.xml///1515154703////
+/OBS_PREGNANCY.xml///1515154703////
+/OBS_PREGNANCY_DX.xml///1515154703////
+/OBS_Phy Exam_Finding_BMI.xml///1515154703////
+/OBS_Physical Exam_Finding_BP_Diastolic.xml///1515154703////
+/OBS_Physical Exam_Finding_BP_Systolic.xml///1515154703////
+/OBS_Tobacco use.xml///1515154703////
+/OBS_controlling_BP_Stage3.xml///1515154701////
+/Payer_Supplement.xml///1515154702////
+/Plan.xml///1515154703////
+/Problem.xml///1515154702////
+/ProblemEntry.txt///1515154704////
+/ProblemlistNullflavor.xml///1515154701////
+/Procedure Performed _current med_documented.xml///1515154703////
+/ProcedureEntry.txt///1515154704////
+/ProcedurePerformed.xml///1515154703////
+/Procedure_Activity_Act.xml///1515154703////
+/Procedures.xml///1515154702////
+/QRDAStage3_CAT_III_Header.xml///1515154702////
+/QRDA_CAT_III_Header.xml///1515154703////
+/QRDA_CAT_III_Header_Old.xml///1515154703////
+/Race_Supplement.xml///1515154703////
+/ReasonForVisit.txt///1515154704////
+/ReasonforReferral.xml///1515154703////
+/Reference_Obs.xml///1515154703////
+/Refused_Influenza.xml///1515154701////
+/Refused_medical_reason.xml///1515154701////
+/Reporting Stratum.xml///1515154703////
+/Reporting Stratum1.xml///1515154703////
+/Result.xml///1515154702////
+/ResultEntry.txt///1515154704////
+/Results_CDA.xml///1515155247////
+/Sex_Supplement.xml///1515154703////
+/SocialHistory.txt///1515154704////
+/SocialHistory.xml///1515154704////
+/SocialHistoryTobacco.xml///1515154702////
+/Substance administration.xml///1515154703////
+/Test.txt///1515154703////
+/Tobbacco.xml///1515154701////
+/TreatmentPlan.xml///1515154703////
+/Unilateral_Mastectomy.xml///1515154702////
+/VitalSign.xml///1515154702////
+/Vitals.txt///1515154704////
+/XML Master Template.xml///1515154704////
+/XML Master Template_Stage3Measure.xml///1515154702////
+/staticlookup.xml///1515154701////

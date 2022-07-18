@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.OrderComponents, Acurus.Capella.Core" table="order_components" lazy="true">
+    <id name="Id" column="Order_Components_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Order_Code_Name" column="Order_Code_Name" />
+    <property name="Specimen_Type" column="Specimen_Type" />
+    <property name="Temperature" column="Temperature" />
+    <property name="Order_Code" column="Order_Code" />
+      </class>
+</hibernate-mapping>
+

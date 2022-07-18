@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ProcedureCodeRuleMaster, Acurus.Capella.Core" table="procedure_code_rule_master" lazy="true">
+    <id name="Id" column="Procedure_Code_Rule_Master_ID">
+      <generator class="identity" />
+    </id>
+    <!--<property name="Procedure_Code" column="Procedure_Code" />-->
+    <property name="XML_Type" column="XML_Type" />
+    <property name="XML_Query" column="XML_Query" />
+    <property name="Procedure_Code" column="Procedure_Code" />
+    <!--<property name="Group_Number" column="Group_Number" />-->
+    <property name="DOS_Year" column="DOS_Year" />
+    <!--<property name="Is_Result_Expected" column="Is_Result_Expected" />-->
+    <property name="Procedure_Code_Description" column="Procedure_Code_Description" />
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="Rule_Name" column="Rule_Name" />
+    <!--<property name="Is_Group" column="Is_Group" />-->
+    <!--<property name="Sub_Rule_Name" column="Sub_Rule_Name" />-->
+    <!--<property name="From_Date" column="From_Date" />
+    <property name="To_Date" column="To_Date" />-->
+    <!--<property name="Is_Active" column="Is_Active" />-->
+    <!--<property name="Parent_Rule_ID" column="Parent_Rule_ID" />-->
+    <property name="Domain_Object" column="Domain_Object" />
+    <!--<property name="Additional_Rule" column="Additional_Rule" />-->
+  </class>
+</hibernate-mapping>
+

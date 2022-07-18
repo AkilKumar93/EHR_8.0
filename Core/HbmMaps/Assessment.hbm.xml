@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Assessment, Acurus.Capella.Core" table="assessment" lazy="true">
+    <id name="Id" column="Assessment_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Assessment_Type" column="Assessment_Type" />
+    <property name="ICD" column="ICD" />
+    <property name="Primary_Diagnosis" column="Primary_Diagnosis" />
+    <property name="Chronic_Problem" column="Chronic_Problem" />
+    <property name="Assessment_Notes" column="Assessment_Notes" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="ICD_Description" column="ICD_Description" />
+    <property name="Assessment_Status" column="Assessment_Status" />
+    <property name="Diagnosis_Source" column="Diagnosis_Source" />
+    <property name="ICD_9" column="ICD_9" />
+    <property name="ICD_9_Description" column="ICD_9_Description" />
+    <property name="Version_Year" column="Version_Year" />
+    <property name="Parent_ICD" column="Parent_ICD" />
+  </class>
+</hibernate-mapping>
+

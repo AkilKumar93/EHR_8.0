@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Medicine Dosage</title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSImageAndLabOrder.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            JSElement.async = false;
+            document.getElementsByTagName('head')[0].appendChild(JSElement);
+        }
+    </script>
+    <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
+    <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />
+    <!--<script src="JScripts/JSImageAndLabOrder.js?v=8.1"></script>
+    <script src="JScripts/JSErrorMessage.js?v=8.1"></script>-->
+    <script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #c3bfbf;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #707070;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #3d3c3a;
+            }
+
+      
+
+        .ui-dialog-titlebar-close {
+            display: none;
+        }
+
+        .ui-widget {
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+            float: none !important;
+            margin-left: 45px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane button {
+            width: 70px !important;
+        }
+
+        .ui-dialog .ui-dialog-titlebar {
+            padding: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-title {
+            font-size: 12px !important;
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+            height: 155px;
+            border: 2px solid;
+            border-radius: 13px;
+            top: 504px !important;
+            left: 180px !important;
+        }
+
+        .ui-dialog .ui-dialog-content {
+            min-height: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane {
+            margin-top: -10px !important;
+            /*padding: 0px !important ;*/
+        }
+
+        .ui-widget-content {
+            border: 0px !important;
+        }
+
+        .ui-widget-header, .ui-state-default, ui-button {
+            font-size: 11px !important;
+            font-family: sans-serif;
+        }
+
+
+        .ui-widget {
+            border: 1px solid #adadad !important;
+            background-color: #F7F7F7;
+        }
+    </style>
+
+
+
+
+
+
+</head>
+
+<body onload="BindMedication()">
+    <form>
+        <table id="tabMed" class="Gridbodystyle" style="width:99%"></table>
+       
+        <table style="width:100%">
+            <tr><td colspan="2"></td>&nbsp;</tr>
+            <tr>
+                <td colspan="2" style="text-align:right" align="right">
+                    <input type="button" class="aspgreenbutton" value="Save" id="btnsave" onclick="saveorder();" disabled />
+                    <input type="button" class="aspredbutton" value="Close" id="btnClose" onclick="closepopup();" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

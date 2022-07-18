@@ -1,0 +1,86 @@
+﻿
+ <entry typeCode="DRIV">
+    <act classCode="ACT" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.22.4.30"/>
+      <id root="36e3e930-7b14-11db-9fe1-0800200c9a66"/>
+      <code code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Allergies, adverse reactions, alerts"/>
+      <statusCode code="completed"/>
+      <effectiveTime value="20070501">
+        <low value="20070501"/>
+        <high value="20120806"/>
+      </effectiveTime>
+      <entryRelationship typeCode="SUBJ">
+        <observation classCode="OBS" moodCode="EVN">
+          <templateId root="2.16.840.1.113883.10.20.22.4.7"/>
+          <id root="4adc1020-7b14-11db-9fe1-0800200c9a66"/>
+          <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+          <statusCode code="completed"/>
+          <!-- adverse event date -->
+          <effectiveTime>
+            <low nullFlavor="UNK"/>
+            <high value="20120806"/>
+          </effectiveTime>
+
+          <!-- adverse event Type -->
+          <value xsi:type="CD" code="416098002" displayName="Drug allergy" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT">
+            <originalText>
+              <reference value="#reaction1"/>
+            </originalText>
+          </value>
+
+          <!-- Substance -->
+          <participant typeCode="CSM">
+            <participantRole classCode="MANU">
+              <playingEntity classCode="MMAT">
+                <code code="" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RxNorm" displayName="">
+                  <originalText>
+                    <reference value="#reaction1"/>
+                  </originalText>
+                </code>
+              </playingEntity>
+            </participantRole>
+          </participant>
+        </observation>
+      </entryRelationship>
+
+      <!-- Reaction -->
+      <entryRelationship typeCode="MFST" inversionInd="true">
+        <observation classCode="OBS" moodCode="EVN">
+          <templateId root="2.16.840.1.113883.10.20.22.4.9"/>
+          <id root="4adc1020-7b14-11db-9fe1-0800200c9a64"/>
+          <code nullFlavor="NA"/>
+          <text>
+            <reference value="#reaction1"/>
+          </text>
+          <statusCode code="completed"/>
+          <effectiveTime>
+            <low value="20070501"/>
+          </effectiveTime>
+          <value xsi:type="CD" code="247472004" codeSystem="2.16.840.1.113883.6.96" displayName=""/>
+        </observation>
+      </entryRelationship>
+
+      <!-- severity -->
+      <entryRelationship typeCode="SUBJ" inversionInd="true">
+        <observation classCode="OBS" moodCode="EVN">
+          <templateId root="2.16.840.1.113883.10.20.22.4.8"/>
+          <code xsi:type="CE" code="SEV" displayName="Severity Observation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode"/>
+          <text>
+            <reference value="#severity1"/>
+          </text>
+          <statusCode code="completed"/>
+          <value xsi:type="CD" code="371924009" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName=""/>
+        </observation>
+      </entryRelationship>
+
+      <!-- status -->
+      <entryRelationship typeCode="SUBJ" inversionInd="true">
+        <observation classCode="OBS" moodCode="EVN">
+          <templateId root="2.16.840.1.113883.10.20.22.4.28"/>
+          <code code="33999-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Status"/>
+          <statusCode code="completed"/>
+          <value xsi:type="CE" code="55561003" codeSystem="2.16.840.1.113883.6.96" displayName="Active"/>
+        </observation>
+      </entryRelationship>
+    </act>
+  </entry>

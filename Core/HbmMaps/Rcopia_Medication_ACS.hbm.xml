@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Rcopia_Medication, Acurus.Capella.Core" table="rcopia_medication" lazy="true">
+    <id name="Id" column="Rcopia_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Drug" column="Drug" />
+    <property name="NDC_ID" column="NDC_ID" />
+    <property name="First_DataBank_Med_ID" column="First_DataBank_Med_ID" />
+    <property name="Brand_Name" column="Brand_Name" />
+    <property name="Generic_Name" column="Generic_Name" />
+    <property name="Route" column="Route" />
+    <property name="Form" column="Form" />
+    <property name="Strength" column="Strength" />
+    <property name="Action" column="Action" />
+    <property name="Dose" column="Dose" />
+    <property name="Dose_Unit" column="Dose_Unit" />
+    <property name="Dose_Timing" column="Dose_Timing" />
+    <property name="Dose_Other" column="Dose_Other" />
+    <property name="Duration" column="Duration" />
+    <property name="Quantity" column="Quantity" />
+    <property name="Quantity_Unit" column="Quantity_Unit" />
+    <property name="Refills" column="Refills" />
+    <property name="Substitution_Permitted" column="Substitution_Permitted" />
+    <property name="Other_Notes" column="Other_Notes" />
+    <property name="Patient_Notes" column="Patient_Notes" />
+    <property name="Comments" column="Comments" />
+    <property name="Start_Date" column="Start_Date" />
+    <property name="Stop_Date" column="Stop_Date" />
+    <property name="Fill_Date" column="Fill_Date" />
+    <property name="Stop_Reason" column="Stop_Reason" />
+    <property name="Sig_Changed_Date" column="Sig_Changed_Date" />
+    <property name="Last_Modified_By" column="Last_Modified_By" />
+    <property name="Last_Modified_Date" column="Last_Modified_Date" />
+    <property name="Height" column="Height" />
+    <property name="Weight" column="Weight" />
+    <property name="Intended_Use" column="Intended_Use" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <!--<property name="Rcopia_ID" column="Rcopia_ID" />-->
+    <property name="Medication_Order" column="Medication_Order" />
+    <property name="ICD_Code" column="ICD_Code" />
+    <property name="ICD_Code_Description" column="ICD_Code_Description" />
+    <property name="Deleted" column="Deleted" />
+    <property name="Pharmacy_Name" column="Pharmacy_Name" />
+    <property name="Pharmacy_Address1" column="Pharmacy_Address1" />
+    <property name="Pharmacy_Address2" column="Pharmacy_Address2" />
+    <property name="Pharmacy_CrossStreet" column="Pharmacy_CrossStreet" />
+    <property name="Pharmacy_City" column="Pharmacy_City" />
+    <property name="Pharmacy_State" column="Pharmacy_State" />
+    <property name="Pharmacy_Zip" column="Pharmacy_Zip" />
+    <property name="Pharmacy_Phone" column="Pharmacy_Phone" />
+    <property name="Pharmacy_Fax" column="Pharmacy_Fax" />
+    <property name="Pharmacy_Is24Hour" column="Pharmacy_Is24Hour" />
+    <property name="Pharmacy_Level3" column="Pharmacy_Level3" />
+    <property name="Pharmacy_Electronic" column="Pharmacy_Electronic" />
+    <property name="Rxnorm_ID" column="Rxnorm_ID" />
+    <property name="Rxnorm_ID_Type" column="Rxnorm_ID_Type" />
+    <property name="Facility_Name" column="Facility_Name" />
+
+
+    <property name="Reason_For_Medication_Discontinued" column="Reason_For_Medication_Discontinued" />
+    <property name="Is_Medication_Discontinued" column="Is_Medication_Discontinued" />
+    <property name="Frequency" column="Frequency" />
+    <property name="Rx_Order_ID" column="Rx_Order_ID" />
+
+    <property name="Stop_Notes" column="Stop_Notes" />
+    <property name="Retain_Notes" column="Retain_Notes" />
+    <property name="Status" column="Status" />
+  </class>
+</hibernate-mapping>

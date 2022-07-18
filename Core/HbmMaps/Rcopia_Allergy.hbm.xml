@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Rcopia_Allergy, Acurus.Capella.Core" table="rcopia_allergy" lazy="true">
+    <id name="Id" column="Rcopia_ID">
+      <generator class="assigned" />
+    </id>
+    <version name ="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Allergy_Name" column="Allergy_Name" />
+    <property name="NDC_ID" column="NDC_ID" />
+    <property name="First_DataBank_Med_ID" column="First_DataBank_Med_ID" />
+    <property name="Reaction" column="Reaction" />
+    <property name="OnsetDate" column="OnsetDate" />
+    <property name="Last_Modified_By" column="Last_Modified_By" />
+    <property name="Last_Modified_Date" column="Last_Modified_Date" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Status" column="Status" />
+    <!--<property name="Rcopia_ID" column="Rcopia_ID" />-->
+    <property name="Deleted" column="Deleted" />
+    <property name="Rxnorm_ID" column="Rxnorm_ID" />
+    <property name="Rxnorm_ID_Type" column="Rxnorm_ID_Type" />
+    <property name="Notes" column="Notes" />
+    <property name="Reaction_Snomed_Code" column="Reaction_Snomed_Code" />
+    <property name="Severity" column="Severity" />
+    <property name="Severity_Snomed_Code" column="Severity_Snomed_Code" />
+    <property name="External_ID" column="External_ID" />
+  </class>
+</hibernate-mapping>

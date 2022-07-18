@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PPLineItemArc, Acurus.Capella.Core" table="pp_line_item_arc" lazy="true">
+    <id name="Id" column="PP_Line_Item_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Batch_ID" column="Batch_ID" />
+    <property name="DOOS" column="DOOS" />
+    <property name="Batch_Name" column="Batch_Name" />
+    <property name="Check_Table_Int_ID" column="Check_Table_Int_ID" />
+    <property name="Carrier_ID" column="Carrier_ID" />
+    <property name="Payment_ID" column="Payment_ID" />
+    <property name="PP_Header_ID" column="PP_Header_ID" />
+    <property name="Claim_Type" column="Claim_Type" />
+    <property name="Line_Type" column="Line_Type" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Charge_Line_Item_ID" column="Charge_Line_Item_ID" />
+    <property name="Deposit_Date" column="Deposit_Date" />
+    <property name="Amount" column="Amount" />
+    <property name="Comments" column="Comments" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Unapplied_CPT" column="Unapplied_CPT" />
+    <property name="Unapplied_DOS" column="Unapplied_DOS" />
+    <property name="Unapplied_Physician_ID" column="Unapplied_Physician_ID" />
+    <property name="Visit_Payment_ID" column="Visit_Payment_ID" />
+    <property name="Insurance_Plan_ID" column="Insurance_Plan_ID" />
+    <property name="Is_Delete" column="Is_Delete" />
+    
+  </class>
+</hibernate-mapping>

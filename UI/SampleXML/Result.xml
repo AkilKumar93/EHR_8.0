@@ -1,0 +1,23 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <entry typeCode="DRIV">
+    <organizer classCode="BATTERY" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.22.4.1" extension="2015-08-01"/>
+      <templateId root="2.16.840.1.113883.10.20.22.4.1"/>
+      <id root="7d5a02b0-67a4-11db-bd13-0800200c9a66"/>
+      <code xsi:type="CE" code="43789009" displayName="CBC WO DIFFERENTIAL" codeSystem="2.16.840.1.113883.6.12" codeSystemName="SNOMED-CT"/>
+      <statusCode code="completed"/>
+      <component>
+        <observation classCode="OBS" moodCode="EVN">
+          <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
+          <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
+          <id root="107c2dc0-67a5-11db-bd13-0800200c9a66"/>
+          <code xsi:type="CE" code="" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName=""/>
+          <text></text>
+          <statusCode code="completed"/>
+          <effectiveTime value=""/>
+          <value xsi:type="PQ" value="" unit="" nullFlavor="NA"/>
+        </observation>
+      </component>
+    </organizer>
+  </entry>
+</ClinicalDocument>

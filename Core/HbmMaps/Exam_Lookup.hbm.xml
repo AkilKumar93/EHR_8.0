@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Exam_Lookup, Acurus.Capella.Core" table="exam_lookup" lazy="true">
+    <id name="Id" column="Exam_Lookup_Id">
+      <generator class="assigned" />
+    </id>
+    <property name="Category" column="Category" />
+    <property name="System_Name" column="System_Name" />
+    <property name="Condition_Name" column="Condition_Name" />
+    <property name="Normal_System_Status" column="Normal_System_Status" />
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="Field_Type" column="Field_Type" />
+    <property name="Field_Value" column="Field_Value" />
+    <property name="User_Name" column="User_Name" />
+    <property name="Options" column="Options" />
+    <property name="Default_Value" column="Default_Value" />
+    <property name="Status" column="Status" />
+    <property name="Short_Description" column="Short_Description" />
+    <property name="Default_System_Color" column="Default_System_Color" />
+    <property name="Other_Description" column="Other_Description" />
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ICD9ICD10Mapping, Acurus.Capella.Core" table="icd_9_10_mapping" lazy="true">
+    <id name="Id" column="ICD_9_10_Mapping_ID">
+      <generator class="identity" />
+    </id>
+    <version name  = "Version"/>
+    <property name = "ICD9" column="ICD_9" />
+    <property name = "ICD10" column="ICD_10" />
+    <property name = "MappingRule" column="Mapping_Rule" />
+    <property name = "RuleName" column="Rule_Name" />    
+    <property name = "Long_Description" column="ICD_10_Description" />
+    <property name = "Short_Description" column="ICD_10_Short_Description" />
+    <property name = "Is_Active" column="Is_Active" />
+    <property name = "ICD_9_Description" column="ICD_9_Description" />
+  </class>
+</hibernate-mapping>

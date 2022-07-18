@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://68.166.232.110:2015/enterprise_services/ES_AuditLogging.asmx?wsdl" docRef="http://68.166.232.110:2015/enterprise_services/ES_AuditLogging.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://68.166.232.110:2015/enterprise_services/ES_AuditLogging.asmx" xmlns:q1="http://www.acurussolutions.com" binding="q1:Enterprise_x005F_x0020_Audit_x005F_x0020_Logging_x005F_x0020_Web_x005F_x0020_ServiceSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://68.166.232.110:2015/enterprise_services/ES_AuditLogging.asmx" xmlns:q2="http://www.acurussolutions.com" binding="q2:Enterprise_x005F_x0020_Audit_x005F_x0020_Logging_x005F_x0020_Web_x005F_x0020_ServiceSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

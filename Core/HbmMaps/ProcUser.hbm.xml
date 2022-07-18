@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ProcUser, Acurus.Capella.Core" table="process_user" lazy="true">
+    <id name="Id" column="Process_User_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Process_Name" column="Process_Name" />
+    <property name="User_Name" column="User_Name" />
+    <property name="Status" column="Status" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+  </class>
+</hibernate-mapping>

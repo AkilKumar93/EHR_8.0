@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.OrdersSubmit, Acurus.Capella.Core" table="orders_submit" lazy="true">
+    <id name="Id" column="Order_Submit_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Order_Code_Type" column="Order_Code_Type" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Authorization_Required" column="Authorization_Required" />
+    <property name="Test_Date" column="Test_Date" />
+    <property name="Order_Notes" column="Order_Notes" />
+    <property name="Specimen_In_House" column="Specimen_In_house" />
+    <property name="Lab_Location_ID" column="Lab_Location_ID" />
+    <property name="Lab_ID" column="Lab_ID" />
+    <property name="Move_To_MA" column="Move_To_MA"/>
+    <property name="Order_Type" column="Order_Type" />
+    <property name="Facility_Name" column="Facility_Name" />
+    <property name="Height" column="Height" />
+    <property name="Weight" column="Weight" />
+    <property name="Bill_Type" column="Bill_Type" />
+    <property name="Is_ABN_Signed" column="Is_ABN_Signed" />
+    <property name="Temperature" column="Temperature" />
+    <property name="Lab_Location_Name" column="Lab_Location_Name" />
+    <property name="Lab_Name" column="Lab_Name" />
+    <property name="TestDate_In_Weeks" column="TestDate_In_Weeks" />
+    <property name="TestDate_In_Days" column="TestDate_In_Days" />
+    <property name="Stat" column="Stat" />
+    <property name="TestDate_In_Months" column="TestDate_In_Months" />
+    <property name="Specimen_Collection_Date_And_Time" column="Specimen_Collection_Date_And_Time" />
+    <property name="Specimen_Type" column="Specimen_Type" />
+    <property name="Specimen_Unit" column="Specimen_Unit" />
+    <property name="Culture_Location" column="Culture_Location" />
+    <property name="Fasting" column="Fasting" />
+    <property name="Quantity" column="Quantity" />
+    <property name="Is_Submit_Immediately" column="Is_Submit_Immediately" />
+    <property name="Prefered_Reading_Provider_ID" column="Prefered_Reading_Provider_ID" />
+    <property name="Is_Paper_Order" column="Is_Paper_Order" />
+    <property name="Is_Deleted" column="Is_Deleted"/>
+    <property name="Date_Last_Seen" column="Date_Last_Seen"/>
+    <property name="Duration_for_DME_Need_in_Months" column="Duration_for_DME_Need_in_Months"/>
+    <property name="Duration_for_Supplies_Need_in_Months" column="Duration_for_Supplies_Need_in_Months"/>
+    <property name="Is_Urgent" column="Is_Urgent"/>
+  </class>
+</hibernate-mapping>

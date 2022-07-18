@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="EHR.xsl"?>
+<notes>  
+   <Modules>     
+    <EncounterDetails>
+      <Encounter_Provider_Name></Encounter_Provider_Name>
+      <Physician_Address Physician_Address1="" Physician_Address2="" Physician_City="" Physician_State="" Physician_Zip="" Physician_Telephone="" Physician_Fax="" Specialties="" />
+    </EncounterDetails>
+     <Age Value=""/>
+     <TargetEncounterId></TargetEncounterId>
+  </Modules> 
+</notes>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.User, Acurus.Capella.Core" table="user" lazy="true">
+    <id name="user_name" column="User_Name">
+      <generator class="identity" />
+    </id>
+    <!--<property name="user_name" column="User_Name" />-->
+    <property name="password" column="Password" />
+    <property name="status" column="Status" />
+    <property name="role" column="Role" />
+    <property name="person_name" column="Person_Name" />
+    <property name="User_Class" column="User_Class" />
+    <property name="Physician_Library_ID" column="Physician_Library_ID" />
+    <property name="Landing_Screen_ID" column="Landing_Screen_ID" />
+    <property name="Default_Facility" column="Default_Facility" />
+    <property name="Password_Changed_Date" column="Password_Changed_Date" />
+    <property name="RCopia_User_Name" column="RCopia_User_Name" />
+    <property name="Is_Down_Time" column="Is_Down_Time" />
+    <property name="Default_MyQ_Days" column="Default_MyQ_Days" />
+    <property name="Short_Name" column="Short_Name" />
+    <property name="Is_RCopia_Notification_Required" column="Is_RCopia_Notification_Required" />
+    <property name="Security_Question1" column="Security_Question1" />
+    <property name="Answer1" column="Answer1" />
+    <property name="Security_Question2" column="Security_Question2" />
+    <property name="Answer2" column="Answer2" />
+    <property name="Default_Server" column="Default_Server" />
+    <property name="EMail_Address" column="EMail_Address" />
+    <property name="Legal_Org" column="Legal_Org" />
+    <property name="Last_Successful_Login_Date_Time" column="Last_Successful_Login_Date_Time" />
+  </class>
+</hibernate-mapping>
+

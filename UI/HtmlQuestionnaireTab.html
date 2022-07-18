@@ -1,0 +1,443 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <style type="text/css">
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: White;
+            z-index: 99;
+            -moz-opacity: 0.8;
+            min-height: 100%;
+            width: 100%;
+        }
+
+        .ui-widget-header, .ui-state-default, ui-button {
+            background: #b9cd6d;
+            border: 1px solid #b9cd6d;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        .nav > li > a {
+            padding: 5px 9px !important;
+        }
+
+        ul {
+            margin-top: 4px !important;
+            margin-bottom: 2px !important;
+            height: 32px !important;
+            margin-left: -48px !important;
+        }
+
+        /*.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+              background-color: rgba(193, 194, 208, 0.98) !important;
+        }*/
+
+        :focus {
+            outline: none !important;
+        }
+
+        a {
+            /*background-color: #f5f4f4 !important;
+            font-weight: bold;
+            padding-top: 3px !important;
+            font-size: small;
+            font-weight: bold;*/
+            color: black !important;
+           /*// border-color: #adadad;*/
+        }
+
+        .nav-tabs {
+            border-bottom: 0px !important;
+        }
+
+        .container {
+            margin-right: 0px !important;
+            margin-left: 36px !important;
+        }
+
+        .ui-dialog-titlebar-close {
+            display: none;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+            float: none !important;
+            margin-left: 45px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane button {
+            width: 60px !important;
+        }
+
+        .ui-dialog .ui-dialog-titlebar {
+            padding: 0px !important;
+        }
+
+        .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+            height: 155px;
+            border: 2px solid;
+            border-radius: 13px;
+        }
+
+        .ui-dialog .ui-dialog-content {
+            min-height: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane {
+            margin-top: -16px !important;
+            padding: 0px !important;
+        }
+
+        .ui-widget-content {
+            border: 0px !important;
+        }
+
+        .ui-widget-header, .ui-state-default, ui-button {
+            font-weight: bold !important;
+            font-size: 12px !important;
+            font-family: sans-serif;
+        }
+    </style>
+    <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />
+      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form>
+        <div class="container" id="dvcontainer">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs" id="myTabs">
+                        <li id="liGeneral" class="tabstyle" style="display:none">
+                            <a href="#General" data-toggle="tab">General</a>
+                        </li>
+                        <li id="liTBRiskAssessment" class="tabstyle" style="display:none">
+                            <a href="#TBRiskAssessment" data-toggle="tab">TB Risk Assessment</a>
+                        </li>
+                        <li id="liDiabeticFootScreening" class="tabstyle" style="display:none">
+                            <a href="#DiabeticFootScreening" data-toggle="tab">Diabetic Foot Screening</a>
+                        </li>
+                        <li id="liSleepScreening" class="tabstyle" style="display:none">
+                            <a href="#SleepScreening" data-toggle="tab">Sleep Screening</a>
+                        </li>
+                        <li id="liSleep" class="tabstyle" style="display:none">
+                            <a href="#Sleep" data-toggle="tab">Sleep</a>
+                        </li>
+                        <li id="liPulmonary" class="tabstyle" style="display:none">
+                            <a href="#Pulmonary" data-toggle="tab">Pulmonary</a>
+                        </li>
+                        <li id="liEpworthSleepScore" class="tabstyle" style="display:none">
+                            <a href="#EpworthSleepScore" data-toggle="tab">Epworth Sleep Score</a>
+                        </li>
+                        <li id="liPulmonarySleepExam" class="tabstyle" style="display:none">
+                            <a href="#PulmonarySleepExam" data-toggle="tab">Pulmonary/Sleep Exam</a>
+                        </li>
+                        <li id="liDermatologyQuestionnaire" class="tabstyle" style="display:none">
+                            <a href="#DermatologyQuestionnaire" data-toggle="tab">Dermatology Questionnaire</a>
+                        </li>
+                        <li id="liAcne" class="tabstyle" style="display:none">
+                            <a href="#Acne" data-toggle="tab">Acne</a>
+                        </li>
+                        <li id="liAsthmaControlTest" class="tabstyle" style="display:none">
+                            <a href="#AsthmaControlTest" data-toggle="tab">Asthma Control Test</a>
+                        </li>
+                        <li id="liPHQ-9Screening" class="tabstyle" style="display:none">
+                            <a href="#PHQ-9Screening" data-toggle="tab">PHQ-9 Screening</a>
+                        </li>
+                        <li id="liDepressionTest" class="tabstyle" style="display:none">
+                            <a href="#DepressionTest" data-toggle="tab">Depression Test</a>
+                        </li>
+
+                        <li id="liNeckDisabilityIndex" class="tabstyle" style="display:none">
+                            <a href="#NeckDisabilityIndex" data-toggle="tab">Neck Disability Index</a>
+                        </li>
+                        <li id="liOswestryDisabilityIndex" class="tabstyle" style="display:none">
+                            <a href="#OswestryDisabilityIndex" data-toggle="tab">Oswestry Disability Index</a>
+                        </li>
+                        <li id="liDevelopment" class="tabstyle" style="display:none">
+                            <a href="#Development" data-toggle="tab">Development</a>
+                        </li>
+                        <!--Rjones-->
+                        <li id="liChronicCoughScale" class="tabstyle" style="display:none">
+                            <a href="#ChronicCoughScale" data-toggle="tab">Chronic Cough Scale</a>
+                        </li>
+                        <li id="liGynecological" class="tabstyle" style="display:none">
+                            <a href="#Gynecological" data-toggle="tab">Gynecological</a>
+                        </li>
+                        <li id="liPediatricSleepQuestionnaire" class="tabstyle" style="display:none">
+                            <a href="#PediatricSleepQuestionnaire" data-toggle="tab">Pediatric Sleep Questionnaire</a>
+                        </li>
+                        <li id="liSleepShort" class="tabstyle" style="display:none">
+                            <a href="#SleepShort" data-toggle="tab">Sleep Short</a>
+                        </li>
+                        <li id="liSleepTendencyScale" class="tabstyle" style="display:none">
+                            <a href="#SleepTendencyScale" data-toggle="tab">Sleep Tendency Scale</a>
+                        </li>
+                        <li id="liPainAssessment" class="tabstyle" style="display:none">
+                            <a href="#PainAssessment" data-toggle="tab">Pain Assessment</a>
+                        </li>
+                        <li id="liFunctionalAssessment" class="tabstyle" style="display:none">
+                            <a href="#FunctionalAssessment" data-toggle="tab">Functional Assessment</a>
+                        </li>
+                        <li id="liKarnofsky" class="tabstyle" style="display:none">
+                            <a href="#Karnofsky" data-toggle="tab">Karnofsky</a>
+                        </li>
+                        <li id="liMiniMental" class="tabstyle" style="display:none">
+                            <a href="#MiniMental" data-toggle="tab">Mini Mental</a>
+                        </li>
+                        <li id="liNutritionalScreening" class="tabstyle" style="display:none">
+                            <a href="#NutritionalScreening" data-toggle="tab">Nutritional Screening</a>
+                        </li>
+                        <li id="liSafetyGuidelines" class="tabstyle" style="display:none">
+                            <a href="#SafetyGuidelines" data-toggle="tab">Safety Guidelines</a>
+                        </li>
+                        <li id="liSupportNeeds" class="tabstyle" style="display:none">
+                            <a href="#SupportNeeds" data-toggle="tab">Support Needs</a>
+                        </li>
+                        <li id="liCATScreening" class="tabstyle" style="display:none">
+                            <a href="#CATScreening" data-toggle="tab">CAT Screening</a>
+                        </li>
+                        <li id="liCOPDBreatheWellProgram" class="tabstyle" style="display:none">
+                            <a href="#COPDBreatheWellProgram" data-toggle="tab">COPD Breathe Well Program</a>
+                        </li>
+                        <li id="liFallRiskScreening" class="tabstyle" style="display:none">
+                            <a href="#FallRiskScreening" data-toggle="tab">Fall Risk Screening</a>
+
+                        </li>
+                        <li id="liCognitiveScreening" class="tabstyle" style="display:none">
+                            <a href="#CognitiveScreening" data-toggle="tab">Cognitive Screening</a>
+                        </li>
+                        <li id="liPainScreening" class="tabstyle" style="display:none">
+                            <a href="#PainScreening" data-toggle="tab">Pain Screening</a>
+                        </li>
+                        <li id="liHomeSafety" class="tabstyle" style="display:none">
+                            <a href="#HomeSafety" data-toggle="tab">Home Safety</a>
+                        </li>
+                        <li id="liKatzIndexScreening" class="tabstyle" style="display:none">
+                            <a href="#KatzIndexScreening" data-toggle="tab">Katz Index Screening</a>
+                        </li>
+                        <li id="liADLScreening" class="tabstyle" style="display:none">
+                            <a href="#ADLScreening" data-toggle="tab">ADL Screening</a>
+                        </li>
+                        <li id="liGetUpandGo" class="tabstyle" style="display:none">
+                            <a href="#GetUpandGo" data-toggle="tab">Get Up and Go</a>
+                        </li>
+                        <li id="liLawtonScreening" class="tabstyle" style="display:none">
+                            <a href="#LawtonScreening" data-toggle="tab">Lawton Screening</a>
+                        </li>
+                        <li id="liAnxietyScreening" class="tabstyle" style="display:none">
+                            <a href="#AnxietyScreening" data-toggle="tab">Anxiety Screening</a>
+                        </li>
+                        <li id="liSpineIntake" class="tabstyle" style="display:none">
+                            <a href="#SpineIntake" data-toggle="tab">Spine Intake</a>
+                        </li>
+                        <li id="liMonofilamentFootExam" class="tabstyle" style="display:none">
+                            <a href="#MonofilamentFootExam" data-toggle="tab">Monofilament Foot Exam</a>
+                        </li>
+                        <li id="liCervicalSpine" class="tabstyle" style="display:none">
+                            <a href="#CervicalSpine" data-toggle="tab">Cervical Spine</a>
+                        </li>
+                        <li id="liLumbarSpine" class="tabstyle" style="display:none">
+                            <a href="#LumbarSpine" data-toggle="tab">Lumbar Spine</a>
+                        </li>
+                        <li id="liUrinalysis" class="tabstyle" style="display:none">
+                            <a href="#Urinalysis" data-toggle="tab">Urinalysis</a>
+                        </li>
+                        <li id="liStayingHealthyAssessment" class="tabstyle" style="display:none">
+                            <a href="#StayingHealthyAssessment" data-toggle="tab">Staying Healthy Assessment</a>
+                        </li>
+                        <li id="liAUABPHSymptom" class="tabstyle" style="display:none">
+                            <a href="#AUABPHSymptom" data-toggle="tab">AUA BPH Symptom</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane" id="General" data-src="">
+                            <!--<iframe id="iGeneral" class="clsIframe" src="" style=" height: 625px; width: 107%; margin-left: -43px;margin-top:-2px !important;" frameborder="0" marginheight="0" marginwidth="0" allowfullscreen="allowFullScreen"></iframe>-->
+                            <iframe id="iGeneral" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="TBRiskAssessment" data-src="">
+                            <iframe id="iTBRiskAssessment" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="DiabeticFootScreening" data-src="">
+                            <iframe id="iDiabeticFootScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                         </div>
+
+                        <div class="tab-pane" id="SleepScreening" data-src="">
+                            <iframe id="iSleepScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="Sleep">
+                            <iframe id="iSleep" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="Pulmonary" data-src="">
+                            <iframe id="iPulmonary" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="EpworthSleepScore" data-src="">
+                            <!--<iframe id="iEpworthSleepScore" class="clsIframe" src="" style=" height: 665px; width: 107%; margin-left: -43px;margin-top:-2px !important;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
+                            <iframe id="iEpworthSleepScore" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="PulmonarySleepExam" data-src="">
+                            <iframe id="iPulmonarySleepExam" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="DermatologyQuestionnaire" data-src="">
+                            <iframe id="iDermatologyQuestionnaire" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="Acne" data-src="">
+                            <iframe id="iAcne" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="AsthmaControlTest" data-src="">
+                            <iframe id="iAsthmaControlTest" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="PHQ-9Screening" data-src="">
+                            <iframe id="iPHQ-9Screening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="DepressionTest" data-src="">
+                            <!--<iframe id="iDepressionTest" class="clsIframe" src="" style=" height: 665px; width: 107%; margin-left: -43px;margin-top:-2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
+                            <iframe id="iDepressionTest" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="NeckDisabilityIndex" data-src="">
+                            <!--<iframe id="iNeckDisabilityIndex" class="clsIframe" src="" style=" height: 665px; width: 107%; margin-left: -43px;margin-top:-2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
+                            <iframe id="iNeckDisabilityIndex" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="OswestryDisabilityIndex" data-src="">
+                            <!--<iframe id="iOswestryDisabilityIndex" class="clsIframe" src="" style=" height: 665px; width: 107%; margin-left: -43px;margin-top:-2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
+                            <iframe id="iOswestryDisabilityIndex" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="Development" data-src="">
+                            <!--<iframe id="iDevelopment" class="clsIframe" src="" style=" height: 665px; width: 107%; margin-left: -43px;margin-top:-2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
+                            <iframe id="iDevelopment" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <!--Rjones-->
+                        <div class="tab-pane" id="ChronicCoughScale" data-src="">
+                            <iframe id="iChronicCoughScale" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="Gynecological" data-src="">
+                            <iframe id="iGynecological" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="PediatricSleepQuestionnaire" data-src="">
+                            <iframe id="iPediatricSleepQuestionnaire" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="SleepShort" data-src="">
+                            <iframe id="iSleepShort" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="SleepTendencyScale" data-src="">
+                            <iframe id="iSleepTendencyScale" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="PainAssessment" data-src="">
+                            <iframe id="iPainAssessment" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="FunctionalAssessment" data-src="">
+                            <iframe id="iFunctionalAssessment" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="Karnofsky" data-src="">
+                            <iframe id="iKarnofsky" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="MiniMental" data-src="">
+                            <iframe id="iMiniMental" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="NutritionalScreening" data-src="">
+                            <iframe id="iNutritionalScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="SafetyGuidelines" data-src="">
+                            <iframe id="iSafetyGuidelines" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="SupportNeeds" data-src="">
+                            <iframe id="iSupportNeeds" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="CATScreening" data-src="">
+                            <iframe id="iCATScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="COPDBreatheWellProgram" data-src="">
+                            <iframe id="iCOPDBreatheWellProgram" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="FallRiskScreening" data-src="">
+                            <iframe id="iFallRiskScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="CognitiveScreening" data-src="">
+                            <iframe id="iCognitiveScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="PainScreening" data-src="">
+                            <iframe id="iPainScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="HomeSafety" data-src="">
+                            <iframe id="iHomeSafety" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="KatzIndexScreening" data-src="">
+                            <iframe id="iKatzIndexScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="ADLScreening" data-src="">
+                            <iframe id="iADLScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="GetUpandGo" data-src="">
+                            <iframe id="iGetUpandGo" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="LawtonScreening" data-src="">
+                            <iframe id="iLawtonScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="AnxietyScreening" data-src="">
+                            <iframe id="iAnxietyScreening" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="SpineIntake" data-src="">
+                            <iframe id="iSpineIntake" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="MonofilamentFootExam" data-src="">
+                            <iframe id="iMonofilamentFootExam" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="CervicalSpine" data-src="">
+                            <iframe id="iCervicalSpine" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="LumbarSpine" data-src="">
+                            <iframe id="iLumbarSpine" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="Urinalysis" data-src="">
+                            <iframe id="iUrinalysis" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="StayingHealthyAssessment" data-src="">
+                            <iframe id="iStayingHealthyAssessment" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="AUABPHSymptom" data-src="">
+                            <iframe id="iAUABPHSymptom" class="clsIframe" rostype="" src="" style=" height: 643px; width: 107%; margin-left: -48px;margin-top:-8px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dvdialog" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display:none">
+            <p>There are unsaved changes.Do you want to save the them?</p>
+        </div>
+    </form>
+    <script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="JScripts/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSHealthQuestionnaire.js", "JScripts/JSAvoidRightClick.js", "JScripts/JSCustomDLC.js", "JScripts/JSQuestionnaireTab.js"];
+    for (var i = 0; i < JSFiles.length; i++) {
+        var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+        var JSElement = document.createElement('script');
+        JSElement.src = JSLink;
+        document.getElementsByTagName('body')[0].appendChild(JSElement);
+    }
+    </script>
+</body>
+</html>

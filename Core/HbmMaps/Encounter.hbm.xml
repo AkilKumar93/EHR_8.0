@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Encounter, Acurus.Capella.Core" table="encounter" lazy="true">
+    <id name="Id" column="Encounter_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Facility_Name" column="Facility_Name" />
+    <property name="Date_of_Service" column="Date_of_Service" />
+    <property name="Assigned_Med_Asst_User_Name" column="Assigned_Med_Asst_User_Name" />
+    <property name="Assigned_Room" column="Assigned_Room" />
+    <property name="Is_PFSH_Verified" column="Is_PFSH_Verified" />
+    <property name="Source_Of_Information" column="Source_Of_Information" />
+    <property name="If_Source_Of_Information_Others" column="If_Source_Of_Information_Others" />
+    <property name="Is_Hospitalization_Denied" column="Is_Hospitalization_Denied" />
+    <property name="Is_Medication_History_Verified" column="Is_Medication_History_Verified" />
+
+    <property name="Appointment_Date" column="Appointment_Date" />
+    <property name="Duration_Minutes" column="Duration_Minutes" />
+    <property name="Purpose_of_Visit" column="Purpose_of_Visit" />
+    <property name="Visit_Type" column="Visit_Type" />
+    <property name="Reason_for_Cancelation" column="Reason_for_Cancelation" />
+    <property name="Cancelation_Reason_Code" column="Cancelation_Reason_Code" />
+    <property name="Check_Out_Notes" column="Check_Out_Notes" />
+    <property name="Exam_Room" column="Exam_Room" />
+
+    <!--<property name="Method_of_Payment" column="Method_of_Payment" />
+    <property name="Check_Card_No" column="Check_Card_No" />
+    <property name="Check_Date" column="Check_Date" />
+    <property name="Auth_no" column="Auth_no" />
+    <property name="Patient_Payment" column="Patient_Payment" />-->
+    <property name="Payment_Note" column="Payment_Note" />
+
+
+
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_and_Time" column="Created_Date_and_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_and_Time" column="Modified_Date_and_Time" />
+    <property name="Referring_Facility" column="Referring_Facility" />
+    <property name="Referring_Physician" column="Referring_Physician" />
+    <property name="Call_Spoken_To" column="Call_Spoken_To" />
+    <property name="Relationship" column="Relationship" />
+    <property name="Call_Duration" column="Call_Duration" />
+    <property name="Insurance_Plan_ID" column="Insurance_Plan_ID" />
+    <property name="Place_Of_Service" column="Place_Of_Service" />
+    <property name="External_Plan_Number" column="External_Plan_Number" />
+    <property name="Policy_Holder_ID" column="Policy_Holder_ID" />
+    <property name="Reschedule_Reason_Code" column="Reschedule_Reason_Code" />
+    <property name="Reschedule_Reason_Text" column="Reschedule_Reason_Text" />
+    <property name="Appointment_Provider_ID" column="Appointment_Provider_ID" />
+    <property name="Encounter_Provider_ID" column="Encounter_Provider_ID" />
+    <property name="Encounter_Provider_Signed_Date" column="Encounter_Provider_Signed_Date" />
+    <property name="Encounter_Provider_Review_ID" column="Encounter_Provider_Review_ID" />
+    <property name="Encounter_Provider_Review_Signed_Date" column="Encounter_Provider_Review_Signed_Date" />
+  <property name="Is_Physician_Asst_Process" column="Is_Physician_Asst_Process" />
+    <!--<property name="Return_In" column="Return_In" />-->
+    <property name="Due_On" column="Due_On" />
+    <property name="Follow_Reason_Notes" column="Follow_Reason_Notes" />
+    <property name="Is_Prescription_To_Be_Moved" column="Is_Prescription_To_Be_Moved" />
+<!--<property name="Documents_To_Be_Print" column="Documents_To_Be_Print" />
+    <property name="Print_Documents_Given_To" column="Print_Documents_Given_To" />-->
+    <property name="Notes" column="Notes" />
+
+    <property name="Is_Document_Given" column="Is_Document_Given" />
+    <property name="Referring_Address" column="Referring_Address" />
+    <property name="Referring_Phone_No" column="Referring_Phone_No" />
+    <property name="Referring_Fax_No" column="Referring_Fax_No" />
+    <property name="Is_Phone_Encounter" column="Is_Phone_Encounter" />
+    <property name="Is_Previous_Encounter_Copied" column="Is_Previous_Encounter_Copied" />
+    <property name="Return_In_Months" column="Return_In_Months" />
+    <property name="Return_In_Weeks" column="Return_In_Weeks" />
+    <property name="Return_In_Days" column="Return_In_Days" />
+    <property name="Technician_ID" column="Technician_ID" />
+    <property name="Reading_Provider_ID" column="Reading_Provider_ID" />
+    <property name="File_Reference_Number" column="File_Reference_Number" />
+    <!--<property name="Encounter_Mode" column="Encounter_Mode" />-->
+    <property name="Is_Encounter_SuperBill" column="Is_Encounter_SuperBill" />
+    <property name="Willing_For_Prior_Appointment" column="Willing_For_Prior_Appointment" />
+    <property name="Referring_Provider_NPI" column="Referring_Provider_NPI" />
+    <property name="Message_ID" column="Message_ID" />
+    <property name="No_of_Med_Orders_In_Paper" column="No_of_Med_Orders_In_Paper" />
+    <property name="Is_Moved_to_MA" column="Is_Moved_to_MA" />
+    <property name="Is_Progressnote_Generated" column="Is_Progressnote_Generated" />
+    <property name="PCP_Facility" column="PCP_Facility" />
+    <property name="PCP_Physician" column="PCP_Physician" />
+    <property name="PCP_Address" column="PCP_Address" />
+    <property name="PCP_Phone_No" column="PCP_Phone_No" />
+    <property name="PCP_Fax_No" column="PCP_Fax_No" />
+    <property name="PCP_Provider_NPI" column="PCP_Provider_NPI" />
+    <property name="Is_EandM_Submitted" column="Is_EandM_Submitted" />
+    <property name="Is_Batch_Created" column="Is_Batch_Created" />
+    <property name="Billing_Instruction" column="Billing_Instruction" />
+    <property name="Batch_Status" column="Batch_Status" />
+    <property name="Ext_Apt_Uniq" column="Ext_Apt_Uniq" />
+    <property name="Is_Medication_Reviewed" column="Is_Medication_Reviewed" />
+    <property name="Reason_Not_Performed_Medication_Reviewed" column="Reason_Not_Performed_Medication_Reviewed" />
+    <property name="Snomed_Reason_Not_Performed_Med_Reviewed" column="Snomed_Reason_Not_Performed_Med_Reviewed" />
+    <property name="Order_Submit_ID" column="Order_Submit_ID"/>
+    <property name="Machine_Technician_Library_ID" column="Machine_Technician_Library_ID"/>
+    <property name="Authorization_Number" column="Authorization_Number"/>
+    <property name="Valid_From" column="Valid_From"/>
+    <property name="Valid_To" column="Valid_To"/>
+    <property name="Auth_Insurance_Plan_ID" column="Auth_Insurance_Plan_ID"/>
+    <property name="is_assessment_saved" column="Is_Assessment_Saved" />
+    <property name="is_serviceprocedure_saved" column="Is_Serviceprocedure_Saved" />
+
+   <property name="Proceed_with_Surgery_Planned" column="Proceed_with_Surgery_Planned" />
+    <property name="Authorization_CPT" column="Authorization_CPT" />
+
+    <property name="Is_PRN" column="Is_PRN" />
+    <property name="Is_After_Studies" column="Is_After_Studies" />
+    <property name="Is_Self_Referred" column="Is_Self_Referred" />
+    <property name="Assigned_Scribe_User_Name" column="Assigned_Scribe_User_Name" />
+  </class>
+</hibernate-mapping>

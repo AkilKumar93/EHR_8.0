@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MeaseureCount>
+<content styleCode="Bold"></content>
+<!-- Year range Reporting Period -->
+<list>
+  <item>
+    <content styleCode="Bold">Performance Rate</content>: XTYR
+  </item>
+
+  <item>
+    <content styleCode="Bold">Reporting Rate</content>: XTYR
+  </item>
+ 
+  <item>
+    <content styleCode="Bold">Initial Patient Population</content>: XTYR 
+    <list>
+      <item>
+        <content styleCode="Bold">Male</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Female</content>: XTYR
+      </item> 
+      <item>
+        <content styleCode="Bold">Not Hispanic or Latino</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Hispanic or Latino</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Black</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">White</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Asian</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Payer - Medicare</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Payer - Medicaid</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Zipcode 91767</content>: XTYR
+      </item> 
+    </list>
+  </item>
+  <item>
+    <content styleCode="Bold">Denominator</content>: XTYR
+    <list>
+      <item>
+        <content styleCode="Bold">Male</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Female</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Not Hispanic or Latino</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Hispanic or Latino</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Black</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">White</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Asian</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Payer - Medicare</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Payer - Medicaid</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Zipcode 91767</content>: XTYR
+      </item>
+    </list>
+  </item>
+  <item>
+    <content styleCode="Bold">Numerator</content>: XTYR
+    <list>
+      <item>
+        <content styleCode="Bold">Male</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Female</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Not Hispanic or Latino</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Hispanic or Latino</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Black</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">White</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Asian</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Payer - Medicare</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Payer - Medicaid</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Zipcode 91767</content>: XTYR
+      </item>
+    </list>
+  </item>
+  <item>
+    <content styleCode="Bold">Denominator Exclusions</content>: XTYR
+    <list>
+      <item>
+        <content styleCode="Bold">Male</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Female</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Not Hispanic or Latino</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Hispanic or Latino</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Black</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">White</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Asian</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Payer - Medicare</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Payer – Medicaid</content>: XTYR
+      </item>
+      <item>
+        <content styleCode="Bold">Zipcode 91767</content>: XTYR
+      </item>
+    </list>
+  </item>
+</list>
+
+</MeaseureCount>

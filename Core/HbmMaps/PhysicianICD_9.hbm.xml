@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PhysicianICD_9, Acurus.Capella.Core" table="physician_icd" lazy="true">
+
+    <composite-id>
+      <key-property name="ICD_9" column="Physician_ICD"/>
+      <key-property name="Physician_ID" column ="Physician_ID"/>
+      <key-property name="Parent_ICD_9" column="Parent_ICD" />
+      <key-property name="Is_Ruled_Out" column="Is_Ruled_Out" />
+    </composite-id>
+    <version name="Version"></version>
+    <!--<property name="Parent_ICD_9" column="Parent_ICD" />-->
+    <property name="ICD_9_Description" column="ICD_Description" />
+
+    <property name="Leaf_Node" column="Leaf_Node" />
+    <!--<property name="Physician_ID" column="Physician_ID" />-->
+    <property name="HCC_Category" column="HCC_Category" />
+    <property name="Is_Delete" column="Is_Delete" />
+    <property name="Version_Year" column="Version_Year" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="ICD_Category" column="ICD_Category" />
+    <property name="Physician_ICD_Sort_Order" column="Physician_ICD_Sort_Order" />
+
+    <property name="Category_Sort_Order" column="Category_Sort_Order" />
+    <property name="Legal_Org" column="Legal_Org" />
+    <!--<property name="Is_Ruled_Out" column="Is_Ruled_Out" />-->
+  </class>
+</hibernate-mapping>
+

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Qc_Err, Acurus.Capella.Core" table="qc_error" lazy="true">
+    <id name="Id" column="Qc_Error_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Parent_Object_ID" column="Parent_Object_ID" />
+    <property name="DOOS" column="DOOS" />
+    <property name="Batch_Name" column="Batch_Name" />
+    <property name="Sub_Batch_Range" column="Sub_Batch_Range" />
+    <property name="Doc_Name" column="Doc_Name" />
+    <property name="Patient_Name" column="Patient_Name" />
+    <property name="DOS" column="DOS" />
+    <property name="Procedure_Code" column="Procedure_Code" />
+    <property name="Page_Number" column="Page_Number" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Error_Type" column="Error_Type" />
+    <property name="Error_Field" column="Error_Field" />
+    <property name="Error_Description" column="Error_Description" />
+    <!--<property name="Error_Corr_By" column="Error_Corr_By" />-->
+    <!--<property name="Error_Corr_Notes" column="Error_Corr_Notes" />-->
+    <property name="Account_Number" column="Account_Number" />
+    <property name="Chk_Int_War_No" column="Chk_Int_War_No" />
+    <property name="WorkSetAmt" column="WorkSetAmt" />    
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Charge_Header_ID" column="Charge_Header_ID" />
+    <property name="Internal_Reference_ID" column="Internal_Reference_ID" />
+    <property name="Comments_Message_ID" column="Comments_Message_ID" />
+    <property name="Review_Comments_Message_ID" column="Review_Comments_Message_ID" />
+    <property name="Internal_Response_Message_ID" column="Internal_Response_Message_ID" />
+    <property name="Client_Response_Message_ID" column="Client_Response_Message_ID" />
+    <property name="Charge_Line_Item_ID" column="Charge_Line_Item_ID" />
+    <property name="Field_Name" column="Field_Name" />
+    <property name="Reason_Code" column="Reason_Code" />
+    <property name="Reason_Sub_Code" column="Reason_Sub_Code" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Claim_Number" column="Claim_Number" />
+    <property name="Exc_Category" column="Exc_Category" />
+  </class>
+</hibernate-mapping>

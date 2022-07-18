@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.AllICD, Acurus.Capella.Core" table="all_icd" lazy="true">
+    <composite-id>
+      <key-property name="All_ICD" column="All_ICD"/>
+      <key-property name="Parent_ICD" column="Parent_ICD" />
+    </composite-id>
+
+    <property name="ICD_Description" column="ICD_Description" />
+    <property name="ICD_Synonyms" column="ICD_Synonyms" />
+    <property name="Leaf_Node" column="Leaf_Node" />
+    <property name="Mutually_Exclusive" column="Mutually_Exclusive" />
+    <property name="HCC_Category" column="HCC_Category" />
+    <property name="Version_Year" column="Version_Year" />
+    <property name="Manageable" column="Manageable" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Is_Active" column="Is_Active" />
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="ICD_ID" column="ICD_ID" />
+    <property name="HCC_Value" column="HCC_Value" />
+  </class>
+</hibernate-mapping>

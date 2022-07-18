@@ -1,0 +1,35 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <!--  ******** Functional status section template   ******** -->
+  <component>
+    <section>
+      <templateId root="2.16.840.1.113883.10.20.22.2.14"/>
+      <code code="47420-5" codeSystem="2.16.840.1.113883.6.1"/>
+      <title>FUNCTIONAL STATUS</title>
+      <text>
+        <table border="1" width="100%">
+          <thead>
+            <tr>
+              <th>Functional Condition</th>
+              <th>Effective Dates</th>
+              <th>Condition Status</th>
+            </tr>
+          </thead>
+        </table>
+      </text>
+      <entry typeCode="DRIV">
+        <observation classCode="OBS" moodCode="EVN">
+          <!-- Problem observation template -->
+          <templateId root="2.16.840.1.113883.10.20.22.4.68"/>
+          <id root="ab1791b0-5c71-11db-b0de-0800200c9a66"/>
+          <code xsi:type="CE" code="409586006" codeSystem="2.16.840.1.113883.6.96" displayName="Complaint"/>
+          <statusCode code="completed"/>
+          <effectiveTime>
+            <low value=""/>
+            <high nullFlavor="NI" />
+          </effectiveTime>
+          <value xsi:type="CD" code="66557003" codeSystem="2.16.840.1.113883.6.96" displayName=""/>
+        </observation>
+      </entry>
+    </section>
+  </component>
+</ClinicalDocument>

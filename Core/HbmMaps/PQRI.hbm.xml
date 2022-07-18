@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.PQRI, Acurus.Capella.Core" table="pqri" lazy="true">
+    <id name="Id" column="PQRI_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="Human_ID" column="Human_ID" />
+    <property name="Encounter_ID" column="Encounter_ID" />
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="PQRI_Name" column="PQRI_Name" />
+    <property name="PQRI_Value" column="PQRI_Value" />
+    <property name="Additional_Measure_Name" column="Additional_Measure_Name" />
+    <property name="Additional_Measure_Value" column="Additional_Measure_Value" />
+    <property name="Options" column="Options" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Is_Done" column="Is_Done" />
+    
+  </class>
+</hibernate-mapping>

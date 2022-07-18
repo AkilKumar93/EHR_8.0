@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            JSElement.async = false;
+            document.getElementsByTagName('head')[0].appendChild(JSElement);
+        }
+    </script>
+    <script src="JScripts/jQueryAngular.js"></script>
+    <script src="JScripts/jquery-ui.js"></script>
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+    <script src="JScripts/bootstrap.min.js"></script>
+    <script src="jscripts/JSManageProblemListNew.js?v=2.8" type="text/javascript"></script>
+    <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
+    <style>
+        .modal-backdrop.in {
+            opacity: 0;
+        }
+
+        .table-bordered {
+            padding: 5px 5px;
+            border-color: black !important;
+            border: 1px solid !important;
+        }
+
+        tr {
+            border: .2pt;
+        }
+
+        .chkbx {
+            width: 10%;
+            height: 34px;
+            text-align: center;
+        }
+
+        .ValueICD {
+            width: 25%;
+            height: 34px;
+        }
+
+        .DescpICD {
+            width: 64.99%;
+            height: 34px;
+        }
+
+        summary {
+            background-color: #F7E9BF;
+            margin-left: 2px;
+            padding: 5px 10px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .ICDValue {
+            display: none;
+        }
+
+        th {
+            /*background-color: #bfdbff !important;*/
+            color: black !important;
+            border-bottom: 1px solid !important;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+
+        /*td {
+
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 14px !important;
+        }*/
+
+        .table > tbody > tr > td {
+            border-bottom: 1px solid #ddd !important;
+            border-top: 0px !important;
+        }
+
+        .table {
+            margin-top: 1px;
+            margin-bottom: 5px;
+            border: 1px solid !important;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        label {
+            font-weight: normal !important;
+        }
+
+        #ProblemListHead, #ProblemListBody {
+            display: block;
+        }
+
+        @media (min-height: 640px) {
+            #ProblemListBody {
+                height: 454px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .ProbTable {
+                height: 457px;
+            }
+        }
+
+        @media (min-height: 540px) and (max-height: 639px) {
+            #ProblemListBody {
+                height: 355px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .ProbTable {
+                height: 358px;
+            }
+        }
+
+        @media (max-height: 539px) {
+            #ProblemListBody {
+                height: 256px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .ProbTable {
+                height: 259px;
+            }
+        }
+
+        .ui-dialog-titlebar-close {
+            display: none;
+        }
+
+        .ui-widget {
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+            float: none !important;
+            margin-left: 45px !important;
+            font-size: 12px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane button {
+            width: 60px !important;
+        }
+
+        .ui-dialog .ui-dialog-titlebar {
+            padding: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-title {
+            font-size: 12px !important;
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+            height: 155px;
+            border: 2px solid;
+            border-radius: 13px;
+            top: 504px !important;
+            left: 568px !important;
+        }
+
+        .ui-dialog .ui-dialog-content {
+            min-height: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane {
+            margin-top: -16px !important;
+            border-width: 0px !important;
+        }
+
+        .ui-widget-header, .ui-state-default, ui-button {
+            font-weight: bold !important;
+            font-size: 12px !important;
+            font-family: sans-serif;
+        }
+
+        .ui-widget-overlay {
+            opacity: 0 !important;
+        }
+
+        .ui-dialog .ui-dialog-title {
+            float: left !important;
+            margin: .1em 0 !important;
+            white-space: nowrap !important;
+            width: 90% !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+    </style>
+    <title></title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+</head>
+<body>
+    <div id="AngularDiv" ng-app="AppManageProblem" ng-controller="ControllerManageProblem">
+        <div style="width:1025px;padding-left:20px;">
+            <div id="SearchICD" style="width:100%;">
+                <table style="width:100%;margin-top:6px;">
+                    <tr style="border-bottom: 1em solid white;">
+                        <td style="width:5%;"><label id="lblICD10" style="width:95%;color:black;" class="spanstyle">ICD10</label></td>
+                        <td style="width:35%;"><input type="text" id="txtICD10" style="width:95%;border: 1px solid #ccc;border-radius: 2px;" placeholder="Type your ICD10 code here .." class="Editabletxtbox" /></td>
+                        <td style="width:15%;"><label id="lblICD10Description" style="width:95%;color:black;" class="spanstyle">ICD10 Description</label></td>
+                        <td style="width:45%;">
+                            <input type="text" style="width:100%;border: 1px solid #ccc;border-radius: 2px;" id="txtDescription" placeholder="Type your ICD10 description here .." class="Editabletxtbox" />
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <table id="tblProblemList" class="table">
+                <thead id="ProblemListHead" class="Gridheaderstyle">
+                    <tr style="width:100%;">
+                        <th style="width:5%;text-align:center;">Del</th>
+                        <th style="width:5%;text-align:center;">Concern<input type="checkbox" id="chkHealthConcern" ng-click="CheckAllHealthConcern()" /> </th>
+                        <th style="width:7%;text-align:center;">ICD Code</th>
+                        <th style="width:20%;text-align:center;">ICD Description</th>
+                        <th style="width:8%;text-align:center;">Status</th>
+                        <th style="width:8%;text-align:center;">Diagnosed Year</th>
+                        <th style="width:8%;text-align:center;">Diagnosed Month</th>
+                        <th style="width:8%;text-align:center;">Diagnosed Day</th>
+                        <th style="width:8%;text-align:center;">Resolved Year</th>
+                        <th style="width:8%;text-align:center;">Resolved Month</th>
+                        <th style="width:8%;text-align:center;">Resolved Day</th>
+                        <th style="width:10%;display:none;text-align:center;">ProblemListID</th>
+                        <th style="width:5%;display:none;text-align:center;">Version</th>
+                        <th style="width:3%;display:none;text-align:center;">ISActive</th>
+                        <th style="width:1%;display:none;text-align:center;">RefSource</th>
+                        <th style="width:1%;display:none;text-align:center;">Version_Yr</th>
+                    </tr>
+                </thead>
+                <tbody id="ProblemListBody" class="Gridbodystyle">
+                    <tr style="width:100%;height:45px!important;" ng-repeat="a in ProblemListTable|orderBy:orderByField:reverseSort">
+                        <td style="width:5%;text-align:center;"><img id="followbutton" src="Resources/Delete-Blue.png" ng-click="Delete($index)" /></td>
+                        <td style="width:5%;"><input type="checkbox" onchange="SetSaveEnabled();" ng-checked="a.CheckBoxCheck=='Y'" /></td>
+                        <td style="width:7%;text-align:center;">{{ a.ICDCode  }}</td>
+                        <td style="width:20%;text-align:left;">{{ a.ICDDescription}}</td>
+                        <td style="width:8%;text-align:center;">
+                            <select id="StatusDropDwn" onchange="SetIndexChanged(this);">
+                                <option ng-selected="a.Status=='Active'" value="Active">Active</option>
+                                <option ng-selected="a.Status=='Resolved'" value="Resolved">Resolved</option>
+                                <option ng-selected="a.Status=='Inactive'" value="Inactive">Inactive</option>
+                            </select>
+                        </td>
+                        <td style="width:8%;text-align:center;">
+                            <select ng-model="a.Year" style="width:85%" onchange="SetSaveEnabled();" id="Year">
+                                <option value=""></option>
+                                <option ng-repeat="item in items" ng-selected="{{item==a.Year}}" value="{{item}}">
+                                    {{item}}
+                                </option>
+                            </select>
+                        </td>
+                        <td style="width:8%;text-align:center;">
+                            <select style="width:75%" ng-model="a.Month" onchange="SetSaveEnabled();">
+                                <option value=""> </option>
+                                <option ng-selected="a.Month=='Jan' || a.Month=='jan' || a.Month=='JAN' || a.Month=='jAn' || a.Month=='jaN' || a.Month=='JaN' || a.Month=='jAN' || a.Month=='JAn'" value="Jan">Jan</option>
+                                <option ng-selected="a.Month=='Feb' || a.Month=='feb' || a.Month=='FEB' || a.Month=='fEb' || a.Month=='feB' || a.Month=='FeB' || a.Month=='fEB' || a.Month=='FEb'" value="Feb">Feb</option>
+                                <option ng-selected="a.Month=='Mar' || a.Month=='mar' || a.Month=='MAR' || a.Month=='mAr' || a.Month=='maR' || a.Month=='MaR' || a.Month=='mAR' || a.Month=='MAr'" value="Mar">Mar</option>
+                                <option ng-selected="a.Month=='Apr' || a.Month=='apr' || a.Month=='APR' || a.Month=='aPr' || a.Month=='apR' || a.Month=='ApR' || a.Month=='aPR' || a.Month=='APr'" value="Apr">Apr</option>
+                                <option ng-selected="a.Month=='May' || a.Month=='may' || a.Month=='MAY' || a.Month=='mAy' || a.Month=='maY' || a.Month=='MaY' || a.Month=='mAY' || a.Month=='MAy'" value="May">May</option>
+                                <option ng-selected="a.Month=='Jun' || a.Month=='jun' || a.Month=='JUN' || a.Month=='jUn' || a.Month=='juN' || a.Month=='JuN' || a.Month=='jUN' || a.Month=='JUn'" value="Jun">Jun</option>
+                                <option ng-selected="a.Month=='Jul' || a.Month=='jul' || a.Month=='JUL' || a.Month=='jUl' || a.Month=='juL' || a.Month=='JuL' || a.Month=='jUL' || a.Month=='JUl'" value="Jul">Jul</option>
+                                <option ng-selected="a.Month=='Aug' || a.Month=='aug' || a.Month=='AUG' || a.Month=='aUg' || a.Month=='auG' || a.Month=='AuG' || a.Month=='aUG' || a.Month=='AUg'" value="Aug">Aug</option>
+                                <option ng-selected="a.Month=='Sep' || a.Month=='sep' || a.Month=='SEP' || a.Month=='sEp' || a.Month=='seP' || a.Month=='SeP' || a.Month=='sEP' || a.Month=='SEp'" value="Sep">Sep</option>
+                                <option ng-selected="a.Month=='Oct' || a.Month=='oct' || a.Month=='OCT' || a.Month=='oCt' || a.Month=='ocT' || a.Month=='OcT' || a.Month=='oCT' || a.Month=='OCt'" value="Oct">Oct</option>
+                                <option ng-selected="a.Month=='Nov' || a.Month=='nov' || a.Month=='NOV' || a.Month=='nOv' || a.Month=='noV' || a.Month=='NoV' || a.Month=='nOV' || a.Month=='NOv'" value="Nov">Nov</option>
+                                <option ng-selected="a.Month=='Dec' || a.Month=='dec' || a.Month=='DEC' || a.Month=='dEc' || a.Month=='deC' || a.Month=='DeC' || a.Month=='dEC' || a.Month=='DEc'" value="Dec">Dec</option>
+                            </select>
+                        </td>
+                        <td style="width:8%;text-align:center;">
+                            <select ng-model="a.Date" style="width:75%" ng-focus="SetDateDropDown({event:$event})" id="dateDrpDwn" onchange="SetSaveEnabled();">
+                                <option value=""></option>
+                                <option ng-repeat="date in dates" ng-selected="{{date==a.Date}}" value="{{date}}">
+                                    {{date}}
+                                </option>
+                            </select>
+                        </td>
+                        <td style="width:8%;text-align:center;">
+                            <select ng-model="a.EndYear" style="width:85%" onchange="SetSaveEnabled();" id="EndYear" ng-disabled="a.Status!='Resolved'">
+                                <option value=""></option>
+                                <option ng-repeat="item in items" ng-selected="{{item==a.EndYear}}" value="{{item}}">
+                                    {{item}}
+                                </option>
+                            </select>
+                        </td>
+                        <td style="width:8%;text-align:center;">
+                            <select style="width:75%" ng-model="a.EndMonth" id="EndMonth" onchange="SetSaveEnabled();" ng-disabled="a.Status!='Resolved'">
+                                <option value=""> </option>
+                                <option ng-selected="a.EndMonth=='Jan' || a.EndMonth=='jan' || a.EndMonth=='JAN' || a.EndMonth=='jAn' || a.EndMonth=='jaN' || a.EndMonth=='JaN' || a.EndMonth=='jAN' || a.EndMonth=='JAn'" value="Jan">Jan</option>
+                                <option ng-selected="a.EndMonth=='Feb' || a.EndMonth=='feb' || a.EndMonth=='FEB' || a.EndMonth=='fEb' || a.EndMonth=='feB' || a.EndMonth=='FeB' || a.EndMonth=='fEB' || a.EndMonth=='FEb'" value="Feb">Feb</option>
+                                <option ng-selected="a.EndMonth=='Mar' || a.EndMonth=='mar' || a.EndMonth=='MAR' || a.EndMonth=='mAr' || a.EndMonth=='maR' || a.EndMonth=='MaR' || a.EndMonth=='mAR' || a.EndMonth=='MAr'" value="Mar">Mar</option>
+                                <option ng-selected="a.EndMonth=='Apr' || a.EndMonth=='apr' || a.EndMonth=='APR' || a.EndMonth=='aPr' || a.EndMonth=='apR' || a.EndMonth=='ApR' || a.EndMonth=='aPR' || a.EndMonth=='APr'" value="Apr">Apr</option>
+                                <option ng-selected="a.EndMonth=='May' || a.EndMonth=='may' || a.EndMonth=='MAY' || a.EndMonth=='mAy' || a.EndMonth=='maY' || a.EndMonth=='MaY' || a.EndMonth=='mAY' || a.EndMonth=='MAy'" value="May">May</option>
+                                <option ng-selected="a.EndMonth=='Jun' || a.EndMonth=='jun' || a.EndMonth=='JUN' || a.EndMonth=='jUn' || a.EndMonth=='juN' || a.EndMonth=='JuN' || a.EndMonth=='jUN' || a.EndMonth=='JUn'" value="Jun">Jun</option>
+                                <option ng-selected="a.EndMonth=='Jul' || a.EndMonth=='jul' || a.EndMonth=='JUL' || a.EndMonth=='jUl' || a.EndMonth=='juL' || a.EndMonth=='JuL' || a.EndMonth=='jUL' || a.EndMonth=='JUl'" value="Jul">Jul</option>
+                                <option ng-selected="a.EndMonth=='Aug' || a.EndMonth=='aug' || a.EndMonth=='AUG' || a.EndMonth=='aUg' || a.EndMonth=='auG' || a.EndMonth=='AuG' || a.EndMonth=='aUG' || a.EndMonth=='AUg'" value="Aug">Aug</option>
+                                <option ng-selected="a.EndMonth=='Sep' || a.EndMonth=='sep' || a.EndMonth=='SEP' || a.EndMonth=='sEp' || a.EndMonth=='seP' || a.EndMonth=='SeP' || a.EndMonth=='sEP' || a.EndMonth=='SEp'" value="Sep">Sep</option>
+                                <option ng-selected="a.EndMonth=='Oct' || a.EndMonth=='oct' || a.EndMonth=='OCT' || a.EndMonth=='oCt' || a.EndMonth=='ocT' || a.EndMonth=='OcT' || a.EndMonth=='oCT' || a.EndMonth=='OCt'" value="Oct">Oct</option>
+                                <option ng-selected="a.EndMonth=='Nov' || a.EndMonth=='nov' || a.EndMonth=='NOV' || a.EndMonth=='nOv' || a.EndMonth=='noV' || a.EndMonth=='NoV' || a.EndMonth=='nOV' || a.EndMonth=='NOv'" value="Nov">Nov</option>
+                                <option ng-selected="a.EndMonth=='Dec' || a.EndMonth=='dec' || a.EndMonth=='DEC' || a.EndMonth=='dEc' || a.EndMonth=='deC' || a.EndMonth=='DeC' || a.EndMonth=='dEC' || a.EndMonth=='DEc'" value="Dec">Dec</option>
+                            </select>
+                        </td>
+                        <td style="width:10%;text-align:center;">
+                            <select ng-model="a.Enddate" style="width:75%" ng-focus="SetDateDropDown({event:$event})" id="EnddateDrpDwn" onchange="SetSaveEnabled();" ng-disabled="a.Status!='Resolved'">
+                                <option value=""></option>
+                                <option ng-repeat="date in dates" ng-selected="{{date==a.Enddate}}" value="{{date}}">
+                                    {{date}}
+                                </option>
+                            </select>
+                        </td>
+                        <td style="width:10%;display:none;text-align:center;">{{a.ProblemListID}}</td>
+                        <td style="width:5%;display:none;text-align:center;">{{a.iProblemListVersion}}</td>
+                        <td style="width:3%;display:none;text-align:center;">{{a.isActive}}</td>
+                        <td style="width:1%;display:none;text-align:center;">{{a.RefSource}}</td>
+                        <td style="width:1%;display:none;text-align:center;">{{a.Version_Yr}}</td>
+                        <td style="width:1%;display:none;text-align:center;">{{a.Color}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table style="width:100%;height:50px;padding:5px;" id="tblProblemListFooter">
+                <tr>
+                    <td style="text-align:left;width:1%;padding-left:6px;"><button id="btnFavouriteICD" ng-click="OpenFormView()" class="btn btn-primary" type="button">Favourite ICD</button></td>
+                    <td style="width:10%;text-align:left;"><input type="checkbox" id="chkNoKnownActiveProblem" value="No Known Active Problems" ng-model="isKnwnChecked" onclick="SetStatus();">No Known Active Problems</td>
+                    <td style="width:16%;text-align:left;"><input type="checkbox" id="chkShowActiveOnly" value="Show Active Only" ng-model="isChecked" ng-click="ShowActivChkd()">Show Active Only </td>
+                    <td style="width:1%;text-align:right;"><button id="btnSave" class="btn btn-success" type="button" ng-click="SaveProblemList()">Save</button></td>
+                    <td style="width:1%;text-align:right;padding-right:6px;"><button id="btnCloseModal" class="btn btn-danger" type="button" ng-click="CloseModal();">Close</button></td>
+                </tr>
+            </table>
+        </div>
+        <div id="divdetails" class="modal modal-wide fade">
+            <div class="modal-dialog" style="width: 95%; margin-top: 5%;">
+                <div class="modal-content" style="">
+                    <div class="modal-header" style="height: 46px;background-color: #E6D090;border-top-left-radius: 7px;border-top-right-radius: 7px;color: #00437D;font-weight: 900!important;">
+                        <div style="margin-top: -12px;">
+                            <div class="col-xs-8">
+                                <h4 style="font-weight: 600;color: #666666;">ICD 9 to 10 Conversion</h4>
+                            </div>
+                            <div class="col-xs-4" style="margin-top:11px;padding: 1px;">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body" id="divbody">
+                        <div class="container" style="width:100%;height:400px;">
+                            <table class="table table-bordered" style="margin-bottom:0px;">
+                                <thead style="background-color:#015aa7;color:white;">
+                                    <tr style="width:100%;">
+                                        <th style="width:10%; text-align:center;">Select</th>
+                                        <th style="width:25%;">ICD 10</th>
+                                        <th style="width:64.99%;">ICD 10 Description</th>
+                                        <th style="display:none;">Notes</th>
+                                        <th style="display:none;">ProblemListID</th>
+                                        <th style="display:none;">AssessmentID</th>
+                                        <th style="display:none;">ProblemListVersion</th>
+                                        <th style="display:none;">AssessmentVersion</th>
+                                        <th style="display:none;">ICD9Code</th>
+                                        <th style="display:none;">ICD9Desc</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div id="divtblContainer" style="width:100%;height:360px;overflow-y:auto;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="height: 56px;">
+                        <button id="ok" type="button" class="btn btn-success btn-sm" style="margin-top: -10px;" ng-click="LoadICD10toProblemLIstTable()">Continue</button>
+                        <button id="cancel" class="btn btn-danger btn-sm" style="margin-top: -10px;" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divMultipleICD9ModalQuestionnaire" class="modal fade" style="border-color:black !important;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <label id="lblQuestionnaire" style="font-weight:700!important;">`Please select the Diagnosis related to:</label>
+
+                    </div>
+                    <div class="modal-body">
+                        <div>
+
+                            <table id="tblQuestionnaire" class="table-bordered">
+                                <tr ng-repeat="name in ColumnName">
+                                    <th style="width:20%; word-wrap:break-word;white-space:normal;font-weight:normal;  vertical-align: middle;">{{name.Select}} </th>
+                                    <th style="width:15%;word-wrap:break-word;white-space:normal;font-weight:normal;   vertical-align: middle;">{{name.ICD}} </th>
+                                    <th style="width:65%;word-wrap:break-word;white-space:normal;font-weight:normal;   vertical-align: middle;">{{name.ICDDesc}}</th>
+                                    <th style="display:none;">{{name.LeafNode}}</th>
+                                    <th style="display:none;">{{name.CheckLeafNode}}</th>
+                                    <th style="display:none;">{{name.MutullayExclusive}}</th>
+                                </tr>
+                                <tbody id="AssessmentQuestionnaire">
+                                    <tr ng-repeat="x in Questionnaire">
+                                        <td style="width:20%;"><input ng-checked="x.ICDCode==x.CheckLeafNode" ng-click="x.MutuallyExclusive=='Y'?CheckedQuestionnaire($index):null" type="checkbox" /></td>
+                                        <td style="width:15%;">{{ x.ICDCode  }}</td>
+                                        <td style="width:65%;">{{ x.ICDDescription}}</td>
+                                        <td style="display:none">{{x.LeafNode}}</td>
+                                        <td style="display:none">{{x.CheckLeafNode}}</td>
+                                        <td style="display:none">{{x.MutuallyExclusive}}</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn aspbluebutton" id="btnOKICD9Modal" ng-click="OpenSkipQuestionnaire()">Skip</button>
+                        <button type="button" class="btn aspbluebutton" id="btnOKICD9Modal" ng-click="OpenBackQuestionnaire()">Back</button>
+                        <button type="button" class="btn aspbluebutton" id="btnCancelICD9Modal" ng-click="OpenNextQuestionnaire()">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dvdialog" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">
+            <p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">
+                There are unsaved changes.Do you want to save them?
+            </p>
+
+        </div>
+
+    </div>
+</body>
+</html>

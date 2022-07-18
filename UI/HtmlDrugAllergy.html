@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <!--<script src="JScripts/jQueryAngular.js"></script>-->
+    <script src="JScripts/jquery-1.11.3.min.js"></script>
+    <script src="JScripts/jquery-ui.min1.10.2.js"></script>
+    <script src="JScripts/bootstrap.min.js"></script>
+    <!--<script src="JScripts/jquery-ui.js"></script>-->
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+    <!--<script src="JScripts/bootstrap.min.js"></script>-->
+    <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
+    <script src="JScripts/jsCustomAutoCompleteCombobox.js"></script>
+    <script type="text/javascript">
+        var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSModalWindow.js", "JScripts/JSDrugAllergy.js"];
+        for (var i = 0; i < JSFiles.length; i++) {
+            var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+            var JSElement = document.createElement('script');
+            JSElement.src = JSLink;
+            JSElement.async = false;
+            document.getElementsByTagName('head')[0].appendChild(JSElement);
+        }
+    </script>
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #c3bfbf;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #707070;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #3d3c3a;
+            }
+
+       
+
+        tbody#tbodytblDrugAllergy td, table#tblDrugAllergy td {
+            /*background-color: white;*/
+            border: 1px solid #808080;
+            color: #4E4E4E;
+            padding: 6px 2px 3px 2px;
+        }
+
+        .ui-autocomplete {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+       
+
+       
+
+        li:hover {
+            background-color: #DEF;
+        }
+
+
+        label {
+            margin-bottom: -3px !important;
+        }
+
+        .dis option {
+            padding: 4px 0;
+        }
+
+        select option:hover {
+            background: #DFDFDF;
+        }
+    </style>
+</head>
+<body onload="HistoryDrug_Load()">
+    <div class="container" style="width:100%">
+        <div class="panelborderbox" style="height: 290px; width: 99%;" id="mainContainer">
+            <div class="divgroupstyle Editabletxtbox">Drug Allergy Details</div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " style="margin-top:5px!important;">
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 ">
+                    <div class="row" style="text-align:left;padding-bottom:2px;">
+                        <span id="lblCommanAllergies" class="Editabletxtbox">Common Allergies</span>
+                    </div>
+                    <div class="row">
+                        <select id="Frequencylist" class="dis Editabletxtbox" onclick="FrequencySelect();" style="width:100%;height:217px;" multiple></select>
+                    </div>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 ">
+                    <div class="row" style="margin-top:5px;">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 form-group Editabletxtbox">
+                            <span mand="Yes"> Allergy*</span>
+
+                        </div>
+                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 form-group">
+                            <input type="text" id="mDrugName" style="width:94%" class="form-control Editabletxtbox" onclick="EnableSave();">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 form-group Editabletxtbox">
+                            Reaction
+                        </div>
+                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 form-group">
+                            <textarea id="Reactiontxtarea" name="REACTION" textmode="MultiLine" style="resize:none;position: static;margin-top:4px;height: 58px;width: 94%;" maxlength="32767" ng-keyup="SettxtSaveEnabled()" class="actcmpt Editabletxtbox" onclick="EnableSave();" onkeydown="insertTab(this, event);"></textarea>
+                            <div id="lstReactiontesplus" class="col-6-btns" style=" width: 22px;float: right !important;margin-right:-7px;margin-top: 18px;text-align:left;height:45px!important;">
+                                <a class=" fa fa-plus" style="margin-top:5px;margin-left:-14px;margin-right:    1px;text-decoration:none;cursor:pointer;padding: 6px 7px 4px 6px !important;color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdowns" align="centre" font-bold="false" title="Drop down" onclick="GetReaction(this, 'REACTION');">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 form-group">
+                            Notes
+                        </div>
+                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 form-group">
+                            <textarea id="genralnotes" name="Drug Allergy Notes" textmode="MultiLine" style="resize:none;position: static;margin-top:-4px;height: 58px;width: 94%;" maxlength="32767" ng-keyup="SettxtSaveEnabled()" class="actcmpt Editabletxtbox" onclick="EnableSave();" onkeydown="insertTab(this, event);"></textarea>
+                            <div id="lstgenralnotesplus" class="col-6-btns" style=" width: 22px;float: right !important;margin-right:-7px;margin-top: 9px;text-align:left;height:45px!important;">
+                                <a class=" fa fa-plus" style="margin-top:5px;margin-left:-14px;margin-right:1px;text-decoration:none;cursor:pointer;padding: 6px 7px 4px 6px !important;background: #6DABF7;color: #fff;font-size: 12px; border-radius: 2px;" id="pbDropdowns" align="centre" font-bold="false" title="Drop down" onclick="GetNotesList(this, 'Drug Allergy Notes');">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;text-align:right;" class="row">
+                        <button type="button" id="btnAdd" class="aspgreenbutton aspresizedgreenbutton">Add</button>
+                        <button type="button" id="btnclear" data-toggle="tooltip-wide" ng-click="ClearConfirm()" class="aspredbutton aspresizedredbutton">Clear All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width:99.2%;height:auto;vertical-align:top;padding-top:10px;padding-bottom:10px;" id="ScrollStatic">
+            <div class="table-responsive" style="height: 100%" id="DrugAllergyTable">
+                <table id="tblDrugAllergy" style="width:100%;text-align:left;" class="table table-bordered table-condensed Gridbodystyle">
+                    <thead id="DrugHead" style="background-color:#cacaca;width:100%!important;">
+                        <tr>
+                            <th style="width:5%!important;">Edit</th>
+                            <th style="width:5%!important;">Del</th>
+                            <th style="width:30%!important;">Allergy</th>
+                            <th style="width:30%!important;">Reaction</th>
+                            <th style="width:30%!important;">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodytblDrugAllergy" style="width:100%!important">
+                        <!--<tr>
+                <td style="width:5%!important;"><input type="image" ng-click="open(c)" data-toggle="tooltip" title="Edit" style="width:14px" src="images/Pen-Grey.png" alt="Delete"></td>
+                <td style="width:5%!important;"><input type="image" ng-click="showConfirm($event)" id="{{c.id }}" style="width:14px" data-toggle="modal" data-target="#modal-sm" title="Delete" src="images/Delete-Grey.png" alt="Delete"></td>
+                <td style="width:40%!important;"></td>
+                <td style="width:40%!important;"></td>
+                <td style="width:10%!important;"></td>
+            </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

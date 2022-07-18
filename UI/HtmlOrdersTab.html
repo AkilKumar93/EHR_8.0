@@ -1,0 +1,730 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <style type="text/css">
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: White;
+            z-index: 99;
+            -moz-opacity: 0.8;
+            min-height: 100%;
+            width: 100%;
+        }
+
+        .ui-widget-header, .ui-state-default, ui-button {
+            background: #b9cd6d;
+            border: 1px solid #b9cd6d;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        .nav > li > a {
+            padding: 5px 9px !important;
+        }
+
+        ul {
+            margin-top: 4px !important;
+            margin-bottom: 2px !important;
+            height: 32px !important;
+            margin-left: -48px !important;
+        }
+
+        .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+            /*background-color: rgb(191, 219, 255) !important;*/
+            /*background-color: rgba(193, 194, 208, 0.98) !important;*/
+        }
+
+        :focus {
+            outline: none !important;
+        }
+
+        a {
+            /*background-color: #f5f4f4 !important;
+            font-weight: bold;
+            padding-top: 3px !important;
+            font-size: small;
+            font-weight: bold;*/
+            color: black !important;
+            border-color: #adadad;
+        }
+
+        .nav-tabs {
+            border-bottom: 0px !important;
+        }
+
+        .container {
+            margin-right: 0px !important;
+            margin-left: 36px !important;
+        }
+
+        .ui-dialog-titlebar-close {
+            display: none;
+        }
+
+        .ui-widget {
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+            float: none !important;
+            margin-left: 45px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane button {
+            width: 60px !important;
+        }
+
+        .ui-dialog .ui-dialog-titlebar {
+            padding: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-title {
+            font-size: 12px !important;
+            font-family: Verdana,Arial,sans-serif !important;
+        }
+
+        .ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable {
+            height: 155px;
+            border: 2px solid;
+            border-radius: 13px;
+            top: 504px !important;
+            left: 568px !important;
+        }
+
+        .ui-dialog .ui-dialog-content {
+            min-height: 0px !important;
+        }
+
+        .ui-dialog .ui-dialog-buttonpane {
+            margin-top: -10px !important;
+            /*padding: 0px !important ;*/
+        }
+
+        .ui-widget-content {
+            border: 0px !important;
+        }
+
+        .ui-widget-header, .ui-state-default, ui-button {
+            font-weight: bold !important;
+            font-size: 12px !important;
+            font-family: sans-serif;
+        }
+
+
+
+        @media (min-width: 992px) {
+            .container {
+                width: 102%!important;
+            }
+        }
+
+        .ui-widget {
+            border: 1px solid #adadad !important;
+            background-color: #F7F7F7;
+        }
+        .disableTab {
+            background-color: #a4a4a4 !important;
+            cursor: default !important;
+        }
+    </style>
+    <link href="CSS/bootstrap.min.css" rel="Stylesheet" />
+    <link href="CSS/jquery-ui.css" rel="Stylesheet" />
+      <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" /> 
+</head>
+<body>
+    <form>
+        <div class="container" id="dvcontainer">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs" id="myTabs">
+                        <li class="active tabstyle">
+                            <a href="#DiagnosticOrder" data-toggle="tab" style="color:#6504d0!important;">Diagnostic Order</a>
+                        </li>
+                        <li class="tabstyle">
+                            <a href="#ReferralOrder" data-toggle="tab">Referral Order</a>
+                        </li>
+                        <li class="tabstyle">
+                            <a href="#Immunization" data-toggle="tab" style="color:#6504d0!important;">Immunization/Injection</a>
+                        </li>
+                        <li class="tabstyle">
+                            <a href="#InHouseProcedure" data-toggle="tab">Procedures</a>
+                        </li>
+                        <li class="tabstyle">
+                            <a href="#DMEOrder" data-toggle="tab">DME Order</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="DiagnosticOrder" data-src="frmImageAndLabOrder.aspx">
+                            <iframe class="clsIframe" src="" style=" height: 665px; width:99%; margin-left: -43px;margin-top:-2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="ReferralOrder" data-src="frmReferralOrder.aspx">
+                            <iframe class="clsIframe" src="" style=" height: 620px; width: 100%; margin-left: -48px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+
+                        <div class="tab-pane" id="Immunization" data-src="frmImmunization.aspx">
+                            <iframe class="clsIframe" src="" style=" height: 643px; width: 98%; margin-left: -48px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+
+                        <div class="tab-pane" id="InHouseProcedure" data-src="frmInhouseProcedure.aspx">
+                            <iframe class="clsIframe" src="" style=" height: 643px; width: 98%; margin-left: -48px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                        <div class="tab-pane" id="DMEOrder" data-src="frmDMEOrder.aspx">
+                            <iframe class="clsIframe" src="" style=" height: 665px; width:99%; margin-left: -43px;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <button type="button" id="btnHiddenOrder" style="display:none;"></button>
+</body>
+</html>
+
+<script src="JScripts/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="JScripts/jquery-ui.min1.10.2.js" type="text/javascript"></script>
+<script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSOrders.js", "JScripts/JSAvoidRightClick.js"];
+    for (var i = 0; i < JSFiles.length; i++) {
+        var JSLink = JSFiles[i] + "?version=" + sessionStorage.getItem("ScriptVersion");
+        var JSElement = document.createElement('script');
+        JSElement.src = JSLink;
+        document.getElementsByTagName('body')[0].appendChild(JSElement);
+    }
+    var PrevTab;
+    var CurTab;
+    var ORDERS_tab = [];
+    var ORDERS_tab_to_disable;
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "frmImageAndLabOrder.aspx/LoadOrdersTab",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            async: true,
+            success: function (data) {
+                Sessionvalues = (data.d);
+                var tab_disable = (data.d).split('=')[1];
+                if (tab_disable != "") {
+                    ORDERS_tab_to_disable = JSON.parse((data.d).split('=')[1]);
+                    for (var i = 0; i < ORDERS_tab_to_disable.length; i++) {
+                        if (ORDERS_tab_to_disable[i].tab != null && ORDERS_tab_to_disable[i].tab.indexOf("_")>-1)
+                            ORDERS_tab.push(ORDERS_tab_to_disable[i].tab.split('_')[1].replace("tb", ""));
+                        $("#myTabs a[href*='" + ORDERS_tab[i] + "']").addClass("disableTab");
+                    }
+                }
+
+            },
+
+            error: function OnError(xhr) {
+                var log = JSON.parse(xhr.responseText);
+                console.log(log);
+                if (xhr.status == 999)
+                    window.location = xhr.statusText;
+                else
+                    alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                   "Message: " + log.Message);
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            }
+        });
+        //if (document.URL.indexOf("ScreenMode=Menu") > -1)
+        //$('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+        //    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+        if ($("ul#myTabs li.active").length != 0) {
+
+            if (localStorage.getItem("bSave") == "true") {
+                if (localStorage.getItem("notification") == "Immunizationorder") {
+                    $('#myTabs a')[2].click();
+                    var target = $('#myTabs li:eq(2) a').tab('show')
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                    localStorage.setItem("notification", "");
+                }
+                else if (localStorage.getItem("Implant") == "Procedures")
+                {
+                 $('#myTabs a')[3].click();
+            var target = $('#myTabs li:eq(3) a').tab('show')
+            localStorage.setItem("PrevSubTab", target[0].innerText);
+            paneID = $(target).attr('href');
+            localStorage.setItem("Implant", "");
+                }
+                else {
+                    var target = $('#myTabs a:first').tab('show');
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                }
+                if (document.URL.indexOf("ScreenMode=Menu") > -1)
+                    src = $(paneID).attr('data-src') + document.URL.substr(document.URL.indexOf("?"), document.URL.length);
+                else if ($(paneID).attr('data-src').indexOf("?") > -1)
+                    src = document.URL.substr(0, document.URL.indexOf("?"));
+                else
+                    src = $(paneID).attr('data-src');
+                $(paneID).attr('data-src', src);
+                $(paneID + " iframe").attr("src", src);
+
+            }
+            else {
+                if (localStorage.getItem("PrevSubTab") == "Diagnostic Order") {
+                    var target = $('#myTabs a:first').tab('show');
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                    src = $(paneID).attr('data-src');
+                    $(paneID).attr('data-src', src);
+                    $(paneID + " iframe").attr("src", src);
+                    localStorage.setItem("bSave", "true");
+                }
+                else if (localStorage.getItem("PrevSubTab") == "Referral Order") {
+                    var target = $('#myTabs li:eq(1) a').tab('show')
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                    localStorage.setItem("bSave", "true");
+                }
+                else if (localStorage.getItem("PrevSubTab") == "Immunization/Injection") {
+                    var target = $('#myTabs li:eq(2) a').tab('show')
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                    localStorage.setItem("bSave", "true");
+                }
+                else if (localStorage.getItem("PrevSubTab") == "Procedures") {
+                    var target = $('#myTabs li:eq(3) a').tab('show')
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                    localStorage.setItem("bSave", "true");
+                }
+                else if (localStorage.getItem("PrevSubTab") == "DME Order") {
+                    var target = $('#myTabs li:eq(4) a').tab('show')
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                    localStorage.setItem("bSave", "true");
+                }
+                else {
+                    var target = $('#myTabs a:first').tab('show');
+                    localStorage.setItem("PrevSubTab", target[0].innerText);
+                    paneID = $(target).attr('href');
+                    src = $(paneID).attr('data-src');
+                    $(paneID).attr('data-src', src);
+                    $(paneID + " iframe").attr("src", src);
+                }
+            }
+
+        }
+        $('#myTabs li a').click(function () {
+            localStorage.setItem("notification", "");
+            localStorage.setItem("Implant", "");
+            var is_disabled = false;
+            if (ORDERS_tab != undefined && ORDERS_tab.length > 0) {
+                for (var t = 0; t < ORDERS_tab.length; t++) {
+                    if (this.hash == "#" + ORDERS_tab[t]) {
+                        event.stopPropagation();
+                        is_disabled = true;
+                    }
+                }
+                if (is_disabled == false) {
+                    if ($("ul#myTabs li.active a")[0].innerText != this.innerText)
+                    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                }
+            }
+            else {
+                if ($("ul#myTabs li.active a")[0].innerText != this.innerText)
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            }
+            if (!is_disabled) {
+                if ($("ul#myTabs li.active a")[0].innerText != this.innerText) {
+                    if (document.URL.indexOf("ScreenMode=Menu") > -1) {
+                        if ($($(this).attr('href')).attr('data-src').indexOf("?") == -1) {
+                            var src = $($(this).attr('href')).attr('data-src') + document.URL.substr(document.URL.indexOf("?"), document.URL.length);
+                            $($(this).attr('href')).attr('data-src', src);
+                        }
+                    }
+                    else if ($($(this).attr('href')).attr('data-src').indexOf("?") > -1) {
+                        var src = document.URL.substr(0, document.URL.indexOf("?"));
+                        $($(this).attr('href')).attr('data-src', src);
+                    }
+                    else {
+                        var src = $($(this).attr('href')).attr('data-src');
+                        $($(this).attr('href')).attr('data-src', src);
+                    }
+                    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                }
+            }
+           
+        });
+        $("#btnHiddenOrder").click(function () {
+            var PrevTabtxt = sessionStorage.getItem('Order_PrevTabText');
+            $("a:contains('" + PrevTabtxt + "')").tab('show');
+        });
+    });
+
+    //var bOrderCancel = false;
+    sessionStorage.setItem('bOrderCancel', 'false');
+
+    $('.nav-tabs a').on('shown.bs.tab', function (event) {
+        
+        var is_disabled = false;
+        if (ORDERS_tab != undefined && ORDERS_tab.length > 0) {
+            for (var t = 0; t < ORDERS_tab.length; t++) {
+                if (this.hash == "#" + ORDERS_tab[t])
+                {
+                    event.stopPropagation();
+                    is_disabled = true;
+                }
+            }
+            if (is_disabled == false) {
+                LoadOrdersTabs(event);
+            }
+        }
+        else
+            LoadOrdersTabs(event);
+
+    });
+
+   function LoadOrdersTabs(event) {
+        CurTab = $(event.target);         // active tab
+        PrevTab = $(event.relatedTarget);  // previous tab
+        localStorage.setItem("PrevSubTab", CurTab[0].innerText);
+        if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true") {
+            event.preventDefault();
+            sessionStorage.setItem("AutoSave_Order", "false");
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                //$(dvdialog).dialog("close");
+                //$(dvdialog).remove();
+                sessionStorage.setItem("AutoSave_Order", "true");
+                if (PrevTab[0].innerText == "Diagnostic Order") {
+                    paneID = $(event.target).attr('href');
+                    sessionStorage.setItem('Order_paneID', paneID);
+                    src = $(paneID).attr('data-src');
+                    sessionStorage.setItem('Order_src', src);
+                    var prevTabtxt = $(PrevTab).text();
+                    sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+                    $('.clsIframe').contents()[0].all.namedItem('btnOrderSubmit').click();
+                    //if (localStorage.getItem("bSave") == "true") {
+                    //    $(dvdialog).dialog("close");
+                    //    paneID = $(event.target).attr('href');
+                    //    src = $(paneID).attr('data-src');
+                    //    if ($(paneID + " iframe").attr("src") == "") {
+                    //        $(paneID + " iframe").attr("src", src);
+                    //    }
+                    //}
+                    //else {
+                    //    bOrderCancel = true;
+                    //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //    $(dvdialog).dialog("close");
+                    //    PrevTab.tab('show');
+                    //    return;
+                    //}
+
+
+                }
+                else if (PrevTab[0].innerText == "Referral Order") {
+                    paneID = $(event.target).attr('href');
+                    sessionStorage.setItem('Order_paneID', paneID);
+                    src = $(paneID).attr('data-src');
+                    sessionStorage.setItem('Order_src', src);
+                    var prevTabtxt = $(PrevTab).text();
+                    sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+                    $('.clsIframe').contents()[1].all.namedItem('btnAddRefOrder').click();
+                    //if (localStorage.getItem("bSave") == "true") {
+                    //    $(dvdialog).dialog("close");
+                    //    paneID = $(event.target).attr('href');
+                    //    src = $(paneID).attr('data-src');
+                    //    if ($(paneID + " iframe").attr("src") == "") {
+                    //        $(paneID + " iframe").attr("src", src);
+                    //    }
+                    //}
+                    //else {
+                    //    bOrderCancel = true;
+                    //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //    $(dvdialog).dialog("close");
+                    //    PrevTab.tab('show');
+                    //    return;
+                    //}
+
+                }
+                else if (PrevTab[0].innerText == "Immunization/Injection") {
+                    paneID = $(event.target).attr('href');
+                    sessionStorage.setItem('Order_paneID', paneID);
+                    src = $(paneID).attr('data-src');
+                    sessionStorage.setItem('Order_src', src);
+                    var prevTabtxt = $(PrevTab).text();
+                    sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+                    $('.clsIframe').contents()[2].all.namedItem('btnAdd').click();
+                    //if (localStorage.getItem("bSave") == "true") {
+                    //    $(dvdialog).dialog("close");
+                    //    paneID = $(event.target).attr('href');
+                    //    src = $(paneID).attr('data-src');
+                    //    if ($(paneID + " iframe").attr("src") == "") {
+                    //        $(paneID + " iframe").attr("src", src);
+                    //    }
+                    //}
+                    //else {
+                    //    bOrderCancel = true;
+                    //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //    $(dvdialog).dialog("close");
+                    //    PrevTab.tab('show');
+                    //    return;
+                    //}
+
+                }
+                else if (PrevTab[0].innerText == "Procedures") {
+                    paneID = $(event.target).attr('href');
+                    sessionStorage.setItem('Order_paneID', paneID);
+                    src = $(paneID).attr('data-src');
+                    sessionStorage.setItem('Order_src', src);
+                    var prevTabtxt = $(PrevTab).text();
+                    sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+                    $('.clsIframe').contents()[3].all.namedItem('btnAdd').click();
+                    //if (localStorage.getItem("bSave") == "true") {
+                    //    $(dvdialog).dialog("close");
+                    //    paneID = $(event.target).attr('href');
+                    //    src = $(paneID).attr('data-src');
+                    //    if ($(paneID + " iframe").attr("src") == "") {
+                    //        $(paneID + " iframe").attr("src", src);
+                    //    }
+                    //}
+                    //else {
+                    //    bOrderCancel = true;
+                    //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //    $(dvdialog).dialog("close");
+                    //    PrevTab.tab('show');
+                    //    return;
+                    //}
+                }
+                else if (PrevTab[0].innerText == "DME Order") {
+                    paneID = $(event.target).attr('href');
+                    sessionStorage.setItem('Order_paneID', paneID);
+                    src = $(paneID).attr('data-src');
+                    sessionStorage.setItem('Order_src', src);
+                    var prevTabtxt = $(PrevTab).text();
+                    sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+                    $('.clsIframe').contents()[4].all.namedItem('btnAdd').click();
+                    //if (localStorage.getItem("bSave") == "true") {
+                    //    $(dvdialog).dialog("close");
+                    //    paneID = $(event.target).attr('href');
+                    //    src = $(paneID).attr('data-src');
+                    //    if ($(paneID + " iframe").attr("src") == "") {
+                    //        $(paneID + " iframe").attr("src", src);
+                    //    }
+                    //}
+                    //else {
+                    //    bOrderCancel = true;
+                    //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //    $(dvdialog).dialog("close");
+                    //    PrevTab.tab('show');
+                    //    return;
+                    //}
+                }
+                //return;
+
+            //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            //event.preventDefault();
+            //sessionStorage.setItem("AutoSave_Order", "false");
+            //if (window.parent.document.title == 'Orders' && document.URL.indexOf('ScreenMode=Menu') > -1) {
+            //    $('body').append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
+            //    '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+            //    dvdialog = $('#dvdialogMenu');
+            //    myPos = "center center";
+            //    atPos = 'center center';
+            //}
+            //else {
+            //    $(top.window.document).find("body").append("<div id='dvdialog' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
+            //                "<p style='font-family: Verdana,Arial,sans-serif; font-size: 13.5px;'>There are unsaved changes.Do you want to save them?</p></div>");
+            //    dvdialog = window.parent.parent.parent.parent.document.getElementsByTagName('div').namedItem('dvdialog');
+            //    myPos = "left center";
+            //    atPos = 'center center+100px';
+            //}
+            //$(dvdialog).dialog({
+            //    modal: true,
+            //    title: "Capella -EHR",
+            //    position: {
+            //        my: myPos,
+            //        at: atPos
+
+            //    },
+            //    buttons: {
+            //        "Yes": function () {
+            //            //  window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            //            $(dvdialog).dialog("close");
+            //            $(dvdialog).remove();
+            //            sessionStorage.setItem("AutoSave_Order", "true");
+            //            if (PrevTab[0].innerText == "Diagnostic Order") {
+            //                paneID = $(event.target).attr('href');
+            //                sessionStorage.setItem('Order_paneID', paneID);
+            //                src = $(paneID).attr('data-src');
+            //                sessionStorage.setItem('Order_src', src);
+            //                var prevTabtxt = $(PrevTab).text();
+            //                sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+            //                $('.clsIframe').contents()[0].all.namedItem('btnOrderSubmit').click();
+            //                //if (localStorage.getItem("bSave") == "true") {
+            //                //    $(dvdialog).dialog("close");
+            //                //    paneID = $(event.target).attr('href');
+            //                //    src = $(paneID).attr('data-src');
+            //                //    if ($(paneID + " iframe").attr("src") == "") {
+            //                //        $(paneID + " iframe").attr("src", src);
+            //                //    }
+            //                //}
+            //                //else {
+            //                //    bOrderCancel = true;
+            //                //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //                //    $(dvdialog).dialog("close");
+            //                //    PrevTab.tab('show');
+            //                //    return;
+            //                //}
+
+
+            //            }
+            //            else if (PrevTab[0].innerText == "Referral Order") {
+            //                paneID = $(event.target).attr('href');
+            //                sessionStorage.setItem('Order_paneID', paneID);
+            //                src = $(paneID).attr('data-src');
+            //                sessionStorage.setItem('Order_src', src);
+            //                var prevTabtxt = $(PrevTab).text();
+            //                sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+            //                $('.clsIframe').contents()[1].all.namedItem('btnAddRefOrder').click();
+            //                //if (localStorage.getItem("bSave") == "true") {
+            //                //    $(dvdialog).dialog("close");
+            //                //    paneID = $(event.target).attr('href');
+            //                //    src = $(paneID).attr('data-src');
+            //                //    if ($(paneID + " iframe").attr("src") == "") {
+            //                //        $(paneID + " iframe").attr("src", src);
+            //                //    }
+            //                //}
+            //                //else {
+            //                //    bOrderCancel = true;
+            //                //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //                //    $(dvdialog).dialog("close");
+            //                //    PrevTab.tab('show');
+            //                //    return;
+            //                //}
+
+            //            }
+            //            else if (PrevTab[0].innerText == "Immunization/Injection") {
+            //                paneID = $(event.target).attr('href');
+            //                sessionStorage.setItem('Order_paneID', paneID);
+            //                src = $(paneID).attr('data-src');
+            //                sessionStorage.setItem('Order_src', src);
+            //                var prevTabtxt = $(PrevTab).text();
+            //                sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+            //                $('.clsIframe').contents()[2].all.namedItem('btnAdd').click();
+            //                //if (localStorage.getItem("bSave") == "true") {
+            //                //    $(dvdialog).dialog("close");
+            //                //    paneID = $(event.target).attr('href');
+            //                //    src = $(paneID).attr('data-src');
+            //                //    if ($(paneID + " iframe").attr("src") == "") {
+            //                //        $(paneID + " iframe").attr("src", src);
+            //                //    }
+            //                //}
+            //                //else {
+            //                //    bOrderCancel = true;
+            //                //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //                //    $(dvdialog).dialog("close");
+            //                //    PrevTab.tab('show');
+            //                //    return;
+            //                //}
+
+            //            }
+            //            else if (PrevTab[0].innerText == "Procedures") {
+            //                paneID = $(event.target).attr('href');
+            //                sessionStorage.setItem('Order_paneID', paneID);
+            //                src = $(paneID).attr('data-src');
+            //                sessionStorage.setItem('Order_src', src);
+            //                var prevTabtxt = $(PrevTab).text();
+            //                sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+            //                $('.clsIframe').contents()[3].all.namedItem('btnAdd').click();
+            //                //if (localStorage.getItem("bSave") == "true") {
+            //                //    $(dvdialog).dialog("close");
+            //                //    paneID = $(event.target).attr('href');
+            //                //    src = $(paneID).attr('data-src');
+            //                //    if ($(paneID + " iframe").attr("src") == "") {
+            //                //        $(paneID + " iframe").attr("src", src);
+            //                //    }
+            //                //}
+            //                //else {
+            //                //    bOrderCancel = true;
+            //                //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //                //    $(dvdialog).dialog("close");
+            //                //    PrevTab.tab('show');
+            //                //    return;
+            //                //}
+            //            }
+            //            else if (PrevTab[0].innerText == "DME Order") {
+            //                paneID = $(event.target).attr('href');
+            //                sessionStorage.setItem('Order_paneID', paneID);
+            //                src = $(paneID).attr('data-src');
+            //                sessionStorage.setItem('Order_src', src);
+            //                var prevTabtxt = $(PrevTab).text();
+            //                sessionStorage.setItem('Order_PrevTabText', prevTabtxt);
+            //                $('.clsIframe').contents()[4].all.namedItem('btnAdd').click();
+            //                //if (localStorage.getItem("bSave") == "true") {
+            //                //    $(dvdialog).dialog("close");
+            //                //    paneID = $(event.target).attr('href');
+            //                //    src = $(paneID).attr('data-src');
+            //                //    if ($(paneID + " iframe").attr("src") == "") {
+            //                //        $(paneID + " iframe").attr("src", src);
+            //                //    }
+            //                //}
+            //                //else {
+            //                //    bOrderCancel = true;
+            //                //    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //                //    $(dvdialog).dialog("close");
+            //                //    PrevTab.tab('show');
+            //                //    return;
+            //                //}
+            //            }
+            //            //return;
+            //        },
+            //        "No": function () {
+            //            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            //            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //            $(dvdialog).dialog("close");
+            //            $(dvdialog).remove();
+            //            paneID = $(event.target).attr('href');
+            //            src = $(paneID).attr('data-src');
+            //            $(paneID + " iframe").attr("src", src);
+
+            //        },
+            //        "Cancel": function () {
+            //            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            //            //bOrderCancel = true;
+            //            sessionStorage.setItem('bOrderCancel', 'true');
+            //            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //            $(dvdialog).dialog("close");
+            //            $(dvdialog).remove();
+            //            PrevTab.tab('show');
+            //            return;
+
+            //        }
+            //    }
+            //});
+        }
+        else {
+            // {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+            if ($(".ui-dialog").is(":visible")) {
+                $(dvdialog).dialog("close");
+                $(dvdialog).remove();
+            }
+
+            //if (bOrderCancel == false) {
+            if (JSON.parse(sessionStorage.getItem('bOrderCancel')) == false) {
+                paneID = $(event.target).attr('href');
+                src = $(paneID).attr('data-src');
+                $(paneID + " iframe").attr("src", src);
+            } else {
+                //bOrderCancel = false;
+                sessionStorage.setItem('bOrderCancel', 'false');
+                localStorage.setItem("bSave", "false");
+                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            }
+        }
+
+    }
+
+</script>

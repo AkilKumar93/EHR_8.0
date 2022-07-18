@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Rcopia_Update_info, Acurus.Capella.Core" table="rcopia_update_info" lazy="true">
+    <id name="Id" column="Rcopia_Update_Info_ID">
+      <generator class="identity" />
+    </id>
+    <property name="Command" column="Command" />
+    <property name="Last_Updated_Date_Time" column="Last_Updated_Date_Time" />
+    <property name="Value" column="Value" />
+  </class>
+</hibernate-mapping>

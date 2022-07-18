@@ -1,0 +1,15 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <entry typeCode="DRIV">
+    <!--  Smoking Status Observation-->
+    <observation classCode="OBS" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.22.4.78"/>
+      <id extension="123456789" root="2.16.840.1.113883.3.8375"/>
+      <code code="72166-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Smoking Status"/>
+      <statusCode code="completed"/>
+      <effectiveTime>
+        <low value="20120806"/>
+      </effectiveTime>
+      <value xsi:type="CD" code="" codeSystem="2.16.840.1.113883.6.96" displayName=""/>
+    </observation>
+  </entry>
+</ClinicalDocument>

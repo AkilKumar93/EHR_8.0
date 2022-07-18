@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.DynamicScreen, Acurus.Capella.Core" table="dynamic_screen" lazy="true">
+    <id name="Id" column="Dynamic_Screen_ID">
+      <generator class="assigned" />
+    </id>
+    <property name="Screen_ID" column="SCN_ID" />
+    <property name="Master_Vitals_ID" column="Master_Vitals_ID" />
+    <property name="Control_Name" column="Control_Name" />
+    <property name="Control_Type" column="Control_Type" />
+    <property name="Display_Text" column="Display_Text" />
+    <property name="LookUp_Field" column="LookUp_Field" />
+    <property name="Table_Name" column="Table_Name" />
+    <property name="Column_Name" column="Column_Name" />
+    <property name="Mandatory" column="Mandatory" />
+    <property name="Minimum_Value" column="Minimum_Value" />
+    <property name="Maximum_Value" column="Maximum_Value" />
+    <property name="Column_Span" column="Column_Span" />
+    <property name="Is_Editable" column="Is_Editable" />
+    <property name="LookUp_Method" column="LookUp_Method" />
+    <property name="Utility_Method" column="Utility_Method" />
+    <property name="Parent_Control_ID" column="Parent_Control_ID" />
+    <property name="Maximum_Length" column="Maximum_Length" />
+    <property name="Allow_Decimal" column="Allow_Decimal" />
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="Control_Content_Type" column="Control_Content_Type" />
+    <property name="Loinc_Identifier" column="Loinc_Identifier" />
+    <property name="Acurus_Result_Code" column="Acurus_Result_Code" />
+    <property name="Acurus_Result_Description" column="Acurus_Result_Description" />
+    <property name="Is_Flow_Sheet_Required" column="Is_Flow_Sheet_Required" />
+    <property name="Control_Name_Thin_Client" column="Control_Name_Thin_Client" />
+    <property name="Column_Span_Thin_Client" column="Column_Span_Thin_Client" />
+    <property name="LookUp_Method_Thin_Client" column="LookUp_Method_Thin_Client" />
+    <property name="Snomed_Code" column="Snomed_Code" />
+    <property name="Is_Macra_Field" column="Is_Macra_Field" />
+  </class>
+</hibernate-mapping>
+

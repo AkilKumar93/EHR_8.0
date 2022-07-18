@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.ResultSPM, Acurus.Capella.Core" table="result_spm" lazy="true">
+    <id name="Id" column="Result_SPM_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Result_Master_ID" column="Result_Master_ID" />
+    <property name="SPM_Set_ID" column="SPM_Set_ID" />
+    <property name="SPM_Specimen_ID" column="SPM_Specimen_ID" />
+    <property name="SPM_Specimen_Parent_IDs" column="SPM_Specimen_Parent_IDs" />
+    <property name="SPM_Specimen_Type" column="SPM_Specimen_Type" />
+    <property name="SPM_Specimen_Type_Modifier" column="SPM_Specimen_Type_Modifier" />
+    <property name="SPM_Specimen_Additives" column="SPM_Specimen_Additives" />
+    <property name="SPM_Specimen_Collection_Method" column="SPM_Specimen_Collection_Method" />
+    <property name="SPM_Specimen_Source_Site" column="SPM_Specimen_Source_Site" />
+    <property name="SPM_Specimen_Source_Site_Modifier" column="SPM_Specimen_Source_Site_Modifier" />
+    <property name="SPM_Specimen_Collection_Site" column="SPM_Specimen_Collection_Site" />
+    <property name="SPM_Specimen_Role" column="SPM_Specimen_Role" />
+    <property name="SPM_Specimen_Collection_Amount" column="SPM_Specimen_Collection_Amount" />
+    <property name="SPM_Grouped_Specimen_Count" column="SPM_Grouped_Specimen_Count" />
+    <property name="SPM_Specimen_Description" column="SPM_Specimen_Description" />
+    <property name="SPM_Specimen_Handling_Code" column="SPM_Specimen_Handling_Code" />
+    <property name="SPM_Specimen_Risk_Code" column="SPM_Specimen_Risk_Code" />
+    <property name="SPM_Specimen_Collection_Date_And_Time" column="SPM_Specimen_Collection_Date_And_Time" />
+    <property name="SPM_Specimen_Expiration_Date_And_Time" column="SPM_Specimen_Expiration_Date_And_Time" />
+    <property name="SPM_Specimen_Availability" column="SPM_Specimen_Availability" />
+    <property name="SPM_Specimen_Reject" column="SPM_Specimen_Reject" />
+    <property name="SPM_Specimen_Quality" column="SPM_Specimen_Quality" />
+    <property name="SPM_Specimen_Appropriateness" column="SPM_Specimen_Appropriateness" />
+    <property name="SPM_Specimen_Condition" column="SPM_Specimen_Condition" />
+    <property name="SPM_Specimen_Current_Quantity" column="SPM_Specimen_Current_Quantity" />
+    <property name="SPM_Number_of_Specimen_Containers" column="SPM_Number_of_Specimen_Containers" />
+    <property name="SPM_Container_Type" column="SPM_Container_Type" />
+    <property name="SPM_Container_Condition" column="SPM_Container_Condition" />
+    <property name="SPM_Specimen_Child_Role" column="SPM_Specimen_Child_Role" />
+    
+  </class>
+</hibernate-mapping>

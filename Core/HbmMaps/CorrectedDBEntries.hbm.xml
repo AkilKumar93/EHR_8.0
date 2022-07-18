@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.CorrectedDBEntries, Acurus.Capella.Core" table="corrected_db_entries" lazy="true">
+    <id name="Id" column="Corrected_db_entry_ID">
+      <generator class="identity" />
+    </id>
+    <version name="Version"/>
+    <property name="WF_Object_ID" column="WF_Object_ID" />
+    <property name="Reason_for_Changes" column="Reason_for_Changes" />
+    <property name="Corrected_Date" column="Corrected_Date_And_Time" />
+    <property name="Corrected_By" column="Corrected_By" />
+    <property name="Old_Process" column="Old_Process" />
+    <property name="New_Process" column="New_Process" />
+    <property name="Old_Owner" column="Old_Owner" />
+    <property name="New_Owner" column="New_Owner" />
+    <property name="Type_of_Change" column="Type_of_Change" />
+
+  </class>
+</hibernate-mapping>

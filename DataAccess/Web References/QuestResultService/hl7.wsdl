@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:wsr="http://www.openuri.org/2002/10/soap/reliability/" xmlns:tns="http://medplus.com/resultsHub/observations" xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding" xmlns:conv="http://www.openuri.org/2002/04/wsdl/conversation/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://medplus.com/resultsHub/observations" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema xmlns:stns="java:com.medplus.serviceHub.results.webservice" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="java:com.medplus.serviceHub.results.webservice" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="java:language_builtins.lang" />
+      <xsd:complexType name="ArrayOfHL7Message">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" wsdl:arrayType="stns:HL7Message[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfProviderAccount">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" wsdl:arrayType="stns:ProviderAccount[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="HL7Message">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="controlId" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="message" nillable="true" type="xsd:base64Binary" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="HL7ResultsResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="HL7Messages" nillable="true" type="stns:ArrayOfHL7Message" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="isMore" nillable="true" type="xsd:boolean" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="requestId" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Provider">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="description" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="name" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProviderAccount">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="accountId" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="accountName" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="description" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="descriptiveName" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="internalId" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="provider" nillable="true" type="stns:Provider" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ResultsRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="endDate" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="maxMessages" nillable="true" type="xsd:int" />
+          <xsd:element xmlns:tp="java:language_builtins.lang" minOccurs="1" maxOccurs="1" name="providerAccountIds" nillable="true" type="tp:ArrayOfString" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="retrieveFinalsOnly" type="xsd:boolean" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="retrieveObsoleteResults" type="xsd:boolean" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="startDate" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ResultsResponse">
+        <xsd:sequence>
+          <xsd:element xmlns:tp="java:language_builtins.lang" minOccurs="1" maxOccurs="1" name="HL7Messages" nillable="true" type="tp:ArrayOfString" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="isMore" nillable="true" type="xsd:boolean" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="requestId" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns:stns="java:com.medplus.serviceHub.results.webservice.printable" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="java:com.medplus.serviceHub.results.webservice.printable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:complexType name="PrintableResultsResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="fileMimeType" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="fileName" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="isMore" nillable="true" type="xsd:boolean" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="requestId" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="resultData" nillable="true" type="xsd:base64Binary" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="resultInfo" nillable="true" type="stns:ResultInfo" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ResultInfo">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="arrivalDate" nillable="true" type="xsd:dateTime" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="messageControlId" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="providerAcctId" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns:stns="java:javax.xml.rpc" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="java:javax.xml.rpc" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:element name="ServiceException" type="stns:ServiceException" />
+      <xsd:complexType name="ServiceException" />
+    </xsd:schema>
+    <xsd:schema xmlns:stns="java:javax.xml.soap" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="java:javax.xml.soap" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:element name="SOAPException" type="stns:SOAPException" />
+      <xsd:complexType name="SOAPException">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="message" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns:stns="java:language_builtins.lang" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="java:language_builtins.lang" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="ArrayOfString">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" wsdl:arrayType="xsd:string[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <message name="getResults">
+    <part xmlns:partns="java:com.medplus.serviceHub.results.webservice" name="resultsRequest" type="partns:ResultsRequest" />
+  </message>
+  <message name="getResultsResponse">
+    <part xmlns:partns="java:com.medplus.serviceHub.results.webservice" name="result" type="partns:ResultsResponse" />
+  </message>
+  <message name="getMoreResults">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="requestId" type="partns:string" />
+  </message>
+  <message name="getMoreResultsResponse">
+    <part xmlns:partns="java:com.medplus.serviceHub.results.webservice" name="result" type="partns:ResultsResponse" />
+  </message>
+  <message name="acknowledgeResults">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="requestId" type="partns:string" />
+    <part xmlns:partns="java:language_builtins.lang" name="acknowledgeMessages" type="partns:ArrayOfString" />
+  </message>
+  <message name="acknowledgeResultsResponse" />
+  <message name="getHL7Results">
+    <part xmlns:partns="java:com.medplus.serviceHub.results.webservice" name="resultsRequest" type="partns:ResultsRequest" />
+  </message>
+  <message name="getHL7ResultsResponse">
+    <part xmlns:partns="java:com.medplus.serviceHub.results.webservice" name="result" type="partns:HL7ResultsResponse" />
+  </message>
+  <message name="getMoreHL7Results">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="requestId" type="partns:string" />
+  </message>
+  <message name="getMoreHL7ResultsResponse">
+    <part xmlns:partns="java:com.medplus.serviceHub.results.webservice" name="result" type="partns:HL7ResultsResponse" />
+  </message>
+  <message name="acknowledgeHL7Results">
+    <part xmlns:partns="http://www.w3.org/2001/XMLSchema" name="requestId" type="partns:string" />
+    <part xmlns:partns="java:com.medplus.serviceHub.results.webservice" name="acknowledgeMessages" type="partns:ArrayOfHL7Message" />
+  </message>
+  <message name="acknowledgeHL7ResultsResponse" />
+  <message name="getProviderAccounts" />
+  <message name="getProviderAccountsResponse">
+    <part xmlns:partns="java:com.medplus.serviceHub.results.webservice" name="result" type="partns:ArrayOfProviderAccount" />
+  </message>
+  <portType name="ResultsServicePort">
+    <operation name="getResults">
+      <input message="tns:getResults" />
+      <output message="tns:getResultsResponse" />
+    </operation>
+    <operation name="getMoreResults">
+      <input message="tns:getMoreResults" />
+      <output message="tns:getMoreResultsResponse" />
+    </operation>
+    <operation name="acknowledgeResults">
+      <input message="tns:acknowledgeResults" />
+      <output message="tns:acknowledgeResultsResponse" />
+    </operation>
+    <operation name="getHL7Results">
+      <input message="tns:getHL7Results" />
+      <output message="tns:getHL7ResultsResponse" />
+    </operation>
+    <operation name="getMoreHL7Results">
+      <input message="tns:getMoreHL7Results" />
+      <output message="tns:getMoreHL7ResultsResponse" />
+    </operation>
+    <operation name="acknowledgeHL7Results">
+      <input message="tns:acknowledgeHL7Results" />
+      <output message="tns:acknowledgeHL7ResultsResponse" />
+    </operation>
+    <operation name="getProviderAccounts">
+      <input message="tns:getProviderAccounts" />
+      <output message="tns:getProviderAccountsResponse" />
+    </operation>
+  </portType>
+  <binding name="ResultsServicePort" type="tns:ResultsServicePort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="getResults">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="getMoreResults">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="acknowledgeResults">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="getHL7Results">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="getMoreHL7Results">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="acknowledgeHL7Results">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="getProviderAccounts">
+      <soap:operation soapAction="" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="http://medplus.com/resultsHub/observations" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+  </binding>
+  <service name="ResultsService">
+    <port name="ResultsServicePort" binding="tns:ResultsServicePort">
+      <soap:address location="https://cert.hub.care360.com:443/resultsHub/observations/hl7" />
+    </port>
+  </service>
+</definitions>

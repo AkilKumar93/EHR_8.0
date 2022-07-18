@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.Batch, Acurus.Capella.Core" table="batch" lazy="true">
+    <id name="Id" column="Batch_ID">
+      <generator class="identity" />
+    </id>
+    <version name ="Version"/>
+    <property name="DOOS" column="DOOS" />
+    <property name="Batch_Name" column="Batch_Name" />
+    <property name="Created_By" column="Created_By" />
+    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+    <property name="Modified_By" column="Modified_By" />
+    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+    <property name="Doc_Type" column="Doc_Type" />
+    <property name="Doc_Sub_Type" column="Doc_Sub_Type" />
+    <property name="Facility_Name" column="Facility_Name" />
+    <property name="Scan_File_Path_Name" column="Scan_File_Path_Name" />
+    <property name="Scan_File_Name" column="Scan_File_Name" />
+    <property name="Scan_File_Recvd_Date" column="Scan_File_Recvd_Date" />
+    <property name="Misc_File_Path_Name" column="Misc_File_Path_Name" />
+    <property name="Misc_File_Name" column="Misc_File_Name" />
+    <property name="Num_Imgs_Exp" column="Num_Imgs_Exp" />
+    <property name="Num_Images_Rcvd" column="Num_Images_Rcvd" />
+    <property name="Demos_Enc_PPLine_Rcvd" column="Demos_Enc_PPLine_Rcvd" />
+    <property name="Num_Encounters_Exp" column="Num_Encounters_Exp" />
+    <property name="Num_of_Checks_Exp" column="Num_of_Checks_Exp" />
+    <property name="Num_of_Checks_Rcvd" column="Num_of_Checks_Rcvd" />
+    <property name="Batch_Total_Exp" column="Batch_Total_Exp" />
+    <property name="Batch_Total_Rcvd" column="Batch_Total_Rcvd" />
+    <property name="Date_of_Deposit" column="Date_of_Deposit" />
+    <property name="DOS" column="DOS" />
+    <property name="Input_Mode" column="Input_Mode" />
+    <property name="Rend_Prov_ID" column="Rend_Prov_ID" />
+    <property name="Comments_Message_ID" column="Comments_Message_ID" />
+    <property name="Client_Response_Message_ID" column="Client_Response_Message_ID" />
+    <property name="Total_No_Of_Demos" column="Total_No_Of_Demos" />
+    <property name="Scan_ID" column="Scan_ID" />
+  </class>
+</hibernate-mapping>

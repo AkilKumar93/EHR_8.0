@@ -1,0 +1,377 @@
+﻿//check the particular checkbox
+function enableField(idCheckbox) {
+    var divid = document.getElementById("divSocialHistoryControls");
+    if (divid.scrollHeight != null && divid.scrollHeight != undefined)
+        hdnDivPosition.value = divid.scrollHeight;
+
+    var ctrlchk = document.getElementById(idCheckbox);
+    if (ctrlchk.checked == true) {
+        var value = null;
+        if (idCheckbox.substring(3, 6) == "Yes")
+            value = idCheckbox.replace("Yes", "No");
+        else if (idCheckbox.substring(3, 5) == "No")
+            value = idCheckbox.replace("No", "Yes");
+        if (document.getElementById(value).checked == true)
+            document.getElementById(value).checked = false;
+        if (idCheckbox.substring(3, 6) == "Yes")
+            disable(idCheckbox, "chkYes");
+        else
+            disable(idCheckbox, "chkNo");
+    }
+    else {
+        if (idCheckbox.substring(3, 6) == "Yes") {
+            enable(idCheckbox, "chkYes")
+        }
+        else {
+
+            enable(idCheckbox, "chkNo")
+        }
+    }
+    EnableSave();
+    return;
+}
+function warningmethod() {
+    $("span[mand=Yes]").addClass('MandLabelstyle');
+    $("span[mand=Yes]").each(function () {
+        $(this).html($(this).html().replace("*", "<span class='manredforstar'>*</span>"));
+    });
+}
+function LoadSocialHistory()
+{
+
+    
+    $("span[mand=Yes]").addClass('MandLabelstyle');
+    $("span[mand=No]").addClass('LabelStyle');
+    $("[id*=pbDropdown]").addClass('pbDropdownBackground');
+    $("span[mand=Yes]").each(function () {
+        $(this).html($(this).html().replace("*", "<span class='manredforstar'>*</span>"));
+    });
+    $("textarea[id *= txtDLC]").addClass('Editabletxtbox');
+}
+function displayalerttobacco()
+{
+    alert("Please Pick at least one Reason Not Performed for Tobacco Use and Exposure and do not modify the selected item");
+        return false
+}
+//check the checkbox YesorNo
+function CheckChanged(chkids) {
+    EnableSave();
+    LoadTobaccoList();
+    var chkid = document.getElementById(chkids);
+    var ctrl = document.getElementsByTagName('INPUT');
+    for (var i = 0; i < ctrl.length; i++) {
+        if (ctrl[i].type == 'checkbox') {
+            if (chkid.checked == true) {
+                var value = null;
+                if (ctrl[i].id.substring(3, 6) == chkid.id.substring(6, 9)) {
+                    var sum = ctrl[i].id.replace("Yes", "No");
+                    if (document.getElementById(sum).checked == true)
+                        document.getElementById(ctrl[i].id).checked = false;
+                    else
+                        disable(ctrl[i].id, "chkYes");
+                }
+                else if (ctrl[i].id.substring(3, 5) == chkid.id.substring(6, 8)) {
+                    var sum = ctrl[i].id.replace("No", "Yes");
+                    if (document.getElementById(sum).checked == true)
+                        document.getElementById(ctrl[i].id).checked = false;
+                    else
+                        disable(ctrl[i].id, "chkNo");
+                }
+                if (chkid.id.substring(6, 9) == "Yes") {
+                    value = chkid.id.replace("Yes", "No");
+                }
+                if (chkid.id.substring(6, 8) == "No") {
+                    value = chkid.id.replace("No", "Yes");
+                }
+                if (value != null) {
+                    if (document.getElementById(value).checked == true) {
+                        document.getElementById(value).checked = false;
+                    }
+                }
+            }
+            else {
+                if (ctrl[i].id.substring(3, 6) == chkid.id.substring(6, 9)) {
+                    //alert("Yes");
+                    if (document.getElementById(ctrl[i].id.replace("Yes", "No")).checked == false)
+                        enable(ctrl[i].id, "chkYes");
+                }
+                else if (ctrl[i].id.substring(3, 5) == chkid.id.substring(6, 8)) {
+                    //alert("No");
+                    if (document.getElementById(ctrl[i].id.replace("No", "Yes")).checked == false)
+                        enable(ctrl[i].id, "chkNo");
+                }
+            }
+        }
+    }
+}
+function disable(ctrlId, ctrlName) {
+    EnableSave();
+    document.getElementById(ctrlId).checked = true;
+    var crltxt = ctrlId.replace(ctrlName, "DLC") + "_txtDLC";
+    var ctrlcbo = ctrlId.replace(ctrlName, "cbo")
+    var combo = $find(ctrlcbo);
+    if (ctrlName == "chkYes" && ctrlId != "chkYesSexuallyActive") {
+        combo.enable();
+    }
+    else {
+        combo.disable();
+        combo.clearSelection();
+    }
+
+    if (ctrlId == "chkNoTobaccoUseandExposure" || ctrlId == "chkYesTobaccoUseandExposure") {
+        combo.enable();        
+        
+    }
+    defaultselectionTobacca(ctrlId);
+    
+}
+function defaultselectionTobacca(ctrlId) {
+    if(ctrlId == "chkYesTobaccoUseandExposure")
+    {
+        var cmbbx = $find("cboTobaccoUseandExposure");
+        var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-230060001-Light cigarette smoker");
+        cItem.select();
+    }
+    else if(ctrlId == "chkNoTobaccoUseandExposure")
+    {
+        var cmbbx = $find("cboTobaccoUseandExposure");
+        var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-160618006-Current non-smoker");
+        cItem.select();
+    }
+}
+function enable(testId, chkName) {
+    EnableSave();
+    document.getElementById(testId).checked = false;
+    var crltxt = testId.replace(chkName, "DLC") + "_txtDLC";
+    var ctrlcbo = testId.replace(chkName, "cbo")
+    var combo = $find(ctrlcbo);
+    combo.disable();
+    combo.clearSelection();
+    var TFamilyDiseaseControlD = testId.replace(chkName, "DLC") + "_listDLC";
+    document.getElementById(TFamilyDiseaseControlD).style.display = "none";
+    var listcontrolSocialHistory = document.getElementById(testId.replace(chkName, "DLC") + "_pbDropdown");
+    if (listcontrolSocialHistory.childNodes[0] != undefined && listcontrolSocialHistory.childNodes[0].className != null)
+        listcontrolSocialHistory.childNodes[0].className = "fa fa-plus margin2";
+    else if (listcontrolSocialHistory.childNodes[0] != undefined && listcontrolSocialHistory.childNodes[0].nextSibling.className != null)
+        listcontrolSocialHistory.childNodes[0].nextSibling.className = "fa fa-plus margin2";
+}
+function EnableSave(id) {
+    $find('btnSave').set_enabled(true);
+    localStorage.setItem("bSave", "false");
+    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
+    else
+        window.parent.theForm.hdnSaveEnable.value = true;
+}
+
+
+function btnClearAll_Clicked(sender, args) {
+    var IsClearAll = DisplayErrorMessage('180010');
+    $("textarea[id *= txtDLC]").addClass('Editabletxtbox');
+    if (IsClearAll == true) {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+        document.getElementById('InvisibleButton').click();
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+        if (sender != undefined)
+            sender.set_autoPostBack(true);
+        $("textarea[id *= txtDLC]").addClass('Editabletxtbox');
+    }
+    else {
+        if (sender != undefined)
+            sender.set_autoPostBack(false);
+       
+           
+    }
+    $("textarea[id *= txtDLC]").addClass('Editabletxtbox');
+}
+
+function OnClientSelectedIndex(sender, eventArgs) {
+    EnableSave();
+}
+function btnSave_Clicked(sender, args) {
+    if (document.getElementById("DLC_txtDLC")!=null && document.getElementById("DLC_txtDLC")!=undefined && document.getElementById("DLC_txtDLC").value != "" && document.getElementById("DLC_txtDLC").value.length > 32767) {
+        PFSH_SaveUnsuccessful();
+        DisplayErrorMessage('180032');
+        top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+        sender.set_autoPostBack(false);
+    }
+    else if (document.getElementById("chkYesSmokinghabit") != null && (document.getElementById("chkYesSmokinghabit").checked == false && document.getElementById("chkNoSmokinghabit").checked == false && document.getElementById("lblSmokinghabit").style.color == "red")) {
+        PFSH_SaveUnsuccessful();
+        DisplayErrorMessage('180020');
+        top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        sender.set_autoPostBack(false);
+    }
+    else if (document.getElementById("chkYesTobaccoUseandExposure") != null && (document.getElementById("chkYesTobaccoUseandExposure").checked == false && document.getElementById("chkNoTobaccoUseandExposure").checked == false && document.getElementById("lblTobaccoUseandExposure").style.color == "red" && document.getElementById("DLCTobaccoUseandExposure_txtDLC") != null && document.getElementById("DLCTobaccoUseandExposure_txtDLC").value == "")) {    //added by Shilpa for Reason_Not_Performed cbo
+            PFSH_SaveUnsuccessful();
+            DisplayErrorMessage('180020');
+            top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            sender.set_autoPostBack(false);
+    }
+    else if (document.getElementById("chkYesTobaccoUseandExposure") != null && (document.getElementById("chkYesTobaccoUseandExposure").checked == true && document.getElementById("lblTobaccoUseandExposure").style.color == "red") && document.getElementById("cboTobaccoUseandExposure").value == "") {
+        PFSH_SaveUnsuccessful();
+        DisplayErrorMessage('180055');
+        top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        sender.set_autoPostBack(false);
+    }
+    else if (document.getElementById("chkNoTobaccoUseandExposure") != null && (document.getElementById("chkNoTobaccoUseandExposure").checked == true && document.getElementById("lblTobaccoUseandExposure").style.color == "red") && document.getElementById("cboTobaccoUseandExposure").value == "") {
+        PFSH_SaveUnsuccessful();
+        DisplayErrorMessage('180055');
+        top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        sender.set_autoPostBack(false);
+    }
+    else if (document.getElementById("chkYesDrugUse") != null && (document.getElementById("chkYesDrugUse").checked == false && document.getElementById("chkNoDrugUse").checked == false && document.getElementById("lblDrugUse").style.color == "red")) {
+        PFSH_SaveUnsuccessful();
+        DisplayErrorMessage('180020');
+        top.window.document.getElementById('ctl00_Loading').style.display = 'none';
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        sender.set_autoPostBack(false);
+    }
+    else {
+        if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
+            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+        else
+            window.parent.theForm.hdnSaveEnable.value = false;
+        sender.set_autoPostBack(true);
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+    }
+}
+
+function AddUsersKeyDown(evtobj) {
+    $find('btnSave').set_enabled(true);
+    localStorage.setItem("bSave", "false");
+    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
+}
+
+function SavedSuccessfully() {
+    
+    localStorage.setItem("bSave", "true");
+    DisplayErrorMessage('180003');
+    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+    else
+        window.parent.theForm.hdnSaveEnable.value = false;
+    PFSH_AfterAutoSave();
+   
+}
+
+function HideAllControls() {
+    document.getElementById("divSocialHistory").style.display = 'none';
+    document.getElementById("SummaryAlert").style.display = '';
+}
+function EnablePFSH(val) {
+   
+    if ($(window.parent.document).find('#btnPFSHVerified') != null)
+        $(window.parent.document).find('#btnPFSHVerified')[0].disabled = false;
+    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+    else
+        window.parent.theForm.hdnSaveEnable.value = false;
+    var bValue = true;
+    var PFSHVerified = localStorage.getItem("PFSHVerified");
+    if (PFSHVerified != "") {
+        var PFSH = PFSHVerified.split('|');
+        for (var i = 0; i < PFSH.length; i++) {
+            if (PFSH[i].split('-')[0] == val) {
+                PFSHVerified = PFSHVerified.replace(PFSH[i], val + "-" + "TRUE");
+                bValue = false;
+            }
+        }
+    }
+    if (bValue == true)
+        PFSHVerified = PFSHVerified + "|" + val + "-" + "TRUE";
+    localStorage.setItem("PFSHVerified", PFSHVerified);
+}
+
+function LoadcboTobacco(sender, args) {
+    var cboTobacco = $telerik.findComboBox('cboTobaccoUseandExposure');
+    if (cboTobacco != null) {
+        var chkValue = "None";
+        if (document.getElementById('chkYesTobaccoUseandExposure') != null && document.getElementById('chkYesTobaccoUseandExposure').checked == true)
+            chkValue = true;
+        else if (document.getElementById('chkNoTobaccoUseandExposure') != null && document.getElementById('chkNoTobaccoUseandExposure').checked == true)
+            chkValue = false;
+        if (cboTobacco.get_attributes()._data.CheckedValue.toLowerCase() == "true" || cboTobacco.get_attributes()._data.CheckedValue.toLowerCase() == "false")
+            chkValue = JSON.parse(cboTobacco.get_attributes()._data.CheckedValue.toLowerCase());
+        var cboItems = cboTobacco.get_items();
+        cboTobacco.trackChanges();
+
+        for (i = 0; i < cboItems._array.length; i++) {
+            var item = cboItems.getItem(i);
+            if (chkValue == "None" && (item.get_attributes()._data.Option == "Yes" || item.get_attributes()._data.Option == "No"))
+                item.hide();
+            else {
+                if (item.get_attributes()._data.Option == "Yes" && chkValue == true) {
+                    item.show();
+                }
+                else if (item.get_attributes()._data.Option == "No" && chkValue == false) {
+                    item.show();
+                }
+                else if (item.get_attributes()._data.Option == "Yes" || item.get_attributes()._data.Option == "No")
+                    item.hide();
+                else if (item.get_attributes()._data.Option == undefined)
+                    item.show();
+            }
+        }
+        cboTobacco.commitChanges();
+    }
+}
+
+function LoadTobaccoList() {
+    var cboTobacco = $telerik.findComboBox('cboTobaccoUseandExposure');
+    if (cboTobacco != null) {
+        cboTobacco.clearSelection();
+        var cboItems = cboTobacco.get_items();
+        cboTobacco.trackChanges();
+        var hidden = 'No', shown = 'Yes';
+        if ((event.target.checked && event.target.id.indexOf("chkNo") > -1) || (event.target.checked && event.target.id.indexOf("chkAllNo") > -1)) {
+            hidden = 'Yes';
+            shown = 'No';
+        }
+        else if ((event.target.checked && event.target.id.indexOf("chkYes") > -1) || (event.target.checked && event.target.id.indexOf("chkAllYes") > -1)) {
+            hidden = 'No';
+            shown = 'Yes';
+        }
+        else {
+            hidden = "Both";
+        }
+        for (var i = 0; i < cboItems._array.length; i++) {
+            var item = cboItems.getItem(i);
+            if (hidden == "Both")
+                item.hide();
+            else {
+                if (item.get_attributes()._data.Option == hidden) {
+                    item.set_visible(false);
+                }
+                else if (item.get_attributes()._data.Option == shown) {
+                    item.set_visible(true);
+                }
+            }
+        }
+        cboTobacco.commitChanges();
+        if (event.target.id.indexOf("chkNo") > -1 || event.target.id.indexOf("chkYes") > -1)
+            enableField(event.target.id);
+    }
+
+
+    if (document.getElementById('DLCTobaccoUseandExposure_txtDLC')!=undefined && document.getElementById('DLCTobaccoUseandExposure_txtDLC').value != "") {
+
+        var heightnotes = document.getElementById('DLCTobaccoUseandExposure_txtDLC').value.split(',');
+        var resason = document.getElementById('hdnreason').value.split('~');
+        for (var i = 0; i < heightnotes.length; i++) {
+            for (var j = 0; j < resason.length; j++) {
+                if (resason[j].split('|')[1] == heightnotes[i].trim()) {
+                    if ((heightnotes.length == 0 && i == 0) || i == heightnotes.length - 1)
+                        document.getElementById('DLCTobaccoUseandExposure_txtDLC').value = document.getElementById('DLCTobaccoUseandExposure_txtDLC').value.replace(heightnotes[i].trim(), "");
+
+                    else
+                        document.getElementById('DLCTobaccoUseandExposure_txtDLC').value = document.getElementById('DLCTobaccoUseandExposure_txtDLC').value.replace(heightnotes[i].trim() + ", ", "");
+                }
+            }
+
+        }
+    }
+}

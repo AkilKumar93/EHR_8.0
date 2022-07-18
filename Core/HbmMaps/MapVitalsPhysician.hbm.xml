@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+  <class name="Acurus.Capella.Core.DomainObjects.MapVitalsPhysician, Acurus.Capella.Core" table="map_vitals_physician" lazy="true">
+    <id name="Id" column="Map_Vitals_Physician_ID">
+      <generator class="assigned" />
+    </id>
+    <property name="Physician_ID" column="Physician_ID" />
+    <property name="Master_Vitals_ID" column="Master_Vitals_ID" />
+    <property name="Vital_Text" column="Vital_Text" />
+    <property name="Age_Condition_In_Years" column="Age_Condition_In_Years" />
+    <property name="Sex" column="Sex" />
+    <property name="Sort_Order" column="Sort_Order" />
+    <property name="BP_Status" column="BP_Status" />
+  </class>
+</hibernate-mapping>
+

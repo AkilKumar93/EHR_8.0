@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Acurus.Capella.DataAccess.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Acurus_Capella_DataAccess_com_labcorp_www4_ABNServiceProxyService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://www4.labcorp.com:443/Abn/services/ABNServiceProxy</Value>
+    </Setting>
+    <Setting Name="Acurus_Capella_DataAccess_com_care360_hub_cert_OrderService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://cert.hub.care360.com:443/orders/service</Value>
+    </Setting>
+    <Setting Name="Acurus_Capella_DataAccess_QuestResultService_ResultsService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://cert.hub.care360.com:443/resultsHub/observations/hl7</Value>
+    </Setting>
+    <Setting Name="Acurus_Capella_DataAccess_AuditLogService_Enterprise_x0020_Audit_x0020_Logging_x0020_Web_x0020_Service" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://172.18.1.116:180/Audit/ES_AuditLogging.asmx</Value>
+    </Setting>
+    <Setting Name="Acurus_Capella_DataAccess_AuditLogService_Testing_Enterprise_x0020_Audit_x0020_Logging_x0020_Web_x0020_Service" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://68.166.232.110:2015/enterprise_services/ES_AuditLogging.asmx</Value>
+    </Setting>
+    <Setting Name="Acurus_Capella_DataAccess_AuditLog_TestService_Enterprise_x0020_Audit_x0020_Logging_x0020_Web_x0020_Service" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://68.166.232.110:2015/enterprise_services/ES_AuditLogging.asmx</Value>
+    </Setting>
+    <Setting Name="Acurus_Capella_DataAccess_AuditLog_DevService_Enterprise_x0020_Audit_x0020_Logging_x0020_Web_x0020_Service" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://172.18.1.116:180/Audit/ES_AuditLogging.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

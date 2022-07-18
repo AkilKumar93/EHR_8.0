@@ -1,0 +1,37 @@
+﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
+  <entry>
+    <procedure classCode="PROC" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.10.20.22.4.14" extension="2014-06-09"/>
+      <id extension="2744" root="1.2.840.114350.1.13.5552.1.7.2.737780"/>
+      <code code="" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName=""/>
+      <!-- Procedure is completed, even though the implant is still active -->
+      <statusCode code="completed"/>
+      <effectiveTime>
+        <!-- Placed Date -->
+        <low value=""/>
+      </effectiveTime>
+      <!--<targetSiteCode code="91722005" displayName="Physical anatomical entity (body structure)" codeSystem="2.16.840.1.113883.3.88.12.3221.8.9" codeSystemName="SNOMED-CT" />-->
+      <participant typeCode="DEV">
+        <participantRole classCode="MANU">
+          <!-- ** Product instance ** -->
+          <templateId root="2.16.840.1.113883.10.20.22.4.37"/>
+          <!-- UDI -db -->
+          <!-- this UDI provided by the test data is not valid as per CDA schema -db -->
+          <!-- <id root="00643169007222"/> -->
+          <!-- <id root="d68b7e32-7810-4f5b-9cc2-acd54b0fd85e" extension="00643169007222"/> -->
+          <!-- root is FDA OID, extension is the UDI id -->
+          <id root="2.16.840.1.113883.3.3719" extension=""/>
+          <playingDevice>
+            <!-- the actual UDI device -db -->
+            <code code="" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="">
+            </code>
+          </playingDevice>
+          <!-- FDA Scoping Entity OID for UDI-db -->
+          <scopingEntity>
+            <id root="2.16.840.1.113883.3.3719"/>
+          </scopingEntity>
+        </participantRole>
+      </participant>
+    </procedure>
+  </entry>
+</ClinicalDocument>

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Spell Checking</title>
+<script type="text/javascript">
+    var o;
+    var b;
+    var a;
+    function init() {
+        a = window.dialogArguments;
+        if (a == null) a = window.opener.rsw_modal_pair;
+        b = a[1];
+        o = a[0];
+        if (typeof (container.contentDocument) != 'undefined') {
+            container.contentDocument.writeln(b);
+            container.contentDocument.forms[0].submit();
+        } else {
+            container.document.writeln(b);
+            container.document.forms[0].submit();
+        }
+    }
+</script>
+</head>
+<body onload="init()" style="padding:0px;overflow:hidden;">
+<iframe id='container' width='99%' height='99%' frameborder='0' align='center' hspace='0' marginwidth='0' marginheight='0' vspace='0' src="blank.html"></iframe>
+</body>
+</html>
