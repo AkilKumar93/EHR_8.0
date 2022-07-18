@@ -201,7 +201,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="bin\Debug\Acurus.Capella.DataAccess.dll.config" />
+    <None Include="bin\Debug\Acurus.Capella.Lab_Agent.exe.config" />
     <None Include="Final.label" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
@@ -214,6 +217,42 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\Acurus.Capella.Core.dll" />
+    <Content Include="bin\Debug\Acurus.Capella.Core.pdb" />
+    <Content Include="bin\Debug\Acurus.Capella.DataAccess.dll" />
+    <Content Include="bin\Debug\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Debug\Acurus.Capella.Lab_Agent.exe" />
+    <Content Include="bin\Debug\Acurus.Capella.Lab_Agent.pdb" />
+    <Content Include="bin\Debug\Altova.dll" />
+    <Content Include="bin\Debug\AltovaDB.dll" />
+    <Content Include="bin\Debug\AltovaFunctions.dll" />
+    <Content Include="bin\Debug\AltovaText.dll" />
+    <Content Include="bin\Debug\AltovaXML.dll" />
+    <Content Include="bin\Debug\Antlr3.Runtime.dll" />
+    <Content Include="bin\Debug\DYMO.Common.dll" />
+    <Content Include="bin\Debug\DYMO.DLS.Runtime.dll" />
+    <Content Include="bin\Debug\DYMO.Label.Framework.dll" />
+    <Content Include="bin\Debug\HbmMaps\Request_Sent_Log.hbm.xml" />
+    <Content Include="bin\Debug\HbmMaps\Response_Received_Log.hbm.xml" />
+    <Content Include="bin\Debug\hibernate.cfg.xml" />
+    <Content Include="bin\Debug\Iesi.Collections.dll" />
+    <Content Include="bin\Debug\Interop.Dymo.dll" />
+    <Content Include="bin\Debug\Interop.DYMOPrintingSupportLib.dll" />
+    <Content Include="bin\Debug\Interop.StdType.dll" />
+    <Content Include="bin\Debug\LinFu.DynamicProxy.dll" />
+    <Content Include="bin\Debug\log4net.dll" />
+    <Content Include="bin\Debug\MySql.Data.dll" />
+    <Content Include="bin\Debug\NHibernate.ByteCode.LinFu.dll" />
+    <Content Include="bin\Debug\NHibernate.dll" />
+    <Content Include="bin\Debug\OpenXmlSdkTool.ClassExplorer.dll" />
+    <Content Include="bin\Debug\OpenXmlSdkTool.Core.dll" />
+    <Content Include="bin\Debug\OpenXmlSdkTool.DocumentReflector.dll" />
+    <Content Include="bin\Debug\OpenXmlSdkTool.OpenXmlDiff.dll" />
+    <Content Include="bin\Debug\OpenXmlSdkTool.OpenXmlValidator.dll" />
+    <Content Include="bin\Debug\OpenXmlSdkTool.PackageInspector.dll" />
+    <Content Include="bin\Debug\Open_Xml.dll" />
+    <Content Include="bin\Debug\ORM_O01.dll" />
+    <Content Include="bin\Debug\ORM_O01_Quest.dll" />
     <Content Include="RCopiaErrorLog.txt" />
   </ItemGroup>
   <ItemGroup>
