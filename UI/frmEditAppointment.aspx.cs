@@ -77,6 +77,7 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //It is the Edit Appointment comment
             //log4net.GlobalContext.Properties["UserName"] = ClientSession.UserName;
             //log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath("Web.config")));
             //logger.Debug("--------------------frmEditAppointment Page Load Started--------------------");
