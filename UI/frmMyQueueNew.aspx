@@ -113,7 +113,6 @@
                 <button id="btnMyScan" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">My Scan</button>
                 <button id="btnMyPres" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">My Prescription</button>
                 <button id="btnMyAmendmnt" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">My Amendment</button>
-<%--                <button id="btnMyQcount" type="button" class="btn btn-primary" onclick="return CalculateMyQCount()">* View MyQ Count</button>--%>
             </div>
 
             <div style="width: 100%; height: 7%;">
@@ -165,7 +164,6 @@
                 <button id="btnOrder" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">Orders Q</button>
                 <button id="btnScan" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)" style="display: none">Scan Q</button>
                 <button id="btnAmendmnt" type="button" class="btn btn-default" onclick="ChangeTableForTabs(this)">Amendment Q</button>
-<%--                <button id="btnGeneralQcount" type="button" class="btn btn-primary" onclick="return CalculateGeneralQCount()">* View GeneralQ Count</button>--%>
             </div>
             <div id="pnlBtn" style="height: 7%; width: 100%; display: inline-block; padding-bottom: 3px; padding-top: 16px;">
 

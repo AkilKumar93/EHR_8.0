@@ -2,85 +2,6 @@
 
 var isproviderReview = false;
 
-//function CalculateMyQCount() {
-//    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-//    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-//    $.ajax({
-//        type: "POST",
-//        url: "frmMyQueueNew.aspx/GetMyQCount",
-//        data: JSON.stringify({
-//            "sShowall": Showall,
-//        }),
-//        contentType: "application/json; charset=utf-8",
-//        dataType: "json",
-//        async: false,
-//        success: function (data) {
-//            var objdata = $.parseJSON(data.d);
-
-//            if ($('#RefreshMyQ')[0].innerText.toUpperCase().indexOf('TASK') >= 0 && $("#chkMyShowAll")[0].checked) {
-//                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + $('#MyQTable tr:has(td)').length + ")";
-
-//                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
-//                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
-//                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-
-//            }
-
-//            else if ($('#RefreshMyQ')[0].innerText.toUpperCase().indexOf('SCAN') >= 0 && $("#chkMyShowAll")[0].checked) {
-//                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
-
-//                $("#btnMyScan")[0].innerText = "My Scan " + "(" + $('#MyQTable tr:has(td)').length + ")";
-//                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
-//                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-
-
-//            }
-
-//            else if ($('#RefreshMyQ')[0].innerText.toUpperCase().indexOf('PRESCRIPTION') >= 0 && $("#chkMyShowAll")[0].checked) {
-//                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
-
-//                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
-//                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + $('#MyQTable tr:has(td)').length + ")";
-//                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-
-
-//            }
-
-//            else if ($('#RefreshMyQ')[0].innerText.toUpperCase().indexOf('AMENDMENT') >= 0 && $("#chkMyShowAll")[0].checked) {
-//                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
-
-//                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
-//                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
-//                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-
-//            }
-//            else {
-//                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
-
-//                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
-//                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
-//                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-
-//            }
-//            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-
-//            return false;
-//        },
-//        error: function OnError(xhr) {
-//            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-//            if (xhr.status == 999)
-//                window.location = xhr.statusText;
-//            else {
-//                var log = JSON.parse(xhr.responseText);
-//                console.log(log);
-//                alert("USER MESSAGE:\n" +
-//                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-//                                   "Message: " + log.Message);
-//            }
-//        }
-//    });
-//    return false;
-//}
 function loadGeneralQueue() {
     document.getElementById("divGeneralQ").style.display = "";
     document.getElementById("divMyQ").style.display = "none";
@@ -844,43 +765,6 @@ function MyQclick() {
 function OnClientCloseWindow() {
     chkShowAllClick();
 }
-
-//function CalculateGeneralQCount() {
-//    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-
-//    $.ajax({
-//        type: "POST",
-//        url: "frmMyQueueNew.aspx/GetGeneralQCount",
-//        data: "",
-//        contentType: "application/json; charset=utf-8",
-//        dataType: "json",
-//        async: false,
-//        success: function (data) {
-
-//            var objdata = $.parseJSON(data.d);
-
-
-
-//            $("#btnAmendmnt")[0].innerText = "Amendment Q" + "(" + objdata.count[0].Amendmnt_Count + ")";
-//            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-
-//        },
-//        error: function OnError(xhr) {
-//            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-//            if (xhr.status == 999)
-//                window.location = xhr.statusText;
-//            else {
-//                var log = JSON.parse(xhr.responseText);
-//                console.log(log);
-//                alert("USER MESSAGE:\n" +
-//                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-//                                   "Message: " + log.Message);
-//            }
-//        }
-//    });
-//    return false;
-//}
-
 
 function GenQLoad() {
     var sShowall = '';

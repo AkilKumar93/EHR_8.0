@@ -3360,42 +3360,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ht;
 
         }
-        //EndSaravanan
-
-        //public Hashtable GetCountMyQHashTable(string FacName, string[] ObjectType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays)
-        //{
-        //    string[] ObjType = new string[5];
-
-        //    if (ProcessType[0] == "ASSIGNED")
-        //    {
-
-        //        ObjType[0] = "SCAN";
-        //        ObjType[1] = "E-PRESCRIBE";
-        //        ObjType[2] = "ADDENDUM";
-        //        ObjType[3] = "DIAGNOSTIC_RESULT";
-        //        ObjType[4] = "TASK";
-
-        //    }
-        //    else
-        //    {
-
-        //        ObjType[0] = "ADDENDUM";
-        //        ObjType[1] = "DIAGNOSTIC_RESULT";
-
-
-        //    }
-        //    IList<MyQueueCountDTO> GenQCount = new List<MyQueueCountDTO>();
-        //    ObjectManager objMngr = new ObjectManager();
-        //    GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays);
-        //    Hashtable ht = new Hashtable();
-
-        //    if (GenQCount.Count > 0)
-        //    {
-        //        ht.Add("Qcount", GenQCount);
-        //    }
-        //    return ht;
-
-        //}
+     
         public Hashtable LoadMyQHashTable(string FacName, string[] ObjectType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string facilityName)
         {
 
