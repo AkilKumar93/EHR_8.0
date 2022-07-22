@@ -2226,11 +2226,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             myq.My_Order_Count = Convert.ToInt16(FavoriteList[0]);
                         }
                         var facAncillary = from f in NHibernateSessionUtility.Instance.MyAncillaryFacilityList where f.Fac_Name == FacName select f;
-                                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                                if (ilstFacAncillary.Count == 0 && FacName != "ALL")
-                                {
-                        //if (sAncillary.Trim().ToUpper() != FacName && FacName != "ALL")
-                        //{
+                        IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                        if (ilstFacAncillary.Count == 0 && FacName != "ALL")
+                        {
+                            //if (sAncillary.Trim().ToUpper() != FacName && FacName != "ALL")
+                            //{
                             query1 = Mysession.GetNamedQuery("Count.Orders");
                             query1.SetString(2, FacName);
                             query1.SetString(0, UserName);

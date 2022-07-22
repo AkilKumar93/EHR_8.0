@@ -3362,40 +3362,40 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         //EndSaravanan
 
-        public Hashtable GetCountMyQHashTable(string FacName, string[] ObjectType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays)
-        {
-            string[] ObjType = new string[5];
+        //public Hashtable GetCountMyQHashTable(string FacName, string[] ObjectType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays)
+        //{
+        //    string[] ObjType = new string[5];
 
-            if (ProcessType[0] == "ASSIGNED")
-            {
+        //    if (ProcessType[0] == "ASSIGNED")
+        //    {
 
-                ObjType[0] = "SCAN";
-                ObjType[1] = "E-PRESCRIBE";
-                ObjType[2] = "ADDENDUM";
-                ObjType[3] = "DIAGNOSTIC_RESULT";
-                ObjType[4] = "TASK";
+        //        ObjType[0] = "SCAN";
+        //        ObjType[1] = "E-PRESCRIBE";
+        //        ObjType[2] = "ADDENDUM";
+        //        ObjType[3] = "DIAGNOSTIC_RESULT";
+        //        ObjType[4] = "TASK";
 
-            }
-            else
-            {
+        //    }
+        //    else
+        //    {
 
-                ObjType[0] = "ADDENDUM";
-                ObjType[1] = "DIAGNOSTIC_RESULT";
+        //        ObjType[0] = "ADDENDUM";
+        //        ObjType[1] = "DIAGNOSTIC_RESULT";
 
 
-            }
-            IList<MyQueueCountDTO> GenQCount = new List<MyQueueCountDTO>();
-            ObjectManager objMngr = new ObjectManager();
-            GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays);
-            Hashtable ht = new Hashtable();
+        //    }
+        //    IList<MyQueueCountDTO> GenQCount = new List<MyQueueCountDTO>();
+        //    ObjectManager objMngr = new ObjectManager();
+        //    GenQCount = objMngr.ObjectCount(FacName, ObjType, UserName, DefaultNoofDays);
+        //    Hashtable ht = new Hashtable();
 
-            if (GenQCount.Count > 0)
-            {
-                ht.Add("Qcount", GenQCount);
-            }
-            return ht;
+        //    if (GenQCount.Count > 0)
+        //    {
+        //        ht.Add("Qcount", GenQCount);
+        //    }
+        //    return ht;
 
-        }
+        //}
         public Hashtable LoadMyQHashTable(string FacName, string[] ObjectType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string facilityName)
         {
 
@@ -3416,12 +3416,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //ObjType[1] = "INTERNAL ORDER";
                 ObjType[1] = "IMMUNIZATION ORDER";
                 ObjType[2] = "REFERRAL ORDER";
-                //ObjType[4] = "SCAN";
-                //ObjType[5] = "E-PRESCRIBE";
-                //ObjType[6] = "ADDENDUM";
-                //ObjType[7] = "DIAGNOSTIC_RESULT";
-                //ObjType[8] = "TASK";
-                ObjType[3] = "DME ORDER";
+                ObjType[3] = "SCAN";
+                ObjType[4] = "E-PRESCRIBE";
+                ObjType[5] = "ADDENDUM";
+                ObjType[6] = "DIAGNOSTIC_RESULT";
+                ObjType[7] = "TASK";
+                ObjType[8] = "DME ORDER";
+
             }
             else
             {
@@ -3429,9 +3430,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //  ObjType[1] = "INTERNAL ORDER";
                 ObjType[1] = "IMMUNIZATION ORDER";
                 ObjType[2] = "REFERRAL ORDER";
-                //ObjType[4] = "ADDENDUM";
-                //ObjType[5] = "DIAGNOSTIC_RESULT";
-                ObjType[3] = "DME ORDER";
+                ObjType[3] = "ADDENDUM";
+                ObjType[4] = "DIAGNOSTIC_RESULT";
+                ObjType[5] = "DME ORDER";
+
+                
             }
 
             IList<MyQueueCountDTO> GenQCount = new List<MyQueueCountDTO>();
