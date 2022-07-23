@@ -13745,7 +13745,7 @@ and c.Procedure_Code in('99201','99202','99203','99204','99205','99212','99213',
 '99395','99396','99397','99385','99386','99387') and c.is_delete='n';]]>
   </sql-query>
 
-  <sql-query name="PQRI.GetNumeratorCMS122.HBA1c">
+  <!--<sql-query name="PQRI.GetNumeratorCMS122.HBA1c">
     <![CDATA[
  select distinct max(e.encounter_id) as Encounter_Id,e.human_id,pr.loinc_identifier from encounter e left join
  patient_results pr on e.encounter_id=pr.encounter_id where e.encounter_id in (:EncIds) and e.encounter_id not in
@@ -13756,7 +13756,18 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
 'Hemoglobin S/Hemoglobin.total',
 'Hemoglobin C/Hemoglobin.total',
 'Hemoglobin A2/Hemoglobin.total') and `value`<9 group by human_id) group by e.human_id;]]>
-  </sql-query>
+  </sql-query>-->
+
+	<sql-query name="PQRI.GetNumeratorCMS122.HBA1c">
+		<![CDATA[
+ select distinct max(e.encounter_id) as Encounter_Id,e.human_id,pr.loinc_identifier from encounter e left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.encounter_id in (:EncIds) and loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
+'Hemoglobin F/Hemoglobin.total',
+'Hemoglobin A/Hemoglobin.total',
+'Hemoglobin S/Hemoglobin.total',
+'Hemoglobin C/Hemoglobin.total',
+'Hemoglobin A2/Hemoglobin.total') and `value`>9 group by e.human_id;]]>
+	</sql-query>
 
   <sql-query name="PQRI.GetDenominatorList1CMS68v6.CurrentMedication">
     <![CDATA[select e.encounter_id from encounter e left join human h on e.human_id=h.human_id
@@ -14440,7 +14451,7 @@ select encounter_id,human_id,'','',snomed_code from immunization where human_id 
 
 
 
-  <sql-query name="PQRI.GetNumeratorCMS147.Influenza">
+  <!--<sql-query name="PQRI.GetNumeratorCMS147.Influenza">
 
     <![CDATA[select distinct(B.Encounter_Id),B.Human_Id,B.procedure_code,ifnull(CVX_Code,'') from immunization_history B
 
@@ -14492,7 +14503,61 @@ where( B.procedure_code in('90630',
  if(Administered_Date<>'',str_to_date(Administered_Date,'%Y-%m-%d'),'0001-01-01') between date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-01-01') and
  date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31') and human_id in (:EncIds));]]>
 
-  </sql-query>
+  </sql-query>-->
+
+	<sql-query name="PQRI.GetNumeratorCMS147.Influenza">
+
+		<![CDATA[select distinct(B.Encounter_Id),B.Human_Id,B.procedure_code,ifnull(CVX_Code,'') from immunization_history B
+
+
+where( B.procedure_code in('90630',
+'90653',
+'90654',
+'90655',
+'90656',
+'90657',
+'90658',
+'90660',
+'90661',
+'90662',
+'90664',
+'90666',
+'90667',
+'90668',
+'90672',
+'90673',
+'90685',
+'90686',
+'90687',
+'90688','G0008',
+'Q2034',
+'Q2035',
+'Q2036',
+'Q2037',
+'Q2038',
+'Q2039'
+
+) or CVX_Code in ('135',
+'140',
+'141',
+'144',
+'149',
+'150',
+'151',
+'153',
+'155',
+'158',
+'161',
+'166',
+'168',
+'88'))  and
+(if(Administered_Date<>'',str_to_date(Administered_Date,'%d-%b-%Y'),'0001-01-01') between date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-08-01') and
+ date_format(date_sub(DATE_FORMAT(?,'%Y-01-01'),interval 1 year),'%Y-12-31')
+ or
+ if(Administered_Date<>'',str_to_date(Administered_Date,'%d-%b-%Y'),'0001-01-01') between date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-01-01') and
+ date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31') and human_id in (:EncIds));]]>
+
+	</sql-query>
 
   <sql-query name="PQRI.GetDenominator1CMS125.BreastCancer">
     <![CDATA[select e.human_id from encounter e left join human h on e.human_id=h.human_id left join e_m_coding em on e.encounter_id=em.encounter_id
