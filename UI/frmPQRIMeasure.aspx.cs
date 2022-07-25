@@ -227,7 +227,10 @@ namespace Acurus.Capella.UI
                 this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('180609');", true);
                 return;
             }
-            Physician_Id = Convert.ToUInt16(cboProviderName.SelectedValue);
+            if (System.Text.RegularExpressions.Regex.IsMatch(cboProviderName.SelectedValue, "^[0-9]*$") == true)
+            {
+                Physician_Id = Convert.ToUInt16(cboProviderName.SelectedValue);
+            }
 
             PQRI_MeasureManager objPQRI = new PQRI_MeasureManager();
             //PQRIlist = objPQRI.GetPqriMeasureList(Physician_Id, dtpFromDate.SelectedDate.Value, dtpToDate.SelectedDate.Value);

@@ -63,7 +63,10 @@ namespace Acurus.Capella.UI
                 btnMakeActive.Enabled = false;
                 btnOK.Enabled = false;
                 btnMakeInactive.Enabled = false;
-                ulMyHumanID = Convert.ToUInt64(Request["HumanId"]);
+                if (System.Text.RegularExpressions.Regex.IsMatch(Request["HumanId"], "^[0-9]*$") == true)
+                {
+                    ulMyHumanID = Convert.ToUInt64(Request["HumanId"]);
+                }
                 hdnHumanID.Value = ulMyHumanID.ToString();
                 //to enter first name,last name and account number field in the form.
                 //IList<Human> humanList = HumanMngr.GetPatientDetailsUsingPatientInformattion(ulMyHumanID);
@@ -88,7 +91,10 @@ namespace Acurus.Capella.UI
 
                             if (xmlhumanList != null && xmlhumanList.Count > 0)
                             {
-                                objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
+                                if (System.Text.RegularExpressions.Regex.IsMatch(xmlhumanList[0].Attributes.GetNamedItem("Id").Value, "^[0-9]*$") == true)
+                                {
+                                    objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
+                                }
                                 objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
                                 objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
                                 objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;

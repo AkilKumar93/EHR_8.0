@@ -144,7 +144,7 @@ namespace Acurus.Capella.UI
                 {
                     if (this.PreviousPage.Form.Name == "frmFindPatient")
                     {
-                        if (((frmFindPatient)this.PreviousPage).hdnHumanID.Value.ToString() != string.Empty)
+                        if (((frmFindPatient)this.PreviousPage).hdnHumanID.Value.ToString() != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(((frmFindPatient)this.PreviousPage).hdnHumanID.Value, "^[0-9]*$") == true)
                         {
                             ulPatientID = Convert.ToUInt64(((frmFindPatient)this.PreviousPage).hdnHumanID.Value);
                             hdnPatientID.Value = ulPatientID.ToString();
@@ -156,14 +156,14 @@ namespace Acurus.Capella.UI
                     ulPatientID = 0;
                     hdnPatientID.Value = ulPatientID.ToString();
                 }
-                if (Request["bInsurance"] != null && Request["HumanId"] != null && Request["HumanId"].ToString() != "undefined" && Request["HumanId"].ToString() != "")
+                if (Request["bInsurance"] != null && Request["HumanId"] != null && Request["HumanId"].ToString() != "undefined" && Request["HumanId"].ToString() != "" && System.Text.RegularExpressions.Regex.IsMatch(Request["HumanId"].ToString(), "^[0-9]*$") == true)
                 {
                     bInsuredHuman = false;
                     hdnbInsuredHuman.Value = "False";
                     ulPatientID = Convert.ToUInt64(Request["HumanId"].ToString());
                     hdnPatientID.Value = Request["HumanId"].ToString();
                 }
-                if (Request["HumanId"] != null && Request["HumanId"].ToString() != "undefined" && Request["HumanId"].ToString() != "")
+                if (Request["HumanId"] != null && Request["HumanId"].ToString() != "undefined" && Request["HumanId"].ToString() != "" && System.Text.RegularExpressions.Regex.IsMatch(Request["HumanId"].ToString(), "^[0-9]*$") == true)
                 {
                     ulPatientID = Convert.ToUInt64(Request["HumanId"].ToString());
                     hdnPatientID.Value = Request["HumanId"].ToString();
@@ -370,10 +370,14 @@ namespace Acurus.Capella.UI
             Session["WFObjIDNotStarted"] = "0";
             Session["CompAmt"] = "0";
             //Added by priyangha 
-            if (Request["HumanId"] != null && Request["HumanId"].ToString() != "undefined")
+            if (Request["HumanId"] != null && Request["HumanId"].ToString() != "undefined" && System.Text.RegularExpressions.Regex.IsMatch(Request["HumanId"], "^[0-9]*$") == true)
+            {
                 ClientSession.HumanId = Convert.ToUInt64(Request["HumanId"]);
-            else if (hdnPatientID.Value != "" && hdnPatientID.Value != "0")
+            }
+            else if (hdnPatientID.Value != "" && hdnPatientID.Value != "0" && System.Text.RegularExpressions.Regex.IsMatch(hdnPatientID.Value, "^[0-9]*$") == true)
+            {
                 ClientSession.HumanId = Convert.ToUInt64(hdnPatientID.Value);
+            }
 
             string sFormName = string.Empty;
             string screenName = string.Empty;

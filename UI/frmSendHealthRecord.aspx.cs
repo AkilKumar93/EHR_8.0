@@ -631,7 +631,7 @@ namespace Acurus.Capella.UI
                 {
                     if (cboFrom.Text.ToString() == ClientSession.PhysicainDetails[0].PhyEMail)
                     {
-                        if (ClientSession.PhysicainDetails[0].Physician_EMail_Port != string.Empty)
+                        if (ClientSession.PhysicainDetails[0].Physician_EMail_Port != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(ClientSession.PhysicainDetails[0].Physician_EMail_Port, "^[0-9]*$")==true)
                         {
                             port = Convert.ToInt32(ClientSession.PhysicainDetails[0].Physician_EMail_Port);
                         }
@@ -653,7 +653,7 @@ namespace Acurus.Capella.UI
                     }
                     else if (cboFrom.Text.ToString() == ClientSession.PhysicainDetails[0].Physician_Other_EMail_Username)
                     {
-                        if (ClientSession.PhysicainDetails[0].Physician_Other_EMail_Port != string.Empty)
+                        if (ClientSession.PhysicainDetails[0].Physician_Other_EMail_Port != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(ClientSession.PhysicainDetails[0].Physician_Other_EMail_Port, "^[0-9]*$")==true)
                         {
                             port = Convert.ToInt32(ClientSession.PhysicainDetails[0].Physician_Other_EMail_Port);
                         }
@@ -943,21 +943,30 @@ namespace Acurus.Capella.UI
                         {
                             frommail = ClientSession.PhysicainDetails[0].PhyEMail.Trim();
                             smptservername = ClientSession.PhysicainDetails[0].Mail_Server_Address.Trim();
-                            port = Convert.ToInt32(ClientSession.PhysicainDetails[0].Physician_EMail_Port);
+                            if (System.Text.RegularExpressions.Regex.IsMatch(ClientSession.PhysicainDetails[0].Physician_EMail_Port, "^[0-9]*$") == true)
+                            {
+                                port = Convert.ToInt32(ClientSession.PhysicainDetails[0].Physician_EMail_Port);
+                            }
                             password = ClientSession.PhysicainDetails[0].Physician_EMail_Password.Trim();
                         }
                         else if (ClientSession.PhysicainDetails[0].Physician_Other_EMail_Username.Trim() == cboFrom.Text)
                         {
                             frommail = ClientSession.PhysicainDetails[0].Physician_Other_EMail_Username.Trim();
                             smptservername = ClientSession.PhysicainDetails[0].Physician_Other_EMail_Server_Address.Trim();
-                            port = Convert.ToInt32(ClientSession.PhysicainDetails[0].Physician_Other_EMail_Port);
+                            if (System.Text.RegularExpressions.Regex.IsMatch(ClientSession.PhysicainDetails[0].Physician_EMail_Port, "^[0-9]*$") == true)
+                            {
+                                port = Convert.ToInt32(ClientSession.PhysicainDetails[0].Physician_Other_EMail_Port);
+                            }
                             password = ClientSession.PhysicainDetails[0].Physician_Other_EMail_Password.Trim();
                         }
                         else if (ClientSession.PhysicainDetails[0].Physician_MDoffice_EMail_Username.Trim() == cboFrom.Text)
                         {
                             frommail = ClientSession.PhysicainDetails[0].Physician_MDoffice_EMail_Username.Trim();
                             smptservername = System.Configuration.ConfigurationSettings.AppSettings["MDOfficeMail"].ToString();
-                            port = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["MDOfficeMailPort"].ToString());
+                            if (System.Text.RegularExpressions.Regex.IsMatch(System.Configuration.ConfigurationSettings.AppSettings["MDOfficeMailPort"].ToString(), "^[0-9]*$") == true)
+                            {
+                                port = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["MDOfficeMailPort"].ToString());
+                            }
                             password = ClientSession.PhysicainDetails[0].Physician_MDoffice_EMail_Password.Trim();
                         }
 

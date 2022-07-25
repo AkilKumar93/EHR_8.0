@@ -1688,22 +1688,22 @@ namespace Acurus.Capella.UI
                     objEligibile.Termination_Date = Convert.ToDateTime(dtpTerminationDate.Text);
                 }
 
-                if (txtPCPCopay.Text != string.Empty)
+                if (txtPCPCopay.Text != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(txtPCPCopay.Text, "^[0-9]*$")==true)
                 {
                     EligibilityDetails.Add("PCP Copay!" + txtPCPCopay.Text);
                     objEligibile.PCP_Copay = Convert.ToDouble(txtPCPCopay.Text);
                 }
-                if (txtSPCCopay.Text != string.Empty)
+                if (txtSPCCopay.Text != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(txtSPCCopay.Text, "^[0-9]*$") == true)
                 {
                     EligibilityDetails.Add("SPC Copay!" + txtSPCCopay.Text);
                     objEligibile.SPC_Copay = Convert.ToDouble(txtSPCCopay.Text);
                 }
-                if (txtDeductibleforThePlan.Text != string.Empty)
+                if (txtDeductibleforThePlan.Text != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(txtDeductibleforThePlan.Text, "^[0-9]*$") == true)
                 {
                     EligibilityDetails.Add("Deductible for the Plan!" + txtDeductibleforThePlan.Text);
                     objEligibile.Deductible_For_Plan = Convert.ToDouble(txtDeductibleforThePlan.Text);
                 }
-                if (txtCoInsurance.Text != string.Empty)
+                if (txtCoInsurance.Text != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(txtCoInsurance.Text, "^[0-9]*$") == true)
                 {
                     EligibilityDetails.Add("Co Insurance!" + txtCoInsurance.Text);
                     objEligibile.Coinsurance = Convert.ToDouble(txtCoInsurance.Text);
@@ -1767,7 +1767,7 @@ namespace Acurus.Capella.UI
                 {
                     EligibilityDetails.Add("Carrier From EV!" + txtCarrierName.Text);
                 }
-                if (txtDeductibleMet.Text.Trim() != string.Empty)
+                if (txtDeductibleMet.Text.Trim() != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(txtDeductibleMet.Text, "^[0-9]*$") == true)
                 {
                     EligibilityDetails.Add("Deductible Met!" + txtDeductibleMet.Text);
                     objEligibile.Deductible_Met_So_Far = Convert.ToDouble(txtDeductibleMet.Text);

@@ -87,7 +87,10 @@ namespace Acurus.Capella.UI
                                             {
                                                 objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
                                                 sBirth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
+                                            if (System.Text.RegularExpressions.Regex.IsMatch(xmlTagName[j].Attributes["Id"].Value, "^[0-9]*$") == true)
+                                            {
                                                 objFillHuman.Id = Convert.ToUInt32(xmlTagName[j].Attributes["Id"].Value);
+                                            }
                                                 objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
                                                 objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
                                                 objFillHuman.MI = xmlTagName[j].Attributes["MI"].Value;
@@ -266,7 +269,7 @@ namespace Acurus.Capella.UI
                 txtCreatedBy.Text = ClientSession.UserName;
             //FillMessageGrid();
             if (Request["parentscreen"] != null && (Request["parentscreen"] == "MyQ" || Request["parentscreen"] == "PatientChart")
-                && (Request["MessageID"] != null && Convert.ToUInt32(Request["MessageID"]) > 0))
+                && (Request["MessageID"] != null && System.Text.RegularExpressions.Regex.IsMatch(Request["MessageID"], "^[0-9]*$") == true && Convert.ToUInt32(Request["MessageID"]) > 0))
             {
                 RowForAll.Style.Add("display", "none");
                 Tr1ForHide.Style.Add("display", "none");

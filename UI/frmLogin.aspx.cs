@@ -799,8 +799,10 @@ namespace Acurus.Capella.UI
                 objUser.Is_RCopia_Notification_Required = Is_RCopia_Notification_Required;
                 if (PhysicianId != null && PhysicianId != "")
                     objUser.Physician_Library_ID = Convert.ToUInt64(PhysicianId);
-                if (Landing_Screen_ID != null && Landing_Screen_ID != "")
+                if (Landing_Screen_ID != null && Landing_Screen_ID != "" && System.Text.RegularExpressions.Regex.IsMatch(Landing_Screen_ID, "^[0-9]*$") == true)
+                {
                     objUser.Landing_Screen_ID = Convert.ToInt32(Landing_Screen_ID);
+                }
                 objUser.user_name = sUserName.ToUpper();
                 objUser.EMail_Address = EMailAddress;
                 objUser.Legal_Org = LegalOrg;

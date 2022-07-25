@@ -2814,7 +2814,10 @@ namespace Acurus.Capella.UI
 
                 #region DB Call
 
-                PhyIDList.Add(Convert.ToUInt64(hdnApptPhyId.Value));
+                if (System.Text.RegularExpressions.Regex.IsMatch(hdnApptPhyId.Value, "^[0-9]*$") == true)
+                {
+                    PhyIDList.Add(Convert.ToUInt64(hdnApptPhyId.Value));
+                }
                 facilityList = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList<string>();
                 string time_taken = "";
                 Stopwatch LoadAppointmentsDBCall = new Stopwatch();
@@ -3025,7 +3028,7 @@ namespace Acurus.Capella.UI
                 hdnPhyIDColor.Value = string.Empty;
                 for (int k = 0; k < chklstProviders.Items.Count; k++)
                 {
-                    if (chklstProviders.Items[k].Selected == true)
+                    if (chklstProviders.Items[k].Selected == true && System.Text.RegularExpressions.Regex.IsMatch(chklstProviders.Items[k].Value, "^[0-9]*$") == true)
                     {
                         PhyIDList.Add(Convert.ToUInt64(chklstProviders.Items[k].Value));
                         hdnApptPhyId.Value = chklstProviders.Items[k].Value;

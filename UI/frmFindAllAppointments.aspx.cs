@@ -86,8 +86,10 @@ namespace Acurus.Capella.UI
                 {
                     try
                     {
-                        if (IsDigitsOnly(hdnHumanID.Value))
+                        if (IsDigitsOnly(hdnHumanID.Value) && System.Text.RegularExpressions.Regex.IsMatch(hdnHumanID.Value, "^[0-9]*$") == true)
+                        {
                             fillneweditappt = EncounterMngr.GetEncounterAndHumanRecord(0, Convert.ToUInt64(hdnHumanID.Value));
+                        }
                     }
                     catch(Exception ex)
                     {
@@ -166,7 +168,7 @@ namespace Acurus.Capella.UI
             {
                 page = PageNumber;
             }
-            if (hdnHumanID.Value != string.Empty && hdnHumanID.Value != "undefined")
+            if (hdnHumanID.Value != string.Empty && hdnHumanID.Value != "undefined" && System.Text.RegularExpressions.Regex.IsMatch(hdnHumanID.Value, "^[0-9]*$") == true)
             {
                 if (chkShowOldAppointments.Checked == true)
                 {

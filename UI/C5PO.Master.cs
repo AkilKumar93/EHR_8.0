@@ -161,9 +161,14 @@ namespace Acurus.Capella.UI
                     {
                         if (Request["HumanID"] != null && Request["HumanID"] != string.Empty)
                         {
-                            ClientSession.HumanId = Convert.ToUInt32(Request["HumanID"]);
-                            if (Request["EncounterID"] != null && Request["EncounterID"] != string.Empty)
+                            if (System.Text.RegularExpressions.Regex.IsMatch(Request["HumanID"], "^[0-9]*$") == true)
+                            {
+                                ClientSession.HumanId = Convert.ToUInt32(Request["HumanID"]);
+                            }
+                            if (Request["EncounterID"] != null && Request["EncounterID"] != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(Request["EncounterID"], "^[0-9]*$") == true)
+                            {
                                 ClientSession.EncounterId = Convert.ToUInt32(Request["EncounterID"]);
+                            }
                             string FacilityName = ClientSession.FacilityName.Replace("#", "HASH");
                             PFSHWindow.NavigateUrl = "HtmlPFSH.html?MyHumanID=" + Request["HumanID"].ToString() + "&openingfrom=" + Convert.ToString(Request["openingfrom"] + "&FacilityName=" + FacilityName + "&UserRole=" + ClientSession.UserRole + "&EncounterID=" + ClientSession.EncounterId) + "&version=" + System.Configuration.ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ", "");
                             PFSHWindow.Visible = true;
@@ -185,7 +190,10 @@ namespace Acurus.Capella.UI
                     {
                         if (Request["HumanID"] != null && Request["HumanID"] != string.Empty)
                         {
-                            ClientSession.HumanId = Convert.ToUInt32(Request["HumanID"]);
+                            if (System.Text.RegularExpressions.Regex.IsMatch(Request["HumanID"], "^[0-9]*$") == true)
+                            {
+                                ClientSession.HumanId = Convert.ToUInt32(Request["HumanID"]);
+                            }
                             ModalWindow.Visible = true;
                             ModalWindow.VisibleOnPageLoad = true;
                             ModalWindow.VisibleStatusbar = false;

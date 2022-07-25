@@ -1372,17 +1372,21 @@ namespace Acurus.Capella.UI
                     string[] splittedPages1 = splittedPages[i].Split('-');
                     if (splittedPages1[0].ToString().Trim() != string.Empty && splittedPages1[1].ToString().Trim() != string.Empty)//BugID:54356
                     {
-                        if (Convert.ToInt32(splittedPages1[0]) <= Convert.ToInt32(splittedPages1[1]))
-                            AddToArrayList(Convert.ToInt32(splittedPages1[0]), Convert.ToInt32(splittedPages1[1]));
-                        else
-                            AddToArrayList(Convert.ToInt32(splittedPages1[1]), Convert.ToInt32(splittedPages1[0]));
-
+                        if (System.Text.RegularExpressions.Regex.IsMatch(splittedPages1[0], "^[0-9]*$") == true && System.Text.RegularExpressions.Regex.IsMatch(splittedPages1[1], "^[0-9]*$") == true)
+                        {
+                            if (Convert.ToInt32(splittedPages1[0]) <= Convert.ToInt32(splittedPages1[1]))
+                                AddToArrayList(Convert.ToInt32(splittedPages1[0]), Convert.ToInt32(splittedPages1[1]));
+                            else
+                                AddToArrayList(Convert.ToInt32(splittedPages1[1]), Convert.ToInt32(splittedPages1[0]));
+                        }
                     }
                 }
                 else
                 {
-                    if (splittedPages[i].ToString().Trim() != string.Empty)//BugID:54356
+                    if (System.Text.RegularExpressions.Regex.IsMatch(splittedPages[i], "^[0-9]*$") == true && splittedPages[i].ToString().Trim() != string.Empty)//BugID:54356
+                    {
                         AddToArrayList(Convert.ToInt32(splittedPages[i]));
+                    }
                 }
             }
 
@@ -1592,8 +1596,10 @@ namespace Acurus.Capella.UI
 
                 // AddedListOfScanIndex = scanIndesmanager.SaveUpdateDeleteOnlineDocuments(insertList.ToArray<scan_index>(), new List<scan_index>(), new List<scan_index>(), ClientSession.HumanId, scan_ID, string.Empty, ClientSession.UserName, ddSelectedFacility.Text, full_path, (int)Session["Page_Count"], Path.GetFileName(full_path));// txtFileName.Value);
                 int ipagecount = 1;
-                if (hdnPagecount.Value != null && hdnPagecount.Value != "")
+                if (hdnPagecount.Value != null && hdnPagecount.Value != "" && System.Text.RegularExpressions.Regex.IsMatch(hdnPagecount.Value, "^[0-9]*$") == true)
+                {
                     ipagecount = Convert.ToInt32(hdnPagecount.Value);
+                }
                 AddedListOfScanIndex = scanIndesmanager.SaveUpdateDeleteOnlineDocuments(insertList.ToArray<scan_index>(), new List<scan_index>(), new List<scan_index>(), ClientSession.HumanId, scan_ID, string.Empty, ClientSession.UserName, sFacilityName.ToString(), full_path.ToString(), ipagecount, Path.GetFileName(full_path.ToString()), dtScanReceivedDate, sScan_Type.ToString());
                 if (insertList.Count > 0)
                     scan_ID = insertList[0].Scan_ID;

@@ -208,7 +208,11 @@ namespace Acurus.Capella.UI
                 int index = Convert.ToInt32(hdmRowIndex.Value);
                 GridViewRow gridRow = grdAddOrUpdateKeyword.Rows[index];
 
-                ulong deleteId = Convert.ToUInt32(grdAddOrUpdateKeyword.Rows[gridRow.RowIndex].Cells[5].Text);
+                ulong deleteId = 0;
+                if (System.Text.RegularExpressions.Regex.IsMatch(grdAddOrUpdateKeyword.Rows[gridRow.RowIndex].Cells[5].Text, "^[0-9]*$") == true)
+                {
+                    deleteId = Convert.ToUInt32(grdAddOrUpdateKeyword.Rows[gridRow.RowIndex].Cells[5].Text);
+                }
                 UserLookup objUserLookup = new UserLookup();
                 objUserLookup.Id = deleteId;
                 IList<UserLookup> SaveList = new List<UserLookup>();

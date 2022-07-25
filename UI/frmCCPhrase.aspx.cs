@@ -459,9 +459,10 @@ namespace Acurus.Capella.UI
                     objEncounter.Add(ClientSession.FillEncounterandWFObject.EncRecord);
                     if (objEncounter.Count > 0)
                     {
-                        if (txtcount.Value != null && txtcount.Value.Trim() != "")
+                        if (txtcount.Value != null && txtcount.Value.Trim() != "" && System.Text.RegularExpressions.Regex.IsMatch(txtcount.Value, "^[0-9]*$")==true)
+                        {
                             objEncounter[0].No_of_Med_Orders_In_Paper = Convert.ToUInt16(txtcount.Value);
-                        //Added by Saravanakumar
+                        }
                         if (chkCurrentMedicationDocumented.Checked)
                             objEncounter[0].Is_Medication_Reviewed = "Y";
                         else

@@ -835,7 +835,11 @@ namespace Acurus.Capella.UI
                     IList<ImmunizationMasterHistory> ResultList = (IList<ImmunizationMasterHistory>)Session["ImmunizationMasterHistory"];
                     if (grdImmunization.MasterTableView.Items.Count > 0)
                     {
-                        ulong ID = Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text);
+                        ulong ID = 0;
+                        if (System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text, "^[0-9]*$") == true)
+                        {
+                            ID = Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text);
+                        }
                         ulong ulUpdateDelId = ID;
                         Session["UpdateDeleteID"] = ulUpdateDelId;
                         IList<ImmunizationMasterHistory> ImmuMasterHistoryList = (from I in ResultList where I.Id == Convert.ToUInt64(ID) select I).ToList<ImmunizationMasterHistory>();
@@ -850,7 +854,11 @@ namespace Acurus.Capella.UI
                         IList<ImmunizationHistory> ResultList = (IList<ImmunizationHistory>)Session["ImmunizationHistory"];
                         if (grdImmunization.MasterTableView.Items.Count > 0)
                         {
-                            ulong ID = Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text);
+                            ulong ID = 0;
+                            if (System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text, "^[0-9]*$") == true)
+                            {
+                                ID = Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text);
+                            }
                             ulong ulUpdateDelId = ID;
                             Session["UpdateDeleteID"] = ulUpdateDelId;
                             IList<ImmunizationHistory> ImmuHistoryList = (from I in ResultList where I.Id == Convert.ToUInt64(ID) select I).ToList<ImmunizationHistory>();
@@ -863,7 +871,11 @@ namespace Acurus.Capella.UI
                         IList<ImmunizationMasterHistory> ResultList = (IList<ImmunizationMasterHistory>)Session["ImmunizationMasterHistory"];
                         if (grdImmunization.MasterTableView.Items.Count > 0)
                         {
-                            ulong ID = Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text);
+                            ulong ID = 0;
+                            if (System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text, "^[0-9]*$") == true)
+                            {
+                                ID = Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text);
+                            }
                             ulong ulUpdateDelId = ID;
                             Session["UpdateDeleteID"] = ulUpdateDelId;
                             IList<ImmunizationMasterHistory> ImmuMasterHistoryList = (from I in ResultList where I.Id == Convert.ToUInt64(ID) select I).ToList<ImmunizationMasterHistory>();
@@ -903,7 +915,7 @@ namespace Acurus.Capella.UI
                 {
                     if ((IList<ImmunizationMasterHistory>)Session["LoadImmunizationMasterList"] != null && ((IList<ImmunizationMasterHistory>)Session["LoadImmunizationMasterList"]).Count > 0)
                     {
-                        if (grdImmunization.MasterTableView.Items.Count > 0)
+                        if (grdImmunization.MasterTableView.Items.Count > 0 && System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[8].Text, "^[0-9]*$") == true)
                         {
                             DeleteFromMaster(Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[8].Text));
                         }
@@ -914,7 +926,7 @@ namespace Acurus.Capella.UI
                         ImmunizationHistoryManager immunizationMngr = new ImmunizationHistoryManager();
                         IList<ImmunizationHistory> DeleteList = (IList<ImmunizationHistory>)Session["ImmunizationHistory"];
                         ulong ImmunizationID = 0;
-                        if (grdImmunization.MasterTableView.Items.Count > 0)
+                        if (grdImmunization.MasterTableView.Items.Count > 0 && System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text, "^[0-9]*$") == true)
                         {
                             ImmunizationID = Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text);
                         }
@@ -944,7 +956,7 @@ namespace Acurus.Capella.UI
                 }
                 else if (ScreenMode == "Menu")
                 {
-                    if (grdImmunization.MasterTableView.Items.Count > 0)
+                    if (grdImmunization.MasterTableView.Items.Count > 0 && System.Text.RegularExpressions.Regex.IsMatch(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text, "^[0-9]*$") == true)
                     {
                         DeleteFromMaster(Convert.ToUInt64(grdImmunization.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[9].Text));
                     }
