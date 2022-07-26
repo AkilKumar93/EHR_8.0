@@ -38,6 +38,9 @@ build Test Job:
 Deploy Test Job:
   rules:
     - if: '$SERVER_TESTING =="10.0.0.11"'
+  environment:
+    name: Capella_Test
+    url: https://cmgtest10.capellaehr.com:8081/frmlogin.aspx
   stage: Deploy TESTING
   script:
   - echo "Backup RJ..Start.."
