@@ -207,6 +207,8 @@ namespace Acurus.Capella.UI
                 }
                 dtpToDate.SelectedDate = DateTime.Now;
                 dtpFromDate.SelectedDate = Convert.ToDateTime(DateTime.Now.Year.ToString() + "-01-01");
+                dtpFromDate.MinDate = Convert.ToDateTime(DateTime.Now.Year.ToString() + "-01-01");
+                dtpToDate.MinDate = Convert.ToDateTime(DateTime.Now.Year.ToString() + "-01-01");
             }
         }
 
