@@ -322,28 +322,28 @@ function ClickMovetoma(sender, args) {
         return false;
     }
     if (document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('DLC_txtDLC').value == "") {
-        var Continue = DisplayErrorMessage('115060');
-        if (Continue != undefined && Continue == true) {
+        //var Continue = DisplayErrorMessage('115060');
+        //if (Continue != undefined && Continue == true) {
             StartLoadingImage();
             __doPostBack('btnMoveToMa', "true");
-        }
-        else {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
+        //}
+        //else {
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
     }
     if (document.getElementById('txtMedicalAssistantNotes').disabled == false && document.getElementById('txtMedicalAssistantNotes').value == "") {
 
 
-        var Continue = DisplayErrorMessage('115060');
-        if (Continue != undefined && Continue == true) {
+        //var Continue = DisplayErrorMessage('115060');
+        //if (Continue != undefined && Continue == true) {
             StartLoadingImage();
             __doPostBack('btnMoveToMa', "true");
-        }
-        else {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
+        //}
+        //else {
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
     }
     else {
         StartLoadingImage();//BugID:41027 -- move to next result
@@ -359,26 +359,26 @@ function ClickMovetonextProcess(sender, args) {
     }
 
     if (document.getElementById('DLC_txtDLC').disabled == false && document.getElementById('DLC_txtDLC').value == "") {
-        var Continue = DisplayErrorMessage('115060');
-        if (Continue != undefined && Continue == true) {
+        //var Continue = DisplayErrorMessage('115060');
+        //if (Continue != undefined && Continue == true) {
             StartLoadingImage();
             __doPostBack('btnMoveToNextProcess', "true");
-        }
-        else {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
+        //}
+        //else {
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
     }
     if (document.getElementById('txtMedicalAssistantNotes').disabled == false && document.getElementById('txtMedicalAssistantNotes').value == "") {
-        var Continue = DisplayErrorMessage('115060');
-        if (Continue != undefined && Continue == true) {
+        //var Continue = DisplayErrorMessage('115060');
+        //if (Continue != undefined && Continue == true) {
             StartLoadingImage();
             __doPostBack('btnMoveToNextProcess', "true");
-        }
-        else {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }
+        //}
+        //else {
+        //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    return false;
+        //}
 
     }
     else {
