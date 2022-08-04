@@ -449,15 +449,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 /* ICriteria criteria = iMySession.CreateCriteria(typeof(WorkFlow)).Add(Expression.Eq("Fac_Name", FacilityName));
                  WFMapList = criteria.List<WorkFlow>();*/
-                IList<WorkFlowTypeMaster> WFTypeMasterList;
+                IList<WorkFlowTypeMaster> WFTypeMasterList = new List<WorkFlowTypeMaster>();
                 IList<WorkFlowTypeMaster> WFTypeMasterListDefault;
                 string WorkFlowType = string.Empty;
-                ICriteria criteriaWFType = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", FacilityName)).Add(Expression.Eq("Legal_Org", System.Configuration.ConfigurationManager.AppSettings["Legal_Org"]));
-                WFTypeMasterList = criteriaWFType.List<WorkFlowTypeMaster>();
+                IList<FacilityLibrary> FacList;
+                ICriteria criteriaFacType = iMySession.CreateCriteria(typeof(FacilityLibrary)).Add(Expression.Eq("Facility_Name", FacilityName));
+                FacList = criteriaFacType.List<FacilityLibrary>();
+
+                if (FacList.Count > 0)
+                {
+                    ICriteria criteriaWFType = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", FacilityName)).Add(Expression.Eq("Legal_Org", FacList[0].Legal_Org));
+                    WFTypeMasterList = criteriaWFType.List<WorkFlowTypeMaster>();
+                }
 
                 if (WFTypeMasterList.Count == 0)
                 {
-                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", "DEFAULT")).Add(Expression.Eq("Legal_Org", System.Configuration.ConfigurationManager.AppSettings["Legal_Org"]));
+                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", "DEFAULT")).Add(Expression.Eq("Legal_Org", FacList[0].Legal_Org));
                     WFTypeMasterListDefault = criteria1.List<WorkFlowTypeMaster>();
                     if (WFTypeMasterListDefault.Count > 0)
                         WorkFlowType = WFTypeMasterListDefault[0].Workflow_Type;

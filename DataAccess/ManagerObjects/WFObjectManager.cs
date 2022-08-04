@@ -860,26 +860,32 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ToProcess = wfList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList()[0].To_Process;
             //Commented for Performance Tuning - To Reduce Memmory Usage --//BugID:53695 
             // var objWorkflow = wfList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList();
-            var objWorkflowType = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.Where(a => a.Legal_Org == System.Configuration.ConfigurationManager.AppSettings["Legal_Org"] && a.Facility_Name == WFobj.Fac_Name).ToList();
-            if (objWorkflowType.Count ==0)
+            IList<FacilityLibrary> FacList = NHibernateSessionUtility.Instance.MyFacilityList.Where(a => a.Fac_Name == WFobj.Fac_Name).ToList();
+
+            if (FacList.Count > 0)
             {
-                var objWorkflowTypeDefault = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.Where(a => a.Legal_Org == System.Configuration.ConfigurationManager.AppSettings["Legal_Org"] && a.Facility_Name == "DEFAULT").ToList();
-                if (objWorkflowTypeDefault.Count==0)
+                var objWorkflowType = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.Where(a => a.Legal_Org == FacList[0].Legal_Org && a.Facility_Name == WFobj.Fac_Name).ToList();
+
+                if (objWorkflowType.Count == 0)
                 {
-                    throw new Exception("Workflow Type is not found -" + System.Configuration.ConfigurationManager.AppSettings["Legal_Org"] + " -" + "DEFAULT");
+                    var objWorkflowTypeDefault = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.Where(a => a.Legal_Org == FacList[0].Legal_Org && a.Facility_Name == "DEFAULT").ToList();
+                    if (objWorkflowTypeDefault.Count == 0)
+                    {
+                        throw new Exception("Workflow Type is not found -" + FacList[0].Legal_Org + " -" + "DEFAULT");
+                    }
+                    else
+                    {
+                        WorkFlowType = objWorkflowTypeDefault[0].Workflow_Type;
+                    }
                 }
                 else
                 {
-                    WorkFlowType = objWorkflowTypeDefault[0].Workflow_Type;
+                    WorkFlowType = objWorkflowType[0].Workflow_Type;
                 }
-            }
-            else
-            {
-                WorkFlowType = objWorkflowType[0].Workflow_Type;
             }
             
             //var objWorkflow = NHibernateSessionUtility.Instance.MyWorkFlowList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList();
-            //if (objWorkflow.Count() > 0)
+            //if (objWorkflow.Count() > 0)m 
             //    ToProcess = ((WorkFlow)objWorkflow[0]).To_Process;
             //ToProcess = WFManager.GetNextProcess(WFobj.Fac_Name, WFobj.Obj_Type, WFobj.Obj_Sub_Type, WFobj.Current_Process, iCloseType, WFobj.Doc_Type, WFobj.Doc_Sub_Type);
 
@@ -1417,22 +1423,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ToProcess = wfList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList()[0].To_Process;
             //Commented for Performance Tuning - To Reduce Memmory Usage --//BugID:53695 
             // var objWorkflow = wfList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList();
-            var objWorkflowType = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.Where(a => a.Legal_Org == System.Configuration.ConfigurationManager.AppSettings["Legal_Org"] && a.Facility_Name == WFobj.Fac_Name).ToList();
-            if (objWorkflowType.Count == 0)
+            IList<FacilityLibrary> FacList = NHibernateSessionUtility.Instance.MyFacilityList.Where(a => a.Fac_Name == WFobj.Fac_Name).ToList();
+
+            if (FacList.Count > 0)
             {
-                var objWorkflowTypeDefault = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.Where(a => a.Legal_Org == System.Configuration.ConfigurationManager.AppSettings["Legal_Org"] && a.Facility_Name == "DEFAULT").ToList();
-                if (objWorkflowTypeDefault.Count == 0)
+                var objWorkflowType = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.Where(a => a.Legal_Org == FacList[0].Legal_Org && a.Facility_Name == WFobj.Fac_Name).ToList();
+                if (objWorkflowType.Count == 0)
                 {
-                    throw new Exception("Workflow Type is not found -" + System.Configuration.ConfigurationManager.AppSettings["Legal_Org"] + " -" + "DEFAULT");
+                    var objWorkflowTypeDefault = NHibernateSessionUtility.Instance.MyWorkFlowTypeMasterList.Where(a => a.Legal_Org == FacList[0].Legal_Org && a.Facility_Name == "DEFAULT").ToList();
+                    if (objWorkflowTypeDefault.Count == 0)
+                    {
+                        throw new Exception("Workflow Type is not found -" + FacList[0].Legal_Org + " -" + "DEFAULT");
+                    }
+                    else
+                    {
+                        WorkFlowType = objWorkflowTypeDefault[0].Workflow_Type;
+                    }
                 }
                 else
                 {
-                    WorkFlowType = objWorkflowTypeDefault[0].Workflow_Type;
+                    WorkFlowType = objWorkflowType[0].Workflow_Type;
                 }
-            }
-            else
-            {
-                WorkFlowType = objWorkflowType[0].Workflow_Type;
             }
             //var objWorkflow = NHibernateSessionUtility.Instance.MyWorkFlowList.Where(a => a.Fac_Name == WFobj.Fac_Name && a.Obj_Type == WFobj.Obj_Type && a.Obj_Sub_Type == WFobj.Obj_Sub_Type && a.From_Process == WFobj.Current_Process && a.Close_Type == iCloseType && a.Doc_Type == WFobj.Doc_Type && a.Doc_Sub_Type == WFobj.Doc_Sub_Type).ToList();
             //if (objWorkflow.Count() > 0)

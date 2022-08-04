@@ -58,19 +58,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<WorkFlow> GetWorkFlowMapListbyFacilityNameandObjType(string sFacilityName,string ObjType,string ToProcess)
         {
             //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            IList<WorkFlowTypeMaster> WFTypeMasterList;
+            IList<WorkFlowTypeMaster> WFTypeMasterList = new List<WorkFlowTypeMaster>();
             IList<WorkFlowTypeMaster> WFTypeMasterListDefault;
             string WorkFlowType = string.Empty;
 
             IList<WorkFlow> WFMapList = new List<WorkFlow>(); ;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria criteriaWFType = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", sFacilityName)).Add(Expression.Eq("Legal_Org", System.Configuration.ConfigurationManager.AppSettings["Legal_Org"]));
-                WFTypeMasterList = criteriaWFType.List<WorkFlowTypeMaster>();
+                IList<FacilityLibrary> FacList = NHibernateSessionUtility.Instance.MyFacilityList.Where(a => a.Fac_Name == sFacilityName).ToList();
+
+                if (FacList.Count > 0)
+                {
+                    ICriteria criteriaWFType = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", sFacilityName)).Add(Expression.Eq("Legal_Org", FacList[0].Legal_Org));
+                    WFTypeMasterList = criteriaWFType.List<WorkFlowTypeMaster>();
+                }
 
                 if (WFTypeMasterList.Count==0)
                 {
-                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", "DEFAULT")).Add(Expression.Eq("Legal_Org", System.Configuration.ConfigurationManager.AppSettings["Legal_Org"]));
+                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", "DEFAULT")).Add(Expression.Eq("Legal_Org", FacList[0].Legal_Org));
                     WFTypeMasterListDefault = criteria1.List<WorkFlowTypeMaster>();
                     if (WFTypeMasterListDefault.Count > 0)
                         WorkFlowType = WFTypeMasterListDefault[0].Workflow_Type;
@@ -96,19 +101,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             string FromProcess = string.Empty;
 
-            IList<WorkFlowTypeMaster> WFTypeMasterList;
+            IList<WorkFlowTypeMaster> WFTypeMasterList = new List<WorkFlowTypeMaster>();
             IList<WorkFlowTypeMaster> WFTypeMasterListDefault;
             string WorkFlowType = string.Empty;
            
             IList<WorkFlow> WFMapList;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria criteriaWFType = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", FacName)).Add(Expression.Eq("Legal_Org", System.Configuration.ConfigurationManager.AppSettings["Legal_Org"]));
-                WFTypeMasterList = criteriaWFType.List<WorkFlowTypeMaster>();
+                IList<FacilityLibrary> FacList = NHibernateSessionUtility.Instance.MyFacilityList.Where(a => a.Fac_Name == FacName).ToList();
+
+                if (FacList.Count > 0)
+                {
+                    ICriteria criteriaWFType = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", FacName)).Add(Expression.Eq("Legal_Org", FacList[0].Legal_Org));
+                    WFTypeMasterList = criteriaWFType.List<WorkFlowTypeMaster>();
+                }
 
                 if (WFTypeMasterList.Count == 0)
                 {
-                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", "DEFAULT")).Add(Expression.Eq("Legal_Org", System.Configuration.ConfigurationManager.AppSettings["Legal_Org"]));
+                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", "DEFAULT")).Add(Expression.Eq("Legal_Org", FacList[0].Legal_Org));
                     WFTypeMasterListDefault = criteria1.List<WorkFlowTypeMaster>();
                     if (WFTypeMasterListDefault.Count > 0)
                         WorkFlowType = WFTypeMasterListDefault[0].Workflow_Type;
@@ -155,19 +165,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             IList<string> ilstflow = new List<string>();
 
-            IList<WorkFlowTypeMaster> WFTypeMasterList;
+            IList<WorkFlowTypeMaster> WFTypeMasterList = new List<WorkFlowTypeMaster>();
             IList<WorkFlowTypeMaster> WFTypeMasterListDefault;
             string WorkFlowType = string.Empty;
            
             IList<WorkFlow> WFMapList;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria criteriaWFType = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", sFacility_Name)).Add(Expression.Eq("Legal_Org", System.Configuration.ConfigurationManager.AppSettings["Legal_Org"]));
-                WFTypeMasterList = criteriaWFType.List<WorkFlowTypeMaster>();
+                IList<FacilityLibrary> FacList = NHibernateSessionUtility.Instance.MyFacilityList.Where(a => a.Fac_Name == sFacility_Name).ToList();
+
+                if (FacList.Count > 0)
+                {
+                    ICriteria criteriaWFType = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", sFacility_Name)).Add(Expression.Eq("Legal_Org", FacList[0].Legal_Org));
+                    WFTypeMasterList = criteriaWFType.List<WorkFlowTypeMaster>();
+                }
 
                 if (WFTypeMasterList.Count == 0)
                 {
-                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", "DEFAULT")).Add(Expression.Eq("Legal_Org", System.Configuration.ConfigurationManager.AppSettings["Legal_Org"]));
+                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(WorkFlowTypeMaster)).Add(Expression.Eq("Facility_Name", "DEFAULT")).Add(Expression.Eq("Legal_Org", FacList[0].Legal_Org));
                     WFTypeMasterListDefault = criteria1.List<WorkFlowTypeMaster>();
                     if (WFTypeMasterListDefault.Count > 0)
                         WorkFlowType = WFTypeMasterListDefault[0].Workflow_Type;

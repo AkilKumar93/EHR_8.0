@@ -22,7 +22,8 @@ namespace Acurus.Capella.DataAccess
         public IList<WorkFlowTypeMaster> MyWorkFlowTypeMasterList = new List<WorkFlowTypeMaster>();
         public IList<ProcessMaster> MyProcessmasterList = new List<ProcessMaster>();
         public IList<FacilityLibrary> MyAncillaryFacilityList = new List<FacilityLibrary>();
-     
+        public IList<FacilityLibrary> MyFacilityList = new List<FacilityLibrary>();
+
         private NHibernateSessionUtility()
         {
         }
@@ -105,7 +106,19 @@ namespace Acurus.Capella.DataAccess
 
             }
 
-           
+            try
+            {
+                if (MyFacilityList.Count == 0)
+                {
+                    FacilityManager facMngr = new FacilityManager();
+                    MyFacilityList = facMngr.GetAll();
+                }
+
+            }
+            catch
+            {
+
+            }
         }
 
         public static NHibernateSessionUtility Instance
