@@ -99,7 +99,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 else
                 {
-                    ISQLQuery sq = iMySession.CreateSQLQuery("select * from physician_procedure where type_of_visit='" + type_of_visit + "' and physician_id in (select max(physician_id) from physician_procedure where type_of_visit='" + type_of_visit + "') + and Legal_Org ='"+ sLegalOrg+"'").AddEntity(typeof(PhysicianProcedure));
+                    ISQLQuery sq = iMySession.CreateSQLQuery("select * from physician_procedure where type_of_visit='" + type_of_visit + "' and physician_id in (select max(physician_id) from physician_procedure where type_of_visit='" + type_of_visit + "') and Legal_Org ='"+ sLegalOrg+"'").AddEntity(typeof(PhysicianProcedure));
                     listProc = sq.List<PhysicianProcedure>();
                 }
                 iMySession.Close();
