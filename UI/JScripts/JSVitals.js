@@ -2730,14 +2730,15 @@ function setBPStatus(idsys, iddia) {
                             //    default_date = "";
 
                             //}
-                            if (parseFloat(diaval) < 80 && parseFloat(sysvalye) < 129) {
+                            //if (parseFloat(diaval) < 80 && parseFloat(sysvalye) < 129) {
 
-                                statusLabel.title = "Elevated";
-                                statusLabel.value = "Elevated";
-                                default_date = "";
+                            //    statusLabel.title = "Elevated";
+                            //    statusLabel.value = "Elevated";
+                            //    default_date = "";
 
-                            }
-                            else if (parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) {
+                            //}
+                            //else if (parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) {
+                            if (parseFloat(sysvalye) >= 140 || parseFloat(diaval) >= 90) {
 
 
                                 if (document.getElementById('hdnBPValue').value != "" && flagdatecheck == 0) {
