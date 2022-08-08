@@ -7,7 +7,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 {
     public partial interface IMapVitalsPhysicianManager : IManagerBase<MapVitalsPhysician, ulong>
     {
-        IList<MapVitalsPhysician> GetVitalsForPhysician(ulong PhyID,string Slegalorg);
+        IList<MapVitalsPhysician> GetVitalsForPhysician(ulong PhyID );
     }
     public partial class MapVitalsPhysicianManager : ManagerBase<MapVitalsPhysician, ulong>, IMapVitalsPhysicianManager
     {
@@ -28,14 +28,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         #region IMapVitalsPhysicianManager Members
 
-        public IList<MapVitalsPhysician> GetVitalsForPhysician(ulong PhyID,string SLegalOrg)
+        public IList<MapVitalsPhysician> GetVitalsForPhysician(ulong PhyID)
         {
             IList<MapVitalsPhysician> ilstMapVitalsPhysician = new List<MapVitalsPhysician>();
             // ISession MySessionobj = NHibernateSessionManager.Instance.CreateISession();
             using (ISession MySessionobj = NHibernateSessionManager.Instance.CreateISession())
             {
                 ICriteria crit = MySessionobj.CreateCriteria(typeof(MapVitalsPhysician))
-                                             .Add(Expression.Eq("Physician_ID", PhyID)).Add(Expression.Eq("Legal_Org", SLegalOrg))
+                                             .Add(Expression.Eq("Physician_ID", PhyID))
                                              .AddOrder(Order.Asc("Sort_Order"));
 
                 ilstMapVitalsPhysician = crit.List<MapVitalsPhysician>();

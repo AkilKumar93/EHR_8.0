@@ -3541,7 +3541,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     double humanAgeInMonths = 0;
                     humanAgeInMonths = ((DateTime.Now.Date - lstHuman[0].Birth_Date.Date).TotalDays) / 30.4375;
 
-                    IList<object> objList = objVitalsManger.GetLocalData(lstUser[0].Physician_Library_ID, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), lstHuman[0].Sex, "'BMI-AGE','HC-AGE'", 2000, sLegalorg);
+                    IList<object> objList = objVitalsManger.GetLocalData(lstUser[0].Physician_Library_ID, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), lstHuman[0].Sex, "'BMI-AGE','HC-AGE'", 2000);
                     IList<DynamicScreen> dynamicScreenList = new List<DynamicScreen>();
                     if (objList != null && objList.Count > 0)
                     {
@@ -3773,7 +3773,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<User> lstUser = sqlqueryUser.List<User>();
                                 double humanAgeInMonths = 0;
                                 humanAgeInMonths = ((DateTime.Now.Date - lstHuman[0].Birth_Date.Date).TotalDays) / 30.4375;
-                                IList<object> objList = objVitalsManger.GetLocalData(lstUser[0].Physician_Library_ID, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), lstHuman[0].Sex, "'BMI-AGE','HC-AGE'", 2000,sLegalorg);
+                                IList<object> objList = objVitalsManger.GetLocalData(lstUser[0].Physician_Library_ID, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), lstHuman[0].Sex, "'BMI-AGE','HC-AGE'", 2000);
                                 IList<DynamicScreen> dynamicScreenList = new List<DynamicScreen>();
                                 if (objList != null && objList.Count > 0)
                                 {
