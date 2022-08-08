@@ -14055,13 +14055,11 @@ group by captured_date_and_time,human_id order by captured_date_and_time desc ) 
 	</sql-query>
 
 	<sql-query name="PQRI.GetDenominatorCMS147.Influenza">
-		<![CDATA[select a.human_id from encounter a  inner join human b on a.human_id = b.human_id
+		<![CDATA[select a.encounter_id from encounter a  inner join human b on a.human_id = b.human_id
 	where TIMESTAMPDIFF(YEAR,Birth_date, date(date_of_Service)) >0.6
 and a.date_of_service between (date_format(date_sub(DATE_FORMAT(? ,'%Y-01-01'),interval 1 year),'%Y-10-01'))
 and (date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and a.encounter_provider_id = ?
-union
-select a.human_id from encounter_arc a inner join human b on a.human_id = b.human_id where TIMESTAMPDIFF(YEAR,Birth_date, date(date_of_Service)) >0.6
-and a.date_of_service between (date_format(date_sub(DATE_FORMAT(? ,'%Y-01-01'),interval 1 year),'%Y-10-01')) and (date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and a.encounter_provider_id = ?
+
 ;]]>
 	</sql-query>
 	<!--<sql-query name="PQRI.GetDenominatorList1CMS147.Influenza">
@@ -14099,21 +14097,11 @@ where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
 ]]>
 	</sql-query>-->
 	<sql-query name="PQRI.GetDenominatorList1CMS147.Influenza">
-		<![CDATA[select c.human_id
-from e_m_coding c
-left join immunization E on C.Encounter_Id=E.Encounter_Id
-left join human h on c.human_id = h.human_id
-where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in 
-(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS'))
-or Refused_Administration='') group by C.human_id having count(C.encounter_id)>=2
-
-union
-select c.human_id
-from e_m_coding c left join assessment B on c.Encounter_id=B.Encounter_ID
-left join human h on c.human_id = h.human_id
-left join immunization E on c.Encounter_Id=E.Encounter_Id
-where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
-(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT1')) or Refused_Administration='')  group by c.Human_Id having count(c.encounter_id)>=1;
+		<![CDATA[
+select c.encounter_id
+from e_m_coding c 
+where c.encounter_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
+(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT')));
 ]]>
 	</sql-query>
 
@@ -14132,20 +14120,20 @@ where c.human_id in (:EncIds) and c.is_delete='N' and (c.Procedure_Code in
 
 
 	<sql-query name="PQRI.GetDenominatorExceptionCMS147.Influenza">
-		<![CDATA[select a.human_id from encounter a
+		<![CDATA[select a.encounter_id from encounter a
 left join assessment b on A.Encounter_id=b.Encounter_ID
 left join immunization e on a.Encounter_Id=e.Encounter_Id
-where a.human_id in(:EncIds)  and 
+where a.encounter_id in(:EncIds)  and 
 (b.ICD  in(SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) or
 e.snomed_code in (SELECT PQRI_Value FROM pqri_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('SNOMED')
 ));]]>
 	</sql-query>
 	<sql-query name="PQRI.GetDenominatorExceptionCMS147_list.Influenza">
-		<![CDATA[select encounter_id,human_id,'',procedure_code,'' from e_m_coding where human_id in (:EncIds) and is_delete='N'
+		<![CDATA[select encounter_id,human_id,'',procedure_code,'' from e_m_coding where encounter_id in (:EncIds) and is_delete='N'
 union all
-select encounter_id,human_id,icd,'','' from assessment where human_id in (:EncIds)
+select encounter_id,human_id,icd,'','' from assessment where encounter_id in (:EncIds)
 UNION ALL
-select encounter_id,human_id,'','',snomed_code from immunization where human_id in (:EncIds);
+select encounter_id,human_id,'','',snomed_code from immunization where encounter_id in (:EncIds);
 ]]>
 	</sql-query>
 
@@ -14283,7 +14271,7 @@ select distinct B.encounter_id,B.human_id,'' from patient_results B
 left join care_plan cp on B.encounter_id=cp.encounter_id
 left join encounter e on B.encounter_id=e.encounter_id
 where B.encounter_id in (:EncIds)
-and (loinc_observation like "%bp%" and value='pre-hypertensive' and cp.care_name_value ='BP Sys/Dia' and cp.care_plan_notes!='' and cp.status= 'Elevated'
+and (loinc_observation like "%bp%" and value='Elevated' and cp.care_name_value ='BP Sys/Dia' and cp.care_plan_notes!='' and cp.status= 'Elevated'
  and
 ((e.due_on between date_add(date(e.date_of_service) , interval 1 day) and DATE_add(date_add(date(e.date_of_service),interval 1 day),
  INTERVAL 12 MONTH))

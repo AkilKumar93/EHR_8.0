@@ -9447,20 +9447,27 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                 //Denominator
                 if (Enc_Denominator_lst138 != null && Enc_Denominator_lst138.Count > 0)
                 {
-                    EncounterDenominatorquery138 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS138.Tobacco");
-                    EncounterDenominatorquery138.SetParameterList("EncIds", Enc_Denominator_lst138.ToArray());
+                    IQuery EncounterDenominatorquery138_List2 = iMySession.GetNamedQuery("PQRI.GetDenominatorList2CMS138.Tobacco");
+                    EncounterDenominatorquery138_List2.SetParameterList("EncIds", Enc_Denominator_lst138.ToArray());
 
-                    EncounterDenominatorquery138.SetString(0, "CMS138v10");
-                    EncounterDenominatorquery138.SetString(1, "Denominator");
-                    EncounterDenominatorquery138.SetString(2, "CMS138v10");
-                    EncounterDenominatorquery138.SetString(3, "Denominator");
-                    Enc_Denominator_lst138 = new ArrayList(EncounterDenominatorquery138.List());
+                    EncounterDenominatorquery138_List2.SetString(0, "CMS138v10");
+                    EncounterDenominatorquery138_List2.SetString(1, "Denominator");
+                    EncounterDenominatorquery138_List2.SetString(2, "CMS138v10");
+                    EncounterDenominatorquery138_List2.SetString(3, "Denominator");
+                    ArrayList Enc_Denominator_lst138_List2 = new ArrayList(EncounterDenominatorquery138_List2.List());
 
-                    if (Enc_Denominator_lst138 != null && Enc_Denominator_lst138.Count > 0)
+                    if (Enc_Denominator_lst138_List2 != null && Enc_Denominator_lst138_List2.Count > 0)
                     {
-                        EncounterDenominatorquery138 = iMySession.GetNamedQuery("PQRI.GetDenominatorList3CMS138.Tobacco");
-                        EncounterDenominatorquery138.SetParameterList("EncIds", Enc_Denominator_lst138.ToArray());
-                        Enc_Denominator_lst138Denoninator = new ArrayList(EncounterDenominatorquery138.List());
+                        if (Enc_Denominator_lst138_List2.Count == 1 && Enc_Denominator_lst138_List2[0].ToString() == "0")
+                        {
+                            
+                        }
+                        else
+                        {
+                            IQuery EncounterDenominatorquery138_List3 = iMySession.GetNamedQuery("PQRI.GetDenominatorList3CMS138.Tobacco");
+                            EncounterDenominatorquery138_List3.SetParameterList("EncIds", Enc_Denominator_lst138_List2.ToArray());
+                            Enc_Denominator_lst138Denoninator = new ArrayList(EncounterDenominatorquery138_List3.List());
+                        }
                     }
 
 
@@ -9988,9 +9995,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                 EncounterDenominatorquery147.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery147.SetString(1, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery147.SetString(2, Convert.ToString(ulPhysician_id));
-                EncounterDenominatorquery147.SetString(3, Fromdate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery147.SetString(4, Fromdate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery147.SetString(5, Convert.ToString(ulPhysician_id));
+               
                 ArrayList Enc_Denominator_lst147 = new ArrayList(EncounterDenominatorquery147.List());
 
 
@@ -10008,9 +10013,6 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     EncounterDenominator1query147.SetParameterList("EncIds", Enc_Denominator_lst147.ToArray());
                     EncounterDenominator1query147.SetString(0, "CMS147v11");
                     EncounterDenominator1query147.SetString(1, "Denominator");
-                    EncounterDenominator1query147.SetString(2, "CMS147v11");
-                    EncounterDenominator1query147.SetString(3, "Denominator");
-                  
 
 
               Enc_Denominator1_lst147 = new ArrayList(EncounterDenominator1query147.List());
@@ -10175,7 +10177,7 @@ and pr.value ='' and pr.Snomed_Code<>'') or a.icd in (SELECT PQRI_Value FROM pqr
                     //        Numerator = Enc_Numerator_lst147.Count;
 
                 }
-                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "147v6", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
+                PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "147v11", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
                 Numerator = 0;
                 Denominator = 0;
                 DenominatorExclusion = 0;
@@ -10620,8 +10622,10 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                     {
                         object[] objEnc = (object[])Enc_Numerator_lst22[i];
 
-
                         Encounter obj = new Encounter();
+                        
+                        if (objEnc[0].ToString() == "0")
+                            continue;
 
                         obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                         obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
@@ -10807,10 +10811,11 @@ and date(c.date_of_service)<='" + Todate.ToString("yyyy-MM-dd") + "' and c.human
                     Encounterumeratorquery130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumeratorquery130.SetString(1, Todate.ToString("yyyy-MM-dd"));
 
-                    EncounterDenominatorquery130.SetParameter(2, "CMS130v10");
+                    Encounterumeratorquery130.SetParameter(2, "CMS130v10");
 
-                    EncounterDenominatorquery130.SetParameter(3, "Numerator");
+                    Encounterumeratorquery130.SetParameter(3, "Numerator");
                     Encounterumeratorquery130.SetParameterList("EncIds", ulEncList130.ToArray());
+                   
                     ArrayList Enc_Numerator_lst130 = new ArrayList(Encounterumeratorquery130.List());
                     for (int i = 0; i < Enc_Numerator_lst130.Count; i++)
                     {
