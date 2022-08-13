@@ -10538,13 +10538,13 @@ and b.Encounter_ID in (:EncIds)";
 
                     }
 
-                    //if (lstEncList68.Count > 0)
-                    //{
-                    //    var lists = (from m in lstEncList68
-                    //                 group m by m.Human_ID).ToList();
+                    if (lstEncList68.Count > 0)
+                    {
+                        var lists = (from m in lstEncList68
+                                     group m by m.Human_ID).ToList();
 
-                    //    DenominatorExclusion = lists.Count;
-                    //}
+                        DenominatorExclusion = lists.Count;
+                    }
 
 
                 }
@@ -10714,9 +10714,9 @@ and b.Encounter_ID in (:EncIds)";
                     EncounterExlusionquery130.SetParameter(0, "CMS130v10");
 
                     EncounterExlusionquery130.SetParameter(1, "Exclusion");
-                    EncounterExlusionquery130.SetParameter(2, "CMS130v10");
+                    //EncounterExlusionquery130.SetParameter(2, "CMS130v10");
 
-                    EncounterExlusionquery130.SetParameter(3, "Exclusion");
+                    //EncounterExlusionquery130.SetParameter(3, "Exclusion");
                     Enc_Exclusion_lst130 = new ArrayList(EncounterExlusionquery130.List());
                     lstEncList68 = new List<Encounter>();
                     if (Enc_Exclusion_lst130 != null && Enc_Exclusion_lst130.Count > 0)
@@ -10732,14 +10732,90 @@ and b.Encounter_ID in (:EncIds)";
                             lstEncList68.Add(obj);
 
                         }
-                        if (lstEncList68.Count > 0)
-                        {
-                            var lists = (from m in lstEncList68
-                                         group m by m.Human_ID).ToList();
-
-                            DenominatorExclusion = lists.Count;
-                        }
                     }
+
+
+                    ArrayList Enc_Exclusion_lstFrailtyCMS130 = new ArrayList();
+                    ArrayList Enc_Exclusion_lstrxnormCMS130 = new ArrayList();
+                    ArrayList Enc_Exclusion_lstadvdiaCMS130 = new ArrayList();
+                    IQuery EncounterExlusionqueryFrailtyCMS130 = iMySession.GetNamedQuery("PQRI.GetExceptionListFrailtyCMS130.ColorectalCancer");
+                    EncounterExlusionqueryFrailtyCMS130.SetParameterList("EncIds", ulEncList130_DEnominator.ToArray());
+
+
+                    EncounterExlusionqueryFrailtyCMS130.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
+                    EncounterExlusionqueryFrailtyCMS130.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
+
+                    EncounterExlusionqueryFrailtyCMS130.SetParameter(2, "CMS130v10");
+
+                    EncounterExlusionqueryFrailtyCMS130.SetParameter(3, "Exclusion");
+                    Enc_Exclusion_lstFrailtyCMS130 = new ArrayList(EncounterExlusionqueryFrailtyCMS130.List());
+
+                    if (Enc_Exclusion_lstFrailtyCMS130 != null && Enc_Exclusion_lstFrailtyCMS130.Count > 0)
+                    {
+                        IQuery EncounterExlusionqueryrxnormCMS130 = iMySession.GetNamedQuery("PQRI.GetExceptionListRxnormCMS130.ColorectalCancer");
+                        EncounterExlusionqueryrxnormCMS130.SetParameterList("EncIds", Enc_Exclusion_lstFrailtyCMS130.ToArray());
+
+
+                        EncounterExlusionqueryrxnormCMS130.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
+                        EncounterExlusionqueryrxnormCMS130.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
+
+                        EncounterExlusionqueryrxnormCMS130.SetParameter(2, "CMS130v10");
+
+                        EncounterExlusionqueryrxnormCMS130.SetParameter(3, "Exclusion");
+                        Enc_Exclusion_lstrxnormCMS130 = new ArrayList(EncounterExlusionqueryrxnormCMS130.List());
+
+
+
+
+                        for (int i = 0; i < Enc_Exclusion_lstrxnormCMS130.Count; i++)
+                        {
+                            Encounter obj = new Encounter();
+                            object[] objEnc = (object[])Enc_Exclusion_lstrxnormCMS130[i];
+                            obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
+                            obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
+                            ulEncList130_exception.Add(Convert.ToUInt32(objEnc[1]));
+
+                            lstEncList68.Add(obj);
+
+                        }
+
+                        IQuery EncounterExlusionqueryAdvanceCMS130 = iMySession.GetNamedQuery("PQRI.GetExceptionListRxnormCMS130.ColorectalCancer");
+                        EncounterExlusionqueryAdvanceCMS130.SetParameterList("EncIds", Enc_Exclusion_lstFrailtyCMS130.ToArray());
+
+
+                        EncounterExlusionqueryAdvanceCMS130.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
+                        EncounterExlusionqueryAdvanceCMS130.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
+
+                        EncounterExlusionqueryAdvanceCMS130.SetParameter(2, "CMS130v10");
+
+                        EncounterExlusionqueryAdvanceCMS130.SetParameter(3, "Exclusion");
+                        Enc_Exclusion_lstadvdiaCMS130 = new ArrayList(EncounterExlusionqueryAdvanceCMS130.List());
+
+
+                        for (int i = 0; i < Enc_Exclusion_lstadvdiaCMS130.Count; i++)
+                        {
+                            Encounter obj = new Encounter();
+                            object[] objEnc = (object[])Enc_Exclusion_lstadvdiaCMS130[i];
+                            obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
+                            obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
+                            ulEncList130_exception.Add(Convert.ToUInt32(objEnc[1]));
+
+                            lstEncList68.Add(obj);
+
+                        }
+
+                    }
+
+
+
+                    if (lstEncList68.Count > 0)
+                    {
+                        var lists = (from m in lstEncList68
+                                     group m by m.Human_ID).ToList();
+
+                        DenominatorExclusion = lists.Count;
+                    }
+
                 }
                 if (Enc_Exclusion_lst130 != null && Enc_Exclusion_lst130.Count > 0)
                 {
@@ -10806,6 +10882,7 @@ and b.Encounter_ID in (:EncIds)";
                         lstEncList68.Add(obj);
 
                     }
+                  
                     if (lstEncList68.Count > 0)
                     {
                         var lists = (from m in lstEncList68
@@ -10820,7 +10897,7 @@ and b.Encounter_ID in (:EncIds)";
 
 
                 //Numerator
-
+              
                 if (Enc_Denominator_lst130_1 != null && Enc_Denominator_lst130_1.Count > 0)
                 {
                     //for (int i = 0; i < Enc_Denominator_lst130_1.Count; i++)
@@ -10831,27 +10908,133 @@ and b.Encounter_ID in (:EncIds)";
                     Encounterumeratorquery130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumeratorquery130.SetString(1, Todate.ToString("yyyy-MM-dd"));
 
-                    Encounterumeratorquery130.SetParameter(2, "CMS130v10");
 
-                    Encounterumeratorquery130.SetParameter(3, "Numerator");
+
+                  //  Encounterumeratorquery130.SetParameter(12, "CMS130v10");
+
+                   // Encounterumeratorquery130.SetParameter(13, "Numerator");
+
                     Encounterumeratorquery130.SetParameterList("EncIds", ulEncList130.ToArray());
 
                     ArrayList Enc_Numerator_lst130 = new ArrayList(Encounterumeratorquery130.List());
+
+
+                    IQuery Encounterumerator1query130 = iMySession.GetNamedQuery("PQRI.GetNumerator1CMS130.ColorectalCancer");
+                    Encounterumerator1query130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumerator1query130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+
+
+
+                    //  Encounterumeratorquery130.SetParameter(12, "CMS130v10");
+
+                    // Encounterumeratorquery130.SetParameter(13, "Numerator");
+
+                    Encounterumerator1query130.SetParameterList("EncIds", ulEncList130.ToArray());
+
+                    ArrayList Enc_Numerator1_lst130 = new ArrayList(Encounterumerator1query130.List());
+
+
+
+                    IQuery Encounterumerator2query130 = iMySession.GetNamedQuery("PQRI.GetNumerator2CMS130.ColorectalCancer");
+                    Encounterumerator2query130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumerator2query130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+
+
+
+                    //  Encounterumeratorquery130.SetParameter(12, "CMS130v10");
+
+                    // Encounterumeratorquery130.SetParameter(13, "Numerator");
+
+                    Encounterumerator2query130.SetParameterList("EncIds", ulEncList130.ToArray());
+
+                    ArrayList Enc_Numerator2_lst130 = new ArrayList(Encounterumerator2query130.List());
+
+
+
+                    IQuery Encounterumerator3query130 = iMySession.GetNamedQuery("PQRI.GetNumerator3CMS130.ColorectalCancer");
+                    Encounterumerator3query130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumerator3query130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+
+
+
+                    //  Encounterumeratorquery130.SetParameter(12, "CMS130v10");
+
+                    // Encounterumeratorquery130.SetParameter(13, "Numerator");
+
+                    Encounterumerator3query130.SetParameterList("EncIds", ulEncList130.ToArray());
+
+                    ArrayList Enc_Numerato3_lst130 = new ArrayList(Encounterumerator3query130.List());
+
+
+                    IQuery Encounterumerator4query130 = iMySession.GetNamedQuery("PQRI.GetNumerator4CMS130.ColorectalCancer");
+                    Encounterumerator4query130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumerator4query130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+
+
+
+                    Encounterumerator4query130.SetParameter(2, "CMS130v10");
+
+                    Encounterumerator4query130.SetParameter(3, "Numerator");
+
+                    Encounterumerator4query130.SetParameterList("EncIds", ulEncList130.ToArray());
+
+                    ArrayList Enc_Numerato4_lst130 = new ArrayList(Encounterumerator4query130.List());
+
+
+                    IQuery Encounterumerator5query130 = iMySession.GetNamedQuery("PQRI.GetNumerator5CMS130.ColorectalCancer");
+                    Encounterumerator5query130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                    Encounterumerator5query130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+
+
+
+                    Encounterumerator5query130.SetParameter(2, "CMS130v10");
+
+                    Encounterumerator5query130.SetParameter(3, "Numerator");
+
+                    Encounterumerator5query130.SetParameterList("EncIds", ulEncList130.ToArray());
+
+                    ArrayList Enc_Numerato5_lst130 = new ArrayList(Encounterumerator5query130.List());
+
+
+                     Enc_Numerator_lst130.AddRange(Enc_Numerator1_lst130);
+                    Enc_Numerator_lst130.AddRange(Enc_Numerator2_lst130);
+                    Enc_Numerator_lst130.AddRange(Enc_Numerato3_lst130);
+                    Enc_Numerator_lst130.AddRange(Enc_Numerato4_lst130);
+                    Enc_Numerator_lst130.AddRange(Enc_Numerato5_lst130);
+
+
+
+                    lstEncList68 = new List<Encounter>();
+                   
+
+
                     for (int i = 0; i < Enc_Numerator_lst130.Count; i++)
                     {
+                        Encounter obj = new Encounter();
                         object[] objEnc = (object[])Enc_Numerator_lst130[i];
+
+                        obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
+                        obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
+                       
                         string loinc = "";
                         if (objEnc[2] != null)
                         {
                             loinc = objEnc[2].ToString();
                         }
-
+                        lstEncList68.Add(obj);
                         string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", loinc, "", "CMS130N", "", "", "CMS130v10" };
                         icdcptListNumerator.Add(ary);
 
                     }
-                    if (Enc_Numerator_lst130.Count > 0)
-                        Numerator = Enc_Numerator_lst130.Count;
+
+                    if (lstEncList68.Count > 0)
+                    {
+                        var lists = (from m in lstEncList68
+                                     group m by m.Human_ID).ToList();
+
+                        Numerator = lists.Count;
+                    }
+
 
                 }
                 PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "130v10", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));

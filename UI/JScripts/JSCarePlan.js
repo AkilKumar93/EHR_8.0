@@ -39,7 +39,8 @@ function callweb(icon, List, id) {
         $(icon).removeClass("fa fa-plus").addClass("fa fa-minus");
 
         var ListValue = List;
-        if (check == "" || (ListValue.toUpperCase().indexOf("TOBACCO") > -1 && localStorage.getItem('Tobacco').toString().toUpperCase() == "NO") || bpstatus == "NORMAL" || bmistatus == "NORMAL") {
+        if ((check == "" || (ListValue.toUpperCase().indexOf("TOBACCO") > -1 && localStorage.getItem('Tobacco').toString().toUpperCase() == "NO") || bpstatus == "NORMAL" || bmistatus == "NORMAL" )&&
+            (ListValue.toUpperCase().indexOf("HOSPICE") < 0 && ListValue.toUpperCase().indexOf("PALLIATIVE")) < 0) {
             $.ajax({
                 type: "POST",
                 url: "frmDLC.aspx/GetListBoxValues",
