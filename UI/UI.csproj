@@ -232,6 +232,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\phimailcon.dll</HintPath>
     </Reference>
+    <Reference Include="QRCoder, Version=1.4.3.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -321,10 +325,10 @@
     <Content Include="bin\OpenXmlSdkTool.PackageInspector.dll" />
     <Content Include="bin\Open_Xml.dll" />
     <Content Include="bin\phimailcon.dll" />
+    <Content Include="bin\QRCoder.dll" />
     <Content Include="bin\RCopiaErrorLog.txt" />
     <Content Include="bin\stdole.dll" />
     <Content Include="bin\TimePicker.dll" />
-    <Content Include="bin\VSLangProj.dll" />
     <Content Include="bin\VsWebSite.Interop.dll" />
     <Content Include="bin\X12_Envelope.dll" />
     <Content Include="ConfigXML\CapellaScribeLookupList.xml" />
@@ -351,6 +355,7 @@
     <Content Include="frmMyQueueNew.aspx" />
     <Content Include="frmPatientChart.aspx" />
     <Content Include="frmPQRIBirtViewDetail.aspx" />
+    <Content Include="frmQRCodeGenerator.aspx" />
     <Content Include="frmQuickPatientCreate.aspx" />
     <Content Include="frmResetPassword.aspx" />
     <Content Include="frmSummaryNew.aspx" />
@@ -1322,6 +1327,13 @@
     </Compile>
     <Compile Include="frmProviderValidation.aspx.designer.cs">
       <DependentUpon>frmProviderValidation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmQRCodeGenerator.aspx.cs">
+      <DependentUpon>frmQRCodeGenerator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmQRCodeGenerator.aspx.designer.cs">
+      <DependentUpon>frmQRCodeGenerator.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmQuestionnaireTab.aspx.cs">
       <DependentUpon>frmQuestionnaireTab.aspx</DependentUpon>
