@@ -59,7 +59,7 @@
               <!-- The externalObservationID contains the ID of the
 numerator in the referenced eMeasure. -->
               <id root="9D92F4D0-8B7D-480C-BAF0-4B2774BEC1EE"/>
-              <code code="NUMER1" displayName="Numerator1"
+              <code code="NUMER" displayName="Numerator"
               codeSystem="2.16.840.1.113883.5.4"
               codeSystemName="ObservationValue"/>
             </externalObservation>

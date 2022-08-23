@@ -17,8 +17,8 @@
                     <!-- QDM Attribute: Code -->
 					<!-- anyone code is enough -->
                       <code code="{}" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT"/>
-					  <code code="{}" codeSystem="2.16.840.1.113883.6.285" codeSystemName="HCPCS"/>
-					  <code code="{}" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>
+					  <!--<code code="{}" codeSystem="2.16.840.1.113883.6.285" codeSystemName="HCPCS"/>
+					  <code code="{}" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT"/>-->
                     <text>""</text>
                     <statusCode code="completed"/>
                       <!-- QDM Attribute: Relevant Period -->

@@ -109,7 +109,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     objPQRI.DenominatorExclusion = ilstCQMSummary[iCount].Denominator_Exclusion.ToString();
                     objPQRI.Sort_Order = Convert.ToInt32(ilstCQMSummary[iCount].Id);
                     objPQRI.Measurement_Year = ilstCQMSummary[iCount].Measurement_Year;
-                    objPQRI.Percentage = "80%";
+                    objPQRI.Percentage = ilstCQMSummary[iCount].Rate.ToString();
                     objPQRI.NumeratorExclusion = ilstCQMSummary[iCount].Numerator_Exclusion.ToString();
 
 

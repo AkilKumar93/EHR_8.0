@@ -398,7 +398,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<PatientInsuredPlan> objPatInsPlan = new List<PatientInsuredPlan>();
             using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit = mySession.CreateCriteria(typeof(PatientInsuredPlan)).Add(Expression.In("Insured_Human_ID", Human_ID.ToArray<ulong>()));
+                ICriteria crit = mySession.CreateCriteria(typeof(PatientInsuredPlan)).Add(Expression.In("Insured_Human_ID", Human_ID.ToArray<ulong>())).Add(Expression.Eq("Insurance_Type", "PRIMARY")); 
                 objPatInsPlan = crit.List<PatientInsuredPlan>();
                 mySession.Close();
             }

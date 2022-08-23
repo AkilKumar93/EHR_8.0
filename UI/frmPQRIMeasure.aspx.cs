@@ -1631,7 +1631,7 @@ namespace Acurus.Capella.UI
             IList<ulong> DenmoniatorList147 = PQRIDTO.Where(a => a.MeasureNo == "CMS147D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE147List = PQRIDTO.Where(a => a.MeasureNo == "CMS147DE").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DEX147List = PQRIDTO.Where(a => a.MeasureNo == "CMS147DEX").Select(a => a.HumanID).ToList<ulong>();
-            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS125_v10_CAT_III_Header.xml", DenmoniatorList147, NumeratorList147, DE147List, DEX147List, DCQM["CMS147v11"], "CMS147v11", null).ToString());
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS147_v11_CAT_III_Header.xml", DenmoniatorList147, NumeratorList147, DE147List, DEX147List, DCQM["CMS147v11"], "CMS147v11", null).ToString());
             StringBuilder cms147 = MeasureHeaderCount(NumeratorList147, DenmoniatorList147, DE147List, DEX147List, "E35791DF-5B25-41BB-B260-673337BC44A5");
 
 
@@ -1717,19 +1717,20 @@ namespace Acurus.Capella.UI
 
 
 
-            IList<Encounter> EncLst = objEncounterManager.GetEncoutnerListByPhyID((int)ClientSession.PhysicianId);
-            string sLow = string.Empty;
-            string sHigh = string.Empty;
-            string firstrdos = "";
-            string lastrdos = "";
+           // IList<Encounter> EncLst = objEncounterManager.GetEncoutnerListByPhyID((int)ClientSession.PhysicianId);
+            string sLow = Convert.ToDateTime(dtpFromDate.SelectedDate).ToString("yyyyMMdd");
+            string sHigh = Convert.ToDateTime(dtpToDate.SelectedDate).ToString("yyyyMMdd");
+            // string firstrdos = "";
+            // string lastrdos = "";
+
             //  string  sLow = string.Empty;
-            if (EncLst != null && EncLst.Count > 0)
-            {
-                sLow = ConvertToLocal((from m in EncLst where Convert.ToDateTime(m.Date_of_Service).ToString("yyyy-MM-dd") != "0001-01-01" select m).OrderBy(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMdd");
-                sHigh = ConvertToLocal((from m in EncLst where Convert.ToDateTime(m.Date_of_Service).ToString("yyyy-MM-dd") != "0001-01-01" select m).OrderByDescending(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMdd");
-                firstrdos = ConvertToLocal((from m in EncLst where Convert.ToDateTime(m.Date_of_Service).ToString("yyyy-MM-dd") != "0001-01-01" select m).OrderBy(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("dd MMMM yyyy");
-                lastrdos = ConvertToLocal((from m in EncLst where Convert.ToDateTime(m.Date_of_Service).ToString("yyyy-MM-dd") != "0001-01-01" select m).OrderByDescending(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("dd MMMM yyyy");
-            }
+            //if (EncLst != null && EncLst.Count > 0)
+            //{
+            //    sLow = ConvertToLocal((from m in EncLst where Convert.ToDateTime(m.Date_of_Service).ToString("yyyy-MM-dd") != "0001-01-01" select m).OrderBy(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMdd");
+            //    sHigh = ConvertToLocal((from m in EncLst where Convert.ToDateTime(m.Date_of_Service).ToString("yyyy-MM-dd") != "0001-01-01" select m).OrderByDescending(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMdd");
+            //    firstrdos = ConvertToLocal((from m in EncLst where Convert.ToDateTime(m.Date_of_Service).ToString("yyyy-MM-dd") != "0001-01-01" select m).OrderBy(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("dd MMMM yyyy");
+            //    lastrdos = ConvertToLocal((from m in EncLst where Convert.ToDateTime(m.Date_of_Service).ToString("yyyy-MM-dd") != "0001-01-01" select m).OrderByDescending(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("dd MMMM yyyy");
+            //}
             xmlReqNode = xmlDoc.GetElementsByTagName("low");
             xmlReqNode[0].Attributes[0].Value = sLow;
             xmlReqNode = xmlDoc.GetElementsByTagName("high");
@@ -1743,9 +1744,9 @@ namespace Acurus.Capella.UI
 
 
             xmlReqNode = xmlDoc.GetElementsByTagName("low");
-            xmlReqNode[3].Attributes[0].Value = sLow;
+            xmlReqNode[2].Attributes[0].Value = sLow;
             xmlReqNode = xmlDoc.GetElementsByTagName("high");
-            xmlReqNode[3].Attributes[0].Value = sHigh;
+            xmlReqNode[2].Attributes[0].Value = sHigh;
 
 
             xmlReqNode = xmlDoc.GetElementsByTagName("id");
@@ -1757,8 +1758,8 @@ namespace Acurus.Capella.UI
             xmlReqNode[12].Attributes[1].Value = System.Configuration.ConfigurationSettings.AppSettings["ClientNPI"].ToString();
 
             //// CHOSEN IN MEAsURE CALCULATOR
-            xmlReqNode = xmlDoc.GetElementsByTagName("item");
-            xmlReqNode[0].InnerText = "Reporting period: " + dtpFromDate.SelectedDate.Value.ToString("dd MMMM yyyy") + " - " + dtpToDate.SelectedDate.Value.ToString("dd MMMM yyyy");
+            //xmlReqNode = xmlDoc.GetElementsByTagName("");
+            //xmlReqNode[0].InnerText = "Reporting period: " + dtpFromDate.SelectedDate.Value.ToString("dd MMMM yyyy") + " - " + dtpToDate.SelectedDate.Value.ToString("dd MMMM yyyy");
            // xmlReqNode[1].InnerText = "First encounter: " + firstrdos;
             // xmlReqNode[2].InnerText = "Last encounter:  " + lastrdos;
 
@@ -1792,6 +1793,9 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("textcountBPfollowup");
             xmlReqNode[0].InnerXml = cms22.ToString();
 
+            xmlReqNode = xmlDoc.GetElementsByTagName("textcountColorectal");
+            xmlReqNode[0].InnerXml = cms130.ToString();
+            
             xmlReqNode = xmlDoc.GetElementsByTagName("CATIIILOAD");
             xmlReqNode[0].InnerXml = sbLoad.ToString();
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<CATIIILOAD>", "").Replace("</CATIIILOAD>", "");
@@ -1803,9 +1807,10 @@ namespace Acurus.Capella.UI
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<textcountHba1c>", "").Replace("</textcountHba1c>", "");
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<textcountimmun>", "").Replace("</textcountimmun>", "");
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<textcountBreast>", "").Replace("</textcountBreast>", "");
-            //xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<textcountBPfollowup>", "").Replace("</textcountBPfollowup>", "");
 
-
+            xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<textcountBPfollowup>", "").Replace("</textcountBPfollowup>", "");
+            xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<textcountColorectal>", "").Replace("</textcountColorectal>", "");
+            
             xmlDoc.Save(Server.MapPath("Documents/" + Session.SessionID + "/CQMIII") + "\\CQMCATIII.xml");
 
         }
@@ -3124,7 +3129,9 @@ namespace Acurus.Capella.UI
                     objSexMalesb.Append(objSexsb.ToString());
                     objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "M");
                     objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("value=") + 7, Malelst.Count.ToString());
-                    objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("displayName=") + 13, "MALE");
+
+                  if(objSexMalesb.ToString().IndexOf("AdministrativeSex")> -1)
+                    objSexMalesb.Insert(objSexMalesb.ToString().IndexOf(@"AdministrativeSex") + 32, "MALE"); ;
                     objFinalSexsb.Append(objSexMalesb.ToString());
                 }
                 StringBuilder objSexFemalesb = new StringBuilder();
@@ -3133,7 +3140,9 @@ namespace Acurus.Capella.UI
 
                     objSexFemalesb.Append(objSexsb.ToString());
                     objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "F");
-                    objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("displayName=") + 13, "FE3MALE");
+                    if (objSexFemalesb.ToString().IndexOf(@"AdministrativeSex") > -1)
+                        objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf(@"AdministrativeSex") + 32, "FEMALE") ;
+
                     objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("value=") + 7, Femalelst.Count.ToString());
                     objFinalSexsb.Append(objSexFemalesb.ToString());
                 }
@@ -3215,44 +3224,81 @@ namespace Acurus.Capella.UI
                 IList<PatientInsuredPlan> objPatientInsuredPlan = objPatientInsuredPlanManager.GetPatInsPlanDetails(HumanLst);
 
                 PQRI_DataManager objPQRI_DataManager = new PQRI_DataManager();
-                IList<PQRI_Data> lstPQRI = objPQRI_DataManager.GetPQRIListByStandardConcept("Payer");
+                //IList<PQRI_Data> lstPQRI = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("Payer",CMSName);
                 StringBuilder objFinalPayersb = new StringBuilder();
                 int iCount = 0;
-                foreach (PQRI_Data item in lstPQRI)
+                if(objPatientInsuredPlan.Count>0)
                 {
 
-                    if (item.NQF_Number.Trim() != string.Empty)
-                    {
-                        if (objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.NQF_Number.Trim()) > 0)
-                        {
-                            StringBuilder objPayerNewsb = new StringBuilder();
-                            objPayerNewsb.Append(objPayersb);
-                            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.221.5") - 29, item.PQRI_Value);
-                            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.221.5") - 14, item.PQRI_Type);
-                            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("value=") + 7, objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.NQF_Number.Trim()));
-                            objFinalPayersb.Append(objPayerNewsb.ToString());
-                            iCount += objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.NQF_Number.Trim());
-                        }
+                    //var results = from p in objPatientInsuredPlan
+                    //              group p.Insurance_Plan_ID by p.Insurance_Plan_ID into g
+                    //              //select new { id = g.ToList() };
 
+
+                    IList<ulong> InsurancePlanID = objPatientInsuredPlan.Select(a => a.Insurance_Plan_ID).Distinct().ToList<ulong>();
+                    InsurancePlanManager objins = new InsurancePlanManager();
+                    IList<InsurancePlan> lstplan = objins.GetInsDetails(InsurancePlanID);
+                   
+                    for (int i=0;i<lstplan.Count;i++)
+                    {
+                        StringBuilder objPayerNewsb = new StringBuilder();
+                        objPayerNewsb.Append(objPayersb);
+                        objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, lstplan[i].External_Plan_Number);
+                        objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, lstplan[i].Ins_Plan_Name);
+                        objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("value=") + 7, objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == lstplan[i].Id.ToString().Trim()));
+                        objFinalPayersb.Append(objPayerNewsb.ToString());
+                       // iCount += objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim())
                     }
+
+                    //IList<PatientInsuredPlan> lstpat = objPatientInsuredPlan.GroupBy(a => a.Insurance_Plan_ID).ToList<PatientInsuredPlan>();
+
+
+
+                    //            objPayerNewsb.Append(objPayersb);
+                    //            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, item.PQRI_Value);
+                    //            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, item.PQRI_Description);
+                    //            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("value=") + 7, objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim()));
+                    //            objFinalPayersb.Append(objPayerNewsb.ToString());
+                    //            iCount += objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim());
+                    //        }
 
                 }
 
-                if (objPatientInsuredPlan != null && (objPatientInsuredPlan.Count - iCount++) != 0)
-                {
-                    IList<PQRI_Data> lstPqri = lstPQRI.Where(a => a.NQF_Number.Trim() == string.Empty).ToList<PQRI_Data>();
-                    if (lstPqri != null && lstPqri.Count>0)
-                    {
+                //foreach (PQRI_Data item in lstPQRI)
+                //{
 
-                        StringBuilder objPayerCountsb = new StringBuilder();
-                        objPayerCountsb.Append(objPayersb);
-                        objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.221.5") - 29, lstPqri[0].PQRI_Value);
-                        objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.221.5") - 14, lstPqri[0].PQRI_Type);
-                        objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("value=") + 7, objPatientInsuredPlan.Count - iCount++);
-                        objFinalPayersb.Append(objPayerCountsb.ToString());
-                    }
+                //    if (item.PQRI_Value.if(Trim() != string.Empty)
+                //    {
+                //        if (objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim()) > 0)
+                //        {
+                //            StringBuilder objPayerNewsb = new StringBuilder();
+                //            objPayerNewsb.Append(objPayersb);
+                //            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, item.PQRI_Value);
+                //            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, item.PQRI_Description);
+                //            objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("value=") + 7, objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim()));
+                //            objFinalPayersb.Append(objPayerNewsb.ToString());
+                //            iCount += objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim());
+                //        }
 
-                }
+                //    }
+
+                //}
+
+                //if (objPatientInsuredPlan != null && (objPatientInsuredPlan.Count - iCount++) != 0)
+                //{
+                //    IList<PQRI_Data> lstPqri = lstPQRI.Where(a => a.NQF_Number.Trim() == string.Empty).ToList<PQRI_Data>();
+                //    if (lstPqri != null && lstPqri.Count>0)
+                //    {
+
+                //        StringBuilder objPayerCountsb = new StringBuilder();
+                //        objPayerCountsb.Append(objPayersb);
+                //        objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, lstPqri[0].PQRI_Value);
+                //        objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, lstPqri[0].PQRI_Type);
+                //        objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("value=") + 7, objPatientInsuredPlan.Count - iCount++);
+                //        objFinalPayersb.Append(objPayerCountsb.ToString());
+                //    }
+
+                //}
 
 
 
@@ -3300,12 +3346,14 @@ namespace Acurus.Capella.UI
 
             objSexMalesb.Append(objSexsb.ToString());
             objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "M");
+            objSexMalesb.Insert(objSexMalesb.ToString().IndexOf(@"AdministrativeSex") + 32, "MALE");
             objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("value=") + 7, "0");
             objFinalSexsb.Append(objSexMalesb.ToString());
 
             StringBuilder objSexFemalesb = new StringBuilder();
             objSexFemalesb.Append(objSexsb.ToString());
             objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "F");
+            objSexFemalesb.Insert(objSexMalesb.ToString().IndexOf(@"AdministrativeSex") + 32, "FEMALE");
             objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("value=") + 7, "0");
             objFinalSexsb.Append(objSexFemalesb.ToString());
 
@@ -3359,8 +3407,11 @@ namespace Acurus.Capella.UI
             StringBuilder objFinalPayersb = new StringBuilder();
             StringBuilder objPayerCountsb = new StringBuilder();
             objPayerCountsb.Append(objPayersb);
-            objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.221.5") - 29, "349");
-            objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.221.5") - 14, "Other");
+
+            //objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, "349");
+
+            // objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, "Other");
+            objPayerCountsb.Replace(@"code="" displayName="" codeSystem=""2.16.840.1.113883.3.249.12"" codeSystemName=""CMS Clinical Codes""/>", @"nullFlavor=""NA"" />");
             objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("value=") + 7, "0");
             objFinalPayersb.Append(objPayerCountsb.ToString());
 
@@ -3959,8 +4010,8 @@ namespace Acurus.Capella.UI
         //            xmlReqNode[0].Attributes[1].Value = HumanLst.Race;
 
         //            xmlReqNode = xmlDoc.GetElementsByTagName("ethnicGroupCode");
-        //            xmlReqNode[0].Attributes[0].Value = Convert.ToString(HumanLst.Ethnicity_No);
-        //            xmlReqNode[0].Attributes[1].Value = HumanLst.Ethnicity;
+        //            xmlReqNode[0].Attributes[0].Value = Convert.ToString(HumanLst.E
+
 
         //            //xmlReqNode = xmlDoc.GetElementsByTagName("languageCode");
         //            //xmlReqNode[1].Attributes[0].Value = HumanLst.Preferred_Language;
@@ -4736,7 +4787,7 @@ namespace Acurus.Capella.UI
 
 
                     XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\XML Master Template_Stage3Measure.xml"));
+                    xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\XML Master Template_Stage3Measure_v10.xml"));
 
                     string FolderName = string.Empty;
 
@@ -4778,6 +4829,17 @@ namespace Acurus.Capella.UI
                     xmlReqNode[4].InnerText = ClientSession.PhysicainDetails[0].PhyAddress1;
                     xmlReqNode[5].InnerText = ClientSession.PhysicainDetails[0].PhyAddress1;
                     xmlReqNode[6].InnerText = HumanLst.Street_Address1;
+
+                    //StaticLookupManager objStaticLookupManager = new StaticLookupManager();
+
+                    //IList<StaticLookup> lsdstLookUp = objStaticLookupManager.getStaticLookupByFieldName("preferred language");
+                    //lsdstLookUp = (from m in lsdstLookUp where m.Value == HumanLst.Preferred_Language select m).ToList<StaticLookup>();
+                    //if (lsdstLookUp != null && lsdstLookUp.Count > 0)
+                    //{
+                    //    xmlReqNode = xmlDoc.GetElementsByTagName("languageCode");
+                    //    xmlReqNode[1].Attributes[0].Value = lsdstLookUp[0].Description;
+                       
+                    //}
 
                     xmlReqNode = xmlDoc.GetElementsByTagName("city");
                     xmlReqNode[0].InnerText = HumanLst.City;
@@ -4927,13 +4989,13 @@ namespace Acurus.Capella.UI
 
                     xmlReqNode = xmlDoc.GetElementsByTagName("id");
                     xmlReqNode[1].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
-                    xmlReqNode[2].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
-                    xmlReqNode[4].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
-                    xmlReqNode[5].Attributes[1].Value = lstfacility[0].Fac_NPI;
-                    xmlReqNode[7].Attributes[1].Value = sClientTin;
-                    xmlReqNode[11].Attributes[1].Value = ClientSession.PhysicainDetails[0].PhyNPI;
+                    xmlReqNode[3].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
+                    xmlReqNode[5].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
+                    xmlReqNode[6].Attributes[1].Value = lstfacility[0].Fac_NPI;
+                    xmlReqNode[8].Attributes[1].Value = sClientTin;
+                   // xmlReqNode[11].Attributes[1].Value = ClientSession.PhysicainDetails[0].PhyNPI;
                     xmlReqNode[12].Attributes[1].Value = sClientTin;
-
+                    xmlReqNode[14].Attributes[1].Value = sClientTin;
                     xmlReqNode = xmlDoc.GetElementsByTagName("assignedAuthor");
                     lst = xmlReqNode[0].ChildNodes.OfType<XmlElement>().Where(Z => Z.Name == "code").ToList();
                     lst[0].Attributes[0].Value = ClientSession.PhysicainDetails[0].Taxonomy_Code;
@@ -4974,9 +5036,26 @@ namespace Acurus.Capella.UI
                     lst[0].Attributes[1].Value = ClientSession.PhysicainDetails[0].Taxonomy_Description;
 
 
+                   // PatientInsuredPlanManager objPatientInsuredPlanManager = new PatientInsuredPlanManager();
+                    IList<PatientInsuredPlan> objPatientInsuredPlan = objPatientInsuredPlanManager.GetActiveInsurancePoliciesByHumanId(HumanLst.Id,"PRIMARY");
+
+                   // IList<ulong> InsurancePlanID = objPatientInsuredPlan.Select(a => a.Insurance_Plan_ID).Distinct().ToList<ulong>();
+                    InsurancePlanManager objins = new InsurancePlanManager();
+                    if (objPatientInsuredPlan != null && objPatientInsuredPlan.Count > 0)
+                    {
+                        IList<InsurancePlan> lstplan = objins.GetInsurancebyID(objPatientInsuredPlan[0].Insurance_Plan_ID);
+                        if (lstplan.Count > 0)
+                        {
+                            xmlReqNode = xmlDoc.GetElementsByTagName("value");
+
+                            xmlReqNode[0].Attributes[1].Value = lstplan[0].External_Plan_Number;
+                            xmlReqNode[0].Attributes[4].Value = lstplan[0].Ins_Plan_Name;
+                        }
+                    }
+
                     // CHOSEN IN MEAsURE CALCULATOR
-                    xmlReqNode = xmlDoc.GetElementsByTagName("item");
-                    xmlReqNode[0].InnerText = "Reporting Parameter " + dtpFromDate.SelectedDate.Value.ToString("yyyyMMddhhmmss") + " To " + dtpToDate.SelectedDate.Value.ToString("yyyyMMddhhmmss");
+                    //xmlReqNode = xmlDoc.GetElementsByTagName("item");
+                    //xmlReqNode[0].InnerText = "Reporting Parameter " + dtpFromDate.SelectedDate.Value.ToString("yyyyMMddhhmmss") + " To " + dtpToDate.SelectedDate.Value.ToString("yyyyMMddhhmmss");
                     #endregion
 
                     //1.Encounter Xml File Indert
@@ -5142,9 +5221,9 @@ namespace Acurus.Capella.UI
                     }
 
 
-                    xmlReqNode = xmlDoc.GetElementsByTagName("Test");
+                    xmlReqNode = xmlDoc.GetElementsByTagName("test");
                     xmlReqNode[0].InnerXml = XMLInsertsb.ToString();
-                    xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<Test>", "").Replace("</Test>", "");
+                    xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<test>", "").Replace("</test>", "");
                     xmlDoc.Save(Server.MapPath("Documents/" + Session.SessionID + "/CQMI/" + FolderName) + "\\" + HumanLst.Id + "_" + HumanLst.First_Name + "_" + HumanLst.Last_Name + ".xml");
                     file.Close();
                 }
