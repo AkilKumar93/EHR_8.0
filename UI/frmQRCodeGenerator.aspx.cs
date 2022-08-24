@@ -90,6 +90,7 @@ namespace Acurus.Capella.UI
 
             var lstPatient = new
             {
+
                 id = "" + ClientSession.HumanId.ToString() + "",
                 dob = objFillHuman.Birth_Date,
                 firstName = objFillHuman.First_Name,
@@ -106,6 +107,7 @@ namespace Acurus.Capella.UI
 
             var lstEncounter = new
             {
+
                 id = "" + ClientSession.EncounterId + "",
                 dateOfService = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).ToString("MM/dd/yyyy"),
             };
