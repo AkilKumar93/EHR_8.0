@@ -136,6 +136,8 @@
     <Compile Include="DomainObjects\ChiefComplaints.cs" />
     <Compile Include="DomainObjects\Client.cs" />
     <Compile Include="DomainObjects\Context.cs" />
+    <Compile Include="DomainObjects\CQMDetail.cs" />
+    <Compile Include="DomainObjects\CQMSummary.cs" />
     <Compile Include="DomainObjects\DictationData.cs">
       <SubType>Code</SubType>
     </Compile>

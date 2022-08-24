@@ -5,6 +5,7 @@ using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.Core.DTO;
 using NHibernate;
 using NHibernate.Criterion;
+using System.Linq;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -383,6 +384,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
             return ilistInsurancePlan;
+        }
+        public IList<InsurancePlan> GetInsDetails(IList<ulong> InsurancID)
+        {
+            IList<InsurancePlan> objPatInsPlan = new List<InsurancePlan>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = mySession.CreateCriteria(typeof(InsurancePlan)).Add(Expression.In("Id", InsurancID.ToArray<ulong>()));
+                objPatInsPlan = crit.List<InsurancePlan>();
+                mySession.Close();
+            }
+            return objPatInsPlan;
         }
         #endregion
     }
