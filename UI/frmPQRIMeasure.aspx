@@ -190,7 +190,7 @@
                                         <telerik:RadComboBox ID="cboStage" runat="server" Height="100px" Width="125px" CssClass="Editabletxtbox">
                                             <Items>
                                                 <telerik:RadComboBoxItem runat="server" Text="Stage 3" Selected="true" />
-                                                <telerik:RadComboBoxItem runat="server" Text="Stage 2" />
+                                                <%--<telerik:RadComboBoxItem runat="server" Text="Stage 2" />--%>
                                                 <%-- Selected="true" --%>
                                                 <%--<telerik:RadComboBoxItem runat="server" Text="Stage 1" />--%>
                                             </Items>
@@ -315,6 +315,13 @@
                                             <HeaderStyle Width="80px" />
                                             <ItemStyle Width="80px" HorizontalAlign="Center" />
                                         </telerik:GridBoundColumn>
+
+                                        <telerik:GridBoundColumn DataField="Numerator Exclusion" FilterControlAltText="Filter NumeratorExclusion column"
+                                            HeaderText="Numerator Exclusion" UniqueName="NumeratorExclusion">
+                                            <HeaderStyle Width="80px" />
+                                            <ItemStyle Width="80px" HorizontalAlign="Center" />
+                                        </telerik:GridBoundColumn>
+
                                         <telerik:GridBoundColumn DataField="Rate" FilterControlAltText="Filter Rate column"
                                             HeaderText="Rate" UniqueName="Rate">
                                             <HeaderStyle Width="80px" />
