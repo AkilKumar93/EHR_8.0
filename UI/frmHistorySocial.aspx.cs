@@ -1135,15 +1135,15 @@ namespace Acurus.Capella.UI
 
 
                 description = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", ""))).txtDLC;
-                if (description != null)
-                {
-                    if (description.Text.Length > 255)
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Validation", "PFSH_SaveUnsuccessful();DisplayErrorMessage('180033'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                        description.Focus();
-                        return;
-                    }
-                }
+                //if (description != null)
+                //{
+                //    //if (description.Text.Length > 255)
+                //    //{
+                //    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Validation", "PFSH_SaveUnsuccessful();DisplayErrorMessage('180033'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                //    //    description.Focus();
+                //    //    return;
+                //    //}
+                //}
 
                 SocialHistoryObject.Social_Info = item.Key;
                 SocialHistoryObject.Human_ID = ClientSession.HumanId;
