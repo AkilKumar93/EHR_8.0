@@ -10083,7 +10083,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                                 snomed = objEnc[4].ToString();
                             }
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), "", snomed, "", "CMS147DEX", "CMS147v11" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), snomed, "",  "", "CMS147DEX", "CMS147v11" };
                             ulEncList147.Add(Convert.ToUInt32(objEnc[1].ToString()));
                             icdcptListDenominatorException.Add(ary);
                             lstEncList68.Add(obj);
@@ -12394,7 +12394,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                                 snomed = objEnc[4].ToString();
                             }
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), "", snomed, "", "CMS147DEX", "CMS147v11" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), snomed, "", "", "CMS147DEX", "CMS147v11" };
                             ulEncList147.Add(Convert.ToUInt32(objEnc[1].ToString()));
                             icdcptListDenominatorException.Add(ary);
                             lstEncList68.Add(obj);
@@ -13154,6 +13154,7 @@ and b.Encounter_ID in (:EncIds)";
                             object[] objEnc = (object[])Enc_Exclusion1_lst130[i];
                             string icd = "";
                             string cpt = "";
+                            string snomed_code = "";
                             if (objEnc[2] != null)
                             {
                                 icd = objEnc[2].ToString();
@@ -13162,7 +13163,11 @@ and b.Encounter_ID in (:EncIds)";
                             {
                                 cpt = objEnc[3].ToString();
                             }
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, "", "", "", "CMS130DE", "CMS130v10" };
+                            if (objEnc[4] != null)
+                            {
+                                snomed_code = objEnc[4].ToString();
+                            }
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, snomed_code, "", "", "CMS130DE", "CMS130v10" };
                             icdcptListDenominatorException.Add(ary);
 
 
@@ -13226,6 +13231,7 @@ and b.Encounter_ID in (:EncIds)";
                     IQuery Encounterumeratorquery130 = iMySession.GetNamedQuery("PQRI.GetNumeratorCMS130.ColorectalCancer");
                     Encounterumeratorquery130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                     Encounterumeratorquery130.SetString(1, Todate.ToString("yyyy-MM-dd"));
+
 
 
 
@@ -13409,7 +13415,7 @@ and b.Encounter_ID in (:EncIds)";
             string Percentage = string.Empty;
             string cleared = string.Empty;
             if (objCQMSummary.Numerator != 0 && objCQMSummary.Denominator != 0)
-                objCQMSummary.Rate = Decimal.Round(((Convert.ToDecimal(objCQMSummary.Numerator) / (Convert.ToDecimal(objCQMSummary.Denominator))) * 100), 2);
+                objCQMSummary.Rate = Decimal.Round(((Convert.ToDecimal(objCQMSummary.Numerator) / (Convert.ToDecimal(objCQMSummary.Denominator))) ), 6);
             else
                 objCQMSummary.Rate = 0;
             ilstCQMSummary.Add(objCQMSummary);

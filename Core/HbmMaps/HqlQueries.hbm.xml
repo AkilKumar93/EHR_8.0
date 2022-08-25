@@ -14068,6 +14068,7 @@ and (date_format(DATE_FORMAT(?,'%Y-01-01'),'%Y-03-31')) and a.encounter_provider
 
 ;]]>
 	</sql-query>
+
 	<!--<sql-query name="PQRI.GetDenominatorList1CMS147.Influenza">
 		<![CDATA[select c.human_id
 from e_m_coding c
@@ -14606,8 +14607,8 @@ and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
 ]]>
 	</sql-query>
 	<sql-query name="PQRI.GetException1CMS130.ColorectalCancer">
-		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code from e_m_coding em
-left join assessment c on em.encounter_id=c.encounter_id where em.human_id in (:EncIds); ]]>
+		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code,cp.snomed_code from e_m_coding em
+left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp on em.encounter_id=cp.encounter_id where em.human_id in (:EncIds); ]]>
 	</sql-query>
 	<sql-query name="PQRI.GetDenominator2CMS130.ColorectalCancer">
 		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id

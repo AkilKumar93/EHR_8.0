@@ -388,11 +388,11 @@ namespace Acurus.Capella.UI
 
             PQRI_MeasureManager objPQRI = new PQRI_MeasureManager();
             CQMSummaryManager cqmSummaryMngr = new CQMSummaryManager();
-          
+
             //Stage 3 Measure
             if (cboStage.Text == "Stage 3")
             {
-                PQRIlist = cqmSummaryMngr.GetCQMSummary(ClientSession.LegalOrg,dtpFromDate.SelectedDate.Value.Year.ToString(), Physician_Id);
+                PQRIlist = cqmSummaryMngr.GetCQMSummary(ClientSession.LegalOrg, dtpFromDate.SelectedDate.Value.Year.ToString(), Physician_Id);
             }
 
             PQRIlist = (from doc in PQRIlist
@@ -443,10 +443,10 @@ namespace Acurus.Capella.UI
                     resultNumeratorDto.HumanID = Convert.ToUInt32(NumeratorList[k][1]);
                     resultNumeratorDto.ICD = NumeratorList[k][2].ToString();
                     resultNumeratorDto.ProcedureCode = NumeratorList[k][3].ToString();
-                    resultNumeratorDto.Value = NumeratorList[k][4].ToString();
+                    resultNumeratorDto.Value = NumeratorList[k][6].ToString();
                     resultNumeratorDto.LoincIdentifier = NumeratorList[k][5].ToString();
-                    if (NumeratorList[k][6] != "")
-                        resultNumeratorDto.ResultDateandTime = Convert.ToDateTime(NumeratorList[k][6].ToString());
+                   // if (NumeratorList[k][4] != "")
+                      //  resultNumeratorDto.ResultDateandTime = Convert.ToDateTime(NumeratorList[k][4].ToString());
                     resultNumeratorDto.MeasureNo = NumeratorList[k][7].ToString();
                     resultNumeratorDto.NDCID = NumeratorList[k][8].ToString();
                     resultNumeratorDto.Recodes = NumeratorList[k][9].ToString();
@@ -786,8 +786,8 @@ namespace Acurus.Capella.UI
                     xmlReqNode[6].Attributes[1].Value = PhysicianLibrarylst[0].PhyNPI;//"66666";
 
                     // CHOSEN IN MEAsURE CALCULATOR
-                  //  xmlReqNode = xmlDoc.GetElementsByTagName("item");
-                   // xmlReqNode[0].InnerText = "Reporting Parameter " + dtpFromDate.SelectedDate.Value.ToString("yyyyMMddhhmmss") + " To " + dtpToDate.SelectedDate.Value.ToString("yyyyMMddhhmmss");
+                    //  xmlReqNode = xmlDoc.GetElementsByTagName("item");
+                    // xmlReqNode[0].InnerText = "Reporting Parameter " + dtpFromDate.SelectedDate.Value.ToString("yyyyMMddhhmmss") + " To " + dtpToDate.SelectedDate.Value.ToString("yyyyMMddhhmmss");
                     #endregion
 
                     //1.Encounter Xml File Indert
@@ -1647,10 +1647,10 @@ namespace Acurus.Capella.UI
             IList<ulong> DenmoniatorList130 = PQRIDTO.Where(a => a.MeasureNo == "CMS130D").Select(a => a.HumanID).Distinct().ToList<ulong>();
             IList<ulong> DE130List = PQRIDTO.Where(a => a.MeasureNo == "CMS130DE").Select(a => a.HumanID).ToList<ulong>();
             IList<ulong> DEX130List = PQRIDTO.Where(a => a.MeasureNo == "CMS130DEX").Select(a => a.HumanID).ToList<ulong>();
-            
 
-           sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS130v10Stage3_Header.xml", DenmoniatorList130, NumeratorList130, DE130List, DEX130List, DCQM["CMS130v10"], "CMS130v10", null).ToString());
-            StringBuilder cms130 = MeasureHeaderCount(NumeratorList130, DenmoniatorList130, DE130List, DEX130List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
+
+            sbLoad.Append(SubXMLLoadForCQMIIIstage3("CMS130v10Stage3_Header.xml", DenmoniatorList130, NumeratorList130, DE130List, DEX130List, DCQM["CMS130v10"], "CMS130v10", null).ToString());
+            StringBuilder cms130 = MeasureHeaderCount(NumeratorList130, DenmoniatorList130, DEX130List, DE130List, "b6ac13e2-beb8-4e4f-94ed-fcc397406cd2");
 
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\QRDAStage3_CAT_III_Header.xml"));
@@ -1717,7 +1717,7 @@ namespace Acurus.Capella.UI
 
 
 
-           // IList<Encounter> EncLst = objEncounterManager.GetEncoutnerListByPhyID((int)ClientSession.PhysicianId);
+            // IList<Encounter> EncLst = objEncounterManager.GetEncoutnerListByPhyID((int)ClientSession.PhysicianId);
             string sLow = Convert.ToDateTime(dtpFromDate.SelectedDate).ToString("yyyyMMdd");
             string sHigh = Convert.ToDateTime(dtpToDate.SelectedDate).ToString("yyyyMMdd");
             // string firstrdos = "";
@@ -1750,8 +1750,8 @@ namespace Acurus.Capella.UI
 
 
             xmlReqNode = xmlDoc.GetElementsByTagName("id");
-            xmlReqNode[2].Attributes[1].Value = System.Configuration.ConfigurationSettings.AppSettings["ClientNPI"].ToString();
-            xmlReqNode[3].Attributes[1].Value = System.Configuration.ConfigurationSettings.AppSettings["ClientNPI"].ToString();
+            xmlReqNode[2].Attributes[1].Value = PhysicianLibrarylst[0].PhyNPI;//System.Configuration.ConfigurationSettings.AppSettings["ClientNPI"].ToString();
+            xmlReqNode[3].Attributes[1].Value = PhysicianLibrarylst[0].PhyNPI;//System.Configuration.ConfigurationSettings.AppSettings["ClientNPI"].ToString();
             xmlReqNode[5].Attributes[1].Value = System.Configuration.ConfigurationSettings.AppSettings["ClientNPI"].ToString();
             xmlReqNode[4].Attributes[1].Value = PhysicianLibrarylst[0].PhyNPI;
             xmlReqNode[11].Attributes[1].Value = PhysicianLibrarylst[0].PhyNPI;
@@ -1760,7 +1760,7 @@ namespace Acurus.Capella.UI
             //// CHOSEN IN MEAsURE CALCULATOR
             //xmlReqNode = xmlDoc.GetElementsByTagName("");
             //xmlReqNode[0].InnerText = "Reporting period: " + dtpFromDate.SelectedDate.Value.ToString("dd MMMM yyyy") + " - " + dtpToDate.SelectedDate.Value.ToString("dd MMMM yyyy");
-           // xmlReqNode[1].InnerText = "First encounter: " + firstrdos;
+            // xmlReqNode[1].InnerText = "First encounter: " + firstrdos;
             // xmlReqNode[2].InnerText = "Last encounter:  " + lastrdos;
 
             //    XmlNodeList xmlReqNode = null;
@@ -1795,7 +1795,7 @@ namespace Acurus.Capella.UI
 
             xmlReqNode = xmlDoc.GetElementsByTagName("textcountColorectal");
             xmlReqNode[0].InnerXml = cms130.ToString();
-            
+
             xmlReqNode = xmlDoc.GetElementsByTagName("CATIIILOAD");
             xmlReqNode[0].InnerXml = sbLoad.ToString();
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<CATIIILOAD>", "").Replace("</CATIIILOAD>", "");
@@ -1810,7 +1810,7 @@ namespace Acurus.Capella.UI
 
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<textcountBPfollowup>", "").Replace("</textcountBPfollowup>", "");
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<textcountColorectal>", "").Replace("</textcountColorectal>", "");
-            
+
             xmlDoc.Save(Server.MapPath("Documents/" + Session.SessionID + "/CQMIII") + "\\CQMCATIII.xml");
 
         }
@@ -2294,8 +2294,10 @@ namespace Acurus.Capella.UI
             }
             else
             {
+
                 //RootID = resultlst.Where(a => a.NQF_Number.Trim() == "IPP").ToList<PQRI_Data>()[0].PQRI_Value;
                 objIPPsb.Insert(objIPPsb.ToString().IndexOf("value=") + 7, "0");
+                // objIPPsb.Replace(@"value=""", @"nullFlavor=""NA""");
                 // objIPPsb.Insert(objIPPsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                 //objIPPsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
                 objIPPsb.Insert(objIPPsb.ToString().IndexOf("<TextIPP>") + 9, CATIIILoadForEmptyXMLStage3(RootID, CMSName).ToString());
@@ -2330,6 +2332,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
+                //objDenominatorsb.Replace(@"value=""", @"nullFlavor=""NA""");
                 objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("value=") + 7, "0");
                 //objDenominatorsb.Insert(objDenominatorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                 //  objDenominatorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
@@ -2363,6 +2366,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
+                // objNumeratorsb.Replace(@"value=""", @"nullFlavor=""NA""");
                 objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("value=") + 7, "0");
                 // objNumeratorsb.Insert(objNumeratorsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                 // objNumeratorsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
@@ -2401,6 +2405,7 @@ namespace Acurus.Capella.UI
                 {
                     if (RootID.Trim() != string.Empty)
                     {
+                        //objDEsb.Replace(@"value=""", @"nullFlavor=""NA""");
                         objDEsb.Insert(objDEsb.ToString().IndexOf("value=") + 7, "0");
                         // objDEsb.Insert(objDEsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                         //  objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
@@ -2444,6 +2449,7 @@ namespace Acurus.Capella.UI
 
                     if (RootID.Trim() != string.Empty)
                     {
+                        // objDEXsb.Replace(@"value=""", @"nullFlavor=""NA""");
                         objDEXsb.Insert(objDEXsb.ToString().IndexOf("value=") + 7, "0");
                         // objDEXsb.Insert(objDEXsb.ToString().IndexOf("extension=") + 11, System.DateTime.Now.ToString("yyyy-MM-dd"));
                         //  objDEsb.Insert(objIPPsb.ToString().IndexOf("root=") + 6, RootID);
@@ -2460,8 +2466,20 @@ namespace Acurus.Capella.UI
 
 
             xmlReqNode = xmlDoc.GetElementsByTagName("value");
-            xmlReqNode[0].Attributes[1].Value = CQMPercentage;
 
+            if (DLst.Union(DEXLst).Union(DELst).ToList<ulong>().Count != 0)
+                xmlReqNode[0].Attributes[1].Value = CQMPercentage;
+            else
+            {
+                xmlReqNode[0].Attributes.RemoveAll();
+                XmlAttribute xAttribute = xmlReqNode[0].OwnerDocument.CreateAttribute("xsi", "type", "http://www.w3.org/2001/XMLSchema-instance");
+                xAttribute.Value = "REAL";
+                xmlReqNode[0].Attributes.Append(xAttribute);
+                XmlAttribute xAttributenull = xmlReqNode[0].OwnerDocument.CreateAttribute("nullFlavor");
+                xAttributenull.Value = "NA";
+                xmlReqNode[0].Attributes.Append(xAttributenull);
+            }
+            //xmlReqNode[0].Attributes[1].re
             xmlReqNode = xmlDoc.GetElementsByTagName("Text");
             xmlReqNode[0].InnerXml = objMeasuresb.ToString();
             xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("<Text>", "").Replace("</Text>", "");
@@ -3130,8 +3148,8 @@ namespace Acurus.Capella.UI
                     objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "M");
                     objSexMalesb.Insert(objSexMalesb.ToString().IndexOf("value=") + 7, Malelst.Count.ToString());
 
-                  if(objSexMalesb.ToString().IndexOf("AdministrativeSex")> -1)
-                    objSexMalesb.Insert(objSexMalesb.ToString().IndexOf(@"AdministrativeSex") + 32, "MALE"); ;
+                    if (objSexMalesb.ToString().IndexOf("AdministrativeSex") > -1)
+                        objSexMalesb.Insert(objSexMalesb.ToString().IndexOf(@"AdministrativeSex") + 32, "MALE"); ;
                     objFinalSexsb.Append(objSexMalesb.ToString());
                 }
                 StringBuilder objSexFemalesb = new StringBuilder();
@@ -3141,7 +3159,7 @@ namespace Acurus.Capella.UI
                     objSexFemalesb.Append(objSexsb.ToString());
                     objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("2.16.840.1.113883.5.1") - 14, "F");
                     if (objSexFemalesb.ToString().IndexOf(@"AdministrativeSex") > -1)
-                        objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf(@"AdministrativeSex") + 32, "FEMALE") ;
+                        objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf(@"AdministrativeSex") + 32, "FEMALE");
 
                     objSexFemalesb.Insert(objSexFemalesb.ToString().IndexOf("value=") + 7, Femalelst.Count.ToString());
                     objFinalSexsb.Append(objSexFemalesb.ToString());
@@ -3207,7 +3225,7 @@ namespace Acurus.Capella.UI
                     objRCsb.Insert(objRCsb.ToString().IndexOf("2.16.840.1.113883.6.238") - 29, lsdstLookUp.Where(a => a.Value.Trim() == items.Trim()).ToList<StaticLookup>().Count > 0 ? lsdstLookUp.Where(a => a.Value.Trim() == items.Trim()).ToList<StaticLookup>()[0].Default_Value : string.Empty);
                     objRCsb.Insert(objRCsb.ToString().IndexOf("2.16.840.1.113883.6.238") - 14, items);
                     objRCsb.Insert(objRCsb.ToString().LastIndexOf("value=") + 7, lstHuman.Count(a => a.Race.Trim() == items.Trim()));
-                    
+
                     objFinalRacesb.Append(objRCsb.ToString());
 
                 }
@@ -3227,7 +3245,7 @@ namespace Acurus.Capella.UI
                 //IList<PQRI_Data> lstPQRI = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("Payer",CMSName);
                 StringBuilder objFinalPayersb = new StringBuilder();
                 int iCount = 0;
-                if(objPatientInsuredPlan.Count>0)
+                if (objPatientInsuredPlan.Count > 0)
                 {
 
                     //var results = from p in objPatientInsuredPlan
@@ -3238,8 +3256,8 @@ namespace Acurus.Capella.UI
                     IList<ulong> InsurancePlanID = objPatientInsuredPlan.Select(a => a.Insurance_Plan_ID).Distinct().ToList<ulong>();
                     InsurancePlanManager objins = new InsurancePlanManager();
                     IList<InsurancePlan> lstplan = objins.GetInsDetails(InsurancePlanID);
-                   
-                    for (int i=0;i<lstplan.Count;i++)
+
+                    for (int i = 0; i < lstplan.Count; i++)
                     {
                         StringBuilder objPayerNewsb = new StringBuilder();
                         objPayerNewsb.Append(objPayersb);
@@ -3247,7 +3265,7 @@ namespace Acurus.Capella.UI
                         objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, lstplan[i].Ins_Plan_Name);
                         objPayerNewsb.Insert(objPayerNewsb.ToString().IndexOf("value=") + 7, objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == lstplan[i].Id.ToString().Trim()));
                         objFinalPayersb.Append(objPayerNewsb.ToString());
-                       // iCount += objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim())
+                        // iCount += objPatientInsuredPlan.Count(a => a.Insurance_Plan_ID.ToString().Trim() == item.PQRI_Value.Trim())
                     }
 
                     //IList<PatientInsuredPlan> lstpat = objPatientInsuredPlan.GroupBy(a => a.Insurance_Plan_ID).ToList<PatientInsuredPlan>();
@@ -3408,10 +3426,10 @@ namespace Acurus.Capella.UI
             StringBuilder objPayerCountsb = new StringBuilder();
             objPayerCountsb.Append(objPayersb);
 
-            //objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, "349");
+            objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 29, "D");
 
-            // objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, "Other");
-            objPayerCountsb.Replace(@"code="" displayName="" codeSystem=""2.16.840.1.113883.3.249.12"" codeSystemName=""CMS Clinical Codes""/>", @"nullFlavor=""NA"" />");
+            objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("2.16.840.1.113883.3.249.12") - 14, "Other");
+            //objPayerCountsb.Replace(@"code="" displayName="" codeSystem=""2.16.840.1.113883.3.249.12"" codeSystemName=""CMS Clinical Codes""/>", @"nullFlavor=""NA"" />");
             objPayerCountsb.Insert(objPayerCountsb.ToString().IndexOf("value=") + 7, "0");
             objFinalPayersb.Append(objPayerCountsb.ToString());
 
@@ -4838,7 +4856,7 @@ namespace Acurus.Capella.UI
                     //{
                     //    xmlReqNode = xmlDoc.GetElementsByTagName("languageCode");
                     //    xmlReqNode[1].Attributes[0].Value = lsdstLookUp[0].Description;
-                       
+
                     //}
 
                     xmlReqNode = xmlDoc.GetElementsByTagName("city");
@@ -4993,9 +5011,10 @@ namespace Acurus.Capella.UI
                     xmlReqNode[5].Attributes[0].Value = ClientSession.PhysicainDetails[0].PhyNPI;
                     xmlReqNode[6].Attributes[1].Value = lstfacility[0].Fac_NPI;
                     xmlReqNode[8].Attributes[1].Value = sClientTin;
-                   // xmlReqNode[11].Attributes[1].Value = ClientSession.PhysicainDetails[0].PhyNPI;
+                    xmlReqNode[11].Attributes[1].Value = System.Configuration.ConfigurationSettings.AppSettings["ClientNPI"];
                     xmlReqNode[12].Attributes[1].Value = sClientTin;
-                    xmlReqNode[14].Attributes[1].Value = sClientTin;
+                    //  xmlReqNode[14].Attributes[1].Value = sClientTin;
+
                     xmlReqNode = xmlDoc.GetElementsByTagName("assignedAuthor");
                     lst = xmlReqNode[0].ChildNodes.OfType<XmlElement>().Where(Z => Z.Name == "code").ToList();
                     lst[0].Attributes[0].Value = ClientSession.PhysicainDetails[0].Taxonomy_Code;
@@ -5036,10 +5055,10 @@ namespace Acurus.Capella.UI
                     lst[0].Attributes[1].Value = ClientSession.PhysicainDetails[0].Taxonomy_Description;
 
 
-                   // PatientInsuredPlanManager objPatientInsuredPlanManager = new PatientInsuredPlanManager();
-                    IList<PatientInsuredPlan> objPatientInsuredPlan = objPatientInsuredPlanManager.GetActiveInsurancePoliciesByHumanId(HumanLst.Id,"PRIMARY");
+                    // PatientInsuredPlanManager objPatientInsuredPlanManager = new PatientInsuredPlanManager();
+                    IList<PatientInsuredPlan> objPatientInsuredPlan = objPatientInsuredPlanManager.GetActiveInsurancePoliciesByHumanId(HumanLst.Id, "PRIMARY");
 
-                   // IList<ulong> InsurancePlanID = objPatientInsuredPlan.Select(a => a.Insurance_Plan_ID).Distinct().ToList<ulong>();
+                    // IList<ulong> InsurancePlanID = objPatientInsuredPlan.Select(a => a.Insurance_Plan_ID).Distinct().ToList<ulong>();
                     InsurancePlanManager objins = new InsurancePlanManager();
                     if (objPatientInsuredPlan != null && objPatientInsuredPlan.Count > 0)
                     {
@@ -5102,32 +5121,71 @@ namespace Acurus.Capella.UI
                     //IList<string> Loinc = new List<string>();
                     IList<string[]> Loinc = new List<string[]>();
                     IList<PQRIResultDTO> objLoinclst = PQRIResultDTOList.Where(a => a.HumanID == Item_Human_ID && a.MeasureName == MeasureName.Key.Replace(" ", "") && a.EncounterID != 0 && a.LoincIdentifier.Trim() != string.Empty).ToList<PQRIResultDTO>();
+
+                    IList<PQRIResultDTO> objsnomedlsttemp = PQRIResultDTOList.Where(a => a.HumanID == Item_Human_ID && a.MeasureName == MeasureName.Key.Replace(" ", "") && a.EncounterID != 0 && a.Value.Trim() != string.Empty).ToList<PQRIResultDTO>();
                     string sValueSetLoinc = string.Empty;
-                    foreach (PQRIResultDTO item in objLoinclst)
+                    if (objLoinclst.Count > 0 && objsnomedlsttemp.Count > 0)
                     {
-                        if (lst_Pqri_Data.Any(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim()) && !Loinc.Any(a => a[0].Trim() == item.LoincIdentifier.Trim() && a[1].Trim() == item.EncounterID.ToString().Trim()))
+
+                        foreach (PQRIResultDTO item in objLoinclst)
                         {
-                            //Loinc.Add(item.LoincIdentifier.Trim());
-                            //try
-                            //{
-                            Loinc.Add(new string[] { item.LoincIdentifier.Trim(), item.EncounterID.ToString().Trim() });
-                            PQRI_Data Loinc_Item_lst = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == item.MeasureName).ToList<PQRI_Data>()[0];
-                            Encounter objLoinc_Enc = EncList.Where(a => a.Id == item.EncounterID).ToList<Encounter>()[0];
+                            if (lst_Pqri_Data.Any(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim()) &&
+                                !Loinc.Any(a => a[0].Trim() == item.LoincIdentifier.Trim() &&
+                                a[1].Trim() == item.EncounterID.ToString().Trim()))
+                            {
+                                Loinc.Add(new string[] { item.LoincIdentifier.Trim(), item.EncounterID.ToString().Trim() });
+                               
+                                PQRI_Data Loinc_Item_lst = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == item.MeasureName).ToList<PQRI_Data>()[0];
+                               
+                                Encounter objLoinc_Enc = EncList.Where(a => a.Id == item.EncounterID).ToList<Encounter>()[0]; 
+                                
+                                objsnomedlsttemp = PQRIResultDTOList.Where(a => a.HumanID == Item_Human_ID && a.EncounterID==item.EncounterID
+                                && a.MeasureName == MeasureName.Key.Replace(" ", "") && a.Value.Trim() != string.Empty ).ToList<PQRIResultDTO>();
 
-                            sValueSetLoinc = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == Name).ToList<PQRI_Data>().Count > 0 ? lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == Name).ToList<PQRI_Data>()[0].Value_Set : string.Empty;
-                            XMLInsertsb.Append(SubXMLLoadCATIStageThree(Loinc_Item_lst, item, objLoinc_Enc, sValueSetLoinc, HumanLst).ToString());
-                            //}
-                            //catch(Exception ex)
-                            //{
+                               IList<PQRIResultDTO> ilistPQRIsnomed = (objsnomedlsttemp.GroupBy(x => x.Value).Select(x => x.FirstOrDefault())).ToList<PQRIResultDTO>();
 
-                            //}
+                                // PQRI_Data snomed_Item_lst = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == item.MeasureName).ToList<PQRI_Data>()[0];
+
+
+
+                                sValueSetLoinc = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == Name).ToList<PQRI_Data>().Count > 0 ? lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == Name).ToList<PQRI_Data>()[0].Value_Set : string.Empty;
+                                XMLInsertsb.Append(SubXMLLoadCATIStageThreeLoinc(Loinc_Item_lst, item, objLoinc_Enc, sValueSetLoinc, HumanLst, ilistPQRIsnomed).ToString());
+
+
+                            }
                         }
-                        else
+
+                    }
+                    else
+                    {
+
+
+                        foreach (PQRIResultDTO item in objLoinclst)
                         {
-                            file.WriteLine(item.LoincIdentifier.Trim());
+                            if (lst_Pqri_Data.Any(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim()) && !Loinc.Any(a => a[0].Trim() == item.LoincIdentifier.Trim() && a[1].Trim() == item.EncounterID.ToString().Trim()))
+                            {
+                                //Loinc.Add(item.LoincIdentifier.Trim());
+                                //try
+                                //{
+                                Loinc.Add(new string[] { item.LoincIdentifier.Trim(), item.EncounterID.ToString().Trim() });
+                                PQRI_Data Loinc_Item_lst = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == item.MeasureName).ToList<PQRI_Data>()[0];
+                                Encounter objLoinc_Enc = EncList.Where(a => a.Id == item.EncounterID).ToList<Encounter>()[0];
+
+                                sValueSetLoinc = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == Name).ToList<PQRI_Data>().Count > 0 ? lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == item.LoincIdentifier.Trim() && a.NQF_Number == Name).ToList<PQRI_Data>()[0].Value_Set : string.Empty;
+                                XMLInsertsb.Append(SubXMLLoadCATIStageThree(Loinc_Item_lst, item, objLoinc_Enc, sValueSetLoinc, HumanLst).ToString());
+                                //}
+                                //catch(Exception ex)
+                                //{
+
+                                //}
+                            }
+                            else
+                            {
+                                file.WriteLine(item.LoincIdentifier.Trim());
+
+                            }
 
                         }
-
                     }
 
 
@@ -5155,9 +5213,38 @@ namespace Acurus.Capella.UI
                         }
                     }
 
+                    //snomedcode
+
+                    IList<string[]> ilistsnomed = new List<string[]>();
 
 
+                    IList<PQRIResultDTO> objsnomedlst = PQRIResultDTOList.Where(a => a.HumanID == Item_Human_ID && a.MeasureName == MeasureName.Key.Replace(" ", "") && a.EncounterID != 0 && a.Value.Trim() != string.Empty).ToList<PQRIResultDTO>();
+                    //if (MeasureName.Key == "CMS127N")
+                    //    objProclst = PQRIResultDTOList.Where(a => a.HumanID == Item_Human_ID && a.ProcedureCode.Trim() != string.Empty).ToList<PQRIResultDTO>();
 
+
+                    foreach (PQRIResultDTO item in objsnomedlst)
+                    {
+
+                        string[] sarray = item.Value.Trim().Split(',');
+
+                        for (int icount = 0; icount < sarray.Length; icount++)
+                        {
+
+                            if (lst_Pqri_Data.Any(a => a.PQRI_Value.Trim() == sarray[icount].Trim() && item.MeasureName == a.NQF_Number) && !ilistsnomed.Any(a => a[0].Trim() == sarray[icount].Trim() && a[1].Trim() == item.EncounterID.ToString().Trim()))
+                            {
+                                //Procedure.Add(item.ProcedureCode.Trim());
+                                ilistsnomed.Add(new string[] { sarray[icount].Trim(), item.EncounterID.ToString().Trim() });
+                                PQRI_Data Proc_Item_lst = lst_Pqri_Data.Where(a => a.PQRI_Value.Trim() == sarray[icount].Trim() && item.MeasureName == a.NQF_Number).ToList<PQRI_Data>()[0];
+                                Encounter objProc_Enc = EncList.Where(a => a.Id == item.EncounterID).ToList<Encounter>()[0];
+                                string sValueSet = string.Empty;
+
+                                XMLInsertsb.Append(SubXMLLoadCATIStageThree(Proc_Item_lst, item, objProc_Enc, sValueSet, HumanLst).ToString());
+
+
+                            }
+                        }
+                    }
 
 
 
@@ -7550,7 +7637,7 @@ namespace Acurus.Capella.UI
         //            break;
         //    }
         //    return SubXMLsb;
-        //}
+        //}_Snomed
 
         public StringBuilder SubXMLLoadCATIStageThree(PQRI_Data PQRI_Data_value, PQRIResultDTO PQRIResultDTO_Value, Encounter EncLst, string sValueSet, Human Humanlst)
         {
@@ -7570,41 +7657,94 @@ namespace Acurus.Capella.UI
             Loopsb = new StringBuilder();
             Loopsb.Append(objEncMainsb.ToString());
 
-            if(Loopsb.ToString().IndexOf(@"<time value=""{}""")>-1)
-            Loopsb.Insert(Loopsb.ToString().IndexOf(@"<time value=""{}""") + 13, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss")).Replace("{", "").Replace("}", "");
-           
-           if(Loopsb.ToString().IndexOf("<text>")>-1) 
-            Loopsb.Insert(Loopsb.ToString().IndexOf("<text>") + 6, PQRI_Data_value.Standard_concept);
-           if(Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""")>-1)
-            Loopsb.Insert(Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") + 22, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss")).Replace("{", "").Replace("}", "");
-            if(Loopsb.ToString().LastIndexOf(@"<code code=""{}""")>-1)
-            Loopsb.Insert(Loopsb.ToString().LastIndexOf(@"<code code=""{}""") + 13, PQRI_Data_value.PQRI_Value).Replace("{", "").Replace("}", "");
-           if( Loopsb.ToString().IndexOf(@"displayName=""{}""")>-1)
-            Loopsb.Insert(Loopsb.ToString().IndexOf(@"displayName=""{}""") + 14, PQRI_Data_value.PQRI_Description).Replace("{", "").Replace("}", "");
-            if(Loopsb.ToString().IndexOf(@"low value=""{}""")>-1)
-            Loopsb.Insert(Loopsb.ToString().IndexOf(@"low value=""{}""") + 12, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss")).Replace("{", "").Replace("}", "");
-            
-            if(Loopsb.ToString().IndexOf(@"high value=""{}""")>-1)
-            Loopsb.Insert(Loopsb.ToString().IndexOf(@"high value=""{}""") + 13, ConvertToLocal(EncLst.Date_of_Service).AddHours(1).ToString("yyyyMMddhhmmss")).Replace("{", "").Replace("}", "");
-           if(Loopsb.ToString().IndexOf(@"<value code=""{}""")>-1)
-            Loopsb.Insert(Loopsb.ToString().IndexOf(@"<value code=""{}""") + 14, PQRI_Data_value.PQRI_Value).Replace("{", "").Replace("}", ""); ;
-           if(Loopsb.ToString().LastIndexOf(@"code=""{}""")>-1)
-            Loopsb.Insert(Loopsb.ToString().LastIndexOf(@"code=""{}""") + 7, PQRI_Data_value.PQRI_Value).Replace("{", "").Replace("}", "");
+            if (Loopsb.ToString().IndexOf(@"<time value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"<time value=""{}""") + 13, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
 
-           if(Loopsb.ToString().IndexOf("valueSet=")>-1)
-            Loopsb.Insert(Loopsb.ToString().IndexOf("valueSet=") + 10, sValueSet);
+            if (Loopsb.ToString().IndexOf("<text>") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf("<text>") + 6, PQRI_Data_value.Standard_concept);
+            if (Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") + 22, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
+            if (Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") + 22, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
+            if (Loopsb.ToString().IndexOf(@"<code code=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"<code code=""{}""") + 12, PQRI_Data_value.PQRI_Value);
+            if (Loopsb.ToString().IndexOf(@"displayName=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"displayName=""{}""") + 13, PQRI_Data_value.PQRI_Description);
+            if (Loopsb.ToString().IndexOf(@"low value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"low value=""{}""") + 11, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
+            if (Loopsb.ToString().IndexOf(@"low value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"low value=""{}""") + 11, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
+
+            if (Loopsb.ToString().IndexOf(@"high value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"high value=""{}""") + 12, ConvertToLocal(EncLst.Date_of_Service).AddHours(1).ToString("yyyyMMddhhmmss"));
+            if (Loopsb.ToString().IndexOf(@"<value code=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"<value code=""{}""") + 13, PQRI_Data_value.PQRI_Value);
+            if (Loopsb.ToString().LastIndexOf(@"code=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().LastIndexOf(@"code=""{}""") + 6, PQRI_Data_value.PQRI_Value);
+
+            if (Loopsb.ToString().IndexOf("valueSet=") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf("valueSet=") + 10, sValueSet);
 
 
-           if(Loopsb.ToString().IndexOf("<originalText>")>-1)
-            Loopsb.Insert(Loopsb.ToString().IndexOf("<originalText>") + 14, PQRI_Data_value.PQRI_Description);
-           
-            AddEncountersb.AppendFormat(Loopsb.ToString());
+            if (Loopsb.ToString().IndexOf("<originalText>") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf("<originalText>") + 14, PQRI_Data_value.PQRI_Description);
+
+            AddEncountersb.AppendFormat(Loopsb.ToString().Replace("{}", ""));
+            SubXMLsb.Append(AddEncountersb.ToString());
+
+            return SubXMLsb;
+        }
+        public StringBuilder SubXMLLoadCATIStageThreeLoinc(PQRI_Data PQRI_Data_value, PQRIResultDTO PQRIResultDTO_Value,
+            Encounter EncLst, string sValueSet, Human Humanlst, IList<PQRIResultDTO> PQRI_Data_value_snomed)
+        {
+            IList<StaticLookup> objstaticlookup = new List<StaticLookup>();
+            StaticLookupManager stmMngr = new StaticLookupManager();
+            objstaticlookup = stmMngr.getStaticLookupByFieldNameAndValue("fobtsnomed", PQRI_Data_value_snomed[0].Value);
+
+            iRandomNo++;
+            StringBuilder SubXMLsb = new StringBuilder();
+            StringBuilder objEncMainsb;
+            StringBuilder AddEncountersb;
+            StringBuilder Loopsb;
+            var xDox = new XDocument();
+
+            xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\" + PQRI_Data_value.PQRI_Selection_XML));
+            objEncMainsb = new StringBuilder(xDox.ToString());
+            objEncMainsb.Remove(0, 157);
+            objEncMainsb.Remove(objEncMainsb.Length - 20, 20);
+            AddEncountersb = new StringBuilder();
+            Loopsb = new StringBuilder();
+            Loopsb.Append(objEncMainsb.ToString());
+
+
+            if (Loopsb.ToString().IndexOf(@"<time value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"<time value=""{}""") + 13, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
+            if (objstaticlookup.Count > 0)
+            {
+                if (Loopsb.ToString().IndexOf(@"displayName=""{}""") > -1)
+                    Loopsb.Insert(Loopsb.ToString().IndexOf(@"displayName=""{}""") + 13, objstaticlookup[0].Description);
+            }
+           if (Loopsb.ToString().IndexOf(@"code=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"code=""{}""") + 6, PQRI_Data_value.PQRI_Value);
+            if(Loopsb.ToString().IndexOf(@"code=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"code=""{}""") + 6, PQRI_Data_value.PQRI_Value);
+            if (Loopsb.ToString().LastIndexOf(@"code=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().LastIndexOf(@"code=""{}""") + 6, PQRI_Data_value_snomed[0].Value);
+            if (Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") + 22, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
+            if (Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf(@"<effectiveTime value=""{}""") + 22, ConvertToLocal(EncLst.Date_of_Service).ToString("yyyyMMddhhmmss"));
+
+            if (Loopsb.ToString().IndexOf("<text>") > -1)
+                Loopsb.Insert(Loopsb.ToString().IndexOf("<text>") + 6, PQRI_Data_value.Standard_concept);
+
+            AddEncountersb.AppendFormat(Loopsb.ToString().Replace("{}", ""));
             SubXMLsb.Append(AddEncountersb.ToString());
 
             return SubXMLsb;
         }
 
-
+        
         #endregion
 
         protected void btndownloadCATI_Click(object sender, EventArgs e)
