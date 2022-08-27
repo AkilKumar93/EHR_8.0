@@ -13210,7 +13210,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT enc.* FROM encounter enc where enc.encounter_id in(" + svalue +
-                    ") union all SELECT arc.* FROM encounter_arc arc  where arc.encounter_id in(" + svalue + ");").AddEntity("e", typeof(Encounter));
+                    ") and date_of_service!='0001-01-01 00:00:00' union all SELECT arc.* FROM encounter_arc arc  where arc.encounter_id in(" + svalue + ") and date_of_service!='0001-01-01 00:00:00';").AddEntity("e", typeof(Encounter));
                 ilstEncounter = sqlquery.List<Encounter>();
                 iMySession.Close();
             }

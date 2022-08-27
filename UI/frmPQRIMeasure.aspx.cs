@@ -781,6 +781,10 @@ namespace Acurus.Capella.UI
                     {
                         sLow = ConvertToLocal(EncLst.OrderBy(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMddhhmmss");
                         sHigh = ConvertToLocal(EncLst.OrderByDescending(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMddhhmmss");
+                        if (sLow.StartsWith("0001")==true)
+                        {
+                            sLow = sHigh;
+                        }
                     }
                     xmlReqNode = xmlDoc.GetElementsByTagName("low");
                     xmlReqNode[0].Attributes[0].Value = sLow;
@@ -1759,6 +1763,10 @@ namespace Acurus.Capella.UI
             // IList<Encounter> EncLst = objEncounterManager.GetEncoutnerListByPhyID((int)ClientSession.PhysicianId);
             string sLow = Convert.ToDateTime(dtpFromDate.SelectedDate).ToString("yyyyMMdd");
             string sHigh = Convert.ToDateTime(dtpToDate.SelectedDate).ToString("yyyyMMdd");
+            if (sLow.StartsWith("0001") == true)
+            {
+                sHigh = sLow;
+            }
             // string firstrdos = "";
             // string lastrdos = "";
 
@@ -2073,6 +2081,10 @@ namespace Acurus.Capella.UI
             {
                 sLow = ConvertToLocal(EncLst.OrderBy(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMddhhmmss");
                 sHigh = ConvertToLocal(EncLst.OrderByDescending(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMddhhmmss");
+                if (sLow.StartsWith("0001")==true)
+                {
+                    sLow = sHigh;
+                }
             }
             xmlReqNode = xmlDoc.GetElementsByTagName("low");
             xmlReqNode[0].Attributes[0].Value = sLow;
@@ -2298,7 +2310,9 @@ namespace Acurus.Capella.UI
 
             PQRI_DataManager objPQRI_DataManager = new PQRI_DataManager();
 
-            IList<PQRI_Data> resultlst = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("REFERENCE OBS ROOT ID_STAGE3", CMSName.Replace("_Population1", "").Replace("_Population2", "").Replace("_Population3", ""));
+
+            IList<PQRI_Data> resultlst = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("REFERENCE OBS ROOT ID_STAGE3", 
+                CMSName);
             string RootID = string.Empty;
 
 
@@ -2307,6 +2321,7 @@ namespace Acurus.Capella.UI
 
 
             //IntialPopulation
+
 
             StringBuilder objIPPsb = new StringBuilder();
             xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\IPPStage3.xml"));
@@ -2522,7 +2537,6 @@ namespace Acurus.Capella.UI
                 xAttributenull.Value = "NA";
                 xmlReqNode[0].Attributes.Append(xAttributenull);
             }
-            
 
 
 
@@ -2531,6 +2545,8 @@ namespace Acurus.Capella.UI
 
 
 
+            resultlst = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("REFERENCE OBS ROOT ID_STAGE3",
+               CMSName1);
 
             //IntialPopulation
 
@@ -2754,7 +2770,8 @@ namespace Acurus.Capella.UI
 
 
             //IntialPopulation
-
+            resultlst = objPQRI_DataManager.GetPQRIListByStandardConceptAndPQRIType("REFERENCE OBS ROOT ID_STAGE3",
+             CMSName2);
             objIPPsb = new StringBuilder();
             xDox = XDocument.Load(HttpContext.Current.Server.MapPath("SampleXML" + "\\IPPStage3.xml"));
             objIPPsb = new StringBuilder(xDox.ToString());
@@ -5781,6 +5798,10 @@ namespace Acurus.Capella.UI
                     {
                         sLow = ConvertToLocal(EncLst.OrderBy(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMddhhmmss");
                         sHigh = ConvertToLocal(EncLst.OrderByDescending(a => a.Date_of_Service).ToList<Encounter>()[0].Date_of_Service).ToString("yyyyMMddhhmmss");
+                        if (sLow.StartsWith("0001") == true)
+                        {
+                            sLow = sHigh;
+                        }
                     }
                     xmlReqNode = xmlDoc.GetElementsByTagName("low");
                     xmlReqNode[0].Attributes[0].Value = sLow;

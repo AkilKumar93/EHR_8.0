@@ -524,6 +524,8 @@
     <Content Include="SampleXML\Hemodialysis2.xml" />
     <Content Include="SampleXML\HighBPI10.xml" />
     <Content Include="SampleXML\Historyofbilateralmastectomy.xml" />
+    <Content Include="SampleXML\HospiceCare_Ambulatory.xml" />
+    <Content Include="SampleXML\Hospitalization_CMS130_CATI.xml" />
     <Content Include="SampleXML\HP_BP_NotPerformed_Cat1_Stage3.xml" />
     <Content Include="SampleXML\HP_Exception_Cat1_Stage3.xml" />
     <Content Include="SampleXML\HP_Exception_Snomed_Cat1_Stage3.xml" />

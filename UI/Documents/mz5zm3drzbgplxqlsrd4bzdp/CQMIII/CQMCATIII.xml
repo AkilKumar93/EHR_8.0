@@ -14,7 +14,7 @@
   <title>QRDA Category III Calculated Summary report</title>
   <!-- This is the document creation time -->
   <!--Acurus-Generated Date and Time-->
-  <effectiveTime value="20220826" />
+  <effectiveTime value="20220827" />
   <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" />
   <languageCode code="en" />
   <!-- SHOULD The version of the file being submitted. -->
@@ -27,7 +27,7 @@
   </recordTarget>
   <!-- Software author example-->
   <author>
-    <time value="20220826" />
+    <time value="20220827" />
     <!-- Generated Date-->
     <assignedAuthor>
       <!-- author ID. This may be an NPI, or any other type of ID. -->
@@ -47,7 +47,7 @@
   <!-- Example of an author who is a device -->
   <author>
     <!--Acurus-Generated Date and Time in the format yyyymmddhhmmss-->
-    <time value="20220826" />
+    <time value="20220827" />
     <assignedAuthor>
       <!--Acurus-Provider NPI from Physician library for the Provider chosen in the Measure Calculator screen-->
       <id root="2.16.840.1.113883.4.6" extension="1821058470" assigningAuthorityName="NPI" />
@@ -96,7 +96,7 @@
   </informationRecipient>
   <legalAuthenticator>
     <!--Acurus-Generated Date and Time-->
-    <time value="20220826" />
+    <time value="20220827" />
     <signatureCode code="S" />
     <assignedEntity>
       <id root="bc01a5d1-3a34-4286-82cc-43eb04c972a7" />
@@ -1257,10 +1257,10 @@
             <!-- Year range Reporting Period -->
             <list>
               <item>
-                <content styleCode="Bold">Performance Rate</content>: 22.22%
+                <content styleCode="Bold">Performance Rate</content>: 28.57%
     </item>
               <item>
-                <content styleCode="Bold">Reporting Rate</content>: 22.22%
+                <content styleCode="Bold">Reporting Rate</content>: 28.57%
     </item>
               <item>
                 <content styleCode="Bold">Initial Patient Population</content>: 10
@@ -1280,18 +1280,18 @@
         </item><item><content styleCode="Bold">Zipcode 91767</content>: 0
         </item></list></item>
               <item>
-                <content styleCode="Bold">Denominator</content>: 9
-      <list><item><content styleCode="Bold">Male</content>: 2
-        </item><item><content styleCode="Bold">Female</content>: 7
-        </item><item><content styleCode="Bold">Not Hispanic or Latino</content>: 4
-        </item><item><content styleCode="Bold">Hispanic or Latino</content>: 5
-        </item><item><content styleCode="Bold">Black</content>: 3
-        </item><item><content styleCode="Bold">White</content>: 2
+                <content styleCode="Bold">Denominator</content>: 7
+      <list><item><content styleCode="Bold">Male</content>: 1
+        </item><item><content styleCode="Bold">Female</content>: 6
+        </item><item><content styleCode="Bold">Not Hispanic or Latino</content>: 3
+        </item><item><content styleCode="Bold">Hispanic or Latino</content>: 4
+        </item><item><content styleCode="Bold">Black</content>: 2
+        </item><item><content styleCode="Bold">White</content>: 1
         </item><item><content styleCode="Bold">Asian</content>: 3
         </item><item><content styleCode="Bold">Declined to specify</content>: 0
         </item><item><content styleCode="Bold">Native Hawaiian or Other Pacific Islander</content>: 1
         </item><item><content styleCode="Bold">American Indian or Alaska Native</content>: 0
-        </item><item><content styleCode="Bold">Payer - Medicare</content>: 9
+        </item><item><content styleCode="Bold">Payer - Medicare</content>: 7
         </item><item><content styleCode="Bold">Payer - Medicaid</content>: 0
         </item><item><content styleCode="Bold">Payer - Other</content>: 0
         </item><item><content styleCode="Bold">Zipcode 91767</content>: 0
@@ -1314,18 +1314,18 @@
         </item><item><content styleCode="Bold">Zipcode 91767</content>: 0
         </item></list></item>
               <item>
-                <content styleCode="Bold">Denominator Exclusions</content>: 1
-      <list><item><content styleCode="Bold">Male</content>: 1
-        </item><item><content styleCode="Bold">Female</content>: 0
-        </item><item><content styleCode="Bold">Not Hispanic or Latino</content>: 1
-        </item><item><content styleCode="Bold">Hispanic or Latino</content>: 0
-        </item><item><content styleCode="Bold">Black</content>: 0
-        </item><item><content styleCode="Bold">White</content>: 0
+                <content styleCode="Bold">Denominator Exclusions</content>: 3
+      <list><item><content styleCode="Bold">Male</content>: 2
+        </item><item><content styleCode="Bold">Female</content>: 1
+        </item><item><content styleCode="Bold">Not Hispanic or Latino</content>: 2
+        </item><item><content styleCode="Bold">Hispanic or Latino</content>: 1
+        </item><item><content styleCode="Bold">Black</content>: 1
+        </item><item><content styleCode="Bold">White</content>: 1
         </item><item><content styleCode="Bold">Asian</content>: 1
         </item><item><content styleCode="Bold">Declined to specify</content>: 0
         </item><item><content styleCode="Bold">Native Hawaiian or Other Pacific Islander</content>: 0
         </item><item><content styleCode="Bold">American Indian or Alaska Native</content>: 0
-        </item><item><content styleCode="Bold">Payer - Medicare</content>: 1
+        </item><item><content styleCode="Bold">Payer - Medicare</content>: 3
         </item><item><content styleCode="Bold">Payer – Medicaid</content>: 0
         </item><item><content styleCode="Bold">Payer - Other</content>: 0
         </item><item><content styleCode="Bold">Zipcode 91767</content>: 0
@@ -4446,7 +4446,7 @@ numerator in the referenced eMeasure. -->
                   <!--reference to the relevant population in the eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="05318779-D67D-47E0-809E-A1F9A5A6879A" />
+                      <id root="DEA865F7-987D-470B-8ABA-6A86F3F6AE1D" />
                       <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
                       <!--CMS130v10 Population ID
 	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
@@ -4626,7 +4626,7 @@ numerator in the referenced eMeasure. -->
                   <!--reference to the relevant population in the eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="DB2DA60D-0EF4-4D8B-9EC8-C25BB0FB2A27" />
+                      <id root="51A24760-470A-432B-829D-30099334C6B1" />
                       <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
                       <!--CMS130v10 Population ID
 	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
@@ -4804,7 +4804,7 @@ numerator in the referenced eMeasure. -->
                   <!--reference to the relevant population in the eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="9D92F4D0-8B7D-480C-BAF0-4B2774BEC1EE" />
+                      <id root="24C1699B-1030-4FF7-9AAC-E776B39BD91B" />
                       <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
                       <!--CMS130v10 Population ID
 	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
@@ -4982,7 +4982,7 @@ numerator in the referenced eMeasure. -->
                   <!--reference to the relevant population in the eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="B8E0647F-F111-4DC5-B716-E47DDBE5EAB6" />
+                      <id root="3F50FAD1-B4D1-4058-80B2-AA37633B4B51" />
                       <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
                       <!--CMS130v10 Population ID
 	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
@@ -5160,7 +5160,7 @@ numerator in the referenced eMeasure. -->
                   <!--reference to the relevant population in the eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="05318779-D67D-47E0-809E-A1F9A5A6879A" />
+                      <id root="7B5F16D7-4F1A-4313-A305-EB8685E8510C" />
                       <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
                       <!--CMS130v10 Population ID
 	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
@@ -5340,7 +5340,7 @@ numerator in the referenced eMeasure. -->
                   <!--reference to the relevant population in the eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="DB2DA60D-0EF4-4D8B-9EC8-C25BB0FB2A27" />
+                      <id root="8DB29C6C-F3BC-4E31-AA2E-88DD40A58745" />
                       <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
                       <!--CMS130v10 Population ID
 	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
@@ -5518,7 +5518,7 @@ numerator in the referenced eMeasure. -->
                   <!--reference to the relevant population in the eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="9D92F4D0-8B7D-480C-BAF0-4B2774BEC1EE" />
+                      <id root="DB239C8F-AD12-4B6D-86EA-7E0195B9B44C" />
                       <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
                       <!--CMS130v10 Population ID
 	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
@@ -5696,7 +5696,7 @@ numerator in the referenced eMeasure. -->
                   <!--reference to the relevant population in the eMeasure-->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
-                      <id root="B8E0647F-F111-4DC5-B716-E47DDBE5EAB6" />
+                      <id root="640B98A5-88BC-4379-B826-3A6FC748781F" />
                       <!--This is the population ID in the eMeasure.In this case, the IPP/NUMER/DENOM/DENEX/DENEXCEP-->
                       <!--CMS130v10 Population ID
 	  IPOP: 17503C2D-5201-451F-8B59-6E8D0C1F06E2
@@ -11407,7 +11407,7 @@ numerator in the referenced eMeasure. -->
                   <code code="72510-1" codeSystem="2.16.840.1.113883.6.1" displayName="Performance Rate" codeSystemName="2.16.840.1.113883.6.1" />
                   <statusCode code="completed" />
                   <!--Acurus- Get the Performance Rate for the measure here-->
-                  <value xsi:type="REAL" value="0.222222" />
+                  <value xsi:type="REAL" value="0.285714" />
                   <!-- This is the reference to the Numerator in the eMeasure -->
                   <reference typeCode="REFR">
                     <externalObservation classCode="OBS" moodCode="EVN">
@@ -11758,7 +11758,7 @@ numerator in the referenced eMeasure. -->
                       <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
                       <statusCode code="completed" />
                       <!--Acurus-Total Count for the  DENOMINATOR of the measure-->
-                      <value xsi:type="INT" value="9" />
+                      <value xsi:type="INT" value="7" />
                       <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
                     </observation>
                   </entryRelationship>
@@ -11783,7 +11783,7 @@ numerator in the referenced eMeasure. -->
                           <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
                           <statusCode code="completed" />
                           <!--Acurus-Total Count for the Chosen Sex-->
-                          <value xsi:type="INT" value="2" />
+                          <value xsi:type="INT" value="1" />
                           <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
                         </observation>
                       </entryRelationship>
@@ -11810,7 +11810,7 @@ numerator in the referenced eMeasure. -->
                           <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
                           <statusCode code="completed" />
                           <!--Acurus-Total Count for the Chosen Sex-->
-                          <value xsi:type="INT" value="7" />
+                          <value xsi:type="INT" value="6" />
                           <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
                         </observation>
                       </entryRelationship>
@@ -11837,7 +11837,7 @@ numerator in the referenced eMeasure. -->
                           <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
                           <statusCode code="completed" />
                           <!--Acurus-Total Count for the Chosen Ethinicity-->
-                          <value xsi:type="INT" value="4" />
+                          <value xsi:type="INT" value="3" />
                           <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
                         </observation>
                       </entryRelationship>
@@ -11864,7 +11864,7 @@ numerator in the referenced eMeasure. -->
                           <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
                           <statusCode code="completed" />
                           <!--Acurus-Total Count for the Chosen Ethinicity-->
-                          <value xsi:type="INT" value="5" />
+                          <value xsi:type="INT" value="4" />
                           <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
                         </observation>
                       </entryRelationship>
@@ -11918,7 +11918,7 @@ numerator in the referenced eMeasure. -->
                           <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
                           <statusCode code="completed" />
                           <!--Acurus-Total Count for the Chosen RAce-->
-                          <value xsi:type="INT" value="2" />
+                          <value xsi:type="INT" value="1" />
                           <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
                         </observation>
                       </entryRelationship>
@@ -11945,7 +11945,7 @@ numerator in the referenced eMeasure. -->
                           <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
                           <statusCode code="completed" />
                           <!--Acurus-Total Count for the Chosen RAce-->
-                          <value xsi:type="INT" value="3" />
+                          <value xsi:type="INT" value="2" />
                           <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
                         </observation>
                       </entryRelationship>
@@ -12003,7 +12003,7 @@ numerator in the referenced eMeasure. -->
                           <code code="MSRAGG" displayName="rate aggregation" codeSystem="2.16.840.1.113883.5.4" codeSystemName="ActCode" />
                           <statusCode code="completed" />
                           <!--Acurus-Total Count for the Chosen Payer code-->
-                          <value xsi:type="INT" value="6" />
+                          <value xsi:type="INT" value="4" />
                           <methodCode code="COUNT" displayName="Count" codeSystem="2.16.840.1.113883.5.84" codeSystemName="ObservationMethod" />
                         </observation>
                       </entryRelationship>

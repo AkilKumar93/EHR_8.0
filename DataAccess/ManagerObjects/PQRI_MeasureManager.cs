@@ -13510,6 +13510,7 @@ and b.Encounter_ID in (:EncIds)";
                 IList<ulong> ulEncList130_DEnominator = new List<ulong>();
                 IList<ulong> ulEncList130_DEnominator1 = new List<ulong>();
                 IList<ulong> ulEncList130 = new List<ulong>();
+                IList<ulong> ulHosEncList130 = new List<ulong>();
                 if (Enc_Denominator_lst130 != null && Enc_Denominator_lst130.Count > 0)
                 {
                     for (int i = 0; i < Enc_Denominator_lst130.Count; i++)
@@ -13541,6 +13542,44 @@ and b.Encounter_ID in (:EncIds)";
 
                         }
                     }
+
+
+
+
+
+                    IQuery EncounterExlusionhosquery130 = iMySession.GetNamedQuery("PQRI.GetExceptionHosCMS130.ColorectalCancer");
+                    EncounterExlusionhosquery130.SetParameterList("EncIds", ulEncList130_DEnominator.ToArray());
+
+                    EncounterExlusionhosquery130.SetParameter(0, Fromdate.ToString("yyyy-MM-dd"));
+                    EncounterExlusionhosquery130.SetParameter(1, Todate.ToString("yyyy-MM-dd"));
+
+                    EncounterExlusionhosquery130.SetParameter(2, Fromdate.ToString("yyyy-MM-dd"));
+                    EncounterExlusionhosquery130.SetParameter(3, Todate.ToString("yyyy-MM-dd"));
+
+                    //EncounterExlusionquery130.SetParameter(2, "CMS130v10");
+
+                    //EncounterExlusionquery130.SetParameter(3, "Exclusion");
+                    Enc_Exclusion_lst130 = new ArrayList(EncounterExlusionhosquery130.List());
+                   // lstEncList68 = new List<Encounter>();
+                   
+                    
+                    if (Enc_Exclusion_lst130 != null && Enc_Exclusion_lst130.Count > 0)
+                    {
+                        for (int i = 0; i < Enc_Exclusion_lst130.Count; i++)
+                        {
+                            Encounter obj = new Encounter();
+                            object[] objEnc = (object[])Enc_Exclusion_lst130[i];
+                            obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
+                            obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
+                            ulEncList130_exception.Add(Convert.ToUInt32(objEnc[1]));
+                            ulHosEncList130.Add(obj.Encounter_ID);
+
+                            lstEncList68.Add(obj);
+
+                        }
+                    }
+
+
 
 
                     ArrayList Enc_Exclusion_lstFrailtyCMS130 = new ArrayList();
@@ -13655,6 +13694,10 @@ and b.Encounter_ID in (:EncIds)";
                             if (objEnc[4] != null)
                             {
                                 snomed_code = objEnc[4].ToString();
+                            }
+                            if (ulHosEncList130.Contains(Convert.ToUInt64(objEnc[0])) == true)
+                            {
+                                snomed_code = "32485007";
                             }
                             string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, snomed_code, "", "", "CMS130DE", "CMS130v10" };
                             icdcptListDenominatorException.Add(ary);
