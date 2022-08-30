@@ -26,7 +26,6 @@ namespace Acurus.Capella.PatientPortal
         public static IList<FacilityLibrary> facilityLibraryList = null;
         public static IList<ProcessMaster> processMasterList = null;
         public static IList<Element> elementList = null;
-        public static IList<Rcopia_Settings> RCopiaSettingsList = null;
         public static string macAddress = string.Empty;
     }
 }
