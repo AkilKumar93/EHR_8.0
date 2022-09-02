@@ -14624,9 +14624,9 @@ select distinct encounter_id,human_id from care_plan where care_name_value in ('
 
 	</sql-query>
 		<sql-query name="PQRI.GetExceptionHosCMS130.ColorectalCancer">
-			<![CDATA[select distinct b.encounter_id ,b.human_id from  
- hospitalization b 
-where    if(length(`from_date`)=8,date_format(str_to_date(`from_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`from_date`,'%d-%b-%Y'))
+			<![CDATA[select distinct b.encounter_id ,b.human_id,ifnull(s.description,'') from  
+ hospitalization b left join static_lookup  as s on s.value=b.Reason_for_hospitalization
+where s.field_name='REASON FOR HOSPITALIZATION' and   if(length(`from_date`)=8,date_format(str_to_date(`from_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`from_date`,'%d-%b-%Y'))
 		between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31') and 
 		 if(length(`to_date`)=8,date_format(str_to_date(`to_date`,'%d-%b-%Y'),'%Y-%m-01'),str_to_date(`to_date`,'%d-%b-%Y'))
 		between (DATE_FORMAT(?,'%Y-01-01')) and DATE_FORMAT(?,'%Y-12-31')  and human_id in (:EncIds)

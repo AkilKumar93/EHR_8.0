@@ -454,7 +454,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             ArrayList NumTobaccoList = null;
                             ArrayList NumeratorEmList = null;
-                           // ArrayList NumeratorHumanList = null;
+                            // ArrayList NumeratorHumanList = null;
                             if (EncounterList != null && EncounterList.Count > 0)
                             {
                                 IQuery query = iMySession.GetNamedQuery("PQRI.Get.0028a.Numerator.Pqri.encounter_id");
@@ -510,7 +510,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                     }
                                 }
-                            } break;
+                            }
+                            break;
                         }
                     case "0028bN":
                         {
@@ -660,7 +661,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     case "0031D":
                         {
-                           // ArrayList AssessmentLIst = null;
+                            // ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             if (EncounterList != null && EncounterList.Count > 0)
                             {
@@ -762,7 +763,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     case "0041N":
                         {
-                           // ArrayList AssessmentLIst = null;
+                            // ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             ArrayList MedicationList = null;
                             if (EncounterList != null && EncounterList.Count > 0)
@@ -790,7 +791,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     case "0041D":
                         {
-                           // ArrayList AssessmentLIst = null;
+                            // ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             if (EncounterList != null && EncounterList.Count > 0)
                             {
@@ -1168,7 +1169,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     case "0056D":
                         {
 
-                           // int iExclusionCount = 0; int iDenominatorCount = 0;
+                            // int iExclusionCount = 0; int iDenominatorCount = 0;
                             ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             ArrayList MedicationList = null;
@@ -1290,7 +1291,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
-                           // ArrayList MedicationList = null;
+                            // ArrayList MedicationList = null;
                             if (EncounterList != null && EncounterList.Count > 0)
                             {
                                 IQuery Assessmentquery = iMySession.GetNamedQuery("PQRI.Get.0043.Denominator.Assessment");
@@ -1748,7 +1749,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     case "0038bN":
                         {
 
-                          //  ArrayList AssessmentLIst = null;
+                            //  ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             ArrayList MedicationList = null;
                             ArrayList AllergyList = null;
@@ -1889,7 +1890,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     case "0038eN":
                         {
-                           // ArrayList AssessmentLIst = null;
+                            // ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             ArrayList MedicationList = null;
                             ArrayList AllergyList = null;
@@ -1980,7 +1981,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     case "0038gN":
                         {
 
-                           // ArrayList AssessmentLIst = null;
+                            // ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             ArrayList MedicationList = null;
                             ArrayList AllergyList = null;
@@ -2068,7 +2069,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     case "0038iN":
                         {
-                           // ArrayList AssessmentLIst = null;
+                            // ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             ArrayList MedicationList = null;
                             ArrayList AllergyList = null;
@@ -2165,7 +2166,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     case "0038kN":
                         {
 
-                           // ArrayList AssessmentLIst = null;
+                            // ArrayList AssessmentLIst = null;
                             ArrayList EmList = null;
                             ArrayList MedicationList = null;
                             ArrayList AllergyList = null;
@@ -2223,7 +2224,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             int iNumeratorResultCount = 0;
 
-           // int iExclusion = 0;
+            // int iExclusion = 0;
             int iDenominarorResultCount = 0;
             //int iResultCount = 0;
             int iD1Count1 = 0;
@@ -2434,7 +2435,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             ArrayList PqriList = null;
                             ArrayList NumeratorEmList = null;
-                           // ArrayList NumeratorHumanList = null;
+                            // ArrayList NumeratorHumanList = null;
                             if (EncounterList != null && EncounterList.Count > 0)
                             {
                                 IQuery query = iMySession.GetNamedQuery("PQRI.Get.0421.Numerator1.Pqri.encounter_id");
@@ -2463,7 +2464,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             ArrayList PqriList = null;
                             ArrayList NumeratorEmList = null;
-                           // ArrayList NumeratorHumanList = null;
+                            // ArrayList NumeratorHumanList = null;
                             if (EncounterList != null && EncounterList.Count > 0)
                             {
                                 IQuery query = iMySession.GetNamedQuery("PQRI.Get.0421.Numerator2.Pqri.encounter_id");
@@ -2492,7 +2493,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
 
                             ArrayList NumeratorEmList = null;
-                           // ArrayList NumeratorHumanList = null;
+                            // ArrayList NumeratorHumanList = null;
                             if (EncounterList != null && EncounterList.Count > 0)
                             {
 
@@ -10083,7 +10084,7 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                                 snomed = objEnc[4].ToString();
                             }
 
-                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), snomed, "",  "", "CMS147DEX", "CMS147v11" };
+                            string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[3].ToString(), snomed, "", "", "CMS147DEX", "CMS147v11" };
                             ulEncList147.Add(Convert.ToUInt32(objEnc[1].ToString()));
                             icdcptListDenominatorException.Add(ary);
                             lstEncList68.Add(obj);
@@ -10883,7 +10884,7 @@ and b.Encounter_ID in (:EncIds)";
                         lstEncList68.Add(obj);
 
                     }
-                  
+
                     if (lstEncList68.Count > 0)
                     {
                         var lists = (from m in lstEncList68
@@ -10898,7 +10899,7 @@ and b.Encounter_ID in (:EncIds)";
 
 
                 //Numerator
-              
+
                 if (Enc_Denominator_lst130_1 != null && Enc_Denominator_lst130_1.Count > 0)
                 {
                     //for (int i = 0; i < Enc_Denominator_lst130_1.Count; i++)
@@ -10911,9 +10912,9 @@ and b.Encounter_ID in (:EncIds)";
 
 
 
-                  //  Encounterumeratorquery130.SetParameter(12, "CMS130v10");
+                    //  Encounterumeratorquery130.SetParameter(12, "CMS130v10");
 
-                   // Encounterumeratorquery130.SetParameter(13, "Numerator");
+                    // Encounterumeratorquery130.SetParameter(13, "Numerator");
 
                     Encounterumeratorquery130.SetParameterList("EncIds", ulEncList130.ToArray());
 
@@ -10997,7 +10998,7 @@ and b.Encounter_ID in (:EncIds)";
                     ArrayList Enc_Numerato5_lst130 = new ArrayList(Encounterumerator5query130.List());
 
 
-                     Enc_Numerator_lst130.AddRange(Enc_Numerator1_lst130);
+                    Enc_Numerator_lst130.AddRange(Enc_Numerator1_lst130);
                     Enc_Numerator_lst130.AddRange(Enc_Numerator2_lst130);
                     Enc_Numerator_lst130.AddRange(Enc_Numerato3_lst130);
                     Enc_Numerator_lst130.AddRange(Enc_Numerato4_lst130);
@@ -11006,7 +11007,7 @@ and b.Encounter_ID in (:EncIds)";
 
 
                     lstEncList68 = new List<Encounter>();
-                   
+
 
 
                     for (int i = 0; i < Enc_Numerator_lst130.Count; i++)
@@ -11016,7 +11017,7 @@ and b.Encounter_ID in (:EncIds)";
 
                         obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                         obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
-                       
+
                         string loinc = "";
                         if (objEnc[2] != null)
                         {
@@ -11130,7 +11131,7 @@ and b.Encounter_ID in (:EncIds)";
             string Percentage = string.Empty;
             string cleared = string.Empty;
             if (Numerator != 0 && Denominator != 0)
-                Percentage = Convert.ToString(Decimal.Round(((Convert.ToDecimal(Numerator) / (Convert.ToDecimal(Denominator)))*100), 2));
+                Percentage = Convert.ToString(Decimal.Round(((Convert.ToDecimal(Numerator) / (Convert.ToDecimal(Denominator))) * 100), 2));
             else
                 Percentage = "0";
 
@@ -11350,7 +11351,7 @@ and b.Encounter_ID in (:EncIds)";
 
                 PQRIlst.Add(NumeratorandDenominatorCalculationforCMSStageThree(Denominator, Numerator, DenominatorExclusion, DenominatorException, "68v11", icdcptListNumerator, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, PQRIMeasureList));
 
-                LoadCQMList(Fromdate.Year.ToString(), sLegalOrg, "68v11", ulPhysicianID, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, icdcptListNumerator, PQRIMeasureList,Numerator,Denominator, DenominatorExclusion,DenominatorException);
+                LoadCQMList(Fromdate.Year.ToString(), sLegalOrg, "68v11", ulPhysicianID, icdcptListDenominator, icdcptListDenominatorExclusion, icdcptListDenominatorException, icdcptListNumerator, PQRIMeasureList, Numerator, Denominator, DenominatorExclusion, DenominatorException);
 
                 Numerator = 0;
                 Denominator = 0;
@@ -13303,7 +13304,7 @@ and b.Encounter_ID in (:EncIds)";
                             ulEncListExclusion22.Add(Convert.ToUInt32(Enc_Exclusion_lst22[i]));
                         }
                     }
-                   // DenominatorExclusion = Enc_Exclusion_lst22.Count;
+                    // DenominatorExclusion = Enc_Exclusion_lst22.Count;
                 }
 
                 //Enc_Exclusion_lst22 = new ArrayList(EncounterExclusionquery22.List());
@@ -13510,7 +13511,7 @@ and b.Encounter_ID in (:EncIds)";
                 IList<ulong> ulEncList130_DEnominator = new List<ulong>();
                 IList<ulong> ulEncList130_DEnominator1 = new List<ulong>();
                 IList<ulong> ulEncList130 = new List<ulong>();
-                IList<ulong> ulHosEncList130 = new List<ulong>();
+                IList<string> ulHosEncList130 = new List<string>();
                 if (Enc_Denominator_lst130 != null && Enc_Denominator_lst130.Count > 0)
                 {
                     for (int i = 0; i < Enc_Denominator_lst130.Count; i++)
@@ -13560,9 +13561,9 @@ and b.Encounter_ID in (:EncIds)";
 
                     //EncounterExlusionquery130.SetParameter(3, "Exclusion");
                     Enc_Exclusion_lst130 = new ArrayList(EncounterExlusionhosquery130.List());
-                   // lstEncList68 = new List<Encounter>();
-                   
-                    
+                    // lstEncList68 = new List<Encounter>();
+
+
                     if (Enc_Exclusion_lst130 != null && Enc_Exclusion_lst130.Count > 0)
                     {
                         for (int i = 0; i < Enc_Exclusion_lst130.Count; i++)
@@ -13572,7 +13573,7 @@ and b.Encounter_ID in (:EncIds)";
                             obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                             obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
                             ulEncList130_exception.Add(Convert.ToUInt32(objEnc[1]));
-                            ulHosEncList130.Add(obj.Encounter_ID);
+                            ulHosEncList130.Add(objEnc[0].ToString() + "|" + objEnc[2].ToString());
 
                             lstEncList68.Add(obj);
 
@@ -13695,10 +13696,17 @@ and b.Encounter_ID in (:EncIds)";
                             {
                                 snomed_code = objEnc[4].ToString();
                             }
-                            if (ulHosEncList130.Contains(Convert.ToUInt64(objEnc[0])) == true)
-                            {
-                                snomed_code = "32485007";
-                            }
+                          //  if (ulHosEncList130.Contains((objEnc[0]).ToString()) == true)
+                            //{
+                                for (int h = 0; h < ulHosEncList130.Count; h++)
+                                {
+                                    if (ulHosEncList130[h].Split('|')[0].ToString()==objEnc[0].ToString())
+                                    {
+                                        snomed_code = ulHosEncList130[h].ToString().Split('|')[1];// "32485007";
+                                        break;
+                                    }
+                                }
+                            //}
                             string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, snomed_code, "", "", "CMS130DE", "CMS130v10" };
                             icdcptListDenominatorException.Add(ary);
 
@@ -13876,7 +13884,7 @@ and b.Encounter_ID in (:EncIds)";
                     Enc_Numerator_lst130.AddRange(Enc_Numerato4_lst130);
                     Enc_Numerator_lst130.AddRange(Enc_Numerato5_lst130);
                     Enc_Numerator_lst130.AddRange(Enc_Numerato6_lst130);
-                    
+
 
                     lstEncList68 = new List<Encounter>();
 
@@ -13900,7 +13908,7 @@ and b.Encounter_ID in (:EncIds)";
                         {
                             sSnomed = objEnc[3].ToString();
                         }
-                            lstEncList68.Add(obj);
+                        lstEncList68.Add(obj);
                         string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", "", "", loinc, sSnomed, "CMS130N", "", "", "CMS130v10" };
                         icdcptListNumerator.Add(ary);
 
@@ -13934,7 +13942,7 @@ and b.Encounter_ID in (:EncIds)";
             return PQRIlst;
         }
 
-        public void LoadCQMList(string sYear, string sLegalOrg, string sMeasureNumber, ulong ulPhyID, IList<string[]> icdcptListDenominator, IList<string[]> icdcptListDenominatorExclusion, IList<string[]> icdcptListDenominatorException, IList<string[]> icdcptListNumerator, IList<PQRI_Measure> PQRIMeasureList,int Numerator,int Denominator,int Exclusion,int Exception)
+        public void LoadCQMList(string sYear, string sLegalOrg, string sMeasureNumber, ulong ulPhyID, IList<string[]> icdcptListDenominator, IList<string[]> icdcptListDenominatorExclusion, IList<string[]> icdcptListDenominatorException, IList<string[]> icdcptListNumerator, IList<PQRI_Measure> PQRIMeasureList, int Numerator, int Denominator, int Exclusion, int Exception)
         {
             IList<CQMDetail> ilstCQMDetail = new List<CQMDetail>();
             CQMDetailManager cqmDetailMngr = new CQMDetailManager();
@@ -13971,7 +13979,7 @@ and b.Encounter_ID in (:EncIds)";
             objCQMSummary.Denominator_Exclusion = Exclusion;
             objCQMSummary.Denominator_Exception = Exception;
             objCQMSummary.Numerator = Numerator;
-            objCQMSummary.Initial_Population = Denominator+ Exception+ Exclusion;
+            objCQMSummary.Initial_Population = Denominator + Exception + Exclusion;
             objCQMSummary.Numerator_Exclusion = 0;
             objCQMSummary.Legal_Org = sLegalOrg;
             objCQMSummary.Physician_ID = ulPhyID;
@@ -13979,7 +13987,7 @@ and b.Encounter_ID in (:EncIds)";
             string Percentage = string.Empty;
             string cleared = string.Empty;
             if (objCQMSummary.Numerator != 0 && objCQMSummary.Denominator != 0)
-                objCQMSummary.Rate = Decimal.Round(((Convert.ToDecimal(objCQMSummary.Numerator) / (Convert.ToDecimal(objCQMSummary.Denominator))) ), 6);
+                objCQMSummary.Rate = Decimal.Round(((Convert.ToDecimal(objCQMSummary.Numerator) / (Convert.ToDecimal(objCQMSummary.Denominator)))), 6);
             else
                 objCQMSummary.Rate = 0;
             ilstCQMSummary.Add(objCQMSummary);
@@ -14058,7 +14066,7 @@ and b.Encounter_ID in (:EncIds)";
             cqmDetailMngr.AppendCQMDetail(ilstCQMDetail, String.Empty);
 
 
-            
+
 
         }
     }
