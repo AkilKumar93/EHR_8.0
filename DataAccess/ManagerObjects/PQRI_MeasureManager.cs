@@ -13573,7 +13573,7 @@ and b.Encounter_ID in (:EncIds)";
                             obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                             obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
                             ulEncList130_exception.Add(Convert.ToUInt32(objEnc[1]));
-                            ulHosEncList130.Add(objEnc[0].ToString() + "|" + objEnc[2].ToString());
+                            ulHosEncList130.Add(objEnc[1].ToString() + "|" + objEnc[2].ToString());
 
                             lstEncList68.Add(obj);
 
@@ -13700,11 +13700,19 @@ and b.Encounter_ID in (:EncIds)";
                             //{
                                 for (int h = 0; h < ulHosEncList130.Count; h++)
                                 {
-                                    if (ulHosEncList130[h].Split('|')[0].ToString()==objEnc[0].ToString())
+                                    if (ulHosEncList130[h].Split('|')[0].ToString()==objEnc[1].ToString())
+                                    {
+                                    if (snomed_code == String.Empty)
                                     {
                                         snomed_code = ulHosEncList130[h].ToString().Split('|')[1];// "32485007";
-                                        break;
+
                                     }
+                                    else
+                                    {
+                                        snomed_code = snomed_code +","+ulHosEncList130[h].ToString().Split('|')[1];// 
+                                    }
+                                    break;
+                                }
                                 }
                             //}
                             string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, cpt, snomed_code, "", "", "CMS130DE", "CMS130v10" };

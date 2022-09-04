@@ -14638,7 +14638,7 @@ where s.field_name='REASON FOR HOSPITALIZATION' and   if(length(`from_date`)=8,d
 	<sql-query name="PQRI.GetException1CMS130.ColorectalCancer">
 		<![CDATA[select distinct em.encounter_id,em.human_id,c.ICD,em.procedure_code,cp.snomed_code from e_m_coding em
 left join assessment c on em.encounter_id=c.encounter_id left join care_plan cp on em.encounter_id=cp.encounter_id where em.human_id in (:EncIds); ]]>
-	</sql-query>
+</sql-query>
 	<sql-query name="PQRI.GetDenominator2CMS130.ColorectalCancer">
 		<![CDATA[select e.encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id=em.encounter_id
 where e.human_id in (:EncIds); ]]>
