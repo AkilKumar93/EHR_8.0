@@ -4549,8 +4549,8 @@ namespace Acurus.Capella.UI
                 string MeasureName = e.Item.Cells[2].Text;
                 string Num_Count = e.Item.Cells[8].Text;
                 string Den_Count = e.Item.Cells[5].Text;
-                string Num_Human_id = e.Item.Cells[14].Text;
-                string Den_Human_id = e.Item.Cells[13].Text;
+                string Num_Human_id = e.Item.Cells[15].Text;
+                string Den_Human_id = e.Item.Cells[14].Text;
                 if (Den_Human_id == string.Empty)
                     Den_Human_id = "0";
                 Session["Num_Hum_IDs"] = Num_Human_id;

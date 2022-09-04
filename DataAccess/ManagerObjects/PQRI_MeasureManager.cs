@@ -10879,7 +10879,12 @@ and b.Encounter_ID in (:EncIds)";
                         obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                         obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
                         ulEncList130.Add(Convert.ToUInt32(objEnc[1].ToString()));
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS130D", "CMS130v10" };
+                       string  icd = "";
+                        if (objEnc[3] != null)
+                        {
+                            icd = objEnc[3].ToString();
+                        }
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[2].ToString(), "", "", "", "CMS130D", "CMS130v10" };
                         icdcptListDenominator.Add(ary);
                         lstEncList68.Add(obj);
 
@@ -13749,7 +13754,12 @@ and b.Encounter_ID in (:EncIds)";
                         obj.Encounter_ID = Convert.ToUInt32(objEnc[0].ToString());
                         obj.Human_ID = Convert.ToUInt32(objEnc[1].ToString());
                         ulEncList130.Add(Convert.ToUInt32(objEnc[1].ToString()));
-                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), "", objEnc[2].ToString(), "", "", "", "CMS130D", "CMS130v10" };
+                        string icd = "";
+                        if (objEnc[3] != null)
+                        {
+                            icd = objEnc[3].ToString();
+                        }
+                        string[] ary = { objEnc[0].ToString(), objEnc[1].ToString(), icd, objEnc[2].ToString(), "", "", "", "CMS130D", "CMS130v10" };
                         icdcptListDenominator.Add(ary);
                         lstEncList68.Add(obj);
 
