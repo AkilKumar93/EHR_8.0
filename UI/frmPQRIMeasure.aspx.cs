@@ -580,10 +580,34 @@ namespace Acurus.Capella.UI
                     dr["Numerator Human Id"] = String.Join(",", PQRI_lst[i].ICDCPTNumeratorList.Select(a => a[1]).Distinct().ToArray());
                 else
                     dr["Numerator Human Id"] = 0;
+                string denominator = "";
                 if (PQRI_lst[i].ICDCPTDenominatorList != null && PQRI_lst[i].ICDCPTDenominatorList.Count > 0)
-                    dr["Denominator Human Id"] = String.Join(",", PQRI_lst[i].ICDCPTDenominatorList.Select(a => a[1]).Distinct().ToArray());
-                else
+                {
+                    // dr["Denominator Human Id"] = String.Join(",", PQRI_lst[i].ICDCPTDenominatorList.Select(a => a[1]).Distinct().ToArray());
+                    denominator = String.Join(",", PQRI_lst[i].ICDCPTDenominatorList.Select(a => a[1]).Distinct().ToArray());
+                }
+                if (PQRI_lst[i].ICDCPTDenominatorExceptionList != null && PQRI_lst[i].ICDCPTDenominatorExceptionList.Count > 0)
+                {
+                    if (denominator == "")
+                        denominator =  String.Join(",", PQRI_lst[i].ICDCPTDenominatorExceptionList.Select(a => a[1]).Distinct().ToArray());
+
+                    else
+
+                        denominator = denominator+ "," + String.Join(",", PQRI_lst[i].ICDCPTDenominatorExceptionList.Select(a => a[1]).Distinct().ToArray());
+                }
+                if (PQRI_lst[i].ICDCPTDenominatorExclusionList != null && PQRI_lst[i].ICDCPTDenominatorExclusionList.Count > 0)
+                {
+                    if (denominator == "")
+                        denominator =  String.Join(",", PQRI_lst[i].ICDCPTDenominatorExclusionList.Select(a => a[1]).Distinct().ToArray());
+
+                    else
+                        denominator = denominator + "," + String.Join(",", PQRI_lst[i].ICDCPTDenominatorExclusionList.Select(a => a[1]).Distinct().ToArray());
+                }
+                if (denominator == "")
                     dr["Denominator Human Id"] = 0;
+                else
+                    dr["Denominator Human Id"] = denominator;
+
                 dr["Numerator Exclusion"] = PQRI_lst[i].NumeratorExclusion;
                 dt.Rows.Add(dr);
 
