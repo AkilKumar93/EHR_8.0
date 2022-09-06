@@ -170,7 +170,7 @@
         <telerik:RadWindowManager ID="PQRIMeasureWindowMngr" runat="server" EnableViewState="false">
             <Windows>
                 <telerik:RadWindow ID="PQRIMeasureWindow" runat="server" Modal="true" VisibleOnPageLoad="false"
-                    Behaviors="Close" IconUrl="Resources/16_16.ico" EnableViewState="false" Title="PQRI Details">
+                    Behaviors="Close" IconUrl="Resources/16_16.ico" EnableViewState="false" Title="CQM Details">
                 </telerik:RadWindow>
             </Windows>
         </telerik:RadWindowManager>
