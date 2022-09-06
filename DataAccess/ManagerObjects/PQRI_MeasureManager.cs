@@ -13732,7 +13732,7 @@ and b.Encounter_ID in (:EncIds)";
                 if (Enc_Denominator_lst130 != null && Enc_Denominator_lst130.Count > 0)
                 {
 
-                    if (Enc_Exclusion_lst130.Count > 0)
+                    if (ulEncList130_exception.Count > 0)
                     {
                         IQuery EncounterDenominator2query130 = iMySession.GetNamedQuery("PQRI.GetDenominator2withExceptionCMS130.ColorectalCancer");
                         EncounterDenominator2query130.SetParameterList("EncIds", ulEncList130_DEnominator.ToArray());
@@ -13993,7 +13993,7 @@ and b.Encounter_ID in (:EncIds)";
 
             //}
 
-            objCQMSummary.Denominator = Denominator;
+            objCQMSummary.Denominator = Denominator + Exception + Exclusion;
             objCQMSummary.Denominator_Exclusion = Exclusion;
             objCQMSummary.Denominator_Exception = Exception;
             objCQMSummary.Numerator = Numerator;
@@ -14005,7 +14005,7 @@ and b.Encounter_ID in (:EncIds)";
             string Percentage = string.Empty;
             string cleared = string.Empty;
             if (objCQMSummary.Numerator != 0 && objCQMSummary.Denominator != 0)
-                objCQMSummary.Rate = Decimal.Round(((Convert.ToDecimal(objCQMSummary.Numerator) / (Convert.ToDecimal(objCQMSummary.Denominator)))), 6);
+                objCQMSummary.Rate = Decimal.Round(((Convert.ToDecimal(objCQMSummary.Numerator) / (Convert.ToDecimal(Denominator)))), 6);
             else
                 objCQMSummary.Rate = 0;
             ilstCQMSummary.Add(objCQMSummary);
