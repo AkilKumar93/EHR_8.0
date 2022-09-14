@@ -532,13 +532,13 @@
                                                         <asp:Label ID="lblOrder" runat="server" ForeColor="Red" Text="Outstanding Order*" CssClass="Editabletxtbox"></asp:Label>
                                                     </td>
                                                     <td colspan="3">
-                                                        <telerik:RadComboBox ID="cboOrder" runat="server" Width="430px" CssClass="Editabletxtbox" onchange="EnableSaveButton(this);" AutoPostBack="True" OnSelectedIndexChanged="cboOrder_SelectedIndexChanged">
+                                                        <telerik:RadComboBox ID="cboOrder" runat="server" Width="600px" CssClass="Editabletxtbox" onchange="EnableSaveButton(this);" AutoPostBack="True" OnSelectedIndexChanged="cboOrder_SelectedIndexChanged">
                                                         </telerik:RadComboBox>
 
                                                     </td>
                                                     <td>
                                                         <asp:Button ID="btnOrder" runat="server" Text="Create Order" CssClass="aspresizedbluebutton"
-                                                            OnClientClick="return OpenImageAndLaborder();" />
+                                                            OnClientClick="return OpenImageAndLaborder();" Visible="false" />
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -660,8 +660,7 @@
                                                         <span class="spanstyle">Provider Search</span>
                                                     </td>
                                                     <td style="width: 82%;">
-                                                        <asp:TextBox ID="txtProviderSearch" runat="server" Width="130%" data-phy-id="0"  data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Specialty or NPI or Facility and follow it by a space.." CssClass="Editabletxtbox"  style="resize:none;" ></asp:TextBox>
-                                                        </td>
+                                                        <asp:TextBox ID="txtProviderSearch" runat="server"  data-phy-id="0"  data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Specialty or NPI or Facility and follow it by a space.."  style="width:111.5%;" ></asp:TextBox> 
                                                     <td style="width:10%;">
 
                                                         <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 140px; top: 246px !important; cursor: pointer; width: 10px; height: 10px;" />
