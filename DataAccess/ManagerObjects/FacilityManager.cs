@@ -453,7 +453,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IList<WorkFlowTypeMaster> WFTypeMasterListDefault;
                 string WorkFlowType = string.Empty;
                 IList<FacilityLibrary> FacList;
-                ICriteria criteriaFacType = iMySession.CreateCriteria(typeof(FacilityLibrary)).Add(Expression.Eq("Facility_Name", FacilityName));
+                ICriteria criteriaFacType = iMySession.CreateCriteria(typeof(FacilityLibrary)).Add(Expression.Eq("Fac_Name", FacilityName));
                 FacList = criteriaFacType.List<FacilityLibrary>();
 
                 if (FacList.Count > 0)
