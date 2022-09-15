@@ -29,7 +29,7 @@ build Test Job:
   - '& "$env:MSBUILD_PATH" EHR-Capella5.0.sln /p:DeployOnBuild=true /p:Configuration=Release
     /p:DeleteExistingFiles=True /p:Platform="Any CPU" /p:PublishProfile=FolderProfile.pubxml
     /p:publishUrl=E:\Deployee\builds\Capella_publish\ 
-    /p:ExcludeFoldersFromDeployment=EHR-Capella8.0\PatientPortal
+    /p:ExcludeFoldersFromDeployment=PatientPortal
     #/p:publishUrl=.\EHR_REPORTS2.0\bin\Publish\ '
    
 
