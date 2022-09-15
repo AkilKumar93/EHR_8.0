@@ -2939,8 +2939,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //Commented for BugID:53007 
                 //if (objFillAssessment.Assessment != null && objFillAssessment.Assessment.Count > 0)//BugID:48668 -- to prevent suggestions when Assessment.count>0
                 //    goto d;
-                objProblemList = (from obj in objProblemList where obj.ICD != "0000" select obj).ToList<ProblemList>();
-                objFillAssessment.Problem_List = objProblemList;
+                //objProblemList = (from obj in objProblemList where obj.ICD != "0000" select obj).ToList<ProblemList>();
+                //objFillAssessment.Problem_List = objProblemList;
+
 
 
                 IList<AssessmentVitalsLookup> AssessmentVitalsLookupList = new List<AssessmentVitalsLookup>();
@@ -2987,6 +2988,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
 
+
+                objProblemList = (from obj in objProblemList where obj.ICD != "0000" select obj).ToList<ProblemList>();
+
+                IList<ProblemList> ilstVitalsBasedProblem = new List<ProblemList>();
+                for (int iCount = 0; iCount < objProblemList.Count; iCount++)
+                {
+                    AssessmentVitalsLookupList = (from obj in AssessmentVitalsLookupList where obj.ICD_10 == objProblemList[iCount].ICD select obj).ToList<AssessmentVitalsLookup>();
+                    if (AssessmentVitalsLookupList.Count > 0)
+                    {
+                        ilstVitalsBasedProblem.Add(objProblemList[iCount]);
+                    }
+                }
+
+                for (int iCount = 0; iCount < ilstVitalsBasedProblem.Count; iCount++)
+                {
+                    objProblemList.Remove(ilstVitalsBasedProblem[iCount]);
+                }
+
+                objFillAssessment.Problem_List = objProblemList;
 
 
                 if (AssessmentVitalsLookupList.Count > 0)
