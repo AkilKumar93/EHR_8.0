@@ -3804,7 +3804,7 @@ namespace Acurus.Capella.UI
                 //}
                     
                 //objOrderSubmit.Facility_Name = ClientSession.FacilityName;
-                if (Request["ScreenMode"].ToString().ToUpper() == "MENU")
+                if (Request["ScreenMode"] != null && Request["ScreenMode"].ToString().ToUpper() == "MENU")
                 {
                     string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
                     if (File.Exists(strXmlFilePath1) == true)
