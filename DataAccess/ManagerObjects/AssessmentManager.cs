@@ -2994,8 +2994,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 IList<ProblemList> ilstVitalsBasedProblem = new List<ProblemList>();
                 for (int iCount = 0; iCount < objProblemList.Count; iCount++)
                 {
-                    AssessmentVitalsLookupList = (from obj in AssessmentVitalsLookupList where obj.ICD_10 == objProblemList[iCount].ICD select obj).ToList<AssessmentVitalsLookup>();
-                    if (AssessmentVitalsLookupList.Count > 0)
+                    var AssessmentVitalsicds = (from obj in AssessmentVitalsLookupList where obj.ICD_10 == objProblemList[iCount].ICD select obj).ToList<AssessmentVitalsLookup>();
+                    if (AssessmentVitalsicds.Count > 0)
                     {
                         ilstVitalsBasedProblem.Add(objProblemList[iCount]);
                     }
@@ -3375,7 +3375,32 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     ProblemListManager objProblemListManager = new ProblemListManager();
                     VitalsManager objVitalsManager = new VitalsManager();
 
-                    objFillAssessment.Assessment = GetAssessmentPerEncounterIDForOrders(previousEncounterId, isFromArchive, dtDOS);
+                    using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                    {
+                        ICriteria crit2 = iMySession.CreateCriteria(typeof(AssessmentVitalsLookup));
+                        AssessmentVitalsLookupList = crit2.List<AssessmentVitalsLookup>();
+                    }
+
+                    //objFillAssessment.Assessment = GetAssessmentPerEncounterIDForOrders(previousEncounterId, isFromArchive, dtDOS);
+                    //GitLab # 1590
+                    IList<Assessment> ilstAssessment= new List<Assessment>();
+                    ilstAssessment = GetAssessmentPerEncounterIDForOrders(previousEncounterId, isFromArchive, dtDOS);
+                    IList<Assessment> ilstVitalsBasedAssessment = new List<Assessment>();
+                    for (int iCount = 0; iCount < ilstAssessment.Count; iCount++)
+                    {
+                        var AssessmentVitalsicd = (from obj in AssessmentVitalsLookupList where obj.ICD_10 == ilstAssessment[iCount].ICD select obj).ToList<AssessmentVitalsLookup>();
+                        if (AssessmentVitalsicd.Count > 0)
+                        {
+                            ilstVitalsBasedAssessment.Add(ilstAssessment[iCount]);
+                        }
+                    }
+
+                    for (int iCount = 0; iCount < ilstVitalsBasedAssessment.Count; iCount++)
+                    {
+                        ilstAssessment.Remove(ilstVitalsBasedAssessment[iCount]);
+                    }
+
+                    objFillAssessment.Assessment = ilstAssessment;
 
                     objFillAssessment.General_Notes = objGeneralNotesManager.GetGeneralNotes(previousEncounterId,
                                                                                             "Selected Assessment");
@@ -3386,14 +3411,30 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                                                                        "Selected Assessment");
                     objFillAssessment.Potential_Diagnosis = new List<PotentialDiagnosis>();
 
-                    objFillAssessment.Problem_List = objProblemListManager.GetProblemDescription(humanId);
-
-                    var lstPatientResults = objVitalsManager.GetVitalsByHumanEncounter(previousEncounterId, humanId);
-                    using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                    //objFillAssessment.Problem_List = objProblemListManager.GetProblemDescription(humanId);
+                    //GitLab # 1590
+                    IList<ProblemList> ilstProblem_List = new List<ProblemList>();
+                    ilstProblem_List = objProblemListManager.GetProblemDescription(humanId);
+                    IList<ProblemList> ilstVitalsBasedProblem = new List<ProblemList>();
+                    for (int iCount = 0; iCount < ilstProblem_List.Count; iCount++)
                     {
-                        ICriteria crit2 = iMySession.CreateCriteria(typeof(AssessmentVitalsLookup));
-                        AssessmentVitalsLookupList = crit2.List<AssessmentVitalsLookup>();
+                        var  Problem_listAssessmentVitalsicd = (from obj in AssessmentVitalsLookupList where obj.ICD_10 == ilstProblem_List[iCount].ICD select obj).ToList<AssessmentVitalsLookup>();
+                        if (Problem_listAssessmentVitalsicd.Count > 0)
+                        {
+                            ilstVitalsBasedProblem.Add(ilstProblem_List[iCount]);
+                        }
                     }
+
+                    for (int iCount = 0; iCount < ilstVitalsBasedProblem.Count; iCount++)
+                    {
+                        ilstProblem_List.Remove(ilstVitalsBasedProblem[iCount]);
+                    }
+                    objFillAssessment.Problem_List = ilstProblem_List;
+
+                    //var lstPatientResults = objVitalsManager.GetVitalsByHumanEncounter(previousEncounterId, humanId);
+                    //GitLab # 1590
+                    var lstPatientResults = objVitalsManager.GetVitalsByHumanEncounter(encounterId, humanId);
+                    
 
                     if (lstPatientResults.Count > 0 || AssessmentVitalsLookupList.Count > 0)
                     {
