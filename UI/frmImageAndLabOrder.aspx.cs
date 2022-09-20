@@ -196,7 +196,7 @@ namespace Acurus.Capella.UI
             {
                 sCmgorder = "Y";
                 lnkOrderList.Visible = false;
-                cboLab.Disabled = true;
+                //cboLab.Disabled = true;
                 btnEditQuantity.Disabled = false;
 
             }
