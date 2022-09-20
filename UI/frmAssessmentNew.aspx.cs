@@ -320,7 +320,10 @@ namespace Acurus.Capella.UI
                             return jsons;
                         }
                         else
-                            goto l;
+                        {
+                            //goto l;
+                            bSuggestIcds = true;
+                        }
                     }
                 }
                 IList<string> problemListCodesWithParentCodesTemp = new List<string>();
