@@ -257,7 +257,7 @@ namespace Acurus.Capella.UI
                                 Directory.CreateDirectory(ObjSearchDir.Parent.Parent.FullName + "\\stylesheet");
                             }
                             System.IO.File.Copy(Server.MapPath("SampleXML/CDA.xsl"), Server.MapPath("Documents/" + Session.SessionID.ToString() + "/" + ObjSearchDir.Parent.Parent + "/stylesheet/CDA.xsl"), true);
-                            aryPrintNew.Add(Path.GetFileName(sPrintPathName));
+                            aryPrintNew.Add(sPrintPathName);
 
                         }
                         else

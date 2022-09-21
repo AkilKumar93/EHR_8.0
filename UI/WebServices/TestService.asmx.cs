@@ -11,7 +11,8 @@ namespace Acurus.Capella.UI.WebServices
     /// <summary>
     /// Summary description for TestService
     /// </summary>
-    [WebService(Namespace = "http://tempuri.org/")]
+    //[WebService(Namespace = "http://tempuri.org/")]
+    [WebService(Namespace = "http://www.acurussolutions.com", Description = "Logs the Audit Trail for EHR Modules", Name = "Enterprise Audit Logging Web Service")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
