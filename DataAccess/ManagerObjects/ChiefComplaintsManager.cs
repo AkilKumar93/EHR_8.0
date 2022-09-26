@@ -966,6 +966,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             fillCN.Vitals = GetCSVitalsForCareplan(ulEncounterID);
             //fillCN.ProblemListing = GetCSProblemList(ulHumanID);
             fillCN.ProblemListing = GetHealthConcernProblemList(ulHumanID);
+
             fillCN.TreatmentPlan = GetTreatmentPlanForcareplan(ulEncounterID);
             GetCSHuman(ulHumanID, ref fillCN);
             fillCN.facilityLibraryCustodian = GetFacilityInfoforCustadian(ulEncounterID);
@@ -6100,10 +6101,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 fillProblemList.Status = ccObject[4].ToString();
                         }
                         if (ccObject[5] != null)
-                        fillProblemList.Snomed_Code = ccObject[5].ToString();
+                        {
+                            fillProblemList.Snomed_Code = ccObject[5].ToString();
 
-                        ilstProblemList.Add(fillProblemList);
+                            ilstProblemList.Add(fillProblemList);
+                        }
+                        if (ccObject[6] != null)
+                        {
+                            fillProblemList.Snomed_Code_Description = ccObject[6].ToString();
+
+                            ilstProblemList.Add(fillProblemList);
+                        }
                     }
+
 
                 }
                 iMySession.Close();

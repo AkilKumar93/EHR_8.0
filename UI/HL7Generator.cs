@@ -38,7 +38,8 @@ namespace Acurus.Capella.UI
             string sContent = string.Empty;
             xmlReqNode = xmlDoc.GetElementsByTagName("effectiveTime");
             xmlReqNode[0].Attributes[0].Value = DateTime.Now.ToString("yyyyMMddhhmmss+0500");
-
+            string sMAName = string.Empty;
+            
             #region OLdHEADER_CAREPLAN
             /* Old Header
             #region PatientRole
@@ -606,7 +607,7 @@ namespace Acurus.Capella.UI
                 if (lst.Count > 0)
                 {
                     string[] name = lst[0].person_name.Split(' ');
-                    xmlReqNode[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[0].InnerText = name[0];
+                    xmlReqNode[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].InnerText = name[0];
                     if (name.Count() > 1)
                         xmlReqNode[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText = name[1];
                 }
@@ -688,11 +689,18 @@ namespace Acurus.Capella.UI
 
                     xmlReqNode = xmlDoc.GetElementsByTagName("low");
                     if (ClinicalSummary.PhysicianLibraryDocumentation[i].Encounter_Date_of_Service.ToString() != "" || ClinicalSummary.PhysicianLibraryDocumentation[i].Encounter_Date_of_Service.ToString("yyyyMMdd") != "00010101")
+                    {
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[1].ChildNodes[0].Attributes[0].Value = ClinicalSummary.PhysicianLibraryDocumentation[i].Encounter_Date_of_Service.ToString("yyyyMMdd");
+                    }
                     else if (ClinicalSummary.Encounter.Count > 0)
+                    {
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[1].ChildNodes[0].Attributes[0].Value = ClinicalSummary.Encounter[0].Date_of_Service.ToString("yyyyMMdd");
+                    }
                     else
+                    {
                         xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[1].ChildNodes[0].Attributes[0].Value = "00010101";
+                    }
+                    xmlDoc.GetElementsByTagName("documentationOf")[0].ChildNodes[0].ChildNodes[1].ChildNodes[1].Attributes[0].Value = DateTime.Now.ToString("yyyyMMddhhmmss");
 
                     //commented Start
                     //xmlReqNode = xmlDoc.GetElementsByTagName("prefix");
@@ -785,6 +793,7 @@ namespace Acurus.Capella.UI
                         {
                             string[] name = lst[0].person_name.Split(' ');
                             xmlReqNode[1].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = name[0];
+                            sMAName = name[0];
                             if (name.Count() > 1)
                                 xmlReqNode[1].ChildNodes[1].ChildNodes[4].ChildNodes[0].ChildNodes[1].InnerText = name[1];
                         }
@@ -960,21 +969,30 @@ namespace Acurus.Capella.UI
 
                     for (int i = 0; i < ClinicalSummary.ProblemListing.Count; i++)
                     {
+                       
+                        String sDate = DateTime.Now.ToString("yyyyMMddhhmmss");
+                        DateTime digDate = DateTime.Parse(ClinicalSummary.ProblemListing[i].Date_Diagnosed);
+                       
                         XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
-                        xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml;
+                       
+                        xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.PhyId.ToString()).Replace("{DateDiagnosed}", digDate.ToString("yyyyMMdd")).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{SnomedCode}",ClinicalSummary.ProblemListing[i].Snomed_Code).Trim().Replace("{SnomedDescription}", ClinicalSummary.ProblemListing[i].Snomed_Code_Description).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
+
+                      
                         elemOldEntry.LastChild.AppendChild(xfragAllergy);
                         xmlDoc.Save(sPrintFileName);
                         xmlDoc.Load(sPrintFileName);
 
                         elemOldEntry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1];
-                        XmlElement elemProcedureCode = null;
-                        elemProcedureCode = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1].ChildNodes[0].ChildNodes[5 + i].ChildNodes[1].ChildNodes[5].ChildNodes[0].ChildNodes[2];
+                        
+                        
+                         //XmlElement elemProcedureCode = null;
+                        //elemProcedureCode = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1].ChildNodes[0].ChildNodes[5 + i].ChildNodes[1].ChildNodes[5].ChildNodes[0].ChildNodes[2];
                         //elemProcedureCode = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[1].ChildNodes[1].ChildNodes[4 + i].LastChild.ChildNodes[5].LastChild.ChildNodes[1];
                         // elemProcedureCode.Attributes[0].Value = ClinicalSummary.ProblemListing[i].ICD_9_Description;//ICD_ID value
-                        if (ClinicalSummary.ProblemListing[i].ICD_9_Description != "")
-                            elemProcedureCode.Attributes[0].Value = ClinicalSummary.ProblemListing[i].ICD_9_Description;//ICD_ID value
-                        else
-                            elemProcedureCode.Attributes[0].Value = "a2788ab0-2993-5ff9-aaae-8e120e83b31b";//ICD_ID value
+                        //if (ClinicalSummary.ProblemListing[i].ICD_9_Description != "")
+                        //    elemProcedureCode.Attributes[0].Value = ClinicalSummary.ProblemListing[i].ICD_9_Description;//ICD_ID value
+                        //else
+                        //    elemProcedureCode.Attributes[0].Value = "a2788ab0-2993-5ff9-aaae-8e120e83b31b";//ICD_ID value
 
                         //elemOldEntry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[37];
                         //XmlElement elemProcedureCode = null;
@@ -1074,55 +1092,65 @@ namespace Acurus.Capella.UI
 
                     for (int i = 0; i < ClinicalSummary.TreatmentPlan.Count; i++)
                     {
-                        XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
-                        xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml;
-                        elemOldentry.LastChild.AppendChild(xfragAllergy);
+                        String sDate = DateTime.Now.ToString("yyyyMMddhhmmss");
+
+                        XmlDocumentFragment xfragGoals = xmlDoc.CreateDocumentFragment();
+
+                        xfragGoals.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{PhysicianFirstName}", Phy.PhyFirstName).Replace("{PhysicianLastName}", Phy.PhyLastName).Replace("{PhysicianSuffix}", Phy.PhySuffix).Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.Id.ToString()).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
+
+
+                        elemOldentry.LastChild.AppendChild(xfragGoals);
                         xmlDoc.Save(sPrintFileName);
                         xmlDoc.Load(sPrintFileName);
 
+                        //XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
+                        //xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml;
+                        //elemOldentry.LastChild.AppendChild(xfragAllergy);
+                        //xmlDoc.Save(sPrintFileName);
+                        //xmlDoc.Load(sPrintFileName);
 
-                        elemOldentry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3];
 
-                        XmlElement elemEffectiveTime = null;
-                        XmlElement ePlanGoal = null;
-                        XmlElement family = null;
-                        XmlElement eSpecialityNPI = null;
-                        XmlElement given = null;
-                        XmlElement suffix = null;
-                        XmlElement eTime = null;
-                        XmlElement AssignedAuthor = null;
-                        elemEffectiveTime = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[4];
-                        elemEffectiveTime.Attributes[0].Value = ClinicalSummary.Encounter[0].Date_of_Service.ToString("yyyyMMdd");
-                        ePlanGoal = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[5];
-                        ePlanGoal.InnerText = ClinicalSummary.TreatmentPlan[i].Plan.Replace("-Vitals", "").Replace("-Problem List", "").Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
-                        eTime = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[1];
-                        eTime.Attributes[0].Value = ClinicalSummary.Encounter[0].Date_of_Service.ToString("yyyyMMdd");
-                        eSpecialityNPI = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[2].ChildNodes[1];
-                        //if (ClinicalSummary.phyList[0].PhyColor.Trim() != string.Empty)
+                        //elemOldentry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3];
+
+                        //XmlElement elemEffectiveTime = null;
+                        //XmlElement ePlanGoal = null;
+                        //XmlElement family = null;
+                        //XmlElement eSpecialityNPI = null;
+                        //XmlElement given = null;
+                        //XmlElement suffix = null;
+                        //XmlElement eTime = null;
+                        //XmlElement AssignedAuthor = null;
+                        //elemEffectiveTime = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[4];
+                        //elemEffectiveTime.Attributes[0].Value = ClinicalSummary.Encounter[0].Date_of_Service.ToString("yyyyMMdd");
+                        //ePlanGoal = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[5];
+                        //ePlanGoal.InnerText = ClinicalSummary.TreatmentPlan[i].Plan.Replace("-Vitals", "").Replace("-Problem List", "").Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("'", "&apos;").Replace("\"", "&quot;");
+                        //eTime = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[1];
+                        //eTime.Attributes[0].Value = ClinicalSummary.Encounter[0].Date_of_Service.ToString("yyyyMMdd");
+                        //eSpecialityNPI = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[2].ChildNodes[1];
+                        ////if (ClinicalSummary.phyList[0].PhyColor.Trim() != string.Empty)
+                        ////{
+                        ////if (ClinicalSummary.phyList[0].PhyColor.Contains('-'))
+                        ////{
+                        ////eSpecialityNPI.Attributes[0].Value = ClinicalSummary.phyList[0].PhyColor.Split('-')[0];
+                        ////eSpecialityNPI.Attributes[1].Value = ClinicalSummary.phyList[0].PhyColor.Split('-')[1];
+                        ////    }
+                        ////}
+                        //eSpecialityNPI.Attributes[0].Value = ClinicalSummary.phyList[0].Taxonomy_Code;
+                        //eSpecialityNPI.Attributes[1].Value = ClinicalSummary.phyList[0].Taxonomy_Description.Replace("&", "&amp;");
+                        //given = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[2].ChildNodes[2].ChildNodes[0].ChildNodes[0];
+                        //given.InnerText = ClinicalSummary.phyList[0].PhyFirstName;
+                        //family = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[2].ChildNodes[2].ChildNodes[0].ChildNodes[1];
+                        //family.InnerText = ClinicalSummary.phyList[0].PhyLastName;
+                        //suffix = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[2].ChildNodes[2].ChildNodes[0].ChildNodes[1];
+                        //suffix.InnerText = ClinicalSummary.phyList[0].PhySuffix;
+                        //AssignedAuthor = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[7].ChildNodes[2].ChildNodes[0];
+                        //if (ClinicalSummary.PhysicianLibraryDocumentation.Count > 0)
                         //{
-                        //if (ClinicalSummary.phyList[0].PhyColor.Contains('-'))
-                        //{
-                        //eSpecialityNPI.Attributes[0].Value = ClinicalSummary.phyList[0].PhyColor.Split('-')[0];
-                        //eSpecialityNPI.Attributes[1].Value = ClinicalSummary.phyList[0].PhyColor.Split('-')[1];
-                        //    }
+                        //    AssignedAuthor.Attributes[0].Value = ClinicalSummary.PhysicianLibraryDocumentation[0].Physician_SSN_Number;
                         //}
-                        eSpecialityNPI.Attributes[0].Value = ClinicalSummary.phyList[0].Taxonomy_Code;
-                        eSpecialityNPI.Attributes[1].Value = ClinicalSummary.phyList[0].Taxonomy_Description.Replace("&", "&amp;");
-                        given = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[2].ChildNodes[2].ChildNodes[0].ChildNodes[0];
-                        given.InnerText = ClinicalSummary.phyList[0].PhyFirstName;
-                        family = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[2].ChildNodes[2].ChildNodes[0].ChildNodes[1];
-                        family.InnerText = ClinicalSummary.phyList[0].PhyLastName;
-                        suffix = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[6].ChildNodes[2].ChildNodes[2].ChildNodes[0].ChildNodes[1];
-                        suffix.InnerText = ClinicalSummary.phyList[0].PhySuffix;
-                        AssignedAuthor = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[7].ChildNodes[2].ChildNodes[0];
-                        if (ClinicalSummary.PhysicianLibraryDocumentation.Count > 0)
-                        {
-                            AssignedAuthor.Attributes[0].Value = ClinicalSummary.PhysicianLibraryDocumentation[0].Physician_SSN_Number;
+                        //else
+                        //    AssignedAuthor.Attributes[0].Value = "111-111-111";
                         }
-                        else
-                            AssignedAuthor.Attributes[0].Value = "111-111-111";
-
-                    }
                 }
             }
             else
@@ -1169,9 +1197,9 @@ namespace Acurus.Capella.UI
 
             if (sInnerVitalsIntervention.Trim() != string.Empty || sInnerCarePlanIntervention.Trim() != string.Empty)
             {
-                if (xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[5].ChildNodes[0].ChildNodes[3].InnerText == "Interventions Section")
+                if (xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[5].ChildNodes[0].ChildNodes[4].InnerText == "Interventions Section")
                 {
-                    XmlElement elemOld = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[5].ChildNodes[0].ChildNodes[4];
+                    XmlElement elemOld = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[5].ChildNodes[0].ChildNodes[5];
                     XmlDocumentFragment xfrag = xmlDoc.CreateDocumentFragment();
                     string sInnerXML = string.Empty;
                     sInnerXML = "<tbody xmlns=" + '"' + "urn:hl7-org:v3" + '"' + ">";
@@ -1179,6 +1207,53 @@ namespace Acurus.Capella.UI
                     sInnerXML += "</tbody>";
                     xfrag.InnerXml = sInnerXML.Replace("&", "&amp;");
                     elemOld.LastChild.AppendChild(xfrag);
+
+                    XmlElement elemOldentry = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[5];
+                    XmlDocument docAllergyEntry = new XmlDocument();
+
+                    docAllergyEntry.Load(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "SampleXML\\Intervention.xml"));
+
+                    string sEntryTextHere = string.Empty;
+
+                    for (int i = 0; i < ClinicalSummary.Vitals.Count; i++)
+                    {
+                        String sDate = DateTime.Now.ToString("yyyyMMddhhmmss");
+
+                        XmlDocumentFragment xfragIntervention = xmlDoc.CreateDocumentFragment();
+
+                        sEntryTextHere = "<code code=\"LoincCode\" displayName=\"LoincDescription\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName =\"LOINC\"/><text>LoincDescription</text>";
+
+                        sEntryTextHere = sEntryTextHere.Replace("LoincCode", ClinicalSummary.Vitals[i].Loinc_Identifier);
+                        sEntryTextHere = sEntryTextHere.Replace("LoincDescription", ClinicalSummary.Vitals[i].Loinc_Observation);
+
+                        xfragIntervention.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{EntryTextHere}", sEntryTextHere).Replace("{CurrentDate}", sDate).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
+
+
+                        elemOldentry.LastChild.AppendChild(xfragIntervention);
+                        //xmlDoc.Save(sPrintFileName);
+                        //xmlDoc.Load(sPrintFileName);
+                    }
+
+
+                    for (int i = 0; i < ClinicalSummary.Careplan.Count; i++)
+                    {
+                        String sDate = DateTime.Now.ToString("yyyyMMddhhmmss");
+
+                        XmlDocumentFragment xfragIntervention = xmlDoc.CreateDocumentFragment();
+
+                        sEntryTextHere = "<code nullFlavor=\"UNK\"/><text>Description</text>";
+
+                        sEntryTextHere = sEntryTextHere.Replace("Description", ClinicalSummary.Careplan[i].Care_Name);
+
+                        xfragIntervention.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{EntryTextHere}", sEntryTextHere).Replace("{CurrentDate}", sDate).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
+
+                        elemOldentry.LastChild.AppendChild(xfragIntervention);
+                        //xmlDoc.Save(sPrintFileName);
+                        //xmlDoc.Load(sPrintFileName);
+                    }
+
+                    xmlDoc.Save(sPrintFileName);
+                    xmlDoc.Load(sPrintFileName);
                 }
 
             }
@@ -1397,8 +1472,8 @@ namespace Acurus.Capella.UI
                         evalue.Attributes[1].Value = ClinicalSummary.Vitals[i].Value;
                         //eUnit = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[3].ChildNodes[0].ChildNodes[5 + i].ChildNodes[0].ChildNodes[5];
                         // eUnit.Attributes[2].Value = ClinicalSummary.Vitals[i].Units;
-                        eTime = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[7].ChildNodes[0].ChildNodes[5 + i].ChildNodes[1].ChildNodes[6].ChildNodes[0];
-                        eTime.Attributes[0].Value = ClinicalSummary.Vitals[i].Captured_date_and_time.ToString("yyyyMMdd");
+                        //eTime = (XmlElement)xmlDoc.GetElementsByTagName("structuredBody")[0].ChildNodes[7].ChildNodes[0].ChildNodes[5 + i].ChildNodes[1].ChildNodes[6].ChildNodes[0];
+                        //eTime.Attributes[0].Value = ClinicalSummary.Vitals[i].Captured_date_and_time.ToString("yyyyMMdd")+"selva";
 
                         if (i == ClinicalSummary.Vitals.Count - 1)
                         {
@@ -1432,11 +1507,51 @@ namespace Acurus.Capella.UI
 
             #endregion
 
+            #region legalAuthenticator
+            xmlReqNode = xmlDoc.GetElementsByTagName("legalAuthenticator");
+            xmlReqNode[0].ChildNodes[0].Attributes[0].Value = DateTime.Now.ToString("yyyyMMddhhmmss+0500"); ;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[1].Attributes[0].Value = Phy.Taxonomy_Code;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[1].Attributes[1].Value = Phy.Taxonomy_Description;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[2].ChildNodes[0].InnerText = Phy.PhyAddress1;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[2].ChildNodes[1].InnerText = Phy.PhyCity;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[2].ChildNodes[2].InnerText = Phy.PhyState;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[2].ChildNodes[3].InnerText = Phy.PhyZip;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = Phy.PhyFirstName;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[4].ChildNodes[0].ChildNodes[1].InnerText = Phy.PhyLastName;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[4].ChildNodes[0].ChildNodes[2].InnerText = Phy.PhySuffix;
+
+            //  xfragLegal.InnerXml = docLegalentry.DocumentElement.InnerXml.Replace("{TaxonomyCode}", ).Replace("{TaxonomyDiscription}",).Replace("{PhyAddress}",).Replace("{PhyCity}", Phy.PhyCity).Replace("{PhyState}", Phy.PhyState).Replace("{PhyZip}", Phy.PhyZip).Replace("{PhyFirstNmae}", Phy.PhyFirstName).Replace("{PhyFirstNmae}", Phy.PhyLastName).Replace("{PhyFirstNmae}", Phy.PhySuffix);
+
+
+            #endregion
+
+            #region authenticator
+            xmlReqNode = xmlDoc.GetElementsByTagName("authenticator");
+            xmlReqNode[0].ChildNodes[0].Attributes[0].Value = DateTime.Now.ToString("yyyyMMddhhmmss+0500"); ;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[2].ChildNodes[0].InnerText = Phy.PhyAddress1;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[2].ChildNodes[1].InnerText = Phy.PhyCity;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[2].ChildNodes[2].InnerText = Phy.PhyState;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[2].ChildNodes[3].InnerText = Phy.PhyZip;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[4].ChildNodes[0].ChildNodes[0].InnerText = Phy.PhyFirstName;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[4].ChildNodes[0].ChildNodes[1].InnerText = Phy.PhyLastName;
+            xmlReqNode[0].ChildNodes[2].ChildNodes[4].ChildNodes[0].ChildNodes[2].InnerText = Phy.PhySuffix;
+
+            //  xfragLegal.InnerXml = docLegalentry.DocumentElement.InnerXml.Replace("{TaxonomyCode}", ).Replace("{TaxonomyDiscription}",).Replace("{PhyAddress}",).Replace("{PhyCity}", Phy.PhyCity).Replace("{PhyState}", Phy.PhyState).Replace("{PhyZip}", Phy.PhyZip).Replace("{PhyFirstNmae}", Phy.PhyFirstName).Replace("{PhyFirstNmae}", Phy.PhyLastName).Replace("{PhyFirstNmae}", Phy.PhySuffix);
+
+
+            #endregion
             //Middle Name
             xmlReqNode = xmlDoc.GetElementsByTagName("given");
             xmlReqNode[1].InnerText = ClinicalSummary.MI;
-            xmlDoc.Save(sPrintFileName);
+            xmlDoc.GetElementsByTagName("dataEnterer")[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].InnerText = sMAName;
+
+            String sCurrentDate = DateTime.Now.ToString("yyyyMMddhhmmss");
+            xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("{CurrentDate}", sCurrentDate);
+            xmlDoc.InnerXml = xmlDoc.InnerXml.Replace("{TaxonomicalCode}", Phy.Taxonomy_Code);
+
+            xmlDoc.Save(sPrintFileName);            
             return xmlDoc;
+           
 
         }
         public XmlDocument CreateCCDXML(PhysicianLibrary Phy, FillClinicalSummary ClinicalSummary, string sPrintFileName, Hashtable hashCheckedList)

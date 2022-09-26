@@ -1,0 +1,669 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="../stylesheet/CDA.xsl"?>
+<!--
+ Title:        Care Plan
+  
+ ********************************************************
+ Disclaimer: This sample file contains representative data elements to represent a Care Plan. 
+ The file depicts a fictional character's health data. Any resemblance to a real person is coincidental. 
+ To illustrate as many data elements as possible, the clinical scenario may not be plausible. 
+ The data in this sample file is not intended to represent real patients, people or clinical events. 
+ This sample is designed to be used in conjunction with the C-CDA Implementation Guide.
+ ********************************************************
+  -->
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3" xmlns:voc="urn:hl7-org:v3/voc" xmlns:sdtc="urn:hl7-org:sdtc">
+  <!-- ** CDA Header ** -->
+  <realmCode code="US" />
+  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040" />
+  <templateId root="2.16.840.1.113883.10.20.22.1.1" extension="2015-08-01" />
+  <templateId root="2.16.840.1.113883.10.20.22.1.15" />
+  <templateId root="2.16.840.1.113883.10.20.22.1.15" extension="2015-08-01" />
+  <templateId root="2.16.840.1.113883.10.20.22.1.1" />
+  <id extension="cp_1" root="2.16.840.1.113883.19.5.99999.1" />
+  <code code="18776-5" displayName="Plan of care note" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+  <!--<code code="52521-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Overall Plan of Care/Advance Care Directives"/>-->
+  <title>Chaparral Medical Group Care Plan</title>
+  <effectiveTime value="20220925115208+0500" />
+  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" />
+  <languageCode code="en-US" />
+  <!-- This document is the second document in the set (see setId for id for the set -->
+  <setId root="004bb033-b948-4f4c-b5bf-a8dbd7d8dd40" />
+  <!-- See relatedDocument for the previous version in the set -->
+  <versionNumber value="2" />
+  <!-- Patient (recordTarget) -->
+  <recordTarget>
+    <patientRole>
+      <id extension="2025623" root="2.16.840.1.113883.19" />
+      <addr use="HP">
+        <streetAddressLine>123 Street</streetAddressLine>
+        <city>Pomona</city>
+        <state>CA</state>
+        <postalCode>54848-4545</postalCode>
+        <country>US</country>
+      </addr>
+      <telecom value="tel:(111) 111-1111" use="HP" />
+      <telecom value="tel:(111) 111-1111" use="WP" />
+      <telecom value="tel:(111) 111-1111" use="MC" />
+      <patient>
+        <name use="L">
+          <given>acurus_new</given>
+          <given qualifier="BR">
+          </given>
+          <family>Sakthi</family>
+        </name>
+        <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1" displayName="MALE" />
+        <birthTime value="19840920" />
+        <maritalStatusCode code="S" codeSystem="2.16.840.1.113883.5.2" codeSystemName="MaritalStatusCode" displayName="Single" />
+        <religiousAffiliationCode code="1013" codeSystem="2.16.840.1.113883.5.1076" codeSystemName="HL7 Religious Affiliation" displayName="Christian (non-Catholic, non-specific)" />
+        <raceCode nullFlavor="UNK" />
+        <sdtc:raceCode nullFlavor="UNK" />
+        <ethnicGroupCode nullFlavor="UNK" />
+        <languageCommunication>
+          <languageCode code="en-US" />
+          <proficiencyLevelCode nullFlavor="UNK" />
+          <preferenceInd nullFlavor="UNK" />
+        </languageCommunication>
+      </patient>
+    </patientRole>
+  </recordTarget>
+  <author>
+    <time value="20220925115208+0500" />
+    <assignedAuthor>
+      <id extension="KP00017" root="2.16.840.1.113883.19.5" />
+      <addr use="WP">
+        <streetAddressLine>TEST FACILITY, 9170 Haven Avenue, Suite 120</streetAddressLine>
+        <city>Rancho Cucamonga</city>
+        <state>CA</state>
+        <postalCode>91730</postalCode>
+        <country>US</country>
+      </addr>
+      <telecom use="WP" value="tel:(909) 906-6070" />
+      <!--<assignedPerson>
+        <name>
+          <prefix></prefix>
+          <given></given>
+          <family></family>
+        </name>
+      </assignedPerson>-->
+      <assignedAuthoringDevice>
+        <manufacturerModelName>Acurus</manufacturerModelName>
+        <softwareName>Capella EHR v5.4</softwareName>
+      </assignedAuthoringDevice>
+      <representedOrganization>
+        <id root="2.16.840.1.113883.19.5" />
+        <name>Acurus</name>
+      </representedOrganization>
+    </assignedAuthor>
+  </author>
+  <dataEnterer>
+    <assignedEntity>
+      <id root="2.16.840.1.113883.4.6" extension="999999943252" />
+      <addr use="WP">
+        <streetAddressLine>Test Address 1</streetAddressLine>
+        <city>Pomona</city>
+        <state>CA</state>
+        <postalCode>91767</postalCode>
+        <country>US</country>
+      </addr>
+      <telecom use="WP" value="tel:(111) 111-1111" />
+      <assignedPerson>
+        <name>MA_5</name>
+      </assignedPerson>
+    </assignedEntity>
+  </dataEnterer>
+  <custodian>
+    <assignedCustodian>
+      <representedCustodianOrganization>
+        <id extension="99999999" root="2.16.840.1.113883.4.6" />
+        <name>TEST FACILITY</name>
+        <telecom value="tel:(111) 111-1111" use="HP" />
+        <addr use="HP">
+          <streetAddressLine>Test Address 1</streetAddressLine>
+          <city>Pomona</city>
+          <state>CA</state>
+          <postalCode>91767</postalCode>
+          <country>US</country>
+        </addr>
+      </representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+  <legalAuthenticator>
+    <time value="20220925115217+0500" />
+    <signatureCode code="S" />
+    <assignedEntity>
+      <id extension="5555555555" root="2.16.840.1.113883.4.6" />
+      <code code="207RE0101X" displayName="Internal Medicine Endocrinology, Diabetes &amp; Metabolism" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)" />
+      <addr use="WP">
+        <streetAddressLine>9170 Haven Avenue, Suite 120</streetAddressLine>
+        <city>Rancho Cucamonga</city>
+        <state>CA</state>
+        <postalCode>91730</postalCode>
+        <country>US</country>
+      </addr>
+      <telecom use="WP" value="{PhyPhone}" />
+      <assignedPerson>
+        <name>
+          <given>Jeereddi</given>
+          <family>Prasad</family>
+          <suffix qualifier="AC">M.D., F.A.C.E., F.A.C.P.,E.C.N.U.</suffix>
+        </name>
+      </assignedPerson>
+    </assignedEntity>
+  </legalAuthenticator>
+  <documentationOf>
+    <serviceEvent classCode="PCPR">
+      <id root="1.2.840.113619.2.62.994044785528.114289542805" />
+      <effectiveTime>
+        <low value="20220919" />
+        <high value="20220925115208" />
+      </effectiveTime>
+      <performer typeCode="PRF">
+        <functionCode code="PCP" codeSystem="2.16.840.1.113883.5.88" codeSystemName="ParticipationFunction" displayName="Primary Care Provider">
+          <originalText>Primary Care Provider</originalText>
+        </functionCode>
+        <assignedEntity>
+          <id extension="5555555555" root="2.16.840.1.113883.4.6" />
+          <code code="207QA0505X" displayName="Adult Medicine" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)" />
+          <addr>
+            <streetAddressLine>9170 Haven Avenue, Suite 120</streetAddressLine>
+            <city>Rancho Cucamonga</city>
+            <state>CA</state>
+            <postalCode>91730</postalCode>
+            <country>US</country>
+          </addr>
+          <telecom use="WP" value="tel:(909) 906-6070" />
+          <assignedPerson>
+            <name>
+              <prefix qualifier="TITLE">Dr.</prefix>
+              <given>Jeereddi</given>
+              <family>Prasad</family>
+            </name>
+          </assignedPerson>
+          <representedOrganization>
+            <id extension="99999999" root="2.16.840.1.113883.4.6" />
+            <name>Chaparral Medical Group</name>
+            <telecom value="tel:+1(555)-555-5000" use="WP" />
+            <addr>
+              <streetAddressLine>2472 Rocky place</streetAddressLine>
+              <city>Beaverton</city>
+              <state>OR</state>
+              <postalCode>97006</postalCode>
+              <country>US</country>
+            </addr>
+          </representedOrganization>
+        </assignedEntity>
+      </performer>
+      <performer typeCode="PRF">
+        <time>
+          <low nullFlavor="UNK" />
+        </time>
+        <assignedEntity>
+          <id extension="91138" root="2.16.840.1.113883.4.6" />
+          <code codeSystem="2.16.840.1.113883.6.101" codeSystemName="NUCC Health Care Provider Taxonomy" code="163W00000X" displayName="Registered Nurse" />
+          <addr>
+            <streetAddressLine>Test Address 1</streetAddressLine>
+            <city>Pomona</city>
+            <state>CA</state>
+            <postalCode>91767</postalCode>
+            <country>US</country>
+          </addr>
+          <telecom use="WP" value="tel:(111) 111-1111" />
+          <assignedPerson>
+            <name>
+              <given>MA_5</given>
+              <family>
+              </family>
+            </name>
+          </assignedPerson>
+        </assignedEntity>
+      </performer>
+    </serviceEvent>
+  </documentationOf>
+  <!--<componentOf>
+    <encompassingEncounter>
+      <id extension="9937012" root="2.16.840.1.113883.19"/>
+      <code codeSystem="2.16.840.1.113883.5.4" code="IMP" displayName="Inpatient"/>
+      -->
+  <!-- captures that this is an inpatient encounter -->
+  <!--
+      <effectiveTime>
+        <low value=""/>
+        -->
+  <!-- No high value - this patient is still in hospital -->
+  <!--
+      </effectiveTime>
+    </encompassingEncounter>
+  </componentOf>-->
+  <!-- 
+********************************************************
+CDA Body
+********************************************************
+-->
+  <component>
+    <structuredBody>
+      <!--  Health Concerns section  -->
+      <component>
+        <section>
+          <!-- Health Concerns Section -->
+          <templateId root="2.16.840.1.113883.10.20.22.2.58" extension="2015-08-01" />
+          <code code="75310-3" displayName="Health Concerns Document" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+          <title>Health Concerns Section</title>
+          <text>
+            <table border="1" width="100%">
+              <thead>
+                <tr>
+                  <th>Concern</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody xmlns="urn:hl7-org:v3">
+                <tr>
+                  <td>Unspecified perpetrator of maltreatment and neglect, SNOMED-CT: 2268003, Active</td>
+                  <td>Active</td>
+                  <td>March 08,2022</td>
+                </tr>
+                <tr>
+                  <td>Unspecified perpetrator of maltreatment and neglect, SNOMED-CT: 2268003, Active</td>
+                  <td>Active</td>
+                  <td>March 08,2022</td>
+                </tr>
+                <tr>
+                  <td>Chronic Sickness exhibited by patient, 161901003 SNOMED-CT</td>
+                </tr>
+              </tbody>
+            </table>
+          </text>
+          <entry xmlns="urn:hl7-org:v3">
+            <!-- The Health Status Observation represents information about the overall health status of the patient. -->
+            <observation classCode="OBS" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.5" extension="2014-06-09" />
+              <templateId root="2.16.840.1.113883.10.20.22.4.5" />
+              <id root="1.3.6.1.4.1.22812.4.222.334.4.15" extension="HlthStat67544" />
+              <code code="11323-3" displayName="General health Reported" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+              <text>
+              </text>
+              <statusCode code="completed" />
+              <effectiveTime>
+                <!-- This time represents just the year and the month - when the patient was about 2 years old.
+					This patient STARTED his state of chonic illness when he was 2 years old.-->
+                <low nullFlavor="UNK" />
+              </effectiveTime>
+              <value xsi:type="CD" nullFlavor="UNK" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+            </observation>
+          </entry>
+          <entry xmlns="urn:hl7-org:v3">
+            <!-- The Health Concern act  -->
+            <!-- The Health Concern act wraps any single problem, situation, issue, or other observation and identifies it as health concern (non-optimal physical or psychological situations) -->
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.132" extension="2015-08-01" />
+              <templateId root="2.16.840.1.113883.10.20.22.4.132" />
+              <id root="4eab0e52-dd7d-4285-99eb-72d32ddb195c" />
+              <code code="75310-3" displayName="Health concerns Document" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+              <text>
+              </text>
+              <statusCode code="active" />
+              <effectiveTime>
+                <low value="20220308" />
+                <!-- The high value has a nullFlacor of "NI" (No Informmation) because it is an ongoing health concern -->
+                <high nullFlavor="NI" />
+              </effectiveTime>
+              <!-- ** When the {Date_Diagnosed} is not available -->
+              <!--effectiveTime>
+						<low nullFlavor="UNK"/>
+					</effectiveTime ** -->
+              <author>
+                <templateId root="2.16.840.1.113883.10.20.22.4.119" />
+                <time value="20220925115208" />
+                <!-- The author is Harold Hippocrates, the same author as the document author. The IDs equal ClinicalDocument/Author/IDs  -->
+                <assignedAuthor>
+                  <id extension="0" root="1.3.6.1.4.1.22812.4.222.334" />
+                  <id extension="1821058470" root="2.16.840.1.113883.4.6" />
+                  <code code="207RE0101X" codeSystem="2.16.840.1.113883.6.101" />
+                </assignedAuthor>
+              </author>
+              <entryRelationship typeCode="REFR">
+                <!-- The Health Concern's Problem Observation wrapped by the Health Concern act -->
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.4" extension="2015-08-01" />
+                  <templateId root="2.16.840.1.113883.10.20.22.4.4" />
+                  <id root="ab1791b0-5c71-11db-b0de-0800200c9a66" />
+                  <code code="404684003" displayName="Clinical Finding (finding)" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT">
+                    <translation code="75321-0" displayName="Clinical Finding" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+                  </code>
+                  <text>
+                  </text>
+                  <statusCode code="completed" />
+                  <effectiveTime>
+                    <low value="20220308" />
+                  </effectiveTime>
+                  <!-- ** When the {Date_Diagnosed} is not available -->
+                  <!--effectiveTime>
+						<low nullFlavor="UNK"/>
+					</effectiveTime ** -->
+                  <value xsi:type="CD" code="2268003 " displayName="" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                  </value>
+                  <author typeCode="AUT">
+                    <templateId root="2.16.840.1.113883.10.20.22.4.119" />
+                    <time value="20220925115208" />
+                    <assignedAuthor>
+                      <id extension="555555555" root="2.16.840.1.113883.4.6" />
+                      <code code="207RE0101X" displayName="Internal Medicine Endocrinology, Diabetes &amp; Metabolism" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)" />
+                    </assignedAuthor>
+                  </author>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>
+          <entry xmlns="urn:hl7-org:v3">
+            <!-- The Health Status Observation represents information about the overall health status of the patient. -->
+            <observation classCode="OBS" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.5" extension="2014-06-09" />
+              <templateId root="2.16.840.1.113883.10.20.22.4.5" />
+              <id root="1.3.6.1.4.1.22812.4.222.334.4.15" extension="HlthStat67544" />
+              <code code="11323-3" displayName="General health Reported" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+              <text>
+              </text>
+              <statusCode code="completed" />
+              <effectiveTime>
+                <!-- This time represents just the year and the month - when the patient was about 2 years old.
+					This patient STARTED his state of chonic illness when he was 2 years old.-->
+                <low nullFlavor="UNK" />
+              </effectiveTime>
+              <value xsi:type="CD" nullFlavor="UNK" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+            </observation>
+          </entry>
+          <entry xmlns="urn:hl7-org:v3">
+            <!-- The Health Concern act  -->
+            <!-- The Health Concern act wraps any single problem, situation, issue, or other observation and identifies it as health concern (non-optimal physical or psychological situations) -->
+            <act classCode="ACT" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.132" extension="2015-08-01" />
+              <templateId root="2.16.840.1.113883.10.20.22.4.132" />
+              <id root="4eab0e52-dd7d-4285-99eb-72d32ddb195c" />
+              <code code="75310-3" displayName="Health concerns Document" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+              <text>
+              </text>
+              <statusCode code="active" />
+              <effectiveTime>
+                <low value="20220308" />
+                <!-- The high value has a nullFlacor of "NI" (No Informmation) because it is an ongoing health concern -->
+                <high nullFlavor="NI" />
+              </effectiveTime>
+              <!-- ** When the {Date_Diagnosed} is not available -->
+              <!--effectiveTime>
+						<low nullFlavor="UNK"/>
+					</effectiveTime ** -->
+              <author>
+                <templateId root="2.16.840.1.113883.10.20.22.4.119" />
+                <time value="20220925115208" />
+                <!-- The author is Harold Hippocrates, the same author as the document author. The IDs equal ClinicalDocument/Author/IDs  -->
+                <assignedAuthor>
+                  <id extension="0" root="1.3.6.1.4.1.22812.4.222.334" />
+                  <id extension="1821058470" root="2.16.840.1.113883.4.6" />
+                  <code code="207RE0101X" codeSystem="2.16.840.1.113883.6.101" />
+                </assignedAuthor>
+              </author>
+              <entryRelationship typeCode="REFR">
+                <!-- The Health Concern's Problem Observation wrapped by the Health Concern act -->
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.4" extension="2015-08-01" />
+                  <templateId root="2.16.840.1.113883.10.20.22.4.4" />
+                  <id root="ab1791b0-5c71-11db-b0de-0800200c9a66" />
+                  <code code="404684003" displayName="Clinical Finding (finding)" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT">
+                    <translation code="75321-0" displayName="Clinical Finding" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+                  </code>
+                  <text>
+                  </text>
+                  <statusCode code="completed" />
+                  <effectiveTime>
+                    <low value="20220308" />
+                  </effectiveTime>
+                  <!-- ** When the {Date_Diagnosed} is not available -->
+                  <!--effectiveTime>
+						<low nullFlavor="UNK"/>
+					</effectiveTime ** -->
+                  <value xsi:type="CD" code="2268003 " displayName="" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                  </value>
+                  <author typeCode="AUT">
+                    <templateId root="2.16.840.1.113883.10.20.22.4.119" />
+                    <time value="20220925115208" />
+                    <assignedAuthor>
+                      <id extension="555555555" root="2.16.840.1.113883.4.6" />
+                      <code code="207RE0101X" displayName="Internal Medicine Endocrinology, Diabetes &amp; Metabolism" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)" />
+                    </assignedAuthor>
+                  </author>
+                </observation>
+              </entryRelationship>
+            </act>
+          </entry>
+        </section>
+      </component>
+      <!--  Goals Section -->
+      <component>
+        <section>
+          <!-- Goals Section -->
+          <templateId root="2.16.840.1.113883.10.20.22.2.60" />
+          <code code="61146-7" displayName="Goals" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+          <title>Goals Section</title>
+          <text>
+            <table border="1" width="100%">
+              <thead>
+                <tr>
+                  <th>Goal</th>
+                  <th>Value</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody xmlns="urn:hl7-org:v3">
+                <tr>
+                  <td>* Unspecified infectious disease(ICD- B99.9)-Stable</td>
+                  <td>Test  </td>
+                  <td>September 19, 2022</td>
+                </tr>
+                <tr>
+                  <td>* Atherosclerotic heart disease of native coronary artery without angina pectoris(ICD- I25.10)-Stable</td>
+                  <td> N/A </td>
+                  <td>September 19, 2022</td>
+                </tr>
+                <tr>
+                  <td>* Hemorrhage, not elsewhere classified(ICD- R58)-Stable</td>
+                  <td> N/A </td>
+                  <td>September 19, 2022</td>
+                </tr>
+                <tr>
+                  <td>* Underweight(ICD- R63.6)-Stable</td>
+                  <td> N/A </td>
+                  <td>September 19, 2022</td>
+                </tr>
+                <tr>
+                  <td>* Body mass index (BMI) 19.9 or less, adult(ICD- Z68.1)-Stable</td>
+                  <td>Giving encouragement to exercise, Lifestyle education regarding diet </td>
+                  <td>September 19, 2022</td>
+                </tr>
+                <tr>
+                  <td>* Test </td>
+                  <td> N/A </td>
+                  <td>September 19, 2022</td>
+                </tr>
+              </tbody>
+            </table>
+          </text>
+          <entry xmlns="urn:hl7-org:v3">
+            <observation classCode="OBS" moodCode="GOL">
+              <templateId root="2.16.840.1.113883.10.20.22.4.121" />
+              <id root="3700b3b0-fbed-12e2-b778-0800200c9a66" />
+              <code code="58144-7" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Resident's overall goal established during assessment process" />
+              <statusCode code="active" />
+              <effectiveTime value="20220925115213" />
+              <value xsi:type="ST" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              </value>
+              <author>
+                <templateId root="2.16.840.1.113883.10.20.22.4.119" />
+                <time value="20220925115213" />
+                <assignedAuthor>
+                  <id root="d839038b-7171-4165-a760-467925b43857" />
+                  <code code="207RE0101X" displayName="Internal Medicine Endocrinology, Diabetes &amp; Metabolism" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)" />
+                  <assignedPerson>
+                    <name>
+                      <given>Jeereddi</given>
+                      <family>Prasad</family>
+                      <suffix>M.D., F.A.C.E., F.A.C.P.,E.C.N.U.</suffix>
+                    </name>
+                  </assignedPerson>
+                </assignedAuthor>
+              </author>
+              <entryRelationship typeCode="REFR">
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.143" />
+                  <id root="7d66f448-ba82-4291-a9da-9e5db5e58803" />
+                  <code code="225773000" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="preference" />
+                  <effectiveTime value="20220925115213" />
+                  <value xsi:type="CD" nullFlavor="UNK" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+                  <author>
+                    <templateId root="2.16.840.1.113883.10.20.22.4.119" />
+                    <time value="20220925115213" />
+                    <!-- The author is Harold Hippocrates, the provider, so this is a provider goal. This is the same author as the document author. The IDs equal ClinicalDocument/Author/ID The author could be another member of the healthcare team - such as a nurse -->
+                    <assignedAuthor>
+                      <id extension="0" root="1.3.6.1.4.1.22812.4.222.334" />
+                      <id extension="1821058470" root="2.16.840.1.113883.4.6" />
+                      <code code="207RE0101X" codeSystem="2.16.840.1.113883.6.101" />
+                    </assignedAuthor>
+                  </author>
+                </observation>
+              </entryRelationship>
+            </observation>
+          </entry>
+        </section>
+      </component>
+      <!-- Interventions Section-->
+      <component>
+        <section>
+          <!-- Interventions Section (V2) -->
+          <templateId root="2.16.840.1.113883.10.20.21.2.3" extension="2015-08-01" />
+          <templateId root="2.16.840.1.113883.10.20.21.2.3" />
+          <code code="62387-6" displayName="Interventions Provided" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+          <title>Interventions Section</title>
+          <text>
+            <table border="1" width="100%">
+              <thead>
+                <tr>
+                  <th>Planned Intervention</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody xmlns="urn:hl7-org:v3">
+                <tr>
+                  <td>Test dib</td>
+                  <td>Yes</td>
+                  <td>September 19, 2022</td>
+                </tr>
+                <tr>
+                  <td>test ad</td>
+                  <td>YES</td>
+                  <td>September 19, 2022</td>
+                </tr>
+                <tr>
+                  <td>
+                  </td>
+                  <td>Normal</td>
+                  <td>September 19, 2022</td>
+                </tr>
+              </tbody>
+            </table>
+          </text>
+        </section>
+      </component>
+      <!-- Health Status Evaluations/Outcomes Section-->
+      <component>
+        <section>
+          <!-- Health Status Evaluations/Outcomes Section  -->
+          <templateId root="2.16.840.1.113883.10.20.22.2.61" />
+          <code code="11383-7" displayName="Patient Problem Outcome" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" />
+          <title>Health Status Evaluations/Outcomes Section</title>
+          <text>
+            <table border="1" width="100%">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Outcome</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody xmlns="urn:hl7-org:v3">
+                <tr>
+                  <td>Weight</td>
+                  <td>85Lbs</td>
+                  <td>September 19, 2022</td>
+                </tr>
+              </tbody>
+            </table>
+          </text>
+          <entry xmlns="urn:hl7-org:v3">
+            <!-- Outcome Observation -->
+            <observation classCode="OBS" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.144" />
+              <id root="0aaaa123-24e2-46b3-9d49-6b753c712dec" />
+              <code code="29463-7" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Weight" />
+              <statusCode code="completed" />
+              <effectiveTime value="20220919" />
+              <value xsi:type="PQ" value="85" unit="%" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+              <author>
+                <time value="20220919" />
+                <!-- This author points to the author in the header of the document -->
+                <assignedAuthor>
+                  <id root="20cf14fb-b65c-4c8c-a54d-b0cca834c18c" />
+                </assignedAuthor>
+              </author>
+              <!-- This Outcome Observation HAS REASON Intervention -->
+              <entryRelationship typeCode="RSON">
+                <!-- Entry Reference template -->
+                <act classCode="ACT" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.122" />
+                  <!-- This id points back to an already defined Intervention in the Interventions Section -->
+                  <id root="b3c091b3-f9a4-41e4-a8e4-2d1b11f2eb22" />
+                  <code nullFlavor="NP" />
+                  <statusCode code="completed" />
+                </act>
+              </entryRelationship>
+              <!-- This Outcome Observation EVALUATES a Goal (Pulse ox reading of 95 evaluates the goal of Pulse ox reading > 92)-->
+              <entryRelationship typeCode="GEVL">
+                <!-- Entry Reference template -->
+                <act classCode="ACT" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.122" />
+                  <!-- This id points back to an already defined Goal 
+                                        (pulse ox reading > 92) in the Goals Section -->
+                  <id root="3700b3b0-fbed-11e2-b778-0800200c9a66" />
+                  <code nullFlavor="NP" />
+                  <statusCode code="completed" />
+                </act>
+              </entryRelationship>
+              <!-- This Outcome Observation SUPPORTS the Progress Toward Goal Observation -->
+              <entryRelationship typeCode="SPRT" inversionInd="true">
+                <!-- Progress Toward Goal Observation template -->
+                <observation classCode="OBS" moodCode="EVN">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.110" />
+                  <id root="2afcf057-aae4-47cf-bfee-b7498e300424" />
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" />
+                  <statusCode code="completed" />
+                  <value xsi:type="CD" code="390802008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Goal achieved" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />
+                </observation>
+              </entryRelationship>
+            </observation>
+          </entry>
+          <entry xmlns="urn:hl7-org:v3">
+            <act classCode="ACT" moodCode="EVN">
+              <code code="DOCCLIN" displayName="clinical document" codeSystem="2.16.840.1.113883.5.6" codeSystemName="ActClass" />
+              <reference typeCode="REFR">
+                <externalDocument classCode="DOCCLIN" moodCode="EVN">
+                  <id root="1.2.840.113619.2.62.994044785528.12" extension="20060828170821659" />
+                  <code code="18842-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Disharge Summarization Note" />
+                </externalDocument>
+              </reference>
+            </act>
+          </entry>
+        </section>
+      </component>
+    </structuredBody>
+  </component>
+</ClinicalDocument>

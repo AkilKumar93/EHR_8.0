@@ -5,30 +5,42 @@
       <id root="3700b3b0-fbed-12e2-b778-0800200c9a66"/>
       <code code="58144-7" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Resident's overall goal established during assessment process"/>
       <statusCode code="active"/>
-      <effectiveTime value=""/>
+      <effectiveTime value="{CurrentDate}"/>
       <value xsi:type="ST"></value>
       <author>
         <templateId root="2.16.840.1.113883.10.20.22.4.119"/>
-        <time value=""/>
+        <time value="{CurrentDate}"/>
         <assignedAuthor>
           <id root="d839038b-7171-4165-a760-467925b43857"/>
-          <code code="" displayName="" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)"/>
+          <code code="{TaxonomicalCode}" displayName="{TaxonomicalDescription}" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)"/>
           <assignedPerson>
             <name> 
-              <given></given> 
-              <family></family> 
-              <suffix></suffix> 
+              <given>{PhysicianFirstName}</given> 
+              <family>{PhysicianLastName}</family> 
+              <suffix>{PhysicianSuffix}</suffix> 
             </name>
           </assignedPerson>
         </assignedAuthor>
       </author>
-      <author typeCode="AUT">
-        <templateId root="2.16.840.1.113883.10.20.22.4.119"/>
-        <time/>
-        <assignedAuthor>
-          <id extension="" root="2.16.840.1.113883.3.8375.5"/>
-        </assignedAuthor>
-      </author>
-    </observation>
+		<entryRelationship typeCode="REFR">
+			<observation classCode="OBS" moodCode="EVN">
+				<templateId root="2.16.840.1.113883.10.20.22.4.143" />
+				<id root="7d66f448-ba82-4291-a9da-9e5db5e58803" />
+				<code code="225773000" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="preference" />
+				<effectiveTime value="{CurrentDate}"/>
+				<value xsi:type="CD" nullFlavor="UNK"/>
+				<author>
+					<templateId root="2.16.840.1.113883.10.20.22.4.119"/>
+					<time value="{CurrentDate}"/>
+					<!-- The author is Harold Hippocrates, the provider, so this is a provider goal. This is the same author as the document author. The IDs equal ClinicalDocument/Author/ID The author could be another member of the healthcare team - such as a nurse -->
+					<assignedAuthor>
+						<id extension="{PhysicianLibraryID}" root="1.3.6.1.4.1.22812.4.222.334"/>
+						<id extension="{NPI}" root="2.16.840.1.113883.4.6"/>
+						<code code="{TaxonomicalCode}" codeSystem="2.16.840.1.113883.6.101"/>
+					</assignedAuthor>
+				</author>
+			</observation>
+		</entryRelationship>
+	</observation>
   </entry>
 </ClinicalDocument>

@@ -9,10 +9,12 @@
 							<effectiveTime value=""/>
 							<value xsi:type="PQ" value="" unit="%"/>
 							<author>
-								<time value=""/>
+								<templateId root="2.16.840.1.113883.10.20.22.4.119" />
+								<time value="{CurrentDate}"/>
 								<!-- This author points to the author in the header of the document -->
 								<assignedAuthor>
 									<id root="20cf14fb-b65c-4c8c-a54d-b0cca834c18c"/>
+									<code code="{TaxonomicalCode}" codeSystem="2.16.840.1.113883.6.101" />
 								</assignedAuthor>
 							</author>
 							<!-- This Outcome Observation HAS REASON Intervention -->

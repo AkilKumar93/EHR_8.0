@@ -1554,7 +1554,7 @@ o.ICD,o.Is_Active,o.Resolved_Date,a.snomed_code,a.snomed_code_description from p
   -->
 
   <sql-query name="Fill.HealthConcernProblemList.List">
-    <![CDATA[select o.problem_description,o.date_diagnosed,o.ICD,a.ICD_ID,o.status,a.snomed_code from problem_list o,all_icd a where o.icd=a.all_icd  and o.is_health_concern='Y' and o.is_active='Y' and  o.Status in ('active','resolved') and o.human_id=? group  by o.icd;]]>
+    <![CDATA[select o.problem_description,o.date_diagnosed,o.ICD,a.ICD_ID,o.status,a.snomed_code,a.SNOMED_Code_Description from problem_list o,all_icd a where o.icd=a.all_icd  and o.is_health_concern='Y' and o.is_active='Y' and  o.Status in ('active','resolved') and o.human_id=? group  by o.icd;]]>
   </sql-query>
 
   <sql-query name="Fill.CSTreatmentPlan.List">

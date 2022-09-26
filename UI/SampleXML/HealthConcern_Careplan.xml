@@ -1,23 +1,80 @@
 ﻿<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="urn:hl7-org:v3 http://xreg2.nist.gov:8080/hitspValidation/schema/cdar2c32/infrastructure/cda/C32_CDA.xsd">
-  <entry>
-    <!-- Health Concerns Act (V2) (V1 was added as a NEW template in R2.0, V2 was updated in R2.1) -db -->
-    <act classCode="ACT" moodCode="EVN">
-      <templateId root="2.16.840.1.113883.10.20.22.4.132" extension="2015-08-01"/>
-      <id root="4eab0e52-dd7d-4285-99eb-72d32ddb195c"/>
-      <code code="75310-3" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Health Concern"/>
-      <statusCode code="completed"/>
-      <!-- Concerns -db -->
-      <entryRelationship typeCode="REFR">
-        <act classCode="ACT" moodCode="EVN">
-          <templateId root="2.16.840.1.113883.10.20.22.4.122"/>
-          <!-- This ID equals the problem, HyperTension in this case -db -->
-          <id root="ab1791b0-5c71-14db-b0de-0800200c9a66"/>
-          <!-- The code is nulled to "NP" Not Present" (as specified in reference -db) -->
-          <code nullFlavor="NP"/>
-          <statusCode code="completed"/>
-        </act>
-      </entryRelationship>
-      <!-- removed in VDT -db -->
-    </act>
-  </entry>
+	<entry>
+		<!-- The Health Status Observation represents information about the overall health status of the patient. -->
+		<observation classCode="OBS" moodCode="EVN">
+			<templateId root="2.16.840.1.113883.10.20.22.4.5" extension="2014-06-09"/>
+			<templateId root="2.16.840.1.113883.10.20.22.4.5"/>
+			<id root="1.3.6.1.4.1.22812.4.222.334.4.15" extension="HlthStat67544"/>
+			<code code="11323-3" displayName="General health Reported" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
+			<text></text>
+			<statusCode code="completed"/>
+			<effectiveTime >
+				<!-- This time represents just the year and the month - when the patient was about 2 years old.
+					This patient STARTED his state of chonic illness when he was 2 years old.-->
+				<low nullFlavor="UNK"/>
+			</effectiveTime>
+			<value xsi:type="CD" nullFlavor="UNK"/>
+		</observation>
+	</entry>
+	<entry>
+		<!-- The Health Concern act  -->
+		<!-- The Health Concern act wraps any single problem, situation, issue, or other observation and identifies it as health concern (non-optimal physical or psychological situations) -->
+		<act classCode="ACT" moodCode="EVN">
+			<templateId root="2.16.840.1.113883.10.20.22.4.132" extension="2015-08-01"/>
+			<templateId root="2.16.840.1.113883.10.20.22.4.132"/>
+			<id root="4eab0e52-dd7d-4285-99eb-72d32ddb195c" />
+			<code code="75310-3" displayName="Health concerns Document" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
+			<text></text>
+			<statusCode code="active"/>
+			<effectiveTime>
+				<low value="{DateDiagnosed}"/>
+				<!-- The high value has a nullFlacor of "NI" (No Informmation) because it is an ongoing health concern -->
+				<high nullFlavor="NI"/>
+			</effectiveTime>
+			<!-- ** When the {Date_Diagnosed} is not available -->
+			<!--effectiveTime>
+						<low nullFlavor="UNK"/>
+					</effectiveTime ** -->
+			<author>
+				<templateId root="2.16.840.1.113883.10.20.22.4.119"/>
+				<time value="{CurrentDate}"/>
+				<!-- The author is Harold Hippocrates, the same author as the document author. The IDs equal ClinicalDocument/Author/IDs  -->
+				<assignedAuthor>
+					<id extension="{PhysicianLibraryID}" root="1.3.6.1.4.1.22812.4.222.334"/>
+					<id extension="{NPI}" root="2.16.840.1.113883.4.6"/>
+					<code code="{TaxonomicalCode}" codeSystem="2.16.840.1.113883.6.101"/>
+				</assignedAuthor>
+			</author>
+			<entryRelationship typeCode="REFR">
+				<!-- The Health Concern's Problem Observation wrapped by the Health Concern act -->
+				<observation classCode="OBS" moodCode="EVN">
+					<templateId root="2.16.840.1.113883.10.20.22.4.4" extension="2015-08-01"/>
+					<templateId root="2.16.840.1.113883.10.20.22.4.4"/>
+					<id root="ab1791b0-5c71-11db-b0de-0800200c9a66" />
+					<code code="404684003" displayName="Clinical Finding (finding)" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT">
+						<translation code="75321-0" displayName="Clinical Finding" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC"/>
+					</code>
+					<text></text>
+					<statusCode code="completed"/>
+					<effectiveTime>
+						<low value="{DateDiagnosed}"/>
+					</effectiveTime>
+					<!-- ** When the {Date_Diagnosed} is not available -->
+					<!--effectiveTime>
+						<low nullFlavor="UNK"/>
+					</effectiveTime ** -->
+					<value xsi:type="CD" code="{SnomedCode} " displayName="{SnomedDescription}" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT">
+					</value>
+					<author typeCode="AUT">
+						<templateId root="2.16.840.1.113883.10.20.22.4.119" />
+						<time value="{CurrentDate}" />
+						<assignedAuthor>
+							<id extension="555555555" root="2.16.840.1.113883.4.6" />
+							<code code="{TaxonomicalCode}" displayName="{TaxonomicalDescription}" codeSystem="2.16.840.1.113883.6.101" codeSystemName="Healthcare Provider Taxonomy (HIPAA)" />
+						</assignedAuthor>
+					</author>
+				</observation>
+			</entryRelationship>
+		</act>
+	</entry>
 </ClinicalDocument>
