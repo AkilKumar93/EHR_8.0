@@ -609,7 +609,7 @@ namespace Acurus.Capella.UI
                     string[] name = lst[0].person_name.Split(' ');
                     xmlReqNode[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].InnerText = name[0];
                     if (name.Count() > 1)
-                        xmlReqNode[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText = name[1];
+                        xmlReqNode[0].ChildNodes[0].ChildNodes[3].ChildNodes[0].InnerText = name[0];
                 }
             }
             #endregion
