@@ -971,9 +971,15 @@ namespace Acurus.Capella.UI
                     {
                        
                         String sDate = DateTime.Now.ToString("yyyyMMddhhmmss");
-                        DateTime digDate = DateTime.Parse(ClinicalSummary.ProblemListing[i].Date_Diagnosed);
-                       
-                        XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
+
+                        DateTime digDate = DateTime.MinValue;
+                        if (ClinicalSummary.ProblemListing[i].Date_Diagnosed.Length>9)
+                        {
+                            digDate= DateTime.Parse(ClinicalSummary.ProblemListing[i].Date_Diagnosed);
+                        }
+                        
+
+                            XmlDocumentFragment xfragAllergy = xmlDoc.CreateDocumentFragment();
                        
                         xfragAllergy.InnerXml = docAllergyEntry.DocumentElement.InnerXml.Replace("{CurrentDate}", sDate).Replace("{PhysicianLibraryID}", Phy.PhyId.ToString()).Replace("{DateDiagnosed}", digDate.ToString("yyyyMMdd")).Replace("{NPI}", Phy.PhyNPI).Replace("{TaxonomicalCode}", Phy.Taxonomy_Code).Replace("{SnomedCode}",ClinicalSummary.ProblemListing[i].Snomed_Code).Trim().Replace("{SnomedDescription}", ClinicalSummary.ProblemListing[i].Snomed_Code_Description).Replace("{TaxonomicalDescription}", Phy.Taxonomy_Description).Replace("&", "&amp;");
 
