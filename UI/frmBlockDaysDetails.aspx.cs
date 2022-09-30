@@ -309,8 +309,25 @@ namespace Acurus.Capella.UI
                         for (int i = 0; i < PhysicianList.Count; i++)
                         {
                             ListItem item = new ListItem();
+                            //old code
+                            //item.Value = PhysicianList[i].Id.ToString();
+                            //item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName + " " + PhysicianList[i].PhySuffix;
+                            //Gitlab# 2485 - Physician Name Display Change
+                            if (PhysicianList[i].PhyLastName != String.Empty)
+                                item.Text += PhysicianList[i].PhyLastName;
+                            if (PhysicianList[i].PhyFirstName != String.Empty)
+                            {
+                                if (item.Text != String.Empty)
+                                    item.Text += "," + PhysicianList[i].PhyFirstName;
+                                else
+                                    item.Text += PhysicianList[i].PhyFirstName;
+                            }
+                            if (PhysicianList[i].PhyMiddleName != String.Empty)
+                                item.Text += " " + PhysicianList[i].PhyMiddleName;
+                            if (PhysicianList[i].PhySuffix != String.Empty)
+                                item.Text += "," + PhysicianList[i].PhySuffix;
+
                             item.Value = PhysicianList[i].Id.ToString();
-                            item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName + " " + PhysicianList[i].PhySuffix;
                             ddlProvider.Items.Add(item);
                             if (Request.QueryString["Physician_Name"] != null && item.Text == Request.QueryString["Physician_Name"].ToString())
                             {

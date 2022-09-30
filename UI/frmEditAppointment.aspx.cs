@@ -589,7 +589,23 @@ namespace Acurus.Capella.UI
 
                             if (objPhyLib != null)
                             {
-                                string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                                //old code
+                                // string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                                //Gitlab# 2485 - Physician Name Display Change
+                                string sPhyName = string.Empty;
+                                 if (objPhyLib.PhyLastName != String.Empty)
+                                    sPhyName += objPhyLib.PhyLastName;
+                                if (objPhyLib.PhyFirstName != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += "," + objPhyLib.PhyFirstName;
+                                    else
+                                        sPhyName += objPhyLib.PhyFirstName;
+                                }
+                                if (objPhyLib.PhyMiddleName != String.Empty)
+                                    sPhyName += " " + objPhyLib.PhyMiddleName;
+                                if (objPhyLib.PhySuffix != String.Empty)
+                                    sPhyName += "," + objPhyLib.PhySuffix;
 
                                 //  txtReferringProvider.Text = sPhyName;
                                 //  txtReferringFacility.Text = objPhyLib.PhyNotes;
@@ -767,7 +783,22 @@ namespace Acurus.Capella.UI
                                 }
                                 else
                                 {
-                                    item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                    //old code
+                                    //item.Text = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    if (PhysicianList[i].PhyLastName != String.Empty)
+                                        item.Text += PhysicianList[i].PhyLastName;
+                                    if (PhysicianList[i].PhyFirstName != String.Empty)
+                                    {
+                                        if (item.Text != String.Empty)
+                                            item.Text += "," + PhysicianList[i].PhyFirstName;
+                                        else
+                                            item.Text += PhysicianList[i].PhyFirstName;
+                                    }
+                                    if (PhysicianList[i].PhyMiddleName != String.Empty)
+                                        item.Text += " " + PhysicianList[i].PhyMiddleName;
+                                    if (PhysicianList[i].PhySuffix != String.Empty)
+                                        item.Text += "," + PhysicianList[i].PhySuffix;
                                     item.Value = PhysicianList[i].Id.ToString();
                                 }
 
@@ -784,9 +815,26 @@ namespace Acurus.Capella.UI
                         {
                             string sPhyName = string.Empty;
                             if (PhysicianList != null)
-                                sPhyName = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
+                            //old code
+                            // sPhyName = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
+                            //Gitlab# 2485 - Physician Name Display Change
+                            {
+                                if (PhysicianList[i].PhyLastName != String.Empty)
+                                    sPhyName += PhysicianList[i].PhyLastName;
+                                if (PhysicianList[i].PhyFirstName != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += "," + PhysicianList[i].PhyFirstName;
+                                    else
+                                        sPhyName += PhysicianList[i].PhyFirstName;
+                                }
+                                if (PhysicianList[i].PhyMiddleName != String.Empty)
+                                    sPhyName += " " + PhysicianList[i].PhyMiddleName;
+                                if (PhysicianList[i].PhySuffix != String.Empty)
+                                    sPhyName += "," + PhysicianList[i].PhySuffix;
+                            }
 
-                            RadComboBoxItem item1 = new RadComboBoxItem();
+                                RadComboBoxItem item1 = new RadComboBoxItem();
                             item1.Value = PhysicianList[i].Id.ToString();
                             item1.Text = sPhyName;
                             ddlPhysicianName.Items.Add(item1);
@@ -2869,7 +2917,24 @@ namespace Acurus.Capella.UI
                 {
                     string sPhyName = string.Empty;
                     if (PhyList[i] != null)
-                        sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                    {
+                        //old code
+                        //sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                        //Gitlab# 2485 - Physician Name Display Change
+                        if (PhyList[i].PhyLastName != String.Empty)
+                            sPhyName += PhyList[i].PhyLastName;
+                        if (PhyList[i].PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + PhyList[i].PhyFirstName;
+                            else
+                                sPhyName += PhyList[i].PhyFirstName;
+                        }
+                        if (PhyList[i].PhyMiddleName != String.Empty)
+                            sPhyName += " " + PhyList[i].PhyMiddleName;
+                        if (PhyList[i].PhySuffix != String.Empty)
+                            sPhyName += "," + PhyList[i].PhySuffix;
+                    }
 
                     RadComboBoxItem item = new RadComboBoxItem();
                     item.Value = PhyList[i].Id.ToString();
@@ -3230,7 +3295,25 @@ namespace Acurus.Capella.UI
 
                                 if (objPhyLib != null)
                                 {
-                                    string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+
+                                    //old code
+                                    // string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    string sPhyName = String.Empty;
+                                    if (objPhyLib.PhyLastName != String.Empty)
+                                        sPhyName += objPhyLib.PhyLastName;
+                                    if (objPhyLib.PhyFirstName != String.Empty)
+                                    {
+                                        if (sPhyName != String.Empty)
+                                            sPhyName += "," + objPhyLib.PhyFirstName;
+                                        else
+                                            sPhyName += objPhyLib.PhyFirstName;
+                                    }
+                                    if (objPhyLib.PhyMiddleName != String.Empty)
+                                        sPhyName += " " + objPhyLib.PhyMiddleName;
+                                    if (objPhyLib.PhySuffix != String.Empty)
+                                        sPhyName += "," + objPhyLib.PhySuffix;
+
 
                                     //txtReferringProvider.Text = sPhyName;
                                     //txtReferringFacility.Text = objPhyLib.PhyNotes;
@@ -3274,7 +3357,23 @@ namespace Acurus.Capella.UI
 
                             if (objPhyLib != null)
                             {
-                                string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                                //old code
+                                //string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                                //Gitlab# 2485 - Physician Name Display Change
+                                string sPhyName = string.Empty;
+                                if (objPhyLib.PhyLastName != String.Empty)
+                                    sPhyName += objPhyLib.PhyLastName;
+                                if (objPhyLib.PhyFirstName != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += "," + objPhyLib.PhyFirstName;
+                                    else
+                                        sPhyName += objPhyLib.PhyFirstName;
+                                }
+                                if (objPhyLib.PhyMiddleName != String.Empty)
+                                    sPhyName += " " + objPhyLib.PhyMiddleName;
+                                if (objPhyLib.PhySuffix != String.Empty)
+                                    sPhyName += "," + objPhyLib.PhySuffix;
 
                                 //txtReferringProvider.Text = sPhyName;
                                 //txtReferringFacility.Text = objPhyLib.PhyNotes;
@@ -3450,8 +3549,23 @@ namespace Acurus.Capella.UI
                         {
                             facilityadd = lstfacirty[0].Fac_Address1;
                         }
-
-                        sPhyName = objPhysicianLibrary.PhyPrefix + " " + objPhysicianLibrary.PhyFirstName + " " + objPhysicianLibrary.PhyLastName + " " + objPhysicianLibrary.PhySuffix;
+                        //old code
+                        // sPhyName = objPhysicianLibrary.PhyPrefix + " " + objPhysicianLibrary.PhyFirstName + " " + objPhysicianLibrary.PhyLastName + " " + objPhysicianLibrary.PhySuffix;
+                        //Gitlab# 2485 - Physician Name Display Change
+                        sPhyName = string.Empty;
+                        if (objPhysicianLibrary.PhyLastName != String.Empty)
+                            sPhyName += objPhysicianLibrary.PhyLastName;
+                        if (objPhysicianLibrary.PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + objPhysicianLibrary.PhyFirstName;
+                            else
+                                sPhyName += objPhysicianLibrary.PhyFirstName;
+                        }
+                        if (objPhysicianLibrary.PhyMiddleName != String.Empty)
+                            sPhyName += " " + objPhysicianLibrary.PhyMiddleName;
+                        if (objPhysicianLibrary.PhySuffix != String.Empty)
+                            sPhyName += "," + objPhysicianLibrary.PhySuffix;
                         if (sPhyName.Trim() != "")
                         {
                             hdnrenprovider.Value = objPhysicianLibrary.Id + "|" + sPhyName + "|" + objPhysicianLibrary.PhyNPI + "|" + "" + "|" + cboFacility.SelectedItem.Text + "|" +
@@ -3571,7 +3685,24 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        string sPhyName = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
+                        //old code
+                        // string sPhyName = PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyLastName;
+                        //Gitlab# 2485 - Physician Name Display Change
+                        string sPhyName = string.Empty;
+                        if (PhysicianList[i].PhyLastName != String.Empty)
+                            sPhyName += PhysicianList[i].PhyLastName;
+                        if (PhysicianList[i].PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + PhysicianList[i].PhyFirstName;
+                            else
+                                sPhyName += PhysicianList[i].PhyFirstName;
+                        }
+                        if (PhysicianList[i].PhyMiddleName != String.Empty)
+                            sPhyName += " " + PhysicianList[i].PhyMiddleName;
+                        if (PhysicianList[i].PhySuffix != String.Empty)
+                            sPhyName += "," + PhysicianList[i].PhySuffix;
+
 
                         item = new RadComboBoxItem();
                         item.Value = PhysicianList[i].Id.ToString();

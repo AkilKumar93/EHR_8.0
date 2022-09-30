@@ -2594,7 +2594,7 @@ namespace Acurus.Capella.UI
 
                     AllPhysicians = AllPhysicians.Distinct().ToList<PhysicianLibrary>();
                     AllPhysicians = AllPhysicians.Concat(lstMachineTech).ToList<PhysicianLibrary>();//BugID:53256
-                    return AllPhysicians.OrderBy(item => item.PhyFirstName).ToList<PhysicianLibrary>();
+                    return AllPhysicians.OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
                     //return AllPhysicians.Distinct().OrderBy(item => item.PhyFirstName).ToList<PhysicianLibrary>();
                 }
                 else
@@ -2635,10 +2635,10 @@ namespace Acurus.Capella.UI
                             }
                         }
                     }
-                    return AllPhysicians.OrderBy(item => item.PhyFirstName).ToList<PhysicianLibrary>();
+                    return AllPhysicians.OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
                 }
             }
-            return AllPhysicians.Distinct().OrderBy(item => item.PhyFirstName).ToList<PhysicianLibrary>();
+            return AllPhysicians.Distinct().OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
         }
 
         public static IList<MapFacilityPhysician> GetFacilityListMappedToPhysician(string physician_id)

@@ -2300,58 +2300,73 @@ namespace Acurus.Capella.UI
                     {
                         foreach (XElement phyItems in elements.Elements())
                         {
-                            StringBuilder phyName = new StringBuilder();
-                            StringBuilder username = new StringBuilder();
-                            StringBuilder prefix = new StringBuilder();
-                            StringBuilder firstname = new StringBuilder();
-                            StringBuilder middlename = new StringBuilder();
-                            StringBuilder lastname = new StringBuilder();
-                            StringBuilder suffix = new StringBuilder();
-                            StringBuilder phyID = new StringBuilder();
+                            //Old Code
+                            //StringBuilder phyName = new StringBuilder();
+                            //StringBuilder username = new StringBuilder();
+                            //StringBuilder prefix = new StringBuilder();
+                            //StringBuilder firstname = new StringBuilder();
+                            //StringBuilder middlename = new StringBuilder();
+                            //StringBuilder lastname = new StringBuilder();
+                            //StringBuilder suffix = new StringBuilder();
+                            //StringBuilder phyID = new StringBuilder();
 
-                            if (phyItems.Attribute("username").Value != null)
-                                username.Append(phyItems.Attribute("username").Value);
-                            if (phyItems.Attribute("prefix").Value != null)
-                                prefix.Append(phyItems.Attribute("prefix").Value);
-                            if (phyItems.Attribute("firstname").Value != null)
-                                firstname.Append(phyItems.Attribute("firstname").Value);
-                            if (phyItems.Attribute("middlename").Value != null)
-                                middlename.Append(phyItems.Attribute("middlename").Value);
-                            if (phyItems.Attribute("lastname").Value != null)
-                                lastname.Append(phyItems.Attribute("lastname").Value);
-                            if (phyItems.Attribute("suffix").Value != null)
-                                suffix.Append(phyItems.Attribute("suffix").Value);
-                            //if (phyItems.Attribute("phyID").Value != null)
-                            // phyID = phyItems.Attribute("phyID").Value;
-                            if (phyItems.Attribute("ID").Value != null)
-                                phyID.Append(phyItems.Attribute("ID").Value);
+                            //if (phyItems.Attribute("username").Value != null)
+                            //    username.Append(phyItems.Attribute("username").Value);
+                            //if (phyItems.Attribute("prefix").Value != null)
+                            //    prefix.Append(phyItems.Attribute("prefix").Value);
+                            //if (phyItems.Attribute("firstname").Value != null)
+                            //    firstname.Append(phyItems.Attribute("firstname").Value);
+                            //if (phyItems.Attribute("middlename").Value != null)
+                            //    middlename.Append(phyItems.Attribute("middlename").Value);
+                            //if (phyItems.Attribute("lastname").Value != null)
+                            //    lastname.Append(phyItems.Attribute("lastname").Value);
+                            //if (phyItems.Attribute("suffix").Value != null)
+                            //    suffix.Append(phyItems.Attribute("suffix").Value);
+                            ////if (phyItems.Attribute("phyID").Value != null)
+                            //// phyID = phyItems.Attribute("phyID").Value;
+                            //if (phyItems.Attribute("ID").Value != null)
+                            //    phyID.Append(phyItems.Attribute("ID").Value);
 
-                            if (prefix.Length != 0)
+                            //if (prefix.Length != 0)
+                            //{
+                            //    phyName.Append(prefix.ToString());
+                            //}
+                            //if (firstname.Length != 0)
+                            //{
+                            //    phyName.Append(firstname.ToString());
+                            //}
+                            //if (middlename.Length != 0)
+                            //{
+                            //    phyName.Append(middlename.ToString());
+                            //}
+                            //if (lastname.Length != 0)
+                            //{
+                            //    phyName.Append(lastname.ToString());
+                            //}
+                            //if (suffix.Length != 0)
+                            //{
+                            //    phyName.Append(suffix.ToString());
+                            //}
+                            //Gitlab# 2485 - Physician Name Display Change
+                            string phyName = String.Empty;
+                            if (phyItems.Attribute("lastname").Value != String.Empty)
+                                phyName += phyItems.Attribute("lastname").Value;
+                            if (phyItems.Attribute("firstname").Value != String.Empty)
                             {
-                                phyName.Append(prefix.ToString());
+                                if (phyName != String.Empty)
+                                    phyName += "," + phyItems.Attribute("firstname").Value;
+                                else
+                                    phyName += phyItems.Attribute("firstname").Value;
                             }
-                            if (firstname.Length != 0)
-                            {
-                                phyName.Append(firstname.ToString());
-                            }
-                            if (middlename.Length != 0)
-                            {
-                                phyName.Append(middlename.ToString());
-                            }
-                            if (lastname.Length != 0)
-                            {
-                                phyName.Append(lastname.ToString());
-                            }
-                            if (suffix.Length != 0)
-                            {
-                                phyName.Append(suffix.ToString());
-                            }
-                            if (username.Length != 0)
-                            {
-                                liDropdown = new ListItem(username.ToString() + "-" + phyName.ToString(), phyID.ToString());
+                            if (phyItems.Attribute("middlename").Value != String.Empty)
+                                phyName += " " + phyItems.Attribute("middlename").Value;
+                            if (phyItems.Attribute("suffix").Value != String.Empty)
+                                phyName += "," + phyItems.Attribute("suffix").Value;
+
+                                liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
                                 liDropdown.Attributes.Add("default", "true");
                                 liComboItems.Add(liDropdown);
-                            }
+                            
                         }
 
                     }
@@ -2363,63 +2378,77 @@ namespace Acurus.Capella.UI
                         {
                             foreach (XElement phyItems in elements.Elements())
                             {
-                                StringBuilder phyName = new StringBuilder();
-                                StringBuilder username = new StringBuilder();
-                                StringBuilder prefix = new StringBuilder();
-                                StringBuilder firstname = new StringBuilder();
-                                StringBuilder middlename = new StringBuilder();
-                                StringBuilder lastname = new StringBuilder();
-                                StringBuilder suffix = new StringBuilder();
-                                StringBuilder phyID = new StringBuilder();
+                                //Old Code
+                                //StringBuilder phyName = new StringBuilder();
+                                //StringBuilder username = new StringBuilder();
+                                //StringBuilder prefix = new StringBuilder();
+                                //StringBuilder firstname = new StringBuilder();
+                                //StringBuilder middlename = new StringBuilder();
+                                //StringBuilder lastname = new StringBuilder();
+                                //StringBuilder suffix = new StringBuilder();
+                                //StringBuilder phyID = new StringBuilder();
 
-                                if (phyItems.Attribute("username").Value != null)
-                                    username.Append(phyItems.Attribute("username").Value);
-                                if (phyItems.Attribute("prefix").Value != null)
-                                    prefix.Append(phyItems.Attribute("prefix").Value);
-                                if (phyItems.Attribute("firstname").Value != null)
-                                    firstname.Append(phyItems.Attribute("firstname").Value);
-                                if (phyItems.Attribute("middlename").Value != null)
-                                    middlename.Append(phyItems.Attribute("middlename").Value);
-                                if (phyItems.Attribute("lastname").Value != null)
-                                    lastname.Append(phyItems.Attribute("lastname").Value);
-                                if (phyItems.Attribute("suffix").Value != null)
-                                    suffix.Append(phyItems.Attribute("suffix").Value);
-                                //if (phyItems.Attribute("phyID").Value != null)
-                                // phyID = phyItems.Attribute("phyID").Value;
-                                if (phyItems.Attribute("ID").Value != null)
-                                    phyID.Append(phyItems.Attribute("ID").Value);
+                                //if (phyItems.Attribute("username").Value != null)
+                                //    username.Append(phyItems.Attribute("username").Value);
+                                //if (phyItems.Attribute("prefix").Value != null)
+                                //    prefix.Append(phyItems.Attribute("prefix").Value);
+                                //if (phyItems.Attribute("firstname").Value != null)
+                                //    firstname.Append(phyItems.Attribute("firstname").Value);
+                                //if (phyItems.Attribute("middlename").Value != null)
+                                //    middlename.Append(phyItems.Attribute("middlename").Value);
+                                //if (phyItems.Attribute("lastname").Value != null)
+                                //    lastname.Append(phyItems.Attribute("lastname").Value);
+                                //if (phyItems.Attribute("suffix").Value != null)
+                                //    suffix.Append(phyItems.Attribute("suffix").Value);
+                                ////if (phyItems.Attribute("phyID").Value != null)
+                                //// phyID = phyItems.Attribute("phyID").Value;
+                                //if (phyItems.Attribute("ID").Value != null)
+                                //    phyID.Append(phyItems.Attribute("ID").Value);
 
-                                if (prefix.Length != 0)
+                                //if (prefix.Length != 0)
+                                //{
+                                //    phyName.Append(prefix.ToString());
+                                //}
+                                //if (firstname.Length != 0)
+                                //{
+                                //    phyName.Append(firstname.ToString());
+                                //}
+                                //if (middlename.Length != 0)
+                                //{
+                                //    phyName.Append(middlename.ToString());
+                                //}
+                                //if (lastname.Length != 0)
+                                //{
+                                //    phyName.Append(lastname.ToString());
+                                //}
+                                //if (suffix.Length != 0)
+                                //{
+                                //    phyName.Append(suffix.ToString());
+                                //}
+                                //Gitlab# 2485 - Physician Name Display Change
+                                string phyName = String.Empty;
+                                if (phyItems.Attribute("lastname").Value != String.Empty)
+                                    phyName += phyItems.Attribute("lastname").Value;
+                                if (phyItems.Attribute("firstname").Value != String.Empty)
                                 {
-                                    phyName.Append(prefix.ToString());
+                                    if (phyName != String.Empty)
+                                        phyName += "," + phyItems.Attribute("firstname").Value;
+                                    else
+                                        phyName += phyItems.Attribute("firstname").Value;
                                 }
-                                if (firstname.Length != 0)
-                                {
-                                    phyName.Append(firstname.ToString());
-                                }
-                                if (middlename.Length != 0)
-                                {
-                                    phyName.Append(middlename.ToString());
-                                }
-                                if (lastname.Length != 0)
-                                {
-                                    phyName.Append(lastname.ToString());
-                                }
-                                if (suffix.Length != 0)
-                                {
-                                    phyName.Append(suffix.ToString());
-                                }
+                                if (phyItems.Attribute("middlename").Value != String.Empty)
+                                    phyName += " " + phyItems.Attribute("middlename").Value;
+                                if (phyItems.Attribute("suffix").Value != String.Empty)
+                                    phyName += "," + phyItems.Attribute("suffix").Value;
 
-                                if (username.Length != 0)
-                                {
-                                    liDropdown = new ListItem(username.ToString() + "-" + phyName.ToString(), phyID.ToString());
-                                    if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyID.ToString())
+                                
+                                    liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
+                                    if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.Attribute("ID").Value)
                                         liDropdown.Attributes.Add("default", "true");
                                     else
                                         liDropdown.Attributes.Add("default", "false");
                                     liDropdown.Attributes.CssStyle.Add("display", "none");
                                     liComboItems.Add(liDropdown);
-                                }
                             }
                         }
                     }
@@ -2456,58 +2485,76 @@ namespace Acurus.Capella.UI
                     {
                         foreach (XElement phyItems in elements.Elements())
                         {
-                            StringBuilder phyName = new StringBuilder();
-                            StringBuilder username = new StringBuilder();
-                            StringBuilder prefix = new StringBuilder();
-                            StringBuilder firstname = new StringBuilder();
-                            StringBuilder middlename = new StringBuilder();
-                            StringBuilder lastname = new StringBuilder();
-                            StringBuilder suffix = new StringBuilder();
-                            StringBuilder phyID = new StringBuilder();
+                            //Old Code 
+                            //StringBuilder phyName = new StringBuilder();
+                            //StringBuilder username = new StringBuilder();
+                            //StringBuilder prefix = new StringBuilder();
+                            //StringBuilder firstname = new StringBuilder();
+                            //StringBuilder middlename = new StringBuilder();
+                            //StringBuilder lastname = new StringBuilder();
+                            //StringBuilder suffix = new StringBuilder();
+                            //StringBuilder phyID = new StringBuilder();
 
-                            if (phyItems.Attribute("username").Value != null)
-                                username.Append(phyItems.Attribute("username").Value);
-                            if (phyItems.Attribute("prefix").Value != null)
-                                prefix.Append(phyItems.Attribute("prefix").Value);
-                            if (phyItems.Attribute("firstname").Value != null)
-                                firstname.Append(phyItems.Attribute("firstname").Value);
-                            if (phyItems.Attribute("middlename").Value != null)
-                                middlename.Append(phyItems.Attribute("middlename").Value);
-                            if (phyItems.Attribute("lastname").Value != null)
-                                lastname.Append(phyItems.Attribute("lastname").Value);
-                            if (phyItems.Attribute("suffix").Value != null)
-                                suffix.Append(phyItems.Attribute("suffix").Value);
-                            //if (phyItems.Attribute("phyID").Value != null)
-                            // phyID = phyItems.Attribute("phyID").Value;
-                            if (phyItems.Attribute("ID").Value != null)
-                                phyID.Append(phyItems.Attribute("ID").Value);
+                            //if (phyItems.Attribute("username").Value != null)
+                            //    username.Append(phyItems.Attribute("username").Value);
+                            //if (phyItems.Attribute("prefix").Value != null)
+                            //    prefix.Append(phyItems.Attribute("prefix").Value);
+                            //if (phyItems.Attribute("firstname").Value != null)
+                            //    firstname.Append(phyItems.Attribute("firstname").Value);
+                            //if (phyItems.Attribute("middlename").Value != null)
+                            //    middlename.Append(phyItems.Attribute("middlename").Value);
+                            //if (phyItems.Attribute("lastname").Value != null)
+                            //    lastname.Append(phyItems.Attribute("lastname").Value);
+                            //if (phyItems.Attribute("suffix").Value != null)
+                            //    suffix.Append(phyItems.Attribute("suffix").Value);
+                            ////if (phyItems.Attribute("phyID").Value != null)
+                            //// phyID = phyItems.Attribute("phyID").Value;
+                            //if (phyItems.Attribute("ID").Value != null)
+                            //    phyID.Append(phyItems.Attribute("ID").Value);
 
-                            if (prefix.Length != 0)
+                            //if (prefix.Length != 0)
+                            //{
+                            //    phyName.Append(prefix.ToString());
+                            //}
+                            //if (firstname.Length != 0)
+                            //{
+                            //    phyName.Append(firstname.ToString());
+                            //}
+                            //if (middlename.Length != 0)
+                            //{
+                            //    phyName.Append(middlename.ToString());
+                            //}
+                            //if (lastname.Length != 0)
+                            //{
+                            //    phyName.Append(lastname.ToString());
+                            //}
+                            //if (suffix.Length != 0)
+                            //{
+                            //    phyName.Append(suffix.ToString());
+                            //}
+
+                            //Gitlab# 2485 - Physician Name Display Change
+                            string phyName = String.Empty;
+                            if (phyItems.Attribute("lastname").Value != String.Empty)
+                                phyName += phyItems.Attribute("lastname").Value;
+                            if (phyItems.Attribute("firstname").Value != String.Empty)
                             {
-                                phyName.Append(prefix.ToString());
+                                if (phyName != String.Empty)
+                                    phyName += "," + phyItems.Attribute("firstname").Value;
+                                else
+                                    phyName += phyItems.Attribute("firstname").Value;
                             }
-                            if (firstname.Length != 0)
-                            {
-                                phyName.Append(firstname.ToString());
-                            }
-                            if (middlename.Length != 0)
-                            {
-                                phyName.Append(middlename.ToString());
-                            }
-                            if (lastname.Length != 0)
-                            {
-                                phyName.Append(lastname.ToString());
-                            }
-                            if (suffix.Length != 0)
-                            {
-                                phyName.Append(suffix.ToString());
-                            }
-                            if (username.Length != 0)
-                            {
-                                liDropdown = new ListItem(username.ToString() + "-" + phyName.ToString(), phyID.ToString());
+                            if (phyItems.Attribute("middlename").Value != String.Empty)
+                                phyName += " " + phyItems.Attribute("middlename").Value;
+                            if (phyItems.Attribute("suffix").Value != String.Empty)
+                                phyName += "," + phyItems.Attribute("suffix").Value;
+
+
+                           
+                                liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
                                 liDropdown.Attributes.Add("default", "true");
                                 liComboItems.Add(liDropdown);
-                            }
+                            
                         }
 
                     }
@@ -2521,63 +2568,78 @@ namespace Acurus.Capella.UI
                         {
                             foreach (XElement phyItems in elements.Elements())
                             {
-                                StringBuilder phyName = new StringBuilder();
-                                StringBuilder username = new StringBuilder();
-                                StringBuilder prefix = new StringBuilder();
-                                StringBuilder firstname = new StringBuilder();
-                                StringBuilder middlename = new StringBuilder();
-                                StringBuilder lastname = new StringBuilder();
-                                StringBuilder suffix = new StringBuilder();
-                                StringBuilder phyID = new StringBuilder();
+                                //Old Code
+                                //StringBuilder phyName = new StringBuilder();
+                                //StringBuilder username = new StringBuilder();
+                                //StringBuilder prefix = new StringBuilder();
+                                //StringBuilder firstname = new StringBuilder();
+                                //StringBuilder middlename = new StringBuilder();
+                                //StringBuilder lastname = new StringBuilder();
+                                //StringBuilder suffix = new StringBuilder();
+                                //StringBuilder phyID = new StringBuilder();
 
-                                if (phyItems.Attribute("username").Value != null)
-                                    username.Append(phyItems.Attribute("username").Value);
-                                if (phyItems.Attribute("prefix").Value != null)
-                                    prefix.Append(phyItems.Attribute("prefix").Value);
-                                if (phyItems.Attribute("firstname").Value != null)
-                                    firstname.Append(phyItems.Attribute("firstname").Value);
-                                if (phyItems.Attribute("middlename").Value != null)
-                                    middlename.Append(phyItems.Attribute("middlename").Value);
-                                if (phyItems.Attribute("lastname").Value != null)
-                                    lastname.Append(phyItems.Attribute("lastname").Value);
-                                if (phyItems.Attribute("suffix").Value != null)
-                                    suffix.Append(phyItems.Attribute("suffix").Value);
-                                //if (phyItems.Attribute("phyID").Value != null)
-                                // phyID = phyItems.Attribute("phyID").Value;
-                                if (phyItems.Attribute("ID").Value != null)
-                                    phyID.Append(phyItems.Attribute("ID").Value);
+                                //if (phyItems.Attribute("username").Value != null)
+                                //    username.Append(phyItems.Attribute("username").Value);
+                                //if (phyItems.Attribute("prefix").Value != null)
+                                //    prefix.Append(phyItems.Attribute("prefix").Value);
+                                //if (phyItems.Attribute("firstname").Value != null)
+                                //    firstname.Append(phyItems.Attribute("firstname").Value);
+                                //if (phyItems.Attribute("middlename").Value != null)
+                                //    middlename.Append(phyItems.Attribute("middlename").Value);
+                                //if (phyItems.Attribute("lastname").Value != null)
+                                //    lastname.Append(phyItems.Attribute("lastname").Value);
+                                //if (phyItems.Attribute("suffix").Value != null)
+                                //    suffix.Append(phyItems.Attribute("suffix").Value);
+                                ////if (phyItems.Attribute("phyID").Value != null)
+                                //// phyID = phyItems.Attribute("phyID").Value;
+                                //if (phyItems.Attribute("ID").Value != null)
+                                //    phyID.Append(phyItems.Attribute("ID").Value);
 
-                                if (prefix.Length != 0)
-                                {
-                                    phyName.Append(prefix.ToString());
-                                }
-                                if (firstname.Length != 0)
-                                {
-                                    phyName.Append(firstname.ToString());
-                                }
-                                if (middlename.Length != 0)
-                                {
-                                    phyName.Append(middlename.ToString());
-                                }
-                                if (lastname.Length != 0)
-                                {
-                                    phyName.Append(lastname.ToString());
-                                }
-                                if (suffix.Length != 0)
-                                {
-                                    phyName.Append(suffix.ToString());
-                                }
+                                //if (prefix.Length != 0)
+                                //{
+                                //    phyName.Append(prefix.ToString());
+                                //}
+                                //if (firstname.Length != 0)
+                                //{
+                                //    phyName.Append(firstname.ToString());
+                                //}
+                                //if (middlename.Length != 0)
+                                //{
+                                //    phyName.Append(middlename.ToString());
+                                //}
+                                //if (lastname.Length != 0)
+                                //{
+                                //    phyName.Append(lastname.ToString());
+                                //}
+                                //if (suffix.Length != 0)
+                                //{
+                                //    phyName.Append(suffix.ToString());
+                                //}
 
-                                if (username.Length != 0)
+                                //Gitlab# 2485 - Physician Name Display Change
+                                string phyName = String.Empty;
+                                if (phyItems.Attribute("lastname").Value != String.Empty)
+                                    phyName += phyItems.Attribute("lastname").Value;
+                                if (phyItems.Attribute("firstname").Value != String.Empty)
                                 {
-                                    liDropdown = new ListItem(username.ToString() + "-" + phyName.ToString(), phyID.ToString());
-                                    if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyID.ToString())
+                                    if (phyName != String.Empty)
+                                        phyName += "," + phyItems.Attribute("firstname").Value;
+                                    else
+                                        phyName += phyItems.Attribute("firstname").Value;
+                                }
+                                if (phyItems.Attribute("middlename").Value != String.Empty)
+                                    phyName += " " + phyItems.Attribute("middlename").Value;
+                                if (phyItems.Attribute("suffix").Value != String.Empty)
+                                    phyName += "," + phyItems.Attribute("suffix").Value;
+                               
+                                    liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
+                                    if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.Attribute("ID").Value)
                                         liDropdown.Attributes.Add("default", "true");
                                     else
                                         liDropdown.Attributes.Add("default", "false");
                                     liDropdown.Attributes.CssStyle.Add("display", "none");
                                     liComboItems.Add(liDropdown);
-                                }
+                                
                             }
                         }
                     }

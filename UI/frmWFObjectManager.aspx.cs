@@ -481,9 +481,9 @@ namespace Acurus.Capella.UI
             if (xmlUserList != null)
             {
                 foreach (XmlNode item in xmlUserList)
-                    if (cboUpdateOwner.Text.ToString().Trim().ToUpper() == item.Attributes.GetNamedItem("User_Name").Value.ToUpper().Trim())
+                    if (cboUpdateOwner.SelectedItem.Value.ToString().Trim().ToUpper() == item.Attributes.GetNamedItem("User_Name").Value.ToUpper().Trim())
                     {
-                        if (cboUpdateOwner.Text.ToString() == item.Attributes[0].Value.ToUpper())
+                        if (cboUpdateOwner.SelectedItem.Value.ToString() == item.Attributes[0].Value.ToUpper())
                         {
                             if (item.Attributes.GetNamedItem("Physician_Library_ID").Value != null)
                                 Physician_Library_ID = Convert.ToInt32(item.Attributes.GetNamedItem("Physician_Library_ID").Value);
@@ -520,9 +520,9 @@ namespace Acurus.Capella.UI
             }
 
             CorrDBEntry.Old_Owner = WFRecord.Current_Owner;
-            if (cboUpdateOwner.Items[cboUpdateOwner.SelectedIndex].Text != string.Empty)
+            if (cboUpdateOwner.Items[cboUpdateOwner.SelectedIndex].Value != string.Empty)
             {
-                CorrDBEntry.New_Owner = cboUpdateOwner.Items[cboUpdateOwner.SelectedIndex].Text;
+                CorrDBEntry.New_Owner = cboUpdateOwner.Items[cboUpdateOwner.SelectedIndex].Value;
             }
             if (selectedItem["Current Process"].Text != string.Empty)
             {
@@ -533,9 +533,9 @@ namespace Acurus.Capella.UI
             CorrDBEntry.WF_Object_ID = Convert.ToInt32(WFRecord.Id);
             CorrDBEntryProxy.AppendToCorrectedDBEntries(CorrDBEntry, string.Empty);
 
-            if (grdAdminModule.SelectedItems[0].Cells[2].Text != string.Empty && selectedItem["Object Type"].Text != string.Empty && cboUpdateOwner.SelectedItem.Text != string.Empty)
+            if (grdAdminModule.SelectedItems[0].Cells[2].Text != string.Empty && selectedItem["Object Type"].Text != string.Empty && cboUpdateOwner.SelectedItem.Value != string.Empty)
             {
-                WfObjectMngr.UpdateOwner(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), selectedItem["Object Type"].Text, cboUpdateOwner.SelectedItem.Text, string.Empty);
+                WfObjectMngr.UpdateOwner(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), selectedItem["Object Type"].Text, cboUpdateOwner.SelectedItem.Value, string.Empty);
             }
 
             if (selectedItem["Current Process"].Text != string.Empty)
@@ -771,32 +771,120 @@ namespace Acurus.Capella.UI
             pnlUpdateProcess.Enabled = false;
             pnlUpdateOwner.Enabled = true;
 
-                //Update Owner
-                IList<ProcessMaster> proclist = ApplicationObject.processMasterList; // (IList<ProcessMaster>)ViewState["proclist"];
-                IList<ProcUser> ProcUser = (IList<ProcUser>)ViewState["ProcUser"];
-                GridDataItem grdSelectedItem = (GridDataItem)grdAdminModule.SelectedItems[0];
+            //Update Owner
+            IList<ProcessMaster> proclist = ApplicationObject.processMasterList; // (IList<ProcessMaster>)ViewState["proclist"];
+            IList<ProcUser> ProcUser = (IList<ProcUser>)ViewState["ProcUser"];
+            GridDataItem grdSelectedItem = (GridDataItem)grdAdminModule.SelectedItems[0];
 
-                if (proclist.Count > 0)
+            if (proclist.Count > 0)
+            {
+                //ViewState["proclist"] = proclist;
+                IList<ProcessMaster> BackPushAllowedProcess = (from p in proclist where p.Process_Name == grdSelectedItem["Current Process"].Text select p).ToList<ProcessMaster>();
+                if (BackPushAllowedProcess.Count > 0)
                 {
-                    //ViewState["proclist"] = proclist;
-                    IList<ProcessMaster> BackPushAllowedProcess = (from p in proclist where p.Process_Name == grdSelectedItem["Current Process"].Text select p).ToList<ProcessMaster>();
-                    if (BackPushAllowedProcess.Count > 0)
+                    if (BackPushAllowedProcess[0].Process_Type == "ASSIGNED")
                     {
-                        if (BackPushAllowedProcess[0].Process_Type=="ASSIGNED")
+                        UserManager lo = new UserManager();
+                        IList<string> userOldList = new List<string>();
+                        //IList<string> userList = new List<string>();
+                        if (grdSelectedItem["Current Process"].Text != string.Empty)
                         {
-                            UserManager lo = new UserManager();
-                            IList<string> userList = new List<string>();
-                            if (grdSelectedItem["Current Process"].Text != string.Empty)
-                            {
-                                var user = from u in ProcUser where u.Process_Name == grdSelectedItem["Current Process"].Text && u.Status == "A" orderby u.User_Name select u.User_Name;
-                                userList = user.ToList<string>();
-                            }
-
-                            cboUpdateOwner.DataSource = userList;
-                            cboUpdateOwner.DataBind();
+                            var user = from u in ProcUser where u.Process_Name == grdSelectedItem["Current Process"].Text && u.Status == "A" orderby u.User_Name select u.User_Name;
+                            userOldList = user.ToList<string>();
                         }
+
+                        XDocument xmlUser = null;
+                        XDocument xmlPhysician = null;
+                        SortedDictionary<string, string> hashUserList = new SortedDictionary<string, string>();
+                        if (File.Exists(Server.MapPath(@"ConfigXML\User.xml")))
+                            xmlUser = XDocument.Load(Server.MapPath(@"ConfigXML\User.xml"));
+                        if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianAddressDetails.xml")))
+                            xmlPhysician = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianAddressDetails.xml"));
+
+                        for (int iCount =0;iCount< userOldList.Count;iCount++)
+                        {
+                            if (xmlUser != null)
+                            {
+                                foreach (XElement elements in xmlUser.Descendants("UserList"))
+                                {
+                                    foreach (XElement UserElement in elements.Elements())
+                                    {
+                                        if (UserElement.Attribute("User_Name").Value.ToUpper() == userOldList[iCount].ToString() && UserElement.Attribute("Legal_Org").Value.ToUpper() == ClientSession.LegalOrg)
+                                        {
+                                            if (UserElement.Attribute("Physician_Library_ID").Value.ToUpper() == "0")
+                                            {
+                                                //userList.Add(UserElement.Attribute("person_name").Value);
+
+                                                //cboUpdateOwner.Items.Add(new RadComboBoxItem(UserElement.Attribute("person_name").Value, UserElement.Attribute("person_name").Value));
+
+                                                if (hashUserList.ContainsKey(UserElement.Attribute("person_name").Value) == false)
+                                                {
+                                                    hashUserList.Add(UserElement.Attribute("person_name").Value, UserElement.Attribute("User_Name").Value);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                foreach (XElement element in xmlPhysician.Descendants("p" + UserElement.Attribute("Physician_Library_ID").Value))
+                                                {
+                                                    string phyName = string.Empty;
+                                                    string prefix = string.Empty;
+                                                    string firstname = string.Empty;
+                                                    string middlename = string.Empty;
+                                                    string lastname = string.Empty;
+                                                    string suffix = string.Empty;
+
+                                                    if (element.Attribute("Physician_prefix").Value != null)
+                                                        prefix = element.Attribute("Physician_prefix").Value;
+                                                    if (element.Attribute("Physician_First_Name").Value != null)
+                                                        firstname = element.Attribute("Physician_First_Name").Value;
+                                                    if (element.Attribute("Physician_Middle_Name").Value != null)
+                                                        middlename = element.Attribute("Physician_Middle_Name").Value;
+                                                    if (element.Attribute("Physician_Last_Name").Value != null)
+                                                        lastname = element.Attribute("Physician_Last_Name").Value;
+                                                    if (element.Attribute("Physician_Suffix").Value != null)
+                                                        suffix = element.Attribute("Physician_Suffix").Value;
+
+                                                    //Gitlab# 2485 - Physician Name Display Change
+                                                    if (lastname != String.Empty)
+                                                        phyName += lastname;
+                                                    if (firstname != String.Empty)
+                                                    {
+                                                        if (phyName != String.Empty)
+                                                            phyName += "," + firstname;
+                                                        else
+                                                            phyName += firstname;
+                                                    }
+                                                    if (middlename != String.Empty)
+                                                        phyName += " " + middlename;
+                                                    if (suffix != String.Empty)
+                                                        phyName += "," + suffix;
+
+
+                                                    //userList.Add(phyName);
+                                                    //cboUpdateOwner.Items.Add(new RadComboBoxItem(phyName, UserElement.Attribute("User_Name").Value));
+                                                    if (hashUserList.ContainsKey(phyName) == false)
+                                                    {
+                                                        hashUserList.Add(phyName, UserElement.Attribute("User_Name").Value);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        foreach (var item in hashUserList)
+                        {
+                            cboUpdateOwner.Items.Add(new Telerik.Web.UI.RadComboBoxItem(item.Key, item.Value));
+                        }
+
+
+                        //cboUpdateOwner.DataSource = userList;
+                        //cboUpdateOwner.DataBind();
                     }
                 }
+            }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }

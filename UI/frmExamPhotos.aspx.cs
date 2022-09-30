@@ -368,7 +368,6 @@ namespace Acurus.Capella.UI
                 {
                    // if (ClientSession.FillEncounterandWFObject.EncRecord.Facility_Name.ToUpper() != Ancilliary_FacilityName.Trim().ToUpper() && xmlValue.ToUpper() != Ancilliary_FacilityName.Trim().ToUpper())//For bug Id  52933
                     if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
-                   
                     {
                         foreach (XElement phyItems in elements.Elements())
                         {
@@ -382,27 +381,43 @@ namespace Acurus.Capella.UI
                             string lastname = phyItems.Attribute("lastname").Value;
                             string suffix = phyItems.Attribute("suffix").Value;
                             string phyID = phyItems.Attribute("ID").Value;
+                            //Old Code
+                            //if (prefix != "")
+                            //{
+                            //    phyName += prefix + " ";
+                            //}
+                            //if (firstname != "")
+                            //{
+                            //    phyName += firstname + " ";
+                            //}
+                            //if (middlename != "")
+                            //{
+                            //    phyName += middlename + " ";
+                            //}
+                            //if (lastname != "")
+                            //{
+                            //    phyName += lastname + " ";
+                            //}
+                            //if (suffix != "")
+                            //{
+                            //    phyName += suffix;
+                            //}
 
-                            if (prefix != "")
+                            //Gitlab# 2485 - Physician Name Display Change
+                            if (lastname != String.Empty)
+                                phyName += lastname;
+                            if (firstname != String.Empty)
                             {
-                                phyName += prefix + " ";
+                                if (phyName != String.Empty)
+                                    phyName += "," + firstname;
+                                else
+                                    phyName += firstname;
                             }
-                            if (firstname != "")
-                            {
-                                phyName += firstname + " ";
-                            }
-                            if (middlename != "")
-                            {
-                                phyName += middlename + " ";
-                            }
-                            if (lastname != "")
-                            {
-                                phyName += lastname + " ";
-                            }
-                            if (suffix != "")
-                            {
-                                phyName += suffix;
-                            }
+                            if (middlename != String.Empty)
+                                phyName += " " + middlename;
+                            if (suffix != String.Empty)
+                                phyName += "," + suffix;
+
                             if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
                             {
                                 continue;
@@ -426,7 +441,10 @@ namespace Acurus.Capella.UI
                                 {
                                     if (username != string.Empty)
                                     {
-                                        liDropdown = new ListItem(username + " - " + phyName, phyID);
+                                        //Old Code
+                                        //liDropdown = new ListItem(username + " - " + phyName, phyID);
+                                        //Gitlab# 2485 - Physician Name Display Change
+                                        liDropdown = new ListItem(phyName, phyID);
                                         liDropdown.Attributes.Add("FacilityName", xmlValue);
                                         liDropdown.Attributes.Add("default", "true");
                                         liDropdown.Attributes.CssStyle.Add("display", "");
@@ -457,27 +475,43 @@ namespace Acurus.Capella.UI
                         string lastname = phyItems.Attribute("lastname").Value;
                         string suffix = phyItems.Attribute("suffix").Value;
                         string phyID = phyItems.Attribute("ID").Value;
+                        //Old Code
+                        //if (prefix != "")
+                        //{
+                        //    phyName += prefix + " ";
+                        //}
+                        //if (firstname != "")
+                        //{
+                        //    phyName += firstname + " ";
+                        //}
+                        //if (middlename != "")
+                        //{
+                        //    phyName += middlename + " ";
+                        //}
+                        //if (lastname != "")
+                        //{
+                        //    phyName += lastname + " ";
+                        //}
+                        //if (suffix != "")
+                        //{
+                        //    phyName += suffix;
+                        //}
 
-                        if (prefix != "")
+                        //Gitlab# 2485 - Physician Name Display Change
+                        if (lastname != String.Empty)
+                            phyName += lastname;
+                        if (firstname != String.Empty)
                         {
-                            phyName += prefix + " ";
+                            if (phyName != String.Empty)
+                                phyName += "," + firstname;
+                            else
+                                phyName += firstname;
                         }
-                        if (firstname != "")
-                        {
-                            phyName += firstname + " ";
-                        }
-                        if (middlename != "")
-                        {
-                            phyName += middlename + " ";
-                        }
-                        if (lastname != "")
-                        {
-                            phyName += lastname + " ";
-                        }
-                        if (suffix != "")
-                        {
-                            phyName += suffix;
-                        }
+                        if (middlename != String.Empty)
+                            phyName += " " + middlename;
+                        if (suffix != String.Empty)
+                            phyName += "," + suffix;
+
                         if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
                         {
                             continue;
@@ -486,7 +520,10 @@ namespace Acurus.Capella.UI
                         {
                             if (username != string.Empty && phyItems.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
                             {
-                                liDropdown = new ListItem(username + " - " + phyName, phyID);
+                                //Old Code
+                                //liDropdown = new ListItem(username + " - " + phyName, phyID);
+                                //Gitlab# 2485 - Physician Name Display Change
+                                liDropdown = new ListItem(phyName, phyID);
                                 liDropdown.Attributes.Add("default", "false");
                                 liDropdown.Attributes.Add("FacilityName", xmlValue);
                                 liDropdown.Attributes.CssStyle.Add("display", "none");

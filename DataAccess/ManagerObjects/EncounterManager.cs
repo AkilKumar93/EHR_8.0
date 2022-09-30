@@ -16529,6 +16529,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                     OrdersManager OrderMngr = new OrdersManager();
                     Orders objOrder = new Orders();
                     IList<string> ilstOrder = new List<string>();
+                    string sPhyName = string.Empty;
                     if (aryAppointmentList != null)
                     {
                         for (int i = 0; i < aryAppointmentList.Count; i++)
@@ -16569,7 +16570,27 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                             if (ilstFacAncillary.Count > 0)
                                 FillApptList.PhysicianName.Add(oj[12].ToString() + " - " + oj[13].ToString() + " " + oj[14].ToString());
                             else
-                                FillApptList.PhysicianName.Add(oj[11].ToString() + " " + oj[12].ToString() + " " + oj[13].ToString() + " " + oj[14].ToString());
+                            {
+                                //Old Code
+                                //FillApptList.PhysicianName.Add(oj[11].ToString() + " " + oj[12].ToString() + " " + oj[13].ToString() + " " + oj[14].ToString());
+                                //Gitlab# 2485 - Physician Name Display Change
+                                sPhyName = string.Empty;
+                                if (oj[14].ToString() != String.Empty)
+                                    sPhyName += oj[14].ToString();
+                                if (oj[12].ToString() != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += "," + oj[12].ToString();
+                                    else
+                                        sPhyName += oj[12].ToString();
+                                }
+                                if (oj[13].ToString() != String.Empty)
+                                    sPhyName += " " + oj[13].ToString();
+                                if (oj[15].ToString() != String.Empty)
+                                    sPhyName += "," + oj[15].ToString();
+                                FillApptList.PhysicianName.Add(sPhyName);
+                            }
+                                
 
                             FillApptList.FacilityName.Add(oj[16].ToString());
                             FillApptList.PatientName.Add(sPatientName);

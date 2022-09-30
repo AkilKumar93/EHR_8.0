@@ -758,18 +758,76 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg)
         {
             IList<string> UserList = new List<string>();
+            string sPhyName = string.Empty;
             if (sFacilityName == "SHOW ALL")
             {
-                UserManager UserMgr = new UserManager();
-                IList<User> ListUser = UserMgr.GetUserList(sLegalOrg);
-                IList<User> lstUserName = (from user in ListUser where user.status.ToUpper() == "A" select user).ToList<User>();
-                UserList = lstUserName.Select(u => u.user_name + "|" + u.person_name).ToList<string>();
+                //Old Code
+                //UserManager UserMgr = new UserManager();
+                //IList<User> ListUser = UserMgr.GetUserList(sLegalOrg);
+                //IList<User> lstUserName = (from user in ListUser where user.status.ToUpper() == "A" select user).ToList<User>();
+                //UserList = lstUserName.Select(u => u.user_name + "|" + u.person_name).ToList<string>();
+                //Gitlab# 2485 - Physician Name Display Change
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    IList<object> objLst = iMySession.CreateSQLQuery("select u.user_name,'',u.person_name,'','' from user u where status = 'a' and u.physician_library_id = 0 union all select u.user_name,p.Physician_Last_Name, Physician_First_Name, Physician_Middle_Name,Physician_Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Physician_Library_ID = p.Physician_Library_ID").List<object>();
+
+                    for (int i = 0; i < objLst.Count; i++)
+                    {
+                        object[] obj = (object[])objLst[i];
+                        sPhyName = string.Empty;
+
+                        if (obj[1].ToString() != String.Empty)
+                            sPhyName += obj[1].ToString();
+                        if (obj[2].ToString() != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + obj[2].ToString();
+                            else
+                                sPhyName += obj[2].ToString();
+                        }
+                        if (obj[3].ToString() != String.Empty)
+                            sPhyName += " " + obj[3].ToString();
+                        if (obj[4].ToString() != String.Empty)
+                            sPhyName += "," + obj[4].ToString();
+
+                        UserList.Add(obj[0].ToString() + "|" + sPhyName);
+                    }
+                    iMySession.Close();
+                }
             }
             else
             {
                 using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                 {
-                    UserList = iMySession.CreateSQLQuery("select concat(us.user_name ,'|',us.person_name) UserName from Map_facility_user f inner join map_facility_physician p on (f.facility_Name=p.facility_Name) inner join user us on (if(us.Physician_library_Id=0,us.user_Name=f.User_name,us.Physician_library_Id=p.Physician_Id)) where f.facility_Name='" + sFacilityName + "' group by UserName").List<string>();
+                    //Old Code
+                    //UserList = iMySession.CreateSQLQuery("select concat(us.user_name ,'|',us.person_name) UserName from Map_facility_user f inner join map_facility_physician p on (f.facility_Name=p.facility_Name) inner join user us on (if(us.Physician_library_Id=0,us.user_Name=f.User_name,us.Physician_library_Id=p.Physician_Id)) where f.facility_Name='" + sFacilityName + "' group by UserName").List<string>();
+
+                    //IList<object> objLst = iMySession.CreateSQLQuery("select u.user_name ,'',u.person_name,'','' from Map_facility_user f,user u where u.Physician_Library_Id = 0 and u.user_name = f.user_name and f.facility_Name = '" + sFacilityName + "' group by u.user_name union all select u.user_name, phy.Physician_Last_Name, phy.Physician_First_Name, phy.Physician_Middle_Name, phy.Physician_Suffix from user u, map_facility_physician p, physician_library phy, Map_facility_user where  u.physician_library_id <> 0 and u.Physician_Library_ID = p.Physician_ID and u.physician_library_id = phy.physician_library_id  and   p.facility_Name = '" + sFacilityName + "' group by user_name").List<object>();
+
+                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from Map_facility_user f,user u where u.Physician_Library_Id = 0 and u.user_name = f.user_name and f.facility_Name = '" + sFacilityName + "' group by UserName union all select u.user_name as UserName, phy.Physician_Last_Name as LastName, phy.Physician_First_Name as FirstName, phy.Physician_Middle_Name as MI, phy.Physician_Suffix as Suffix from user u, map_facility_physician p, physician_library phy, Map_facility_user where  u.physician_library_id <> 0 and u.Physician_Library_ID = p.Physician_ID and u.physician_library_id = phy.physician_library_id  and   p.facility_Name = '" + sFacilityName + "' group by UserName) as a order by LastName,FirstName").List<object>();
+
+                    for (int i = 0; i < objLst.Count; i++)
+                    {
+                        object[] obj = (object[])objLst[i];
+                        sPhyName = string.Empty;
+
+                        if (obj[1].ToString() != String.Empty)
+                            sPhyName += obj[1].ToString();
+                        if (obj[2].ToString() != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + obj[2].ToString();
+                            else
+                                sPhyName += obj[2].ToString();
+                        }
+                        if (obj[3].ToString() != String.Empty)
+                            sPhyName += " " + obj[3].ToString();
+                        if (obj[4].ToString() != String.Empty)
+                            sPhyName += "," + obj[4].ToString();
+
+                        UserList.Add(obj[0].ToString() + "|" + sPhyName);
+                    }
+
                     iMySession.Close();
                 }
             }
@@ -1019,23 +1077,52 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             PatientDetailDto PatientDetailsto = new PatientDetailDto();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("select {p.*},{w.*},{u.*} from patient_notes p LEFT JOIN wf_object w ON ( p.message_id=w.obj_system_id and w.obj_type='TASK' ) left join user u on (u.user_name = p.Assigned_To) where p.human_id='" + humanid.ToString() + "' order by p.created_date_and_time desc").AddEntity("p", typeof(PatientNotes)).AddEntity("w", typeof(WFObject)).AddEntity("u", typeof(User));
+                ISQLQuery sql = iMySession.CreateSQLQuery("select {p.*},{w.*},{u.*},{ph.*} from patient_notes p LEFT JOIN wf_object w ON ( p.message_id=w.obj_system_id and w.obj_type='TASK' ) left join user u on (u.user_name = p.Assigned_To) left join physician_library ph on (u.physician_library_id=ph.physician_library_id) where p.human_id='" + humanid.ToString() + "' order by p.created_date_and_time desc").AddEntity("p", typeof(PatientNotes)).AddEntity("w", typeof(WFObject)).AddEntity("u", typeof(User)).AddEntity("ph", typeof(PhysicianLibrary));
                 PatientNotes PatientNotesRecord = new PatientNotes();
                 WFObject WFObjRecord = new WFObject();
                 User us = new User();
+                PhysicianLibrary PhyRecord = new PhysicianLibrary();
                 foreach (IList<Object> l in sql.List())
                 {
                     PatientNotesRecord = new PatientNotes();
                     WFObjRecord = new WFObject();
                     us = new User();
+                    PhyRecord = new PhysicianLibrary();
 
                     PatientNotesRecord = (PatientNotes)l[0];
                     WFObjRecord = (WFObject)l[1];
                     if (WFObjRecord == null)
                         WFObjRecord = new WFObject();
                     us = (User)l[2];
+                    PhyRecord = (PhysicianLibrary)l[3];
                     if (us == null)
                         us = new User();
+                    if (PhyRecord == null)
+                        PhyRecord = new PhysicianLibrary();
+
+                    //Gitlab# 2485 - Physician Name Display Change
+                    if (us.Physician_Library_ID==0)
+                    {
+                        PatientNotesRecord.Assigned_To = us.person_name;
+                    }
+                    else
+                    {
+                        PatientNotesRecord.Assigned_To = String.Empty;
+                        if (PhyRecord.PhyLastName != String.Empty)
+                            PatientNotesRecord.Assigned_To += PhyRecord.PhyLastName;
+                        if (PhyRecord.PhyFirstName != String.Empty)
+                        {
+                            if (PatientNotesRecord.Assigned_To != String.Empty)
+                                PatientNotesRecord.Assigned_To += "," + PhyRecord.PhyFirstName;
+                            else
+                                PatientNotesRecord.Assigned_To += PhyRecord.PhyFirstName;
+                        }
+                        if (PhyRecord.PhyMiddleName != String.Empty)
+                            PatientNotesRecord.Assigned_To += " " + PhyRecord.PhyMiddleName;
+                        if (PhyRecord.PhySuffix != String.Empty)
+                            PatientNotesRecord.Assigned_To += "," + PhyRecord.PhySuffix;
+                    }
+
                     PatientDetailsto.ilstPatientNotes.Add(PatientNotesRecord);
                     PatientDetailsto.ilstWFObj.Add(WFObjRecord);
                     PatientDetailsto.ilstUser.Add(us);                  

@@ -7,6 +7,10 @@ using System.Web.UI.WebControls;
 using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using System.Collections;
+using Telerik.Web.UI;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Acurus.Capella.UI
 {
@@ -16,28 +20,55 @@ namespace Acurus.Capella.UI
         protected void Page_Load(object sender, EventArgs e)
         {
             IList<User> ilstUser = new List<User>();
-            Hashtable loginhash = new Hashtable();
+            //Hashtable loginhash = new Hashtable();
           
             if(!IsPostBack)
             {
-                ilstUser = objUserMngr.GetUserList(ClientSession.LegalOrg);
-                if(ilstUser.Count>0)
+                //Old Code
+                //ilstUser = objUserMngr.GetUserList(ClientSession.LegalOrg);
+                //if(ilstUser.Count>0)
+                //{
+                //    cboUserName.Items.Add(new Telerik.Web.UI.RadComboBoxItem());
+                //    for (int i = 0; i < ilstUser.Count; i++)
+                //    {
+                //        cboUserName.Items.Add(new Telerik.Web.UI.RadComboBoxItem(ilstUser[i].user_name));
+                //        loginhash.Add(ilstUser[i].user_name, ilstUser[i].password);
+                //    }
+                //}
+                //Gitlab# 2485 - Physician Name Display Change
+                IList<string> phyList = new List<string>();
+                PatientNotesManager objPatNotesMngr = new PatientNotesManager();
+                phyList = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL", ClientSession.LegalOrg);
+
+                SortedDictionary<string, string> hashphyList = new SortedDictionary<string, string>();
+                for (int iCount = 0; iCount < phyList.Count; iCount++)
                 {
-                    cboUserName.Items.Add(new Telerik.Web.UI.RadComboBoxItem());
-                    for (int i = 0; i < ilstUser.Count; i++)
+                    if (hashphyList.ContainsKey(phyList[iCount].ToString().Split('|')[1]) == false)
                     {
-                        cboUserName.Items.Add(new Telerik.Web.UI.RadComboBoxItem(ilstUser[i].user_name));
-                        loginhash.Add(ilstUser[i].user_name, ilstUser[i].password);
+                        hashphyList.Add(phyList[iCount].ToString().Split('|')[1], phyList[iCount].ToString().Split('|')[0]);
                     }
                 }
+
+                foreach (var item in hashphyList)
+                {
+                    cboUserName.Items.Add(new Telerik.Web.UI.RadComboBoxItem(item.Key, item.Value));
+                }
+
+                //    for (int iCount=0;iCount<patientlst.Count;iCount++)
+                //{
+                //    cboUserName.Items.Add(new Telerik.Web.UI.RadComboBoxItem(patientlst[iCount].ToString().Split('|')[1], patientlst[iCount].ToString().Split('|')[0]));
+                //    //loginhash.Add(ilstUser[i].user_name, ilstUser[i].password);
+                //}
             }
         }
 
         protected void btnOK_Click(object sender, EventArgs e)
         {
             IList<User> login;
-            login = objUserMngr.GetUser(cboUserName.Text);
-           
+            //Old Code
+            //login = objUserMngr.GetUser(cboUserName.Text);
+            //Gitlab# 2485 - Physician Name Display Change
+            login = objUserMngr.GetUser(((RadComboBoxItem)cboUserName.SelectedItem).Value);
             login[0].password = "Password1!";
             if (hdnLocalTime.Value != "")
                 login[0].Password_Changed_Date = Convert.ToDateTime(hdnLocalTime.Value);

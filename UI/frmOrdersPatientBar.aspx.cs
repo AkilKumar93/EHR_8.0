@@ -222,7 +222,7 @@ namespace Acurus.Capella.UI
                     lstPhysician.Add(objPhy);
                 }
             }
-            return lstPhysician.Distinct().OrderBy(o => o.PhyFirstName).ToList() ;
+            return lstPhysician.Distinct().OrderBy(o => o.PhyLastName).ToList() ;
         }
         void FillPhysician()
         {
@@ -269,8 +269,28 @@ namespace Acurus.Capella.UI
             cboPhysician.Items[0].Selected = false;
             for (int i = 0; i < PhyList.Count; i++)
             {
-                string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
-                Telerik.Web.UI.RadComboBoxItem tempItem = new Telerik.Web.UI.RadComboBoxItem(PhyList[i].Category.ToString() + " - " + sPhyName);//Instead of PhyUserList.UserList[i].username;
+                //Old Code
+                // string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                //Gitlab# 2485 - Physician Name Display Change
+                string sPhyName = string.Empty;
+                //PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                if (PhyList[i].PhyLastName != String.Empty)
+                    sPhyName += PhyList[i].PhyLastName;
+                if (PhyList[i].PhyFirstName != String.Empty)
+                {
+                    if (sPhyName != String.Empty)
+                        sPhyName += "," + PhyList[i].PhyFirstName;
+                    else
+                        sPhyName += PhyList[i].PhyFirstName;
+                }
+                if (PhyList[i].PhyMiddleName != String.Empty)
+                    sPhyName += " " + PhyList[i].PhyMiddleName;
+                if (PhyList[i].PhySuffix != String.Empty)
+                    sPhyName += "," + PhyList[i].PhySuffix;
+                //Old Code
+                //Telerik.Web.UI.RadComboBoxItem tempItem = new Telerik.Web.UI.RadComboBoxItem(PhyList[i].Category.ToString() + " - " + sPhyName);//Instead of PhyUserList.UserList[i].username;
+                //Gitlab# 2485 - Physician Name Display Change
+                Telerik.Web.UI.RadComboBoxItem tempItem = new Telerik.Web.UI.RadComboBoxItem(sPhyName);//Instead of PhyUserList.UserList[i].username;
                 cboPhysician.Items.Add(tempItem);
                 cboPhysician.Items[i + 1].Selected = false;
                 cboPhysician.Items[i + 1].Value = PhyList[i].Id.ToString();
@@ -384,11 +404,32 @@ namespace Acurus.Capella.UI
                 int j = 1;
                 for (int i = 0; i < PhyList.Count; i++)
                 {
-                    string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                    //Old Code
+                    //string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                    //Gitlab# 2485 - Physician Name Display Change
+                    string sPhyName = string.Empty;
+                    if (PhyList[i].PhyLastName != String.Empty)
+                        sPhyName += PhyList[i].PhyLastName;
+                    if (PhyList[i].PhyFirstName != String.Empty)
+                    {
+                        if (sPhyName != String.Empty)
+                            sPhyName += "," + PhyList[i].PhyFirstName;
+                        else
+                            sPhyName += PhyList[i].PhyFirstName;
+                    }
+                    if (PhyList[i].PhyMiddleName != String.Empty)
+                        sPhyName += " " + PhyList[i].PhyMiddleName;
+                    if (PhyList[i].PhySuffix != String.Empty)
+                        sPhyName += "," + PhyList[i].PhySuffix;
+
+
                     if (!tempPhyList.Contains(sPhyName))
                     {
                         //cboPhysician.Items.Add(new Telerik.Web.UI.RadComboBoxItem(PhyList[i].Category.ToString() + " - " + sPhyName));
-                        cboPhysician.Items.Add(new Telerik.Web.UI.RadComboBoxItem(PhyList[i].PhyUserName.ToString() + " - " + sPhyName));
+                        //Old Code
+                        //cboPhysician.Items.Add(new Telerik.Web.UI.RadComboBoxItem(PhyList[i].PhyUserName.ToString() + " - " + sPhyName));
+                        //Gitlab# 2485 - Physician Name Display Change
+                        cboPhysician.Items.Add(new Telerik.Web.UI.RadComboBoxItem(sPhyName));
                         cboPhysician.Items[j].Value = PhyList[i].Id.ToString();
 
                         //if (Convert.ToUInt64(cboPhysician.Items[j].Value) == PhysicianID)
@@ -406,8 +447,29 @@ namespace Acurus.Capella.UI
 
                 for (int i = 0; i < PhyList.Count; i++)
                 {
-                    string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
-                    cboPhysician.Items.Add(new Telerik.Web.UI.RadComboBoxItem(PhyList[i].Category.ToString() + " - " + sPhyName));
+                    //Old Code
+                    //string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                    //Gitlab# 2485 - Physician Name Display Change
+                 
+                    string sPhyName = string.Empty;
+                    if (PhyList[i].PhyLastName != String.Empty)
+                        sPhyName += PhyList[i].PhyLastName;
+                    if (PhyList[i].PhyFirstName != String.Empty)
+                    {
+                        if (sPhyName != String.Empty)
+                            sPhyName += "," + PhyList[i].PhyFirstName;
+                        else
+                            sPhyName += PhyList[i].PhyFirstName;
+                    }
+                    if (PhyList[i].PhyMiddleName != String.Empty)
+                        sPhyName += " " + PhyList[i].PhyMiddleName;
+                    if (PhyList[i].PhySuffix != String.Empty)
+                        sPhyName += "," + PhyList[i].PhySuffix;
+
+                    //Old Code
+                    //cboPhysician.Items.Add(new Telerik.Web.UI.RadComboBoxItem(PhyList[i].Category.ToString() + " - " + sPhyName));
+                    //Gitlab# 2485 - Physician Name Display Change
+                    cboPhysician.Items.Add(new Telerik.Web.UI.RadComboBoxItem(sPhyName));
                     cboPhysician.Items[i+1].Value = PhyList[i].Id.ToString();
 
                     //if (Convert.ToUInt64(cboPhysician.Items[i+1].Value) == PhysicianID)
