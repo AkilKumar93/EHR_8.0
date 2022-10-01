@@ -809,7 +809,23 @@ function LoadPhysicianList(Control) {
                                 for (var j = 0; j < PhyList.length; j++) {
                                     if (PhyList[j].getAttribute("username") != "" && PhyList[j].getAttribute("username").toUpperCase() == FacilityRole.split('&')[2] && PhyList[j].getAttribute("Legal_Org").toUpperCase() == CLegalOrg.toUpperCase()) {
                                         var PhyOption = document.createElement("option");
-                                        var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+                                        //Old Code
+                                        //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+                                        //PhyOption.text = PhyName;
+                                        //Gitlab# 2485 - Physician Name Display Change
+                                        var PhyName="";
+                                        if (PhyList[j].getAttribute("lastname") != "")
+                                            PhyName += PhyList[j].getAttribute("lastname");
+                                        if (PhyList[j].getAttribute("firstname") != "") {
+                                            if (PhyName != "")
+                                                PhyName += "," + PhyList[j].getAttribute("firstname");
+                                            else
+                                                PhyName += PhyList[j].getAttribute("firstname");
+                                        }
+                                        if (PhyList[j].getAttribute("middlename") != "")
+                                            PhyName += " " + PhyList[j].getAttribute("middlename");
+                                        if (PhyList[j].getAttribute("suffix") != "")
+                                            PhyName += "," + PhyList[j].getAttribute("suffix");
                                         PhyOption.text = PhyName;
                                         PhyOption.value = PhyList[j].getAttribute("ID");
                                         document.getElementById("cboPhysician").options.add(PhyOption);
@@ -835,7 +851,23 @@ function LoadPhysicianList(Control) {
                             for (var j = 0; j < PhyList.length; j++) {
                                 if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
                                     var PhyOption = document.createElement("option");
-                                    var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+                                    //Old Code
+                                    //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+                                    //PhyOption.text = PhyName;
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    var PhyName = "";
+                                    if (PhyList[j].getAttribute("lastname") != "")
+                                        PhyName += PhyList[j].getAttribute("lastname");
+                                    if (PhyList[j].getAttribute("firstname") != "") {
+                                        if (PhyName != "")
+                                            PhyName += "," + PhyList[j].getAttribute("firstname");
+                                        else
+                                            PhyName += PhyList[j].getAttribute("firstname");
+                                    }
+                                    if (PhyList[j].getAttribute("middlename") != "")
+                                        PhyName += " " + PhyList[j].getAttribute("middlename");
+                                    if (PhyList[j].getAttribute("suffix") != "")
+                                        PhyName += "," + PhyList[j].getAttribute("suffix");
                                     PhyOption.text = PhyName;
                                     PhyOption.value = PhyList[j].getAttribute("ID");
                                     if (chkphysician.indexOf(PhyName.toUpperCase()) <= -1) {
@@ -861,7 +893,23 @@ function LoadPhysicianList(Control) {
                                     for (var j = 0; j < PhyList.length; j++) {
                                         if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
                                             var PhyOption = document.createElement("option");
-                                            var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+                                            //Old Code
+                                            //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+                                            //PhyOption.text = PhyName;
+                                            //Gitlab# 2485 - Physician Name Display Change
+                                            var PhyName = "";
+                                            if (PhyList[j].getAttribute("lastname") != "")
+                                                PhyName += PhyList[j].getAttribute("lastname");
+                                            if (PhyList[j].getAttribute("firstname") != "") {
+                                                if (PhyName != "")
+                                                    PhyName += "," + PhyList[j].getAttribute("firstname");
+                                                else
+                                                    PhyName += PhyList[j].getAttribute("firstname");
+                                            }
+                                            if (PhyList[j].getAttribute("middlename") != "")
+                                                PhyName += " " + PhyList[j].getAttribute("middlename");
+                                            if (PhyList[j].getAttribute("suffix") != "")
+                                                PhyName += "," + PhyList[j].getAttribute("suffix");
                                             PhyOption.text = PhyName;
                                             PhyOption.value = PhyList[j].getAttribute("ID");
                                             document.getElementById("cboPhysician").options.add(PhyOption);
@@ -874,10 +922,16 @@ function LoadPhysicianList(Control) {
                 }
             }
             if ($("#cboPhysician")[0].disabled == true)
-                PhysicianName = FacilityRole.split('&')[2].toUpperCase();
+                PhysicianName = FacilityRole.split('&')[3].toUpperCase();
             if (PhysicianName != "") {
                 $('#cboPhysician option').each(function () {
-                    if (this.text.indexOf(PhysicianName) > -1) {
+                    //Old Code
+                    //if (this.text.indexOf(PhysicianName) > -1) {
+                    //    option = this;
+                    //    option.selected = true;
+                    //}
+                    //Gitlab# 2485 - Physician Name Display Change
+                    if (this.value.indexOf(PhysicianName) > -1) {
                         option = this;
                         option.selected = true;
                     }
@@ -896,7 +950,23 @@ function LoadPhysicianList(Control) {
                         for (var j = 0; j < PhyList.length; j++) {
                             if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
                                 var PhyOption = document.createElement("option");
-                                var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+                                //Old Code
+                                //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+                                //PhyOption.text = PhyName;
+                                //Gitlab# 2485 - Physician Name Display Change
+                                var PhyName = "";
+                                if (PhyList[j].getAttribute("lastname") != "")
+                                    PhyName += PhyList[j].getAttribute("lastname");
+                                if (PhyList[j].getAttribute("firstname") != "") {
+                                    if (PhyName != "")
+                                        PhyName += "," + PhyList[j].getAttribute("firstname");
+                                    else
+                                        PhyName += PhyList[j].getAttribute("firstname");
+                                }
+                                if (PhyList[j].getAttribute("middlename") != "")
+                                    PhyName += " " + PhyList[j].getAttribute("middlename");
+                                if (PhyList[j].getAttribute("suffix") != "")
+                                    PhyName += "," + PhyList[j].getAttribute("suffix");
                                 PhyOption.text = PhyName;
                                 PhyOption.value = PhyList[j].getAttribute("ID");
                                 document.getElementById("cboPhysician").options.add(PhyOption);
@@ -905,10 +975,16 @@ function LoadPhysicianList(Control) {
                     }
                 }
                 if ($("#cboPhysician")[0].disabled == true)
-                    PhysicianName = FacilityRole.split('&')[2].toUpperCase();
+                    PhysicianName = FacilityRole.split('&')[3].toUpperCase();
                 if (PhysicianName != "") {
                     $('#cboPhysician option').each(function () {
-                        if (this.text.indexOf(PhysicianName) > -1) {
+                        //Old Code
+                        //if (this.text.indexOf(PhysicianName) > -1) {
+                        //    option = this;
+                        //    option.selected = true;
+                        //}
+                        //Gitlab# 2485 - Physician Name Display Change
+                        if (this.value.indexOf(PhysicianName) > -1) {
                             option = this;
                             option.selected = true;
                         }

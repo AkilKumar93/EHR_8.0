@@ -164,8 +164,26 @@ namespace Acurus.Capella.UI
                 {
                     for (int i = 0; i < PhyUserList.PhyList.Count; i++)
                     {
-                        string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                        cboProviderName.Items.Add(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName);
+                        //Old Code
+                        //string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+                        //Gitlab# 2485 - Physician Name Display Change
+                        string sPhyName = string.Empty;
+                        if (PhyUserList.PhyList[i].PhyLastName != String.Empty)
+                            sPhyName += PhyUserList.PhyList[i].PhyLastName;
+                        if (PhyUserList.PhyList[i].PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + PhyUserList.PhyList[i].PhyFirstName;
+                            else
+                                sPhyName += PhyUserList.PhyList[i].PhyFirstName;
+                        }
+                        if (PhyUserList.PhyList[i].PhyMiddleName != String.Empty)
+                            sPhyName += " " + PhyUserList.PhyList[i].PhyMiddleName;
+                        if (PhyUserList.PhyList[i].PhySuffix != String.Empty)
+                            sPhyName += "," + PhyUserList.PhyList[i].PhySuffix;
+                        //Old Code
+                        //cboProviderName.Items.Add(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName);
+                        cboProviderName.Items.Add(sPhyName);
                         cboProviderName.Items[i].Value = PhyUserList.PhyList[i].Id.ToString();
                         cboProviderName.ToolTip = cboProviderName.SelectedItem.Text;
 
@@ -8671,8 +8689,26 @@ namespace Acurus.Capella.UI
             {
                 for (int i = 0; i < PhyUserList.PhyList.Count; i++)
                 {
-                    string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                    cboProviderName.Items.Add(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName);
+                    //Old Code
+                    //string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+                    //Gitlab# 2485 - Physician Name Display Change
+                    string sPhyName = string.Empty;
+                    if (PhyUserList.PhyList[i].PhyLastName != String.Empty)
+                        sPhyName += PhyUserList.PhyList[i].PhyLastName;
+                    if (PhyUserList.PhyList[i].PhyFirstName != String.Empty)
+                    {
+                        if (sPhyName != String.Empty)
+                            sPhyName += "," + PhyUserList.PhyList[i].PhyFirstName;
+                        else
+                            sPhyName += PhyUserList.PhyList[i].PhyFirstName;
+                    }
+                    if (PhyUserList.PhyList[i].PhyMiddleName != String.Empty)
+                        sPhyName += " " + PhyUserList.PhyList[i].PhyMiddleName;
+                    if (PhyUserList.PhyList[i].PhySuffix != String.Empty)
+                        sPhyName += "," + PhyUserList.PhyList[i].PhySuffix;
+                    //Old Code
+                    //cboProviderName.Items.Add(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName);
+                    cboProviderName.Items.Add(sPhyName);
                     cboProviderName.Items[i].Value = PhyUserList.PhyList[i].Id.ToString();
                     cboProviderName.ToolTip = cboProviderName.Items[i].Text;
 

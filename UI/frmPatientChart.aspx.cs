@@ -2383,7 +2383,10 @@ namespace Acurus.Capella.UI
 
                     }
                 }
-                hdnFacilityRole.Value = ClientSession.FacilityName + "&" + ClientSession.UserRole + "&" + ClientSession.UserName;
+                //Old Code
+                //hdnFacilityRole.Value = ClientSession.FacilityName + "&" + ClientSession.UserRole + "&" + ClientSession.UserName;
+                //Gitlab# 2485 - Physician Name Display Change
+                hdnFacilityRole.Value = ClientSession.FacilityName + "&" + ClientSession.UserRole + "&" + ClientSession.UserName+ "&" + ClientSession.PhysicianId;
                 //if (ClientSession.UserCurrentProcess.ToString().ToUpper() == "REVIEW_CODING")
                 //{
                 //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "OpenCreateCoding", "OpenCreateCodingException();", true);

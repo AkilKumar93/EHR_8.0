@@ -120,8 +120,25 @@ namespace Acurus.Capella.UI
 
             for (int i = 0; i < PhyUserList.PhyList.Count; i++)
             {
-                string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                cboPhysician.Items.Add(new RadComboBoxItem(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName));
+                //Old Code
+                //string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+                //cboPhysician.Items.Add(new RadComboBoxItem(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName));
+                //Gitlab# 2485 - Physician Name Display Change
+                string sPhyName = string.Empty;
+                if (PhyUserList.PhyList[i].PhyLastName != String.Empty)
+                    sPhyName += PhyUserList.PhyList[i].PhyLastName;
+                if (PhyUserList.PhyList[i].PhyFirstName != String.Empty)
+                {
+                    if (sPhyName != String.Empty)
+                        sPhyName += "," + PhyUserList.PhyList[i].PhyFirstName;
+                    else
+                        sPhyName += PhyUserList.PhyList[i].PhyFirstName;
+                }
+                if (PhyUserList.PhyList[i].PhyMiddleName != String.Empty)
+                    sPhyName += " " + PhyUserList.PhyList[i].PhyMiddleName;
+                if (PhyUserList.PhyList[i].PhySuffix != String.Empty)
+                    sPhyName += "," + PhyUserList.PhyList[i].PhySuffix;
+                cboPhysician.Items.Add(new RadComboBoxItem(sPhyName));
                 cboPhysician.Items[iIter].Value = PhyUserList.PhyList[i].Id.ToString();
                 cboPhysician.Items[iIter].ToolTip = cboPhysician.Items[i].Text;
 
@@ -360,15 +377,33 @@ namespace Acurus.Capella.UI
             cboPhysician.Items.Add(new RadComboBoxItem(""));
             for (int i = 0; i < PhyUserList.PhyList.Count; i++)
             {
-                string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                cboPhysician.Items.Add(new RadComboBoxItem(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName));
+                //Old Code
+                //string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+                //cboPhysician.Items.Add(new RadComboBoxItem(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName));
+                //Gitlab# 2485 - Physician Name Display Change
+                string sPhyName = string.Empty;
+                if (PhyUserList.PhyList[i].PhyLastName != String.Empty)
+                    sPhyName += PhyUserList.PhyList[i].PhyLastName;
+                if (PhyUserList.PhyList[i].PhyFirstName != String.Empty)
+                {
+                    if (sPhyName != String.Empty)
+                        sPhyName += "," + PhyUserList.PhyList[i].PhyFirstName;
+                    else
+                        sPhyName += PhyUserList.PhyList[i].PhyFirstName;
+                }
+                if (PhyUserList.PhyList[i].PhyMiddleName != String.Empty)
+                    sPhyName += " " + PhyUserList.PhyList[i].PhyMiddleName;
+                if (PhyUserList.PhyList[i].PhySuffix != String.Empty)
+                    sPhyName += "," + PhyUserList.PhyList[i].PhySuffix;
+                cboPhysician.Items.Add(new RadComboBoxItem(sPhyName));
                 cboPhysician.Items[i+1].Value = PhyUserList.PhyList[i].Id.ToString();
                 if (Request["PhyId"] != null && Request["PhyId"].ToString() != string.Empty)
                 {
                     if (Convert.ToUInt64(Request["PhyId"]) == PhyUserList.PhyList[i].Id)
                     {
                         cboPhysician.SelectedIndex = i+1;
-                        cboPhysician.SelectedItem.Text = PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName;
+                        //cboPhysician.SelectedItem.Text = PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName;
+                        cboPhysician.SelectedItem.Text = sPhyName;
                         IsPhysicianAvailable = true;
                     }
                 }
@@ -390,15 +425,33 @@ namespace Acurus.Capella.UI
                     PhyUserList = phyMngr.GetPhysicianandUser(false, string.Empty, ClientSession.LegalOrg);
                     for (int i = 0; i < PhyUserList.PhyList.Count; i++)
                     {
-                        string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
-                        cboPhysician.Items.Add(new RadComboBoxItem(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName));
+                        //Old Code
+                        //string sPhyName = PhyUserList.PhyList[i].PhyPrefix + " " + PhyUserList.PhyList[i].PhyFirstName + " " + PhyUserList.PhyList[i].PhyMiddleName + " " + PhyUserList.PhyList[i].PhyLastName + " " + PhyUserList.PhyList[i].PhySuffix;
+                        //cboPhysician.Items.Add(new RadComboBoxItem(PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName));
+                        //Gitlab# 2485 - Physician Name Display Change
+                        string sPhyName = string.Empty;
+                        if (PhyUserList.PhyList[i].PhyLastName != String.Empty)
+                            sPhyName += PhyUserList.PhyList[i].PhyLastName;
+                        if (PhyUserList.PhyList[i].PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + PhyUserList.PhyList[i].PhyFirstName;
+                            else
+                                sPhyName += PhyUserList.PhyList[i].PhyFirstName;
+                        }
+                        if (PhyUserList.PhyList[i].PhyMiddleName != String.Empty)
+                            sPhyName += " " + PhyUserList.PhyList[i].PhyMiddleName;
+                        if (PhyUserList.PhyList[i].PhySuffix != String.Empty)
+                            sPhyName += "," + PhyUserList.PhyList[i].PhySuffix;
+                        cboPhysician.Items.Add(new RadComboBoxItem(sPhyName));
                         cboPhysician.Items[i+1].Value = PhyUserList.PhyList[i].Id.ToString();
                         if (Request["PhyId"] != null && Request["PhyId"].ToString() != string.Empty)
                         {
                             if (Convert.ToUInt64(Request["PhyId"]) == PhyUserList.PhyList[i].Id)
                             {
                                 cboPhysician.SelectedIndex = i+1;
-                                cboPhysician.SelectedItem.Text = PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName;
+                                //cboPhysician.SelectedItem.Text = PhyUserList.UserList[i].user_name.ToString() + " - " + sPhyName;
+                                cboPhysician.SelectedItem.Text = sPhyName;
 
                             }
                         }
