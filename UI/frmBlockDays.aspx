@@ -274,7 +274,7 @@
                                                 BackColor="White" Height="385px" Width="377px" CssClass="Editabletxtbox">
                                                 <div style="overflow: auto; height: 348px; width: 340px;">
                                                     <asp:CheckBoxList ID="chklstboxProvider" runat="server" RepeatLayout="Flow"
-                                                        Width="217px" CssClass="Editabletxtbox">
+                                                        Width="248px" CssClass="Editabletxtbox">
                                                     </asp:CheckBoxList>
                                                 </div>
                                             </asp:Panel>
