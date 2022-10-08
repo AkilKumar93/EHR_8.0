@@ -900,7 +900,7 @@ namespace Acurus.Capella.UI
 
                     SmtpServer.UseDefaultCredentials = false;
                     SmtpServer.Credentials = new System.Net.NetworkCredential(System.Configuration.ConfigurationSettings.AppSettings["FromMail"].ToString(), System.Configuration.ConfigurationSettings.AppSettings["MailPassword"].ToString());
-
+                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                     SmtpServer.EnableSsl = true;
                     SmtpServer.Send(mail);
 
@@ -977,6 +977,7 @@ namespace Acurus.Capella.UI
                 SmtpClient dd = new SmtpClient(objSenderAddress[0].Default_Value, 25);
                 string ToMailId = string.Empty;
                 List<string> ToAddress = new List<string>();
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 dd.EnableSsl = true;
                 dd.UseDefaultCredentials = true;
                 if (objSenderAddress.Count > 0)
@@ -1281,11 +1282,18 @@ namespace Acurus.Capella.UI
 
                         //}
                     }
-                    catch
+                    catch (Exception ex)
                     {
+
+
+
                         hdnType.Value = string.Empty;
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "stopload", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('1007004');", true);
+                        throw ex;
+                        
+                        //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "stopload", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+
+                        //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('1007004');", true);
+                        //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "alert('" + ex.Message.ToString() + "')", true);
                         return;
                     }
 
