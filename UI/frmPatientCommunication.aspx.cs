@@ -375,7 +375,7 @@ namespace Acurus.Capella.UI
             StaticLookupManager objStaticLookUpMngr = new StaticLookupManager();
             IList<StaticLookup> ilstStaticLookUp = new List<StaticLookup>();
             ilstStaticLookUp = objStaticLookUpMngr.getStaticLookupByFieldName(FieldName, "Sort_Order");
-            ilstStaticLookUp = ilstStaticLookUp.OrderBy(s => s.Description).ToList<StaticLookup>();
+            //ilstStaticLookUp = ilstStaticLookUp.OrderBy(s => s.Description).ToList<StaticLookup>();
             IList<PatientNotes> MessageDetails = new List<PatientNotes>();
             PatientNotesManager objPatNotesMngr = new PatientNotesManager();
             if ((ParentScreen == "MyQ" || ParentScreen == "PatientChart") && (MessageID != "" && Convert.ToUInt32(MessageID) > 0))
