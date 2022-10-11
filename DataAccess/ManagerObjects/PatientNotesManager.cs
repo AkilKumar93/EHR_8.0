@@ -1077,33 +1077,43 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             PatientDetailDto PatientDetailsto = new PatientDetailDto();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("select {p.*},{w.*},{u.*},{ph.*} from patient_notes p LEFT JOIN wf_object w ON ( p.message_id=w.obj_system_id and w.obj_type='TASK' ) left join user u on (u.user_name = p.Assigned_To) left join physician_library ph on (u.physician_library_id=ph.physician_library_id) where p.human_id='" + humanid.ToString() + "' order by p.created_date_and_time desc").AddEntity("p", typeof(PatientNotes)).AddEntity("w", typeof(WFObject)).AddEntity("u", typeof(User)).AddEntity("ph", typeof(PhysicianLibrary));
+                ISQLQuery sql = iMySession.CreateSQLQuery("select {p.*},{w.*},{u.*},{ph.*},{c.*},{pl.*} from patient_notes p LEFT JOIN wf_object w ON ( p.message_id=w.obj_system_id and w.obj_type='TASK' ) left join user u on (u.user_name = p.Assigned_To) left join physician_library ph on (u.physician_library_id=ph.physician_library_id) left join user c on (c.user_name = p.created_by) left join physician_library pl on (c.physician_library_id=pl.physician_library_id) where p.human_id='" + humanid.ToString() + "' order by p.created_date_and_time desc").AddEntity("p", typeof(PatientNotes)).AddEntity("w", typeof(WFObject)).AddEntity("u", typeof(User)).AddEntity("ph", typeof(PhysicianLibrary)).AddEntity("c", typeof(User)).AddEntity("pl", typeof(PhysicianLibrary));
                 PatientNotes PatientNotesRecord = new PatientNotes();
                 WFObject WFObjRecord = new WFObject();
-                User us = new User();
+                User UserAssignedTo = new User();
+                User UserCreatedBy = new User();
                 PhysicianLibrary PhyRecord = new PhysicianLibrary();
+                PhysicianLibrary PhyCreatedBy = new PhysicianLibrary();
                 foreach (IList<Object> l in sql.List())
                 {
                     PatientNotesRecord = new PatientNotes();
                     WFObjRecord = new WFObject();
-                    us = new User();
+                    UserAssignedTo = new User();
+                    UserCreatedBy = new User();
                     PhyRecord = new PhysicianLibrary();
+                    PhyCreatedBy = new PhysicianLibrary();
 
                     PatientNotesRecord = (PatientNotes)l[0];
                     WFObjRecord = (WFObject)l[1];
                     if (WFObjRecord == null)
                         WFObjRecord = new WFObject();
-                    us = (User)l[2];
+                    UserAssignedTo = (User)l[2];
                     PhyRecord = (PhysicianLibrary)l[3];
-                    if (us == null)
-                        us = new User();
+                    UserCreatedBy = (User)l[4];
+                    PhyCreatedBy = (PhysicianLibrary)l[5];
+                    if (UserAssignedTo == null)
+                        UserAssignedTo = new User();
                     if (PhyRecord == null)
                         PhyRecord = new PhysicianLibrary();
+                    if (UserCreatedBy == null)
+                        UserCreatedBy = new User();
+                    if (PhyCreatedBy == null)
+                        PhyCreatedBy = new PhysicianLibrary();
 
                     //Gitlab# 2485 - Physician Name Display Change
-                    if (us.Physician_Library_ID==0)
+                    if (UserAssignedTo.Physician_Library_ID==0)
                     {
-                        PatientNotesRecord.Assigned_To = us.person_name;
+                        PatientNotesRecord.Assigned_To = UserAssignedTo.person_name;
                     }
                     else
                     {
@@ -1123,9 +1133,33 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             PatientNotesRecord.Assigned_To += "," + PhyRecord.PhySuffix;
                     }
 
+                    if (UserCreatedBy.Physician_Library_ID == 0)
+                    {
+                        PatientNotesRecord.Created_By = UserCreatedBy.person_name;
+                    }
+                    else
+                    {
+                        PatientNotesRecord.Created_By = String.Empty;
+                        if (PhyCreatedBy.PhyLastName != String.Empty)
+                            PatientNotesRecord.Created_By += PhyCreatedBy.PhyLastName;
+                        if (PhyCreatedBy.PhyFirstName != String.Empty)
+                        {
+                            if (PatientNotesRecord.Created_By != String.Empty)
+                                PatientNotesRecord.Created_By += "," + PhyCreatedBy.PhyFirstName;
+                            else
+                                PatientNotesRecord.Created_By += PhyCreatedBy.PhyFirstName;
+                        }
+                        if (PhyCreatedBy.PhyMiddleName != String.Empty)
+                            PatientNotesRecord.Created_By += " " + PhyCreatedBy.PhyMiddleName;
+                        if (PhyCreatedBy.PhySuffix != String.Empty)
+                            PatientNotesRecord.Created_By += "," + PhyCreatedBy.PhySuffix;
+                    }
+
                     PatientDetailsto.ilstPatientNotes.Add(PatientNotesRecord);
                     PatientDetailsto.ilstWFObj.Add(WFObjRecord);
-                    PatientDetailsto.ilstUser.Add(us);                  
+                    PatientDetailsto.ilstUser.Add(UserAssignedTo);
+                    PatientDetailsto.ilstUser.Add(UserCreatedBy);
+                    
                 }
                 iMySession.Close();
             }
