@@ -64,15 +64,6 @@ namespace Acurus.Capella.UI
             //DLCRecAdd.txtDLC.Attributes.Add("onchange", "EnableSave(event);");
             //DLCRecAdd.txtDLC.Attributes.Add("onkeypress", "EnableSave(event);");
 
-            if (ConfigurationSettings.AppSettings["IsEFax"] != null && ConfigurationSettings.AppSettings["IsEFax"].ToString().ToUpper() == "Y")
-            {
-                btnGenAtltovaCCD.Visible = true; 
-            }
-            else
-            {
-                btnGenAtltovaCCD.Visible = false;
-            }
-
             if (ConfigurationSettings.AppSettings["Is_Cerner"] != null && ConfigurationSettings.AppSettings["Is_Cerner"].ToString().ToUpper() == "Y")
             {
                 btnSendCerner.Visible = true;
