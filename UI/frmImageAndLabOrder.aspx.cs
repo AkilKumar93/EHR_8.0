@@ -3802,10 +3802,13 @@ namespace Acurus.Capella.UI
                 //{
                     objOrderSubmit.Physician_ID = PhysicianID;
                 //}
-                    
+
                 //objOrderSubmit.Facility_Name = ClientSession.FacilityName;
                 //GitLab # 2364 - Enabled Menu level Order for Ancillary FO 
-                if (Request["ScreenMode"] != null && Request["ScreenMode"].ToString().ToUpper() == "MENU")
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
+                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                                               
+                if (Request["ScreenMode"] != null && Request["ScreenMode"].ToString().ToUpper() == "MENU" && ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
                 {
                     string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
                     if (File.Exists(strXmlFilePath1) == true)
