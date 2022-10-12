@@ -1869,64 +1869,7 @@ namespace Acurus.Capella.UI.WebServices
             PreventiveScreen objPreventivePlan = new PreventiveScreen();
             HttpContext.Current.Session["PreventiveScreenLst"] = null;
 
-            string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
-            {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                // itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-                    XmlNodeList xmlTagName;
-
-                    xmlTagName = itemDoc.GetElementsByTagName("PreventiveScreen");
-                    if (xmlTagName.Count > 0)
-                    {
-                        for (int j = 0; j < xmlTagName.Count; j++)
-                        {
-                            string TagName = xmlTagName[j].Name;
-                            XmlSerializer xmlserializer = new XmlSerializer(typeof(PreventiveScreen));
-                            objPreventivePlan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PreventiveScreen;
-                            IEnumerable<PropertyInfo> propInfo = null;
-                            propInfo = from obji in ((PreventiveScreen)objPreventivePlan).GetType().GetProperties() select obji;
-
-                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                            {
-                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                {
-                                    foreach (PropertyInfo property in propInfo)
-                                    {
-                                        if (property.Name == nodevalue.Name)
-                                        {
-                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                property.SetValue(objPreventivePlan, Convert.ToUInt64(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                property.SetValue(objPreventivePlan, Convert.ToString(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                property.SetValue(objPreventivePlan, Convert.ToDateTime(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                property.SetValue(objPreventivePlan, Convert.ToInt32(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "BOOLEAN")
-                                                property.SetValue(objPreventivePlan, Convert.ToBoolean(nodevalue.Value), null);
-                                            else
-                                                property.SetValue(objPreventivePlan, nodevalue.Value, null);
-                                        }
-                                    }
-                                }
-
-                            }
-                            PreventiveScreenLst.Add(objPreventivePlan);
-                        }
-                       
-                    }
-                    fs.Close();
-                    fs.Dispose();
-                }
-            }
+            PreventiveScreenLst = objPreventiveScreenManager.GetPreventiveScreenPlanDetails(ClientSession.EncounterId, ClientSession.HumanId);
             HttpContext.Current.Session["PreventiveScreenLst"] = PreventiveScreenLst;
             string sGender = string.Empty;
             if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
