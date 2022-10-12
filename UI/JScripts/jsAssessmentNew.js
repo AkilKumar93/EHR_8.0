@@ -33,10 +33,8 @@ function chkStatusChange(cIDs) {
     }
     else {
         for (var i = 0; i < $(cIDs).parent().next().next().next()[0].children[0].length - 1; i++) {
-            if ($(cIDs).parent().next().next().next()[0].children[0][i].selected && $(cIDs).parent().next().next().next()[0].children[0][i].value == "Suspected")
-            { DisplayErrorMessage('220014'); cIDs.checked = false; }
-            else
-            {
+            if ($(cIDs).parent().next().next().next()[0].children[0][i].selected && $(cIDs).parent().next().next().next()[0].children[0][i].value == "Suspected") { DisplayErrorMessage('220014'); cIDs.checked = false; }
+            else {
                 cIDs.parentNode.parentNode.children[21].innerText = "Y";
                 $('#btnSave')[0].disabled = false;
                 localStorage.setItem("bSave", "false");
@@ -56,10 +54,8 @@ function cboStatusChange(cIDs) {
     }
     else {
         cIDs.parentNode.parentNode.children[21].innerText = "Y";
-        if ($(cIDs).parent().prev().prev().prev()[0].children[0].checked && cIDs.value == "Suspected")
-        { DisplayErrorMessage('220014'); cIDs.value = ""; }
-        else
-        {
+        if ($(cIDs).parent().prev().prev().prev()[0].children[0].checked && cIDs.value == "Suspected") { DisplayErrorMessage('220014'); cIDs.value = ""; }
+        else {
             $('#btnSave')[0].disabled = false;
             localStorage.setItem("bSave", "false");
             window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
@@ -76,7 +72,7 @@ function ClosePlanScreen() {
 
 function chkstatus_change(checkbox) {
     if (checkbox.checked) {
-        for (var i = 0; i < $('select').length ; i++) {
+        for (var i = 0; i < $('select').length; i++) {
 
             if ($('select')[i].selectedIndex <= 1) {
                 $('select')[i].selectedIndex = 1;
@@ -89,7 +85,7 @@ function chkstatus_change(checkbox) {
     }
 
     else {
-        for (var i = 0; i < $('select').length ; i++) {
+        for (var i = 0; i < $('select').length; i++) {
 
             if ($('select')[i].selectedIndex <= 1) {
                 $('select')[i].selectedIndex = 0;
@@ -195,24 +191,24 @@ function callweb(icon, List, id) {
                 else
                     iTop = pos.top + 45;
                 $("<div id='" + "sg" + targetControlValue + "'tabindex='0'/>").html(innerdiv)
-                  .css({
-                      top: iTop,
-                      left: pos.left,
-                      width: $('#' + targetControlValue)[0].style.width,
-                      height: '150px',
-                      overflow: 'scroll',
-                      position: 'absolute',
-                      background: 'white',
-                      bottom: '0',
-                      floating: 'top',
-                      border: '1px solid #8e8e8e',
-                      background: '#FFF',
-                      fontFamily: 'Segoe UI",Arial,sans-serif',
-                      fontSize: '12px',
-                      'z-index': '150',
-                      overflowX: 'auto'
+                    .css({
+                        top: iTop,
+                        left: pos.left,
+                        width: $('#' + targetControlValue)[0].style.width,
+                        height: '150px',
+                        overflow: 'scroll',
+                        position: 'absolute',
+                        background: 'white',
+                        bottom: '0',
+                        floating: 'top',
+                        border: '1px solid #8e8e8e',
+                        background: '#FFF',
+                        fontFamily: 'Segoe UI",Arial,sans-serif',
+                        fontSize: '12px',
+                        'z-index': '150',
+                        overflowX: 'auto'
 
-                  })
+                    })
                     .insertAfter($('#' + targetControlValue));
 
 
@@ -228,8 +224,8 @@ function callweb(icon, List, id) {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
@@ -309,27 +305,27 @@ var intCPTLength = -1;
 
 var singlecolumn = {
     "ColumnName": [
-      {
-          "Select": "Select(One Diagnosis)",
-          "ICD": "ICD 10",
-          "ICDDesc": "ICD 10 Description",
-          "LeafNode": "LeafNode",
-          "CheckLeafNode": "CheckLeafNode",
-          "MutullayExclusive": "Mutullay Exclusive"
+        {
+            "Select": "Select(One Diagnosis)",
+            "ICD": "ICD 10",
+            "ICDDesc": "ICD 10 Description",
+            "LeafNode": "LeafNode",
+            "CheckLeafNode": "CheckLeafNode",
+            "MutullayExclusive": "Mutullay Exclusive"
 
-      }
+        }
     ]
 }
 var Multiplecolumn = {
     "ColumnName": [
-      {
-          "Select": "Select(One or more Diagnosis)",
-          "ICD": "ICD 10",
-          "ICDDesc": "ICD 10 Description",
-          "LeafNode": "LeafNode",
-          "CheckLeafNode": "CheckLeafNode",
-          "MutullayExclusive": "Mutullay Exclusive"
-      }
+        {
+            "Select": "Select(One or more Diagnosis)",
+            "ICD": "ICD 10",
+            "ICDDesc": "ICD 10 Description",
+            "LeafNode": "LeafNode",
+            "CheckLeafNode": "CheckLeafNode",
+            "MutullayExclusive": "Mutullay Exclusive"
+        }
     ]
 }
 var test = "";
@@ -422,16 +418,16 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         }
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     })
-    .error(function (error, status, headers, config) {
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        if (status == 999)
-            window.location = "frmSessionExpired.aspx";
-        else {
-            window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
-        }
+        .error(function (error, status, headers, config) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (status == 999)
+                window.location = "frmSessionExpired.aspx";
+            else {
+                window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
+            }
 
-        // alert(error.Message + ".Please Contact Support!");
-    });
+            // alert(error.Message + ".Please Contact Support!");
+        });
 
     var ResultAssesssment = [];
     var RefreshCheck = false;
@@ -1201,8 +1197,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             bSublevelCheck = true;
             $scope.OpenNextQuestionnaire();
         }
-        else if (sMainlevelQuestionnaire != "")
-        { sMainlevelCheck = true; $scope.OpenQuestionnaire(); }
+        else if (sMainlevelQuestionnaire != "") { sMainlevelCheck = true; $scope.OpenQuestionnaire(); }
 
         else {
             sMainlevelCheck = false;
@@ -1332,33 +1327,33 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
 
     $("#txtICD10").autocomplete({
         source:
-                 function (request, response) {
-                     if (intCPTLength == 0 && bcheck && bBool == false) {
-                         arrCPTs = [];
-                         bBool = true;
-                     }
-                     if (arrICD10Codes == null) {
-                         $.get("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
+            function (request, response) {
+                if (intCPTLength == 0 && bcheck && bBool == false) {
+                    arrCPTs = [];
+                    bBool = true;
+                }
+                if (arrICD10Codes == null) {
+                    $.get("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
 
-                             arrICD10Codes = $.map(file, function (li) {
-                                 return $(li).attr("value");
-                             });
-                         });
-                     }
-                     if ($("#txtICD10").val().length > 2) {
-                         var results = FilterCodes(arrICD10Codes, request.term);
+                        arrICD10Codes = $.map(file, function (li) {
+                            return $(li).attr("value");
+                        });
+                    });
+                }
+                if ($("#txtICD10").val().length > 2) {
+                    var results = FilterCodes(arrICD10Codes, request.term);
 
-                         response($.map(results, function (item) {
+                    response($.map(results, function (item) {
 
-                             return {
-                                 label: item,
-                                 value: item
-                             }
-                         }));
-                     }
+                        return {
+                            label: item,
+                            value: item
+                        }
+                    }));
+                }
 
-                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                 },
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            },
         minlength: 2,
         multiple: true,
         mustMatch: false,
@@ -1422,8 +1417,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
                         }
                     }
                 });
@@ -1441,8 +1436,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         $(".ui-autocomplete").hide();
     }).on("keydown", function (e) {
         if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtICD10").val().length <= 3)
                 bBool = false;
             else
@@ -1451,26 +1445,21 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             bcheck = false;
         }
         else if (e.which == 46) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bBool = false;
             bcheck = false;
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bcheck = true;
         }
 
     }).on("input", function (e) {
         document.getElementById('txtDescription').value = "";
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         if ($("#txtICD10").val().length >= 3) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (!bBool)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             intCPTLength = 0;
         }
         else if ($("#txtICD10").val().length != 0 && intCPTLength != -1) {
@@ -1516,8 +1505,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                         }
 
                         $("#txtDescription").focus();
-                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     },
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1527,8 +1515,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
                         }
                     }
 
@@ -1625,8 +1613,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
                         }
                     }
 
@@ -1644,8 +1632,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         $(".ui-autocomplete").hide();
     }).on("keydown", function (e) {
         if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtDescription").val().length <= 4)
                 bBool = false;
             else
@@ -1654,26 +1641,21 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             bcheck = false;
         }
         else if (e.which == 46) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bBool = false;
             bcheck = false;
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bcheck = true;
         }
 
     }).on("input", function (e) {
         document.getElementById('txtICD10').value = "";
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         if ($("#txtDescription").val().length >= 4) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (!bBool)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             intCPTLength = 0;
         }
         else if ($("#txtDescription").val().length != 0 && intCPTLength != -1) {
@@ -2257,7 +2239,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                     Ass_status = statusDefaultLst.ASSESSMENT;
                 }
                 for (var i = 0; i < AddSelectedICD.length; i++) {
-                    if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0]) == -1) {
+                    if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0].trim()) == -1) {
                         if (bSetICD9Code || bProblmCheck)
                             $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': ' ', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
                         else
@@ -2399,7 +2381,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             var str = response.d;
             var test = JSON.parse(str);
 
-            if (test.TruncatedICDList != undefined && test.TruncatedICDList!=null) {
+            if (test.TruncatedICDList != undefined && test.TruncatedICDList != null) {
                 DisplayErrorMessage('220025', "", test.TruncatedICDList.toString());
                 sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
                 return;
@@ -2445,18 +2427,18 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                 RAFRefreshCLick();
             }
         })
-        .error(function (error, status, headers, config) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            .error(function (error, status, headers, config) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
-            AutoSaveUnsuccessful();
-            if (status == 999)
-                window.location = "frmSessionExpired.aspx";
+                AutoSaveUnsuccessful();
+                if (status == 999)
+                    window.location = "frmSessionExpired.aspx";
                 //else
                 //    alert(error.Message + ".Please Contact Support!");
-            else {
-                window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
-            }
-        });
+                else {
+                    window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
+                }
+            });
     }
 
     function RAFRefreshCLick() {
@@ -2610,8 +2592,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                       "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
