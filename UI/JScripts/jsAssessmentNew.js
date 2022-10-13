@@ -2382,7 +2382,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             var test = JSON.parse(str);
 
             if (test.TruncatedICDList != undefined && test.TruncatedICDList != null) {
-                DisplayErrorMessage('220025', "", test.TruncatedICDList.toString());
+                alert("Please delete or update the following invalid/incomplete ICD codes: " + test.TruncatedICDList.toString() + " .");
+
+                //DisplayErrorMessage('220025', "", test.TruncatedICDList.toString());
                 sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
                 return;
             }
