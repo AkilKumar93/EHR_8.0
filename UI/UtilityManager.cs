@@ -2593,7 +2593,7 @@ namespace Acurus.Capella.UI
                     }
 
                     AllPhysicians = AllPhysicians.Distinct().ToList<PhysicianLibrary>();
-                    AllPhysicians = AllPhysicians.Concat(lstMachineTech).ToList<PhysicianLibrary>();//BugID:53256
+                    AllPhysicians = AllPhysicians.Concat(lstMachineTech).Distinct().ToList<PhysicianLibrary>();//BugID:53256
                     return AllPhysicians.OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
                     //return AllPhysicians.Distinct().OrderBy(item => item.PhyFirstName).ToList<PhysicianLibrary>();
                 }
@@ -2635,7 +2635,7 @@ namespace Acurus.Capella.UI
                             }
                         }
                     }
-                    return AllPhysicians.OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
+                    return AllPhysicians.Distinct().OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
                 }
             }
             return AllPhysicians.Distinct().OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
