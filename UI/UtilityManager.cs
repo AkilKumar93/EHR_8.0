@@ -2635,7 +2635,7 @@ namespace Acurus.Capella.UI
                             }
                         }
                     }
-                    return AllPhysicians.Distinct().OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
+                    return AllPhysicians.OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
                 }
             }
             return AllPhysicians.Distinct().OrderBy(item => item.PhyLastName).ToList<PhysicianLibrary>();
