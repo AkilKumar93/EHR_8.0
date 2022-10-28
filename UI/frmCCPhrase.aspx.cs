@@ -49,7 +49,7 @@ namespace Acurus.Capella.UI
             {
                 ctmDLCChief_Complaints.txtDLC.TextMode = TextBoxMode.MultiLine;
                 ctmDLCHPI_Notes.txtDLC.TextMode = TextBoxMode.MultiLine;
-
+                //Gitlab# 2716 - Load transaction data from the Transaction Table instead of XML
                 ChiefComplaintsLst = objCC.GetComplaintsByEncID(ClientSession.EncounterId, false);
                 fillCc.CurrentCCList = ChiefComplaintsLst;
                 if (fillCc.CurrentCCList != null && fillCc.CurrentCCList.Count == 0 && ClientSession.FillEncounterandWFObject != null && ClientSession.FillEncounterandWFObject.EncRecord != null)
@@ -367,7 +367,7 @@ namespace Acurus.Capella.UI
                     objEncounter.Add(ClientSession.FillEncounterandWFObject.EncRecord);
                     if (objEncounter.Count > 0)
                     {
-                        //Gitlab# 2716 - Load transaction data from the Transaction Table instead of XML
+                        
                         if (txtcount.Value != null && txtcount.Value.Trim() != "" && System.Text.RegularExpressions.Regex.IsMatch(txtcount.Value, "^[0-9]*$")==true)
                         {
                             objEncounter[0].No_of_Med_Orders_In_Paper = Convert.ToUInt16(txtcount.Value);

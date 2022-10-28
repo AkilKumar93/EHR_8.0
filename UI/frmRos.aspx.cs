@@ -109,7 +109,7 @@ namespace Acurus.Capella.UI
                 {
                     ROSManager objROSManager = new ROSManager();
                     ClientSession.FlushSession();
-
+                    //Gitlab# 2725 - Load transaction data from the Transaction Table instead of XML
                     fillRos = objROSManager.GetROSAndGeneralNotesByEncounterId(ClientSession.EncounterId, ClientSession.HumanId, false);
                     dlcROS.DName = "pbGeneralNotesDropDown";
 
@@ -265,7 +265,7 @@ namespace Acurus.Capella.UI
 
             if (ClientSession.PatientPaneList != null)
             {
-                //Gitlab# 2725 - Load transaction data from the Transaction Table instead of XML
+                //Gitlab# 2725 - Load transaction data from the Transaction Table instead of XML   
                 if (ClientSession.PatientPaneList.Count > 0)
                     sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
             }
@@ -862,7 +862,7 @@ namespace Acurus.Capella.UI
 
             FillROS fillRos = new FillROS();
             IList<ROS> rosList = new List<ROS>();
-
+            //Gitlab# 2725 - Load transaction data from the Transaction Table instead of XML
             IList<ROS> ilst = null;
             IList<GeneralNotes> ilstGen = null;
             IList<GeneralNotes> ilstROSGen = null;
