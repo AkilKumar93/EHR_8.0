@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Untitled Page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" />
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
     <style type="text/css">
         label {
@@ -152,7 +152,7 @@
               margin: 0px; padding: 0px;
          }
     </style>
-      <link href="CSS/CommonStyle.css?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" rel="stylesheet" type="text/css" />
+      <link href="CSS/CommonStyle.css?version=1.2" rel="stylesheet" type="text/css" />
     <script type="text/javascript" id="telerikClientEvents1">
         
         
