@@ -71,7 +71,7 @@ namespace Acurus.Capella.UI
                 lblGeneralNotes.Visible = false;
                 DLC.Visible = false;
             }
-            
+
 
             if (ClientSession.UserRole.Trim().ToUpper() == "PHYSICIAN")
                 hdnLibraryIcon.Value = "Physician";
@@ -94,7 +94,7 @@ namespace Acurus.Capella.UI
                 DLC.txtDLC.Attributes.Add("onchange", "checkLength(this);");
                 chkShowAll.Enabled = false;
 
-               
+
 
                 if (string.Compare(Convert.ToString(Session["Client_FromTab"]), "PFSH_Non Drug Allergy", true) == 0)
                 {
@@ -150,7 +150,7 @@ namespace Acurus.Capella.UI
             if (Session["GeneralNotes"] != null)
                 GeneralNotesObject = (GeneralNotes)Session["GeneralNotes"];
 
-            if (Session["NonDrugAllergyLoadList"] != null && ((IList<NonDrugAllergy>)Session["NonDrugAllergyLoadList"]).Count>0)
+            if (Session["NonDrugAllergyLoadList"] != null && ((IList<NonDrugAllergy>)Session["NonDrugAllergyLoadList"]).Count > 0)
             {
                 NonDrugAllergyLoadList = (IList<NonDrugAllergy>)Session["NonDrugAllergyLoadList"];
                 if (NonDrugAllergyLoadList != null && NonDrugAllergyLoadList.Count > 0)
@@ -168,24 +168,24 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            else if (Session["NonDrugAllergyLoadMasterList"] != null && ((IList<NonDrugAllergyMaster>)Session["NonDrugAllergyLoadMasterList"]).Count>0)
+            else if (Session["NonDrugAllergyLoadMasterList"] != null && ((IList<NonDrugAllergyMaster>)Session["NonDrugAllergyLoadMasterList"]).Count > 0)
+            {
+                NonDrugAllergyLoadMasterList = (IList<NonDrugAllergyMaster>)Session["NonDrugAllergyLoadMasterList"];
+                if (NonDrugAllergyLoadMasterList != null && NonDrugAllergyLoadMasterList.Count > 0)
                 {
-                    NonDrugAllergyLoadMasterList = (IList<NonDrugAllergyMaster>)Session["NonDrugAllergyLoadMasterList"];
-                    if (NonDrugAllergyLoadMasterList != null && NonDrugAllergyLoadMasterList.Count > 0)
+                    foreach (NonDrugAllergyMaster item in NonDrugAllergyLoadMasterList)
                     {
-                        foreach (NonDrugAllergyMaster item in NonDrugAllergyLoadMasterList)
+                        if (!dictionary.ContainsKey(item.Non_Drug_Allergy_History_Info))
                         {
-                            if (!dictionary.ContainsKey(item.Non_Drug_Allergy_History_Info))
-                            {
-                                createControlsFromMaster(item.Non_Drug_Allergy_History_Info, item.Is_Present, item.Description, item);
-                                dictionary.Add(item.Non_Drug_Allergy_History_Info, item.Version.ToString());
-                            }
+                            createControlsFromMaster(item.Non_Drug_Allergy_History_Info, item.Is_Present, item.Description, item);
+                            dictionary.Add(item.Non_Drug_Allergy_History_Info, item.Version.ToString());
                         }
-                        if (!ctrl)
-                            createHeaderControls(ref ctrl);
-
                     }
+                    if (!ctrl)
+                        createHeaderControls(ref ctrl);
+
                 }
+            }
             else
             {
                 if (Session["NonDrugAllergyFieldLookupList"] != null && !chkShowAll.Checked)
@@ -208,22 +208,21 @@ namespace Acurus.Capella.UI
 
 
             // if (Session["NonDrugAllergyFieldLookupList"] != null && (chkShowAll.Checked||!chkShowAll.Enabled))is_FieldLookUp
-            //Gitlab #2821 - When Show All is unchecked, it should bring only the saved data
-            //if (Session["NonDrugAllergyFieldLookupList"] != null && is_FieldLookUp)
-            //{
-            //    NonDrugAllergyFieldLookupList = (IList<FieldLookup>)Session["NonDrugAllergyFieldLookupList"];
+            if (Session["NonDrugAllergyFieldLookupList"] != null && is_FieldLookUp)
+            {
+                NonDrugAllergyFieldLookupList = (IList<FieldLookup>)Session["NonDrugAllergyFieldLookupList"];
 
-            //    foreach (FieldLookup item1 in NonDrugAllergyFieldLookupList)
-            //    {
-            //        if (!dictionary.ContainsKey(item1.Value))
-            //        {
-            //            createControls(item1.Value, string.Empty, string.Empty, null);
-            //            dictionary.Add(item1.Value, item1.Description);
-            //        }
-            //    }
-            //    if (!ctrl)
-            //        createHeaderControls(ref ctrl);
-            //}
+                foreach (FieldLookup item1 in NonDrugAllergyFieldLookupList)
+                {
+                    if (!dictionary.ContainsKey(item1.Value))
+                    {
+                        createControls(item1.Value, string.Empty, string.Empty, null);
+                        dictionary.Add(item1.Value, item1.Description);
+                    }
+                }
+                if (!ctrl)
+                    createHeaderControls(ref ctrl);
+            }
             if (!IsPostBack)
             {
                 ClientSession.processCheck = true;
@@ -471,12 +470,12 @@ namespace Acurus.Capella.UI
 
                 nonDrugDTO.GeneralNotesObject = genrlNotesDrug;
                 //nonDrugDTO.NonDrugList = NonDruglst;
-                if(nonDrugDTO.NonDrugList.Count>0)
-                Session["NonDrugAllergyLoadList"] = nonDrugDTO.NonDrugList;
+                if (nonDrugDTO.NonDrugList.Count > 0)
+                    Session["NonDrugAllergyLoadList"] = nonDrugDTO.NonDrugList;
             }
             else if (ScreenMode == "Menu")
             {
-                
+
                 nonDrugDTO = LoadFromMaster(nonDrugDTO);
             }
             return nonDrugDTO;
@@ -593,7 +592,7 @@ namespace Acurus.Capella.UI
             objLabel.Width = 165;
             objLabel.Attributes.Add("class", "spanstyle");
             //BugID:47705
-            if (value=="Food" || (NonDrugAllergyData!= null && NonDrugAllergyData.Non_Drug_Allergy_History_Info == "Food"))
+            if (value == "Food" || (NonDrugAllergyData != null && NonDrugAllergyData.Non_Drug_Allergy_History_Info == "Food"))
             {
                 objLabel.Attributes.CssStyle.Add("color", "#6504d0");
             }
@@ -830,7 +829,6 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }
@@ -911,11 +909,11 @@ namespace Acurus.Capella.UI
                         objList.Snomed_Code = objMasterList.Snomed_Code;
                         objList.Is_Present = objMasterList.Is_Present;
                         //objList.Encounter_Id = EncounterId;
-              
+
                         if (objNonDrugAllergy.Is_Present.Trim() == string.Empty)
                         {
                             //if (objList.Encounter_Id == EncounterId)
-                                DeleteList.Add(objList);
+                            DeleteList.Add(objList);
                         }
                         else
                         {
@@ -1059,12 +1057,12 @@ namespace Acurus.Capella.UI
                         NonDrugAllergyMaster objList = NonDrugAllergyLoadMasterList.Where(a => a.Non_Drug_Allergy_History_Info.Trim() == item.Key).ToList<NonDrugAllergyMaster>()[0];
                         if (objNonDrugAllergyMaster.Is_Present.Trim() == string.Empty)
                         {
-                                objList.Is_Deleted = "Y";
-                                UpdateList.Add(objList);
-                                //DeleteList.Add(objList);
+                            objList.Is_Deleted = "Y";
+                            UpdateList.Add(objList);
+                            //DeleteList.Add(objList);
                         }
                         else
-                        
+
                         {
                             if (NonDrugAllergyLoadMasterList.Where(a => a.Non_Drug_Allergy_History_Info == item.Key).Any(a => a.Is_Present != objNonDrugAllergyMaster.Is_Present || a.Description != objNonDrugAllergyMaster.Description))
                             {
@@ -1076,8 +1074,8 @@ namespace Acurus.Capella.UI
                                 //if (hdnLocalTime.Value != string.Empty)
                                 //objList.Modified_Date_And_Time = utc; //Convert.ToDateTime(hdnLocalTime.Value);
                                 objList.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                               
-                                    UpdateList.Add(objList);
+
+                                UpdateList.Add(objList);
                             }
                             //if (objList.Encounter_Id != EncounterId)
                             //{
@@ -1100,7 +1098,7 @@ namespace Acurus.Capella.UI
                             //if (hdnLocalTime.Value != string.Empty)
                             //objNonDrugAllergy.Created_Date_And_Time = utc;//Convert.ToDateTime(hdnLocalTime.Value);
                             objNonDrugAllergyMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                            
+
                             SaveList.Add(objNonDrugAllergyMaster);
                         }
                     }
@@ -1167,7 +1165,7 @@ namespace Acurus.Capella.UI
                 //}
 
             }
-            
+
         }
 
         protected void InvisibleButton_Click(object sender, EventArgs e)
@@ -1261,46 +1259,46 @@ namespace Acurus.Capella.UI
                     CheckBox htmlCheckNoBox = (CheckBox)divNonDrugAllergy.FindControl("chkNo" + item.Key);
                     CustomDLCNew DlcNew = ((CustomDLCNew)divNonDrugAllergy.FindControl("DLC" + item.Key.Replace(" ", "")));
                     DlcNew.txtDLC.MaxLength = 255;
-                    if (htmlCheckBox != null && htmlCheckNoBox!= null && DlcNew!= null)
-                    if (!ClientSession.processCheck && ClientSession.UserPermission.ToUpper().Trim() == "R")
-                    {
-                        
-                        htmlCheckBox.Enabled = false;
-                        htmlCheckNoBox.Enabled = false;
-                        DlcNew.Enable = false;
-
-                        CheckBox htmlAllYesCheckBox = (CheckBox)divNonDrugAllergy.FindControl("chkAllYes");
-                        CheckBox htmlAllNoCheckBox = (CheckBox)divNonDrugAllergy.FindControl("chkAllNo");
-
-                        htmlAllYesCheckBox.Enabled = false;
-                        htmlAllNoCheckBox.Enabled = false;
-                        btnClearAll.Enabled = false;
-                        btnSave.Enabled = false;
-                    }
-                    else
-                    {
-
-                        if (!htmlCheckNoBox.Checked && !htmlCheckBox.Checked)
+                    if (htmlCheckBox != null && htmlCheckNoBox != null && DlcNew != null)
+                        if (!ClientSession.processCheck && ClientSession.UserPermission.ToUpper().Trim() == "R")
                         {
-                            DlcNew.txtDLC.Enabled = false;
 
-                            DlcNew.pbDropdown.Disabled = false;
-                            DlcNew.pbDropdown.Attributes.Add("class", "pbDropdownBackgrounddisable");
-                           // DlcNew.pbDropdown.Style.Add("background", "#808080");
+                            htmlCheckBox.Enabled = false;
+                            htmlCheckNoBox.Enabled = false;
+                            DlcNew.Enable = false;
 
+                            CheckBox htmlAllYesCheckBox = (CheckBox)divNonDrugAllergy.FindControl("chkAllYes");
+                            CheckBox htmlAllNoCheckBox = (CheckBox)divNonDrugAllergy.FindControl("chkAllNo");
 
+                            htmlAllYesCheckBox.Enabled = false;
+                            htmlAllNoCheckBox.Enabled = false;
+                            btnClearAll.Enabled = false;
+                            btnSave.Enabled = false;
                         }
                         else
                         {
-                            DlcNew.txtDLC.Enabled = true;
 
-                            DlcNew.pbDropdown.Disabled = false;
-                            DlcNew.pbDropdown.Attributes.Add("class", "pbDropdownBackground");
-                           // DlcNew.pbDropdown.Style.Add("background", "col-6-btn margintop5px");
+                            if (!htmlCheckNoBox.Checked && !htmlCheckBox.Checked)
+                            {
+                                DlcNew.txtDLC.Enabled = false;
+
+                                DlcNew.pbDropdown.Disabled = false;
+                                DlcNew.pbDropdown.Attributes.Add("class", "pbDropdownBackgrounddisable");
+                                // DlcNew.pbDropdown.Style.Add("background", "#808080");
 
 
+                            }
+                            else
+                            {
+                                DlcNew.txtDLC.Enabled = true;
+
+                                DlcNew.pbDropdown.Disabled = false;
+                                DlcNew.pbDropdown.Attributes.Add("class", "pbDropdownBackground");
+                                // DlcNew.pbDropdown.Style.Add("background", "col-6-btn margintop5px");
+
+
+                            }
                         }
-                    }
                 }
 
             }
@@ -1314,7 +1312,7 @@ namespace Acurus.Capella.UI
             GeneralNotes genrlNotesDrug = new GeneralNotes();
             string FileName = "Human" + "_" + ClientSession.HumanId + ".xml"; //"Encounter" + "_" + ClientSession.EncounterId + ".xml";
             string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-           if (File.Exists(strXmlFilePath) == true)
+            if (File.Exists(strXmlFilePath) == true)
             {
                 XmlDocument itemDoc = new XmlDocument();
                 XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
@@ -1323,110 +1321,110 @@ namespace Acurus.Capella.UI
                 {
                     itemDoc.Load(fs);
                     XmlText.Close();
-                if (itemDoc.GetElementsByTagName("NonDrugAllergyMasterList") != null && itemDoc.GetElementsByTagName("NonDrugAllergyMasterList").Count > 0)
-                {
-                xmlTagName = itemDoc.GetElementsByTagName("NonDrugAllergyMasterList")[0].ChildNodes;
-                if (xmlTagName != null && xmlTagName.Count > 0)
-                {
-                    for (int j = 0; j < xmlTagName.Count; j++)
+                    if (itemDoc.GetElementsByTagName("NonDrugAllergyMasterList") != null && itemDoc.GetElementsByTagName("NonDrugAllergyMasterList").Count > 0)
                     {
-                        string TagName = xmlTagName[j].Name;
-                        XmlSerializer xmlserializer = new XmlSerializer(typeof(NonDrugAllergyMaster));
-                        NonDrugAllergyMaster NonDrugAllergyMaster = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as NonDrugAllergyMaster;
-                        IEnumerable<PropertyInfo> propInfo = null;
-                        propInfo = from obji in ((NonDrugAllergyMaster)NonDrugAllergyMaster).GetType().GetProperties() select obji;
-
-                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                        xmlTagName = itemDoc.GetElementsByTagName("NonDrugAllergyMasterList")[0].ChildNodes;
+                        if (xmlTagName != null && xmlTagName.Count > 0)
                         {
-                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                            for (int j = 0; j < xmlTagName.Count; j++)
                             {
-                                if (propInfo != null)
+                                string TagName = xmlTagName[j].Name;
+                                XmlSerializer xmlserializer = new XmlSerializer(typeof(NonDrugAllergyMaster));
+                                NonDrugAllergyMaster NonDrugAllergyMaster = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as NonDrugAllergyMaster;
+                                IEnumerable<PropertyInfo> propInfo = null;
+                                propInfo = from obji in ((NonDrugAllergyMaster)NonDrugAllergyMaster).GetType().GetProperties() select obji;
+
+                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
                                 {
-                                    foreach (PropertyInfo property in propInfo)
+                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
                                     {
-                                        if (property.Name == nodevalue.Name)
+                                        if (propInfo != null)
                                         {
-                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                property.SetValue(NonDrugAllergyMaster, Convert.ToUInt64(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                property.SetValue(NonDrugAllergyMaster, Convert.ToString(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                property.SetValue(NonDrugAllergyMaster, Convert.ToDateTime(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                property.SetValue(NonDrugAllergyMaster, Convert.ToInt32(nodevalue.Value), null);
-                                            else
-                                                property.SetValue(NonDrugAllergyMaster, nodevalue.Value, null);
+                                            foreach (PropertyInfo property in propInfo)
+                                            {
+                                                if (property.Name == nodevalue.Name)
+                                                {
+                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                                                        property.SetValue(NonDrugAllergyMaster, Convert.ToUInt64(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                                                        property.SetValue(NonDrugAllergyMaster, Convert.ToString(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                                                        property.SetValue(NonDrugAllergyMaster, Convert.ToDateTime(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                                                        property.SetValue(NonDrugAllergyMaster, Convert.ToInt32(nodevalue.Value), null);
+                                                    else
+                                                        property.SetValue(NonDrugAllergyMaster, nodevalue.Value, null);
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                if (NonDrugAllergyMaster.Is_Deleted != "Y")
+                                    NonDrugMasterlst.Add(NonDrugAllergyMaster);
                             }
                         }
-                        if (NonDrugAllergyMaster.Is_Deleted != "Y")
-                        NonDrugMasterlst.Add(NonDrugAllergyMaster);
                     }
+                    if (itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList") != null && itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList").Count > 0)
+                    {
+                        xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList")[0].ChildNodes;
+
+                        if (xmlTagName != null && xmlTagName.Count > 0)
+                        {
+                            for (int j = 0; j < xmlTagName.Count; j++)
+                            {
+                                string TagName = xmlTagName[j].Name;
+                                XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                                GeneralNotes GeneralNotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[0])) as GeneralNotes;
+                                IEnumerable<PropertyInfo> propInfo = null;
+                                //GeneralNotes = (GeneralNotes)GeneralNotes;
+                                propInfo = from obji in ((GeneralNotes)GeneralNotes).GetType().GetProperties() select obji;
+
+                                for (int i = 0; i < xmlTagName[0].Attributes.Count; i++)
+                                {
+                                    XmlNode nodevalue = xmlTagName[0].Attributes[i];
+                                    {
+                                        if (propInfo != null)
+                                        {
+                                            foreach (PropertyInfo property in propInfo)
+                                            {
+                                                if (property.Name == nodevalue.Name)
+                                                {
+                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                                                        property.SetValue(GeneralNotes, Convert.ToUInt64(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                                                        property.SetValue(GeneralNotes, Convert.ToString(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                                                        property.SetValue(GeneralNotes, Convert.ToDateTime(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                                                        property.SetValue(GeneralNotes, Convert.ToInt32(nodevalue.Value), null);
+                                                    else
+                                                        property.SetValue(GeneralNotes, nodevalue.Value, null);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                lstGenNotesAll.Add(GeneralNotes);
+                            }
+                        }
+                    }
+                    fs.Close();
+                    fs.Dispose();
                 }
             }
-            if (itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList") != null && itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList").Count > 0)
+
+            if (NonDrugMasterlst != null && NonDrugMasterlst.Count > 0)
             {
-                xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList")[0].ChildNodes;
-
-                if (xmlTagName != null && xmlTagName.Count > 0)
-                {
-                    for (int j = 0; j < xmlTagName.Count; j++)
-                    {
-                        string TagName = xmlTagName[j].Name;
-                        XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                        GeneralNotes GeneralNotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[0])) as GeneralNotes;
-                        IEnumerable<PropertyInfo> propInfo = null;
-                        //GeneralNotes = (GeneralNotes)GeneralNotes;
-                        propInfo = from obji in ((GeneralNotes)GeneralNotes).GetType().GetProperties() select obji;
-
-                        for (int i = 0; i < xmlTagName[0].Attributes.Count; i++)
-                        {
-                            XmlNode nodevalue = xmlTagName[0].Attributes[i];
-                            {
-                                if (propInfo != null)
-                                {
-                                    foreach (PropertyInfo property in propInfo)
-                                    {
-                                        if (property.Name == nodevalue.Name)
-                                        {
-                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                property.SetValue(GeneralNotes, Convert.ToUInt64(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                property.SetValue(GeneralNotes, Convert.ToString(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                property.SetValue(GeneralNotes, Convert.ToDateTime(nodevalue.Value), null);
-                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                property.SetValue(GeneralNotes, Convert.ToInt32(nodevalue.Value), null);
-                                            else
-                                                property.SetValue(GeneralNotes, nodevalue.Value, null);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        lstGenNotesAll.Add(GeneralNotes);
-                    }
-                }
+                nonDrugDTO.NonDrugMasterList = NonDrugMasterlst;
+                nonDrugDTO.GeneralNotesObject = genrlNotesDrug;
+                if (ScreenMode == "Queue")
+                    Session["NonDrugAllergyLoadMasterList"] = nonDrugDTO.NonDrugMasterList;
             }
-            fs.Close();
-            fs.Dispose();
-        }
-           }
-
-           if (NonDrugMasterlst != null && NonDrugMasterlst.Count > 0)
-           {
-               nonDrugDTO.NonDrugMasterList = NonDrugMasterlst;
-               nonDrugDTO.GeneralNotesObject = genrlNotesDrug;
-               if (ScreenMode == "Queue")
-                   Session["NonDrugAllergyLoadMasterList"] = nonDrugDTO.NonDrugMasterList;
-           }
-           else
-           {
-               if (ScreenMode == "Queue")
-                   Session["NonDrugAllergyLoadMasterList"] = null;
-           }
+            else
+            {
+                if (ScreenMode == "Queue")
+                    Session["NonDrugAllergyLoadMasterList"] = null;
+            }
             return nonDrugDTO;
 
         }
