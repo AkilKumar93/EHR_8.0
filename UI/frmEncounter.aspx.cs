@@ -170,6 +170,7 @@ namespace Acurus.Capella.UI
                     else
                     {
                         btnQRCode.Visible = false;
+                        btnAkidoNote.Attributes.CssStyle.Add("margin-left", "8px !important");
                     }
 
                     var userAkidoNote = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101132 && u.user_name == ClientSession.UserName select u;
