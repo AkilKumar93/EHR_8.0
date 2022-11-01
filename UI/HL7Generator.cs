@@ -413,16 +413,25 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("administrativeGenderCode");
             if (ClinicalSummary.Sex != null && ClinicalSummary.Sex != string.Empty)
             {
-                //if (ClinicalSummary.Sex.Substring(0, 1).ToUpper() != "U")
-                //{
-                xmlReqNode[0].Attributes[0].Value = ClinicalSummary.Sex.Substring(0, 1).ToUpper();
+                if (ClinicalSummary.Sex.Substring(0, 1).ToUpper() != "U")
+                {
+                    xmlReqNode[0].Attributes[0].Value = ClinicalSummary.Sex.Substring(0, 1).ToUpper();
                 xmlReqNode[0].Attributes[2].Value = ClinicalSummary.Sex;
-                //}
-                //else
-                //{
-                //    xmlReqNode[0].Attributes[0].Value = ClinicalSummary.Sex.Substring(0, 3).ToUpper();
-                //    xmlReqNode[0].Attributes[2].Value = ClinicalSummary.Sex;
-                //}
+                }
+                else if(ClinicalSummary.Sex=="UNKNOWN")
+                {
+                    xmlReqNode[0].Attributes.RemoveAll();
+                    XmlAttribute xmlNull = null;
+                    xmlNull = xmlDoc.CreateAttribute("nullFlavor");
+                    xmlNull.Value = "UNK";
+                    xmlReqNode[0].Attributes.Append(xmlNull);
+                    
+                }
+                else
+                {
+                    xmlReqNode[0].Attributes[0].Value = "UN";
+                    xmlReqNode[0].Attributes[2].Value = ClinicalSummary.Sex;
+                }
             }
 
             xmlReqNode = xmlDoc.GetElementsByTagName("birthTime");
@@ -1669,16 +1678,25 @@ namespace Acurus.Capella.UI
             xmlReqNode = xmlDoc.GetElementsByTagName("administrativeGenderCode");
             if (ClinicalSummary.Sex != null && ClinicalSummary.Sex != string.Empty)
             {
-                //if (ClinicalSummary.Sex.Substring(0, 1).ToUpper() != "U")
-                //{
-                xmlReqNode[0].Attributes[0].Value = ClinicalSummary.Sex.Substring(0, 1).ToUpper();
-                xmlReqNode[0].Attributes[2].Value = ClinicalSummary.Sex;
-                //}
-                //else
-                //{
-                //    xmlReqNode[0].Attributes[0].Value = ClinicalSummary.Sex.Substring(0, 3).ToUpper();
-                //    xmlReqNode[0].Attributes[2].Value = ClinicalSummary.Sex;
-                //}
+                if (ClinicalSummary.Sex.Substring(0, 1).ToUpper() != "U")
+                {
+                    xmlReqNode[0].Attributes[0].Value = ClinicalSummary.Sex.Substring(0, 1).ToUpper();
+                    xmlReqNode[0].Attributes[2].Value = ClinicalSummary.Sex;
+                }
+                else if (ClinicalSummary.Sex == "UNKNOWN")
+                {
+                    xmlReqNode[0].Attributes.RemoveAll();
+                    XmlAttribute xmlNull = null;
+                    xmlNull = xmlDoc.CreateAttribute("nullFlavor");
+                    xmlNull.Value = "UNK";
+                    xmlReqNode[0].Attributes.Append(xmlNull);
+
+                }
+                else
+                {
+                    xmlReqNode[0].Attributes[0].Value = "UN";
+                    xmlReqNode[0].Attributes[2].Value = ClinicalSummary.Sex;
+                }
             }
 
             xmlReqNode = xmlDoc.GetElementsByTagName("birthTime");
