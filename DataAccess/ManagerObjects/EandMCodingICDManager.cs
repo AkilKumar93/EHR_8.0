@@ -164,6 +164,34 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return count;
         }
+
+
+
+        public IList<EandMCodingICD> GetEandMCodingICDPastEncounters(ulong encounterId, bool isFromArchive)
+        {
+            IList<EandMCodingICD> lst = new List<EandMCodingICD>();
+
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                var querySQL = string.Format(@"SELECT E.* 
+                                               FROM   {0} E  
+WHERE   E.ENCOUNTER_ID = :ENCOUNTER_ID
+                                               AND  is_Delete='N' and Source='ASSESSMENT'",
+                                               isFromArchive ? "e_m_coding_icd_arc" : "e_m_coding_icd");
+
+                var SQLQuery = iMySession.CreateSQLQuery(querySQL)
+                       .AddEntity("E", typeof(EandMCodingICD));
+
+                SQLQuery.SetParameter("ENCOUNTER_ID", encounterId);
+
+                lst = SQLQuery.List<EandMCodingICD>();
+
+                iMySession.Close();
+            }
+            return lst;
+        }
+
+
         #endregion
 
     }

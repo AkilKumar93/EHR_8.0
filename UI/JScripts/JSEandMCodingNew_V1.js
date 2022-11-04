@@ -25,6 +25,7 @@ $(document).ready(function () {
     $('#txtUnits').val("6");
     localStorage.setItem("CCAndEandMAutosave", "false");
     EnableSaveButton();
+
     $(top.window.document).find("#btnMinimizeViewResultCPT").css({ "display": "block" });
     $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "block" });
 });
@@ -60,7 +61,7 @@ document.oncontextmenu = function () {
 
     return !1
 },
-document.onmousedown = mouseDown;
+    document.onmousedown = mouseDown;
 
 var myapp = angular.module('EandMCodingapp', []);
 myapp.controller('EandMCodingCtrl', function ($scope, $http) {
@@ -98,6 +99,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         //  $scope.setOrder('Amount');
         // $scope.orderByFieldICD = 'ICDCode';
         //$scope.reverseSort = false;
+        if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && (UserRole.toUpperCase() != 'CODER')) {
+            $('#divICDPanel *').attr("disabled", "disabled").off('click');
+        }
         EnablePriRbtn = test.EnablePriRbtn;
         sessionStorage.setItem("Is_CMG_Ancillary", test.IsCMGAncillary);
 
@@ -148,8 +152,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (status == 999)
                 window.location = "frmSessionExpired.aspx";
-                //else
-                //    alert(error.Message + ".Please Contact Support!");
+            //else
+            //    alert(error.Message + ".Please Contact Support!");
 
             else {
                 window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
@@ -192,8 +196,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                         }
 
                         $("#txtCPT").focus();
-                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     },
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -203,8 +206,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
                         }
                     }
                 });
@@ -440,8 +443,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     }).on("keydown", function (e) {
 
         if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtCPT").val().length <= 1)
                 bBool = false;
             else
@@ -450,27 +452,22 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             bcheck = false;
         }
         else if (e.which == 46) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bBool = false;
             bcheck = false;
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bcheck = true;
         }
     }).on("input", function (e) {
         document.getElementById('txtCPTDescription').value = "";
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') != "undefined" && jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-        { { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); } }
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') != "undefined" && jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); } }
 
         if ($("#txtCPT").val().length >= 1) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') != "undefined" && jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); } }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') != "undefined" && jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); } }
 
-            if (!bBool)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             intCPTLength = 0;
         }
         else if ($("#txtCPT").val().length != 0 && intCPTLength != -1) {
@@ -636,8 +633,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                             }));
                         }
                         $("#txtCPTDescription").focus();
-                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     },
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -647,8 +643,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
                         }
                     }
                 });
@@ -864,8 +860,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     }).on("keydown", function (e) {
 
         if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtCPTDescription").val().length <= 3)
                 bBool = false;
             else
@@ -874,26 +869,21 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             bcheck = false;
         }
         else if (e.which == 46) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bBool = false;
             bcheck = false;
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bcheck = true;
         }
     }).on("input", function (e) {
 
         document.getElementById('txtCPT').value = "";
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         if ($("#txtCPTDescription").val().length >= 3) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (!bBool)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             intCPTLength = 0;
         }
         else if ($("#txtCPTDescription").val().length != 0 && intCPTLength != -1) {
@@ -966,26 +956,26 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     });
     $("#txtICD10").autocomplete({
         source:
-                function (request, response) {
-                    if (arrICD10Codes == null) {
-                        $.get("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
-                            arrICD10Codes = $.map(file, function (li) {
-                                return $(li).attr("value");
-                            });
+            function (request, response) {
+                if (arrICD10Codes == null) {
+                    $.get("htmICD10.html?version" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim()).done(function (file) {
+                        arrICD10Codes = $.map(file, function (li) {
+                            return $(li).attr("value");
                         });
-                    }
-                    if ($("#txtICD10").val().length > 2) {
-                        var results = FilterCodes(arrICD10Codes, request.term);
+                    });
+                }
+                if ($("#txtICD10").val().length > 2) {
+                    var results = FilterCodes(arrICD10Codes, request.term);
 
-                        response($.map(results, function (item) {
-                            return {
-                                label: item,
-                                value: item
-                            }
-                        }));
-                    }
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                },
+                    response($.map(results, function (item) {
+                        return {
+                            label: item,
+                            value: item
+                        }
+                    }));
+                }
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            },
         minlength: 2,
         multiple: true,
         mustMatch: false,
@@ -1023,8 +1013,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     }).on("keydown", function (e) {
 
         if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtICD10").val().length <= 3)
                 bBool = false;
             else
@@ -1033,26 +1022,21 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             bcheck = false;
         }
         else if (e.which == 46) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bBool = false;
             bcheck = false;
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bcheck = true;
         }
     }).on("input", function (e) {
 
         document.getElementById('txtDescription').value = "";
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         if ($("#txtICD10").val().length >= 3) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (!bBool)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             intCPTLength = 0;
         }
         else if ($("#txtICD10").val().length != 0 && intCPTLength != -1) {
@@ -1096,8 +1080,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                             }));
                         }
                         $("#txtDescription").focus();
-                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     },
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1107,8 +1090,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
                         }
                     }
                 });
@@ -1172,8 +1155,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     }).on("keydown", function (e) {
 
         if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if ($("#txtDescription").val().length <= 3)
                 bBool = false;
             else
@@ -1182,26 +1164,21 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             bcheck = false;
         }
         else if (e.which == 46) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bBool = false;
             bcheck = false;
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             bcheck = true;
         }
     }).on("input", function (e) {
 
         document.getElementById('txtICD10').value = "";
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         if ($("#txtDescription").val().length >= 3) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (!bBool)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             intCPTLength = 0;
         }
         else if ($("#txtDescription").val().length != 0 && intCPTLength != -1) {
@@ -1257,8 +1234,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
@@ -1294,8 +1271,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
                 }
             }
         });
@@ -1355,8 +1332,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     $.each(jsonData[0], function (key, value) {
                         $(top.window.document).find("#select_Type_Of_Visit")
                             .append($("<option></option>")
-                                       .attr("value", key)
-                                       .text(value));
+                                .attr("value", key)
+                                .text(value));
                     });
                     if (jsonData[1] != undefined && jsonData[1] != null) {
                         $(top.window.document).find("#select_Type_Of_Visit").each(function () {
@@ -1375,8 +1352,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
                         alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
                     }
                 }
             });
@@ -1410,10 +1387,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         $(top.window.document).find('#divCPTFormView').modal({ backdrop: 'static', "height": "108%!important", keyboard: false }, 'show');
 
         var table = $(top.window.document).find('#tbFavCPTsContainer');
-        if (PhysicianCPTs.length != 0 && PhysicianCPTs.length <= 2 && catlist.length == 1)
-        { RowCount = 2; }
-        else
-        {
+        if (PhysicianCPTs.length != 0 && PhysicianCPTs.length <= 2 && catlist.length == 1) { RowCount = 2; }
+        else {
             var favCPTCount = PhysicianCPTs.length;
             favCPTCount = favCPTCount + catlist.length;
             var RowCount = parseInt(favCPTCount / 3);
@@ -2255,6 +2230,9 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         }
     }
     $scope.ICDDelete = function (index) {
+        if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && (UserRole.toUpperCase() != 'CODER')) {
+            return false;
+        }
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         if (index != undefined)
             iIndex = index;
@@ -2401,6 +2379,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
     $scope.SaveEandMCoding = function (index) {
         /*Start For Git Lab Id: 1666*/
+        var icdcount = false;
         if (index == "Submit") {
             //Save and submit
             Esuperbillclicked = "Y";
@@ -2412,7 +2391,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         /*Stop For Git Lab Id: 1666*/
         var arrlstAssICD = [];
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-
+        // if (index == "Submit") {
         if ($('#tblEandMCodingCPT tr td').length == 0) { //any cpt not mapped
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             DisplayErrorMessage('530003');
@@ -2421,27 +2400,43 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             return;
         }
         else if (($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0)) { //save service procedure code without icd.
-            if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT') {
+            if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'CODER') {
+                //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+                icdcount = true;
+
+                //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                //return;
+
+
+            }
+            else {
+
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 DisplayErrorMessage('530004');
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
+
+                //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
                 return;
+
             }
+
         }
-            //else if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT') {
-            //    for (var j = 1; j < 7; j++) {
-            //        if ($('#tblEandMCodingCPT tr td input.chkCPT' + j + ':checked').length > 0 && ($('#tblEandMCodingICD tr td input.chkICD' + j + ':checked').length == 0 && $('#tblAssEandMCodingICD tr td input.chkICD' + j + ':checked').length == 0)) {//mapping not complete i.e 6 markd in CPT but 6 not marked in ICD
-            //            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            //            sessionStorage.setItem("EncCancel", "false");
-            //            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-            //            DisplayErrorMessage('530014', "", "'" + j + "'"); No need for now
-            //            bSaveCheck = true;
-            //            AutoSaveUnsuccessful();
-            //            return;
-            //        }
-            //    }
-            //}
+
+        //else if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT') {
+        //    for (var j = 1; j < 7; j++) {
+        //        if ($('#tblEandMCodingCPT tr td input.chkCPT' + j + ':checked').length > 0 && ($('#tblEandMCodingICD tr td input.chkICD' + j + ':checked').length == 0 && $('#tblAssEandMCodingICD tr td input.chkICD' + j + ':checked').length == 0)) {//mapping not complete i.e 6 markd in CPT but 6 not marked in ICD
+        //            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //            sessionStorage.setItem("EncCancel", "false");
+        //            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+        //            DisplayErrorMessage('530014', "", "'" + j + "'"); No need for now
+        //            bSaveCheck = true;
+        //            AutoSaveUnsuccessful();
+        //            return;
+        //        }
+        //    }
+        //}
         else if ($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0) {  //any icd not mapped userRole:coder//BugID:47922 -- ServProc REVAMP
             if (bbtnSubAllForSuperbilltted == true || UserRole.toUpperCase() == 'CODER') {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2469,6 +2464,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 }
             }
         }
+        //// }
+        var isprimary = false;
         if (UserRole.toUpperCase() == 'CODER' || UserRole.toUpperCase() == 'PHYSICIAN') {
             var bIsPrimary = false, bIsAssPrimary = false, bPriICDSelected = false, bPriICDAssSelected = false;
 
@@ -2499,14 +2496,20 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             //    return;
             //}
 
-
+           
             if (!(bIsPrimary || bIsAssPrimary)) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                DisplayErrorMessage('530005');
-                bSaveCheck = true;
-                AutoSaveUnsuccessful();
-                return;
+                if (UserRole.toUpperCase() == 'CODER' ) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    DisplayErrorMessage('530005');
+                    bSaveCheck = true;
+                    AutoSaveUnsuccessful();
+                    return;
+                }
             }
+            else {
+                isprimary = true;
+            }
+
         }
         /*
         for (var j = 1; j < 7; j++) {
@@ -2590,71 +2593,6 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
     }*/
 
         //Validation
-        //Duplicate Diagnosis Pointer Validation
-        var DuplicateDiagnosis = [];
-        DuplicateDiagnosis = new Array();
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-
-                DuplicateDiagnosis = new Array();
-                for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.trim() != "") {
-                        if (DuplicateDiagnosis.length == 0) {
-                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
-                        }
-                        else if (DuplicateDiagnosis.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim()) > -1) {
-
-                            DisplayErrorMessage('530026', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
-                            bSaveCheck = true;
-                            AutoSaveUnsuccessful();
-                            return;
-                        }
-                        else {
-                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
-                        }
-                    }
-                }
-            }
-        }
-        var bSerial = false;
-        var bSeqValidation = false;
-        var iDiaPointerPosition = 0;
-        var iDiaPointerPosition = false;
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-                bSerial = false;
-                bSeqValidation = false;
-                bPosition = false;
-                iDiaPointerPosition = 0;
-                for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() == "") {
-                        if (bSeqValidation != true) {
-                            iDiaPointerPosition = parseInt(DiaPointer) + 1;
-                        }
-                        if (bPosition == false) {
-                            bPosition = true;
-                            iDiaPointerPosition = parseInt(DiaPointer) + 1;
-                        }
-
-                        bSerial = true;
-                    }
-                    if (bSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() != "") {
-                        var Cpt = $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim();
-                        if (iDiaPointerPosition == 0) {
-                            iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
-                        }
-                        DisplayErrorMessage('530027', "", "'" + Cpt + "'-'" + (parseInt(DiaPointer) + 1) + "'-'" + iDiaPointerPosition + "'");
-                        bSaveCheck = true;
-                        AutoSaveUnsuccessful();
-                        return;
-                    }
-                    else {
-                        bSeqValidation = true;
-                        // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
-                    }
-                }
-            }
-        }
 
         var DiagnosisPointerCPTList = [];
         var DiagnosisPointerICDList = [];
@@ -2701,6 +2639,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 }
             }
         }
+
         if (DiagnosisPointerCPTList.length > 0 && DiagnosisPointerICDList.length > 0) // Diagosis pointers are not mandatory
         {
             var DiagnosisPointerdiff = [];
@@ -2715,6 +2654,84 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 return;
             }
         }
+        else if (DiagnosisPointerCPTList.length > 0 && DiagnosisPointerICDList.length == 0) {
+            DisplayErrorMessage('530025', "", "'" + DiagnosisPointerCPTList[0] + "'");
+            // DisplayErrorMessage('530025', "", "'" + DiagnosisPointerdiff + "'");
+            bSaveCheck = true;
+            AutoSaveUnsuccessful();
+            return;
+        }
+
+        //Duplicate Diagnosis Pointer Validation
+        var DuplicateDiagnosis = [];
+        DuplicateDiagnosis = new Array();
+
+        if ($('#tblEandMCodingCPT tr').length > 0) {
+            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+
+                DuplicateDiagnosis = new Array();
+                for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
+                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.trim() != "") {
+                        if (DuplicateDiagnosis.length == 0) {
+                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
+                        }
+                        else if (DuplicateDiagnosis.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim()) > -1) {
+
+                            DisplayErrorMessage('530026', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
+                            bSaveCheck = true;
+                            AutoSaveUnsuccessful();
+                            return;
+                        }
+                        else {
+                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
+                        }
+                    }
+                }
+            }
+        }
+
+        var bSerial = false;
+        var bSeqValidation = false;
+        var iDiaPointerPosition = 0;
+        var iDiaPointerPosition = false;
+
+        if ($('#tblEandMCodingCPT tr').length > 0) {
+            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+                bSerial = false;
+                bSeqValidation = false;
+                bPosition = false;
+                iDiaPointerPosition = 0;
+                for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
+                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() == "") {
+                        if (bSeqValidation != true) {
+                            iDiaPointerPosition = parseInt(DiaPointer) + 1;
+                        }
+                        if (bPosition == false) {
+                            bPosition = true;
+                            iDiaPointerPosition = parseInt(DiaPointer) + 1;
+                        }
+
+                        bSerial = true;
+                    }
+                    if (bSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() != "") {
+                        var Cpt = $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim();
+                        if (iDiaPointerPosition == 0) {
+                            iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
+                        }
+                        DisplayErrorMessage('530027', "", "'" + Cpt + "'-'" + (parseInt(DiaPointer) + 1) + "'-'" + iDiaPointerPosition + "'");
+                        bSaveCheck = true;
+                        AutoSaveUnsuccessful();
+                        return;
+                    }
+                    else {
+                        bSeqValidation = true;
+                        // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
+                    }
+                }
+            }
+        }
+
+       
 
         var aryCPTList = [];
         var aryICDList = [];
@@ -2836,12 +2853,41 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         }).success(function (response) {
             var str = response.d;
             var test = JSON.parse(str);
+            if (icdcount) {
 
+                if (!alert('Please select at least one ICD')) {
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                    return;
+                }
+                //DisplayErrorMessage('530004');
+
+                // bSaveCheck = true;
+                //AutoSaveUnsuccessful();
+
+            }
+            if (!isprimary && UserRole.toUpperCase() == 'PHYSICIAN') {
+
+               
+                if (!alert('Please mark the Primary ICD') ) {
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                    return;
+                }
+
+                // bSaveCheck = true;
+                //AutoSaveUnsuccessful();
+
+
+            }
             if (test.IsBillableNo == "180045") {
-                DisplayErrorMessage('180045');
-                sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
-                AutoSaveUnsuccessful();
-                return;
+
+
+                if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439')) {
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                    return;
+                }
             }
             $scope.EandMCodingCPTTable = test.ProcedureList;
             $scope.EandMCodingICDTable = test.ICDList;
@@ -2849,7 +2895,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             if (test.BillingInstruction != "")
                 $('#txtBillingInstruction').val(test.BillingInstruction);
 
-          
+
             if (test.IsBillableNo == "530024") {
                 DisplayErrorMessage('530024');
                 sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
@@ -2865,8 +2911,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             // $scope.reverseSort = false;
             EnablePriRbtn = test.EnablePriRbtn;
             $('#btnSave').attr("disabled", "disabled");
-            if (bSubmitted == false)
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (bSubmitted == false) { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (Esuperbillclicked != 'Y') {
                 DisplayErrorMessage('110019');
             }
@@ -2890,18 +2935,18 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             }
             return;
         })
-        .error(function (error, status, headers, config) {
+            .error(function (error, status, headers, config) {
 
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (status == 999)
-                window.location = "frmSessionExpired.aspx";
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (status == 999)
+                    window.location = "frmSessionExpired.aspx";
                 //else
                 //    alert(error.Message + ".Please Contact Support!");
 
-            else {
-                window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
-            }
-        });
+                else {
+                    window.location = "ErrorPage.aspx?Message=" + error.Message + "|$|" + error.StackTrace;
+                }
+            });
     }
     /* For Git Lab Id: 1666
     $scope.btnSubAllForSuperbill_Click = function (index) {
@@ -3226,9 +3271,9 @@ myapp.filter('orderSequenceBy', function () {
 
 
 window.addEventListener("contextmenu",
-  function (e) {
-      e.stopPropagation()
-  }, true);
+    function (e) {
+        e.stopPropagation()
+    }, true);
 function followupKeypress() {
     event.preventDefault();
 

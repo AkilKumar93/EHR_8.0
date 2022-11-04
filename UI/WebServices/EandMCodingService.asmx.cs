@@ -1085,16 +1085,18 @@ namespace Acurus.Capella.UI.WebServices
             //CPT
             IList<EAndMCoding> lstInsertUpdateCpt = new List<EAndMCoding>();
             lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().Concat(EAndMCPTUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList();
-            
+
             Boolean bGcode = CheckGcodes(lstInsertUpdateICD, lstInsertUpdateCpt);
+            string isZcode = "";
             if (bGcode == false)
             {
                 //   return JsonConvert.SerializeObject("530024");
-                var result = new { IsBillableNo = "180045" };
-                return JsonConvert.SerializeObject(result);
+                // var result = new { IsBillableNo = "180045" };
+                // return JsonConvert.SerializeObject(result);
+                isZcode = "180045";
             }
 
-           
+
 
             //ClientSession.FillEncounterandWFObject.EncRecord = objencManager.GetEncounterByEncounterID(ClientSession.EncounterId)[0];//BugID:51613
             if (ClientSession.FillEncounterandWFObject != null)
@@ -1328,7 +1330,7 @@ namespace Acurus.Capella.UI.WebServices
             HttpContext.Current.Session["EandMICDList"] = eandmDTO.EandMCodingICDList;
             HttpContext.Current.Session["EnablePriRbtn"] = EnablePriRbtn;
 
-            
+
             //SubmitESuperBill /* Start For Git Lab Id: 1666 */
             if (sESuperbillSubmitted == "Y")
             {
@@ -1395,12 +1397,12 @@ namespace Acurus.Capella.UI.WebServices
             /*End For Git Lab Id: 1666*/
             if (!Is_CMG_Ancillary)
             {
-                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn };
+                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = isZcode };
                 return JsonConvert.SerializeObject(result);
             }
             else
             {
-                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = OrdersAssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn };
+                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = OrdersAssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = isZcode };
                 return JsonConvert.SerializeObject(result);
 
             }

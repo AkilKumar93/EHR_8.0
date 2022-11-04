@@ -22,6 +22,8 @@ namespace Acurus.Capella.Core.DTO
         private bool _physician_process;
         private string _sNofitication;
         private IList<PotentialDiagnosis> _Potential_Diagnosis = null;
+        private IList<EandMCodingICD> _EandMICD = null;
+
         #endregion
 
         #region Constructor
@@ -32,13 +34,15 @@ namespace Acurus.Capella.Core.DTO
             _Problem_List = new List<ProblemList>();
             //_Problem_List_Human = new List<ProblemList>();
             _General_Notes = new List<GeneralNotes>();
-          
+
             _VitalsBasedICD_List = new List<string>();
             _AssessmentCurrentList = new List<Assessment>();
             _General_NotesCurrentList = new List<GeneralNotes>();
             //_PhysicianICD_9 = new List<PhysicianICD_9>();
             _physician_process = false;
             sNofitication = string.Empty;
+            _EandMICD = new List<EandMCodingICD>();
+
 
         }
 
@@ -73,7 +77,7 @@ namespace Acurus.Capella.Core.DTO
             get { return _General_Notes; }
             set { _General_Notes = value; }
         }
-       
+
         [DataMember]
         public virtual IList<string> VitalsBasedICD_List
         {
@@ -116,6 +120,11 @@ namespace Acurus.Capella.Core.DTO
         {
             get { return _Potential_Diagnosis; }
             set { _Potential_Diagnosis = value; }
+        }
+        public virtual IList<EandMCodingICD> EandMICD
+        {
+            get { return _EandMICD; }
+            set { _EandMICD = value; }
         }
         #endregion
     }

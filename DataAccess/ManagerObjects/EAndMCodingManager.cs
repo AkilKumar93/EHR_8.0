@@ -1139,10 +1139,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             if (EandMCodingICD.Encounter_ID == ulEncID && (EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
                                             {
                                                 eandmCode.EandMCodingICDList.Add(EandMCodingICD);
-                                                if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" && !EandMAssICDs.Contains(EandMCodingICD.ICD))
-                                                    EandMAssICDs.Add(EandMCodingICD.ICD);
-                                                if (EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT" && !EandMOrdersAssICDs.Contains(EandMCodingICD.ICD))
-                                                    EandMOrdersAssICDs.Add(EandMCodingICD.ICD);
+                                                if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" && !EandMAssICDs.Contains(EandMCodingICD.ICD.Trim()))
+                                                    EandMAssICDs.Add(EandMCodingICD.ICD.Trim());
+                                                if (EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT" && !EandMOrdersAssICDs.Contains(EandMCodingICD.ICD.Trim()))
+                                                    EandMOrdersAssICDs.Add(EandMCodingICD.ICD.Trim());
 
                                             }
                                         }
@@ -1252,7 +1252,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 string sPrimary = string.Empty;
 
-                                var eandMICDList = from eandmICD in eandmCode.EandMCodingICDList where eandmICD.ICD == eandmCode.EandMCodingICDList[j].ICD select eandmICD;
+                                var eandMICDList = from eandmICD in eandmCode.EandMCodingICDList where eandmICD.ICD.Trim() == eandmCode.EandMCodingICDList[j].ICD.Trim() select eandmICD;
                                 IList<EandMCodingICD> templist = eandMICDList.ToList<EandMCodingICD>();
                                 string sICDID = eandmCode.EandMCodingICDList[j].Id.ToString();
                                 string sICDVersion = eandmCode.EandMCodingICDList[j].Version.ToString();
@@ -1263,7 +1263,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
                                         sPrimary = ((AssPriICD == string.Empty) ? "Pri" : "");
                                 }
-                                else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT" && AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD))
+                                else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT" && AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
                                 //else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT")
                                 {
                                     if (AssessmentICDs != null && AssessmentICDs.Count == 0)
@@ -1271,7 +1271,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
                                             sPrimary = "Pri";
                                     }
-                                    else if (AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD))
+                                    else if (AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
                                     {
                                         if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
                                             sPrimary = ((EMPriICDSet == true) ? "Pri" : "");

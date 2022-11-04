@@ -709,7 +709,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                         'Created_date': $(Selected[i]).parent().parent()[0].cells[13].innerText,
                         'Updated': "Y",
                         'StatusSelected': Ass_status,
-                        'Orig_Status': Ass_status
+                        'Orig_Status': Ass_status,
+                        'ICDid': 0, 'Sequence': "", 'EidVersion': 0
                     });
                     $("textarea").unbind();
                     iRightClickMenuCheck = false;
@@ -1209,7 +1210,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             }
             for (var i = 0; i < AddSelectedICD.length; i++) {
                 if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0]) == -1) {
-                    $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
+                    $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "", 'EidVersion': 0 });
                     iCheckColor++;
                     $("textarea").unbind();
                     iRightClickMenuCheck = false;
@@ -1378,7 +1379,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                             }
                             if (JSON.stringify($scope.AssessmentTable).indexOf(ui.item.label.split('~')[0].trim()) == -1) {
 
-                                $scope.AssessmentTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
+                                $scope.AssessmentTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "", 'EidVersion': 0 });
                                 $("textarea").unbind();
                                 iRightClickMenuCheck = false;
                                 $scope.SaveEnableDisable(false);
@@ -1573,7 +1574,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                             }
                             if (JSON.stringify($scope.AssessmentTable).indexOf(ui.item.label.split('~')[0].trim()) == -1) {
 
-                                $scope.AssessmentTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
+                                $scope.AssessmentTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "", 'EidVersion': 0 });
                                 $("textarea").unbind();
                                 iRightClickMenuCheck = false;
                                 $scope.SaveEnableDisable(false);
@@ -1964,7 +1965,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             var AddSelectedICD = sSelectedICD.split('^');
             for (var i = 0; i < AddSelectedICD.length; i++) {
                 if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0]) == -1) {
-                    $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
+                    $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "", 'EidVersion': 0 });
                     $("textarea").unbind();
                     iRightClickMenuCheck = false;
                 }
@@ -2241,9 +2242,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                 for (var i = 0; i < AddSelectedICD.length; i++) {
                     if (JSON.stringify($scope.AssessmentTable).indexOf(AddSelectedICD[i].split('~')[0].trim()) == -1) {
                         if (bSetICD9Code || bProblmCheck)
-                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': ' ', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
+                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': ' ', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "", 'EidVersion': 0 });
                         else
-                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'CheckBoxCheck': 'PROBLEM', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status });
+                            $scope.AssessmentTable.push({ 'ICDCode': AddSelectedICD[i].split('~')[0], 'ICDDescription': AddSelectedICD[i].split('~')[1].split('|')[0], 'ParentICD': AddSelectedICD[i].split('~')[0], 'AssessmentID': 0, 'iVersion': 0, 'iProblemListVersion': 0, 'ProblemListID': 0, 'Notes': '', 'IncompleteICDCode': AddSelectedICD[i].split('|')[2], 'CheckBoxCheck': 'PROBLEM', 'Created_by': "", 'Created_date': "", 'Updated': "Y", 'StatusSelected': Ass_status, 'Orig_Status': Ass_status, 'ICDid': 0, 'Sequence': "", 'EidVersion': 0 });
 
                         $("textarea").unbind();
                         iRightClickMenuCheck = false;

@@ -21,7 +21,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     {
         IList<Assessment> GetAssessmentUsingEncounterID(ulong encounterID);
         IList<Assessment> GetAssessmentUsingPatientID(ulong PatientID, string Year);
-        FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete, IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList, IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes, TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, ulong PhysicianID, IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious, string sLocalTime, string sLegalOrg);
+        FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate,
+            IList<Assessment> ListToDelete, IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList,
+            IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes,
+            TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, ulong PhysicianID,
+            IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious, string sLocalTime, string sLegalOrg, IList<EandMCodingICD> ListICDToInsert, IList<EandMCodingICD> ListICDToUpdate);
         //FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete, IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList, IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes, TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, string Is_Sent_To_RCopia, ulong PhysicianID, IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious);
         //FillAssessmentRuledOut GetAssessmentUsingEncounterIDForRuledOut(ulong encounterId, ulong physicianId);
         //FillAssessmentRuledOut BatchOperationsToAssessmentFromRuledOut(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete, ulong encounterId, string sMacAddress, GeneralNotes generalNotes);
@@ -105,7 +109,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         int iTryCount = 0;
         // For Reference: Original Function commented and copied below this function.\\Changes made For Bug Id :55981  \\Rcopia section commented and assessmentvitals lookup get from Config xml and remove the Rule out Function call
         // public FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete, IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList, IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes, TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, string Is_Sent_To_RCopia, ulong PhysicianID, IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious)
-        public FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete, IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList, IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes, TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, ulong PhysicianID, IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious, string sLocalTime, string sLegalOrg)
+        public FillAssessment BatchOperationsToAssessment(IList<Assessment> ListToInsert, IList<Assessment> ListToUpdate, IList<Assessment> ListToDelete,
+            IList<ProblemList> ListToInsertProblemList, IList<ProblemList> ListToUpdateProblemList,
+            IList<ProblemList> ListToDeleteProblemList, string sMacAddress, GeneralNotes generalNotes,
+            TreatmentPlan SavePlan, string UserName, ulong ulEncounterID, ulong ulHumanID, ulong PhysicianID,
+            IList<string> sMacraICDChkList, string sIs_Assessment_CopyPrevious, string sLocalTime, string sLegalOrg, IList<EandMCodingICD> ListToInsertEandMICD,
+            IList<EandMCodingICD> ListToUpdateEandMICd)
         {
             iTryCount = 0;
             if (sIs_Assessment_CopyPrevious != null && sIs_Assessment_CopyPrevious != string.Empty && sIs_Assessment_CopyPrevious != "Yes")
@@ -294,7 +303,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 throw Ex;
             }
-            #endregion
+        #endregion
         TryAgain:
             int iResult = 0;
             //Session.GetISession().Clear();
@@ -306,7 +315,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             GenerateXml xmlobjEncounter = new GenerateXml();
             GenerateXml xmlobjHuman = new GenerateXml();
             String GeneralNotesText = string.Empty;
-            bool objAssessmentConsistent = true, objProblemlistConsistent = true, objGeneralNotesConsistent = true;
+            bool objAssessmentConsistent = true, objProblemlistConsistent = true, objGeneralNotesConsistent = true, bEandMCodingICDConsistent = true;
             using (ISession MySession = Session.GetISession())
             {
                 try
@@ -771,14 +780,56 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
                             #endregion
+                            #region EandmICd
+                            EandMCodingICDManager eandmicdMngr = new EandMCodingICDManager();
+                            if (ListToInsertEandMICD.Count > 0 || ListToUpdateEandMICd.Count > 0)
+                            {
+                                iResult = eandmicdMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ListToInsertEandMICD, ref ListToUpdateEandMICd, null, MySession, string.Empty, true, true, ulEncounterID, string.Empty, ref xmlobjEncounter);
+                                //iResult = eandmicdMngr.SaveUpdateDeleteWithoutTransaction(ref SaveEMICDList, UpdateEMICDList, null, MySession, string.Empty);
 
+                                if (iResult == 2)
+                                {
+                                    if (iTryCount < 5)
+                                    {
+                                        iTryCount++;
+                                    }
+                                    else
+                                    {
+                                        trans.Rollback();
+                                        throw new Exception("Deadlock is occured. Transaction failed");
+                                    }
+                                }
+                                else if (iResult == 1)
+                                {
+                                    trans.Rollback();
+                                    throw new Exception("Exception is occured. Transaction failed");
+                                }
+                                IList<EandMCodingICD> CombICDConsischk = new List<EandMCodingICD>();
+                                if (ListToInsertEandMICD != null)
+                                {
+                                    foreach (EandMCodingICD obj in ListToInsertEandMICD)
+                                    {
+                                        CombICDConsischk.Add(obj);
+                                    }
+                                }
+                                if (ListToUpdateEandMICd != null)
+                                {
+                                    foreach (EandMCodingICD objUpd in ListToUpdateEandMICd)
+                                    {
+                                        CombICDConsischk.Add(objUpd);
+                                    }
+                                }
+
+                                //  bEandMCodingICDConsistent = XMLObj.CheckDataConsistency(CombICDConsischk.Cast<object>().ToList(), true, string.Empty);
+                            }
+                            #endregion
                             trans.Commit();
-                            if (objAssessmentConsistent && objProblemlistConsistent && objGeneralNotesConsistent)
+                            if (objAssessmentConsistent && objProblemlistConsistent && objGeneralNotesConsistent && bEandMCodingICDConsistent)
                             {
 
                                 if (xmlobjEncounter.strXmlFilePath != null && xmlobjEncounter.strXmlFilePath != "")
                                 {
-                                   // xmlobjEncounter.itemDoc.Save(xmlobjEncounter.strXmlFilePath);
+                                    // xmlobjEncounter.itemDoc.Save(xmlobjEncounter.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
@@ -841,7 +892,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                                 if (xmlobjHuman.strXmlFilePath != null && xmlobjHuman.strXmlFilePath != "")
                                 {
-                                  //  xmlobjHuman.itemDoc.Save(xmlobjHuman.strXmlFilePath);
+                                    //  xmlobjHuman.itemDoc.Save(xmlobjHuman.strXmlFilePath);
 
                                     int trycount = 0;
                                 trytosaveagain:
@@ -971,7 +1022,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
                 //Added by Selvaraman for RCopiaUpload on 27th Jun 2019
-                RCopiaThread rcopThread = new RCopiaThread(ListToInsert, ListToUpdate, ListToDelete, humanRecord,UserName, sMacAddress,sLegalOrg);
+                RCopiaThread rcopThread = new RCopiaThread(ListToInsert, ListToUpdate, ListToDelete, humanRecord, UserName, sMacAddress, sLegalOrg);
                 Thread threadRCopia = new Thread(rcopThread.UploadProblemListToRCopia);
                 threadRCopia.Start();
 
@@ -2245,7 +2296,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                 if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
                                 {
-                                   // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
@@ -2307,7 +2358,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                                 if (XMLObjHuman.strXmlFilePath != null && XMLObjHuman.strXmlFilePath != "")
                                 {
-                                   // XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
+                                    // XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
@@ -2420,7 +2471,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<GeneralNotes> objAssessmentGeneralNotes = new List<GeneralNotes>();
             IList<Rcopia_Medication> objMed = new List<Rcopia_Medication>();
             IList<ROS> objROS = new List<ROS>();
-
+            IList<EandMCodingICD> objEandMICD = new List<EandMCodingICD>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 #region Data fetched from DB
@@ -2928,12 +2979,62 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                         }
                         #endregion
+
+                        #region EandMICD
+                        if (itemDoc.GetElementsByTagName("EandMCodingICDList")[0] != null)
+                        {
+                            xmlTagName = itemDoc.GetElementsByTagName("EandMCodingICDList")[0].ChildNodes;
+
+                            if (xmlTagName.Count > 0)
+                            {
+                                for (int j = 0; j < xmlTagName.Count; j++)
+                                {
+                                    if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value) == encounterID && (xmlTagName[j].Attributes.GetNamedItem("Source").Value.ToString().ToUpper() == "ASSESSMENT") && (xmlTagName[j].Attributes.GetNamedItem("Is_Delete").Value.ToString().ToUpper() == "N"))
+                                    {
+                                        string TagName = xmlTagName[j].Name;
+                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(EandMCodingICD));
+                                        EandMCodingICD EandMicd = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EandMCodingICD;
+                                        IEnumerable<PropertyInfo> propInfo = null;
+                                        propInfo = from obji in ((EandMCodingICD)EandMicd).GetType().GetProperties() select obji;
+
+                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                                        {
+
+                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                                            {
+                                                foreach (PropertyInfo property in propInfo)
+                                                {
+                                                    if (property.Name == nodevalue.Name)
+                                                    {
+                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                                                            property.SetValue(EandMicd, Convert.ToUInt64(nodevalue.Value), null);
+                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                                                            property.SetValue(EandMicd, Convert.ToString(nodevalue.Value), null);
+                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                                                            property.SetValue(EandMicd, Convert.ToDateTime(nodevalue.Value), null);
+                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                                                            property.SetValue(EandMicd, Convert.ToInt32(nodevalue.Value), null);
+                                                        else
+                                                            property.SetValue(EandMicd, nodevalue.Value, null);
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                        objEandMICD.Add(EandMicd);
+                                    }
+                                }
+                            }
+                        }
+                        #endregion
                         fs.Close();
                         fs.Dispose();
                     }
                 }
                 #endregion
                 objFillAssessment.Assessment = objAssessment;
+                objFillAssessment.EandMICD = objEandMICD;
+
                 objFillAssessment.Potential_Diagnosis = objPotentialDiagnosis;
                 objFillAssessment.General_NotesCurrentList = objAssessmentGeneralNotes;//BugID:49067
                 //Commented for BugID:53007 
@@ -3383,7 +3484,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     //objFillAssessment.Assessment = GetAssessmentPerEncounterIDForOrders(previousEncounterId, isFromArchive, dtDOS);
                     //GitLab # 1590
-                    IList<Assessment> ilstAssessment= new List<Assessment>();
+                    IList<Assessment> ilstAssessment = new List<Assessment>();
                     ilstAssessment = GetAssessmentPerEncounterIDForOrders(previousEncounterId, isFromArchive, dtDOS);
                     IList<Assessment> ilstVitalsBasedAssessment = new List<Assessment>();
                     for (int iCount = 0; iCount < ilstAssessment.Count; iCount++)
@@ -3399,9 +3500,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         ilstAssessment.Remove(ilstVitalsBasedAssessment[iCount]);
                     }
-
+                    EandMCodingICDManager eandMManager = new EandMCodingICDManager();
+                    IList<EandMCodingICD> lsticd = new List<EandMCodingICD>();
+                    lsticd = eandMManager.GetEandMCodingICDPastEncounters(previousEncounterId, isFromArchive);
                     objFillAssessment.Assessment = ilstAssessment;
-
+                    objFillAssessment.EandMICD = lsticd;
                     objFillAssessment.General_Notes = objGeneralNotesManager.GetGeneralNotes(previousEncounterId,
                                                                                             "Selected Assessment");
 
@@ -3418,7 +3521,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     IList<ProblemList> ilstVitalsBasedProblem = new List<ProblemList>();
                     for (int iCount = 0; iCount < ilstProblem_List.Count; iCount++)
                     {
-                        var  Problem_listAssessmentVitalsicd = (from obj in AssessmentVitalsLookupList where obj.ICD_10 == ilstProblem_List[iCount].ICD select obj).ToList<AssessmentVitalsLookup>();
+                        var Problem_listAssessmentVitalsicd = (from obj in AssessmentVitalsLookupList where obj.ICD_10 == ilstProblem_List[iCount].ICD select obj).ToList<AssessmentVitalsLookup>();
                         if (Problem_listAssessmentVitalsicd.Count > 0)
                         {
                             ilstVitalsBasedProblem.Add(ilstProblem_List[iCount]);
@@ -3434,7 +3537,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //var lstPatientResults = objVitalsManager.GetVitalsByHumanEncounter(previousEncounterId, humanId);
                     //GitLab # 1590
                     var lstPatientResults = objVitalsManager.GetVitalsByHumanEncounter(encounterId, humanId);
-                    
+
 
                     if (lstPatientResults.Count > 0 || AssessmentVitalsLookupList.Count > 0)
                     {
@@ -4512,9 +4615,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     //if (humanRecord.Is_Sent_To_Rcopia.ToUpper() == "N")// For Bug id: 77226
                     //{
-                    objrcoptranMngr.SendPatientToRCopia(ListToInsert[0].Human_ID, sMacAddress,sLegalOrg);
+                    objrcoptranMngr.SendPatientToRCopia(ListToInsert[0].Human_ID, sMacAddress, sLegalOrg);
                     //}
-                    objrcoptranMngr.SendProblemToRCopia(ilstinsertId, "Assesment", false, ilstassessment,sLegalOrg);
+                    objrcoptranMngr.SendProblemToRCopia(ilstinsertId, "Assesment", false, ilstassessment, sLegalOrg);
                 }
             }
             if (ListToUpdate != null && ListToUpdate.Count > 0)
@@ -4529,9 +4632,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     //if (humanRecord.Is_Sent_To_Rcopia.ToUpper() == "N")
                     //{
-                    objrcoptranMngr.SendPatientToRCopia(ListToUpdate[0].Human_ID, sMacAddress,sLegalOrg);
+                    objrcoptranMngr.SendPatientToRCopia(ListToUpdate[0].Human_ID, sMacAddress, sLegalOrg);
                     //}
-                    objrcoptranMngr.SendProblemToRCopia(ilstUpdateId, "Assesment", false, ilstassessment,sLegalOrg);
+                    objrcoptranMngr.SendProblemToRCopia(ilstUpdateId, "Assesment", false, ilstassessment, sLegalOrg);
                 }
             }
             if (ListToDelete != null && ListToDelete.Count > 0)
@@ -4545,9 +4648,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     //if (humanRecord.Is_Sent_To_Rcopia.ToUpper() == "N")
                     //{
-                    objrcoptranMngr.SendPatientToRCopia(ListToDelete[0].Human_ID, sMacAddress,sLegalOrg);
+                    objrcoptranMngr.SendPatientToRCopia(ListToDelete[0].Human_ID, sMacAddress, sLegalOrg);
                     //}
-                    objrcoptranMngr.SendProblemToRCopia(ilstDeleteId, "Assesment", true, ListToDelete,sLegalOrg);
+                    objrcoptranMngr.SendProblemToRCopia(ilstDeleteId, "Assesment", true, ListToDelete, sLegalOrg);
                 }
             }
         }
@@ -4597,9 +4700,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         ulPhyID = ListToInsert[0].Physician_ID;
                         //if (humanRecord.Is_Sent_To_Rcopia.ToUpper() == "N")// For Bug id: 77226
                         //{
-                        objrcoptranMngr.SendPatientToRCopia(ListToInsert[0].Human_ID, sMacAddress,sLegalOrg);
+                        objrcoptranMngr.SendPatientToRCopia(ListToInsert[0].Human_ID, sMacAddress, sLegalOrg);
                         //}
-                        objrcoptranMngr.SendProblemToRCopia(ilstinsertId, "Assesment", false, ilstassessment,sLegalOrg);
+                        objrcoptranMngr.SendProblemToRCopia(ilstinsertId, "Assesment", false, ilstassessment, sLegalOrg);
                     }
                 }
                 if (ListToUpdate != null && ListToUpdate.Count > 0)
@@ -4617,9 +4720,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         ulPhyID = ListToUpdate[0].Physician_ID;
                         //if (humanRecord.Is_Sent_To_Rcopia.ToUpper() == "N")
                         //{
-                        objrcoptranMngr.SendPatientToRCopia(ListToUpdate[0].Human_ID, sMacAddress,sLegalOrg);
+                        objrcoptranMngr.SendPatientToRCopia(ListToUpdate[0].Human_ID, sMacAddress, sLegalOrg);
                         //}
-                        objrcoptranMngr.SendProblemToRCopia(ilstUpdateId, "Assesment", false, ilstassessment,sLegalOrg);
+                        objrcoptranMngr.SendProblemToRCopia(ilstUpdateId, "Assesment", false, ilstassessment, sLegalOrg);
                     }
                 }
                 if (ListToDelete != null && ListToDelete.Count > 0)
@@ -4636,9 +4739,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         ulPhyID = ListToDelete[0].Physician_ID;
                         //if (humanRecord.Is_Sent_To_Rcopia.ToUpper() == "N")
                         //{
-                        objrcoptranMngr.SendPatientToRCopia(ListToDelete[0].Human_ID, sMacAddress,sLegalOrg);
+                        objrcoptranMngr.SendPatientToRCopia(ListToDelete[0].Human_ID, sMacAddress, sLegalOrg);
                         //}
-                        objrcoptranMngr.SendProblemToRCopia(ilstDeleteId, "Assesment", true, ListToDelete,sLegalOrg);
+                        objrcoptranMngr.SendProblemToRCopia(ilstDeleteId, "Assesment", true, ListToDelete, sLegalOrg);
                     }
                 }
             }
@@ -4667,7 +4770,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + "', '" + serverno + "','" + DateTime.Now + "','" + sUserName + "','" + ulEncID + "','" + ulHumanID + "','" + ulPhyID + "','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
 
                 string ConnectionData;
-                ConnectionData =ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
                 using (MySqlConnection con = new MySqlConnection(ConnectionData))
                 {
                     using (MySqlCommand cmd = new MySqlCommand(insertQuery))
