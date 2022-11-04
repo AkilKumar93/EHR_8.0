@@ -4855,6 +4855,67 @@ namespace Acurus.Capella.UI
             }
             return sResult;
         }
+        public static string ImportC2ByBatchProcess()
+        {
+            string status = "";
+
+            try
+            {
+                status = "First Block";
+                status = "Third Block Block";
+                string batchfile = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForC2"].ToString();
+                if (File.Exists(batchfile))
+                {
+                    try
+                    {
+                        status = "Third Block - Sub 1";
+                        var proc1 = new Process();
+                        proc1.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForC2"].ToString());
+                        proc1.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForC2"].ToString();
+                        proc1.StartInfo.Arguments = "-v -s -a";
+                        status = "Third Block - Sub 2";
+                        bool bStart = proc1.Start();
+                        status = bStart + " Third Block - Sub 3 ";
+                        proc1.WaitForExit();
+                        status = bStart + " Third Block - Sub 4 ";
+                        var exitCode = proc1.ExitCode;
+                        proc1.Close();
+
+                        //File.Copy(System.Configuration.ConfigurationManager.AppSettings["CCDOutputLocation"].ToString(), sOutputLocation);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(status + " " + ex.Message + "  " + ex.InnerException);
+                    }
+
+                    //using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
+                    //{
+                    //    status = "Third Block - Sub 1";
+                    //    proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString());
+                    //    proc.StartInfo.FileName = "@" + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    status = "Third Block - Sub 2" +" " + proc.StartInfo.WorkingDirectory + " " + proc.StartInfo.FileName;
+                    //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4522 - CreateCCDXMLByBatchProcess: status  - " + status + " : Start", DateTime.Now, "0", "frmimageviewer");
+                    //    bool bStart = proc.Start();
+                    //    status = bStart + " Third Block - Sub 3 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    proc.WaitForExit();
+                    //    status = bStart + " Third Block - Sub 4 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
+                    //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4527 - CreateCCDXMLByBatchProcess: status  - " + status + " : End", DateTime.Now, "0", "frmimageviewer");
+                    //}
+                    status ="Success";
+                }
+                else
+                {
+                    status = "Batch File Not found-FileName:" + batchfile;
+                }
+                return status;
+
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+            }
+
+        }
 
     }
 }

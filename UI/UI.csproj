@@ -350,6 +350,7 @@
     <Content Include="frmFindAllAppointments.aspx" />
     <Content Include="frmFindPatient.aspx" />
     <Content Include="frmFindReferralPhysician.aspx" />
+    <Content Include="frmImportCQM.aspx" />
     <Content Include="frmLogin.aspx" />
     <Content Include="frmMyQueueNew.aspx" />
     <Content Include="frmPatientChart.aspx" />
@@ -370,6 +371,7 @@
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
     <Content Include="JScripts\JSDMEOrder.js" />
+    <Content Include="JScripts\JSImportCQM.js" />
     <Content Include="JScripts\JSMask.Min.js" />
     <Content Include="JScripts\JSMyQueueNew.js" />
     <Content Include="JScripts\JSExchange.js" />
@@ -1062,6 +1064,13 @@
     </Compile>
     <Compile Include="frmImplantableDevice.aspx.designer.cs">
       <DependentUpon>frmImplantableDevice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmImportCQM.aspx.cs">
+      <DependentUpon>frmImportCQM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmImportCQM.aspx.designer.cs">
+      <DependentUpon>frmImportCQM.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmImportedPatients.aspx.cs">
       <DependentUpon>frmImportedPatients.aspx</DependentUpon>
@@ -2500,7 +2509,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55737</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56055/</IISUrl>
+          <IISUrl>http://localhost:56056/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
