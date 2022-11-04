@@ -11207,7 +11207,7 @@ and b.Encounter_ID in (:EncIds)";
 
             IList<ulong> ilstEncID = new List<ulong>();
             IList<ulong> ilstHumanID = new List<ulong>();
-
+            string AgeCalculationDate = Convert.ToDateTime(Fromdate).Year.ToString() + "-01-01";
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 //Documentation of Current Medications in the Medical Record.
@@ -11216,6 +11216,7 @@ and b.Encounter_ID in (:EncIds)";
                 EncounterDenominator1query68.SetString(0, Convert.ToString(ulPhysicianID));
                 EncounterDenominator1query68.SetString(1, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominator1query68.SetString(2, Todate.ToString("yyyy-MM-dd"));
+                EncounterDenominator1query68.SetString(3, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
                 ArrayList Enc_Denominator1_lst68 = new ArrayList(EncounterDenominator1query68.List());
                 ArrayList Enc_Denominator_lst68 = null;
                 ArrayList Enc_Denominator2_lst68 = null;
@@ -11374,8 +11375,9 @@ and b.Encounter_ID in (:EncIds)";
                 EncounterDenominatorquery69.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery69.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery69.SetString(2, Convert.ToString(ulPhysicianID));
-                EncounterDenominatorquery69.SetString(3, "CMS69v10");
-                EncounterDenominatorquery69.SetString(4, "Denominator");
+                EncounterDenominatorquery69.SetString(3, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery69.SetString(4, "CMS69v10");
+                EncounterDenominatorquery69.SetString(5, "Denominator");
 
 
                 ArrayList Enc_Denominator_lst69 = new ArrayList(EncounterDenominatorquery69.List());
@@ -11698,9 +11700,9 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 EncounterDenominatorquery127.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery127.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery127.SetString(2, Convert.ToString(ulPhysicianID));
-
-                EncounterDenominatorquery127.SetString(3, "CMS127v10");
-                EncounterDenominatorquery127.SetString(4, "Denominator");
+                EncounterDenominatorquery127.SetString(3, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery127.SetString(4, "CMS127v10");
+                EncounterDenominatorquery127.SetString(5, "Denominator");
                 ArrayList Enc_Denominator_lst127 = new ArrayList(EncounterDenominatorquery127.List());
 
                 //Denominator
@@ -11784,7 +11786,8 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 IQuery EncounterDenominatorquery138 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS138.Tobacco");
                 EncounterDenominatorquery138.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery138.SetString(1, Todate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery138.SetString(2, Convert.ToString(ulPhysicianID));
+                EncounterDenominatorquery138.SetString(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery138.SetString(3, Convert.ToString(ulPhysicianID));
                 ArrayList Enc_Denominator_lst138 = new ArrayList(EncounterDenominatorquery138.List());
                 ArrayList Enc_Denominator_lst138Denoninator = null;
                 IList<ulong> ulEncList138 = new List<ulong>();
@@ -12018,7 +12021,9 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 IQuery EncounterDenominatorquery138_Population2 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS138.Tobacco");
                 EncounterDenominatorquery138_Population2.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery138_Population2.SetString(1, Todate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery138_Population2.SetString(2, Convert.ToString(ulPhysicianID));
+                EncounterDenominatorquery138_Population2.SetString(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery138_Population2.SetString(3, Convert.ToString(ulPhysicianID));
+
                 ArrayList Enc_Denominator_lst138_Population2 = new ArrayList(EncounterDenominatorquery138.List());
                 ArrayList Enc_Denominator_lst138Denoninator_Population2 = null;
                 IList<ulong> ulEncList138_Population2 = new List<ulong>();
@@ -12218,7 +12223,9 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 IQuery EncounterDenominatorquery138_Population3 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS138.Tobacco");
                 EncounterDenominatorquery138.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery138.SetString(1, Todate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery138.SetString(2, Convert.ToString(ulPhysicianID));
+                EncounterDenominatorquery138.SetString(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery138.SetString(3, Convert.ToString(ulPhysicianID));
+
                 ArrayList Enc_Denominator_lst138_Population3 = new ArrayList(EncounterDenominatorquery138.List());
                 ArrayList Enc_Denominator_lst138Denoninator_Population3 = null;
                 IList<ulong> ulEncList138_Population3 = new List<ulong>();
@@ -12452,7 +12459,8 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 IQuery EncounterDenominatorquery165 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS165.ControllingHighBP");
                 EncounterDenominatorquery165.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery165.SetString(1, Todate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery165.SetString(2, Convert.ToString(ulPhysicianID));
+                EncounterDenominatorquery165.SetString(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery165.SetString(3, Convert.ToString(ulPhysicianID));
                 ArrayList Enc_Denominator_lst165 = new ArrayList(EncounterDenominatorquery165.List());
                 IList<ulong> ulEncList165 = new List<ulong>();
                 IList<ulong> ulEncList165new = new List<ulong>();
@@ -12708,13 +12716,14 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 IQuery EncounterDenominatorquery122 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS122.HBA1c");
                 EncounterDenominatorquery122.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery122.SetString(1, Todate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery122.SetString(2, Convert.ToString(ulPhysicianID));
-                EncounterDenominatorquery122.SetString(3, "CMS122v10");
-                EncounterDenominatorquery122.SetString(4, "Denominator");
-                EncounterDenominatorquery122.SetString(5, "CMS122v10");
-                EncounterDenominatorquery122.SetString(6, "Denominator");
-                EncounterDenominatorquery122.SetString(7, "CMS122v10");
-                EncounterDenominatorquery122.SetString(8, "Denominator");
+                EncounterDenominatorquery122.SetString(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery122.SetString(3, Convert.ToString(ulPhysicianID));
+                EncounterDenominatorquery122.SetString(4, "CMS122v10");
+                EncounterDenominatorquery122.SetString(5, "Denominator");
+                EncounterDenominatorquery122.SetString(6, "CMS122v10");
+                EncounterDenominatorquery122.SetString(7, "Denominator");
+                EncounterDenominatorquery122.SetString(8, "CMS122v10");
+                EncounterDenominatorquery122.SetString(9, "Denominator");
 
                 ArrayList Enc_Denominator_lst122 = new ArrayList(EncounterDenominatorquery122.List());
 
@@ -12811,9 +12820,10 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 //Preventive Care and Screening: Influenza Immunization
                 #region CMS 147
                 IQuery EncounterDenominatorquery147 = iMySession.GetNamedQuery("PQRI.GetDenominatorCMS147.Influenza");
-                EncounterDenominatorquery147.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery147.SetString(0, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery147.SetString(1, Fromdate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery147.SetString(2, Convert.ToString(ulPhysicianID));
+                EncounterDenominatorquery147.SetString(2, Fromdate.ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery147.SetString(3, Convert.ToString(ulPhysicianID));
 
                 ArrayList Enc_Denominator_lst147 = new ArrayList(EncounterDenominatorquery147.List());
 
@@ -13015,9 +13025,10 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 IQuery EncounterDenominatorquery125 = iMySession.GetNamedQuery("PQRI.GetDenominator1CMS125.BreastCancer");
                 EncounterDenominatorquery125.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery125.SetString(1, Todate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery125.SetString(2, Convert.ToString(ulPhysicianID));
-                EncounterDenominatorquery125.SetString(3, "CMS125v10");
-                EncounterDenominatorquery125.SetString(4, "Denominator");
+                EncounterDenominatorquery125.SetString(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery125.SetString(3, Convert.ToString(ulPhysicianID));
+                EncounterDenominatorquery125.SetString(4, "CMS125v10");
+                EncounterDenominatorquery125.SetString(5, "Denominator");
 
                 ArrayList Enc_Denominator_lst125 = new ArrayList(EncounterDenominatorquery125.List());
                 ArrayList Enc_Denominator_lst125_1 = new ArrayList();
@@ -13198,8 +13209,9 @@ where pr.encounter_id in (:EncIds) and (pr.loinc_observation='BMI' and pr.value 
                 EncounterDenominatorquery22.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery22.SetString(1, Todate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery22.SetString(2, Convert.ToString(ulPhysicianID));
-                EncounterDenominatorquery22.SetString(3, "CMS22v10");
-                EncounterDenominatorquery22.SetString(4, "Denominator");
+                EncounterDenominatorquery22.SetString(3, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery22.SetString(4, "CMS22v10");
+                EncounterDenominatorquery22.SetString(5, "Denominator");
 
                 ArrayList Enc_Denominator_lst22 = new ArrayList(EncounterDenominatorquery22.List());
                 ArrayList Enc_Exception_lst22 = new ArrayList();
@@ -13500,11 +13512,11 @@ and b.Encounter_ID in (:EncIds)";
                 IQuery EncounterDenominatorquery130 = iMySession.GetNamedQuery("PQRI.GetDenominator1CMS130.ColorectalCancer");
                 EncounterDenominatorquery130.SetString(0, Fromdate.ToString("yyyy-MM-dd"));
                 EncounterDenominatorquery130.SetString(1, Todate.ToString("yyyy-MM-dd"));
-                EncounterDenominatorquery130.SetString(2, Convert.ToString(ulPhysicianID));
-
-                EncounterDenominatorquery130.SetParameter(3, "CMS130v10");
-
-                EncounterDenominatorquery130.SetParameter(4, "Denominator");
+                EncounterDenominatorquery130.SetString(2, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery130.SetString(3, Convert.ToDateTime(AgeCalculationDate).ToString("yyyy-MM-dd"));
+                EncounterDenominatorquery130.SetString(4, Convert.ToString(ulPhysicianID));
+                EncounterDenominatorquery130.SetParameter(5, "CMS130v10");
+                EncounterDenominatorquery130.SetParameter(6, "Denominator");
                 ArrayList Enc_Denominator_lst130 = new ArrayList(EncounterDenominatorquery130.List());
                 ArrayList Enc_Denominator_lst130_1 = new ArrayList();
                 ArrayList Enc_Exclusion_lst130 = new ArrayList();
