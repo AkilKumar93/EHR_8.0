@@ -1627,6 +1627,13 @@ function OpenModal(data) {
             win.hide();
         }
     }
+    else if (itemValue.toUpperCase() == "IMPORT CAT FILE") {
+        //StartLoadingImage();
+        var obj = new Array();
+        var Result = openModal("frmImportCQM.aspx", 201, 850, obj, "");
+        
+        
+    }
 
 }
 

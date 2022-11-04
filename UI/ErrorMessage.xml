@@ -2011,8 +2011,10 @@
   <Message number="7050008" Type="OK" Text="Please Select Reporting For Stage" />
 
   <Message number="7050009" Type="ToolStrip" Text="Generated Successfully" />
-
-  <Message number="595001" Type="OK" Text="Select the File. "></Message>
+	<Message number="7050010" Type="OK" Text="Import is alredy in Progress. Please try again later." />
+	<Message number="7050011" Type="OK" Text="Please select a ZIP File." />
+	<Message number="7050012" Type="OK" Text="Imporeted Successfully." />
+	<Message number="595001" Type="OK" Text="Select the File. "></Message>
 
   <Message number="596001" Type="OK" Text="Please select the Encrypted Location. "></Message>
   <Message number="596002" Type="OK" Text="Please select the Encrypted File"></Message>
@@ -2982,4 +2984,5 @@
   <Message number="1011190" Type="XmlRegenerate" Text="We apologize for the inconvenience. XML regeneration is in progress. Please contact capella support, if the page does not refresh within 2 minutes."></Message>
   <Message number="1011191" Type="CCDGenerate" Text="The CCD Generate is in progress. Please wait as it takes few minutes."></Message>
   <Message number="1011192" Type="OK" Text="There is an existing CCD Generate request found in the Queue. Please either try after some time or contact Acurus to clear the queue."></Message>
+	<Message number="1011193" Type="CCDGenerate" Text="The C2 Import is in progress. Please wait as it takes few minutes."></Message>
 </ErrorMessage>
