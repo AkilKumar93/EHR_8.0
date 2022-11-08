@@ -2830,17 +2830,22 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + chkICDContainer.cells[6].innerText.trim() + "~" + "EMICD" + "~" + sSequence);
 
             if (arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole == "MEDICAL ASSISTANT" || UserRole == "CODER")) {
-               // DisplayErrorMessage('530021', "", "'" + sICDCode + "'");
+                DisplayErrorMessage('530021', "", "'" + sICDCode + "'");
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
-                
+                return;
+            }
+           else  if (arrlstAssICD.indexOf(sICDCode) != -1) {
+                bSaveCheck = true;
+                AutoSaveUnsuccessful();
 
-                if (!alert('ICD' + sICDCode +  'has already been added under Assessment ICDs.Please remove it ')) {
-                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
-                        return;
-                    }
+                if (!alert('ICD' + sICDCode + 'has already been added under Assessment ICDs.Please remove it ')) {
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                    return;
 
+
+                }
             }
            
 
