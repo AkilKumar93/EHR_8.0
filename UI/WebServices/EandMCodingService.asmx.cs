@@ -298,6 +298,10 @@ namespace Acurus.Capella.UI.WebServices
             {
                 IList<string> AssPriCount = new List<string>();
                 AssPriCount = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
+                if (ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
+                {
+                    EnablePriRbtn = "disabled";
+                }
                 if (AssPriCount != null && AssPriCount.Count > 0)
                 {
                     EnablePriRbtn = "disabled";
@@ -618,6 +622,7 @@ namespace Acurus.Capella.UI.WebServices
             IList<EAndMCoding> TempEAndMCoding = new List<EAndMCoding>();
             IList<EandMCodingICD> TempEAndMICD = new List<EandMCodingICD>();
             IList<EandMCodingICD> EAndMICDTempList = new List<EandMCodingICD>();
+            
             IList<EandMCodingICD> EAndMICDSaveList = new List<EandMCodingICD>();
             IList<EandMCodingICD> EAndMICDUpdateList = new List<EandMCodingICD>();
             ImmunizationDTO ImmDelDTO = new ImmunizationDTO();
@@ -755,10 +760,11 @@ namespace Acurus.Capella.UI.WebServices
                                                     }
                                                 }
                                             }
-                                            if (EandMCodingICD.Encounter_ID == ClientSession.EncounterId && (EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
+                                            if (EandMCodingICD.Encounter_ID == ClientSession.EncounterId  &&(EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
                                             {
                                                 EAndMICDTempList.Add(EandMCodingICD);
                                             }
+                                           
                                         }
                                     }
                                 }
@@ -1003,33 +1009,34 @@ namespace Acurus.Capella.UI.WebServices
 
                 }
             }
+            //Commented for the Enhancement save ICD code of service procedure in Assessment tab
 
             //Newly Added Code - For Deleting the EandMCodingICD with Source as Assessment, if the ICD is deleted in Assessment
-            if (HttpContext.Current.Session["EandMICDList"] != null && OverAllICD != null && OverAllICD.Count > 0)
-            {
-                IList<EandMCodingICD> ilstEandMList = (IList<EandMCodingICD>)HttpContext.Current.Session["EandMICDList"];
-                IList<EandMCodingICD> ilstEandMTemp = new List<EandMCodingICD>();
-                var Del = from e in ilstEandMList where e.Source == "ASSESSMENT" select e;
-                ilstEandMTemp = Del.ToList<EandMCodingICD>();
+            //if (HttpContext.Current.Session["EandMICDList"] != null && OverAllICD != null && OverAllICD.Count > 0)
+            //{
+            //    IList<EandMCodingICD> ilstEandMList = (IList<EandMCodingICD>)HttpContext.Current.Session["EandMICDList"];
+            //    IList<EandMCodingICD> ilstEandMTemp = new List<EandMCodingICD>();
+            //    var Del = from e in ilstEandMList where e.Source == "ASSESSMENT" select e;
+            //    ilstEandMTemp = Del.ToList<EandMCodingICD>();
 
-                IList<EandMCodingICD> ilstNewAssessment = new List<EandMCodingICD>();
-                IList<EandMCodingICD> ilstDeleteAssessment = new List<EandMCodingICD>();
+            //    IList<EandMCodingICD> ilstNewAssessment = new List<EandMCodingICD>();
+            //    IList<EandMCodingICD> ilstDeleteAssessment = new List<EandMCodingICD>();
 
-                var DelAssesslist = from e in OverAllICD where e.Source == "ASSESSMENT" select e;
-                ilstNewAssessment = DelAssesslist.ToList<EandMCodingICD>();
+            //    var DelAssesslist = from e in OverAllICD where e.Source == "ASSESSMENT" select e;
+            //    ilstNewAssessment = DelAssesslist.ToList<EandMCodingICD>();
 
-                //if (ilstEandMTemp.Count > 0)
-                //{
-                ilstDeleteAssessment = ilstEandMTemp.Except(ilstNewAssessment).ToList<EandMCodingICD>();
+            //    //if (ilstEandMTemp.Count > 0)
+            //    //{
+            //    ilstDeleteAssessment = ilstEandMTemp.Except(ilstNewAssessment).ToList<EandMCodingICD>();
 
-                foreach (EandMCodingICD icd in ilstDeleteAssessment)
-                {
-                    icd.Is_Delete = "Y";
-                    EAndMICDUpdateList.Add(icd);
-                }
-                //}
+            //    foreach (EandMCodingICD icd in ilstDeleteAssessment)
+            //    {
+            //        icd.Is_Delete = "Y";
+            //        EAndMICDUpdateList.Add(icd);
+            //    }
+            //    //}
 
-            }
+            //}
             //Added for BugID:49118 - All deleted ICDs even if autosuggested/ entered and deleted will be saved in E_M_Coding table with Is_delete = 'Y'.
             //object[] arrTempDelICD = arylstDelICD.Where(a => a.ToString().Split('~')[8] == string.Empty).ToArray();//SaveList
             foreach (object objICD in arylstDelICD)
@@ -1080,7 +1087,9 @@ namespace Acurus.Capella.UI.WebServices
 
             //ICD
             IList<EandMCodingICD> lstInsertUpdateICD = new List<EandMCodingICD>();
-            lstInsertUpdateICD = EAndMICDSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().Concat(EAndMICDUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList();
+
+            lstInsertUpdateICD = EAndMICDSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().
+                Concat(EAndMICDUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList().Concat(EAndMICDTempList.Where(a => a.Source=="ASSESSMENT" && a.Is_Delete.Trim().ToUpper()!="Y")).ToList();
 
             //CPT
             IList<EAndMCoding> lstInsertUpdateCpt = new List<EAndMCoding>();
@@ -1299,7 +1308,11 @@ namespace Acurus.Capella.UI.WebServices
             {
                 IList<string> AssPriCount = new List<string>();
                 AssPriCount = ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
-                if (AssPriCount != null && AssPriCount.Count > 0)
+                if (ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
+                {
+                    EnablePriRbtn = "disabled";
+                }
+                    if (AssPriCount != null && AssPriCount.Count > 0)
                 {
                     EnablePriRbtn = "disabled";
                 }
@@ -1877,7 +1890,7 @@ namespace Acurus.Capella.UI.WebServices
                         // GcodeCheckList.Add(eandmICDList.Any(a => a.ICD == "V70.0").ToString());
                         //GcodeCheckList.Add(eandmICDList.Any(a => a.ICD == "Z00.00").ToString());
                         //GcodeCheckList.Add(eandmICDList.Any(a => CPTICD.Any(z => z.Value.Contains(a.ICD))).ToString());
-                        GcodeCheckList.Add(eandmICDList.Any(a => Procedure_code.Any(z => z.Key == (GcodeList.ElementAt(i).Procedure_Code) && z.Value.Contains(a.ICD))).ToString());
+                        GcodeCheckList.Add(eandmICDList.Any(a => Procedure_code.Any(z => z.Key == (GcodeList.ElementAt(i).Procedure_Code) && z.Value.Contains(a.ICD.Trim()))).ToString());
                         if (GcodeCheckList[i].ToString().ToUpper() == "FALSE")
                         {
                             //var icd = string.Join(" or ", (Procedure_code.ElementAt(i).Value).Select(g => g.ToString()).ToArray());

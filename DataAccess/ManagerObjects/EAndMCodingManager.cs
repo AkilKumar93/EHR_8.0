@@ -1134,15 +1134,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                     }
                                                 }
                                             }
-                                            if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" || EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT")
-                                                    EMCodingAssessmentSequence.Add(EandMCodingICD);
+                                            //if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" || EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT")
+                                            //    EMCodingAssessmentSequence.Add(EandMCodingICD);
                                             if (EandMCodingICD.Encounter_ID == ulEncID && (EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
                                             {
                                                 eandmCode.EandMCodingICDList.Add(EandMCodingICD);
-                                                if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" && !EandMAssICDs.Contains(EandMCodingICD.ICD.Trim()))
-                                                    EandMAssICDs.Add(EandMCodingICD.ICD.Trim());
-                                                if (EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT" && !EandMOrdersAssICDs.Contains(EandMCodingICD.ICD.Trim()))
-                                                    EandMOrdersAssICDs.Add(EandMCodingICD.ICD.Trim());
+                                                //if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" && !EandMAssICDs.Contains(EandMCodingICD.ICD.Trim()))
+                                                //    EandMAssICDs.Add(EandMCodingICD.ICD.Trim());
+                                                //if (EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT" && !EandMOrdersAssICDs.Contains(EandMCodingICD.ICD.Trim()))
+                                                //    EandMOrdersAssICDs.Add(EandMCodingICD.ICD.Trim());
 
                                             }
                                         }
@@ -1263,29 +1263,29 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
                                         sPrimary = ((AssPriICD == string.Empty) ? "Pri" : "");
                                 }
-                                else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT" && AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
-                                //else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT")
-                                {
-                                    if (AssessmentICDs != null && AssessmentICDs.Count == 0)
-                                    {
-                                        if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
-                                            sPrimary = "Pri";
-                                    }
-                                    else if (AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
-                                    {
-                                        if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
-                                            sPrimary = ((EMPriICDSet == true) ? "Pri" : "");
-                                        else if (eandmCode.EandMCodingICDList[j].ICD.Trim().Equals(AssPriICD))
-                                            sPrimary = "Pri";
-                                    }
-                                    Source = "ASSESSMENT";
+                                //else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT" && AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
+                                ////else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT")
+                                //{
+                                //    if (AssessmentICDs != null && AssessmentICDs.Count == 0)
+                                //    {
+                                //        if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
+                                //            sPrimary = "Pri";
+                                //    }
+                                //    else if (AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
+                                //    {
+                                //        if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
+                                //            sPrimary = ((EMPriICDSet == true) ? "Pri" : "");
+                                //        else if (eandmCode.EandMCodingICDList[j].ICD.Trim().Equals(AssPriICD))
+                                //            sPrimary = "Pri";
+                                //    }
+                                //    Source = "ASSESSMENT";
 
-                                }
-                                else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ORDERS_ASSESSMENT")
-                                {
-                                    Source = "ORDERS_ASSESSMENT";
-                                }
-                                if (Source.Trim() != string.Empty)
+                                //}
+                                //else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ORDERS_ASSESSMENT")
+                                //{
+                                //    Source = "ORDERS_ASSESSMENT";
+                                //}
+                                if (Source.Trim() != string.Empty && Source == "EMICD")
                                 {
                                     if (!ICDList.Any(a => a.Split('~')[1] == eandmCode.EandMCodingICDList[j].ICD))
                                         ICDList.Add(Source + "~" + eandmCode.EandMCodingICDList[j].ICD + "~" + eandmCode.EandMCodingICDList[j].ICD_Description + "~" + sICDVersion + "~" + sPrimary + "~" + sICDID + "~" + eandmCode.EandMCodingICDList[j].Sequence + "~" + ",");
@@ -1325,8 +1325,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         if (eandmCode.AssessmentList != null && eandmCode.AssessmentList.Count > 0)
                         {
-                            IList<Assessment> ICDListinAss_notinEMICD = new List<Assessment>();
+                            IList<EandMCodingICD> lstemp = new List<EandMCodingICD>();
+                            lstemp = (from m in eandmCode.EandMCodingICDList where m.Source == "ASSESSMENT" select m).ToList<EandMCodingICD>();
+                            IList < Assessment > ICDListinAss_notinEMICD = new List<Assessment>();
                             ICDListinAss_notinEMICD = (from a in eandmCode.AssessmentList where !(EandMAssICDs.Contains(a.ICD.Trim())) select a).ToList<Assessment>();
+
 
                             if (ICDListinAss_notinEMICD != null && ICDListinAss_notinEMICD.Count > 0)
                                 foreach (Assessment assICD in ICDListinAss_notinEMICD)
@@ -1334,7 +1337,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     sAssesmentPrimary = string.Empty;
                                     if (assICD.Primary_Diagnosis.ToUpper() == "Y")
                                         sAssesmentPrimary = "Pri";
-                                    ICDList.Add("ASSESSMENT" + "~" + assICD.ICD + "~" + assICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "A" + iAssessmentSequence.ToString() + "~" + "");
+                                         string sequencrtemp = "";
+                                     if(lstemp.Count>0)
+                                        {
+                                            IList<EandMCodingICD> temp=(from a in lstemp where a.ICD== assICD.ICD select a).ToList<EandMCodingICD>();
+                                            if(temp.Count>0)
+                                            {
+                                                sequencrtemp = temp[0].Sequence;
+                                            }
+                                            else
+                                            {
+                                                sequencrtemp = "A" + iAssessmentSequence.ToString();
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            sequencrtemp = "A" + iAssessmentSequence.ToString();
+                                        }
+                                    ICDList.Add("ASSESSMENT" + "~" + assICD.ICD + "~" + assICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + sequencrtemp + "~" + "");
                                     //ICDList.Add("ASSESSMENT" + "~" + assICD.ICD + "~" + assICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
                                     iAssessmentSequence += 1;
                                 }

@@ -2759,42 +2759,42 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
             }
         }
-        for (var jICD = 1; jICD < $('#tblAssEandMCodingICD tr').length; jICD++) {
-            var chkICDContainer = $('#tblAssEandMCodingICD tr')[jICD];
-            var chkICD1 = ""; var chkICD2 = ""; var chkICD3 = ""; var chkICD4 = ""; var chkICD5 = ""; var chkICD6 = "";
-            var IsPrimary = 'N';
-            if (chkICDContainer.cells[0].firstElementChild.firstElementChild.innerText.trim() == "Pri") {
-                IsPrimary = 'Y';
-            }
-            //if (chkICDContainer.cells[1].children[0].checked == true) {
-            //    chkICD1 = '1';
-            //}
-            //if (chkICDContainer.cells[2].children[0].checked == true) {
-            //    chkICD2 = '2';
-            //}
-            //if (chkICDContainer.cells[3].children[0].checked == true) {
-            //    chkICD3 = '3';
-            //}
-            //if (chkICDContainer.cells[4].children[0].checked == true) {
-            //    chkICD4 = '4';
-            //}
-            //if (chkICDContainer.cells[5].children[0].checked == true) {
-            //    chkICD5 = '5';
-            //}
-            //if (chkICDContainer.cells[6].children[0].checked == true) {
-            //    chkICD6 = '6';
-            //}
-            var sSequence = chkICDContainer.cells[1].innerText.trim();
-            var sICDCode = chkICDContainer.cells[2].innerText.trim();
-            var sICDDesc = chkICDContainer.cells[3].innerText.trim();
-            var Source = "ASSESSMENT";
-            if (sessionStorage.getItem("Is_CMG_Ancillary") != null && sessionStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {//BugID:52857
-                Source = "ORDERS_ASSESSMENT";
-            }
-            // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
-            aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[4].innerText.trim() + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + Source + "~" + sSequence);
-            arrlstAssICD.push(sICDCode);
-        }
+        //for (var jICD = 1; jICD < $('#tblAssEandMCodingICD tr').length; jICD++) {
+        //    var chkICDContainer = $('#tblAssEandMCodingICD tr')[jICD];
+        //    var chkICD1 = ""; var chkICD2 = ""; var chkICD3 = ""; var chkICD4 = ""; var chkICD5 = ""; var chkICD6 = "";
+        //    var IsPrimary = 'N';
+        //    if (chkICDContainer.cells[0].firstElementChild.firstElementChild.innerText.trim() == "Pri") {
+        //        IsPrimary = 'Y';
+        //    }
+        //    //if (chkICDContainer.cells[1].children[0].checked == true) {
+        //    //    chkICD1 = '1';
+        //    //}
+        //    //if (chkICDContainer.cells[2].children[0].checked == true) {
+        //    //    chkICD2 = '2';
+        //    //}
+        //    //if (chkICDContainer.cells[3].children[0].checked == true) {
+        //    //    chkICD3 = '3';
+        //    //}
+        //    //if (chkICDContainer.cells[4].children[0].checked == true) {
+        //    //    chkICD4 = '4';
+        //    //}
+        //    //if (chkICDContainer.cells[5].children[0].checked == true) {
+        //    //    chkICD5 = '5';
+        //    //}
+        //    //if (chkICDContainer.cells[6].children[0].checked == true) {
+        //    //    chkICD6 = '6';
+        //    //}
+        //    var sSequence = chkICDContainer.cells[1].innerText.trim();
+        //    var sICDCode = chkICDContainer.cells[2].innerText.trim();
+        //    var sICDDesc = chkICDContainer.cells[3].innerText.trim();
+        //    var Source = "ASSESSMENT";
+        //    if (sessionStorage.getItem("Is_CMG_Ancillary") != null && sessionStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {//BugID:52857
+        //        Source = "ORDERS_ASSESSMENT";
+        //    }
+        //    // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
+        //    aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[4].innerText.trim() + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + Source + "~" + sSequence);
+            //arrlstAssICD.push(sICDCode);
+       // }
 
         for (var jICD = 1; jICD < $('#tblEandMCodingICD tr').length; jICD++) {
             var chkICDContainer = $('#tblEandMCodingICD tr')[jICD];
@@ -2820,19 +2820,29 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             //}
             //if (chkICDContainer.cells[7].children[0].checked == true) {
             //    chkICD6 = '6';
-            //}
+            //}3
             var sSequence = chkICDContainer.cells[2].innerText.trim();
             var sICDCode = chkICDContainer.cells[3].innerText.trim();
             var sICDDesc = chkICDContainer.cells[4].innerText.trim();
+            var dupicd = false;
+            var icddup = '';
             // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
             aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + chkICDContainer.cells[6].innerText.trim() + "~" + "EMICD" + "~" + sSequence);
 
-            if (arrlstAssICD.indexOf(sICDCode) != -1) {
-                DisplayErrorMessage('530021', "", "'" + sICDCode + "'");
+            if (arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole == "MEDICAL ASSISTANT" || UserRole == "CODER")) {
+               // DisplayErrorMessage('530021', "", "'" + sICDCode + "'");
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
-                return;
+                
+
+                if (!alert('ICD' + sICDCode +  'has already been added under Assessment ICDs.Please remove it ')) {
+                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                        return;
+                    }
+
             }
+           
 
 
         }
@@ -2880,6 +2890,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
 
             }
+          
             if (test.IsBillableNo == "180045") {
 
 

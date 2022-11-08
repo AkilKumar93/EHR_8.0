@@ -780,7 +780,7 @@ namespace Acurus.Capella.UI
         Updated = "N",
         Orig_Status = assessment.Assessment_Status,
         ICDid = subICD?.Id ?? Convert.ToUInt64(0),
-        Sequence = subICD?.Sequence.ToString() ?? string.Empty,
+        Sequence = subICD?.Sequence.ToString() ??"0",
         EidVersion = subICD?.Version ?? Convert.ToInt32(0)
     };
 
@@ -807,7 +807,7 @@ namespace Acurus.Capella.UI
                     Updated = "Y",
                     Orig_Status = a.StatusSelected,
                     ICDid = Convert.ToUInt64(0),
-                    Sequence = string.Empty,
+                    Sequence = "0",
                     EidVersion = Convert.ToInt32(0)
                 });
 
@@ -955,33 +955,33 @@ namespace Acurus.Capella.UI
 
             string sLocalTime = string.Empty;
             int seq = 1;
-            foreach (object[] oj in name)
-            {
-                if (oj.Count() == 0)
-                {
-                    continue;
-                }
-                if (Convert.ToBoolean(oj[1]) && oj[0].ToString().Trim() != "Del")
-                {
-                    oj[23] = "A" + seq.ToString();
-                    seq++;
-                    break;
+            //foreach (object[] oj in name)
+            //{
+            //    if (oj.Count() == 0)
+            //    {
+            //        continue;
+            //    }
+            //    if (Convert.ToBoolean(oj[1]) && oj[0].ToString().Trim() != "Del")
+            //    {
+            //        oj[23] = "A" + seq.ToString();
+            //        seq++;
+            //        break;
 
-                }
-            }
-            foreach (object[] oj in name)
-            {
-                if (oj.Count() == 0)
-                {
-                    continue;
-                }
-                if (!Convert.ToBoolean(oj[1]) && oj[0].ToString().Trim() != "Del")
-                {
-                    oj[23] = "A" + seq.ToString();
-                    seq++;
-
-                }
-            }
+            //    }
+            //}
+            //foreach (object[] oj in name)
+            //{
+            //    if (oj.Count() == 0)
+            //    {
+            //        continue;
+            //    }
+            //    if (!Convert.ToBoolean(oj[1]) && oj[0].ToString().Trim() != "Del")
+            //    {
+            //        oj[23] = "A" + seq.ToString();
+            //        seq++;
+            
+            //    }
+            //}
             foreach (object[] oj in name)
             {
                 if (oj.Count() == 0)
@@ -1676,7 +1676,7 @@ namespace Acurus.Capella.UI
        Updated = "N",
        Orig_Status = assessment.Assessment_Status,
        ICDid = subICD?.Id ?? Convert.ToUInt64(0),
-       Sequence = subICD?.Sequence.ToString() ?? string.Empty,
+       Sequence = subICD?.Sequence.ToString() ??"0",
        EidVersion = subICD?.Version ?? Convert.ToInt32(0)
    };
             //var ListAssessment = assessmentLoadList.Assessment.Select(a => new { ICDCode = a.ICD, ICDDescription = a.ICD_Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.Internal_Property_ProblemListID, Notes = a.Assessment_Notes, AssessmentID = a.Id, iVersion = a.Version, iProblemListVersion = a.Internal_Property_ProblemListVersion,
