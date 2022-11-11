@@ -1369,6 +1369,7 @@ namespace Acurus.Capella.UI.WebServices
                             EncRecordEsuperBill.Local_Time = UtilityManager.ConvertToLocal(EncRecordEsuperBill.Date_of_Service).ToString("yyyy-MM-dd hh:mm:ss tt");
                             IList<Encounter> EncUpdateList = new List<Encounter>();
                             EncRecordEsuperBill.Is_EandM_Submitted = "Y";
+                            EncRecordEsuperBill.E_M_Submitted_Date_And_Time = DateTime.Now;
                             //EncRecord.Batch_Status = "MODIFIED";//Commented by naveena For Submitting esuper bill second time
                             if (EncRecordEsuperBill.Is_EandM_Submitted == "Y")
                             {
@@ -1390,6 +1391,7 @@ namespace Acurus.Capella.UI.WebServices
                         EncRecordEsuperBill = ClientSession.FillEncounterandWFObject.EncRecord;
                         IList<Encounter> EncUpdateList = new List<Encounter>();
                         EncRecordEsuperBill.Is_EandM_Submitted = "Y";
+                        EncRecordEsuperBill.E_M_Submitted_Date_And_Time = DateTime.Now;
                         //EncRecord.Batch_Status = "MODIFIED";//Commented by naveena For Submitting esuper bill second time
                         if (EncRecordEsuperBill.Is_EandM_Submitted == "Y")
                         {
@@ -1453,6 +1455,7 @@ namespace Acurus.Capella.UI.WebServices
                         EncRecord.Local_Time = UtilityManager.ConvertToLocal(EncRecord.Date_of_Service).ToString("yyyy-MM-dd hh:mm:ss tt");
                         IList<Encounter> EncUpdateList = new List<Encounter>();
                         EncRecord.Is_EandM_Submitted = "Y";
+                        EncRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
                         //EncRecord.Batch_Status = "MODIFIED";//Commented by naveena For Submitting esuper bill second time
                         if (EncRecord.Is_EandM_Submitted == "Y")
                         {
@@ -1474,6 +1477,7 @@ namespace Acurus.Capella.UI.WebServices
                     EncRecord = ClientSession.FillEncounterandWFObject.EncRecord;
                     IList<Encounter> EncUpdateList = new List<Encounter>();
                     EncRecord.Is_EandM_Submitted = "Y";
+                    EncRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
                     //EncRecord.Batch_Status = "MODIFIED";//Commented by naveena For Submitting esuper bill second time
                     if (EncRecord.Is_EandM_Submitted == "Y")
                     {

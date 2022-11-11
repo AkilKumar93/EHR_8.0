@@ -124,6 +124,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Is_After_Studies = "N";
         private string _Is_Self_Referred = "N";
         private string _Assigned_Scribe_User_Name = string.Empty;
+        private DateTime _E_M_Submitted_Date_And_Time = DateTime.MinValue;
         #endregion
 
         #region Constructors
@@ -240,6 +241,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Is_After_Studies);
             sb.Append(_Is_Self_Referred);
             sb.Append(_Assigned_Scribe_User_Name);
+            sb.Append(_E_M_Submitted_Date_And_Time);
             
             return sb.ToString().GetHashCode();
         }
@@ -1357,7 +1359,17 @@ namespace Acurus.Capella.Core.DomainObjects
                 _Is_Self_Referred = value;
             }
         }
-         }
+
+        [DataMember]
+        public virtual DateTime E_M_Submitted_Date_And_Time
+        {
+            get { return _E_M_Submitted_Date_And_Time; }
+            set
+            {
+                _E_M_Submitted_Date_And_Time = value;
+            }
+        }
+    }
 
 
         #endregion

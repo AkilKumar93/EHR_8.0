@@ -2201,6 +2201,7 @@ namespace Acurus.Capella.UI
             //StaticLookup objStatics = null;
             ListItem liDropdown = null;
             IList<string> PhyASStIDlist = new List<string>();
+            IList<string> PhyIDlist = new List<string>();
             Dictionary<string,string> hashUser = new Dictionary<string, string>();
 
             int i = 0;
@@ -2208,183 +2209,272 @@ namespace Acurus.Capella.UI
             foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList").Elements())
             {
                 PhyASStIDlist.Add(elements.Attribute("ID").Value);
-                i++;
+                if (elements.Attribute("ID").Value.ToString() == ClientSession.PhysicianId.ToString())
+                {
+                    PhyIDlist.Add(elements.Attribute("Physician_ID").Value);
+                    i++;
+                }
             }
 
+            
+
             IList<ListItem> liComboItems = new List<ListItem>();
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            //if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+            //{
+            //    for (int iCount=0;iCount<PhyASStIDlist.Count;iCount++)
+            //    {
+            //        if (PhyASStIDlist[iCount].ToString() == ClientSession.PhysicianId.ToString() && sFacility_Name != string.Empty)
+            //        {
+            //            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            //            {
+            //                string xmlValue = elements.Attribute("name").Value;
+            //                if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+            //                {
+            //                    foreach (XElement phyItems in elements.Elements())
+            //                    {
+            //                        string phyName = string.Empty;
+            //                        string username = string.Empty;
+            //                        string prefix = string.Empty;
+            //                        string firstname = string.Empty;
+            //                        string middlename = string.Empty;
+            //                        string lastname = string.Empty;
+            //                        string suffix = string.Empty;
+            //                        string phyID = string.Empty;
+
+            //                        if (phyItems.Attribute("username").Value != null)
+            //                            username = phyItems.Attribute("username").Value;
+            //                        if (phyItems.Attribute("prefix").Value != null)
+            //                            prefix = phyItems.Attribute("prefix").Value;
+            //                        if (phyItems.Attribute("firstname").Value != null)
+            //                            firstname = phyItems.Attribute("firstname").Value;
+            //                        if (phyItems.Attribute("middlename").Value != null)
+            //                            middlename = phyItems.Attribute("middlename").Value;
+            //                        if (phyItems.Attribute("lastname").Value != null)
+            //                            lastname = phyItems.Attribute("lastname").Value;
+            //                        if (phyItems.Attribute("suffix").Value != null)
+            //                            suffix = phyItems.Attribute("suffix").Value;
+            //                        if (phyItems.Attribute("ID").Value != null)
+            //                            phyID = phyItems.Attribute("ID").Value;
+
+            //                        //Gitlab# 2485 - Physician Name Display Change
+            //                        if (lastname != String.Empty)
+            //                            phyName += lastname;
+            //                        if (firstname != String.Empty)
+            //                        {
+            //                            if (phyName != String.Empty)
+            //                                phyName += "," + firstname;
+            //                            else
+            //                                phyName += firstname;
+            //                        }
+            //                        if (middlename != String.Empty)
+            //                            phyName += " " + middlename;
+            //                        if (suffix != String.Empty)
+            //                            phyName += "," + suffix;
+
+            //                        if (username != string.Empty && hashUser.ContainsKey(phyID) == false && phyID == PhyIDlist[iCount])
+            //                        {
+            //                            //Old Code
+            //                            //liDropdown = new ListItem(username + " - " + phyName, phyID);
+            //                            //Gitlab# 2485 - Physician Name Display Change
+            //                            hashUser.Add(phyID.ToString(), username);
+            //                            liDropdown = new ListItem(phyName, phyID);
+            //                            liDropdown.Attributes.Add("FacilityName", ClientSession.FacilityName); // xmlValue);
+            //                            liDropdown.Attributes.Add("default", "true");
+            //                            liDropdown.Attributes.CssStyle.Add("display", "");
+            //                            liComboItems.Add(liDropdown);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //else
             {
-                string xmlValue = elements.Attribute("name").Value;
-                // if (xmlValue != string.Empty && xmlValue.ToUpper() == ClientSession.FacilityName.ToUpper())
-                if (elements.Attribute("Legal_Org") != null && xmlValue != string.Empty && sFacility_Name != "" && xmlValue.ToUpper() == sFacility_Name.ToUpper() && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+                foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
                 {
-                    foreach (XElement phyItems in elements.Elements())
+                    string xmlValue = elements.Attribute("name").Value;
+                    // if (xmlValue != string.Empty && xmlValue.ToUpper() == ClientSession.FacilityName.ToUpper())
+                    if (elements.Attribute("Legal_Org") != null && xmlValue != string.Empty && sFacility_Name != "" && xmlValue.ToUpper() == sFacility_Name.ToUpper() && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
                     {
-                        string phyName = string.Empty;
-                        string username = string.Empty;
-                        string prefix = string.Empty;
-                        string firstname = string.Empty;
-                        string middlename = string.Empty;
-                        string lastname = string.Empty;
-                        string suffix = string.Empty;
-                        string phyID = string.Empty;
+                        foreach (XElement phyItems in elements.Elements())
+                        {
+                            string phyName = string.Empty;
+                            string username = string.Empty;
+                            string prefix = string.Empty;
+                            string firstname = string.Empty;
+                            string middlename = string.Empty;
+                            string lastname = string.Empty;
+                            string suffix = string.Empty;
+                            string phyID = string.Empty;
 
-                        if (phyItems.Attribute("username").Value != null)
-                            username = phyItems.Attribute("username").Value;
-                        if (phyItems.Attribute("prefix").Value != null)
-                            prefix = phyItems.Attribute("prefix").Value;
-                        if (phyItems.Attribute("firstname").Value != null)
-                            firstname = phyItems.Attribute("firstname").Value;
-                        if (phyItems.Attribute("middlename").Value != null)
-                            middlename = phyItems.Attribute("middlename").Value;
-                        if (phyItems.Attribute("lastname").Value != null)
-                            lastname = phyItems.Attribute("lastname").Value;
-                        if (phyItems.Attribute("suffix").Value != null)
-                            suffix = phyItems.Attribute("suffix").Value;
-                        if (phyItems.Attribute("ID").Value != null)
-                            phyID = phyItems.Attribute("ID").Value;
+                            if (phyItems.Attribute("username").Value != null)
+                                username = phyItems.Attribute("username").Value;
+                            if (phyItems.Attribute("prefix").Value != null)
+                                prefix = phyItems.Attribute("prefix").Value;
+                            if (phyItems.Attribute("firstname").Value != null)
+                                firstname = phyItems.Attribute("firstname").Value;
+                            if (phyItems.Attribute("middlename").Value != null)
+                                middlename = phyItems.Attribute("middlename").Value;
+                            if (phyItems.Attribute("lastname").Value != null)
+                                lastname = phyItems.Attribute("lastname").Value;
+                            if (phyItems.Attribute("suffix").Value != null)
+                                suffix = phyItems.Attribute("suffix").Value;
+                            if (phyItems.Attribute("ID").Value != null)
+                                phyID = phyItems.Attribute("ID").Value;
 
-                        //old code
-                        //if (prefix != "")
-                        //{
-                        //    phyName += prefix + " ";
-                        //}
-                        //if (firstname != "")
-                        //{
-                        //    phyName += firstname + " ";
-                        //}
-                        //if (middlename != "")
-                        //{
-                        //    phyName += middlename + " ";
-                        //}
-                        //if (lastname != "")
-                        //{
-                        //    phyName += lastname + " ";
-                        //}
-                        //if (suffix != "")
-                        //{
-                        //    phyName += suffix;
-                        //}
-                        //Gitlab# 2485 - Physician Name Display Change
-                        if (lastname != String.Empty)
-                            phyName += lastname;
-                        if (firstname != String.Empty)
-                        {
-                            if (phyName != String.Empty)
-                                phyName += "," + firstname;
-                            else
-                                phyName += firstname;
-                        }
-                        if (middlename != String.Empty)
-                            phyName += " " + middlename;
-                        if (suffix != String.Empty)
-                            phyName += "," + suffix;
-                        if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
+                            //old code
+                            //if (prefix != "")
+                            //{
+                            //    phyName += prefix + " ";
+                            //}
+                            //if (firstname != "")
+                            //{
+                            //    phyName += firstname + " ";
+                            //}
+                            //if (middlename != "")
+                            //{
+                            //    phyName += middlename + " ";
+                            //}
+                            //if (lastname != "")
+                            //{
+                            //    phyName += lastname + " ";
+                            //}
+                            //if (suffix != "")
+                            //{
+                            //    phyName += suffix;
+                            //}
+                            //Gitlab# 2485 - Physician Name Display Change
+                            if (lastname != String.Empty)
+                                phyName += lastname;
+                            if (firstname != String.Empty)
                             {
-                                //Old Code
-                                //liDropdown = new ListItem(username + " - " + phyName, phyID);
-                                //Gitlab# 2485 - Physician Name Display Change
-                                hashUser.Add(phyID.ToString(), username);
-                                liDropdown = new ListItem(phyName, phyID);
-                                liDropdown.Attributes.Add("FacilityName", xmlValue);
-                                liDropdown.Attributes.Add("default", "true");
-                                liDropdown.Attributes.CssStyle.Add("display", "");
-                                liComboItems.Add(liDropdown);
+                                if (phyName != String.Empty)
+                                    phyName += "," + firstname;
+                                else
+                                    phyName += firstname;
+                            }
+                            if (middlename != String.Empty)
+                                phyName += " " + middlename;
+                            if (suffix != String.Empty)
+                                phyName += "," + suffix;
+                            if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
+                                {
+                                    if (PhyIDlist.Contains(phyID) && username != string.Empty && hashUser.ContainsKey(phyID) == false)
+                                    {
+                                        hashUser.Add(phyID.ToString(), username);
+                                        liDropdown = new ListItem(phyName, phyID);
+                                        liDropdown.Attributes.Add("FacilityName", xmlValue);
+                                        liDropdown.Attributes.Add("default", "true");
+                                        liDropdown.Attributes.CssStyle.Add("display", "");
+                                        liComboItems.Add(liDropdown);
+                                    }
+                                }
+                                else if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
+                                {
+                                    //Old Code
+                                    //liDropdown = new ListItem(username + " - " + phyName, phyID);
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    hashUser.Add(phyID.ToString(), username);
+                                    liDropdown = new ListItem(phyName, phyID);
+                                    liDropdown.Attributes.Add("FacilityName", xmlValue);
+                                    liDropdown.Attributes.Add("default", "true");
+                                    liDropdown.Attributes.CssStyle.Add("display", "");
+                                    liComboItems.Add(liDropdown);
+                                }
                             }
                         }
-
                     }
-
-                }
-                else if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
-                {
-                    foreach (XElement phyItems in elements.Elements())
+                    else if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
                     {
-                        string phyName = string.Empty;
-                        string username = string.Empty;
-                        string prefix = string.Empty;
-                        string firstname = string.Empty;
-                        string middlename = string.Empty;
-                        string lastname = string.Empty;
-                        string suffix = string.Empty;
-                        string phyID = string.Empty;
+                        foreach (XElement phyItems in elements.Elements())
+                        {
+                            string phyName = string.Empty;
+                            string username = string.Empty;
+                            string prefix = string.Empty;
+                            string firstname = string.Empty;
+                            string middlename = string.Empty;
+                            string lastname = string.Empty;
+                            string suffix = string.Empty;
+                            string phyID = string.Empty;
 
-                        if (phyItems.Attribute("username").Value != null)
-                            username = phyItems.Attribute("username").Value;
-                        if (phyItems.Attribute("prefix").Value != null)
-                            prefix = phyItems.Attribute("prefix").Value;
-                        if (phyItems.Attribute("firstname").Value != null)
-                            firstname = phyItems.Attribute("firstname").Value;
-                        if (phyItems.Attribute("middlename").Value != null)
-                            middlename = phyItems.Attribute("middlename").Value;
-                        if (phyItems.Attribute("lastname").Value != null)
-                            lastname = phyItems.Attribute("lastname").Value;
-                        if (phyItems.Attribute("suffix").Value != null)
-                            suffix = phyItems.Attribute("suffix").Value;
-                        if (phyItems.Attribute("ID").Value != null)
-                            phyID = phyItems.Attribute("ID").Value;
+                            if (phyItems.Attribute("username").Value != null)
+                                username = phyItems.Attribute("username").Value;
+                            if (phyItems.Attribute("prefix").Value != null)
+                                prefix = phyItems.Attribute("prefix").Value;
+                            if (phyItems.Attribute("firstname").Value != null)
+                                firstname = phyItems.Attribute("firstname").Value;
+                            if (phyItems.Attribute("middlename").Value != null)
+                                middlename = phyItems.Attribute("middlename").Value;
+                            if (phyItems.Attribute("lastname").Value != null)
+                                lastname = phyItems.Attribute("lastname").Value;
+                            if (phyItems.Attribute("suffix").Value != null)
+                                suffix = phyItems.Attribute("suffix").Value;
+                            if (phyItems.Attribute("ID").Value != null)
+                                phyID = phyItems.Attribute("ID").Value;
 
-                        //old code
-                        //if (prefix != "")
-                        //{
-                        //    phyName += prefix + " ";
-                        //}
-                        //if (firstname != "")
-                        //{
-                        //    phyName += firstname + " ";
-                        //}
-                        //if (middlename != "")
-                        //{
-                        //    phyName += middlename + " ";
-                        //}
-                        //if (lastname != "")
-                        //{
-                        //    phyName += lastname + " ";
-                        //}
-                        //if (suffix != "")
-                        //{
-                        //    phyName += suffix;
-                        //}
-                        //Gitlab# 2485 - Physician Name Display Change
-                        if (lastname != String.Empty)
-                            phyName += lastname;
-                        if (firstname != String.Empty)
-                        {
-                            if (phyName != String.Empty)
-                                phyName += "," + firstname;
-                            else
-                                phyName += firstname;
-                        }
-                        if (middlename != String.Empty)
-                            phyName += " " + middlename;
-                        if (suffix != String.Empty)
-                            phyName += "," + suffix;
-                        if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            if (username != string.Empty && hashUser.ContainsKey(phyID)==false)
+                            //old code
+                            //if (prefix != "")
+                            //{
+                            //    phyName += prefix + " ";
+                            //}
+                            //if (firstname != "")
+                            //{
+                            //    phyName += firstname + " ";
+                            //}
+                            //if (middlename != "")
+                            //{
+                            //    phyName += middlename + " ";
+                            //}
+                            //if (lastname != "")
+                            //{
+                            //    phyName += lastname + " ";
+                            //}
+                            //if (suffix != "")
+                            //{
+                            //    phyName += suffix;
+                            //}
+                            //Gitlab# 2485 - Physician Name Display Change
+                            if (lastname != String.Empty)
+                                phyName += lastname;
+                            if (firstname != String.Empty)
                             {
-                                //Old Code
-                                //liDropdown = new ListItem(username + " - " + phyName, phyID);
-                                //Gitlab# 2485 - Physician Name Display Change
-                                hashUser.Add(phyID.ToString(), username);
-                                liDropdown = new ListItem(phyName, phyID);
-                                liDropdown.Attributes.Add("default", "false");
-                                liDropdown.Attributes.Add("FacilityName", xmlValue);
-                                liDropdown.Attributes.CssStyle.Add("display", "none");
-                                liComboItems.Add(liDropdown);
+                                if (phyName != String.Empty)
+                                    phyName += "," + firstname;
+                                else
+                                    phyName += firstname;
                             }
-                        }
+                            if (middlename != String.Empty)
+                                phyName += " " + middlename;
+                            if (suffix != String.Empty)
+                                phyName += "," + suffix;
+                            if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && (PhyASStIDlist.Contains(phyID)))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
+                                {
+                                    //Old Code
+                                    //liDropdown = new ListItem(username + " - " + phyName, phyID);
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    hashUser.Add(phyID.ToString(), username);
+                                    liDropdown = new ListItem(phyName, phyID);
+                                    liDropdown.Attributes.Add("default", "false");
+                                    liDropdown.Attributes.Add("FacilityName", xmlValue);
+                                    liDropdown.Attributes.CssStyle.Add("display", "none");
+                                    liComboItems.Add(liDropdown);
+                                }
+                            }
 
+                        }
                     }
                 }
             }

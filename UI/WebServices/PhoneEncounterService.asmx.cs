@@ -562,6 +562,7 @@ namespace Acurus.Capella.UI.WebServices
             }
             EncRecord.Local_Time = UtilityManager.ConvertToLocal(EncRecord.Date_of_Service).ToString("yyyy-MM-dd hh:mm:ss tt");
             EncRecord.Is_EandM_Submitted = "Y";
+            EncRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
 
             //if (EncRecord.Is_EandM_Submitted == "Y")//By naveena For Submitting esuper bill second time
             //{

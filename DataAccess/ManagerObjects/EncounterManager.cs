@@ -8927,6 +8927,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (EncounterWfObject != null && EncounterWfObject.Current_Process.ToUpper() == "MA_PROCESS")
                 {
                     encounterRecord.Is_EandM_Submitted = "Y";
+                    encounterRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
                     lstencountertemp = UpdateEncounter(encounterRecord, sMacAddress, new object[] { "false" });
                     if (lstencountertemp.Count > 0)
                         encounterRecord = lstencountertemp[0];
@@ -9019,6 +9020,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     wfObjMngr.MoveToNextProcess(EncounterWfObject.Obj_System_Id, EncounterWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
 
                     encounterRecord.Is_EandM_Submitted = "Y";
+                    encounterRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
                     //Added by Janani to update Follow up details in encounter
                     lstencountertemp = UpdateEncounter(encounterRecord, sMacAddress, new object[] { "false" });
                     if (lstencountertemp.Count > 0)
@@ -10472,6 +10474,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //Commented out as Is_EandM_Submitted should always be "Y" whenever PhyAssistant moves the encounter to next Process
                             //if (!bMovetoReview)//if the encounter is moved to PROVIDER for PROVIDER_REVIEW -- do not set e_m_submitted to "Y", to prevent batch creation when Documentation object is in correction/review cycle.
                             objEncounter.Is_EandM_Submitted = "Y";
+                            objEncounter.E_M_Submitted_Date_And_Time = DateTime.Now;
                             if (bMovetoReview == true)
                                 objEncounter.Encounter_Provider_Review_ID = Convert.ToInt32(ulSelectedPhyID);
                             else
@@ -15840,6 +15843,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (UserRole.Trim().ToUpper() == "TECHNICIAN" && userCurrentProcess.ToUpper() == "TECHNICIAN_PROCESS")//BugID:53885 -- Added for CMG LAB AND ANCILLARY-- When moved to Coder EandMSubmitted is set to 'Y'
                 {
                     EncRecord.Is_EandM_Submitted = "Y";
+                    EncRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
                 }
                 EncRecord.Is_PFSH_Verified = "Y";
                 EncRecord.Source_Of_Information = "Self";
