@@ -20,7 +20,10 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Modified_By = string.Empty;
         private DateTime _Created_Date_And_Time = DateTime.MinValue;
         private DateTime _Modified_Date_And_Time = DateTime.MinValue;
-       
+        private string _Result_ID = string.Empty;
+        private string _Client_ID = string.Empty;
+        private string _Search_Info = string.Empty;
+
         #endregion
         #region Constructors
 
@@ -45,6 +48,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Modified_By);
             sb.Append(_Created_Date_And_Time );
             sb.Append(_Modified_Date_And_Time);
+            sb.Append(_Result_ID);
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -146,6 +150,33 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _Modified_Date_And_Time = value;
+            }
+        }
+
+        public virtual string Result_ID
+        {
+            get { return _Result_ID; }
+            set
+            {
+                _Result_ID = value;
+            }
+        }
+
+        public virtual string Client_ID
+        {
+            get { return _Client_ID; }
+            set
+            {
+                _Client_ID = value;
+            }
+        }
+
+        public virtual string Search_Info
+        {
+            get { return _Search_Info; }
+            set
+            {
+                _Search_Info = value;
             }
         }
         #endregion
