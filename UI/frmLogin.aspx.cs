@@ -740,7 +740,7 @@ namespace Acurus.Capella.UI
         {
             UtilityManager.inserttologgingtableforSessionTimeout("LandingintoEHR API - Start - input is - " + sUserName, Request.Url.ToString(), string.Empty);
 
-            ClientSession.UserName = sUserName.ToUpper();
+            ClientSession.UserName = sUserName.Trim().ToUpper();
             ClientSession.FacilityName = sFacilityName;
             ClientSession.LocalOffSetTime = hdnLocalTime;
             ClientSession.LocalDate = hdnLocalDate;
