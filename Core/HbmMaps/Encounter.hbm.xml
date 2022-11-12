@@ -115,6 +115,6 @@
     <property name="Is_Self_Referred" column="Is_Self_Referred" />
     <property name="Assigned_Scribe_User_Name" column="Assigned_Scribe_User_Name" />
 
-	<!--<property name="E_M_Submitted_Date_And_Time" column="E_M_Submitted_Date_And_Time" />-->
+	<property name="E_M_Submitted_Date_And_Time" column="E_M_Submitted_Date_And_Time" />
   </class>
 </hibernate-mapping>
