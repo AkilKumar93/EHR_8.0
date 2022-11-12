@@ -2460,7 +2460,18 @@ namespace Acurus.Capella.UI
                             }
                             else
                             {
-                                if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
+                                if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && PhyIDlist.Contains(phyID) && username != string.Empty && hashUser.ContainsKey(phyID) == false)
+                                {                                   
+                                        continue;
+                                        //hashUser.Add(phyID.ToString(), username);
+                                        //liDropdown = new ListItem(phyName, phyID);
+                                        //liDropdown.Attributes.Add("FacilityName", xmlValue);
+                                        //liDropdown.Attributes.Add("default", "true");
+                                        //liDropdown.Attributes.CssStyle.Add("display", "");
+                                        //liComboItems.Add(liDropdown);
+                                   
+                                }
+                                 else if (username != string.Empty && hashUser.ContainsKey(phyID) == false)
                                 {
                                     //Old Code
                                     //liDropdown = new ListItem(username + " - " + phyName, phyID);
