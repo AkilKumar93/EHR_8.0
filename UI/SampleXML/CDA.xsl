@@ -35,10 +35,6 @@
          </xsl:otherwise>
       </xsl:choose>
    </xsl:variable>
-   <xsl:variable name="prelang">
-        <xsl:text>preferredlang</xsl:text>
-        <xsl:text>.xml</xsl:text>
-    </xsl:variable>   
    <!-- Main -->
    <xsl:template match="/">
       <xsl:apply-templates select="n1:ClinicalDocument"/>
@@ -169,6 +165,7 @@
           </span>
         </td>
         <td width="80%">
+          <!--<xsl:text>English</xsl:text>-->
 		<xsl:choose>
             <xsl:when test="n1:languageCode/@code  = &apos;en-US&apos;">
               <xsl:text>English</xsl:text>
@@ -247,18 +244,575 @@
             </xsl:when>
             <xsl:when test="n1:languageCode/@code  = &apos;vie&apos;">
               <xsl:text>Vietnamese</xsl:text>
-            </xsl:when>		
-		</xsl:choose>
-		<!--<xsl:text>English</xsl:text>-->
-		<xsl:for-each select="n1:languageCode">
-			<xsl:variable name="code" select="@code"/>
-			<xsl:for-each select="document($prelang)/rootTag/Language">
-				<xsl:if test="$code=@Description">
-					<xsl:value-of select="@Value"/>
-				</xsl:if>
-			</xsl:for-each>
-		</xsl:for-each>
-	</td>
+            </xsl:when>	
+			<xsl:when test="n1:languageCode/@code  = &apos;NA&apos;"><xsl:text>Declined to specify</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ab&apos;"><xsl:text>Abkhazian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ace&apos;"><xsl:text>Achinese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ach&apos;"><xsl:text>Acoli</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ada&apos;"><xsl:text>Adangme</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ady&apos;"><xsl:text>Adygei</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ady&apos;"><xsl:text>Adyghe</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;aa&apos;"><xsl:text>Afar</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;afh&apos;"><xsl:text>Afrihili</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;af&apos;"><xsl:text>Afrikaans</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;afa&apos;"><xsl:text>Afro-Asiatic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ain&apos;"><xsl:text>Ainu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ak&apos;"><xsl:text>Akan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;akk&apos;"><xsl:text>Akkadian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sq&apos;"><xsl:text>Albanian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gsw&apos;"><xsl:text>Alemannic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ale&apos;"><xsl:text>Aleut</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;alg&apos;"><xsl:text>Algonquian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gsw&apos;"><xsl:text>Alsatian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tut&apos;"><xsl:text>Altaic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;am&apos;"><xsl:text>Amharic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;anp&apos;"><xsl:text>Angika</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;apa&apos;"><xsl:text>Apache languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ar&apos;"><xsl:text>Arabic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;an&apos;"><xsl:text>Aragonese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;arp&apos;"><xsl:text>Arapaho</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;arw&apos;"><xsl:text>Arawak</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hy&apos;"><xsl:text>Armenian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rup&apos;"><xsl:text>Aromanian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;art&apos;"><xsl:text>Artificial languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rup&apos;"><xsl:text>Arumanian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;as&apos;"><xsl:text>Assamese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ast&apos;"><xsl:text>Asturian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ast&apos;"><xsl:text>Asturleonese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ath&apos;"><xsl:text>Athapascan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;aus&apos;"><xsl:text>Australian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;map&apos;"><xsl:text>Austronesian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;av&apos;"><xsl:text>Avaric</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ae&apos;"><xsl:text>Avestan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;awa&apos;"><xsl:text>Awadhi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ay&apos;"><xsl:text>Aymara</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;az&apos;"><xsl:text>Azerbaijani</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ast&apos;"><xsl:text>Bable</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ban&apos;"><xsl:text>Balinese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bat&apos;"><xsl:text>Baltic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bal&apos;"><xsl:text>Baluchi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bm&apos;"><xsl:text>Bambara</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bai&apos;"><xsl:text>Bamileke languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bad&apos;"><xsl:text>Banda languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bnt&apos;"><xsl:text>Bantu languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bas&apos;"><xsl:text>Basa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ba&apos;"><xsl:text>Bashkir</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;eu&apos;"><xsl:text>Basque</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;btk&apos;"><xsl:text>Batak languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bej&apos;"><xsl:text>Bedawiyet</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bej&apos;"><xsl:text>Beja</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;be&apos;"><xsl:text>Belarusian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bem&apos;"><xsl:text>Bemba</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bn&apos;"><xsl:text>Bengali</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ber&apos;"><xsl:text>Berber languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bho&apos;"><xsl:text>Bhojpuri</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bh&apos;"><xsl:text>Bihari languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bik&apos;"><xsl:text>Bikol</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;byn&apos;"><xsl:text>Bilin</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bin&apos;"><xsl:text>Bini</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bi&apos;"><xsl:text>Bislama</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;byn&apos;"><xsl:text>Blin</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zbl&apos;"><xsl:text>Bliss</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zbl&apos;"><xsl:text>Blissymbolics</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zbl&apos;"><xsl:text>Blissymbols</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nob&apos;"><xsl:text>Bokm&#x00E5;l, Norwegian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bs&apos;"><xsl:text>Bosnian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bra&apos;"><xsl:text>Braj</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;br&apos;"><xsl:text>Breton</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bug&apos;"><xsl:text>Buginese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bg&apos;"><xsl:text>Bulgarian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bua&apos;"><xsl:text>Buriat</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;my&apos;"><xsl:text>Burmese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cad&apos;"><xsl:text>Caddo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;es&apos;"><xsl:text>Castilian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ca&apos;"><xsl:text>Catalan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cau&apos;"><xsl:text>Caucasian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ceb&apos;"><xsl:text>Cebuano</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cel&apos;"><xsl:text>Celtic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cai&apos;"><xsl:text>Central American Indian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;km&apos;"><xsl:text>Central Khmer</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chg&apos;"><xsl:text>Chagatai</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cmc&apos;"><xsl:text>Chamic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ch&apos;"><xsl:text>Chamorro</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ce&apos;"><xsl:text>Chechen</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chr&apos;"><xsl:text>Cherokee</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ny&apos;"><xsl:text>Chewa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chy&apos;"><xsl:text>Cheyenne</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chb&apos;"><xsl:text>Chibcha</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ny&apos;"><xsl:text>Chichewa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zh&apos;"><xsl:text>Chinese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chn&apos;"><xsl:text>Chinook jargon</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chp&apos;"><xsl:text>Chipewyan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cho&apos;"><xsl:text>Choctaw</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;za&apos;"><xsl:text>Chuang</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cu&apos;"><xsl:text>Church Slavic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cu&apos;"><xsl:text>Church Slavonic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chk&apos;"><xsl:text>Chuukese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cv&apos;"><xsl:text>Chuvash</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nwc&apos;"><xsl:text>Classical Nepal Bhasa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nwc&apos;"><xsl:text>Classical Newari</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;syc&apos;"><xsl:text>Classical Syriac</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rar&apos;"><xsl:text>Cook Islands Maori</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cop&apos;"><xsl:text>Coptic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kw&apos;"><xsl:text>Cornish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;co&apos;"><xsl:text>Corsican</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cr&apos;"><xsl:text>Cree</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mus&apos;"><xsl:text>Creek</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;crp&apos;"><xsl:text>Creoles and pidgins</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cpe&apos;"><xsl:text>Creoles and pidgins, English based</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cpf&apos;"><xsl:text>Creoles and pidgins, French-based</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cpp&apos;"><xsl:text>Creoles and pidgins, Portuguese-based</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;crh&apos;"><xsl:text>Crimean Tatar</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;crh&apos;"><xsl:text>Crimean Turkish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hr&apos;"><xsl:text>Croatian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cus&apos;"><xsl:text>Cushitic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cs&apos;"><xsl:text>Czech</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dak&apos;"><xsl:text>Dakota</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;da&apos;"><xsl:text>Danish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dar&apos;"><xsl:text>Dargwa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;del&apos;"><xsl:text>Delaware</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chp&apos;"><xsl:text>Dene Suline</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dv&apos;"><xsl:text>Dhivehi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zza&apos;"><xsl:text>Dimili</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zza&apos;"><xsl:text>Dimli</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;din&apos;"><xsl:text>Dinka</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dv&apos;"><xsl:text>Divehi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;doi&apos;"><xsl:text>Dogri</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dgr&apos;"><xsl:text>Dogrib</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dra&apos;"><xsl:text>Dravidian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dua&apos;"><xsl:text>Duala</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nl&apos;"><xsl:text>Dutch</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dum&apos;"><xsl:text>Dutch, Middle (ca.1050-1350)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dyu&apos;"><xsl:text>Dyula</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dz&apos;"><xsl:text>Dzongkha</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;frs&apos;"><xsl:text>Eastern Frisian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bin&apos;"><xsl:text>Edo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;efi&apos;"><xsl:text>Efik</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;egy&apos;"><xsl:text>Egyptian (Ancient)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;eka&apos;"><xsl:text>Ekajuk</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;elx&apos;"><xsl:text>Elamite</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;en&apos;"><xsl:text>English</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;enm&apos;"><xsl:text>English, Middle (1100-1500)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ang&apos;"><xsl:text>English, Old (ca.450-1100)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;myv&apos;"><xsl:text>Erzya</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;eo&apos;"><xsl:text>Esperanto</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;et&apos;"><xsl:text>Estonian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ee&apos;"><xsl:text>Ewe</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ewo&apos;"><xsl:text>Ewondo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fan&apos;"><xsl:text>Fang</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fat&apos;"><xsl:text>Fanti</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fo&apos;"><xsl:text>Faroese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fj&apos;"><xsl:text>Fijian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fil&apos;"><xsl:text>Filipino</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fi&apos;"><xsl:text>Finnish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fiu&apos;"><xsl:text>Finno-Ugrian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nl&apos;"><xsl:text>Flemish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fon&apos;"><xsl:text>Fon</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fr&apos;"><xsl:text>French</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;frm&apos;"><xsl:text>French, Middle (ca.1400-1600)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fro&apos;"><xsl:text>French, Old (842-ca.1400)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fur&apos;"><xsl:text>Friulian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ff&apos;"><xsl:text>Fulah</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gaa&apos;"><xsl:text>Ga</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gd&apos;"><xsl:text>Gaelic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;car&apos;"><xsl:text>Galibi Carib</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gl&apos;"><xsl:text>Galician</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lg&apos;"><xsl:text>Ganda</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gay&apos;"><xsl:text>Gayo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gba&apos;"><xsl:text>Gbaya</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gez&apos;"><xsl:text>Geez</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ka&apos;"><xsl:text>Georgian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;de&apos;"><xsl:text>German</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nds&apos;"><xsl:text>German, Low</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gmh&apos;"><xsl:text>German, Middle High (ca.1050-1500)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;goh&apos;"><xsl:text>German, Old High (ca.750-1050)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gem&apos;"><xsl:text>Germanic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ki&apos;"><xsl:text>Gikuyu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gil&apos;"><xsl:text>Gilbertese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gon&apos;"><xsl:text>Gondi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gor&apos;"><xsl:text>Gorontalo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;got&apos;"><xsl:text>Gothic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;grb&apos;"><xsl:text>Grebo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;grc&apos;"><xsl:text>Greek, Ancient (to 1453)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;el&apos;"><xsl:text>Greek, Modern (1453-)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kl&apos;"><xsl:text>Greenlandic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gn&apos;"><xsl:text>Guarani</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gu&apos;"><xsl:text>Gujarati</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gwi&apos;"><xsl:text>Gwich&apos;in</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hai&apos;"><xsl:text>Haida</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ht&apos;"><xsl:text>Haitian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ht&apos;"><xsl:text>Haitian Creole</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ha&apos;"><xsl:text>Hausa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;haw&apos;"><xsl:text>Hawaiian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;he&apos;"><xsl:text>Hebrew</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hz&apos;"><xsl:text>Herero</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hil&apos;"><xsl:text>Hiligaynon</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;him&apos;"><xsl:text>Himachali languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hi&apos;"><xsl:text>Hindi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ho&apos;"><xsl:text>Hiri Motu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hit&apos;"><xsl:text>Hittite</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hmn&apos;"><xsl:text>Hmong</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hu&apos;"><xsl:text>Hungarian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hup&apos;"><xsl:text>Hupa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;iba&apos;"><xsl:text>Iban</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;is&apos;"><xsl:text>Icelandic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;io&apos;"><xsl:text>Ido</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ig&apos;"><xsl:text>Igbo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ijo&apos;"><xsl:text>Ijo languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ilo&apos;"><xsl:text>Iloko</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;arc&apos;"><xsl:text>Imperial Aramaic (700-300 BCE)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;smn&apos;"><xsl:text>Inari Sami</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;inc&apos;"><xsl:text>Indic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ine&apos;"><xsl:text>Indo-European languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;id&apos;"><xsl:text>Indonesian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;inh&apos;"><xsl:text>Ingush</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ia&apos;"><xsl:text>Interlingua (International Auxiliary Language Association)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ie&apos;"><xsl:text>Interlingue</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;iu&apos;"><xsl:text>Inuktitut</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ik&apos;"><xsl:text>Inupiaq</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ira&apos;"><xsl:text>Iranian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ga&apos;"><xsl:text>Irish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mga&apos;"><xsl:text>Irish, Middle (900-1200)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sga&apos;"><xsl:text>Irish, Old (to 900)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;iro&apos;"><xsl:text>Iroquoian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;it&apos;"><xsl:text>Italian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ja&apos;"><xsl:text>Japanese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;jv&apos;"><xsl:text>Javanese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kac&apos;"><xsl:text>Jingpho</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;jrb&apos;"><xsl:text>Judeo-Arabic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;jpr&apos;"><xsl:text>Judeo-Persian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kbd&apos;"><xsl:text>Kabardian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kab&apos;"><xsl:text>Kabyle</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kac&apos;"><xsl:text>Kachin</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kl&apos;"><xsl:text>Kalaallisut</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;xal&apos;"><xsl:text>Kalmyk</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kam&apos;"><xsl:text>Kamba</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kn&apos;"><xsl:text>Kannada</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kr&apos;"><xsl:text>Kanuri</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pam&apos;"><xsl:text>Kapampangan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kaa&apos;"><xsl:text>Kara-Kalpak</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;krc&apos;"><xsl:text>Karachay-Balkar</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;krl&apos;"><xsl:text>Karelian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kar&apos;"><xsl:text>Karen languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ks&apos;"><xsl:text>Kashmiri</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;csb&apos;"><xsl:text>Kashubian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kaw&apos;"><xsl:text>Kawi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kk&apos;"><xsl:text>Kazakh</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kha&apos;"><xsl:text>Khasi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;khi&apos;"><xsl:text>Khoisan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kho&apos;"><xsl:text>Khotanese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ki&apos;"><xsl:text>Kikuyu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kmb&apos;"><xsl:text>Kimbundu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rw&apos;"><xsl:text>Kinyarwanda</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zza&apos;"><xsl:text>Kirdki</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ky&apos;"><xsl:text>Kirghiz</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zza&apos;"><xsl:text>Kirmanjki</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tlh&apos;"><xsl:text>Klingon</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kv&apos;"><xsl:text>Komi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kg&apos;"><xsl:text>Kongo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kok&apos;"><xsl:text>Konkani</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ko&apos;"><xsl:text>Korean</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kos&apos;"><xsl:text>Kosraean</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kpe&apos;"><xsl:text>Kpelle</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kro&apos;"><xsl:text>Kru languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kj&apos;"><xsl:text>Kuanyama</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kum&apos;"><xsl:text>Kumyk</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ku&apos;"><xsl:text>Kurdish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kru&apos;"><xsl:text>Kurukh</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kut&apos;"><xsl:text>Kutenai</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kj&apos;"><xsl:text>Kwanyama</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ky&apos;"><xsl:text>Kyrgyz</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lad&apos;"><xsl:text>Ladino</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lah&apos;"><xsl:text>Lahnda</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lam&apos;"><xsl:text>Lamba</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;day&apos;"><xsl:text>Land Dayak languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lo&apos;"><xsl:text>Lao</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;la&apos;"><xsl:text>Latin</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lv&apos;"><xsl:text>Latvian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ast&apos;"><xsl:text>Leonese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lb&apos;"><xsl:text>Letzeburgesch</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lez&apos;"><xsl:text>Lezghian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;li&apos;"><xsl:text>Limburgan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;li&apos;"><xsl:text>Limburger</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;li&apos;"><xsl:text>Limburgish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ln&apos;"><xsl:text>Lingala</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lt&apos;"><xsl:text>Lithuanian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;jbo&apos;"><xsl:text>Lojban</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nds&apos;"><xsl:text>Low German</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nds&apos;"><xsl:text>Low Saxon</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dsb&apos;"><xsl:text>Lower Sorbian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;loz&apos;"><xsl:text>Lozi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lu&apos;"><xsl:text>Luba-Katanga</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lua&apos;"><xsl:text>Luba-Lulua</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lui&apos;"><xsl:text>Luiseno</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;smj&apos;"><xsl:text>Lule Sami</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lun&apos;"><xsl:text>Lunda</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;luo&apos;"><xsl:text>Luo (Kenya and Tanzania)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lus&apos;"><xsl:text>Lushai</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lb&apos;"><xsl:text>Luxembourgish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rup&apos;"><xsl:text>Macedo-Romanian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mk&apos;"><xsl:text>Macedonian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mad&apos;"><xsl:text>Madurese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mag&apos;"><xsl:text>Magahi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mai&apos;"><xsl:text>Maithili</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mak&apos;"><xsl:text>Makasar</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mg&apos;"><xsl:text>Malagasy</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ms&apos;"><xsl:text>Malay</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ml&apos;"><xsl:text>Malayalam</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;dv&apos;"><xsl:text>Maldivian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mt&apos;"><xsl:text>Maltese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mnc&apos;"><xsl:text>Manchu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mdr&apos;"><xsl:text>Mandar</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;man&apos;"><xsl:text>Mandingo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mni&apos;"><xsl:text>Manipuri</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mno&apos;"><xsl:text>Manobo languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gv&apos;"><xsl:text>Manx</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mi&apos;"><xsl:text>Maori</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;arn&apos;"><xsl:text>Mapuche</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;arn&apos;"><xsl:text>Mapudungun</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mr&apos;"><xsl:text>Marathi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;chm&apos;"><xsl:text>Mari</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mh&apos;"><xsl:text>Marshallese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mwr&apos;"><xsl:text>Marwari</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mas&apos;"><xsl:text>Masai</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;myn&apos;"><xsl:text>Mayan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;men&apos;"><xsl:text>Mende</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mic&apos;"><xsl:text>Mi&apos;kmaq</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mic&apos;"><xsl:text>Micmac</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;min&apos;"><xsl:text>Minangkabau</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mwl&apos;"><xsl:text>Mirandese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;moh&apos;"><xsl:text>Mohawk</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mdf&apos;"><xsl:text>Moksha</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ro&apos;"><xsl:text>Moldavian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ro&apos;"><xsl:text>Moldovan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mkh&apos;"><xsl:text>Mon-Khmer languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hmn&apos;"><xsl:text>Mong</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;lol&apos;"><xsl:text>Mongo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mn&apos;"><xsl:text>Mongolian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mos&apos;"><xsl:text>Mossi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mul&apos;"><xsl:text>Multiple languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mun&apos;"><xsl:text>Munda languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nqo&apos;"><xsl:text>N&apos;Ko</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nah&apos;"><xsl:text>Nahuatl languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;na&apos;"><xsl:text>Nauru</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nv&apos;"><xsl:text>Navaho</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nv&apos;"><xsl:text>Navajo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nd&apos;"><xsl:text>Ndebele, North</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nr&apos;"><xsl:text>Ndebele, South</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ng&apos;"><xsl:text>Ndonga</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nap&apos;"><xsl:text>Neapolitan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;new&apos;"><xsl:text>Nepal Bhasa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ne&apos;"><xsl:text>Nepali</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;new&apos;"><xsl:text>Newari</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nia&apos;"><xsl:text>Nias</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nic&apos;"><xsl:text>Niger-Kordofanian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ssa&apos;"><xsl:text>Nilo-Saharan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;niu&apos;"><xsl:text>Niuean</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zxx&apos;"><xsl:text>No linguistic content</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nog&apos;"><xsl:text>Nogai</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;non&apos;"><xsl:text>Norse, Old</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nai&apos;"><xsl:text>North American Indian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nd&apos;"><xsl:text>North Ndebele</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;frr&apos;"><xsl:text>Northern Frisian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;se&apos;"><xsl:text>Northern Sami</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nso&apos;"><xsl:text>Northern Sotho</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;no&apos;"><xsl:text>Norwegian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nob&apos;"><xsl:text>Norwegian Bokm&#x00E5;l</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nn&apos;"><xsl:text>Norwegian Nynorsk</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zxx&apos;"><xsl:text>Not applicable</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nub&apos;"><xsl:text>Nubian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ii&apos;"><xsl:text>Nuosu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nym&apos;"><xsl:text>Nyamwezi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ny&apos;"><xsl:text>Nyanja</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nyn&apos;"><xsl:text>Nyankole</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nn&apos;"><xsl:text>Nynorsk, Norwegian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nyo&apos;"><xsl:text>Nyoro</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nzi&apos;"><xsl:text>Nzima</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ie&apos;"><xsl:text>Occidental</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;oc&apos;"><xsl:text>Occitan (post 1500)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pro&apos;"><xsl:text>Occitan, Old (to 1500)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;arc&apos;"><xsl:text>Official Aramaic (700-300 BCE)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;xal&apos;"><xsl:text>Oirat</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;oj&apos;"><xsl:text>Ojibwa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cu&apos;"><xsl:text>Old Bulgarian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cu&apos;"><xsl:text>Old Church Slavonic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nwc&apos;"><xsl:text>Old Newari</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cu&apos;"><xsl:text>Old Slavonic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;or&apos;"><xsl:text>Oriya</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;om&apos;"><xsl:text>Oromo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;osa&apos;"><xsl:text>Osage</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;os&apos;"><xsl:text>Ossetian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;os&apos;"><xsl:text>Ossetic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;oto&apos;"><xsl:text>Otomian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pal&apos;"><xsl:text>Pahlavi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pau&apos;"><xsl:text>Palauan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pi&apos;"><xsl:text>Pali</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pam&apos;"><xsl:text>Pampanga</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pag&apos;"><xsl:text>Pangasinan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pa&apos;"><xsl:text>Panjabi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pap&apos;"><xsl:text>Papiamento</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;paa&apos;"><xsl:text>Papuan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ps&apos;"><xsl:text>Pashto</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nso&apos;"><xsl:text>Pedi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fa&apos;"><xsl:text>Persian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;peo&apos;"><xsl:text>Persian, Old (ca.600-400 B.C.)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;phi&apos;"><xsl:text>Philippine languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;phn&apos;"><xsl:text>Phoenician</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fil&apos;"><xsl:text>Pilipino</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pon&apos;"><xsl:text>Pohnpeian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pl&apos;"><xsl:text>Polish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pt&apos;"><xsl:text>Portuguese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pra&apos;"><xsl:text>Prakrit languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pro&apos;"><xsl:text>Proven&#x00E7;al, Old (to 1500)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;pa&apos;"><xsl:text>Punjabi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ps&apos;"><xsl:text>Pushto</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;qu&apos;"><xsl:text>Quechua</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;raj&apos;"><xsl:text>Rajasthani</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rap&apos;"><xsl:text>Rapanui</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rar&apos;"><xsl:text>Rarotongan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;qaa-qtz&apos;"><xsl:text>Reserved for local use</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;roa&apos;"><xsl:text>Romance languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ro&apos;"><xsl:text>Romanian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rm&apos;"><xsl:text>Romansh</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rom&apos;"><xsl:text>Romany</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;rn&apos;"><xsl:text>Rundi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ru&apos;"><xsl:text>Russian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;kho&apos;"><xsl:text>Sakan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sal&apos;"><xsl:text>Salishan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sam&apos;"><xsl:text>Samaritan Aramaic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;smi&apos;"><xsl:text>Sami languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sm&apos;"><xsl:text>Samoan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sad&apos;"><xsl:text>Sandawe</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sg&apos;"><xsl:text>Sango</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sa&apos;"><xsl:text>Sanskrit</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sat&apos;"><xsl:text>Santali</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sc&apos;"><xsl:text>Sardinian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sas&apos;"><xsl:text>Sasak</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nds&apos;"><xsl:text>Saxon, Low</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sco&apos;"><xsl:text>Scots</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gd&apos;"><xsl:text>Scottish Gaelic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sel&apos;"><xsl:text>Selkup</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sem&apos;"><xsl:text>Semitic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nso&apos;"><xsl:text>Sepedi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sr&apos;"><xsl:text>Serbian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;srr&apos;"><xsl:text>Serer</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;shn&apos;"><xsl:text>Shan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sn&apos;"><xsl:text>Shona</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ii&apos;"><xsl:text>Sichuan Yi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;scn&apos;"><xsl:text>Sicilian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sid&apos;"><xsl:text>Sidamo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sgn&apos;"><xsl:text>Sign Languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bla&apos;"><xsl:text>Siksika</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sd&apos;"><xsl:text>Sindhi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;si&apos;"><xsl:text>Sinhala</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;si&apos;"><xsl:text>Sinhalese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sit&apos;"><xsl:text>Sino-Tibetan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sio&apos;"><xsl:text>Siouan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sms&apos;"><xsl:text>Skolt Sami</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;den&apos;"><xsl:text>Slave (Athapascan)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sla&apos;"><xsl:text>Slavic languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sk&apos;"><xsl:text>Slovak</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sl&apos;"><xsl:text>Slovenian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sog&apos;"><xsl:text>Sogdian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;so&apos;"><xsl:text>Somali</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;son&apos;"><xsl:text>Songhai languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;snk&apos;"><xsl:text>Soninke</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;wen&apos;"><xsl:text>Sorbian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;NA&apos;"><xsl:text>Sotho, Northern</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;st&apos;"><xsl:text>Sotho, Southern</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sai&apos;"><xsl:text>South American Indian languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;nr&apos;"><xsl:text>South Ndebele</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;alt&apos;"><xsl:text>Southern Altai</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sma&apos;"><xsl:text>Southern Sami</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;es&apos;"><xsl:text>Spanish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;srn&apos;"><xsl:text>Sranan Tongo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zgh&apos;"><xsl:text>Standard Moroccan Tamazight</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;suk&apos;"><xsl:text>Sukuma</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sux&apos;"><xsl:text>Sumerian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;su&apos;"><xsl:text>Sundanese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sus&apos;"><xsl:text>Susu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sw&apos;"><xsl:text>Swahili</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ss&apos;"><xsl:text>Swati</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sv&apos;"><xsl:text>Swedish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;gsw&apos;"><xsl:text>Swiss German</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;syr&apos;"><xsl:text>Syriac</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tl&apos;"><xsl:text>Tagalog</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ty&apos;"><xsl:text>Tahitian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tai&apos;"><xsl:text>Tai languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tg&apos;"><xsl:text>Tajik</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tmh&apos;"><xsl:text>Tamashek</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ta&apos;"><xsl:text>Tamil</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tt&apos;"><xsl:text>Tatar</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;te&apos;"><xsl:text>Telugu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ter&apos;"><xsl:text>Tereno</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tet&apos;"><xsl:text>Tetum</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;th&apos;"><xsl:text>Thai</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;bo&apos;"><xsl:text>Tibetan</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tig&apos;"><xsl:text>Tigre</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ti&apos;"><xsl:text>Tigrinya</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tem&apos;"><xsl:text>Timne</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tiv&apos;"><xsl:text>Tiv</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tlh&apos;"><xsl:text>tlhIngan-Hol</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tli&apos;"><xsl:text>Tlingit</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tpi&apos;"><xsl:text>Tok Pisin</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tkl&apos;"><xsl:text>Tokelau</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tog&apos;"><xsl:text>Tonga (Nyasa)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;to&apos;"><xsl:text>Tonga (Tonga Islands)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tsi&apos;"><xsl:text>Tsimshian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ts&apos;"><xsl:text>Tsonga</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tn&apos;"><xsl:text>Tswana</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tum&apos;"><xsl:text>Tumbuka</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tup&apos;"><xsl:text>Tupi languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tr&apos;"><xsl:text>Turkish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ota&apos;"><xsl:text>Turkish, Ottoman (1500-1928)</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tk&apos;"><xsl:text>Turkmen</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tvl&apos;"><xsl:text>Tuvalu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tyv&apos;"><xsl:text>Tuvinian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;tw&apos;"><xsl:text>Twi</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;udm&apos;"><xsl:text>Udmurt</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;uga&apos;"><xsl:text>Ugaritic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ug&apos;"><xsl:text>Uighur</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;uk&apos;"><xsl:text>Ukrainian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;umb&apos;"><xsl:text>Umbundu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;mis&apos;"><xsl:text>Uncoded languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;und&apos;"><xsl:text>Undetermined</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;hsb&apos;"><xsl:text>Upper Sorbian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ur&apos;"><xsl:text>Urdu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ug&apos;"><xsl:text>Uyghur</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;uz&apos;"><xsl:text>Uzbek</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;vai&apos;"><xsl:text>Vai</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ca&apos;"><xsl:text>Valencian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ve&apos;"><xsl:text>Venda</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;vi&apos;"><xsl:text>Vietnamese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;vo&apos;"><xsl:text>Volap&#x00FC;k</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;vot&apos;"><xsl:text>Votic</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;wak&apos;"><xsl:text>Wakashan languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;wa&apos;"><xsl:text>Walloon</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;war&apos;"><xsl:text>Waray</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;was&apos;"><xsl:text>Washo</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;cy&apos;"><xsl:text>Welsh</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;fy&apos;"><xsl:text>Western Frisian</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;him&apos;"><xsl:text>Western Pahari languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;wal&apos;"><xsl:text>Wolaitta</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;wal&apos;"><xsl:text>Wolaytta</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;wo&apos;"><xsl:text>Wolof</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;xh&apos;"><xsl:text>Xhosa</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;sah&apos;"><xsl:text>Yakut</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;yao&apos;"><xsl:text>Yao</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;yap&apos;"><xsl:text>Yapese</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;yi&apos;"><xsl:text>Yiddish</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;yo&apos;"><xsl:text>Yoruba</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;ypk&apos;"><xsl:text>Yupik languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;znd&apos;"><xsl:text>Zande languages</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zap&apos;"><xsl:text>Zapotec</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zza&apos;"><xsl:text>Zaza</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zza&apos;"><xsl:text>Zazaki</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zen&apos;"><xsl:text>Zenaga</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;za&apos;"><xsl:text>Zhuang</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zu&apos;"><xsl:text>Zulu</xsl:text></xsl:when>
+			<xsl:when test="n1:languageCode/@code  = &apos;zun&apos;"><xsl:text>Zuni</xsl:text></xsl:when>
+		</xsl:choose>	
+        </td>
       </tbody>
     </table>
   </xsl:template>
@@ -1553,7 +2107,7 @@
          </xsl:when>
          <xsl:when test="@code  = &apos;UNK&apos;">
             <xsl:text>Unknown</xsl:text>
-         </xsl:when>		 
+         </xsl:when>
       </xsl:choose>
    </xsl:template>
    <!-- show-race-ethnicity  -->
