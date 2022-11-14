@@ -2905,7 +2905,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             if (test.IsBillableNo == "180045") {
                 if (UserRole.toUpperCase() == 'PHYSICIAN') {
 
-                    if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439')   {
+                    if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439'))   {
                         $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
                         $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
                         return;
