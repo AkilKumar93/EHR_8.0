@@ -1013,7 +1013,7 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
                                                     <div>
                                                         <ul>
                                                             <li runat="server" > <a href="#" onclick="OpenModal('IMPORT CAT FILE');">Import</a></li>
-                                                            <li runat ="server" id="mnuReports_smnuPQRIMeasureCalculation" ><a href="#" onclick="OpenModal('PQRI Measure');"> Calculatore</a></li>
+                                                            <li runat ="server" id="mnuReports_smnuPQRIMeasureCalculation" ><a href="#" onclick="OpenModal('PQRI Measure');">Calculator</a></li>
                                                         </ul>
                                                     </div>
 
