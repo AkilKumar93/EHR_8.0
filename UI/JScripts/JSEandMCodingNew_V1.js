@@ -99,7 +99,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         //  $scope.setOrder('Amount');
         // $scope.orderByFieldICD = 'ICDCode';
         //$scope.reverseSort = false;
-        if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && (UserRole.toUpperCase() != 'CODER')) {
+        if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'CODER' && UserRole.toUpperCase() != 'TECHNICIAN') {
             $('#divICDPanel *').attr("disabled", "disabled").off('click');
         }
         EnablePriRbtn = test.EnablePriRbtn;
@@ -2233,7 +2233,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         }
     }
     $scope.ICDDelete = function (index) {
-        if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && (UserRole.toUpperCase() != 'CODER')) {
+        if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && (UserRole.toUpperCase() != 'CODER') && UserRole.toUpperCase() != 'TECHNICIAN') {
             return false;
         }
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -2404,7 +2404,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         }
         else if (($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0)) { //save service procedure code without icd.
 
-            if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'CODER' && ValEnableScreen.indexOf('EnableScreen')<0) {
+            if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'CODER' && UserRole.toUpperCase() != 'TECHNICIAN' && ValEnableScreen.indexOf('EnableScreen')<0) {
                 //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
                 icdcount = true;
@@ -2416,15 +2416,15 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             }
             
             else {
+                if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT') {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    DisplayErrorMessage('530004');
+                    bSaveCheck = true;
+                    AutoSaveUnsuccessful();
 
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                DisplayErrorMessage('530004');
-                bSaveCheck = true;
-                AutoSaveUnsuccessful();
-
-                //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                return;
-
+                    //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                    return;
+                }
             }
 
         }
@@ -2471,7 +2471,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         }
         //// }
         var isprimary = false;
-        if (UserRole.toUpperCase() == 'CODER' || UserRole.toUpperCase() == 'PHYSICIAN') {
+        if (UserRole.toUpperCase() == 'CODER' || UserRole.toUpperCase() == 'PHYSICIAN' ) {
             var bIsPrimary = false, bIsAssPrimary = false, bPriICDSelected = false, bPriICDAssSelected = false;
 
             if ($('#tblEandMCodingICD tr td input.IsPrimary:checked').length > 0) {
@@ -2503,7 +2503,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
            
             if (!(bIsPrimary || bIsAssPrimary)) {
-                if (UserRole.toUpperCase() == 'CODER' && ValEnableScreen.indexOf('EnableScreen') >= 0) {
+                if ((UserRole.toUpperCase() == 'CODER')&& ValEnableScreen.indexOf('EnableScreen') >= 0) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     DisplayErrorMessage('530005');
                     bSaveCheck = true;
@@ -2836,7 +2836,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
             aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + chkICDContainer.cells[6].innerText.trim() + "~" + "EMICD" + "~" + sSequence);
 
-            if (arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole == "MEDICAL ASSISTANT" || UserRole == "CODER" || ValEnableScreen.indexOf('EnableScreen') >= 0)) { 
+            if (arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole.toUpperCase() == "MEDICAL ASSISTANT" || UserRole.toUpperCase() == "CODER" || UserRole.toUpperCase() == 'TECHNICIAN'  || ValEnableScreen.indexOf('EnableScreen') >= 0)) { 
                 DisplayErrorMessage('530021', "", "'" + sICDCode + "'");
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
