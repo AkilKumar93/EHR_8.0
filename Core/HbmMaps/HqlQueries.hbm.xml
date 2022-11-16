@@ -13711,17 +13711,28 @@ select * from encounter_arc where human_id=? and  DATE(date_of_service) between 
 	<!--Stage 3 PQRI Measure-->
 	<sql-query name="PQRI.GetDenominatorCMS122.HBA1c">
 		<![CDATA[select a.encounter_id,a.human_id from encounter a inner join human b on a.human_id = b.human_id
+
+left join e_m_coding c on a.Encounter_id=c.Encounter_id
+left join patient_results pr on a.Encounter_id=pr.Encounter_id
+where date(Date_of_service) between ? and ? and TIMESTAMPDIFF(YEAR,Birth_date, date(?))
+between 18 and 75 and a.encounter_Provider_id =? and
+ c.Procedure_Code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and 
+ PQRI_calculation_Method=? and PQRI_Type in ('CPT')) and c.is_delete='n';]]>
+	</sql-query>
+
+	<sql-query name="PQRI.GetDenominator1CMS122.HBA1c">
+		<![CDATA[select a.encounter_id,a.human_id from encounter a inner join human b on a.human_id = b.human_id
 left join problem_list p on a.human_id=p.human_id
 left join assessment d on a.Encounter_id=d.Encounter_ID
-left join e_m_coding c on a.Encounter_id=c.Encounter_id
+
 left join patient_results pr on a.Encounter_id=pr.Encounter_id
 where date(Date_of_service) between ? and ? and TIMESTAMPDIFF(YEAR,Birth_date, date(?))
 between 18 and 75 and a.encounter_Provider_id =? and(d.ICD in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) 
 
-or (p.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD')) and p.is_active='y' ))
-and c.Procedure_Code in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT')) and c.is_delete='n';]]>
+or (p.icd in(SELECT PQRI_Value FROM cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('ICD'))
+and p.is_active='y' ))
+;]]>
 	</sql-query>
-
 	<!--<sql-query name="PQRI.GetNumeratorCMS122.HBA1c">
     <![CDATA[
  select distinct max(e.encounter_id) as Encounter_Id,e.human_id,pr.loinc_identifier from encounter e left join
@@ -13737,15 +13748,29 @@ where loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
 
 	<sql-query name="PQRI.GetNumeratorCMS122.HBA1c">
 		<![CDATA[
- select distinct max(e.encounter_id) as Encounter_Id,e.human_id,pr.loinc_identifier from encounter e left join
+ select distinct max(e.encounter_id) as Encounter_Id,e.human_id  from encounter e  join
  patient_results pr on e.encounter_id=pr.encounter_id where e.encounter_id in (:EncIds) and loinc_observation in ('HBA1C','Hemoglobin A1c/Hemoglobin.total',
 'Hemoglobin F/Hemoglobin.total',
 'Hemoglobin A/Hemoglobin.total',
 'Hemoglobin S/Hemoglobin.total',
 'Hemoglobin C/Hemoglobin.total',
-'Hemoglobin A2/Hemoglobin.total') and `value`>9 group by e.human_id;]]>
+'Hemoglobin A2/Hemoglobin.total') and `value`<=9 group by e.human_id;]]>
 	</sql-query>
 
+	<sql-query name="PQRI.GetNumerator1CMS122.HBA1c">
+		<![CDATA[
+ select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.human_id in (:EncIds) and e.human_id not in (:EncExp)
+ group by e.human_id;]]>
+	</sql-query>
+
+	<sql-query name="PQRI.GetNumerator2CMS122.HBA1c">
+		<![CDATA[
+ select e.encounter_id as Encounter_Id,e.human_id ,pr.loinc_identifier from encounter e  left join
+ patient_results pr on e.encounter_id=pr.encounter_id where e.human_id in (:EncIds) 
+ group by e.human_id;]]>
+	</sql-query>
+	
 	<sql-query name="PQRI.GetDenominatorList1CMS68v6.CurrentMedication">
 		<![CDATA[select e.encounter_id from encounter e left join human h on e.human_id=h.human_id
 where e.encounter_Provider_id =? and date(e.date_of_service) between ? and ? and (datediff(date(?),h.birth_date)/365.25)>=18;]]>
@@ -15060,18 +15085,20 @@ PQRI_calculation_Method=? and standard_Concept ='Dementia Medications')  and r.d
 	
 
 	<sql-query name="PQRI.GetExceptionCMS130ServiceCare.ColorectalCancer">
-		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em 
+		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em join human h on em.human_id=h.human_id
 	
-where 
+where  
+(datediff(?,h.birth_date)/365.25)>=66 and 
 em.procedure_code in(SELECT PQRI_Value FROM 
 cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Care Services in Long-Term Residential Facility','Nursing Facility Visit')) and 
 em.human_id in (:EncIds);;]]>
 	</sql-query>
 
 	<sql-query name="PQRI.GetExceptionCMS122ServiceCare.HbA1c">
-		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em 
+		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em join human h on em.human_id=h.human_id
 	
-where 
+where  
+(datediff(?,h.birth_date)/365.25)>=66 and 
 em.procedure_code in(SELECT PQRI_Value FROM 
 cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Care Services in Long-Term Residential Facility','Nursing Facility Visit')) and 
 em.human_id in (:EncIds);;]]>
@@ -15080,9 +15107,10 @@ em.human_id in (:EncIds);;]]>
 
 
 	<sql-query name="PQRI.GetExceptionCMS165ServiceCare.ControllingHighBloodPressure">
-		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em 
+		<![CDATA[select em.encounter_id ,em.human_id from  e_m_coding em join human h on em.human_id=h.human_id
 	
-where 
+where  
+(datediff(?,h.birth_date)/365.25)>=66 and 
 em.procedure_code in(SELECT PQRI_Value FROM 
 cqm_data where nqf_number =?  and PQRI_calculation_Method=? and standard_Concept in ('Care Services in Long-Term Residential Facility','Nursing Facility Visit')) and 
 em.human_id in (:EncIds);;]]>
