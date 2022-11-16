@@ -1002,7 +1002,7 @@ function OpenNotification_Before_MovetoNextProcess() {
 }
 
 function IsSaveEnabled(sender) {
-
+    localStorage.setItem("MovetofromEandM", "True");
     var bsave = localStorage.getItem("bSave");
     var val = localStorage.getItem("CCAndEandMAutosave");
     if (bsave == "false") {

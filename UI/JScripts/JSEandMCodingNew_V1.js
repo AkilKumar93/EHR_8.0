@@ -65,6 +65,7 @@ document.oncontextmenu = function () {
 var ValEnableScreen = ""; // window.location.search.toString().split('?')[1];
 var myapp = angular.module('EandMCodingapp', []);
 myapp.controller('EandMCodingCtrl', function ($scope, $http) {
+    localStorage.setItem("MovetofromEandM", "False");
      ValEnableScreen =  window.location.search.toString().split('?')[1];
     // $scope.sortColumn = 'Order';
     $http({
@@ -2879,9 +2880,20 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             if (icdcount) {
 
                 if (!alert('Please select at least one ICD')) {
-                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
-                    return;
+                    if (localStorage.getItem("MovetofromEandM") == "False") {
+
+                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                        return;
+                    }
+                    else {
+                        localStorage.setItem("MovetofromEandM", "False");
+                        $scope.EandMCodingCPTTable = test.ProcedureList;
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        return;
+
+
+                    }
                 }
                 //DisplayErrorMessage('530004');
 
@@ -2893,9 +2905,20 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
                
                 if (!alert('Please mark the Primary ICD') ) {
-                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
-                    return;
+                    if (localStorage.getItem("MovetofromEandM") == "False") {
+
+                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                        return;
+                    }
+                    else {
+                        localStorage.setItem("MovetofromEandM", "False");
+                        $scope.EandMCodingCPTTable = test.ProcedureList;
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        return;
+
+
+                    }
                 }
 
                 // bSaveCheck = true;
@@ -2909,9 +2932,20 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 if (UserRole.toUpperCase() == 'PHYSICIAN' && ValEnableScreen.indexOf('EnableScreen') < 0) {
 
                     if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439'))   {
-                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
-                        return;
+                        if (localStorage.getItem("MovetofromEandM") == "False") {
+
+                            $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                            $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                            return;
+                        }
+                        else {
+                            localStorage.setItem("MovetofromEandM", "False");
+                            $scope.EandMCodingCPTTable = test.ProcedureList;
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                            return;
+
+
+                        }
                     }
                 }
                 else {
