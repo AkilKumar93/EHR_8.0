@@ -12,8 +12,12 @@ namespace Acurus.Capella.UI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
+
+            btnImport.Attributes.Add("onclick", "C2Import();");
             btnImport.Enabled = false;
+
+            
         }
        
         protected void btnImport_Click(object sender, EventArgs e)
@@ -24,7 +28,7 @@ namespace Acurus.Capella.UI
                 int iFilecount = Directory.GetFiles(sSaveFolderPath, "*.zip", SearchOption.AllDirectories).Length;
                 if (iFilecount > 0)
                 {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), string.Empty, "DisplayErrorMessage('7050010');", true);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), string.Empty, "importValidation();", true);
                     return;
                 }
 

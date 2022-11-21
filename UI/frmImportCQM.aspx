@@ -9,6 +9,20 @@
   
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
 
+    <script type="text/javascript">
+Sys.WebForms.PageRequestManager.getInstance().add_endRequest(requestEndHandler );
+
+// This function will handle the end request event
+function requestEndHandler(sender, args) {
+   if( args.get_error() ){
+      //document.getElementById("errorMessageLabel").innerText = 
+      //   args.get_error().description;
+       args.set_errorHandled(true);
+   }
+}
+
+    </script>
+
     <style type="text/css">
         .style3,.style4{height:20px}.style3,.style5,.style7{width:254px}.style5,.style6{height:32px}.style7,.style9{height:62px }.style10{height:32px;width:398px}.style11{height:20px;width:398px}.style17,.style19,.style20{height:22px}.RadPicker{vertical-align:middle}.RadPicker .rcTable{table-layout:auto}.RadPicker .RadInput{vertical-align:baseline}.RadInput_Default{font:12px "segoe ui",arial,sans-serif}.riSingle{box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box;-khtml-box-sizing:border-box;position:relative;display:inline-block;white-space:nowrap;text-align:left}.RadInput{vertical-align:middle}.riSingle .riTextBox{box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box;-khtml-box-sizing:border-box}.RadPicker_Default .rcCalPopup{background-position:0 0;background-image:url('mvwres://Telerik.Web.UI, Version=2012.2.607.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4/Telerik.Web.UI.Skins.Default.Calendar.sprite.gif')}.RadPicker .rcCalPopup{display:block;overflow:hidden;width:22px;height:22px;background-color:transparent;background-repeat:no-repeat;text-indent:-2222px;text-align:center}div.RadPicker table.rcSingle .rcInputCell{padding-right:0}.RadPicker table.rcTable .rcInputCell{padding:0 4px 0 0}.style19{width:98px}.style20{width:89px}.displayNone{display:none}.modal{position:fixed;top:0;left:0;background-color:#fff;z-index:99;opacity:.8;filter:alpha(opacity=80);-moz-opacity:.8;min-height:100%;width:100%}.underline{text-decoration:underline}
 #cboPhysicianName {
@@ -19,7 +33,8 @@
   </head>
 <body >
     <form id="frmImportCQM" runat="server" style="background-color: White;">
-    <telerik:RadWindowManager ID="WindowMngr" runat="server">
+       
+    <telerik:RadWindowManager ID="WindowMngr" runat="server" >
         <Windows>
             <telerik:RadWindow ID="RadViewer" runat="server" Behaviors="Close" Title="Image Viewer"
                 VisibleStatusbar="false" IconUrl="Resources/16_16.ico" VisibleOnPageLoad="false" >
@@ -32,7 +47,7 @@
             </telerik:RadWindow>
         </Windows>
     </telerik:RadWindowManager>
-    <telerik:RadScriptManager ID="RadScriptManager1" runat="server">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" AsyncPostBackTimeout="1800">
     
         <Scripts>
             <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js">
@@ -43,8 +58,9 @@
             </asp:ScriptReference>
         </Scripts>
     </telerik:RadScriptManager>
-  
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+   <%--<asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout ="360000">
+</asp:ScriptManager>--%>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
     <Triggers>
     <asp:PostBackTrigger ControlID="btnClearAll" />
     </Triggers>
@@ -75,7 +91,7 @@
                                 </tr>
                                 <tr>
                                    <td colspan="2" align="right" >
-                                        <asp:Button runat="server" ID="btnImport" OnClick="btnImport_Click" OnClientClick="C2Import();" CssClass="btn  aspresizedgreenbutton" Text="Import"/>
+                                        <asp:Button runat="server" ID="btnImport" OnClick="btnImport_Click"  CssClass="btn  aspresizedgreenbutton" Text="Import" />
                                     
                                          <asp:Button runat="server" ID="btnFileClear" OnClick="btnFileClear_Click"  CssClass="btn aspresizedredbutton" Text="Clear"/>
                                     </td>

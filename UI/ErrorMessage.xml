@@ -2013,7 +2013,7 @@
   <Message number="7050009" Type="ToolStrip" Text="Generated Successfully" />
 	<Message number="7050010" Type="OK" Text="Import is alredy in Progress. Please try again later." />
 	<Message number="7050011" Type="OK" Text="Please select a ZIP File." />
-	<Message number="7050012" Type="OK" Text="Imporeted Successfully." />
+	<Message number="7050012" Type="OK" Text="Imported Successfully." />
 	<Message number="595001" Type="OK" Text="Select the File. "></Message>
 
   <Message number="596001" Type="OK" Text="Please select the Encrypted Location. "></Message>

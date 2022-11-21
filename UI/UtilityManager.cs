@@ -4901,7 +4901,38 @@ namespace Acurus.Capella.UI
                     //    status = bStart + " Third Block - Sub 4 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileForCCD"].ToString();
                     //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "UtilityManager - 4527 - CreateCCDXMLByBatchProcess: status  - " + status + " : End", DateTime.Now, "0", "frmimageviewer");
                     //}
-                    status ="Success";
+
+                    status = "Eighth Block Block";
+                    batchfile = System.Configuration.ConfigurationManager.AppSettings["CQMCalculatorExe"].ToString();
+                    if (File.Exists(batchfile))
+                    {
+                        try
+                        {
+                            status = "Eighth Block - Sub 1";
+                            var proc1 = new Process();
+                            proc1.StartInfo.WorkingDirectory = Path.GetDirectoryName(System.Configuration.ConfigurationManager.AppSettings["CQMCalculatorExe"].ToString());
+                            proc1.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["CQMCalculatorExe"].ToString();
+                            proc1.StartInfo.Arguments = "-v -s -a";
+                            status = "Eighth Block - Sub 2";
+                            bool bStart = proc1.Start();
+                            status = bStart + " Eighth Block - Sub 3 ";
+                            proc1.WaitForExit();
+                            status = bStart + " Eighth Block - Sub 4 ";
+                            var exitCode = proc1.ExitCode;
+                            proc1.Close();
+
+                            //File.Copy(System.Configuration.ConfigurationManager.AppSettings["CCDOutputLocation"].ToString(), sOutputLocation);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(status + " " + ex.Message + "  " + ex.InnerException);
+                        }
+                    }
+                    else
+                    {
+                        status = "Batch File Not found-FileName:" + batchfile;
+                    }
+                    status = "Success";
                 }
                 else
                 {

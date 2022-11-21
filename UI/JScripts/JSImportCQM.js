@@ -32,4 +32,8 @@ function C2ImportClose() {
     DisplayErrorMessage('7050012');
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
-
+function importValidation() {
+    ToolStripAlertHidexml();
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    DisplayErrorMessage('7050010');
+}
