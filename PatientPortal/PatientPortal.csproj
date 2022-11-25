@@ -63,11 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Interop.Microsoft.Office.Interop.Word, Version=8.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>bin\Interop.Microsoft.Office.Interop.Word.dll</HintPath>
-    </Reference>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Ionic.Zip.Reduced.dll</HintPath>
