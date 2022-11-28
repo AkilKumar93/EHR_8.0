@@ -48,6 +48,54 @@ namespace Acurus.Capella.UI
 
         public void Loadsummary()
         {
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y")
+            {
+                try
+                {
+                    ClientSession.EncounterId = 2604839;
+                    var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]",ClientSession.EncounterId.ToString()));
+                    string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
+                    var myWebRequest = WebRequest.Create(myUri);
+                    var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                    myHttpWebRequest.PreAuthenticate = true;
+                    myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
+                    myHttpWebRequest.Accept = "application/json";
+
+                    var myWebResponse = myWebRequest.GetResponse();
+                    var responseStream = myWebResponse.GetResponseStream();
+
+                    var myStreamReader = new StreamReader(responseStream, Encoding.Default);
+                    var json = myStreamReader.ReadToEnd();
+
+                    if (json.ToString()!= string.Empty)
+                    {
+                        xslFrame.Visible = false;
+                        AkidoFrame.Visible = true;
+                        iFrameAkidoSummary.Attributes.Add("src", System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", ClientSession.EncounterId.ToString()).Replace("[ClientName]", ClientSession.LegalOrg));
+
+                        btntreatment.Visible = false;
+                        btnwellness.Visible = false;
+                        Button1.Visible = false;
+                        btnPrint.Visible = false;
+                        btnCancelPhoneEnc.Visible = false;
+                        txtSearch.Visible = false;
+                        dvsignphy.Visible = false;
+                        dvsignreviewphy.Visible = false;
+
+                        responseStream.Close();
+                        myWebResponse.Close();
+
+                        return;
+                    }
+
+                    responseStream.Close();
+                    myWebResponse.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
 
             Stopwatch objTimer = new Stopwatch();
             objTimer.Start();
