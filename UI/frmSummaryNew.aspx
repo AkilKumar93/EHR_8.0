@@ -141,16 +141,19 @@
         </div>
         <div class="rowspace">
         </div>
-        <div id="xslFrame" style="margin: 0px 8px 0px 8px; border: 1px solid #92A9C5; height: 570px; display: block; overflow-y: scroll; overflow-x: hidden;">
+        <div id="xslFrame" style="margin: 0px 8px 0px 8px; border: 1px solid #92A9C5; height: 570px; display: block; overflow-y: scroll; overflow-x: hidden;" runat="server">
             <div style="margin: 3px 3px 3px 3px; overflow-x: hidden;">
                 <asp:Xml ID="DownloadFrame" runat="server" Visible="false" />
                 <asp:Literal ID="ltlDownloadFrame" runat="server" />
             </div>
         </div>
-         <div>
+        <div id="AkidoFrame" visible="false" runat="server" style=" border: 1px solid #92A9C5; height: 630px; display: block; overflow-y: scroll; overflow-x: hidden;">
+            <iframe id="iFrameAkidoSummary" runat="server" style= "border: 1px solid #92A9C5; height: 100%;width:100%; display: block; overflow-y: scroll; overflow-x: hidden;"></iframe>
+        </div>
+         <div id="dvsignphy" runat="server">
             <label style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif !important;font-size: 13px !important;font-weight: normal;color: black;" id="lblSignedPhysician" runat="server" ></label>
         </div>
-        <div>
+        <div id="dvsignreviewphy" runat="server">
             <label style="font-family: Helvetica Neue,Helvetica,Arial,sans-serif !important;font-size: 13px !important;font-weight: normal;color: black;"  id="lblReviewSignedPhysician" runat="server"></label>
         </div>
         <asp:HiddenField runat="server" ID="hdnFilePath" />
