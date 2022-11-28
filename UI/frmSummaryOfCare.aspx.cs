@@ -3158,6 +3158,7 @@ namespace Acurus.Capella.UI
                 objhuman.City = city;
                 objhuman.State = state;
                 objhuman.Is_Sent_To_Rcopia = "N";
+                objhuman.Legal_Org = ClientSession.LegalOrg;
                 objhuman.Created_Date_And_Time = universalTime;
                 objhuman.Created_By = ClientSession.UserName;
                 lsthuman.Add(objhuman);
