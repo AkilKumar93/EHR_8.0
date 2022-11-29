@@ -287,3 +287,13 @@ function PrintTreatmentNote() {
     obj.push("Date=" + strYear + "" + strMonth + "" + strDay + " " + timeString.replace(":", "").replace(":", ""));
     StopLoadingImage();
 }
+function AkidoNoteClickSum(sAkidoURL) {
+
+    Result = openNonModal(sAkidoURL, 780, 1250, obj);
+
+    $('#resultLoading').css("display", "none");
+    if (Result == null)
+        return false;
+
+    return false;
+}

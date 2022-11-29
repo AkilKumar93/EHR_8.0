@@ -389,7 +389,7 @@
                                     <iframe class="clsIframe" src="" style="height: 675px; width: 92%;margin-left:10px!important; margin-top: -2px !important" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                                 </div>
 
-                                <div class="tab-pane" id="tbSummary" data-src="frmSummaryNew.aspx">
+                                <div class="tab-pane" id="tbSummary" data-src="frmSummaryNew.aspx?AkidoSummary=N">
                                     <iframe class="clsIframe" src="" style="height: 651px; width: 96%;" frameborder="0" allowfullscreen="allowFullScreen"></iframe>
                                 </div>
                             </div>
