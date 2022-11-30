@@ -48,7 +48,7 @@ namespace Acurus.Capella.UI
 
         public void Loadsummary()
         {
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y")
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && Request["AkidoSummary"]==null)
             {
                 try
                 {
@@ -69,8 +69,8 @@ namespace Acurus.Capella.UI
                     if (json.ToString()!= "[]")
                     {
                         xslFrame.Visible = false;
-                        AkidoFrame.Visible = true;
-                        iFrameAkidoSummary.Attributes.Add("src", System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", ClientSession.EncounterId.ToString()).Replace("[ClientName]", ClientSession.LegalOrg));
+                        //AkidoFrame.Visible = true;
+                        //iFrameAkidoSummary.Attributes.Add("src", System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", ClientSession.EncounterId.ToString()).Replace("[ClientName]", ClientSession.LegalOrg));
 
                         btntreatment.Visible = false;
                         btnwellness.Visible = false;
@@ -84,6 +84,9 @@ namespace Acurus.Capella.UI
                         responseStream.Close();
                         myWebResponse.Close();
 
+                        string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", ClientSession.EncounterId.ToString()).Replace("[ClientName]", ClientSession.LegalOrg);
+
+                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('"+sAkidoURL+"');", true);
                         return;
                     }
 
