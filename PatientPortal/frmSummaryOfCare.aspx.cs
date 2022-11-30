@@ -610,10 +610,18 @@ namespace Acurus.Capella.PatientPortal
                             }
                             catch
                             {
-                                if (Request["Type"] == "C32")
+                                try
                                 {
-                                    dt.Columns.Add(" Result");
-                                    dr[iCurrentColumn] = Column.Groups[1].ToString();
+                                    if (Request["Type"] == "C32")
+                                    {
+                                        dt.Columns.Add(" Result");
+                                        dr[iCurrentColumn] = Column.Groups[1].ToString();
+                                    }
+                                }
+                                catch 
+                                { 
+                                
+
                                 }
                             }
 
@@ -1311,7 +1319,7 @@ namespace Acurus.Capella.PatientPortal
             //    dsSection = ConvertHTMLTablesToDataSet(elemParent.GetElementsByTagName("text")[0].InnerXml);
             //}
 
-            if (dsSection != null && dsSection.Tables.Count > 0)
+            if (dsSection != null && dsSection.Tables.Count > 0 && dsSection.Tables[0].Columns.Count >0)
             {
                 PdfPTable patSection = new PdfPTable(dsSection.Tables[0].Columns.Count);
                 patSection.WidthPercentage = 100;
