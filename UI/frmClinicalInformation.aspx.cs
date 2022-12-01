@@ -753,12 +753,16 @@ namespace Acurus.Capella.UI
                             objallergy.Allergy_Name = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Substance"));
                         if (bReaction == true)
                             objallergy.Reaction = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Reaction"));
+                        //if (bSeverity == true)
+                        //{
+                        //    if (bReaction == true)
+                        //        objallergy.Reaction = objallergy.Reaction + ": " + StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
+                        //    else
+                        //        objallergy.Reaction = " : " + StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
+                        //}
                         if (bSeverity == true)
                         {
-                            if (bReaction == true)
-                                objallergy.Reaction = objallergy.Reaction + ": " + StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
-                            else
-                                objallergy.Reaction = " : " + StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
+                            objallergy.Severity = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("Severity"));
                         }
                         if (bNDCID == true)
                             objallergy.NDC_ID = StripTagsRegex(dsAllergy.Tables[0].Rows[i].Field<string>("NDCID"));
@@ -801,6 +805,7 @@ namespace Acurus.Capella.UI
             XmlNodeList Doc_Problem_Node = xmldoc.GetElementsByTagName("section");
             DataSet dsProblem = null;
             int iCountResult = 0;
+            int iPrevCount = 0;
             AllICD_9Manager objicd = new AllICD_9Manager();
             foreach (XmlElement elemParent in Doc_Problem_Node)
             {
@@ -820,7 +825,7 @@ namespace Acurus.Capella.UI
                             {
                                 try
                                 {
-                                    if (elemParent.ChildNodes[i + 1].ChildNodes[j].Name == "list")
+                                    if (elemParent.ChildNodes[i + 1].ChildNodes[j].Name == "list" && j != iPrevCount)
                                     {
                                         string columnvalue = string.Empty;
                                         if (elemParent.ChildNodes[i + 1].ChildNodes[j].ChildNodes[0].ChildNodes.Count > 1)
@@ -902,8 +907,9 @@ namespace Acurus.Capella.UI
                                     }
 
 
-                                    else if (elemParent.ChildNodes[i + 1].ChildNodes[j + 1].Name == "list")
+                                    else if (j + 1 < list_count && elemParent.ChildNodes[i + 1].ChildNodes[j + 1].Name == "list")
                                     {
+                                        iPrevCount = j + 1;
                                         try
                                         {
                                             ProblemList objProblem = new ProblemList();
@@ -999,7 +1005,7 @@ namespace Acurus.Capella.UI
                                                     {
                                                     }
                                                 }
-                                                break;
+                                               // break;
                                             }
 
                                         }
