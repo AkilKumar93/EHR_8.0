@@ -1615,6 +1615,10 @@ namespace Acurus.Capella.DataAccess
                     xmlWriter.WriteStartElement("Status");
                     xmlWriter.WriteElementString("Deleted", "");
                     xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("Severity");
+                    xmlWriter.WriteElementString("Description", insertList[i].Severity);
+                    xmlWriter.WriteElementString("SNOMED-CTConceptID", insertList[i].Severity_Snomed_Code);
+                    xmlWriter.WriteEndElement();
                     xmlWriter.WriteStartElement("Patient");
                     xmlWriter.WriteElementString("RcopiaID", "");
                     xmlWriter.WriteElementString("ExternalID", deleteList[i].Human_ID.ToString());
@@ -1671,6 +1675,10 @@ namespace Acurus.Capella.DataAccess
                     xmlWriter.WriteElementString("Deleted", "n");
                     xmlWriter.WriteStartElement("Status");
                     xmlWriter.WriteElementString("Active", "");
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("Severity");
+                    xmlWriter.WriteElementString("Description", insertList[i].Severity);
+                    xmlWriter.WriteElementString("SNOMED-CTConceptID", insertList[i].Severity_Snomed_Code);
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteStartElement("Patient");
                     xmlWriter.WriteElementString("RcopiaID", "");
@@ -1765,6 +1773,10 @@ namespace Acurus.Capella.DataAccess
                     xmlWriter.WriteElementString("Reaction", UpdateList[i].Reaction);
                     xmlWriter.WriteStartElement("Status");
                     xmlWriter.WriteElementString("Active", "");
+                    xmlWriter.WriteEndElement();
+                    xmlWriter.WriteStartElement("Severity");
+                    xmlWriter.WriteElementString("Description", insertList[i].Severity);
+                    xmlWriter.WriteElementString("SNOMED-CTConceptID", insertList[i].Severity_Snomed_Code);
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteElementString("OnsetDate", UpdateList[i].OnsetDate.ToString());
                     xmlWriter.WriteEndElement();
