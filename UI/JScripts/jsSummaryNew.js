@@ -165,6 +165,7 @@ function OpenServiceProcedureCode() {
         dataType: "json",
         async: false,
         success: function (data) {
+            localStorage.setItem("SummaryReload","true");
             var objdata = $.parseJSON(data.d);
             var Output = objdata.Return;
 
@@ -191,6 +192,7 @@ function OpenServiceProcedureCode() {
                 
             }
             else {
+
                 DisplayErrorMessage(Output);
                 var obj = new Array();
                 $(top.window.document).find("#TabModalEandM").modal({ backdrop: 'static', keyboard: false });

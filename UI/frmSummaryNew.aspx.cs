@@ -48,6 +48,7 @@ namespace Acurus.Capella.UI
 
         public void Loadsummary()
         {
+
             Stopwatch objTimer = new Stopwatch();
             objTimer.Start();
             string transformtime = "";
@@ -103,10 +104,9 @@ namespace Acurus.Capella.UI
 
                         responseStream.Close();
                         myWebResponse.Close();
-
+                        
                         string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()).Replace("[ClientName]", ClientSession.LegalOrg.ToLower());
-
-                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('"+sAkidoURL+"');", true);
+                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "if(localStorage.getItem('SummaryReload') != null && localStorage.getItem('SummaryReload') != undefined && localStorage.getItem('SummaryReload') != 'true') {AkidoNoteClickSum('"+sAkidoURL+ "'); localStorage.setItem('SummaryReload','')} else {localStorage.setItem('SummaryReload','');}", true);
                         return;
                     }
 
@@ -118,6 +118,7 @@ namespace Acurus.Capella.UI
                     Console.WriteLine(ex.ToString());
                 }
             }
+            
 
             
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
