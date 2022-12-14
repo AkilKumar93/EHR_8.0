@@ -310,7 +310,7 @@ namespace Acurus.Capella.ImmunizationSubmission
                 {
                     DateTime dt = new DateTime();
                     dt = System.DateTime.Now;
-                    //objwfobject.MoveToNextProcess(lstlstwfobject[i].Obj_System_Id, lstlstwfobject[i].Obj_Type, 7, "UNKNOWN", dt, "", null, null);
+                    objwfobject.MoveToNextProcess(lstlstwfobject[i].Obj_System_Id, lstlstwfobject[i].Obj_Type, 7, "UNKNOWN", dt, "", null, null);
                     objlog.Human_ID = ulHumanId;
                     objlog.Encounter_ID = ulEncounterId;
                     if (resultsplit.Length > 10)
