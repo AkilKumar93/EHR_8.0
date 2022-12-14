@@ -23,7 +23,8 @@ namespace Acurus.Capella.ImmunizationSubmission
             }
             catch(Exception ex) {
                 Console.WriteLine("Exception Occured:"+Environment.NewLine);
-                Console.WriteLine(ex);            
+                Console.WriteLine(ex);
+                Console.ReadLine();
             }
         }
     }

@@ -56,26 +56,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
-      <HintPath>bin\Debug\Antlr3.Runtime.dll</HintPath>
+      <HintPath>..\UI\bin\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections">
-      <HintPath>bin\Debug\Iesi.Collections.dll</HintPath>
+      <HintPath>..\UI\bin\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="LinFu.DynamicProxy">
-      <HintPath>bin\Debug\LinFu.DynamicProxy.dll</HintPath>
+      <HintPath>..\UI\bin\LinFu.DynamicProxy.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>bin\Debug\log4net.dll</HintPath>
+      <HintPath>..\UI\bin\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=5.0.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=8.0.23.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
-      <HintPath>bin\Debug\NHibernate.dll</HintPath>
+      <HintPath>..\UI\bin\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.ByteCode.LinFu">
-      <HintPath>bin\Debug\NHibernate.ByteCode.LinFu.dll</HintPath>
+      <HintPath>..\UI\bin\NHibernate.ByteCode.LinFu.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -175,6 +175,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="ConfigXML\SOAPTemplate.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Service References\ImmunizationSubmissionProduction\configuration.svcinfo" />
     <Content Include="Service References\ImmunizationSubmissionProduction\configuration91.svcinfo" />
     <Content Include="Service References\ImmunizationSubmissionProduction\Reference.svcmap">

@@ -7058,6 +7058,431 @@ namespace Acurus.Capella.UI
             return sResult;
         }
 
+        //Commented on 13-Dec-2022
+        //public string CreateImmunizationRegistry(Human hn, PhysicianLibrary Phy, FillClinicalSummary ClinicalSummary, string sPrintFileName)
+        //{
+        //    string sResult = string.Empty;
+        //    string CityCode = string.Empty;
+        //    string LocalNumber = string.Empty;
+        //    string RaceIdentifier = string.Empty;
+        //    string EthnicityIdentifier = string.Empty;
+        //    string PublicitycodeIdentifier = string.Empty;
+        //    string RelationshipIdentifier = string.Empty;
+        //    string AdministrationIdentifier = string.Empty;
+        //    string ImmunizationInformationIdentifier = string.Empty;
+        //    string ProtectionstateIdentifier = string.Empty;
+        //    string ObservationIdentifier = string.Empty;
+        //    string EvidenceIdentifier = string.Empty;
+        //    string RefusedReasonIdentifier = string.Empty;
+        //    string PhyFirstName = string.Empty;
+        //    string PhyLastName = string.Empty;
+        //    string PhyMIName = string.Empty;
+        //    string PhySuffix = string.Empty;
+        //    string Vfc = string.Empty;
+        //    string VaccinetypeCode = string.Empty;
+        //    string sMSH4 = System.Configuration.ConfigurationSettings.AppSettings["MSH4"];
+        //    string sMSH6 = System.Configuration.ConfigurationSettings.AppSettings["MSH6"];
+        //    string sMSH22 = System.Configuration.ConfigurationSettings.AppSettings["MSH22"];
+        //    string sRXA11 = System.Configuration.ConfigurationSettings.AppSettings["RXA11"];
+
+
+        //    IList<StaticLookup> iFieldLookupList = new List<StaticLookup>();
+        //    if (ClinicalSummary.lookupValues != null && ClinicalSummary.lookupValues.Count > 0)
+        //    {
+        //        iFieldLookupList = ClinicalSummary.lookupValues.Where(q => q.Field_Name == "RACE" || q.Field_Name == "ETHNICITY" || q.Field_Name == "PUBLICITY CODE" || q.Field_Name == "RELATIONSHIP" || q.Field_Name == "ROUTE OF ADMINISTRATION" || q.Field_Name == "REFUSED_ADMINISTRATION" || q.Field_Name == "VFC STATUS" || q.Field_Name == "IMMUNIZATION_INFORMATION_SOURCE" || q.Field_Name == "REFUSED_ADMINISTRATION" || q.Field_Name == "VACCINE TYPE" || q.Field_Name == "IMMUNIZATION PROTECTION TYPE" || q.Field_Name == "OBSERVATION" || q.Field_Name == "IMMUNIZATION EVIDENCE" || q.Field_Name.ToUpper() == "IMMUNIZATIONLOCATION").ToList();
+        //    }
+        //    if (ClinicalSummary.lookupValues != null && ClinicalSummary.lookupValues.Count > 0)
+        //    {
+        //        var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race select d;
+        //        if (RaceIdentifierlst.Count() > 0)
+        //        {
+        //            IList<StaticLookup> iFieldLookupListRace = RaceIdentifierlst.ToList<StaticLookup>();
+        //            if (iFieldLookupListRace != null && iFieldLookupListRace.Count > 0)
+        //                RaceIdentifier = iFieldLookupListRace[0].Default_Value;
+        //        }
+        //        var EthnicityIdentifierlst = from d in iFieldLookupList where d.Value == hn.Ethnicity && d.Field_Name == "ETHNICITY" select d;
+        //        if (EthnicityIdentifierlst != null && EthnicityIdentifierlst.Count() > 0)
+        //        {
+        //            IList<StaticLookup> iFieldLookupListEthnicity = EthnicityIdentifierlst.ToList<StaticLookup>();
+        //            if (iFieldLookupListEthnicity.Count > 0)
+        //                EthnicityIdentifier = iFieldLookupListEthnicity[0].Default_Value;
+        //        }
+        //        var PublicitycodeIdentifierlst = from d in iFieldLookupList where d.Value == hn.Publicity_Code select d;
+        //        if (PublicitycodeIdentifierlst != null && PublicitycodeIdentifierlst.Count() > 0)
+        //        {
+        //            IList<StaticLookup> iFieldLookupListPublicity = PublicitycodeIdentifierlst.ToList<StaticLookup>();
+        //            if (iFieldLookupListPublicity.Count > 0)
+        //                PublicitycodeIdentifier = iFieldLookupListPublicity[0].Description;
+        //        }
+        //        var RelationshipIdentifierlst = from d in iFieldLookupList where d.Value == hn.Guarantor_Relationship select d;
+        //        if (RelationshipIdentifierlst != null && RelationshipIdentifierlst.Count() > 0)
+        //        {
+        //            IList<StaticLookup> iFieldLookupListRelationship = RelationshipIdentifierlst.ToList<StaticLookup>();
+        //            if (iFieldLookupListRelationship != null && iFieldLookupListRelationship.Count > 0)
+        //                RelationshipIdentifier = iFieldLookupListRelationship[0].Default_Value;
+        //        }
+
+        //        //IList<StaticLookup> iFieldLookupListEthnicity = ClinicalSummary.lookupValues.Where(q => q.Field_Name == "ETHNICITY").ToList();
+        //    }
+
+        //    //commented for immunization submission Console app 12.9.2017
+
+        //    //if (ClinicalSummary.phyList != null && ClinicalSummary.phyList.Count > 0)
+        //    // {
+        //    //     IList<PhysicianLibrary> iPhyList = ClinicalSummary.phyList.Where(q => q.Id == ClientSession.PhysicianId).ToList();
+        //    //     if (iPhyList != null && iPhyList.Count > 0)
+        //    //     {
+        //    //         PhyFirstName = iPhyList[0].PhyPrefix + " " + iPhyList[0].PhyFirstName;
+        //    //         PhyLastName = iPhyList[0].PhyLastName;
+        //    //         PhyMIName = iPhyList[0].PhyMiddleName;
+        //    //     }
+        //    // }
+        //    string sPhy_ID = string.Empty;
+        //    if (Phy != null)
+        //    {
+        //        if (ClinicalSummary.phyList != null && ClinicalSummary.phyList.Count > 0)
+        //        {
+        //            IList<PhysicianLibrary> iPhyList = ClinicalSummary.phyList.Where(q => q.Id == Phy.Id).ToList();
+        //            if (iPhyList != null && iPhyList.Count > 0)
+        //            {
+        //                PhyFirstName = iPhyList[0].PhyPrefix + " " + iPhyList[0].PhyFirstName;
+        //                PhyLastName = iPhyList[0].PhyLastName;
+        //                PhyMIName = iPhyList[0].PhyMiddleName;
+        //                sPhy_ID = iPhyList[0].Id.ToString();
+        //                PhySuffix = iPhyList[0].PhySuffix;
+        //            }
+
+
+        //        }
+
+        //    }
+
+        //    //sResult = "MSH|^~\\&|Capella EHR|X68||CA Immunization Reg|" + DateTime.Now.ToString("yyyyMMddHHMM") + "||VXU^V04^VXU_V04|NIST-IZ-001.00|P|2.5.1|||AL|ER";
+        //    sResult = "MSH|^~\\&|Capella EHR|" + sMSH4 + "||" + sMSH6 + "|" + DateTime.Now.ToString("yyyyMMddhhmm") + "||VXU^V04^VXU_V04|IR" + DateTime.Now.ToString("yyyyMMddhhmmss") + "|P|2.5.1|||AL|AL||||||" + sMSH22;
+
+        //    if (hn.Home_Phone_No != String.Empty)
+        //    {
+        //        if (hn.Home_Phone_No.Contains(')'))
+        //        {
+        //            string[] Phone_No = hn.Home_Phone_No.Split(')');
+        //            if (Phone_No.Length > 0)
+        //            {
+        //                if (hn.Home_Phone_No.Contains('('))
+        //                {
+        //                    string[] Code_No = Phone_No[0].ToString().Split('(');
+        //                    if (Code_No.Length > 0)
+        //                    {
+        //                        CityCode = Code_No[1].ToString();
+        //                        if (Phone_No[1].Contains("-"))
+        //                            LocalNumber = Phone_No[1].Replace("-", "").Trim().ToString();
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (hn.Home_Phone_No.Length == 10)
+        //            {
+        //                CityCode = hn.Home_Phone_No.Substring(0, 3);
+        //                LocalNumber = hn.Home_Phone_No.Substring(2, 8);
+        //            }
+        //        }
+        //    }
+        //    string Mothers_Maiden_First_Name = string.Empty;
+        //    string Mothers_Maiden_Last_Name = string.Empty;
+        //    string Mothers_Maiden_Middle_Name = string.Empty;
+
+        //    if (hn.Mothers_Maiden_Name != string.Empty)
+        //    {
+        //        if (hn.Mothers_Maiden_Name.Contains(","))
+        //        {
+        //            string[] Mothers_Maiden_Name = hn.Mothers_Maiden_Name.Split(',');
+        //            if (Mothers_Maiden_Name.Length == 2)
+        //            {
+        //                Mothers_Maiden_First_Name = Mothers_Maiden_Name[0].ToString();
+        //                //Mothers_Maiden_Middle_Name = Mothers_Maiden_Name[1].ToString();
+        //                Mothers_Maiden_Last_Name = Mothers_Maiden_Name[1].ToString();
+        //            }
+        //        }
+        //    }
+        //    string sSex = string.Empty;
+        //    if (hn.Sex != null && hn.Sex != "")
+        //        sSex = hn.Sex.Substring(0, 1);
+        //    if (hn.Patient_Account_External == string.Empty)
+        //    {
+        //        if (EthnicityIdentifier == string.Empty)
+        //        {
+        //            sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
+        //        }
+        //        else
+        //        {
+        //            sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (EthnicityIdentifier == string.Empty)
+        //        {
+        //            sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||";
+        //        }
+        //        else
+        //        {
+        //            sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
+        //        }
+        //    }
+
+
+        //    if (PublicitycodeIdentifier != string.Empty && hn.Immunization_Registry_Status != string.Empty)
+        //    {
+        //        sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215|||||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd") + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd");
+        //    }
+        //    else
+        //    {
+        //        sResult = sResult + "\n" + "PD1||||||||||||N||||||";
+        //    }
+        //    //else if (ClinicalSummary.immunhistoryList != null && ClinicalSummary.immunhistoryList.Count > 0)
+        //    //{
+        //    //    for (int i = 0; i < ClinicalSummary.immunhistoryList.Count; i++)
+        //    //    {
+        //    //        if (ClinicalSummary.immunhistoryList[i].Protection_State != string.Empty)
+        //    //        {
+        //    //            var ProtectionStateIdentifier = from d in iFieldLookupList where d.Value == ClinicalSummary.immunhistoryList[i].Protection_State select d;
+        //    //            if (ProtectionStateIdentifier != null && ProtectionStateIdentifier.Count() > 0)
+        //    //            {
+        //    //                IList<StaticLookup> iFieldLookupListProtection = ProtectionStateIdentifier.ToList<StaticLookup>();
+        //    //                if (iFieldLookupListProtection.Count > 0)
+        //    //                    ProtectionstateIdentifier = iFieldLookupListProtection[0].Description;
+
+        //    //                sResult = sResult + "\n" + "PD1||||||||||||" + ProtectionstateIdentifier + "|" + ClinicalSummary.immunhistoryList[i].Created_Date_And_Time.ToString("yyyyMMdd");
+        //    //            }
+
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            //sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215|||||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd") + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd");
+        //    //            //break;
+        //    //        }
+        //    //    }
+        //    //}
+
+
+
+        //    if (hn.Guarantor_Last_Name != string.Empty || hn.Guarantor_First_Name != string.Empty)
+        //        sResult = sResult + "\n" + "NK1|1|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L|^PRN^PH^^^" + CityCode + "^" + LocalNumber + "";
+
+
+        //    if (ClinicalSummary.immunhistoryList != null && ClinicalSummary.immunhistoryList.Count > 0)
+        //    {
+        //        //if (ClinicalSummary.ImmunizationList.Count < 2)
+        //        //{
+        //        //if (ClinicalSummary.ImmunizationList.Count != 0)
+        //        //{
+        //        //for (int i = 0; i < ClinicalSummary.immunhistoryList.Count; i++)
+        //        //{
+        //        //    if (ClinicalSummary.ImmunizationList.Any(a => a.Given_Date.ToString("dd-MMM-yyyy").ToUpper() != (ClinicalSummary.immunhistoryList[i].Administered_Date) && a.Procedure_Code != ClinicalSummary.immunhistoryList[i].Procedure_Code && a.Immunization_Description != ClinicalSummary.immunhistoryList[i].Immunization_Description && a.Encounter_Id != ClinicalSummary.immunhistoryList[i].Encounter_ID))
+        //        //    {
+        //        //        sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.immunhistoryList[i].Id + "^CAA";
+        //        //    }
+        //        //}
+        //        //}
+        //        //else if (ClinicalSummary.immunhistoryList.Count > 0)
+        //        //{
+        //        //    for (int i = 0; i < ClinicalSummary.immunhistoryList.Count; i++)
+        //        //    {
+        //        //        sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.immunhistoryList[i].Id + "^CAA";
+        //        //    }
+        //        //}
+        //        //}
+
+        //    }
+        //    if (ClinicalSummary.ImmunizationList != null && ClinicalSummary.ImmunizationList.Count > 0)
+        //    {
+        //        //if (ClinicalSummary.ImmunizationList.Count < 2)
+        //        //{
+        //        for (int i = 0; i < ClinicalSummary.ImmunizationList.Count; i++)
+        //        {
+        //            if (ClinicalSummary.ImmunizationList[i].Is_Administration_Refused.ToUpper() == "Y")
+        //            {
+        //                continue;
+        //            }
+        //            if (ClinicalSummary.ImmunizationList[i].Is_Administration_Refused.ToUpper() == "Y")
+        //            {
+        //                sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.ImmunizationList[i].Id + "^CDC";
+        //            }
+        //            else if (ClinicalSummary.ImmunizationList[i].Immunization_Evidence != string.Empty)
+        //            {
+        //                sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.ImmunizationList[i].Id + "^CDC";
+        //            }
+        //            else
+        //            {
+        //                sResult = sResult + "\n" + "ORC|RE||" + ClinicalSummary.ImmunizationList[i].Id + "^CAA|||||||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CAA||" + sPhy_ID + "^" + PhyFirstName + "^" + PhyLastName + "^^^^^^CA-AA-1^L";
+        //            }
+
+        //            //RXA
+
+        //            string phyID = string.Empty;
+        //            //PhyFirstName = string.Empty;
+        //            //PhyLastName = string.Empty;
+        //            //PhyMIName = string.Empty;
+        //            //if (ClinicalSummary.phyList != null && ClinicalSummary.phyList.Count > 0)
+        //            //{
+        //            //    //if (ClinicalSummary.ImmunizationList[i].Given_By.Contains(","))
+        //            //    if (ClinicalSummary.ImmunizationList[i].Given_By != string.Empty)
+        //            //    {
+        //            //        string phyLName = string.Empty;
+        //            //        string phyFName = string.Empty;
+        //            //        string phyMName = string.Empty;
+        //            //        string[] phyName = ClinicalSummary.ImmunizationList[i].Given_By.Split(',');
+        //            //        if (phyName.Length > 0)
+        //            //        {
+        //            //            phyLName = phyName[0].ToString();
+        //            //            if (phyName.Length > 1)
+        //            //                phyFName = phyName[1].ToString();
+        //            //            if (phyName.Length > 2)
+        //            //                phyMName = phyName[2].ToString();
+        //            //            IList<PhysicianLibrary> iPhyList = ClinicalSummary.phyList.Where(q => q.PhyLastName == phyLName && q.PhyFirstName == phyFName).ToList();
+        //            //            if (iPhyList.Count > 0)
+        //            //            {
+        //            //                PhyFirstName = iPhyList[0].PhyPrefix + " " + iPhyList[0].PhyFirstName;
+        //            //                PhyLastName = iPhyList[0].PhyLastName;
+        //            //                PhyMIName = iPhyList[0].PhyMiddleName;
+        //            //                phyID = iPhyList[0].Id.ToString();
+        //            //            }
+        //            //            else
+        //            //            {
+        //            //                PhyFirstName = phyFName;
+        //            //                PhyLastName = phyLName;
+        //            //                PhyMIName = phyMName;
+        //            //                phyID = "0";
+        //            //            }
+        //            //        }
+        //            //    }
+        //            //    else
+        //            //    {
+        //            //        phyID = sPhy_ID;
+        //            //    }
+        //            //}
+        //            phyID = sPhy_ID;
+
+        //            DateTime AdminDate = DateTime.MinValue;
+        //            if (ClinicalSummary.ImmunizationList[i].Given_Date.ToString() != string.Empty)
+        //                AdminDate = Convert.ToDateTime(ClinicalSummary.ImmunizationList[i].Given_Date);
+
+        //            string AdminAmount = string.Empty;
+        //            string VaccineCode = string.Empty;
+        //            IList<VaccineManufacturerCodes> VaccineCodes = new List<VaccineManufacturerCodes>();
+        //            IList<VaccineManufacturerCodes> VaccineCodeforManufacturer = new List<VaccineManufacturerCodes>();
+        //            if (ClinicalSummary != null)
+        //                VaccineCodes = ClinicalSummary.VaccineCodes;
+        //            if (VaccineCodes != null && VaccineCodes.Count > 0)
+        //            {
+        //                var CodeList = from d in VaccineCodes where d.Manufacturer_Name == ClinicalSummary.ImmunizationList[i].Manufacturer select d;
+        //                if (CodeList != null && CodeList.Count() > 0)
+        //                {
+        //                    VaccineCodeforManufacturer = CodeList.ToList<VaccineManufacturerCodes>();
+        //                    if (VaccineCodeforManufacturer != null && VaccineCodeforManufacturer.Count > 0)
+        //                        VaccineCode = VaccineCodeforManufacturer[0].MVX_Code;
+        //                }
+
+        //            }
+
+        //            AdminAmount = "999";
+
+        //            if (PhyLastName != string.Empty || PhyLastName != string.Empty || PhyLastName != string.Empty)
+        //            {
+        //                //sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+        //                //    + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+        //                //    ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
+        //                //    + "^UCUM||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+        //                //    "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-AA-1|^^^" + sRXA11 + "||||" +
+        //                //    ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+        //                //    + "|" + VaccineCode
+        //                //    + "^" +
+        //                //    ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
+        //                if (ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier != null && ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier.Trim() != string.Empty && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source != null && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source.Trim() != string.Empty)
+        //                {
+        //                    sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+        //                        + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+        //                        ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
+        //                        + "^UCUM||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+        //                        "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+        //                        ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+        //                        + "|" + VaccineCode
+        //                        + "^" +
+        //                        ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
+        //                }
+        //                else if (ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier != null && ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier.Trim() == string.Empty && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source != null && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source.Trim() != string.Empty)
+        //                {
+        //                    sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+        //                      + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+        //                      ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+        //                      "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+        //                      ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+        //                      + "|" + VaccineCode
+        //                      + "^" +
+        //                      ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
+
+        //                }
+        //                else if (ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier != null && ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier.Trim() != string.Empty && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source != null && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source.Trim() == string.Empty)
+        //                {
+        //                    sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+        //                  + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+        //                  ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
+        //                  + "^UCUM|||" +
+        //                  "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+        //                  ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+        //                  + "|" + VaccineCode
+        //                  + "^" +
+        //                  ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
+
+        //                }
+        //                else if (ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier != null && ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier.Trim() == string.Empty && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source != null && ClinicalSummary.ImmunizationList[i].Immunization_Information_Source.Trim() == string.Empty)
+        //                {
+        //                    sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
+        //                      + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
+        //                      ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "||||" +
+        //                      "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
+        //                      ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
+        //                      + "|" + VaccineCode
+        //                      + "^" +
+        //                      ClinicalSummary.ImmunizationList[i].Manufacturer + "^MVX|||CP|A";
+        //                }
+
+
+
+        //            }
+
+        //            //RXR
+        //            VaccineInfoStatementProcedureManager objVaccineInfoStatementManager = new VaccineInfoStatementProcedureManager();
+        //            IList<VaccineInfoStatement> VISList = objVaccineInfoStatementManager.GetVaccineInfoStatementForSelectedprocedure(ClinicalSummary.ImmunizationList[0].Procedure_Code);
+        //            string LocationIdentifier = string.Empty;
+        //            if (ClinicalSummary.ImmunizationList[i].Location != string.Empty)
+        //                LocationIdentifier = iFieldLookupList.Where(a => a.Value.ToUpper() == ClinicalSummary.ImmunizationList[i].Location.ToUpper()).ToList<StaticLookup>()[0].Description;
+
+        //            if (ClinicalSummary.ImmunizationList[i].Is_Administration_Refused.ToUpper() != "Y" && ClinicalSummary.ImmunizationList[i].Immunization_Evidence == string.Empty && VISList.Count > 0)
+        //            {
+        //                sResult = sResult + "\n" + "RXR|" + AdministrationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Route_of_Administration + "^NCIT|" + LocationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Location + "^HL70163";
+        //                sResult = sResult + "\n" + "OBX|1|CE|64994-7^Vaccine funding program eligibility category^LN^|1|" + Vfc + "^" + ClinicalSummary.ImmunizationList[i].Vfc + "^HL70064||||||F|||" + ClinicalSummary.ImmunizationList[i].VIS_Given_Date.ToString("yyyyMMdd") + "|||VXC40^" + "Eligibility captured at the" + ClinicalSummary.ImmunizationList[i].Eligibility_Captured + "^CDCPHINVS";
+        //                sResult = sResult + "\n" + "OBX|2|CE|30956-7^vaccine type^LN|2|" + VISList[0].CVX.ToString() + "^" + VISList[0].Vaccine_Name + "^CVX||||||F";
+        //                sResult = sResult + "\n" + "OBX|3|TS|29768-9^Date vaccine information statement published^LN|2|" + VISList[0].VIS_Date.ToString("yyyyMMdd") + "||||||F";
+        //                sResult = sResult + "\n" + "OBX|4|TS|29769-7^Date vaccine information statement presented^LN|2|" + ClinicalSummary.ImmunizationList[i].VIS_Given_Date.ToString("yyyyMMdd") + "||||||F";
+        //            }
+        //            if (VISList != null && VISList.Count >= 2)
+        //            {
+        //                sResult = sResult + "\n" + "OBX|5|CE|30956-7^vaccine type^LN|3|" + VISList[1].CVX + "^" + VISList[1].Vaccine_Name + "^CVX||||||F";
+        //                sResult = sResult + "\n" + "OBX|6|TS|29768-9^Date vaccine information statement published^LN|3|" + VISList[1].VIS_Date.ToString("yyyyMMdd") + "||||||F";
+        //                sResult = sResult + "\n" + "OBX|7|TS|29769-7^Date vaccine information statement presented^LN|3|" + ClinicalSummary.ImmunizationList[i].VIS_Given_Date.ToString("yyyyMMdd") + "||||||F";
+        //            }
+        //            if (VISList != null && VISList.Count == 3)
+        //            {
+        //                sResult = sResult + "\n" + "OBX|8|CE|30956-7^vaccine type^LN|4|" + VISList[2].CVX + "^" + VISList[2].Vaccine_Name + "^CVX||||||F";
+        //                sResult = sResult + "\n" + "OBX|9|TS|29768-9^Date vaccine information statement published^LN|4|" + VISList[2].VIS_Date.ToString("yyyyMMdd") + "||||||F";
+        //                sResult = sResult + "\n" + "OBX|10|TS|29769-7^Date vaccine information statement presented^LN|4|" + ClinicalSummary.ImmunizationList[i].VIS_Given_Date.ToString("yyyyMMdd") + "||||||F";
+        //            }
+        //        }
+        //    }
+        //    return sResult;
+        //}
 
         public string CreateImmunizationRegistry(Human hn, PhysicianLibrary Phy, FillClinicalSummary ClinicalSummary, string sPrintFileName)
         {
@@ -7069,7 +7494,7 @@ namespace Acurus.Capella.UI
             string PublicitycodeIdentifier = string.Empty;
             string RelationshipIdentifier = string.Empty;
             string AdministrationIdentifier = string.Empty;
-            string ImmunizationInformationIdentifier = string.Empty;
+            string ImmunizationInformationIdentifier = "00";
             string ProtectionstateIdentifier = string.Empty;
             string ObservationIdentifier = string.Empty;
             string EvidenceIdentifier = string.Empty;
@@ -7093,7 +7518,7 @@ namespace Acurus.Capella.UI
             }
             if (ClinicalSummary.lookupValues != null && ClinicalSummary.lookupValues.Count > 0)
             {
-                var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race select d;
+                var RaceIdentifierlst = from d in iFieldLookupList where d.Value == hn.Race && d.Field_Name == "RACE" select d;
                 if (RaceIdentifierlst.Count() > 0)
                 {
                     IList<StaticLookup> iFieldLookupListRace = RaceIdentifierlst.ToList<StaticLookup>();
@@ -7107,14 +7532,14 @@ namespace Acurus.Capella.UI
                     if (iFieldLookupListEthnicity.Count > 0)
                         EthnicityIdentifier = iFieldLookupListEthnicity[0].Default_Value;
                 }
-                var PublicitycodeIdentifierlst = from d in iFieldLookupList where d.Value == hn.Publicity_Code select d;
+                var PublicitycodeIdentifierlst = from d in iFieldLookupList where d.Value == hn.Publicity_Code && d.Field_Name == "PUBLICITY CODE" select d;
                 if (PublicitycodeIdentifierlst != null && PublicitycodeIdentifierlst.Count() > 0)
                 {
                     IList<StaticLookup> iFieldLookupListPublicity = PublicitycodeIdentifierlst.ToList<StaticLookup>();
                     if (iFieldLookupListPublicity.Count > 0)
                         PublicitycodeIdentifier = iFieldLookupListPublicity[0].Description;
                 }
-                var RelationshipIdentifierlst = from d in iFieldLookupList where d.Value == hn.Guarantor_Relationship select d;
+                var RelationshipIdentifierlst = from d in iFieldLookupList where d.Value == hn.Guarantor_Relationship && d.Field_Name == "RELATIONSHIP" select d;
                 if (RelationshipIdentifierlst != null && RelationshipIdentifierlst.Count() > 0)
                 {
                     IList<StaticLookup> iFieldLookupListRelationship = RelationshipIdentifierlst.ToList<StaticLookup>();
@@ -7158,7 +7583,7 @@ namespace Acurus.Capella.UI
             }
 
             //sResult = "MSH|^~\\&|Capella EHR|X68||CA Immunization Reg|" + DateTime.Now.ToString("yyyyMMddHHMM") + "||VXU^V04^VXU_V04|NIST-IZ-001.00|P|2.5.1|||AL|ER";
-            sResult = "MSH|^~\\&|Capella EHR|" + sMSH4 + "||" + sMSH6 + "|" + DateTime.Now.ToString("yyyyMMddhhmm") + "||VXU^V04^VXU_V04|IR" + DateTime.Now.ToString("yyyyMMddhhmmss") + "|P|2.5.1|||AL|AL||||||" + sMSH22;
+            sResult = "MSH|^~\\&|Capella EHR|" + sMSH4 + "||" + sMSH6 + "|" + DateTime.Now.ToString("yyyyMMddhhmm") + "||VXU^V04^VXU_V04|IR" + DateTime.Now.ToString("yyyyMMddhhmmss") + "|P|2.5.1|||ER|AL|||||Z22^CDCPHINVS|" + sMSH22;
 
             if (hn.Home_Phone_No != String.Empty)
             {
@@ -7187,6 +7612,7 @@ namespace Acurus.Capella.UI
                         LocalNumber = hn.Home_Phone_No.Substring(2, 8);
                     }
                 }
+                LocalNumber = "^PRN^PH^^^" + CityCode + "^" + LocalNumber;
             }
             string Mothers_Maiden_First_Name = string.Empty;
             string Mothers_Maiden_Last_Name = string.Empty;
@@ -7201,7 +7627,10 @@ namespace Acurus.Capella.UI
                     {
                         Mothers_Maiden_First_Name = Mothers_Maiden_Name[0].ToString();
                         //Mothers_Maiden_Middle_Name = Mothers_Maiden_Name[1].ToString();
-                        Mothers_Maiden_Last_Name = Mothers_Maiden_Name[1].ToString();
+                        if (Mothers_Maiden_First_Name != string.Empty)
+                            Mothers_Maiden_Last_Name = "^" + Mothers_Maiden_Name[1].ToString();
+                        else
+                            Mothers_Maiden_Last_Name = Mothers_Maiden_Name[1].ToString();
                     }
                 }
             }
@@ -7212,33 +7641,40 @@ namespace Acurus.Capella.UI
             {
                 if (EthnicityIdentifier == string.Empty)
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + LocalNumber + "|||||||||";
                 }
                 else
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
                 }
             }
             else
             {
                 if (EthnicityIdentifier == string.Empty)
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + LocalNumber + "|||||||||";
                 }
                 else
                 {
-                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI~" + hn.Patient_Account_External + "^^^MAA^SS||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + "^" + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||^PRN^PH^^^" + CityCode + "^" + LocalNumber + "^~^NET^^" + hn.EMail + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
+                    sResult = sResult + "\n" + "PID|1||" + hn.Id + "^^^ACUR^PI||" + hn.Last_Name + "^" + hn.First_Name + "^" + hn.MI + "^^^^L|" + Mothers_Maiden_First_Name + Mothers_Maiden_Last_Name + "|" + hn.Birth_Date.ToString("yyyyMMdd") + "|" + sSex + "||" + RaceIdentifier + "^" + hn.Race + "^CDCREC|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L||" + LocalNumber + "|||||||||" + EthnicityIdentifier + "^" + hn.Ethnicity + "^CDCREC";
                 }
             }
 
 
-            if (PublicitycodeIdentifier != string.Empty && hn.Immunization_Registry_Status != string.Empty)
+            if (PublicitycodeIdentifier != string.Empty )
             {
-                sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215|||||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd") + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd");
+                if (hn.Immunization_Registry_Status!= String.Empty)
+                    sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215|N||||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd") + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd");
+                else
+                    sResult = sResult + "\n" + "PD1|||||||||||" + PublicitycodeIdentifier + "^" + hn.Publicity_Code + "^HL70215|N||||" + "|" + "|";
             }
             else
             {
-                sResult = sResult + "\n" + "PD1||||||||||||N||||||";
+                if (hn.Immunization_Registry_Status != String.Empty)
+                    sResult = sResult + "\n" + "PD1|||||||||||" + "|N||||" + hn.Immunization_Registry_Status.Substring(0, 1) + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd") + "|" + hn.Created_Date_And_Time.ToString("yyyyMMdd");
+                else
+                    sResult = sResult + "\n" + "PD1|||||||||||" + "|N||||" + "|" + "|";
+                //sResult = sResult + "\n" + "PD1||||||||||||N||||||";
             }
             //else if (ClinicalSummary.immunhistoryList != null && ClinicalSummary.immunhistoryList.Count > 0)
             //{
@@ -7267,8 +7703,8 @@ namespace Acurus.Capella.UI
 
 
 
-            if (hn.Guarantor_Last_Name != string.Empty || hn.Guarantor_First_Name != string.Empty)
-                sResult = sResult + "\n" + "NK1|1|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L|^PRN^PH^^^" + CityCode + "^" + LocalNumber + "";
+            if (hn.Guarantor_Last_Name != string.Empty || hn.Guarantor_First_Name != string.Empty && RelationshipIdentifier != String.Empty)
+                sResult = sResult + "\n" + "NK1|1|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^L|" + LocalNumber + "";
 
 
             if (ClinicalSummary.immunhistoryList != null && ClinicalSummary.immunhistoryList.Count > 0)
@@ -7386,7 +7822,10 @@ namespace Acurus.Capella.UI
 
                     }
 
-                    AdminAmount = "999";
+                    if (ClinicalSummary.ImmunizationList[i].Administered_Amount.ToString() == "0.00")
+                        AdminAmount = "999";
+                    else
+                        AdminAmount = ClinicalSummary.ImmunizationList[i].Administered_Amount.ToString(); // "999";
 
                     if (PhyLastName != string.Empty || PhyLastName != string.Empty || PhyLastName != string.Empty)
                     {
@@ -7404,7 +7843,7 @@ namespace Acurus.Capella.UI
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                                 + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
                                 ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
-                                + "^UCUM||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+                                + "^UCUM||" + ImmunizationInformationIdentifier + "^NIP001|" +
                                 "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
                                 ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                                 + "|" + VaccineCode
@@ -7415,7 +7854,7 @@ namespace Acurus.Capella.UI
                         {
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                               + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
-                              ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|||" + ImmunizationInformationIdentifier + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
+                              ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|||" + ImmunizationInformationIdentifier+ "^NIP001|" +
                               "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
                               ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                               + "|" + VaccineCode
@@ -7428,7 +7867,7 @@ namespace Acurus.Capella.UI
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                           + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
                           ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit
-                          + "^UCUM|||" +
+                          + "^UCUM||00|" +
                           "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
                           ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                           + "|" + VaccineCode
@@ -7440,7 +7879,7 @@ namespace Acurus.Capella.UI
                         {
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                               + ClinicalSummary.ImmunizationList[i].CVX_Code + "^" +
-                              ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "||||" +
+                              ClinicalSummary.ImmunizationList[i].Immunization_Description + "^CVX|" + AdminAmount + "|||00|" +
                               "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^CMS^^^^NPI^^^^^^^^" + PhySuffix + "|^^^" + sRXA11 + "||||" +
                               ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                               + "|" + VaccineCode

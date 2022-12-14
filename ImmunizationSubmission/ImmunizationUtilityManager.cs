@@ -13,6 +13,7 @@ using System.Collections;
 using System.Security.Authentication;
 using Acurus.Capella.UI;
 using System.Net;
+using System.Xml;
 
 namespace Acurus.Capella.ImmunizationSubmission
 {
@@ -58,6 +59,7 @@ namespace Acurus.Capella.ImmunizationSubmission
                 objlog = new ImmunizationSubmissionLog();
                 objlogmanager = new ImmunizationSubmissionLogManager();
                 Console.WriteLine("Get Immunization Order from Immunization table using wf_object_ID");
+                //IList<Immunization> objImmun = objImmunMngr.GetImmunizationUsingGroupID(lstlstwfobject[i].Obj_System_Id);
                 IList<Immunization> objImmun = objImmunMngr.GetImmunizationUsingGroupID(lstlstwfobject[i].Obj_System_Id);
 
                 if (objImmun != null && objImmun.Count > 0)
@@ -147,14 +149,66 @@ namespace Acurus.Capella.ImmunizationSubmission
                     try
                     {
                         Console.WriteLine("Connect to production server...");
-                        ImmunizationSubmissionProduction.IS_PortTypeClient objImmunizationServiceProduction = new ImmunizationSubmissionProduction.IS_PortTypeClient();
-                        ////ServicePointManager.SecurityProtocol = (SecurityProtocolType)192 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
-                        //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-                        const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
-                        const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
-                        ServicePointManager.SecurityProtocol = Tls12;
-                        sConnectivityTest = objImmunizationServiceProduction.connectivityTest("TestPatientSep9");
-                        sHL7Message = objImmunizationServiceProduction.submitSingleMessage("SF-008625", "Qbe3iQzm", "CAIR", sResult);
+                        //ImmunizationSubmissionProduction.IS_PortTypeClient objImmunizationServiceProduction = new ImmunizationSubmissionProduction.IS_PortTypeClient();
+                        //////ServicePointManager.SecurityProtocol = (SecurityProtocolType)192 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
+                        ////ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+                        //const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
+                        //const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
+                        //ServicePointManager.SecurityProtocol = Tls12;
+                        //sConnectivityTest = objImmunizationServiceProduction.connectivityTest("TestPatientSep9");
+                        //sHL7Message = objImmunizationServiceProduction.submitSingleMessage("SF-008625", "Qbe3iQzm", "CAIR", sResult);
+
+
+                        //Calling CreateSOAPWebRequest method  
+                        HttpWebRequest request = CreateSOAPWebRequest();
+                        string sInput = string.Empty;
+
+                        string GetDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                        string sPhysicianXmlPath = GetDirectory + "\\ConfigXML\\SOAPTemplate.txt";
+
+                        string[] lines = File.ReadAllLines(sPhysicianXmlPath);
+
+                        foreach (string ln in lines)
+                            sInput += ln;
+
+                        //string file = @"D:\\sample_immunization_request.xml";
+                        //string[] lines = File.ReadAllLines(file);
+
+                        //foreach (string ln in lines)
+                        //    sInput += ln;
+
+                        XmlDocument SOAPReqBody = new XmlDocument();
+                        //SOAP Body Request  
+                        sInput = sInput.Replace("ImmunizationHL7Content", sResult);
+                        //sInput = sInput.Replace("PID", "\nPID");
+                        //sInput = sInput.Replace("PD1", "\r\nPD1");
+                        //sInput = sInput.Replace("NK1", "\r\nNK1");
+                        //sInput = sInput.Replace("ORC", "\r\nORC");
+                        //sInput = sInput.Replace("RXA", "\r\nRXA");
+                        //sInput = sInput.Replace("RXR", "\r\nRXR");
+                        //sInput = sInput.Replace("OBX", "\r\nOBX");
+
+                        SOAPReqBody.LoadXml(sInput);
+
+
+                        using (Stream stream = request.GetRequestStream())
+                        {
+                            SOAPReqBody.Save(stream);
+                        }
+                        //Geting response from request  
+                        using (WebResponse Serviceres = request.GetResponse())
+                        {
+                            using (StreamReader rd = new StreamReader(Serviceres.GetResponseStream()))
+                            {
+                                //reading stream  
+                                var ServiceResult = rd.ReadToEnd();
+                                //writting stream result on console  
+                                Console.WriteLine(ServiceResult);
+                                sHL7Message = ServiceResult;
+                            }
+                        }
+
+
                         Console.WriteLine("Submitted Sucessfully...");
                     }
                     catch (Exception ex)
@@ -188,44 +242,44 @@ namespace Acurus.Capella.ImmunizationSubmission
                 }
                 else
                 {
-                    Console.WriteLine("Connect to testing server...");
-                    try
-                    {
-                        // ImmunizationSubmissionTesting.IS_PortTypeClient objImmunizationServiceTesting = new ImmunizationSubmissionTesting.IS_PortTypeClient();
-                        //// ServicePointManager.SecurityProtocol = (SecurityProtocolType)192 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
-                        // ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-                        // sConnectivityTest = objImmunizationServiceTesting.connectivityTest("Acurus");
-                        // sHL7Message = objImmunizationServiceTesting.submitSingleMessage("SF-008625", "Qbe3iQzm", "CAIR", sResult);
-                        Console.WriteLine("Submitted Sucessfully...");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Failed to submit ...");
-                        DateTime dt = new DateTime();
-                        dt = System.DateTime.Now;
-                        objwfobject.MoveToNextProcess(lstlstwfobject[i].Obj_System_Id, lstlstwfobject[i].Obj_Type, 7, "UNKNOWN", dt, "", null, null);
-                        objlog.Human_ID = ulHumanId;
-                        objlog.Encounter_ID = ulEncounterId;
-                        //if (resultsplit.Length > 10)
-                        //    objlog.Control_ID = resultsplit[9].ToString();
-                        //else
-                        //    objlog.Control_ID = "";
-                        objlog.Submission_Result_Type = "Failed to connect";
-                        if (PhysicianList != null && PhysicianList.Count > 0)
-                            objlog.Physician_ID = PhysicianList[0].Id;
-                        //objlog.Result_Message = test; // resultsplit[resultsplit.Length - 1].ToString(); ;
-                        objlog.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                        lstlog.Add(objlog);
-                        objlogmanager.SaveUpdateDeleteWithTransaction(ref lstlog, null, null, string.Empty);
-                        if (ex.InnerException != null)
-                        {
-                            Console.WriteLine(ex.InnerException);
-                        }
-                        else
-                        {
-                            Console.WriteLine(ex.ToString());
-                        }
-                    }
+                    //Console.WriteLine("Connect to testing server...");
+                    //try
+                    //{
+                    //    // ImmunizationSubmissionTesting.IS_PortTypeClient objImmunizationServiceTesting = new ImmunizationSubmissionTesting.IS_PortTypeClient();
+                    //    //// ServicePointManager.SecurityProtocol = (SecurityProtocolType)192 | (SecurityProtocolType)768 | (SecurityProtocolType)3072;
+                    //    // ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+                    //    // sConnectivityTest = objImmunizationServiceTesting.connectivityTest("Acurus");
+                    //    // sHL7Message = objImmunizationServiceTesting.submitSingleMessage("SF-008625", "Qbe3iQzm", "CAIR", sResult);
+                    //    Console.WriteLine("Submitted Sucessfully...");
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    Console.WriteLine("Failed to submit ...");
+                    //    DateTime dt = new DateTime();
+                    //    dt = System.DateTime.Now;
+                    //    objwfobject.MoveToNextProcess(lstlstwfobject[i].Obj_System_Id, lstlstwfobject[i].Obj_Type, 7, "UNKNOWN", dt, "", null, null);
+                    //    objlog.Human_ID = ulHumanId;
+                    //    objlog.Encounter_ID = ulEncounterId;
+                    //    //if (resultsplit.Length > 10)
+                    //    //    objlog.Control_ID = resultsplit[9].ToString();
+                    //    //else
+                    //    //    objlog.Control_ID = "";
+                    //    objlog.Submission_Result_Type = "Failed to connect";
+                    //    if (PhysicianList != null && PhysicianList.Count > 0)
+                    //        objlog.Physician_ID = PhysicianList[0].Id;
+                    //    //objlog.Result_Message = test; // resultsplit[resultsplit.Length - 1].ToString(); ;
+                    //    objlog.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    //    lstlog.Add(objlog);
+                    //    objlogmanager.SaveUpdateDeleteWithTransaction(ref lstlog, null, null, string.Empty);
+                    //    if (ex.InnerException != null)
+                    //    {
+                    //        Console.WriteLine(ex.InnerException);
+                    //    }
+                    //    else
+                    //    {
+                    //        Console.WriteLine(ex.ToString());
+                    //    }
+                    //}
                 }
 
                 string test = sHL7Message;
@@ -246,7 +300,7 @@ namespace Acurus.Capella.ImmunizationSubmission
                     objlog.Submission_Result_Type = "Success";
                     if (PhysicianList != null && PhysicianList.Count > 0)
                         objlog.Physician_ID = PhysicianList[0].Id;
-                    objlog.Result_Message = "";
+                    objlog.Result_Message = test;
                     objlog.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                     lstlog.Add(objlog);
                     objlogmanager.SaveUpdateDeleteWithTransaction(ref lstlog, null, null, string.Empty);
@@ -256,7 +310,7 @@ namespace Acurus.Capella.ImmunizationSubmission
                 {
                     DateTime dt = new DateTime();
                     dt = System.DateTime.Now;
-                    objwfobject.MoveToNextProcess(lstlstwfobject[i].Obj_System_Id, lstlstwfobject[i].Obj_Type, 7, "UNKNOWN", dt, "", null, null);
+                    //objwfobject.MoveToNextProcess(lstlstwfobject[i].Obj_System_Id, lstlstwfobject[i].Obj_Type, 7, "UNKNOWN", dt, "", null, null);
                     objlog.Human_ID = ulHumanId;
                     objlog.Encounter_ID = ulEncounterId;
                     if (resultsplit.Length > 10)
@@ -282,6 +336,27 @@ namespace Acurus.Capella.ImmunizationSubmission
                 //return aryResult;
 
             }
+        }
+
+        public static void InvokeService()
+        {
+            
+        }
+
+        public static HttpWebRequest CreateSOAPWebRequest()
+        {
+            //Making Web Request  
+            string sSubmitURL = System.Configuration.ConfigurationSettings.AppSettings["SubmitURL"];
+            HttpWebRequest Req = (HttpWebRequest)WebRequest.Create(sSubmitURL);
+            //SOAPAction  
+            //Req.Headers.Add(@"SOAPAction:http://tempuri.org/Addition");
+            //Content_type  
+            Req.ContentType = "application/soap+xml;charset=UTF-8;action=\"urn: cdc: iisb: 2011:submitSingleMessage\"";
+            Req.Accept = "text/xml";
+            //HTTP method  
+            Req.Method = "POST";
+            //return HttpWebRequest  
+            return Req;
         }
     }
 }
