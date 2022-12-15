@@ -648,7 +648,7 @@ namespace Acurus.Capella.UI
             string sActivityType = "CCD Import";
             if (Path.GetExtension(FileName).ToUpper() == ".XML")
             {
-                string xmlString = System.IO.File.ReadAllText(PhiMailDirectory + "\\" + ClientSession.PhysicianId + "\\" + FileName);
+                string xmlString = System.IO.File.ReadAllText(sFullPathFileName);
                 if (xmlString.ToUpper().Contains("CCR:"))
                 {
 
@@ -827,6 +827,173 @@ namespace Acurus.Capella.UI
             }
         }
         //BugID:48547
+        //public void ReceiveMailDownload(string sender, bool isNotificationCountFill)
+        //{
+        //    PhiMailConnector pcConnection;
+        //    bool IsMail = false;
+        //    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+        //    try
+        //    {
+        //        if (System.Configuration.ConfigurationSettings.AppSettings["phiMailCertficatepath"] != null)
+        //            PhiMailConnector.SetServerCertificate(System.Configuration.ConfigurationSettings.AppSettings["phiMailCertficatepath"].ToString());
+
+        //        X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+        //        store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+        //        X509Certificate2Collection certCollection = (X509Certificate2Collection)store.Certificates.Find(
+        //            X509FindType.FindByIssuerName, "EMR Direct Test", false); //"EMR Direct Test"
+        //        if (certCollection.Count == 0) throw new Exception("No client certificate found");
+        //        if (certCollection.Count > 1) throw new Exception("More than one certificate found");
+        //        X509Certificate2 xcert = certCollection[0];
+        //        store.Close();
+
+        //        PhiMailConnector.SetClientCertificate(xcert);
+
+        //        //PhiMailConnector.SetCheckRevocation(false);
+        //        pcConnection = new PhiMailConnector(System.Configuration.ConfigurationSettings.AppSettings["phiMailServer"].ToString(), Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["phiMailPortNo"]));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (ex.InnerException != null)
+        //        {
+        //            if (ex.InnerException.Message != null)
+        //            {
+        //                throw new Exception(ex.InnerException.Message);
+        //            }
+        //            else
+        //            {
+        //                throw new Exception(ex.InnerException.ToString());
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (ex.Message != null)
+        //                throw new Exception(ex.Message.ToString());
+        //        }
+
+        //        // ex.Message;
+        //        return;
+        //    }
+        //    try
+        //    {
+        //        bool receive = true;
+        //        string sUser = string.Empty;
+        //        string sPassword = null;
+
+        //        XmlDocument xmldoc1 = new XmlDocument();
+        //        string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+        //        if (File.Exists(strXmlFilePath1) == true)
+        //        {
+        //            xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+        //            XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
+        //            if (nodeMatchingPhysicianAddress != null)
+        //            {
+        //                sUser = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
+        //            }
+        //        }
+
+        //        if (sUser == string.Empty)
+        //        {
+        //            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('1007019','','receive');", true);
+        //            return;
+        //        }
+
+        //        pcConnection.AuthenticateUser(sUser, sPassword);
+        //        string Header;
+        //        if (receive)
+        //        {
+        //            while (true)
+        //            {
+        //                PhiMailConnector.CheckResult cr = pcConnection.Check();
+        //                if (cr == null)
+        //                {
+        //                    // fired When there is no new message from inbox queue
+
+        //                    break;
+        //                }
+        //                else if (cr.IsMail())
+        //                {
+        //                    for (int i = 0; i <= cr.NumAttachments; i++)
+        //                    {
+        //                        // Get content for part i of the current message.
+        //                        PhiMailConnector.ShowResult showRes = pcConnection.Show(i);
+
+        //                        // List all the headers
+        //                        for (int j = 0; i == 0 && j < showRes.Headers.Count; j++)
+        //                            Header = "Header: " + showRes.Headers[j];
+
+        //                        if (showRes.PartNum != 0)
+        //                        {
+        //                            string query = @"SELECT *  FROM physician_library  where Physician_EMail='" + cr.Recipient + "'";
+        //                            DataSet dsReturn = DBConnector.ReadData(query);
+        //                            DataTable dt = dsReturn.Tables[0];
+
+        //                            if (dt.Rows.Count > 0)
+        //                            {
+        //                                // Writing Attachment Part in The Location, In the Directory Name Of Sender
+
+        //                                if (!Directory.Exists(PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID")))
+        //                                {
+        //                                    Directory.CreateDirectory(PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID"));
+        //                                }
+        //                                try
+        //                                {
+        //                                    File.WriteAllBytes(PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename, showRes.Data);
+        //                                    IsMail = true;
+        //                                    Activity_Log_Entry(sender, showRes.Filename, PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename);
+        //                                    CreateAuditentry(showRes.Filename);
+        //                                }
+        //                                catch (Exception ex)
+        //                                {
+        //                                    throw ex;
+        //                                }
+        //                            }
+        //                        }
+        //                        //if (showRes.PartNum == 0)
+        //                        //{
+        //                        //    string BodyMessage = System.Text.Encoding.UTF8.GetString(showRes.Data);
+        //                        //}
+
+
+        //                    }
+        //                    pcConnection.AcknowledgeMessage();
+        //                }
+        //                else
+        //                {
+        //                    pcConnection.AcknowledgeStatus();
+        //                }
+        //            }
+        //            if (!isNotificationCountFill)
+        //            {
+        //                try
+        //                {
+        //                    FillGrid();
+        //                    //DownLoadZIPFormateCATII(DirectoryPath);
+        //                }
+        //                catch
+        //                {
+        //                    // do nothing
+        //                }
+        //            }
+        //            if (IsMail)
+        //            {
+        //                ScriptManager.RegisterStartupScript(this, this.GetType(), "Receive Mail", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //            }
+        //            else
+        //            {
+        //                ScriptManager.RegisterStartupScript(this, this.GetType(), "Receive Mail", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+        //            }
+        //        }
+
+        //    }
+        //    catch
+        //    {
+        //        // generic exception handling for connector errors.
+        //        // Console.WriteLine("Exception = " + ex);
+        //    }
+
+        //}
+
         public void ReceiveMailDownload(string sender, bool isNotificationCountFill)
         {
             PhiMailConnector pcConnection;
@@ -841,7 +1008,7 @@ namespace Acurus.Capella.UI
                 X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
                 store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
                 X509Certificate2Collection certCollection = (X509Certificate2Collection)store.Certificates.Find(
-                    X509FindType.FindByIssuerName, "EMR Direct Test", false); //"EMR Direct Test"
+                    X509FindType.FindByIssuerName, System.Configuration.ConfigurationSettings.AppSettings["phiMailIssuerName"].ToString(), false); //"EMR Direct Test"
                 if (certCollection.Count == 0) throw new Exception("No client certificate found");
                 if (certCollection.Count > 1) throw new Exception("More than one certificate found");
                 X509Certificate2 xcert = certCollection[0];
@@ -877,20 +1044,20 @@ namespace Acurus.Capella.UI
             try
             {
                 bool receive = true;
-                string sUser = string.Empty;
+                string sUser = System.Configuration.ConfigurationSettings.AppSettings["ReceiveMailUserGroup"].ToString();
                 string sPassword = null;
 
-                XmlDocument xmldoc1 = new XmlDocument();
-                string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
-                if (File.Exists(strXmlFilePath1) == true)
-                {
-                    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
-                    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
-                    if (nodeMatchingPhysicianAddress != null)
-                    {
-                        sUser = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
-                    }
-                }
+                //XmlDocument xmldoc1 = new XmlDocument();
+                //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
+                //if (File.Exists(strXmlFilePath1) == true)
+                //{
+                //    xmldoc1.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianAddressDetails" + ".xml");
+                //    XmlNode nodeMatchingPhysicianAddress = xmldoc1.SelectSingleNode("/PhysicianAddress/p" + ClientSession.PhysicianId);
+                //    if (nodeMatchingPhysicianAddress != null)
+                //    {
+                //        sUser = nodeMatchingPhysicianAddress.Attributes["Physician_EMail"].Value.ToString();
+                //    }
+                //}
 
                 if (sUser == string.Empty)
                 {
@@ -922,7 +1089,7 @@ namespace Acurus.Capella.UI
                                 for (int j = 0; i == 0 && j < showRes.Headers.Count; j++)
                                     Header = "Header: " + showRes.Headers[j];
 
-                                if (showRes.PartNum != 0)
+                                if (showRes.Filename != null && showRes.Filename != string.Empty)
                                 {
                                     string query = @"SELECT *  FROM physician_library  where Physician_EMail='" + cr.Recipient + "'";
                                     DataSet dsReturn = DBConnector.ReadData(query);
@@ -938,9 +1105,10 @@ namespace Acurus.Capella.UI
                                         }
                                         try
                                         {
-                                            File.WriteAllBytes(PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename, showRes.Data);
+                                            string sFullName = DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename;
+                                            File.WriteAllBytes(PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + sFullName, showRes.Data);
                                             IsMail = true;
-                                            Activity_Log_Entry(sender, showRes.Filename, PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + DateTime.Now.ToString("yyyyMMdd_HH_mm_ss") + "_" + showRes.Filename);
+                                            Activity_Log_Entry(sender, showRes.Filename, PhiMailDirectory + "\\" + dt.Rows[0].Field<UInt32>("Physician_Library_ID") + "\\" + sFullName);
                                             CreateAuditentry(showRes.Filename);
                                         }
                                         catch (Exception ex)

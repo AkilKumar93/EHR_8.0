@@ -22,7 +22,7 @@ using EMRDirect.phiMail;
 using System.IO;
 
 using System.Net;
-
+using System.Security.Cryptography.X509Certificates;
 
 namespace Acurus.Capella.UI
 {
@@ -631,25 +631,25 @@ namespace Acurus.Capella.UI
                 {
                     if (cboFrom.Text.ToString() == ClientSession.PhysicainDetails[0].PhyEMail)
                     {
-                        if (ClientSession.PhysicainDetails[0].Physician_EMail_Port != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(ClientSession.PhysicainDetails[0].Physician_EMail_Port, "^[0-9]*$")==true)
-                        {
-                            port = Convert.ToInt32(ClientSession.PhysicainDetails[0].Physician_EMail_Port);
-                        }
-                        else
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('1007017');", true);
-                            return;
-                        }
-                        
-                        if (ClientSession.PhysicainDetails[0].Physician_EMail_Password != string.Empty)
-                        {
-                            password = ClientSession.PhysicainDetails[0].Physician_EMail_Password;
-                        }
-                        else
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('1007018');", true);
-                            return;
-                        }
+                        //if (ClientSession.PhysicainDetails[0].Physician_EMail_Port != string.Empty && System.Text.RegularExpressions.Regex.IsMatch(ClientSession.PhysicainDetails[0].Physician_EMail_Port, "^[0-9]*$") == true)
+                        //{
+                        //    port = Convert.ToInt32(ClientSession.PhysicainDetails[0].Physician_EMail_Port);
+                        //}
+                        //else
+                        //{
+                        //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('1007017');", true);
+                        //    return;
+                        //}
+
+                        //if (ClientSession.PhysicainDetails[0].Physician_EMail_Password != string.Empty)
+                        //{
+                        //    password = ClientSession.PhysicainDetails[0].Physician_EMail_Password;
+                        //}
+                        //else
+                        //{
+                        //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('1007018');", true);
+                        //    return;
+                        //}
                     }
                     else if (cboFrom.Text.ToString() == ClientSession.PhysicainDetails[0].Physician_Other_EMail_Username)
                     {
@@ -1718,6 +1718,111 @@ namespace Acurus.Capella.UI
             else
                 return (false);
         }
+        //public void ComposeEmail(string sRecipient, List<string> sAttachmentPath, string sContent, string sSub, int port, string password, string toaddress)
+        //{
+        //    string sForCancel = hdnType.Value;
+        //    string sForcancelInSend = hdnMessageType.Value;
+        //    hdnMessageType.Value = string.Empty;
+        //    hdnType.Value = string.Empty;
+        //    PhiMailConnector pcConnection;
+
+        //    try
+        //    {
+        //        PhiMailConnector.SetTrustAnchor((System.Configuration.ConfigurationSettings.AppSettings["phiMailCertficatepath"].ToString()));
+        //        PhiMailConnector.SetCheckRevocation(false);
+        //        // pcConnection = new PhiMailConnector(System.Configuration.ConfigurationSettings.AppSettings["phiMailServer"].ToString(), Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["phiMailPortNo"]));
+        //        pcConnection = new PhiMailConnector(System.Configuration.ConfigurationSettings.AppSettings["phiMailServer"].ToString(), port);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("Exception Caught @" + ex.Message + "\n" + ex.Source + "\n" + ex.Data);
+        //        return;
+        //    }
+        //    try
+        //    {
+        //        bool send = true;
+        //        // pcConnection.AuthenticateUser(System.Configuration.ConfigurationSettings.AppSettings["phiMailUsername"].ToString(), System.Configuration.ConfigurationSettings.AppSettings["phiMailPassword"].ToString());
+        //        pcConnection.AuthenticateUser(sRecipient.ToString(), password);
+
+        //        if (send)
+        //        {
+        //            try
+        //            {
+        //                //foreach (string rec_adderess in sRecipient)
+        //                //{
+        //                // pcConnection.AddRecipient(toaddress);
+        //                //}
+
+        //                string[] toreceipient = sRecipient.Split(';');
+        //                foreach (string rec_adderess in toreceipient)
+        //                {
+        //                    pcConnection.AddRecipient(rec_adderess);
+        //                }
+        //            }
+        //            catch 
+        //            {
+        //                //throw ex;
+        //               // string test = "";
+        //            }
+        //            pcConnection.SetSubject(sSub);
+        //            if (sContent != string.Empty)
+        //            {
+        //                pcConnection.AddText(sContent);
+        //            }
+        //            foreach (string file in sAttachmentPath) // To Attach All The Files With This MailMessage
+        //            {
+        //                // string FinalPath = file.Remove(0, 1);
+        //                if (file.Contains(".xml"))
+        //                {
+        //                    FileInfo filename = new FileInfo(file); // To Remove The // in front Of File Path to avoid production issue
+        //                    pcConnection.AddCDA(File.ReadAllText(file), filename.Name);
+        //                }
+        //                else if (file.Contains(".pdf"))
+        //                {
+        //                    FileInfo filename = new FileInfo(file);
+        //                    pcConnection.AddRaw(File.ReadAllBytes(file), filename.Name);
+        //                }
+        //            }
+        //            pcConnection.SetDeliveryNotification(true);
+        //            List<PhiMailConnector.SendResult> sendRes = pcConnection.Send();
+        //            if (sendRes != null && sendRes.Count > 0 && sendRes[0].Succeeded)
+        //            {
+        //                //ActivityLogEntry(sRecipient);
+        //                if (sForCancel == "Yes")
+        //                {
+        //                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Orders", "DisplayErrorMessage('1007007','','" + sendRes[0].Recipient + "');close();", true);
+        //                }
+        //                else if (sForcancelInSend == "Yes")
+        //                {
+        //                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Orders", "DisplayErrorMessage('1007007','','" + sendRes[0].Recipient + "');closeForSend();", true);
+        //                }
+        //                else
+        //                {
+        //                    if (txtDirectAddress.Text == "")
+        //                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Orders", "DisplayErrorMessage('1007007','','" + sendRes[0].Recipient + "');", true);
+        //                    else
+        //                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Orders", "DisplayErrorMessage('1007007','','" + txtDirectAddress.Text + "');", true);
+
+        //                }
+        //                //ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowMsg", "ShowSuccess(" + sendRes[0].Recipient + ");", true);
+        //            }
+        //            else
+        //            {
+        //                ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowMsg", "ShowFailure(" + sendRes[0].Recipient + "Description :" + sendRes[0].ErrorText.ToString() + ");", true);
+        //                pcConnection.Clear();
+        //            }
+        //        }
+        //    }
+        //    catch 
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowMsg", "alert('Please enter Valid Mail Address.');", true);
+        //        pcConnection.Clear();
+        //        flag = 1;
+
+        //    }
+        //    pcConnection.Close();
+        //}
+
         public void ComposeEmail(string sRecipient, List<string> sAttachmentPath, string sContent, string sSub, int port, string password, string toaddress)
         {
             string sForCancel = hdnType.Value;
@@ -1725,12 +1830,26 @@ namespace Acurus.Capella.UI
             hdnMessageType.Value = string.Empty;
             hdnType.Value = string.Empty;
             PhiMailConnector pcConnection;
+            port = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["phiMailPortNo"].ToString());
 
             try
             {
-                PhiMailConnector.SetTrustAnchor((System.Configuration.ConfigurationSettings.AppSettings["phiMailCertficatepath"].ToString()));
-                PhiMailConnector.SetCheckRevocation(false);
-                // pcConnection = new PhiMailConnector(System.Configuration.ConfigurationSettings.AppSettings["phiMailServer"].ToString(), Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["phiMailPortNo"]));
+                PhiMailConnector.SetServerCertificate((System.Configuration.ConfigurationSettings.AppSettings["phiMailCertficatepath"].ToString()));
+                X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+                //For Production
+                X509Certificate2Collection certCollection = (X509Certificate2Collection)store.Certificates.Find(
+                    X509FindType.FindByIssuerName, System.Configuration.ConfigurationSettings.AppSettings["phiMailIssuerName"].ToString(), false); //"EMR Direct Test" //"phiCert Direct Root CA", false);
+                if (certCollection.Count == 0) throw new Exception("No client certificate found");
+                if (certCollection.Count > 1) throw new Exception("More than one certificate found");
+                X509Certificate2 xcert = certCollection[0];
+                store.Close();
+                //
+                // When using mutual TLS authentication, you can set the client cert/key globally for 
+                // all connections after loading it by using:
+                //
+                PhiMailConnector.SetClientCertificate(xcert);
+
                 pcConnection = new PhiMailConnector(System.Configuration.ConfigurationSettings.AppSettings["phiMailServer"].ToString(), port);
             }
             catch (Exception ex)
@@ -1753,16 +1872,16 @@ namespace Acurus.Capella.UI
                         // pcConnection.AddRecipient(toaddress);
                         //}
 
-                        string[] toreceipient = sRecipient.Split(';');
+                        string[] toreceipient = toaddress.Split(';');
                         foreach (string rec_adderess in toreceipient)
                         {
                             pcConnection.AddRecipient(rec_adderess);
                         }
                     }
-                    catch 
+                    catch
                     {
                         //throw ex;
-                       // string test = "";
+                        // string test = "";
                     }
                     pcConnection.SetSubject(sSub);
                     if (sContent != string.Empty)
@@ -1813,7 +1932,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            catch 
+            catch
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowMsg", "alert('Please enter Valid Mail Address.');", true);
                 pcConnection.Clear();
