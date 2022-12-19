@@ -9296,7 +9296,7 @@ and p.physician_last_name like ? group by c.claim_header_id; ]]>
 		<!--<return class="Acurus.Capella.Core.DomainObjects.SpecialityICD, Acurus.Capella.Core"/>-->
 
 		<![CDATA[SELECT count(*) FROM  insurance_plan i left join carrier c  on(i.Carrier_ID = c.Carrier_ID) where
-i.Insurance_Plan_ID like ? and c.Carrier_Name like ? and i.payer_city like ? and i.payer_zip like ? and i.Insurance_Plan_Name like ? ]]>
+i.Insurance_Plan_ID like ? and c.Carrier_Name like ? and i.payer_city like ? and i.payer_zip like ? and i.Insurance_Plan_Name like ? and Active<>'N']]>
 
 	</sql-query>
 
@@ -9304,7 +9304,7 @@ i.Insurance_Plan_ID like ? and c.Carrier_Name like ? and i.payer_city like ? and
 		<!--<return class="Acurus.Capella.Core.DomainObjects.SpecialityICD, Acurus.Capella.Core"/>-->
 		<![CDATA[SELECT i.Insurance_Plan_ID,c.Carrier_Name,i.Insurance_Plan_Name,i.Payer_Addrress1,i.Payer_City,i.Payer_State,
 i.Payer_Zip,i.payer_phone_number,i.Financial_Class_Name,c.Carrier_id FROM  insurance_plan i left join carrier c  on(i.Carrier_ID = c.Carrier_ID) where
-i.Insurance_Plan_ID like ? and c.Carrier_Name like ? and i.payer_city like ? and i.payer_zip like ?  and i.Insurance_Plan_Name like ?  limit ?,?]]>
+i.Insurance_Plan_ID like ? and c.Carrier_Name like ? and i.payer_city like ? and i.payer_zip like ?  and i.Insurance_Plan_Name like ?  and Active<>'N' limit ?,? ]]>
 	</sql-query>
 
 	<sql-query name="Get.Taskpatientdetail">
