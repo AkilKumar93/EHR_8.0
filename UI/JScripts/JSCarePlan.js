@@ -1300,18 +1300,20 @@ function FillCarePlanTable(objdata) {
             }
 
             var lbl = $("#mainContainer").find("label[LookUpID ='" + objdata[i].Care_Plan_Lookup_ID + "']");
-            if (lbl[0].attributes[0].value == objdata[i].Care_Plan_Lookup_ID) {
-                $(lbl).parents("tr")[0].style.display = "block";
-                if ($(lbl).parents("tr").attr("gender") != undefined) {
-                    if ($(lbl).parents("tr").attr("gender").toUpperCase() != objdata[i].Gender) {
-                        $(lbl).parents("tr")[0].style.display = "block";
+            if (lbl != undefined && lbl[0] != undefined)
+            { 
+                if (lbl[0].attributes[0].value == objdata[i].Care_Plan_Lookup_ID) {
+                    $(lbl).parents("tr")[0].style.display = "block";
+                    if ($(lbl).parents("tr").attr("gender") != undefined) {
+                        if ($(lbl).parents("tr").attr("gender").toUpperCase() != objdata[i].Gender) {
+                            $(lbl).parents("tr")[0].style.display = "block";
+                        }
+                        else {
+                            $(lbl).parents("tr")[0].style.display = "none";
+                        }
                     }
-                    else {
-                        $(lbl).parents("tr")[0].style.display = "none";
-                    }
-                }
 
-            }
+                }
             if ($(lbl).parents("tr")[0].style.display != "none") {
                 if (lbl[0].parentNode.nextElementSibling.children[0].className == "combo SelectStyle") {
                     lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Status;
@@ -1441,6 +1443,9 @@ function FillCarePlanTable(objdata) {
                         EnableSave();
                     }
                 }
+
+
+            }
 
             }
         }
