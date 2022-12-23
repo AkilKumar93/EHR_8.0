@@ -307,7 +307,7 @@ namespace Acurus.Capella.UI.WebServices
             {
                 IList<string> AssPriCount = new List<string>();
                 AssPriCount = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
-                if (ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
+                if (ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT" && ClientSession.UserRole.ToUpper() != "OFFICE MANAGER")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
                 {
                     EnablePriRbtn = "disabled";
                 }
@@ -1317,7 +1317,7 @@ namespace Acurus.Capella.UI.WebServices
             {
                 IList<string> AssPriCount = new List<string>();
                 AssPriCount = ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
-                if (ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
+                if (ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT" && ClientSession.UserRole.ToUpper() != "OFFICE MANAGER")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
                 {
                     EnablePriRbtn = "disabled";
                 }
@@ -1354,7 +1354,7 @@ namespace Acurus.Capella.UI.WebServices
 
 
             //SubmitESuperBill /* Start For Git Lab Id: 1666 */
-            if (sESuperbillSubmitted == "Y")
+            if (sESuperbillSubmitted == "Y" && arylstICD.Count()>0)
             {
                 Encounter EncRecordEsuperBill = new Encounter();
                 EncounterManager ObjEncManager = new EncounterManager();
