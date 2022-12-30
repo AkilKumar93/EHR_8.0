@@ -4948,6 +4948,386 @@ namespace Acurus.Capella.UI
 
         }
 
+        public static IList<object> ReadBlob(string sXMLType, ulong EntityID, IList<string> ilstTagName)
+        {
+            IList<object> ilstResult = new List<object>();
+            IList<object> ilstEntity = new List<object>();
+            XmlDocument xmlDoc = new XmlDocument();
+            string sXMLContent = String.Empty;
+
+            if (sXMLType == "Human")
+            {
+                HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
+                if (ilstHumanBlob.Count > 0)
+                {
+                    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                    xmlDoc.LoadXml(sXMLContent);
+                }
+            }
+            else if (sXMLType == "Encounter")
+            {
+                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(EntityID);
+                if (ilstEncounterBlob.Count > 0)
+                {
+                    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    xmlDoc.LoadXml(sXMLContent);
+                }
+            }
+
+            try
+            {
+                XmlNodeList xmlTagName = null;
+
+                for (int iInputTagCount = 0; iInputTagCount < ilstTagName.Count; iInputTagCount++)
+                {
+                    ilstEntity = new List<object>();
+                    if (xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount]) != null && xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount]).Count > 0)
+                    {
+                        xmlTagName = xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount])[0].ChildNodes;
+                        if (xmlTagName.Count > 0)
+                        {
+                            ilstEntity = new List<object>();
+                            for (int iXMLTagCount = 0; iXMLTagCount < xmlTagName.Count; iXMLTagCount++)
+                            {
+                                string TagName = xmlTagName[iXMLTagCount].Name;
+                                XmlSerializer xmlserializer = FillSerializer(TagName);//new XmlSerializer(typeof(ImmunizationHistory));
+                                object objEntity = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[iXMLTagCount])) as object;
+                                IEnumerable<PropertyInfo> propInfo = null;
+                                if (objEntity != null)
+                                {
+                                    propInfo = from obji in ((object)objEntity).GetType().GetProperties() select obji;
+
+                                    for (int iAttributeCount = 0; iAttributeCount < xmlTagName[iXMLTagCount].Attributes.Count; iAttributeCount++)
+                                    {
+                                        XmlNode nodevalue = xmlTagName[iXMLTagCount].Attributes[iAttributeCount];
+                                        {
+                                            foreach (PropertyInfo property in propInfo)
+                                            {
+                                                if (property.Name == nodevalue.Name)
+                                                {
+                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                                                        property.SetValue(objEntity, Convert.ToUInt64(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                                                        property.SetValue(objEntity, Convert.ToString(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                                                        property.SetValue(objEntity, Convert.ToDateTime(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                                                        property.SetValue(objEntity, Convert.ToInt32(nodevalue.Value), null);
+                                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                                                        property.SetValue(objEntity, Convert.ToDecimal(nodevalue.Value), null);
+                                                    else
+                                                        property.SetValue(objEntity, nodevalue.Value, null);
+                                                }
+                                            }
+                                        }
+                                      
+                                    }
+                                    ilstEntity.Add(objEntity);
+                                }
+                              
+                            }
+                           
+                        }
+                    else
+                    {
+                        ilstResult.Add(null);
+                    }
+                        ilstResult.Add((object)ilstEntity);
+                    }
+                    else
+                    {
+                        ilstResult.Add(null);
+                    }
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return ilstResult;
+        }
+
+        public static XmlSerializer FillSerializer(string sEntityName)
+        {
+            XmlSerializer xmlserializer = null;
+
+            switch (sEntityName)
+            {
+                case "Encounter":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Encounter));
+                        break;
+                    }
+                case "PatientInsuredPlan":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(PatientInsuredPlan));
+                        break;
+                    }
+                case "ProblemList":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(ProblemList));
+                        break;
+                    }
+                case "ChiefComplaints":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(ChiefComplaints));
+                        break;
+                    }
+                case "Healthcare_Questionnaire":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Healthcare_Questionnaire));
+                        break;
+                    }
+                case "Test":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Test));
+                        break;
+                    }
+                case "PastMedicalHistory":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(PastMedicalHistory));
+                        break;
+                    }
+                case "PastMedicalHistoryMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(PastMedicalHistoryMaster));
+                        break;
+                    }
+                case "SocialHistory":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(SocialHistory));
+                        break;
+                    }
+                case "SocialHistoryMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(SocialHistoryMaster));
+                        break;
+                    }
+
+                case "SurgicalHistory":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(SurgicalHistory));
+                        break;
+                    }
+                case "SurgicalHistoryMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(SurgicalHistoryMaster));
+                        break;
+                    }
+                case "FamilyHistory":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(FamilyHistory));
+                        break;
+                    }
+                case "FamilyDisease":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(FamilyDisease));
+                        break;
+                    }
+                case "FamilyHistoryMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(FamilyHistoryMaster));
+                        break;
+                    }
+                case "FamilyDiseaseMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(FamilyDiseaseMaster));
+                        break;
+                    }
+                case "FileManagementIndex":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(FileManagementIndex));
+                        break;
+                    }
+                case "ImmunizationHistory":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
+                        break;
+                    }
+                case "ImmunizationMasterHistory":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(ImmunizationMasterHistory));
+                        break;
+                    }
+                case "NonDrugAllergy":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(NonDrugAllergy));
+                        break;
+                    }
+                case "NonDrugAllergyMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(NonDrugAllergyMaster));
+                        break;
+                    }
+                case "AdvanceDirective":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(AdvanceDirective));
+                        break;
+                    }
+                case "AdvanceDirectiveMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(AdvanceDirectiveMaster));
+                        break;
+                    }
+                case "PhysicianPatient":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(PhysicianPatient));
+                        break;
+                    }
+                case "PhysicianPatientMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(PhysicianPatientMaster));
+                        break;
+                    }
+
+                case "HospitalizationHistory":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(HospitalizationHistory));
+                        break;
+                    }
+                case "HospitalizationHistoryMaster":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(HospitalizationHistoryMaster));
+                        break;
+                    }
+                case "ROS":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(ROS));
+                        break;
+                    }
+                case "PatientResults":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(PatientResults));
+                        break;
+                    }
+                case "Examination":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Examination));
+                        break;
+                    }
+                case "Assessment":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Assessment));
+                        break;
+                    }
+                case "OrdersSubmit":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(OrdersSubmit));
+                        break;
+                    }
+                case "Orders":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Orders));
+                        break;
+                    }
+                case "OrdersAssessment":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(OrdersAssessment));
+                        break;
+                    }
+                case "ReferralOrder":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(ReferralOrder));
+                        break;
+                    }
+                case "ReferralOrdersAssessment":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(ReferralOrdersAssessment));
+                        break;
+                    }
+                case "Immunization":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Immunization));
+                        break;
+                    }
+                case "InHouseProcedure":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(InHouseProcedure));
+                        break;
+                    }
+                case "EAndMCoding":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(EAndMCoding));
+                        break;
+                    }
+                case "EandMCodingICD":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(EandMCodingICD));
+                        break;
+                    }
+                case "TreatmentPlan":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(TreatmentPlan));
+                        break;
+                    }
+                case "CarePlan":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(CarePlan));
+                        break;
+                    }
+                case "Documents":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Documents));
+                        break;
+                    }
+                case "PreventiveScreen":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(PreventiveScreen));
+                        break;
+                    }
+                case "GeneralNotes":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                        break;
+                    }
+                case "GeneralNotesROS":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                        break;
+                    }
+                case "GeneralNotesROSGeneralNotes":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                        break;
+                    }
+                case "Rcopia_Allergy":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Rcopia_Allergy));
+                        break;
+                    }
+                case "Rcopia_Medication":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Rcopia_Medication));
+                        break;
+                    }
+                case "Rcopia_Prescription_List":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Rcopia_Prescription_List));
+                        break;
+                    }
+                case "AddendumNotes":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(AddendumNotes));
+                        break;
+                    }
+                case "Human":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(Human));
+                        break;
+                    }
+                case "PotentialDiagnosis":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(PotentialDiagnosis));
+                        break;
+                    }
+            }
+            return xmlserializer;
+        }
+
     }
 }
 

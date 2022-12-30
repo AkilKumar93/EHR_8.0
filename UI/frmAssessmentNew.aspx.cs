@@ -174,31 +174,52 @@ namespace Acurus.Capella.UI
 
                 if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count() > 0)
                 {
-                    string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                    try
+                    //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                    //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    //try
+                    //{
+                    //    if (File.Exists(strXmlFilePath) == true)
+                    //    {
+                    //        XmlDocument itemDoc = new XmlDocument();
+                    //        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                    //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //        {
+                    //            itemDoc.Load(fs);
+                    //            XmlText.Close();
+                    //            if (itemDoc.GetElementsByTagName("AssessmentList")[0] == null)
+                    //            {
+                    //                sSaveEnableXmlMisMatch = true;
+                    //            }
+                    //            fs.Dispose();
+                    //            fs.Close();
+                    //        }
+                    //    }
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    throw new Exception(ex.Message + " - " + strXmlFilePath);
+                    //}
+                    IList<string> ilsAssessmentEncounterTagList = new List<string>();
+                    ilsAssessmentEncounterTagList.Add("AssessmentList");
+
+
+
+                    IList<object> ilstAsEncounterBlobFinal = new List<object>();
+
+                    ilstAsEncounterBlobFinal = UtilityManager.ReadBlob("Encounter", ClientSession.EncounterId, ilsAssessmentEncounterTagList);
+
+                    if (ilstAsEncounterBlobFinal != null && ilstAsEncounterBlobFinal.Count > 0)
                     {
-                        if (File.Exists(strXmlFilePath) == true)
+                        if (ilstAsEncounterBlobFinal[0] == null)
                         {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                            {
-                                itemDoc.Load(fs);
-                                XmlText.Close();
-                                if (itemDoc.GetElementsByTagName("AssessmentList")[0] == null)
-                                {
-                                    sSaveEnableXmlMisMatch = true;
-                                }
-                                fs.Dispose();
-                                fs.Close();
-                            }
+                            sSaveEnableXmlMisMatch = true;
+
+                            // objPatientList = (from m in lsttemppatientresults where m.Results_Type == "Vitals" select m).ToList<PatientResults>();
                         }
+
+
                     }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.Message + " - " + strXmlFilePath);
-                    }
+
 
                 }
             }
@@ -1477,65 +1498,88 @@ namespace Acurus.Capella.UI
 
             IList<ProblemList> SummaryBarRefreshlist = new List<ProblemList>();
             DateTime CurrentDOS = DateTime.MinValue;
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+            IList<string> ilsAssessmentTagList = new List<string>();
+
+            ilsAssessmentTagList.Add("ProblemListList");
+
+
+
+            IList<object> ilstAsshumanBlobFinal = new List<object>();
+
+            ilstAsshumanBlobFinal = UtilityManager.ReadBlob("Human", ClientSession.HumanId, ilsAssessmentTagList);
+
+            if (ilstAsshumanBlobFinal != null && ilstAsshumanBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                //itemDoc.Load(XmlTe
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstAsshumanBlobFinal[0] != null)
                 {
-                    itemDoc.Load(fs);
 
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("ProblemListList")[0] != null)
+
+                    for (int iCount = 0; iCount < ((IList<object>)ilstAsshumanBlobFinal[0]).Count; iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
-                                ProblemList ProblemList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((ProblemList)ProblemList).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(ProblemList, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(ProblemList, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(ProblemList, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(ProblemList, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(ProblemList, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-                                SummaryBarRefreshlist.Add(ProblemList);
-                            }
-                        }
+                        SummaryBarRefreshlist.Add((ProblemList)((IList<object>)ilstAsshumanBlobFinal[0])[iCount]);
                     }
-                    fs.Close();
-                    fs.Dispose();
-                }
 
+                }
             }
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            // string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    //itemDoc.Load(XmlTe
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+            //        if (itemDoc.GetElementsByTagName("ProblemListList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
+            //                    ProblemList ProblemList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((ProblemList)ProblemList).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(ProblemList, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(ProblemList, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(ProblemList, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(ProblemList, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(ProblemList, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    SummaryBarRefreshlist.Add(ProblemList);
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+
+            //}
             if (ClientSession.FillEncounterandWFObject != null)
             {
                 if (ClientSession.FillEncounterandWFObject.EncRecord != null)

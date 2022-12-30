@@ -542,6 +542,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IClientManager GetClientManager();
         IClientManager GetClientManager(INHibernateSession session);
 
+        IHumanBlobManager GetHumanBlobManager();
+        IHumanBlobManager GetHumanBlobManager(INHibernateSession session);
+
+        IEncounterBlobManager GetEncounterBlobManager();
+        IEncounterBlobManager GetEncounterBlobManager(INHibernateSession session);
+
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2210,6 +2216,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IClientManager GetClientManager(INHibernateSession session)
         {
             return new ClientManager(session);
+        }
+
+        public IHumanBlobManager GetHumanBlobManager()
+        {
+            return new HumanBlobManager();
+        }
+        public IHumanBlobManager GetHumanBlobManager(INHibernateSession session)
+        {
+            return new HumanBlobManager(session);
+        }
+
+        public IEncounterBlobManager GetEncounterBlobManager()
+        {
+            return new EncounterBlobManager();
+        }
+        public IEncounterBlobManager GetEncounterBlobManager(INHibernateSession session)
+        {
+            return new EncounterBlobManager(session);
         }
         #endregion
     }

@@ -109,169 +109,204 @@ namespace Acurus.Capella.UI
                 {
                     ROSManager objROSManager = new ROSManager();
                     ClientSession.FlushSession();
+                    IList<string> ilstROSTagList = new List<string>();
+                    ilstROSTagList.Add("ROSList");
+                    ilstROSTagList.Add("GeneralNotesROSList");
+                    ilstROSTagList.Add("GeneralNotesROSGeneralNotesList");
+                                      
 
-                    string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                    if (File.Exists(strXmlFilePath) == true)
+                    IList<object> ilstROSBlobFinal = new List<object>();
+                    ilstROSBlobFinal = UtilityManager.ReadBlob("Encounter", ClientSession.EncounterId, ilstROSTagList);
+
+                    if (ilstROSBlobFinal != null && ilstROSBlobFinal.Count > 0)
                     {
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                        XmlNodeList xmlTagName = null;
-                        // itemDoc.Load(XmlText);
-                        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        if (ilstROSBlobFinal[0] != null)
                         {
-                            itemDoc.Load(fs);
-
-                            XmlText.Close();
-                            if (itemDoc.GetElementsByTagName("ROSList")[0] != null)
+                            for (int iCount = 0; iCount < ((IList<object>)ilstROSBlobFinal[0]).Count; iCount++)
                             {
-                                xmlTagName = itemDoc.GetElementsByTagName("ROSList")[0].ChildNodes;
-                                IList<ROS> ilst = new List<ROS>();
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(ROS));
-                                        ROS objros = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ROS;
-
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        propInfo = from obji in ((ROS)objros).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (propInfo != null)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(objros, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(objros, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(objros, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(objros, Convert.ToInt32(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(objros, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        ilst.Add(objros);
-                                        fillRos.Ros_List = ilst;
-
-                                    }
-                                }
+                                fillRos.Ros_List.Add((ROS)((IList<object>)ilstROSBlobFinal[0])[iCount]);
                             }
-                            else
+                        }
+
+                        if (ilstROSBlobFinal[1] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstROSBlobFinal[1]).Count; iCount++)
                             {
-                                //fillRos = objROSManager.GetROSAndGeneralNotesByEncounterId(ClientSession.EncounterId, ClientSession.HumanId, false);
-                                fillRos.General_Notes_List = new List<GeneralNotes>();
-                                fillRos.ROS_GeneralNotes_List = new List<GeneralNotes>();
-                                fillRos.Ros_List = new List<ROS>();
+                                fillRos.General_Notes_List.Add((GeneralNotes)((IList<object>)ilstROSBlobFinal[1])[iCount]);
                             }
-                            //
-                            if (itemDoc.GetElementsByTagName("GeneralNotesROSList")[0] != null)
+                        }
+
+                        if (ilstROSBlobFinal[2] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstROSBlobFinal[2]).Count; iCount++)
                             {
-                                xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesROSList")[0].ChildNodes;
-                                IList<GeneralNotes> ilst = new List<GeneralNotes>();
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                                        GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-
-                                        propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (propInfo != null)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(generalnotes, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        ilst.Add(generalnotes);
-                                        fillRos.General_Notes_List = ilst;
-                                    }
-                                }
+                                fillRos.ROS_GeneralNotes_List.Add((GeneralNotes)((IList<object>)ilstROSBlobFinal[2])[iCount]);
                             }
-                            //
-                            if (itemDoc.GetElementsByTagName("GeneralNotesROSGeneralNotesList")[0] != null)
-                            {
-                                xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesROSGeneralNotesList")[0].ChildNodes;
-
-                                if (xmlTagName.Count > 0)
-                                {
-                                    IList<GeneralNotes> ilst = new List<GeneralNotes>();
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                                        GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-
-                                        propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                if (propInfo != null)
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(generalnotes, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        ilst.Add(generalnotes);
-                                        fillRos.ROS_GeneralNotes_List = ilst;
-                                    }
-                                }
-
-                            }
-                            fs.Close();
-                            fs.Dispose();
                         }
                     }
+
+                    //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                    //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    //if (File.Exists(strXmlFilePath) == true)
+                    //{
+                    //    XmlDocument itemDoc = new XmlDocument();
+                    //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                    //    XmlNodeList xmlTagName = null;
+                    //    // itemDoc.Load(XmlText);
+                    //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //    {
+                    //        itemDoc.Load(fs);
+
+                    //        XmlText.Close();
+                    //        if (itemDoc.GetElementsByTagName("ROSList")[0] != null)
+                    //        {
+                    //            xmlTagName = itemDoc.GetElementsByTagName("ROSList")[0].ChildNodes;
+                    //            IList<ROS> ilst = new List<ROS>();
+                    //            if (xmlTagName.Count > 0)
+                    //            {
+                    //                for (int j = 0; j < xmlTagName.Count; j++)
+                    //                {
+                    //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(ROS));
+                    //                    ROS objros = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ROS;
+
+                    //                    IEnumerable<PropertyInfo> propInfo = null;
+                    //                    propInfo = from obji in ((ROS)objros).GetType().GetProperties() select obji;
+
+                    //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                    //                    {
+                    //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                    //                        {
+                    //                            foreach (PropertyInfo property in propInfo)
+                    //                            {
+                    //                                if (property.Name == nodevalue.Name)
+                    //                                {
+                    //                                    if (propInfo != null)
+                    //                                    {
+                    //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                    //                                            property.SetValue(objros, Convert.ToUInt64(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                    //                                            property.SetValue(objros, Convert.ToString(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                    //                                            property.SetValue(objros, Convert.ToDateTime(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                    //                                            property.SetValue(objros, Convert.ToInt32(nodevalue.Value), null);
+                    //                                        else
+                    //                                            property.SetValue(objros, nodevalue.Value, null);
+                    //                                    }
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                    }
+
+                    //                    ilst.Add(objros);
+                    //                    fillRos.Ros_List = ilst;
+
+                    //                }
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            //fillRos = objROSManager.GetROSAndGeneralNotesByEncounterId(ClientSession.EncounterId, ClientSession.HumanId, false);
+                    //            fillRos.General_Notes_List = new List<GeneralNotes>();
+                    //            fillRos.ROS_GeneralNotes_List = new List<GeneralNotes>();
+                    //            fillRos.Ros_List = new List<ROS>();
+                    //        }
+                    //        //
+                    //        if (itemDoc.GetElementsByTagName("GeneralNotesROSList")[0] != null)
+                    //        {
+                    //            xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesROSList")[0].ChildNodes;
+                    //            IList<GeneralNotes> ilst = new List<GeneralNotes>();
+                    //            if (xmlTagName.Count > 0)
+                    //            {
+                    //                for (int j = 0; j < xmlTagName.Count; j++)
+                    //                {
+                    //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                    //                    GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
+                    //                    IEnumerable<PropertyInfo> propInfo = null;
+
+                    //                    propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
+
+                    //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                    //                    {
+                    //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                    //                        {
+                    //                            foreach (PropertyInfo property in propInfo)
+                    //                            {
+                    //                                if (property.Name == nodevalue.Name)
+                    //                                {
+                    //                                    if (propInfo != null)
+                    //                                    {
+                    //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                    //                                            property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                    //                                            property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                    //                                            property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                    //                                            property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
+                    //                                        else
+                    //                                            property.SetValue(generalnotes, nodevalue.Value, null);
+                    //                                    }
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                    }
+                    //                    ilst.Add(generalnotes);
+                    //                    fillRos.General_Notes_List = ilst;
+                    //                }
+                    //            }
+                    //        }
+                    //        //
+                    //        if (itemDoc.GetElementsByTagName("GeneralNotesROSGeneralNotesList")[0] != null)
+                    //        {
+                    //            xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesROSGeneralNotesList")[0].ChildNodes;
+
+                    //            if (xmlTagName.Count > 0)
+                    //            {
+                    //                IList<GeneralNotes> ilst = new List<GeneralNotes>();
+                    //                for (int j = 0; j < xmlTagName.Count; j++)
+                    //                {
+                    //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                    //                    GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
+                    //                    IEnumerable<PropertyInfo> propInfo = null;
+
+                    //                    propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
+
+                    //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                    //                    {
+                    //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                    //                        {
+                    //                            if (propInfo != null)
+                    //                            {
+                    //                                foreach (PropertyInfo property in propInfo)
+                    //                                {
+                    //                                    if (property.Name == nodevalue.Name)
+                    //                                    {
+                    //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                    //                                            property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                    //                                            property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                    //                                            property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
+                    //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                    //                                            property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
+                    //                                        else
+                    //                                            property.SetValue(generalnotes, nodevalue.Value, null);
+                    //                                    }
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                    }
+                    //                    ilst.Add(generalnotes);
+                    //                    fillRos.ROS_GeneralNotes_List = ilst;
+                    //                }
+                    //            }
+
+                    //        }
+                    //        fs.Close();
+                    //        fs.Dispose();
+                    //    }
+                    //}
                     ClientSession.FlushSession();
                     dlcROS.DName = "pbGeneralNotesDropDown";
 

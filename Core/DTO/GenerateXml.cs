@@ -8,8 +8,9 @@ using System.Xml;
 using System.Xml.Xsl;
 using System.Xml.Linq;
 using Acurus.Capella.Core.DomainObjects;
-
-
+using System.Data;
+using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace Acurus.Capella.Core.DTO
 {
@@ -73,6 +74,9 @@ namespace Acurus.Capella.Core.DTO
         public XmlDocument itemDoc = new XmlDocument();
         public string strXmlFilePath = "";
 
+        public int iHumanBlobVersion = 0;
+        public int iEncounterBlobVersion = 0;
+
         /*Added a bool bSave_In_Human in GenerateXml-Save,SaveStatic,Update and Copy_Previous_ to indicate that the list(Encounterlist) needs to be saved/updated in HUmanXML too.
          bSave_In_Human is set to "true" when EncounterTag is saved in HumanXML.*/
         public void GenerateXmlSaveStatic(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human)
@@ -97,19 +101,28 @@ namespace Acurus.Capella.Core.DTO
                     FileName = FileName.Replace("Encounter", "Human");
                 }
             }
-            XmlTextReader XmlText = null;
-            strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //XmlTextReader XmlText = null;
+            //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (File.Exists(strXmlFilePath) == true)
+                if (FileName.Contains("Human"))
                 {
-                    string itemDoc_URI = itemDoc.BaseURI;
-                    if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
-                    {
-                        itemDoc = new XmlDocument();
-                        XmlText = new XmlTextReader(strXmlFilePath);
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
+                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                }
+                else if (FileName.Contains("Encounter"))
+                {
+                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                }
+                //  if (File.Exists(strXmlFilePath) == true)
+                if (itemDoc != null && itemDoc.OuterXml != string.Empty)
+                {
+                    //string itemDoc_URI = itemDoc.BaseURI;
+                    //if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
+                    //{
+                        //itemDoc = new XmlDocument();
+                        //XmlText = new XmlTextReader(strXmlFilePath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
                         //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                         //{
                         //    itemDoc.Load(fs);
@@ -126,7 +139,7 @@ namespace Acurus.Capella.Core.DTO
                                 }
                             }
                         }
-                    }
+                    //}
 
                     XmlAttribute attlabel = null;
                     for (int k = 0; k < obj.Count; k++)
@@ -809,8 +822,8 @@ namespace Acurus.Capella.Core.DTO
             }
             catch(Exception Ex)
             {
-                if (XmlText != null)
-                    XmlText.Close();
+                //if (XmlText != null)
+                //    XmlText.Close();
 
                 throw Ex;
             }
@@ -838,24 +851,33 @@ namespace Acurus.Capella.Core.DTO
                     FileName = FileName.Replace("Encounter", "Human");
                 }
             }
-            XmlTextReader XmlText = null;
-            strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //XmlTextReader XmlText = null;
+            //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (File.Exists(strXmlFilePath) == true)
+                if (FileName.Contains("Human"))
                 {
-                    string itemDoc_URI = itemDoc.BaseURI;
-                    if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
-                    {
-                        itemDoc = new XmlDocument();
-                        XmlText = new XmlTextReader(strXmlFilePath);
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
-                        //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        //{
-                        //    itemDoc.Load(fs);
-                        //}
-                    }
+                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                }
+                else if (FileName.Contains("Encounter"))
+                {
+                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                }
+                //  if (File.Exists(strXmlFilePath) == true)
+                if (itemDoc != null && itemDoc.OuterXml != string.Empty)
+                {
+                    //string itemDoc_URI = itemDoc.BaseURI;
+                    //if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
+                    //{
+                    //    itemDoc = new XmlDocument();
+                    //    XmlText = new XmlTextReader(strXmlFilePath);
+                    //    itemDoc.Load(XmlText);
+                    //    XmlText.Close();
+                    //    //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //    //{
+                    //    //    itemDoc.Load(fs);
+                    //    //}
+                    //}
                     if (obj[0].GetType().Name == "Encounter")
                     {
                         GetXmlNodeID(obj[0]);
@@ -1595,8 +1617,8 @@ namespace Acurus.Capella.Core.DTO
             }
             catch(Exception Ex)
             {
-                if (XmlText != null)
-                    XmlText.Close();
+                //if (XmlText != null)
+                //    XmlText.Close();
                 throw Ex;
             }
             if (IsPhoneEncounter == true || IsAssessment == true || IsRcopiaMedication == true)
@@ -1628,23 +1650,32 @@ namespace Acurus.Capella.Core.DTO
                     FileName = FileName.Replace("Encounter", "Human");
                 }
             }
-            strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+           // strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (File.Exists(strXmlFilePath) == true)
+                if (FileName.Contains("Human"))
                 {
-                    string itemDoc_URI = itemDoc.BaseURI;
-                    if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
-                    {
-                        itemDoc = new XmlDocument();
-                        XmlText = new XmlTextReader(strXmlFilePath);
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
-                        //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        //{
-                        //    itemDoc.Load(fs);
-                        //}
-                    }
+                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                }
+                else if(FileName.Contains("Encounter"))
+                {
+                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                }
+              //  if (File.Exists(strXmlFilePath) == true)
+              if(itemDoc != null && itemDoc.OuterXml != string.Empty)
+                {
+                    //string itemDoc_URI = itemDoc.BaseURI;
+                    //if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
+                    //{
+                    //    itemDoc = new XmlDocument();
+                    //    XmlText = new XmlTextReader(strXmlFilePath);
+                    //    itemDoc.Load(XmlText);
+                    //    XmlText.Close();
+                    //    //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //    //{
+                    //    //    itemDoc.Load(fs);
+                    //    //}
+                    //}
                     if (obj[0].GetType().Name == "Encounter")
                     {
                         GetXmlNodeID(obj[0]);
@@ -2391,9 +2422,11 @@ namespace Acurus.Capella.Core.DTO
             }
             if (IsPhoneEncounter == true || IsAssessment == true || IsRcopiaMedication==true)
             {
-                itemDoc.Save(strXmlFilePath);
+
+                //itemDoc.Save(strXmlFilePath);
             }
         }
+
 
         public void GenerateXmlUpdate(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human)
         {
@@ -2417,18 +2450,27 @@ namespace Acurus.Capella.Core.DTO
                     FileName = FileName.Replace("Encounter", "Human");
                 }
             }
-            strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (File.Exists(strXmlFilePath) == true)
+                if (FileName.Contains("Human"))
                 {
-                    string itemDoc_URI = itemDoc.BaseURI;
-                    if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
-                    {
-                        itemDoc = new XmlDocument();
-                        XmlText = new XmlTextReader(strXmlFilePath);
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
+                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                }
+                else if (FileName.Contains("Encounter"))
+                {
+                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                }
+                //  if (File.Exists(strXmlFilePath) == true)
+                if (itemDoc != null && itemDoc.OuterXml != string.Empty)
+                {
+                    //string itemDoc_URI = itemDoc.BaseURI;
+                    //if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
+                    //{
+                        //itemDoc = new XmlDocument();
+                        //XmlText = new XmlTextReader(strXmlFilePath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
                         //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                         //{
                         //    itemDoc.Load(fs);
@@ -2445,7 +2487,7 @@ namespace Acurus.Capella.Core.DTO
                                 }
                             }
                         }
-                    }
+                    //}
                     for (int k = 0; k < obj.Count; k++)
                     {
                         XmlNodeList xmlRemove = null;
@@ -3779,25 +3821,34 @@ namespace Acurus.Capella.Core.DTO
                     FileName = FileName.Replace("Encounter", "Human");
                 }
             }
-            XmlTextReader XmlText=null;
+            //XmlTextReader XmlText=null;
 
-            strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (File.Exists(strXmlFilePath) == true)
+                if (FileName.Contains("Human"))
                 {
-                    string itemDoc_URI = itemDoc.BaseURI;
-                    if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
-                    {
-                        itemDoc = new XmlDocument();
-                        XmlText = new XmlTextReader(strXmlFilePath);
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
-                        //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        //{
-                        //    itemDoc.Load(fs);
-                        //}
-                    }
+                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                }
+                else if (FileName.Contains("Encounter"))
+                {
+                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                }
+                //  if (File.Exists(strXmlFilePath) == true)
+                if (itemDoc != null && itemDoc.OuterXml != string.Empty)
+                {
+                    //string itemDoc_URI = itemDoc.BaseURI;
+                    //if (itemDoc_URI == string.Empty || (Path.GetFileName(strXmlFilePath) != Path.GetFileName(itemDoc_URI)))
+                    //{
+                    //    itemDoc = new XmlDocument();
+                    //    XmlText = new XmlTextReader(strXmlFilePath);
+                    //    itemDoc.Load(XmlText);
+                    //    XmlText.Close();
+                    //    //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //    //{
+                    //    //    itemDoc.Load(fs);
+                    //    //}
+                    //}
                     string sobjectName = ilstobj[0].GetType().Name;
                     if (sGeneralNotesText == string.Empty)
                     {
@@ -3867,15 +3918,15 @@ namespace Acurus.Capella.Core.DTO
             }
             catch(Exception Ex)
             {
-                if (XmlText != null)
-                    XmlText.Close();
+                //if (XmlText != null)
+                //    XmlText.Close();
 
                 throw Ex;
             }
-            if (IsAssessment == true)
-            {
-                itemDoc.Save(strXmlFilePath);
-            }
+            //if (IsAssessment == true)
+            //{
+            //    itemDoc.Save(strXmlFilePath);
+            //}
         }
 
         public void SetObject(object obj)
@@ -5322,6 +5373,87 @@ namespace Acurus.Capella.Core.DTO
                 }
                 itemDoc.Save(strXmlFilePath);
             }
+        }
+
+
+        public XmlDocument ReadBlob(string sXMLType, ulong EntityID)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            string sXMLContent = String.Empty;
+            
+            if (sXMLType == "Human")
+            {
+                string query = @"select * from blob_human where human_id="+ EntityID;
+                DataSet dsReturn = DBConnector.ReadData(query);
+                DataTable dt = dsReturn.Tables[0];
+                if (dt.Rows.Count > 0)
+                {
+                    sXMLContent = System.Text.Encoding.UTF8.GetString((byte[])dt.Rows[0]["Human_XML"]);
+                    xmlDoc.LoadXml(sXMLContent);
+                    iHumanBlobVersion = (int)dt.Rows[0]["Version"];
+                }
+            }
+            else if (sXMLType == "Encounter")
+            {
+
+                string query = @"select * from blob_encounter where encounter_id=" + EntityID;
+                DataSet dsReturn = DBConnector.ReadData(query);
+                DataTable dt = dsReturn.Tables[0];
+                if (dt.Rows.Count > 0)
+                {
+                    sXMLContent = System.Text.Encoding.UTF8.GetString((byte[])dt.Rows[0]["Encounter_XML"]);
+                    xmlDoc.LoadXml(sXMLContent);
+                    iEncounterBlobVersion = (int)dt.Rows[0]["Version"];
+                }
+            }
+
+            return xmlDoc;
+        }
+
+       
+
+
+    }
+
+    public static class DBConnector
+    {
+        static MySqlDataAdapter MyDataAdap = null;
+        private static string ReadConnection()
+        {
+            string ConnectionData;
+            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            return ConnectionData;
+        }
+        public static DataSet ReadData(string Query)
+        {
+            DataSet dsReturn = new DataSet();
+            MyDataAdap = new MySqlDataAdapter(Query, ReadConnection());
+            MyDataAdap.Fill(dsReturn);
+            return dsReturn;
+        }
+
+        public static int WriteData(string Query)
+        {
+            int iReturn = 0;
+            using (MySqlConnection con = new MySqlConnection(ReadConnection()))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(Query))
+                {
+                    cmd.Connection = con;
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        iReturn = 1;
+                    }
+                    catch
+                    {
+                        iReturn = 2;
+                    }
+                }
+            }
+            return iReturn;
         }
     }
 }

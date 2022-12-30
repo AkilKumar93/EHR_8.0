@@ -63,7 +63,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="mysql.data, Version=8.0.23.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\mysql.data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -145,10 +150,12 @@
     <Compile Include="DomainObjects\DictationException.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DomainObjects\Encounter_Blob.cs" />
     <Compile Include="DomainObjects\ErrorLog.cs" />
     <Compile Include="DomainObjects\FamilyDiseaseMaster.cs" />
     <Compile Include="DomainObjects\FamilyHistoryMaster.cs" />
     <Compile Include="DomainObjects\HospitalizationHistoryMaster.cs" />
+    <Compile Include="DomainObjects\Human_Blob.cs" />
     <Compile Include="DomainObjects\Human_Token.cs" />
     <Compile Include="DomainObjects\ICD9ICD10Mapping.cs" />
     <Compile Include="DomainObjects\ImmunizationMasterHistory.cs" />
@@ -712,6 +719,7 @@
     <EmbeddedResource Include="HbmMaps\CQMDetail.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\CQMSummary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ApplicationAccessLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Encounter_Blob.hbm.xml" />
     <Content Include="HbmMaps\ErrorLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Token.hbm.xml" />
@@ -725,6 +733,7 @@
     <EmbeddedResource Include="HbmMaps\ImmunizationMasterHistory.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\NonDrugAllergyMaster.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\MapUserCarrierFacility.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Human_Blob.hbm.xml" />
     <Content Include="HbmMaps\PatientMessage.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\PhysicianPatientMaster.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\SocialHistoryMaster.hbm.xml" />

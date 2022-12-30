@@ -28,6 +28,10 @@ namespace Acurus.Capella.UI
         string strXmlEncounterPath1 = "";
         string sNotesName = string.Empty;
         string Name = "";
+        string sXMLHumanDoc = string.Empty;
+        string sXMLEncounterDoc = string.Empty;
+        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+        EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
         protected void Page_Load(object sender, EventArgs e)
         {
             sNotesName = Request.QueryString["SubMenuName"].Split('?')[0];
@@ -274,6 +278,20 @@ namespace Acurus.Capella.UI
             string xmlDataFile = strXmlEncounterPath1;
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
+            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64( ClientSession.HumanId));
+            if (ilstHumanBlob.Count > 0)
+            {
+                sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+            }
+
+            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+            ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(ClientSession.EncounterId));
+            if (ilstEncounterBlob.Count > 0)
+            {
+                sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+            }
+
             DataSet ds;
             XmlDataDocument xmlDoc;
             XslCompiledTransform xslTran;
@@ -282,7 +300,13 @@ namespace Acurus.Capella.UI
             XmlTextWriter writer;
             XsltSettings settings = new XsltSettings(true, false);
             ds = new DataSet();
-            ds.ReadXml(xmlDataFile);
+            //ds.ReadXml(xmlDataFile);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+            string SUB = sXMLEncounterDoc.ToString().Substring(0, 72);
+            sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+
             xmlDoc = new XmlDataDocument(ds);
             xslTran = new XslCompiledTransform();
             using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))

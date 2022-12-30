@@ -165,6 +165,7 @@
     <Compile Include="ManagerObjects\EAndMCodingManager.cs" />
     <Compile Include="ManagerObjects\ElementManager.cs" />
     <Compile Include="ManagerObjects\Eligibility_VerficationManager.cs" />
+    <Compile Include="ManagerObjects\EncounterBlobManager.cs" />
     <Compile Include="ManagerObjects\EncounterManager.cs" />
     <Compile Include="ManagerObjects\ErrorLogManager.cs" />
     <Compile Include="ManagerObjects\ExaminationManager.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="ManagerObjects\HealthcareQuestionnaireManager.cs" />
     <Compile Include="ManagerObjects\HospitalizationHistoryManager.cs" />
     <Compile Include="ManagerObjects\HospitalizationHistoryMasterManager.cs" />
+    <Compile Include="ManagerObjects\HumanBlobManager.cs" />
     <Compile Include="ManagerObjects\HumanManager.cs" />
     <Compile Include="ManagerObjects\Human_TokenManager.cs" />
     <Compile Include="ManagerObjects\ImmunizationHistoryManager.cs" />
