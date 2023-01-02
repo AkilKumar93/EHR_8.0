@@ -657,7 +657,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 trytosaveagain:
                     try
                     {
-                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                       // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                     }
                     catch (Exception xmlexcep)
                     {
@@ -798,7 +798,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     trytosaveagain:
                         try
                         {
-                            XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                            //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                         }
                         catch (Exception xmlexcep)
                         {
@@ -1267,24 +1267,33 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<PatientPane> objPatientPane = new List<PatientPane>();
             PatientPane objPatPane = new PatientPane();
             ulong EncProviderId = 0;
-            #region Human & Encounter Info from Human_XML
-            string HumanFileName = "Human" + "_" + Humanid + ".xml";
-            string strHuman_XmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
-            if (File.Exists(strHuman_XmlFilePath))
+            GenerateXml objGenerateXML = new GenerateXml();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc = objGenerateXML.ReadBlob("Human", Humanid);
+            //if (xmlDoc != null)
+            //{
+
+            //}
+
+            #region Human & Encounter Info from Human_XML
+            //string HumanFileName = "Human" + "_" + Humanid + ".xml";
+            //string strHuman_XmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+
+            //if (File.Exists(strHuman_XmlFilePath))
+            if (xmlDoc != null)
             {
-                XmlDocument xmlDoc = new XmlDocument();
-                XmlTextReader xmlReader = new XmlTextReader(strHuman_XmlFilePath);
-                try
-                {
-                    xmlDoc.Load(xmlReader);
-                }
-                catch (Exception ex)
-                {
-                    xmlReader.Close();
-                    throw ex;
-                }
-                xmlReader.Close();
+                //XmlTextReader xmlReader = new XmlTextReader(strHuman_XmlFilePath);
+                //try
+                //{
+                //    xmlDoc.Load(xmlReader);
+                //}
+                //catch (Exception ex)
+                //{
+                //    xmlReader.Close();
+                //    throw ex;
+                //}
+                //xmlReader.Close();
 
 
 
@@ -1329,7 +1338,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             trytosaveagain:
                                 try
                                 {
-                                    xmlDoc.Save(strHuman_XmlFilePath);
+                                    //xmlDoc.Save(strHuman_XmlFilePath);
+                                    ISession session = Session.GetISession();
+                                    try
+                                    {
+                                        using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
+                                        {
+                                            WriteBlob("Human", Humanid, xmlDoc, session, null, null, null, null, true);
+
+                                            trans.Commit();
+                                        }
+                                    }
+                                    catch (Exception ex1)
+                                    {
+
+                                        throw new Exception(ex1.Message);
+                                    }
                                 }
                                 catch (Exception xmlexcep)
                                 {
@@ -9514,8 +9538,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         iMySession.Close();
                         MySession.Flush();
                         trans.Commit();
-                        if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
-                            XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                        if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
+                        {
+
+                        }
+                            //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
 
 
                     }
@@ -10090,10 +10117,29 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<Encounter> addEncounterList = null;
 
 
-            string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
-            string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
-            if (File.Exists(strXmlEncounterFilePath) == false)
-            {
+            //string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
+            //string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
+            //if (File.Exists(strXmlEncounterFilePath) == false)
+            //{
+            //    string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+            //    string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+
+            //    XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+            //    if (xmlAgenode != null && xmlAgenode.Count > 0)
+            //        xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
+            //    itemDoc.Save(strXmlEncounterFilePath);
+            //}
+            IList<object> ilstEncBlob = new List<object>();
+            IList<string> ilstEncounterTagList = new List<string>();
+            ilstEncounterTagList.Add("EncounterList");
+            ilstEncBlob = ReadBlob("Encounter", ulEncID, ilstEncounterTagList);
+            
+            //if (File.Exists(strXmlEncounterFilePath) == false)
+            //{
                 string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                 string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
                 XmlDocument itemDoc = new XmlDocument();
@@ -10104,8 +10150,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
                 if (xmlAgenode != null && xmlAgenode.Count > 0)
                     xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-                itemDoc.Save(strXmlEncounterFilePath);
+                //itemDoc.Save(strXmlEncounterFilePath);
+
+            ISession session = Session.GetISession();
+            try
+            {
+                using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
+                {
+                    WriteBlob("Encounter", ulEncID, itemDoc, session, null, null, null, null, true);
+
+                    trans.Commit();
+                }
             }
+            catch (Exception ex1)
+            {
+
+                throw new Exception(ex1.Message);
+            }
+
+
+            //}
             // SaveUpdateDeleteWithTransaction(ref addEncounterList, encupdateList, null, MACAddress);
             SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref encupdateList, null, MACAddress, true, false, ulEncID, string.Empty);
         }
@@ -15567,11 +15631,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 updateEncounterList[0].Assigned_Scribe_User_Name = sModifiedBy;
             IList<Encounter> addEncounterList = null;
 
-            string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
-            string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
-            if (File.Exists(strXmlEncounterFilePath) == false || (File.Exists(strXmlEncounterFilePath)==true && File.ReadAllBytes(strXmlEncounterFilePath).Length ==0))
-            {
-                string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+            //string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
+            //string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
+            //if (File.Exists(strXmlEncounterFilePath) == false || (File.Exists(strXmlEncounterFilePath)==true && File.ReadAllBytes(strXmlEncounterFilePath).Length ==0))
+            //{
+
+            IList<object> ilstEncBlob = new List<object>();
+            IList<string> ilstEncounterTagList = new List<string>();
+            ilstEncounterTagList.Add("EncounterList");
+            ilstEncBlob = ReadBlob("Encounter", ulEncID, ilstEncounterTagList);
+
+            //if (File.Exists(strXmlEncounterFilePath) == false)
+            //{
+            //itemDoc.Save(strXmlEncounterFilePath);
+
+           
+
+            string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                 string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
                 XmlDocument itemDoc = new XmlDocument();
                 XmlTextReader XmlText = new XmlTextReader(sXmlPath);
@@ -15581,67 +15657,96 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
                 if (xmlAgenode != null && xmlAgenode.Count > 0)
                     xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-               // itemDoc.Save(strXmlEncounterFilePath);
 
-                int trycount = 0;
+
+            IEnumerable<XElement> ilstPhysician = null;
+            XmlNodeList xmlMember_ID = itemDoc.GetElementsByTagName("Encounter_Provider_Name");
+
+            string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
+            XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
+            ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == updateEncounterList[0].Encounter_Provider_ID.ToString());
+            if (ilstPhysician != null && ilstPhysician.Count() > 0)
+            {
+                xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();
+            }
+
+            // itemDoc.Save(strXmlEncounterFilePath);
+
+            int trycount = 0;
             trytosaveagain:
                 try
                 {
-                    itemDoc.Save(strXmlEncounterFilePath);
-                }
-                catch (Exception xmlexcep)
+                // itemDoc.Save(strXmlEncounterFilePath);
+                ISession session = Session.GetISession();
+                try
                 {
-                    trycount++;
-                    if (trycount <= 3)
+                    using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
                     {
-                        int TimeMilliseconds = 0;
-                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                        WriteBlob("Encounter", ulEncID, itemDoc, session, null, updateEncounterList, null, null, true);
 
-                        Thread.Sleep(TimeMilliseconds);
-                        string sMsg = string.Empty;
-                        string sExStackTrace = string.Empty;
-
-                        string version = "";
-                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                        string[] server = version.Split('|');
-                        string serverno = "";
-                        if (server.Length > 1)
-                            serverno = server[1].Trim();
-
-                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                            sMsg = xmlexcep.InnerException.Message;
-                        else
-                            sMsg = xmlexcep.Message;
-
-                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                            sExStackTrace = xmlexcep.StackTrace;
-
-                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                        string ConnectionData;
-                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                        {
-                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                            {
-                                cmd.Connection = con;
-                                try
-                                {
-                                    con.Open();
-                                    cmd.ExecuteNonQuery();
-                                    con.Close();
-                                }
-                                catch
-                                {
-                                }
-                            }
-                        }
-                        goto trytosaveagain;
+                        trans.Commit();
                     }
                 }
+                catch (Exception ex1)
+                {
+
+                    throw new Exception(ex1.Message);
+                }
+
             }
+                catch (Exception xmlexcep)
+                {
+                    //trycount++;
+                    //if (trycount <= 3)
+                    //{
+                    //    int TimeMilliseconds = 0;
+                    //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                    //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                    //    Thread.Sleep(TimeMilliseconds);
+                    //    string sMsg = string.Empty;
+                    //    string sExStackTrace = string.Empty;
+
+                    //    string version = "";
+                    //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                    //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                    //    string[] server = version.Split('|');
+                    //    string serverno = "";
+                    //    if (server.Length > 1)
+                    //        serverno = server[1].Trim();
+
+                    //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                    //        sMsg = xmlexcep.InnerException.Message;
+                    //    else
+                    //        sMsg = xmlexcep.Message;
+
+                    //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                    //        sExStackTrace = xmlexcep.StackTrace;
+
+                    //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                    //    string ConnectionData;
+                    //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                    //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                    //    {
+                    //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                    //        {
+                    //            cmd.Connection = con;
+                    //            try
+                    //            {
+                    //                con.Open();
+                    //                cmd.ExecuteNonQuery();
+                    //                con.Close();
+                    //            }
+                    //            catch
+                    //            {
+                    //            }
+                    //        }
+                    //    }
+                    //    goto trytosaveagain;
+                    //}
+                }
+            //}
 
             //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
             SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, true, false, ulEncID, string.Empty);

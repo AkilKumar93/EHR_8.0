@@ -1626,7 +1626,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         if (XMLObjList[i].itemDoc.BaseURI == "")
                                         {
                                             bXmlFound = false;
-                                            throw new Exception("$Transaction XML: '" + XMLObjList[i].strXmlFilePath + "' not found. Please contact support team to generate the XML. ");
+                                            throw new Exception("$Transaction XML: '"  + "' not found. Please contact support team to generate the XML. ");
                                         }
 
                                     }
@@ -1648,11 +1648,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                                 if (FileName.Contains("Human"))
                                                 {
-                                                    WriteBlob("Human", EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList, XMLObjList[i]);
+                                                    WriteBlob("Human", EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList, XMLObjList[i], false);
                                                 }
                                                 else if (FileName.Contains("Encounter"))
                                                 {
-                                                    WriteBlob("Encounter", EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList, XMLObjList[i]);
+                                                    WriteBlob("Encounter", EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList, XMLObjList[i], false);
                                                 }
                                             }
                                             catch (Exception xmlexcep)
@@ -1757,11 +1757,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                                 if (FileName.Contains("Human"))
                                                 {
-                                                    WriteBlob("Human", EncounterOrHumanId, XMLObj.itemDoc, session, saveList, updateList, deleteList, XMLObj);
+                                                    WriteBlob("Human", EncounterOrHumanId, XMLObj.itemDoc, session, saveList, updateList, deleteList, XMLObj, false);
                                                 }
                                                 else if (FileName.Contains("Encounter"))
                                                 {
-                                                    WriteBlob("Encounter", EncounterOrHumanId, XMLObj.itemDoc, session, saveList, updateList, deleteList, XMLObj);
+                                                    WriteBlob("Encounter", EncounterOrHumanId, XMLObj.itemDoc, session, saveList, updateList, deleteList, XMLObj, false);
                                                 }
                                             }
                                             catch (Exception xmlexcep)
@@ -1817,7 +1817,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                 }
                                             }
                                             }
-                                            if (Is_EncRecord && XmlObjHuman != null && XmlObjHuman.itemDoc.BaseURI != "")
+                                            if (Is_EncRecord && XmlObjHuman != null && XmlObjHuman.itemDoc.InnerXml != "")
                                             {
                                                 // XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
 
@@ -1827,10 +1827,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                 {
                                                 //XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
 
-                                                if (FileName.Contains("Human"))
-                                                {
-                                                    WriteBlob("Human", EncounterOrHumanId, XmlObjHuman.itemDoc, session, saveList, updateList, deleteList, XmlObjHuman);
-                                                }
+                                                //if (FileName.Contains("Human"))
+                                                //{
+                                                    WriteBlob("Human", XmlObjHuman.ulHumanID, XmlObjHuman.itemDoc, session, saveList, updateList, deleteList, XmlObjHuman, false);
+                                                //}
                                                 //else if (FileName.Contains("Encounter"))
                                                 //{
                                                 //    WriteBlob("Encounter", EncounterOrHumanId, XMLObjList[i].itemDoc, session, saveList, updateList, deleteList);
@@ -2192,7 +2192,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         trytosaveagain:
                             try
                             {
-                                XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
+                                //XmlObjHuman.itemDoc.Save(XmlObjHuman.strXmlFilePath);
+
+                                WriteBlob("Human", EncounterOrHumanId, XmlObjHuman.itemDoc, MySession, saveList, updateList, deleteList, XmlObjHuman, false);
                             }
                             catch (Exception xmlexcep)
                             {
@@ -2249,7 +2251,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     }
                     #endregion
-                    if (bsavehit && XMLObj.itemDoc.BaseURI == "")
+                    if (bsavehit && XMLObj.itemDoc.InnerXml == "") //.itemDoc.BaseURI == "")
                     {
                         throw new Exception("$Transaction XML: '" + FileName + "' not found. Please contact support team to generate the XML. ");
                     }
@@ -2361,7 +2363,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
         }
 
-        public void WriteBlob(string sXMLType, ulong EntityID,XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml)
+        public void WriteBlob(string sXMLType, ulong EntityID,XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml,Boolean bIsEncounterXMLCreate)
         {
               
             string sXMLContent = String.Empty;
@@ -2397,12 +2399,28 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (updateList != null && updateList.Count > 0)
                     {
                         objhumanblob.Modified_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
-                        objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+                        //objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+                        if (updateList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
+                        {
+                            objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
+                        }
+                        else if (updateList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+                        {
+                            objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(updateList[0], null));
+                        }
                     }
                     else if (deleteList != null && deleteList.Count > 0)
                     {
                         objhumanblob.Modified_By = deleteList[0].GetType().GetProperty("Modified_By").GetValue(deleteList[0], null) as string;
-                        objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+                        //objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+                        if (deleteList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
+                        {
+                            objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(deleteList[0], null));
+                        }
+                        else if (updateList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+                        {
+                            objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(deleteList[0], null));
+                        }
                     }
                     ilstHumanBlob.Add(objhumanblob);
 
@@ -2417,7 +2435,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                 objEncounterblob.Encounter_ID = EntityID;
                 objEncounterblob.Id = EntityID;
-                objEncounterblob.Version = objGenerateXml.iEncounterBlobVersion;
+                if (objGenerateXml != null)
+                {
+                    objEncounterblob.Version = objGenerateXml.iEncounterBlobVersion;
+                }
 
                 byte[] bytes = null;
                 try
@@ -2429,10 +2450,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 }
                 objEncounterblob.Encounter_XML = bytes;
-                if (saveList != null && saveList.Count > 0 && saveList[0].GetType().Name.ToUpper() == "ENCOUNTER") //To be changed for Process_Encounter
+                //if (saveList != null && saveList.Count > 0 && saveList[0].GetType().Name.ToUpper() == "ENCOUNTER") //To be changed for Process_Encounter
+                if (bIsEncounterXMLCreate == true)
                 {
-                    objEncounterblob.Created_By = saveList[0].GetType().GetProperty("Created_By").GetValue(saveList[0], null) as string;
-                    objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(saveList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+                    objEncounterblob.Created_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
+                    objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
                     ilstEncounterBlob.Add(objEncounterblob);
 
                     EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstEncounterBlob, null, MySession, string.Empty);
@@ -2443,12 +2465,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (updateList != null && updateList.Count > 0)
                     {
                         objEncounterblob.Modified_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
-                        objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+                        if (updateList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
+                        {
+                            objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
+                        }
+                        else if (updateList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+                        {
+                            objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(updateList[0], null));
+                        }
+                        
                     }
                     else if (deleteList != null && deleteList.Count > 0)
                     {
                         objEncounterblob.Modified_By = deleteList[0].GetType().GetProperty("Modified_By").GetValue(deleteList[0], null) as string;
-                        objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+                        if (deleteList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
+                        {
+                            objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(deleteList[0], null));
+                        }
+                        else if (deleteList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+                        {
+                            objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(deleteList[0], null));
+                        }
                     }
                     ilstEncounterBlob.Add(objEncounterblob);
 

@@ -290,7 +290,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             trytosaveagain:
                                 try
                                 {
-                                    XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                 }
                                 catch (Exception xmlexcep)
                                 {
@@ -431,7 +431,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 trytosaveagain:
                                     try
                                     {
-                                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                        //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     }
                                     catch (Exception xmlexcep)
                                     {

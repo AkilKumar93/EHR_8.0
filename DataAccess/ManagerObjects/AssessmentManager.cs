@@ -226,81 +226,98 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             }
             #region TreatmentPlan Get
-            string FileName = "Encounter" + "_" + ulEncounterID + ".xml";
-            XmlTextReader XmlText = null;
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            try
+            IList<string> ilstGeneralPlanTagList = new List<string>();
+            ilstGeneralPlanTagList.Add("TreatmentPlanList");
+
+
+            IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+            ilstGeneralPlanBlobFinal = ReadBlob("Encounter", ulEncounterID, ilstGeneralPlanTagList);
+
+            if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
             {
-                if (File.Exists(strXmlFilePath) == true)
+                if (ilstGeneralPlanBlobFinal[0] != null)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlText = new XmlTextReader(strXmlFilePath);
-                    XmlNodeList xmlTagName = null;
-                    // itemDoc.Load(XmlText);
-
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("TreatmentPlanList")[0] != null)
-                        {
-                            xmlTagName = itemDoc.GetElementsByTagName("TreatmentPlanList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == ulEncounterID && Convert.ToString(xmlTagName[j].Attributes.GetNamedItem("Plan_Type").Value).Equals("ASSESSMENT"))
-                                    {
-
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(TreatmentPlan));
-                                        TreatmentPlan TreatmentPlan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as TreatmentPlan;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        propInfo = from obji in ((TreatmentPlan)TreatmentPlan).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(TreatmentPlan, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(TreatmentPlan, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(TreatmentPlan, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(TreatmentPlan, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(TreatmentPlan, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-
-                                        }
-                                        objTreatmentPlan.Add(TreatmentPlan);
-                                    }
-                                }
-                            }
-                        }
-                        fs.Close();
-                        fs.Dispose();
+                        objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
                     }
                 }
             }
-            catch (Exception Ex)
-            {
-                if (XmlText != null)
-                    XmlText.Close();
+        //string FileName = "Encounter" + "_" + ulEncounterID + ".xml";
+        //XmlTextReader XmlText = null;
+        //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+        //try
+        //{
+        //    if (File.Exists(strXmlFilePath) == true)
+        //    {
+        //        XmlDocument itemDoc = new XmlDocument();
+        //        XmlText = new XmlTextReader(strXmlFilePath);
+        //        XmlNodeList xmlTagName = null;
+        //        // itemDoc.Load(XmlText);
 
-                throw Ex;
-            }
+        //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+        //        {
+        //            itemDoc.Load(fs);
+
+        //            XmlText.Close();
+        //            if (itemDoc.GetElementsByTagName("TreatmentPlanList")[0] != null)
+        //            {
+        //                xmlTagName = itemDoc.GetElementsByTagName("TreatmentPlanList")[0].ChildNodes;
+
+        //                if (xmlTagName.Count > 0)
+        //                {
+        //                    for (int j = 0; j < xmlTagName.Count; j++)
+        //                    {
+        //                        if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == ulEncounterID && Convert.ToString(xmlTagName[j].Attributes.GetNamedItem("Plan_Type").Value).Equals("ASSESSMENT"))
+        //                        {
+
+        //                            string TagName = xmlTagName[j].Name;
+        //                            XmlSerializer xmlserializer = new XmlSerializer(typeof(TreatmentPlan));
+        //                            TreatmentPlan TreatmentPlan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as TreatmentPlan;
+        //                            IEnumerable<PropertyInfo> propInfo = null;
+        //                            propInfo = from obji in ((TreatmentPlan)TreatmentPlan).GetType().GetProperties() select obji;
+
+        //                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+        //                            {
+
+        //                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
+        //                                {
+        //                                    foreach (PropertyInfo property in propInfo)
+        //                                    {
+        //                                        if (property.Name == nodevalue.Name)
+        //                                        {
+        //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+        //                                                property.SetValue(TreatmentPlan, Convert.ToUInt64(nodevalue.Value), null);
+        //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+        //                                                property.SetValue(TreatmentPlan, Convert.ToString(nodevalue.Value), null);
+        //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+        //                                                property.SetValue(TreatmentPlan, Convert.ToDateTime(nodevalue.Value), null);
+        //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+        //                                                property.SetValue(TreatmentPlan, Convert.ToInt32(nodevalue.Value), null);
+        //                                            else
+        //                                                property.SetValue(TreatmentPlan, nodevalue.Value, null);
+        //                                        }
+        //                                    }
+        //                                }
+
+        //                            }
+        //                            objTreatmentPlan.Add(TreatmentPlan);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            fs.Close();
+        //            fs.Dispose();
+        //        }
+        //    }
+        //}
+        //catch (Exception Ex)
+        //{
+        //    if (XmlText != null)
+        //        XmlText.Close();
+
+        //    throw Ex;
+        //}
         #endregion
         TryAgain:
             int iResult = 0;
@@ -931,7 +948,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (objAssessmentConsistent && objProblemlistConsistent && objGeneralNotesConsistent)
                             {
 
-                                if (xmlobjEncounter.strXmlFilePath != null && xmlobjEncounter.strXmlFilePath != "")
+                                if (xmlobjEncounter.itemDoc.InnerXml != null && xmlobjEncounter.itemDoc.InnerXml != "")
                                 {
                                     // xmlobjEncounter.itemDoc.Save(xmlobjEncounter.strXmlFilePath);
                                     int trycount = 0;
@@ -944,10 +961,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         //{
                                         //    WriteBlob("Human", ulHumanID, xmlobjEncounter.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjEncounter);
                                         //}
-                                        if  (FileName.Contains("Encounter"))
-                                        {
-                                            WriteBlob("Encounter", ulEncounterID, xmlobjEncounter.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjEncounter);
-                                        }
+                                        //if  (FileName.Contains("Encounter"))
+                                        //{
+                                            WriteBlob("Encounter", ulEncounterID, xmlobjEncounter.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjEncounter,false);
+                                        //}
 
                                         // xmlobjEncounter.itemDoc.Save(xmlobjEncounter.strXmlFilePath);
                                     }
@@ -1005,7 +1022,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     }
 
                                 }
-                                if (xmlobjHuman.strXmlFilePath != null && xmlobjHuman.strXmlFilePath != "")
+                                if (xmlobjHuman.itemDoc.InnerXml != null && xmlobjHuman.itemDoc.InnerXml != "")
                                 {
                                     //  xmlobjHuman.itemDoc.Save(xmlobjHuman.strXmlFilePath);
 
@@ -1016,7 +1033,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         //  xmlobjHuman.itemDoc.Save(xmlobjHuman.strXmlFilePath);
                                         //if (FileName.Contains("Human"))
                                         //{
-                                            WriteBlob("Human", ulHumanID, xmlobjHuman.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjHuman);
+                                            WriteBlob("Human", ulHumanID, xmlobjHuman.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, xmlobjHuman, false);
                                        // }
                                         //else if (FileName.Contains("Encounter"))
                                         //{
@@ -1108,7 +1125,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     EncounterORHumanId = ListToDelete[0].Encounter_ID;
                                     List<object> lstObj = ListToDelete.Cast<object>().ToList();
                                     objGenXml.GenerateXmlDelete(lstObj, EncounterORHumanId, string.Empty, true);
-                                    WriteBlob("Encounter", ulEncounterID, objGenXml.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, objGenXml);
+                                    WriteBlob("Encounter", ulEncounterID, objGenXml.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, objGenXml, false);
 
                                 }
                                 trans.Commit();
@@ -2419,14 +2436,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (objAssessmentConsistent && objProblemlistConsistent)
                             {
 
-                                if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                                if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
                                 {
                                     // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
                                     {
-                                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                        //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     }
                                     catch (Exception xmlexcep)
                                     {
@@ -2481,14 +2498,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         }
                                     }
                                 }
-                                if (XMLObjHuman.strXmlFilePath != null && XMLObjHuman.strXmlFilePath != "")
+                                if (XMLObjHuman.itemDoc.InnerXml != null && XMLObjHuman.itemDoc.InnerXml != "")
                                 {
                                     // XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
                                     int trycount = 0;
                                 trytosaveagain:
                                     try
                                     {
-                                        XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
+                                        //XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
                                     }
                                     catch (Exception xmlexcep)
                                     {
@@ -2924,7 +2941,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         for (int iCount = 0; iCount < ((IList<object>)ilstAsEncounterBlobFinal[1]).Count; iCount++)
                         {
-                            objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstAsEncounterBlobFinal[0])[iCount]);
+                            objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstAsEncounterBlobFinal[1])[iCount]);
                         }
                         // objPatientList = (from m in lsttemppatientresults where m.Results_Type == "Vitals" select m).ToList<PatientResults>();
                     }
@@ -2937,7 +2954,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         for (int iCount = 0; iCount < ((IList<object>)ilstAsEncounterBlobFinal[2]).Count; iCount++)
                         {
-                            objEandMICD.Add((EandMCodingICD)((IList<object>)ilstAsEncounterBlobFinal[0])[iCount]);
+                            objEandMICD.Add((EandMCodingICD)((IList<object>)ilstAsEncounterBlobFinal[2])[iCount]);
                         }
                         // objPatientList = (from m in lsttemppatientresults where m.Results_Type == "Vitals" select m).ToList<PatientResults>();
                     }

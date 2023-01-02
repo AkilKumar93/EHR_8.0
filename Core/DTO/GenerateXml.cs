@@ -77,12 +77,16 @@ namespace Acurus.Capella.Core.DTO
         public int iHumanBlobVersion = 0;
         public int iEncounterBlobVersion = 0;
 
+        public ulong ulHumanID = 0;
+        public ulong ulEncounterID = 0;
+
         /*Added a bool bSave_In_Human in GenerateXml-Save,SaveStatic,Update and Copy_Previous_ to indicate that the list(Encounterlist) needs to be saved/updated in HUmanXML too.
          bSave_In_Human is set to "true" when EncounterTag is saved in HumanXML.*/
         public void GenerateXmlSaveStatic(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human)
         {
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
+            ulEncounterID = EncounterOrHumanId;
             if (obj.Count > 0)
             {
                 if (ilstHumanXml == null)
@@ -95,10 +99,14 @@ namespace Acurus.Capella.Core.DTO
                 if (ilstHumanXml.Contains(GeneralNotesList) || ilstHumanXml.Contains(SourceName))
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
                 }
                 if (bSave_In_Human)
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
                 }
             }
             //XmlTextReader XmlText = null;
@@ -833,6 +841,7 @@ namespace Acurus.Capella.Core.DTO
         {
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
+            ulEncounterID = EncounterOrHumanId;
             if (obj.Count > 0)
             {
                 if (ilstHumanXml == null)
@@ -845,10 +854,15 @@ namespace Acurus.Capella.Core.DTO
                 if (ilstHumanXml.Contains(GeneralNotesList) || ilstHumanXml.Contains(SourceName))
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
                 }
                 if (bSave_In_Human)
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
+
                 }
             }
             //XmlTextReader XmlText = null;
@@ -1623,7 +1637,7 @@ namespace Acurus.Capella.Core.DTO
             }
             if (IsPhoneEncounter == true || IsAssessment == true || IsRcopiaMedication == true)
             {
-                itemDoc.Save(strXmlFilePath);
+                //itemDoc.Save(strXmlFilePath);
             }
         }
 
@@ -1631,6 +1645,7 @@ namespace Acurus.Capella.Core.DTO
         {
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
+            ulEncounterID = EncounterOrHumanId;
             XmlTextReader XmlText = null;
             if (obj.Count > 0)
             {
@@ -1644,10 +1659,14 @@ namespace Acurus.Capella.Core.DTO
                 if (ilstHumanXml.Contains(GeneralNotesList) || ilstHumanXml.Contains(SourceName))
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
                 }
                 if (bSave_In_Human)
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
                 }
             }
            // strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
@@ -3808,6 +3827,7 @@ namespace Acurus.Capella.Core.DTO
         public void GenerateXmlDelete(IList<object> ilstobj, ulong EncounterOrHumanId, string sGeneralNotesText, bool IsAssessment)
         {
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
+            ulEncounterID = EncounterOrHumanId;
             if (ilstobj.Count > 0)
             {
                 if (ilstHumanXml == null)
@@ -3819,6 +3839,8 @@ namespace Acurus.Capella.Core.DTO
                 if (ilstHumanXml.Contains(GeneralNotesList) || ilstHumanXml.Contains(SourceName))
                 {
                     FileName = FileName.Replace("Encounter", "Human");
+                    ulEncounterID = 0;
+                    ulHumanID = EncounterOrHumanId;
                 }
             }
             //XmlTextReader XmlText=null;
