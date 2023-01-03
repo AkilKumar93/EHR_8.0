@@ -1562,31 +1562,61 @@ namespace Acurus.Capella.UI
             {
                 string sFaxFirstname = string.Empty;
                 string sFaxLastName = string.Empty;
-                string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml";
-                string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
-                if (File.Exists(strXmlHumanPath) == true)
-                {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
-                    using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        itemDoc.Load(fs);
 
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                string sPatientStrip = string.Empty;
+
+                IList<string> ilstHumanTag = new List<string>();
+                ilstHumanTag.Add("HumanList");
+
+                IList<object> ilstHumanBlobList = new List<object>();
+                ilstHumanBlobList = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHumanTag);
+
+                Human objFillHuman = new Human();
+
+                if (ilstHumanBlobList != null && ilstHumanBlobList.Count > 0)
+                {
+                    if (ilstHumanBlobList[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobList[0]).Count; iCount++)
                         {
-                            if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
-                            {
-                                if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != null)
-                                    sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
-                                if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != null)
-                                    sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
-                            }
+                            objFillHuman = ((Human)((IList<object>)ilstHumanBlobList[0])[iCount]);
                         }
-                        fs.Close();
-                        fs.Dispose();
                     }
                 }
+                if(objFillHuman.First_Name!=null)
+                {
+                    sFaxFirstname = objFillHuman.First_Name;
+                }
+                if(objFillHuman.Last_Name!=null)
+                {
+                    sFaxLastName = objFillHuman.Last_Name;
+                }
+
+                //string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml";
+                //string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
+                //if (File.Exists(strXmlHumanPath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
+                //    using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+
+                //        XmlText.Close();
+                //        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                //        {
+                //            if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
+                //            {
+                //                if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != null)
+                //                    sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+                //                if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != null)
+                //                    sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+                //            }
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
                  sFaxSubject = sFaxLastName + sFaxFirstname + "_" + DateTime.Now.ToString("dd-MMM-yyyy");
 
             }

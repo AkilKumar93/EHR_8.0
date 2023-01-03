@@ -22,6 +22,7 @@ using System.Xml;
 using System.IO;
 using System.Xml.Serialization;
 using System.Reflection;
+using iTextSharp.text;
 
 namespace Acurus.Capella.UI
 {
@@ -227,57 +228,87 @@ namespace Acurus.Capella.UI
         //}
         public void LoadPatientDetails()
         {
-            objHuman = new List<Human>();
-            if (txtAccountNumber.Text != string.Empty)
+
+            IList<string> ilstPhoneEncounterTagList = new List<string>();
+            ilstPhoneEncounterTagList.Add("HumanList");
+
+            IList<object> ilstPhoneBlob = new List<object>();
+            ilstPhoneBlob = UtilityManager.ReadBlob(Convert.ToUInt64(txtAccountNumber.Text), ilstPhoneEncounterTagList);
+
+            if(ilstPhoneBlob.Count>0 && ilstPhoneBlob!=null)
             {
-
-
-                string FileName = "Human" + "_" + txtAccountNumber.Text + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                if (File.Exists(strXmlFilePath) == true)
+                if (ilstPhoneBlob[0]!=null)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    XmlNodeList xmlTagName = null;
-                    // itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    for (int iCount = 0; iCount < ((IList<object>)ilstPhoneBlob[0]).Count; iCount++)
                     {
-                        itemDoc.Load(fs);
-                        XmlText.Close();
+                        txtAccountNumber.Text = ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Id.ToString();
+                        txtPatientName.Text = ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Last_Name + "," + ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).First_Name + "  " + ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).MI + "  " + ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Suffix;
+                        hdnHumanDetails.Value = ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Last_Name + "|" + ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).First_Name + "|" + ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).MI;
 
-
-
-                        if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count>0)
-                        {
-                            xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
-
-                            if (xmlTagName!= null)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    if (xmlTagName[j].Attributes["Id"].Value == txtAccountNumber.Text.ToString())
-                                    {
-                                        txtAccountNumber.Text = xmlTagName[j].Attributes["Id"].Value.ToString();
-                                        txtPatientName.Text = xmlTagName[j].Attributes["Last_Name"].Value + "," + xmlTagName[j].Attributes["First_Name"].Value + "  " + xmlTagName[j].Attributes["MI"].Value + "  " + xmlTagName[j].Attributes["Suffix"].Value;
-                                        hdnHumanDetails.Value = xmlTagName[j].Attributes["Last_Name"].Value + "|" + xmlTagName[j].Attributes["First_Name"].Value + "|" + xmlTagName[j].Attributes["MI"].Value;
-
-                                        DateTime dt = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
-                                        txtPatientDOB.Text = dt.ToString("dd-MMM-yyyy");
-                                        txtPatientSex.Text = xmlTagName[j].Attributes["Sex"].Value;
-                                        txtExtension.Text = xmlTagName[j].Attributes["Work_Phone_Ext"].Value;
-                                        mskHomePhone.Text = xmlTagName[j].Attributes["Home_Phone_No"].Value;
-                                        mskCellPhone.Text = xmlTagName[j].Attributes["Cell_Phone_Number"].Value;
-                                        mskWorkPhno.Text = xmlTagName[j].Attributes["Work_Phone_No"].Value;
-
-                                    }
-                                }
-                            }
-
-                        }
-                        fs.Close();
-                        fs.Dispose();
+                        DateTime dt = Convert.ToDateTime(((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Birth_Date);
+                        txtPatientDOB.Text = dt.ToString("dd-MMM-yyyy");
+                        txtPatientSex.Text = ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Sex;
+                        txtExtension.Text = ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Work_Phone_Ext;
+                        mskHomePhone.Text = ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Work_Phone_No;
+                        mskCellPhone.Text = ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Cell_Phone_Number;
+                        mskWorkPhno.Text = ((Human)((IList<object>)ilstPhoneBlob[0])[iCount]).Work_Phone_No;
                     }
+
                 }
+            }
+
+
+            //objHuman = new List<Human>();
+            //if (txtAccountNumber.Text != string.Empty)
+            //{
+
+
+            //    string FileName = "Human" + "_" + txtAccountNumber.Text + ".xml";
+            //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //    if (File.Exists(strXmlFilePath) == true)
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //        XmlNodeList xmlTagName = null;
+            //        // itemDoc.Load(XmlText);
+            //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //        {
+            //            itemDoc.Load(fs);
+            //            XmlText.Close();
+
+
+
+            //            if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count>0)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
+
+            //                if (xmlTagName!= null)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+            //                        if (xmlTagName[j].Attributes["Id"].Value == txtAccountNumber.Text.ToString())
+            //                        {
+            //                            txtAccountNumber.Text = xmlTagName[j].Attributes["Id"].Value.ToString();
+            //                            txtPatientName.Text = xmlTagName[j].Attributes["Last_Name"].Value + "," + xmlTagName[j].Attributes["First_Name"].Value + "  " + xmlTagName[j].Attributes["MI"].Value + "  " + xmlTagName[j].Attributes["Suffix"].Value;
+            //                            hdnHumanDetails.Value = xmlTagName[j].Attributes["Last_Name"].Value + "|" + xmlTagName[j].Attributes["First_Name"].Value + "|" + xmlTagName[j].Attributes["MI"].Value;
+
+            //                            DateTime dt = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
+            //                            txtPatientDOB.Text = dt.ToString("dd-MMM-yyyy");
+            //                            txtPatientSex.Text = xmlTagName[j].Attributes["Sex"].Value;
+            //                            txtExtension.Text = xmlTagName[j].Attributes["Work_Phone_Ext"].Value;
+            //                            mskHomePhone.Text = xmlTagName[j].Attributes["Home_Phone_No"].Value;
+            //                            mskCellPhone.Text = xmlTagName[j].Attributes["Cell_Phone_Number"].Value;
+            //                            mskWorkPhno.Text = xmlTagName[j].Attributes["Work_Phone_No"].Value;
+
+            //                        }
+            //                    }
+            //                }
+
+            //            }
+            //            fs.Close();
+            //            fs.Dispose();
+            //        }
+            //    }
                 //objHuman = objHumanManager.GetPatientDetailsUsingPatientInformattion(Convert.ToUInt32(txtAccountNumber.Text));
                 //if (objHuman.Count > 0)
                 //{
@@ -293,7 +324,7 @@ namespace Acurus.Capella.UI
                 //    mskWorkPhno.Text = objHuman[0].Work_Phone_No;
                 //}
 
-            }
+           // }
         }
 
         protected void InvisibleCloseButton_Click(object sender, EventArgs e)

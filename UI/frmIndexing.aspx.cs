@@ -3576,40 +3576,50 @@ namespace Acurus.Capella.UI
         {
             if (humanID != 0)
             {
+                string sdivPatientstrip = UtilityManager.FillPatientStrip(humanID);
+                if (sdivPatientstrip != null)
+                {
+                    PatientDetails.Text = sdivPatientstrip;
+                    PatientDetails.Attributes.Remove("class");
+                    PatientDetails.Attributes.Add("class", "patientPaneDisabled"); PatientDetails.CssClass = "patientPaneDisabled";
+                    cboDocumentType.Enabled = true;
+                    hdnHumanID.Value = humanID.ToString();
+                }
+
                 //string FileName = "Human" + "_" + humanID + ".xml";
                 //string strXmlFilePath = Path.Combine(ConfigurationManager.AppSettings["XMLPath"], "Human" + "_" + humanID + ".xml");
-                if (File.Exists(Path.Combine(ConfigurationManager.AppSettings["XMLPath"], "Human" + "_" + humanID + ".xml")) == true)
-                {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(Path.Combine(ConfigurationManager.AppSettings["XMLPath"], "Human" + "_" + humanID + ".xml"));
-                    try
-                    {
-                        XmlNodeList xmlTagName = null;
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
-                        {
-                            xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
+                //if (File.Exists(Path.Combine(ConfigurationManager.AppSettings["XMLPath"], "Human" + "_" + humanID + ".xml")) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(Path.Combine(ConfigurationManager.AppSettings["XMLPath"], "Human" + "_" + humanID + ".xml"));
+                //    try
+                //    {
+                //        XmlNodeList xmlTagName = null;
+                //        itemDoc.Load(XmlText);
+                //        XmlText.Close();
+                //        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
 
-                            if (xmlTagName.Count > 0)
-                            {
-                                PatientDetails.Text = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value + ", " + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value + " " + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("MI").Value + "|" + Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("dd-MMM-yyyy") + "|" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Sex").Value + " |Acc #:" + humanID;
-                                PatientDetails.Attributes.Remove("class");
-                                PatientDetails.Attributes.Add("class", "patientPaneDisabled"); PatientDetails.CssClass = "patientPaneDisabled";
-                                cboDocumentType.Enabled = true;
-                                hdnHumanID.Value = humanID.ToString();
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
+                //            if (xmlTagName.Count > 0)
+                //            {
+                //                PatientDetails.Text = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value + ", " + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value + " " + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("MI").Value + "|" + Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("dd-MMM-yyyy") + "|" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Sex").Value + " |Acc #:" + humanID;
+                //                PatientDetails.Attributes.Remove("class");
+                //                PatientDetails.Attributes.Add("class", "patientPaneDisabled"); PatientDetails.CssClass = "patientPaneDisabled";
+                //                cboDocumentType.Enabled = true;
+                //                hdnHumanID.Value = humanID.ToString();
+                //            }
+                //        }
+                //    }
+                //    catch (Exception ex)
+                //    {
 
-                        XmlText.Close();
-                        //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                //        XmlText.Close();
+                //        //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
 
-                        throw ex;
-                    }
-                }
+                //        throw ex;
+                //    }
+                //}
             }
         }
         public void hdnbtngeneratexml_Click(object sender, EventArgs e)

@@ -521,93 +521,98 @@ namespace Acurus.Capella.UI
             // btnSave.Click += new EventHandler(btnSave_Click);
             //btnSave.Attributes.Add("onclick", "btnSave_ClientClick();");
             #region Populate Patient Info
-
-
-            string FileName = "Human" + "_" + human_id + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+            string sPatientstrip = UtilityManager.FillPatientStrip(human_id);
+            if (sPatientstrip != null)
             {
-
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                try
-                {
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        itemDoc.Load(fs);
-
-                        XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
-                        Human objFillHuman = new Human();
-                        IList<Human> lstHuman = new List<Human>();
-                        if (xmlhumanList != null && xmlhumanList.Count > 0)
-                        {
-                            objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
-                            hdnHumanId.Value = Convert.ToString(objFillHuman.Id);
-                            objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
-                            hdnDOB.Value = Convert.ToDateTime(objFillHuman.Birth_Date).ToString();
-                            objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
-                            hdnPatientfirstname.Value = objFillHuman.First_Name;
-                            objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
-                            hdnPatientlastname.Value = objFillHuman.Last_Name;
-                            objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
-                            hdnPatientmiddlename.Value = objFillHuman.MI;
-                            objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
-                            objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
-                            objFillHuman.Medical_Record_Number = xmlhumanList[0].Attributes.GetNamedItem("Medical_Record_Number").Value;
-                            objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Home_Phone_No").Value;
-                            objFillHuman.Human_Type = xmlhumanList[0].Attributes.GetNamedItem("Human_Type").Value;
-                            hdnPatientType.Value = objFillHuman.Human_Type;
-                            objFillHuman.Patient_Account_External = xmlhumanList[0].Attributes.GetNamedItem("Patient_Account_External").Value;
-                            //objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
-                            objFillHuman.Cell_Phone_Number = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
-
-                            lstHuman.Add(objFillHuman);
-                        }
-
-                        string phoneno = "";
-                        if (lstHuman != null && lstHuman.Count > 0)
-                        {
-                            if (objFillHuman.Home_Phone_No.Length == 14)
-                            {
-                                phoneno = objFillHuman.Home_Phone_No;
-                            }
-                            else
-                            {
-                                phoneno = objFillHuman.Cell_Phone_Number;
-                            }
-
-                        }
-
-                        if (lstHuman != null && lstHuman.Count > 0)
-                        {
-                            string sSex = string.Empty;
-                            if (objFillHuman.Sex != null && objFillHuman.Sex.Trim() != "")
-                                sSex = objFillHuman.Sex.Substring(0, 1);
-
-                            txtPatientInformation.Value = objFillHuman.Last_Name + "," + objFillHuman.First_Name +
-                       " " + objFillHuman.MI + " " + objFillHuman.Suffix + " | " +
-                        objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
-                       (CalculateAge(objFillHuman.Birth_Date)).ToString() +
-                       " year(s) | " + sSex + " | Acc #:" + objFillHuman.Id +
-                       " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
-                       "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type;
-                        }
-                        fs.Close();
-                        fs.Dispose();
-                    }
-                }
-                catch (Exception Ex)
-                {
-                    XmlText.Close();
-                    // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Regeneratexml", "RegenerateXML('" + human_id.ToString() + "','Human','result');", true);
-                    return;
-
-                    // UtilityManager.GenerateXML(human_id.ToString(), "Human");
-
-                    //goto retry;
-                }
+                txtPatientInformation.Value = sPatientstrip;
             }
+
+
+            //string FileName = "Human" + "_" + human_id + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    try
+            //    {
+            //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //        {
+            //            itemDoc.Load(fs);
+
+            //            XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
+            //            Human objFillHuman = new Human();
+            //            IList<Human> lstHuman = new List<Human>();
+            //            if (xmlhumanList != null && xmlhumanList.Count > 0)
+            //            {
+            //                objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
+            //                hdnHumanId.Value = Convert.ToString(objFillHuman.Id);
+            //                objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
+            //                hdnDOB.Value = Convert.ToDateTime(objFillHuman.Birth_Date).ToString();
+            //                objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
+            //                hdnPatientfirstname.Value = objFillHuman.First_Name;
+            //                objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
+            //                hdnPatientlastname.Value = objFillHuman.Last_Name;
+            //                objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
+            //                hdnPatientmiddlename.Value = objFillHuman.MI;
+            //                objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
+            //                objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
+            //                objFillHuman.Medical_Record_Number = xmlhumanList[0].Attributes.GetNamedItem("Medical_Record_Number").Value;
+            //                objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Home_Phone_No").Value;
+            //                objFillHuman.Human_Type = xmlhumanList[0].Attributes.GetNamedItem("Human_Type").Value;
+            //                hdnPatientType.Value = objFillHuman.Human_Type;
+            //                objFillHuman.Patient_Account_External = xmlhumanList[0].Attributes.GetNamedItem("Patient_Account_External").Value;
+            //                //objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
+            //                objFillHuman.Cell_Phone_Number = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
+
+            //                lstHuman.Add(objFillHuman);
+            //            }
+
+            //            string phoneno = "";
+            //            if (lstHuman != null && lstHuman.Count > 0)
+            //            {
+            //                if (objFillHuman.Home_Phone_No.Length == 14)
+            //                {
+            //                    phoneno = objFillHuman.Home_Phone_No;
+            //                }
+            //                else
+            //                {
+            //                    phoneno = objFillHuman.Cell_Phone_Number;
+            //                }
+
+            //            }
+
+            //            if (lstHuman != null && lstHuman.Count > 0)
+            //            {
+            //                string sSex = string.Empty;
+            //                if (objFillHuman.Sex != null && objFillHuman.Sex.Trim() != "")
+            //                    sSex = objFillHuman.Sex.Substring(0, 1);
+
+            //                txtPatientInformation.Value = objFillHuman.Last_Name + "," + objFillHuman.First_Name +
+            //           " " + objFillHuman.MI + " " + objFillHuman.Suffix + " | " +
+            //            objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
+            //           (CalculateAge(objFillHuman.Birth_Date)).ToString() +
+            //           " year(s) | " + sSex + " | Acc #:" + objFillHuman.Id +
+            //           " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
+            //           "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type;
+            //            }
+            //            fs.Close();
+            //            fs.Dispose();
+            //        }
+            //    }
+            //    catch (Exception Ex)
+            //    {
+            //        XmlText.Close();
+            //        // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
+            //        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Regeneratexml", "RegenerateXML('" + human_id.ToString() + "','Human','result');", true);
+            //        return;
+
+            //        // UtilityManager.GenerateXML(human_id.ToString(), "Human");
+
+            //        //goto retry;
+            //    }
+            //}
             #endregion
             if (DLC.txtDLC != null && DLC.txtDLC.Text != string.Empty && DLC.txtDLC.Text.Contains("Test Reviewed:"))
             {

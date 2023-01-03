@@ -52,195 +52,203 @@ namespace Acurus.Capella.UI
             }
             txtAccount.Text = ulHumanID.ToString();
 
-                Human objFillHuman = new Human();
-                IList<Human> lstHuman = new List<Human>();
-                string sBirth_Date = string.Empty;
-                string sPatientstrip = string.Empty;
-                XmlTextReader XmlText = null;
-                if (ulHumanID != 0)
-                {
-                ln:
 
-                    string FileName = "Human" + "_" + ulHumanID + ".xml";
-                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                    try
-                    {
-                        if (File.Exists(strXmlFilePath) == true)
-                        {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlText = new XmlTextReader(strXmlFilePath);
-                            XmlNodeList xmlTagName = null;
-                            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                            {
-                                itemDoc.Load(fs);
-                                XmlText.Close();
-
-                                if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
-                                {
-                                    xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
-
-                                    if (xmlTagName != null)
-                                    {
-                                        for (int j = 0; j < xmlTagName.Count; j++)
-                                        {
-                                            if (xmlTagName[j].Attributes["Id"].Value == ulHumanID.ToString())
-                                            {
-                                                objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
-                                                sBirth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
-                                            if (System.Text.RegularExpressions.Regex.IsMatch(xmlTagName[j].Attributes["Id"].Value, "^[0-9]*$") == true)
-                                            {
-                                                objFillHuman.Id = Convert.ToUInt32(xmlTagName[j].Attributes["Id"].Value);
-                                            }
-                                                objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
-                                                objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
-                                                objFillHuman.MI = xmlTagName[j].Attributes["MI"].Value;
-                                                objFillHuman.Suffix = xmlTagName[j].Attributes["Suffix"].Value;
-                                                objFillHuman.Sex = xmlTagName[j].Attributes["Sex"].Value;
-                                                objFillHuman.Work_Phone_No = xmlTagName[j].Attributes["Work_Phone_No"].Value;
-                                                objFillHuman.Work_Phone_Ext = xmlTagName[j].Attributes["Work_Phone_Ext"].Value;
-                                                objFillHuman.Home_Phone_No = xmlTagName[j].Attributes["Home_Phone_No"].Value;
-                                                objFillHuman.Cell_Phone_Number = xmlTagName[j].Attributes["Cell_Phone_Number"].Value;
-                                                if (xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != null && xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != string.Empty)
-                                                    objFillHuman.ACO_Is_Eligible_Patient = xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value.ToString();
-                                                else
-                                                    objFillHuman.ACO_Is_Eligible_Patient = "";
-                                            objFillHuman.Human_Type = xmlTagName[j].Attributes["Human_Type"].Value;
-
-                                            lstHuman.Add(objFillHuman);
-                                            }
-                                        }
-
-                                        string phoneno = "";
-
-                                        if (lstHuman != null && lstHuman.Count > 0)
-                                        {
-
-                                            if (objFillHuman.Home_Phone_No.Length == 14)
-                                            {
-                                                phoneno = objFillHuman.Home_Phone_No;
-                                            }
-                                            else
-                                            {
-                                                phoneno = objFillHuman.Cell_Phone_Number;
-                                            }
-
-                                        }
-
-                                        string sPatientSex = string.Empty;
+            string sdivPatientstrip = UtilityManager.FillPatientStrip(ulHumanID);
+            if (sdivPatientstrip != null)
+            {
+                divPatientstrip.InnerText = sdivPatientstrip;
+            }
 
 
-                                        if (objFillHuman.Sex != string.Empty)
-                                        {
-                                            if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
-                                            {
-                                                sPatientSex = "UNK";
-                                            }
-                                            else
-                                            {
-                                                sPatientSex = objFillHuman.Sex.Substring(0, 1);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            sPatientSex = "";
-                                        }
+            //Human objFillHuman = new Human();
+            //IList<Human> lstHuman = new List<Human>();
+            //string sBirth_Date = string.Empty;
+            //string sPatientstrip = string.Empty;
+            //XmlTextReader XmlText = null;
+            //if (ulHumanID != 0)
+            //{
+            //ln:
 
-                                        string sAcoEligiblePatient = string.Empty;
-                                        sAcoEligiblePatient = objFillHuman.ACO_Is_Eligible_Patient;
+            //    string FileName = "Human" + "_" + ulHumanID + ".xml";
+            //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //    try
+            //    {
+            //        if (File.Exists(strXmlFilePath) == true)
+            //        {
+            //            XmlDocument itemDoc = new XmlDocument();
+            //            XmlText = new XmlTextReader(strXmlFilePath);
+            //            XmlNodeList xmlTagName = null;
+            //            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //            {
+            //                itemDoc.Load(fs);
+            //                XmlText.Close();
 
-                                        sPatientstrip = " " + objFillHuman.Last_Name + "," + objFillHuman.First_Name
-                                            + "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + " | " +
-                    objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
-                   (CalculateAge(objFillHuman.Birth_Date)).ToString() +
-                   "  year(s) | " + sPatientSex + " | Acc #:" + ulHumanID.ToString() +
-                   " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
-                   "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type + " | ";
+            //                if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
+            //                {
+            //                    xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
 
-                                        if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
-                                        {
-                                            sPatientstrip += sAcoEligiblePatient + "   |   ";
-                                        }
+            //                    if (xmlTagName != null)
+            //                    {
+            //                        for (int j = 0; j < xmlTagName.Count; j++)
+            //                        {
+            //                            if (xmlTagName[j].Attributes["Id"].Value == ulHumanID.ToString())
+            //                            {
+            //                                objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
+            //                                sBirth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
+            //                            if (System.Text.RegularExpressions.Regex.IsMatch(xmlTagName[j].Attributes["Id"].Value, "^[0-9]*$") == true)
+            //                            {
+            //                                objFillHuman.Id = Convert.ToUInt32(xmlTagName[j].Attributes["Id"].Value);
+            //                            }
+            //                                objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
+            //                                objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
+            //                                objFillHuman.MI = xmlTagName[j].Attributes["MI"].Value;
+            //                                objFillHuman.Suffix = xmlTagName[j].Attributes["Suffix"].Value;
+            //                                objFillHuman.Sex = xmlTagName[j].Attributes["Sex"].Value;
+            //                                objFillHuman.Work_Phone_No = xmlTagName[j].Attributes["Work_Phone_No"].Value;
+            //                                objFillHuman.Work_Phone_Ext = xmlTagName[j].Attributes["Work_Phone_Ext"].Value;
+            //                                objFillHuman.Home_Phone_No = xmlTagName[j].Attributes["Home_Phone_No"].Value;
+            //                                objFillHuman.Cell_Phone_Number = xmlTagName[j].Attributes["Cell_Phone_Number"].Value;
+            //                                if (xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != null && xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != string.Empty)
+            //                                    objFillHuman.ACO_Is_Eligible_Patient = xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value.ToString();
+            //                                else
+            //                                    objFillHuman.ACO_Is_Eligible_Patient = "";
+            //                            objFillHuman.Human_Type = xmlTagName[j].Attributes["Human_Type"].Value;
 
-                                        divPatientstrip.InnerText = sPatientstrip;
-                                    }
-                                }
-                                fs.Close();
-                                fs.Dispose();
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        XmlText.Close();
-                        //Thread.Sleep(5000);
-                        UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
+            //                            lstHuman.Add(objFillHuman);
+            //                            }
+            //                        }
 
-                        goto ln;
-                    }
-                }
+            //                        string phoneno = "";
 
-                #region OldCode
-                //txtAccount.Text = Request["AccountNum"].ToString();
-                ////if (Request["openingfrom"] != null && Request["openingfrom"].ToString().ToUpper() == "TASK")
-                ////{
-                ////    btnPatient.Visible = true;
-                ////}
+            //                        if (lstHuman != null && lstHuman.Count > 0)
+            //                        {
 
-                //if (Request["PatientName"] != null)
-                //{
-                //    txtPatientName.Text = Request["PatientName"].TrimEnd(',');
-                //    if (Request["PatientDOB"] != null && Request["PatientDOB"] != "")
-                //        txtPatientDOB.Text = Request["PatientDOB"];
-                //    if (Request["HumanType"] != null)
-                //        txtPatientType.Text = Request["HumanType"].ToString();
-                //}
-                //else
-                //{
-                //    string FileName = "Human" + "_" + txtAccount.Text + ".xml";
-                //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                //    try
-                //    {
-                //        if (File.Exists(strXmlFilePath) == true)
-                //        {
-                //            XmlDocument itemDoc = new XmlDocument();
-                //            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                //            try
-                //            {
-                //                // itemDoc.Load(XmlText);
-                //                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                //                {
-                //                    itemDoc.Load(fs);
+            //                            if (objFillHuman.Home_Phone_No.Length == 14)
+            //                            {
+            //                                phoneno = objFillHuman.Home_Phone_No;
+            //                            }
+            //                            else
+            //                            {
+            //                                phoneno = objFillHuman.Cell_Phone_Number;
+            //                            }
 
-                //                    XmlText.Close();
-                //                    if (itemDoc.GetElementsByTagName("Human").Count > 0 && itemDoc.GetElementsByTagName("Human")[0] != null)
-                //                    {
-                //                        txtPatientName.Text = itemDoc.GetElementsByTagName("Human")[0].Attributes["Last_Name"].Value + "," + itemDoc.GetElementsByTagName("Human")[0].Attributes["First_Name"].Value + " " + itemDoc.GetElementsByTagName("Human")[0].Attributes["MI"].Value;
-                //                        txtPatientDOB.Text = Convert.ToDateTime(itemDoc.GetElementsByTagName("Human")[0].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
-                //                        txtPatientType.Text = itemDoc.GetElementsByTagName("Human")[0].Attributes["Human_Type"].Value;
+            //                        }
 
-                //                        if (itemDoc.GetElementsByTagName("Human")[0].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != null && itemDoc.GetElementsByTagName("Human")[0].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != string.Empty && itemDoc.GetElementsByTagName("Human")[0].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != "N")
-                //                            txtPatientType.Text += " | " + itemDoc.GetElementsByTagName("Human")[0].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value;
-                //                    }
-                //                }
-                //            }
-                //            catch (Exception ex)
-                //            {
-                //                // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
-                //                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + txtAccount.Text.ToString() + "','Human','task');", true);
+            //                        string sPatientSex = string.Empty;
 
 
-                //                //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+            //                        if (objFillHuman.Sex != string.Empty)
+            //                        {
+            //                            if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
+            //                            {
+            //                                sPatientSex = "UNK";
+            //                            }
+            //                            else
+            //                            {
+            //                                sPatientSex = objFillHuman.Sex.Substring(0, 1);
+            //                            }
+            //                        }
+            //                        else
+            //                        {
+            //                            sPatientSex = "";
+            //                        }
 
-                //                return;
-                //            }
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        throw new Exception(ex.Message + " - " + strXmlFilePath);
-                //    }
-                //}
-                #endregion
+            //                        string sAcoEligiblePatient = string.Empty;
+            //                        sAcoEligiblePatient = objFillHuman.ACO_Is_Eligible_Patient;
+
+            //                        sPatientstrip = " " + objFillHuman.Last_Name + "," + objFillHuman.First_Name
+            //                            + "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + " | " +
+            //    objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
+            //   (CalculateAge(objFillHuman.Birth_Date)).ToString() +
+            //   "  year(s) | " + sPatientSex + " | Acc #:" + ulHumanID.ToString() +
+            //   " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
+            //   "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type + " | ";
+
+            //                        if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
+            //                        {
+            //                            sPatientstrip += sAcoEligiblePatient + "   |   ";
+            //                        }
+
+            //                        divPatientstrip.InnerText = sPatientstrip;
+            //                    }
+            //                }
+            //                fs.Close();
+            //                fs.Dispose();
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        XmlText.Close();
+            //        //Thread.Sleep(5000);
+            //        UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
+
+            //        goto ln;
+            //    }
+            //}
+
+            #region OldCode
+            //txtAccount.Text = Request["AccountNum"].ToString();
+            ////if (Request["openingfrom"] != null && Request["openingfrom"].ToString().ToUpper() == "TASK")
+            ////{
+            ////    btnPatient.Visible = true;
+            ////}
+
+            //if (Request["PatientName"] != null)
+            //{
+            //    txtPatientName.Text = Request["PatientName"].TrimEnd(',');
+            //    if (Request["PatientDOB"] != null && Request["PatientDOB"] != "")
+            //        txtPatientDOB.Text = Request["PatientDOB"];
+            //    if (Request["HumanType"] != null)
+            //        txtPatientType.Text = Request["HumanType"].ToString();
+            //}
+            //else
+            //{
+            //    string FileName = "Human" + "_" + txtAccount.Text + ".xml";
+            //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //    try
+            //    {
+            //        if (File.Exists(strXmlFilePath) == true)
+            //        {
+            //            XmlDocument itemDoc = new XmlDocument();
+            //            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //            try
+            //            {
+            //                // itemDoc.Load(XmlText);
+            //                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //                {
+            //                    itemDoc.Load(fs);
+
+            //                    XmlText.Close();
+            //                    if (itemDoc.GetElementsByTagName("Human").Count > 0 && itemDoc.GetElementsByTagName("Human")[0] != null)
+            //                    {
+            //                        txtPatientName.Text = itemDoc.GetElementsByTagName("Human")[0].Attributes["Last_Name"].Value + "," + itemDoc.GetElementsByTagName("Human")[0].Attributes["First_Name"].Value + " " + itemDoc.GetElementsByTagName("Human")[0].Attributes["MI"].Value;
+            //                        txtPatientDOB.Text = Convert.ToDateTime(itemDoc.GetElementsByTagName("Human")[0].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
+            //                        txtPatientType.Text = itemDoc.GetElementsByTagName("Human")[0].Attributes["Human_Type"].Value;
+
+            //                        if (itemDoc.GetElementsByTagName("Human")[0].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != null && itemDoc.GetElementsByTagName("Human")[0].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != string.Empty && itemDoc.GetElementsByTagName("Human")[0].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != "N")
+            //                            txtPatientType.Text += " | " + itemDoc.GetElementsByTagName("Human")[0].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value;
+            //                    }
+            //                }
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
+            //                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + txtAccount.Text.ToString() + "','Human','task');", true);
+
+
+            //                //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+
+            //                return;
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new Exception(ex.Message + " - " + strXmlFilePath);
+            //    }
+            //}
+            #endregion
             //}
             //else if (ClientSession.HumanId > 0)
             //{
