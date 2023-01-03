@@ -143,140 +143,191 @@ namespace Acurus.Capella.UI
             IList<ImmunizationHistory> ImmHislst = new List<ImmunizationHistory>();
             ImmunizationDTO ImmunizationDTO = new ImmunizationDTO();
 
-            string FileName = "Human" + "_" + HumanID + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+            IList<string> ilstImmunizationTag = new List<string>();
+            ilstImmunizationTag.Add("ImmunizationList");
+            ilstImmunizationTag.Add("ImmunizationHistoryList");
+
+            IList<object> ilstImmnBlobList = new List<object>();
+            ilstImmnBlobList = UtilityManager.ReadBlob(HumanID, ilstImmunizationTag);
+
+            if (ilstImmnBlobList != null && ilstImmnBlobList.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                //  itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstImmnBlobList[0] != null)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-
-                    if (itemDoc.GetElementsByTagName("ImmunizationList") != null)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstImmnBlobList[0]).Count; iCount++)
                     {
-                        if (itemDoc.GetElementsByTagName("ImmunizationList").Count > 0)
+
+                        if (((Immunization)((IList<object>)ilstImmnBlobList[0])[iCount]).Encounter_Id == 0)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("ImmunizationList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
+                            ImmunizationMenuList.Add((Immunization)((IList<object>)ilstImmnBlobList[0])[iCount]);
+                        }
+                        else
+                        {
+                            if (((Immunization)((IList<object>)ilstImmnBlobList[0])[iCount]).Encounter_Id == ClientSession.EncounterId || (hdnEncID.Value.Trim() != "" && ((Immunization)((IList<object>)ilstImmnBlobList[0])[iCount]).Encounter_Id == Convert.ToUInt64(hdnEncID.Value)))//Changed for BugID:47181
                             {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(Immunization));
-                                    Immunization Immunization = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Immunization;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    if (Immunization != null)
-                                    {
-                                        propInfo = from obji in ((Immunization)Immunization).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(Immunization, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(Immunization, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(Immunization, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(Immunization, Convert.ToInt32(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                            property.SetValue(Immunization, Convert.ToDecimal(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(Immunization, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (Immunization.Encounter_Id == 0)
-                                        {
-                                            ImmunizationMenuList.Add(Immunization);
-                                        }
-                                        else
-                                        {
-                                            if (Immunization.Encounter_Id == ClientSession.EncounterId || (hdnEncID.Value.Trim() != "" && Immunization.Encounter_Id == Convert.ToUInt64(hdnEncID.Value)))//Changed for BugID:47181
-                                            {
-                                                ImmunizationTabList.Add(Immunization);
-                                            }
-                                        }
-                                    }
-                                }
+                                ImmunizationTabList.Add((Immunization)((IList<object>)ilstImmnBlobList[0])[iCount]);
                             }
                         }
-                    }
-                    if (itemDoc.GetElementsByTagName("Age") != null)
-                    {
-                        if (itemDoc.GetElementsByTagName("Age").Count > 0)
-                        {
-                            string sAge = itemDoc.GetElementsByTagName("Age")[0].Attributes[0].Value;
-                            if (sAge != "")
-                            {
-                                age = Convert.ToInt32(sAge);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                    }
-                    if (itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0] != null)
-                    {
-                        xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
 
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
-                                ImmunizationHistory ImmunizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ImmunizationHistory;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((ImmunizationHistory)ImmunizationHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(ImmunizationHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(ImmunizationHistory, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(ImmunizationHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(ImmunizationHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                    property.SetValue(ImmunizationHistory, Convert.ToDecimal(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(ImmunizationHistory, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-                                ImmHislst.Add(ImmunizationHistory);
-                            }
-                        }
                     }
-                    fs.Close();
-                    fs.Dispose();
+
                 }
+
+                if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
+                {
+                    age = Convert.ToInt32(UtilityManager.CalculateAge(Convert.ToDateTime(ClientSession.PatientPaneList[0].Birth_Date)));
+
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                }
+
+                if (ilstImmnBlobList[1] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstImmnBlobList[1]).Count; iCount++)
+                    {
+                        ImmHislst.Add((ImmunizationHistory)((IList<object>)ilstImmnBlobList[1])[iCount]);
+                    }
+                }
+
             }
+
+
+            //string FileName = "Human" + "_" + HumanID + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    //  itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+
+            //        if (itemDoc.GetElementsByTagName("ImmunizationList") != null)
+            //        {
+            //            if (itemDoc.GetElementsByTagName("ImmunizationList").Count > 0)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("ImmunizationList")[0].ChildNodes;
+
+            //                if (xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+
+            //                        string TagName = xmlTagName[j].Name;
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(Immunization));
+            //                        Immunization Immunization = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Immunization;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+            //                        if (Immunization != null)
+            //                        {
+            //                            propInfo = from obji in ((Immunization)Immunization).GetType().GetProperties() select obji;
+
+            //                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                            {
+            //                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                                {
+            //                                    foreach (PropertyInfo property in propInfo)
+            //                                    {
+            //                                        if (property.Name == nodevalue.Name)
+            //                                        {
+            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                property.SetValue(Immunization, Convert.ToUInt64(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                property.SetValue(Immunization, Convert.ToString(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                property.SetValue(Immunization, Convert.ToDateTime(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                property.SetValue(Immunization, Convert.ToInt32(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+            //                                                property.SetValue(Immunization, Convert.ToDecimal(nodevalue.Value), null);
+            //                                            else
+            //                                                property.SetValue(Immunization, nodevalue.Value, null);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                            if (Immunization.Encounter_Id == 0)
+            //                            {
+            //                                ImmunizationMenuList.Add(Immunization);
+            //                            }
+            //                            else
+            //                            {
+            //                                if (Immunization.Encounter_Id == ClientSession.EncounterId || (hdnEncID.Value.Trim() != "" && Immunization.Encounter_Id == Convert.ToUInt64(hdnEncID.Value)))//Changed for BugID:47181
+            //                                {
+            //                                    ImmunizationTabList.Add(Immunization);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        if (itemDoc.GetElementsByTagName("Age") != null)
+            //        {
+            //            if (itemDoc.GetElementsByTagName("Age").Count > 0)
+            //            {
+            //                string sAge = itemDoc.GetElementsByTagName("Age")[0].Attributes[0].Value;
+            //                if (sAge != "")
+            //                {
+            //                    age = Convert.ToInt32(sAge);
+            //                }
+            //            }
+            //        }
+            //        else
+            //        {
+            //            ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+            //        }
+            //        if (itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
+            //                    ImmunizationHistory ImmunizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ImmunizationHistory;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((ImmunizationHistory)ImmunizationHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(ImmunizationHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(ImmunizationHistory, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(ImmunizationHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(ImmunizationHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+            //                                        property.SetValue(ImmunizationHistory, Convert.ToDecimal(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(ImmunizationHistory, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    ImmHislst.Add(ImmunizationHistory);
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
 
             grdImmunizations.DataSource = null;
             grdImmunizations.DataBind();
@@ -1069,7 +1120,7 @@ namespace Acurus.Capella.UI
                 txtDLCDocumentType.txtDLC.TextMode = TextBoxMode.MultiLine;
 
                 GridFill();
-                objImmunizationFill = objImmuMgr.LoadImmunization(HumanID, PhysicianID, EncounterID, DateTime.Now,ClientSession.LegalOrg);
+                objImmunizationFill = objImmuMgr.LoadImmunization(HumanID, PhysicianID, EncounterID, DateTime.Now, ClientSession.LegalOrg);
                 objImmunizationFill.Immunization = ImmunizationList;
                 objImmunizationFill.ImmunizationHistoryList = ImmunizationHistoryList;
                 ViewState["Immunization"] = objImmunizationFill;
@@ -1436,152 +1487,192 @@ namespace Acurus.Capella.UI
             IList<NonDrugAllergy> NonDruglst = new List<NonDrugAllergy>();
             IList<Rcopia_Allergy> Rcopia_Allergylst = new List<Rcopia_Allergy>();
             IList<ProblemList> Problemlst = new List<ProblemList>();
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml"; //"Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+
+            IList<string> ilstImmnAllergyList = new List<string>();
+            ilstImmnAllergyList.Add("NonDrugAllergyList");
+            ilstImmnAllergyList.Add("Rcopia_AllergyList");
+            ilstImmnAllergyList.Add("ProblemListList");
+
+            IList<object> ilstImmnAllergyFinal = new List<object>();
+            ilstImmnAllergyFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstImmnAllergyList);
+
+            if (ilstImmnAllergyFinal != null && ilstImmnAllergyFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                //  itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+
+                if (ilstImmnAllergyFinal[0] != null)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-
-
-                    if (itemDoc.GetElementsByTagName("NonDrugAllergyList")[0] != null)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstImmnAllergyFinal[0]).Count; iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("NonDrugAllergyList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(NonDrugAllergy));
-                                NonDrugAllergy NonDrugAllergy = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as NonDrugAllergy;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                //NonDrugAllergy = (NonDrugAllergy)NonDrugAllergy;
-                                propInfo = from obji in ((NonDrugAllergy)NonDrugAllergy).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(NonDrugAllergy, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(NonDrugAllergy, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(NonDrugAllergy, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(NonDrugAllergy, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(NonDrugAllergy, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                NonDruglst.Add(NonDrugAllergy);
-                            }
-                        }
+                        NonDruglst.Add((NonDrugAllergy)((IList<object>)ilstImmnAllergyFinal[0])[iCount]);
                     }
-                    if (itemDoc.GetElementsByTagName("Rcopia_AllergyList")[0] != null)
+                }
+
+                if (ilstImmnAllergyFinal[1] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstImmnAllergyFinal[1]).Count; iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("Rcopia_AllergyList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(Rcopia_Allergy));
-                                Rcopia_Allergy Rcopia_Allergy = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Rcopia_Allergy;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                //NonDrugAllergy = (NonDrugAllergy)NonDrugAllergy;
-                                propInfo = from obji in ((Rcopia_Allergy)Rcopia_Allergy).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(Rcopia_Allergy, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(Rcopia_Allergy, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(Rcopia_Allergy, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(Rcopia_Allergy, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(Rcopia_Allergy, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                Rcopia_Allergylst.Add(Rcopia_Allergy);
-                            }
-                        }
+                        Rcopia_Allergylst.Add((Rcopia_Allergy)((IList<object>)ilstImmnAllergyFinal[1])[iCount]);
                     }
-                    if (itemDoc.GetElementsByTagName("ProblemListList")[0] != null)
+                }
+
+                if (ilstImmnAllergyFinal[2] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstImmnAllergyFinal[2]).Count; iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
-                                ProblemList ProblemList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((ProblemList)ProblemList).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(ProblemList, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(ProblemList, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(ProblemList, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(ProblemList, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(ProblemList, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-                                Problemlst.Add(ProblemList);
-                            }
-                        }
+                        Problemlst.Add((ProblemList)((IList<object>)ilstImmnAllergyFinal[2])[iCount]);
                     }
-                    fs.Close();
-                    fs.Dispose();
                 }
             }
+
+
+            //    string FileName = "Human" + "_" + ClientSession.HumanId + ".xml"; //"Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    //  itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+
+
+            //        if (itemDoc.GetElementsByTagName("NonDrugAllergyList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("NonDrugAllergyList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(NonDrugAllergy));
+            //                    NonDrugAllergy NonDrugAllergy = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as NonDrugAllergy;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+
+
+            //                    //NonDrugAllergy = (NonDrugAllergy)NonDrugAllergy;
+            //                    propInfo = from obji in ((NonDrugAllergy)NonDrugAllergy).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(NonDrugAllergy, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(NonDrugAllergy, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(NonDrugAllergy, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(NonDrugAllergy, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(NonDrugAllergy, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+            //                    NonDruglst.Add(NonDrugAllergy);
+            //                }
+            //            }
+            //        }
+            //        if (itemDoc.GetElementsByTagName("Rcopia_AllergyList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("Rcopia_AllergyList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(Rcopia_Allergy));
+            //                    Rcopia_Allergy Rcopia_Allergy = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Rcopia_Allergy;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    //NonDrugAllergy = (NonDrugAllergy)NonDrugAllergy;
+            //                    propInfo = from obji in ((Rcopia_Allergy)Rcopia_Allergy).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(Rcopia_Allergy, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(Rcopia_Allergy, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(Rcopia_Allergy, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(Rcopia_Allergy, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(Rcopia_Allergy, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+            //                    Rcopia_Allergylst.Add(Rcopia_Allergy);
+            //                }
+            //            }
+            //        }
+            //        if (itemDoc.GetElementsByTagName("ProblemListList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
+            //                    ProblemList ProblemList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((ProblemList)ProblemList).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(ProblemList, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(ProblemList, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(ProblemList, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(ProblemList, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(ProblemList, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    Problemlst.Add(ProblemList);
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
             sOutput = "Allergic to ";
             string sreturn = string.Empty;
             string sInfluenza = System.Configuration.ConfigurationSettings.AppSettings["InfluenzaImmunization"];
@@ -2502,7 +2593,7 @@ namespace Acurus.Capella.UI
             if (ViewState["Immunization"] != null)
                 objImmunizationFill = (ImmunizationDTO)ViewState["Immunization"];
             EAndMCodingManager objEAndMCodingManager = new EAndMCodingManager();
-            objImmunizationFill.phyProcedureList = objEAndMCodingManager.GetPhysicianProcedure(PhysicianID, "IMMUNIZATION PROCEDURE", 0,ClientSession.LegalOrg);
+            objImmunizationFill.phyProcedureList = objEAndMCodingManager.GetPhysicianProcedure(PhysicianID, "IMMUNIZATION PROCEDURE", 0, ClientSession.LegalOrg);
 
             FillImmunizationProcedure(objImmunizationFill.phyProcedureList);
             ViewState["Immunization"] = objImmunizationFill;
