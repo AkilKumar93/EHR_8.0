@@ -45,7 +45,7 @@ build Job:
 
 Deploy Test Job 10.0.0.4 :
   tags:
-    - 	azure test4 tag
+    - azure test4 tag
   rules:
     - if: '$SERVER_TESTING_4 =="10.0.0.4"'
   environment:
