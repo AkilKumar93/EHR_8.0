@@ -18,6 +18,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         int SaveHumanBlobWithoutTransaction(IList<Human_Blob> ListToInsertHumanBlob, IList<Human_Blob> ListToUpdateHumanBlob, ISession MySession, string MACAddress);
 
         IList<Human_Blob> GetHumanBlob(ulong ulHumanID);
+
+        void SaveHumanBlobWithTransaction(IList<Human_Blob> ListToUpdateHumanBlob, string MACAddress);
     }
 
     public partial class HumanBlobManager : ManagerBase<Human_Blob, ulong>, IHumanBlobManager
@@ -51,6 +53,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ilstHumanBlob = crit.List<Human_Blob>();
 
             return ilstHumanBlob;
+        }
+
+        public void SaveHumanBlobWithTransaction(IList<Human_Blob> ListToUpdateHumanBlob, string MACAddress)
+        {
+            IList<Human_Blob> ilstHumanBlob = null;
+            SaveUpdateDeleteWithTransaction(ref ilstHumanBlob, ListToUpdateHumanBlob, null, MACAddress);
         }
         #endregion
     }

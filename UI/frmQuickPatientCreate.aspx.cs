@@ -2413,30 +2413,30 @@ namespace Acurus.Capella.UI
         public void checkin()
         {
 
-            string FileName = "Human" + "_" + txtPatientAccountNo.Text + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //string FileName = "Human" + "_" + txtPatientAccountNo.Text + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
            
 
-            if (File.Exists(strXmlFilePath) == true)
-            {
-                XmlTextReader XmlText1 = null;
-                try
-                {
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlTextReader XmlText1 = null;
+            //    try
+            //    {
 
 
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlText1 = new XmlTextReader(strXmlFilePath);
-                    itemDoc.Load(XmlText1);
-                    XmlText1.Close();
-                }
-                catch (Exception ex)
-                {
-                    XmlText1.Close();
-                    UtilityManager.GenerateXML(txtPatientAccountNo.Text, "Human");
-                    goto ln;
-                }
-            }
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlText1 = new XmlTextReader(strXmlFilePath);
+            //        itemDoc.Load(XmlText1);
+            //        XmlText1.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        XmlText1.Close();
+            //        UtilityManager.GenerateXML(txtPatientAccountNo.Text, "Human");
+            //        goto ln;
+            //    }
+            //}
 
 
             ln:
@@ -3508,180 +3508,207 @@ namespace Acurus.Capella.UI
                     txtPatientAccountNo.Text = UtilityManager.ulMyFindPatientID.ToString();
 
 
-                    string strXmlHumanFilePath = string.Empty;
-                    if (ListToUpdateHuman.Count > 0)
-                    {
-                        string HumanFileName = "Human" + "_" + ListToUpdateHuman[0].Id + ".xml";
-                        strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
-                    }
-                    if (File.Exists(strXmlHumanFilePath) == false && ListToUpdateHuman[0].Id > 0)
+                    //string strXmlHumanFilePath = string.Empty;
+                    //if (ListToUpdateHuman.Count > 0)
+                    //{
+                    //    string HumanFileName = "Human" + "_" + ListToUpdateHuman[0].Id + ".xml";
+                    //    strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                    //}
+                    //if (File.Exists(strXmlHumanFilePath) == false && ListToUpdateHuman[0].Id > 0)
+                    //{
+
+                    //    if (ListToUpdateHuman != null && ListToUpdateHuman.Count > 0)
+                    //    {
+
+                    //        string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+                    //        string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                    //        XmlDocument itemDoc = new XmlDocument();
+                    //         XmlText = new XmlTextReader(sXmlPath);
+                    //        itemDoc.Load(XmlText);
+                    //        int iAge = 0;
+                    //        iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+
+                    //        XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                    //        if (xmlAge != null && xmlAge.Count > 0)
+                    //            xmlAge[0].Attributes[0].Value = iAge.ToString();
+                    //        else
+                    //        {
+                    //            ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                    //        }
+
+                    //        XmlText.Close();
+                    //       // itemDoc.Save(strXmlHumanFilePath);
+                    //        int trycount = 0;
+                    //    trytosaveagain:
+                    //        try
+                    //        {
+                    //            itemDoc.Save(strXmlHumanFilePath);
+                    //        }
+                    //        catch (Exception xmlexcep)
+                    //        {
+                    //            trycount++;
+                    //            if (trycount <= 3)
+                    //            {
+                    //                int TimeMilliseconds = 0;
+                    //                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                    //                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                    //                Thread.Sleep(TimeMilliseconds);
+                    //                string sMsg = string.Empty;
+                    //                string sExStackTrace = string.Empty;
+
+                    //                string version = "";
+                    //                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                    //                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                    //                string[] server = version.Split('|');
+                    //                string serverno = "";
+                    //                if (server.Length > 1)
+                    //                    serverno = server[1].Trim();
+
+                    //                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                    //                    sMsg = xmlexcep.InnerException.Message;
+                    //                else
+                    //                    sMsg = xmlexcep.Message;
+
+                    //                if (xmlexcep != null && xmlexcep.StackTrace != null)
+                    //                    sExStackTrace = xmlexcep.StackTrace;
+
+                    //                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                    //                string ConnectionData;
+                    //                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                    //                using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                    //                {
+                    //                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                    //                    {
+                    //                        cmd.Connection = con;
+                    //                        try
+                    //                        {
+                    //                            con.Open();
+                    //                            cmd.ExecuteNonQuery();
+                    //                            con.Close();
+                    //                        }
+                    //                        catch
+                    //                        {
+                    //                        }
+                    //                    }
+                    //                }
+                    //                goto trytosaveagain;
+                    //            }
+                    //        }
+
+                    //    }
+                    //}
+
+                    //else
                     {
 
                         if (ListToUpdateHuman != null && ListToUpdateHuman.Count > 0)
                         {
+                            UpdateAgeinBlob(ListToUpdateHuman[0].Id);
 
-                            string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                            string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(sXmlPath);
-                            itemDoc.Load(XmlText);
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //    string sXMLContent = String.Empty;
+                        //    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                        //    Human_Blob objHumanblob = null;
+                        //    IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ListToUpdateHuman[0].Id);
+                        //    if (ilstHumanBlob.Count > 0)
+                        //    {
+                        //        objHumanblob = ilstHumanBlob[0];
+                        //        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        //        itemDoc.LoadXml(sXMLContent);
+                        //    }
 
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
+                                
+                        //    // XmlText = new XmlTextReader(strXmlHumanFilePath);
+                        //    //itemDoc.Load(XmlText);
 
-                            XmlText.Close();
-                           // itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                        //    int iAge = 0;
+                        //    iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                        //    XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                        //    if (xmlAge != null && xmlAge.Count > 0)
+                        //        xmlAge[0].Attributes[0].Value = iAge.ToString();
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                        //    }
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                        //    XmlText.Close();
+                        //   // itemDoc.Save(strXmlHumanFilePath);
+                        //    //int trycount = 0;
+                        ////trytosaveagain:
+                        //    try
+                        //    {
+                        //        //itemDoc.Save(strXmlHumanFilePath);
+                        //        IList<Human_Blob> ilstUpdateBlob = new List<Human_Blob>();
+                        //        byte[] bytes = null;
+                        //        try
+                        //        {
+                        //            bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                        //        }
+                        //        catch (Exception ex)
+                        //        {
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                        //        }
+                        //        objHumanblob.Human_XML = bytes;
+                        //        ilstUpdateBlob.Add(objHumanblob);
+                        //        HumanBlobMngr.SaveHumanBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                        //    }
+                        //    catch (Exception xmlexcep)
+                        //    {
+                        //        throw new Exception(xmlexcep.Message.ToString());
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                        //        //trycount++;
+                        //        //if (trycount <= 3)
+                        //        //{
+                        //        //    int TimeMilliseconds = 0;
+                        //        //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                        //        //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+                        //        //    Thread.Sleep(TimeMilliseconds);
+                        //        //    string sMsg = string.Empty;
+                        //        //    string sExStackTrace = string.Empty;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //        //    string version = "";
+                        //        //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        //        //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                        }
-                    }
+                        //        //    string[] server = version.Split('|');
+                        //        //    string serverno = "";
+                        //        //    if (server.Length > 1)
+                        //        //        serverno = server[1].Trim();
 
-                    else
-                    {
+                        //        //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                        //        //        sMsg = xmlexcep.InnerException.Message;
+                        //        //    else
+                        //        //        sMsg = xmlexcep.Message;
 
-                        if (ListToUpdateHuman != null && ListToUpdateHuman.Count > 0)
-                        {
+                        //        //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                        //        //        sExStackTrace = xmlexcep.StackTrace;
 
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(strXmlHumanFilePath);
-                            itemDoc.Load(XmlText);
-
-
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
-
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
-
-                            XmlText.Close();
-                           // itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
-
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
-
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
-
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
-
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //        //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //        //    string ConnectionData;
+                        //        //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        //        //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        //        //    {
+                        //        //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                        //        //        {
+                        //        //            cmd.Connection = con;
+                        //        //            try
+                        //        //            {
+                        //        //                con.Open();
+                        //        //                cmd.ExecuteNonQuery();
+                        //        //                con.Close();
+                        //        //            }
+                        //        //            catch
+                        //        //            {
+                        //        //            }
+                        //        //        }
+                        //        //    }
+                        //        //    goto trytosaveagain;
+                        //        //}
+                        //    }
                         }
                     }
 
@@ -3701,172 +3728,200 @@ namespace Acurus.Capella.UI
 
                     if (ListToUpdateHuman != null && ListToUpdateHuman.Count > 0)
                     {
-                        string HumanFileName = "Human" + "_" + ListToUpdateHuman[0].Id + ".xml";
-                        string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                        //string HumanFileName = "Human" + "_" + ListToUpdateHuman[0].Id + ".xml";
+                        //string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
 
-                        if (File.Exists(strXmlHumanFilePath) == false && ListToUpdateHuman[0].Id > 0)
+                        //if (File.Exists(strXmlHumanFilePath) == false && ListToUpdateHuman[0].Id > 0)
+                        //{
+
+
+
+                        //    string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+                        //    string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //     XmlText = new XmlTextReader(sXmlPath);
+                        //    itemDoc.Load(XmlText);
+                        //    int iAge = 0;
+                        //    iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+
+                        //    XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                        //    if (xmlAge != null && xmlAge.Count > 0)
+                        //        xmlAge[0].Attributes[0].Value = iAge.ToString();
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                        //    }
+
+                        //    XmlText.Close();
+                        //    //itemDoc.Save(strXmlHumanFilePath);
+                        //    int trycount = 0;
+                        //trytosaveagain:
+                        //    try
+                        //    {
+                        //        itemDoc.Save(strXmlHumanFilePath);
+                        //    }
+                        //    catch (Exception xmlexcep)
+                        //    {
+                        //        trycount++;
+                        //        if (trycount <= 3)
+                        //        {
+                        //            int TimeMilliseconds = 0;
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                        //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                        //            Thread.Sleep(TimeMilliseconds);
+                        //            string sMsg = string.Empty;
+                        //            string sExStackTrace = string.Empty;
+
+                        //            string version = "";
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                        //            string[] server = version.Split('|');
+                        //            string serverno = "";
+                        //            if (server.Length > 1)
+                        //                serverno = server[1].Trim();
+
+                        //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                        //                sMsg = xmlexcep.InnerException.Message;
+                        //            else
+                        //                sMsg = xmlexcep.Message;
+
+                        //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+                        //                sExStackTrace = xmlexcep.StackTrace;
+
+                        //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //            string ConnectionData;
+                        //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        //            {
+                        //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                        //                {
+                        //                    cmd.Connection = con;
+                        //                    try
+                        //                    {
+                        //                        con.Open();
+                        //                        cmd.ExecuteNonQuery();
+                        //                        con.Close();
+                        //                    }
+                        //                    catch
+                        //                    {
+                        //                    }
+                        //                }
+                        //            }
+                        //            goto trytosaveagain;
+                        //        }
+                        //    }
+
+                        //}
+                        //else
                         {
+                            UpdateAgeinBlob(ListToUpdateHuman[0].Id);
+
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //    string sXMLContent = String.Empty;
+                        //    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                        //    Human_Blob objHumanblob = null;
+                        //    IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ListToUpdateHuman[0].Id);
+                        //    if (ilstHumanBlob.Count > 0)
+                        //    {
+                        //        objHumanblob = ilstHumanBlob[0];
+                        //        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        //        itemDoc.LoadXml(sXMLContent);
+                        //    }
+
+                        //    //XmlDocument itemDoc = new XmlDocument();
+                        //    // XmlText = new XmlTextReader(strXmlHumanFilePath);
+                        //    //itemDoc.Load(XmlText);
 
 
+                        //    int iAge = 0;
+                        //    iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
 
-                            string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                            string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(sXmlPath);
-                            itemDoc.Load(XmlText);
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+                        //    XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                        //    if (xmlAge != null && xmlAge.Count > 0)
+                        //        xmlAge[0].Attributes[0].Value = iAge.ToString();
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                        //    }
 
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
+                        //    XmlText.Close();
+                        //    //itemDoc.Save(strXmlHumanFilePath);
+                        //    //int trycount = 0;
+                        ////trytosaveagain:
+                        //    try
+                        //    {
+                        //        //itemDoc.Save(strXmlHumanFilePath);
 
-                            XmlText.Close();
-                            //itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                        //        IList<Human_Blob> ilstUpdateBlob = new List<Human_Blob>();
+                        //        byte[] bytes = null;
+                        //        try
+                        //        {
+                        //            bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                        //        }
+                        //        catch (Exception ex)
+                        //        {
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                        //        }
+                        //        objHumanblob.Human_XML = bytes;
+                        //        ilstUpdateBlob.Add(objHumanblob);
+                        //        HumanBlobMngr.SaveHumanBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                        //    }
+                        //    catch (Exception xmlexcep)
+                        //    {
+                        //        throw new Exception(xmlexcep.Message.ToString());
+                        //        //trycount++;
+                        //        //if (trycount <= 3)
+                        //        //{
+                        //        //    int TimeMilliseconds = 0;
+                        //        //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                        //        //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                        //        //    Thread.Sleep(TimeMilliseconds);
+                        //        //    string sMsg = string.Empty;
+                        //        //    string sExStackTrace = string.Empty;
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                        //        //    string version = "";
+                        //        //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        //        //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                        //        //    string[] server = version.Split('|');
+                        //        //    string serverno = "";
+                        //        //    if (server.Length > 1)
+                        //        //        serverno = server[1].Trim();
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+                        //        //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                        //        //        sMsg = xmlexcep.InnerException.Message;
+                        //        //    else
+                        //        //        sMsg = xmlexcep.Message;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //        //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                        //        //        sExStackTrace = xmlexcep.StackTrace;
 
-                        }
-                        else
-                        {
-
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(strXmlHumanFilePath);
-                            itemDoc.Load(XmlText);
-
-
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
-
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
-
-                            XmlText.Close();
-                            //itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
-
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
-
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
-
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
-
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //        //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //        //    string ConnectionData;
+                        //        //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        //        //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        //        //    {
+                        //        //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                        //        //        {
+                        //        //            cmd.Connection = con;
+                        //        //            try
+                        //        //            {
+                        //        //                con.Open();
+                        //        //                cmd.ExecuteNonQuery();
+                        //        //                con.Close();
+                        //        //            }
+                        //        //            catch
+                        //        //            {
+                        //        //            }
+                        //        //        }
+                        //        //    }
+                        //        //    goto trytosaveagain;
+                        //        //}
+                        //    }
                         }
                     }
 
@@ -3884,170 +3939,172 @@ namespace Acurus.Capella.UI
 
                     if (ListToUpdateHuman != null && ListToUpdateHuman.Count > 0)
                     {
-                        string HumanFileName = "Human" + "_" + ListToUpdateHuman[0].Id + ".xml";
-                        string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                        UpdateAgeinBlob(ListToUpdateHuman[0].Id);
 
-                        if (File.Exists(strXmlHumanFilePath) == false && ListToUpdateHuman[0].Id > 0)
-                        {
+                        //string HumanFileName = "Human" + "_" + ListToUpdateHuman[0].Id + ".xml";
+                        //string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
-                            string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                            string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(sXmlPath);
-                            itemDoc.Load(XmlText);
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+                        //if (File.Exists(strXmlHumanFilePath) == false && ListToUpdateHuman[0].Id > 0)
+                        //{
 
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
+                        //    string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+                        //    string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //     XmlText = new XmlTextReader(sXmlPath);
+                        //    itemDoc.Load(XmlText);
+                        //    int iAge = 0;
+                        //    iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
 
-                            XmlText.Close();
-                           // itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                        //    XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                        //    if (xmlAge != null && xmlAge.Count > 0)
+                        //        xmlAge[0].Attributes[0].Value = iAge.ToString();
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                        //    }
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                        //    XmlText.Close();
+                        //   // itemDoc.Save(strXmlHumanFilePath);
+                        //    int trycount = 0;
+                        //trytosaveagain:
+                        //    try
+                        //    {
+                        //        itemDoc.Save(strXmlHumanFilePath);
+                        //    }
+                        //    catch (Exception xmlexcep)
+                        //    {
+                        //        trycount++;
+                        //        if (trycount <= 3)
+                        //        {
+                        //            int TimeMilliseconds = 0;
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                        //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                        //            Thread.Sleep(TimeMilliseconds);
+                        //            string sMsg = string.Empty;
+                        //            string sExStackTrace = string.Empty;
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                        //            string version = "";
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                        //            string[] server = version.Split('|');
+                        //            string serverno = "";
+                        //            if (server.Length > 1)
+                        //                serverno = server[1].Trim();
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+                        //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                        //                sMsg = xmlexcep.InnerException.Message;
+                        //            else
+                        //                sMsg = xmlexcep.Message;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+                        //                sExStackTrace = xmlexcep.StackTrace;
 
-                        }
-                        else
-                        {
-                            //GenerateXml XMLObj = new GenerateXml();
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(strXmlHumanFilePath);
-                            itemDoc.Load(XmlText);
+                        //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //            string ConnectionData;
+                        //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        //            {
+                        //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                        //                {
+                        //                    cmd.Connection = con;
+                        //                    try
+                        //                    {
+                        //                        con.Open();
+                        //                        cmd.ExecuteNonQuery();
+                        //                        con.Close();
+                        //                    }
+                        //                    catch
+                        //                    {
+                        //                    }
+                        //                }
+                        //            }
+                        //            goto trytosaveagain;
+                        //        }
+                        //    }
 
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+                        //}
+                        //else
+                        //{
+                        //    //GenerateXml XMLObj = new GenerateXml();
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //     XmlText = new XmlTextReader(strXmlHumanFilePath);
+                        //    itemDoc.Load(XmlText);
 
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
+                        //    int iAge = 0;
+                        //    iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
 
-                            XmlText.Close();
-                            //itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                        //    XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                        //    if (xmlAge != null && xmlAge.Count > 0)
+                        //        xmlAge[0].Attributes[0].Value = iAge.ToString();
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                        //    }
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                        //    XmlText.Close();
+                        //    //itemDoc.Save(strXmlHumanFilePath);
+                        //    int trycount = 0;
+                        //trytosaveagain:
+                        //    try
+                        //    {
+                        //        itemDoc.Save(strXmlHumanFilePath);
+                        //    }
+                        //    catch (Exception xmlexcep)
+                        //    {
+                        //        trycount++;
+                        //        if (trycount <= 3)
+                        //        {
+                        //            int TimeMilliseconds = 0;
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                        //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                        //            Thread.Sleep(TimeMilliseconds);
+                        //            string sMsg = string.Empty;
+                        //            string sExStackTrace = string.Empty;
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                        //            string version = "";
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                        //            string[] server = version.Split('|');
+                        //            string serverno = "";
+                        //            if (server.Length > 1)
+                        //                serverno = server[1].Trim();
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+                        //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                        //                sMsg = xmlexcep.InnerException.Message;
+                        //            else
+                        //                sMsg = xmlexcep.Message;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+                        //                sExStackTrace = xmlexcep.StackTrace;
 
-                        }
+                        //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //            string ConnectionData;
+                        //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        //            {
+                        //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                        //                {
+                        //                    cmd.Connection = con;
+                        //                    try
+                        //                    {
+                        //                        con.Open();
+                        //                        cmd.ExecuteNonQuery();
+                        //                        con.Close();
+                        //                    }
+                        //                    catch
+                        //                    {
+                        //                    }
+                        //                }
+                        //            }
+                        //            goto trytosaveagain;
+                        //        }
+                        //    }
+
+                        //}
                     }
 
                     btnSave.Enabled = false;
@@ -4062,169 +4119,171 @@ namespace Acurus.Capella.UI
 
                     if (ListToUpdateHuman != null && ListToUpdateHuman.Count > 0)
                     {
-                        string HumanFileName = "Human" + "_" + ListToUpdateHuman[0].Id + ".xml";
-                        string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
-                        if (File.Exists(strXmlHumanFilePath) == false && ListToUpdateHuman[0].Id > 0)
-                        {
+                        UpdateAgeinBlob(ListToUpdateHuman[0].Id);
 
-                            string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                            string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(sXmlPath);
-                            itemDoc.Load(XmlText);
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+                        //string HumanFileName = "Human" + "_" + ListToUpdateHuman[0].Id + ".xml";
+                        //string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                        //if (File.Exists(strXmlHumanFilePath) == false && ListToUpdateHuman[0].Id > 0)
+                        //{
 
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
+                        //    string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+                        //    string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //     XmlText = new XmlTextReader(sXmlPath);
+                        //    itemDoc.Load(XmlText);
+                        //    int iAge = 0;
+                        //    iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
 
-                            XmlText.Close();
-                           // itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                        //    XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                        //    if (xmlAge != null && xmlAge.Count > 0)
+                        //        xmlAge[0].Attributes[0].Value = iAge.ToString();
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                        //    }
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                        //    XmlText.Close();
+                        //   // itemDoc.Save(strXmlHumanFilePath);
+                        //    int trycount = 0;
+                        //trytosaveagain:
+                        //    try
+                        //    {
+                        //        itemDoc.Save(strXmlHumanFilePath);
+                        //    }
+                        //    catch (Exception xmlexcep)
+                        //    {
+                        //        trycount++;
+                        //        if (trycount <= 3)
+                        //        {
+                        //            int TimeMilliseconds = 0;
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                        //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                        //            Thread.Sleep(TimeMilliseconds);
+                        //            string sMsg = string.Empty;
+                        //            string sExStackTrace = string.Empty;
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                        //            string version = "";
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                        //            string[] server = version.Split('|');
+                        //            string serverno = "";
+                        //            if (server.Length > 1)
+                        //                serverno = server[1].Trim();
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+                        //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                        //                sMsg = xmlexcep.InnerException.Message;
+                        //            else
+                        //                sMsg = xmlexcep.Message;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+                        //                sExStackTrace = xmlexcep.StackTrace;
 
-                        }
-                        else
-                        {
+                        //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //            string ConnectionData;
+                        //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        //            {
+                        //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                        //                {
+                        //                    cmd.Connection = con;
+                        //                    try
+                        //                    {
+                        //                        con.Open();
+                        //                        cmd.ExecuteNonQuery();
+                        //                        con.Close();
+                        //                    }
+                        //                    catch
+                        //                    {
+                        //                    }
+                        //                }
+                        //            }
+                        //            goto trytosaveagain;
+                        //        }
+                        //    }
 
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(strXmlHumanFilePath);
-                            itemDoc.Load(XmlText);
+                        //}
+                        //else
+                        //{
 
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //     XmlText = new XmlTextReader(strXmlHumanFilePath);
+                        //    itemDoc.Load(XmlText);
 
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
+                        //    int iAge = 0;
+                        //    iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
 
-                            XmlText.Close();
-                           // itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                        //    XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                        //    if (xmlAge != null && xmlAge.Count > 0)
+                        //        xmlAge[0].Attributes[0].Value = iAge.ToString();
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                        //    }
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                        //    XmlText.Close();
+                        //   // itemDoc.Save(strXmlHumanFilePath);
+                        //    int trycount = 0;
+                        //trytosaveagain:
+                        //    try
+                        //    {
+                        //        itemDoc.Save(strXmlHumanFilePath);
+                        //    }
+                        //    catch (Exception xmlexcep)
+                        //    {
+                        //        trycount++;
+                        //        if (trycount <= 3)
+                        //        {
+                        //            int TimeMilliseconds = 0;
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                        //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                        //            Thread.Sleep(TimeMilliseconds);
+                        //            string sMsg = string.Empty;
+                        //            string sExStackTrace = string.Empty;
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                        //            string version = "";
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                        //            string[] server = version.Split('|');
+                        //            string serverno = "";
+                        //            if (server.Length > 1)
+                        //                serverno = server[1].Trim();
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+                        //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                        //                sMsg = xmlexcep.InnerException.Message;
+                        //            else
+                        //                sMsg = xmlexcep.Message;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+                        //                sExStackTrace = xmlexcep.StackTrace;
 
-                        }
+                        //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //            string ConnectionData;
+                        //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        //            {
+                        //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                        //                {
+                        //                    cmd.Connection = con;
+                        //                    try
+                        //                    {
+                        //                        con.Open();
+                        //                        cmd.ExecuteNonQuery();
+                        //                        con.Close();
+                        //                    }
+                        //                    catch
+                        //                    {
+                        //                    }
+                        //                }
+                        //            }
+                        //            goto trytosaveagain;
+                        //        }
+                        //    }
+
+                        //}
                     }
 
                     btnSave.Enabled = false;
@@ -4246,89 +4305,89 @@ namespace Acurus.Capella.UI
                     if (ListToSaveHuman != null && ListToSaveHuman.Count > 0)
                     {
 
-                        string HumanFileName = "Human" + "_" + ListToSaveHuman[0].Id + ".xml";
-                        string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
-                        if (File.Exists(strXmlHumanFilePath) == false && ListToSaveHuman[0].Id > 0)
-                        {
+                        //string HumanFileName = "Human" + "_" + ListToSaveHuman[0].Id + ".xml";
+                        //string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                        //if (File.Exists(strXmlHumanFilePath) == false && ListToSaveHuman[0].Id > 0)
+                        //{
 
-                            string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                            string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(sXmlPath);
-                            itemDoc.Load(XmlText);
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToSaveHuman[0].Birth_Date);
+                        //    string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+                        //    string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //     XmlText = new XmlTextReader(sXmlPath);
+                        //    itemDoc.Load(XmlText);
+                        //    int iAge = 0;
+                        //    iAge = UtilityManager.CalculateAge(ListToSaveHuman[0].Birth_Date);
 
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
+                        //    XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                        //    if (xmlAge != null && xmlAge.Count > 0)
+                        //        xmlAge[0].Attributes[0].Value = iAge.ToString();
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                        //    }
 
-                            XmlText.Close();
-                            //itemDoc.Save(strXmlHumanFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                        //    XmlText.Close();
+                        //    //itemDoc.Save(strXmlHumanFilePath);
+                        //    int trycount = 0;
+                        //trytosaveagain:
+                        //    try
+                        //    {
+                        //        itemDoc.Save(strXmlHumanFilePath);
+                        //    }
+                        //    catch (Exception xmlexcep)
+                        //    {
+                        //        trycount++;
+                        //        if (trycount <= 3)
+                        //        {
+                        //            int TimeMilliseconds = 0;
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                        //                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                        //            Thread.Sleep(TimeMilliseconds);
+                        //            string sMsg = string.Empty;
+                        //            string sExStackTrace = string.Empty;
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                        //            string version = "";
+                        //            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                        //                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                        //            string[] server = version.Split('|');
+                        //            string serverno = "";
+                        //            if (server.Length > 1)
+                        //                serverno = server[1].Trim();
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                        //            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                        //                sMsg = xmlexcep.InnerException.Message;
+                        //            else
+                        //                sMsg = xmlexcep.Message;
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+                        //            if (xmlexcep != null && xmlexcep.StackTrace != null)
+                        //                sExStackTrace = xmlexcep.StackTrace;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
+                        //            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                        //            string ConnectionData;
+                        //            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                        //            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                        //            {
+                        //                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                        //                {
+                        //                    cmd.Connection = con;
+                        //                    try
+                        //                    {
+                        //                        con.Open();
+                        //                        cmd.ExecuteNonQuery();
+                        //                        con.Close();
+                        //                    }
+                        //                    catch
+                        //                    {
+                        //                    }
+                        //                }
+                        //            }
+                        //            goto trytosaveagain;
+                        //        }
+                        //    }
 
-                        }
+                        //}
                         ClientSession.HumanId = ListToSaveHuman[0].Id;
                     }
 
@@ -6965,93 +7024,93 @@ namespace Acurus.Capella.UI
                             SavePPHeaderList.ToArray<PPHeader>(), SavePPLineItemList.ToArray<PPLineItem>(), SaveAccountTransactionList.ToArray<AccountTransaction>(), listPatientNotes.ToArray<PatientNotes>(), objPatInsuredPlan, string.Empty, 0, SaveVisitPaymenHistoryList);
                     txtPatientAccountNo.Text = UtilityManager.ulMyFindPatientID.ToString();
 
-                    string HumanFileName = "Human" + "_" + ListToSaveHuman[0].Id + ".xml";
-                    string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
-                    if (File.Exists(strXmlHumanFilePath) == false && ListToSaveHuman[0].Id > 0)
-                    {
+                    //string HumanFileName = "Human" + "_" + ListToSaveHuman[0].Id + ".xml";
+                    //string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                    //if (File.Exists(strXmlHumanFilePath) == false && ListToSaveHuman[0].Id > 0)
+                    //{
 
-                        if (ListToSaveHuman != null && ListToSaveHuman.Count > 0)
-                        {
+                    //    if (ListToSaveHuman != null && ListToSaveHuman.Count > 0)
+                    //    {
 
-                            string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
-                            string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                            XmlDocument itemDoc = new XmlDocument();
-                             XmlText = new XmlTextReader(sXmlPath);
-                            itemDoc.Load(XmlText);
-                            int iAge = 0;
-                            iAge = UtilityManager.CalculateAge(ListToSaveHuman[0].Birth_Date);
+                    //        string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
+                    //        string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                    //        XmlDocument itemDoc = new XmlDocument();
+                    //         XmlText = new XmlTextReader(sXmlPath);
+                    //        itemDoc.Load(XmlText);
+                    //        int iAge = 0;
+                    //        iAge = UtilityManager.CalculateAge(ListToSaveHuman[0].Birth_Date);
 
-                            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
-                            if (xmlAge != null && xmlAge.Count > 0)
-                                xmlAge[0].Attributes[0].Value = iAge.ToString();
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                            }
+                    //        XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+                    //        if (xmlAge != null && xmlAge.Count > 0)
+                    //            xmlAge[0].Attributes[0].Value = iAge.ToString();
+                    //        else
+                    //        {
+                    //            ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                    //        }
 
-                            XmlText.Close();
-                           //itemDoc.Save(strXmlHumanFilePath);
+                    //        XmlText.Close();
+                    //       //itemDoc.Save(strXmlHumanFilePath);
 
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                itemDoc.Save(strXmlHumanFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                    //        int trycount = 0;
+                    //    trytosaveagain:
+                    //        try
+                    //        {
+                    //            itemDoc.Save(strXmlHumanFilePath);
+                    //        }
+                    //        catch (Exception xmlexcep)
+                    //        {
+                    //            trycount++;
+                    //            if (trycount <= 3)
+                    //            {
+                    //                int TimeMilliseconds = 0;
+                    //                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                    //                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+                    //                Thread.Sleep(TimeMilliseconds);
+                    //                string sMsg = string.Empty;
+                    //                string sExStackTrace = string.Empty;
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                    //                string version = "";
+                    //                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                    //                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+                    //                string[] server = version.Split('|');
+                    //                string serverno = "";
+                    //                if (server.Length > 1)
+                    //                    serverno = server[1].Trim();
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+                    //                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                    //                    sMsg = xmlexcep.InnerException.Message;
+                    //                else
+                    //                    sMsg = xmlexcep.Message;
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+                    //                if (xmlexcep != null && xmlexcep.StackTrace != null)
+                    //                    sExStackTrace = xmlexcep.StackTrace;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
-                        }
-                    }
+                    //                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                    //                string ConnectionData;
+                    //                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                    //                using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                    //                {
+                    //                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                    //                    {
+                    //                        cmd.Connection = con;
+                    //                        try
+                    //                        {
+                    //                            con.Open();
+                    //                            cmd.ExecuteNonQuery();
+                    //                            con.Close();
+                    //                        }
+                    //                        catch
+                    //                        {
+                    //                        }
+                    //                    }
+                    //                }
+                    //                goto trytosaveagain;
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
             }
 
@@ -8837,8 +8896,7 @@ namespace Acurus.Capella.UI
         }
 
 
-        private void
-            FillVisitPaymentHistory(VisitPayment EditVisitPayment, VisitPaymentArc EditVisitPaymentArc, string sCreditType)
+        private void FillVisitPaymentHistory(VisitPayment EditVisitPayment, VisitPaymentArc EditVisitPaymentArc, string sCreditType)
         {
             VisitPaymentHistory objVisitPaymentHistory = new VisitPaymentHistory();
             VisitPaymentHistoryArc objVisitPaymentHistoryArc = new VisitPaymentHistoryArc();
@@ -8947,5 +9005,110 @@ namespace Acurus.Capella.UI
 
         }
 
+        public void UpdateAgeinBlob(ulong ulHumanID)
+        {
+            XmlDocument itemDoc = new XmlDocument();
+            string sXMLContent = String.Empty;
+            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+            Human_Blob objHumanblob = null;
+            IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ulHumanID);
+            if (ilstHumanBlob.Count > 0)
+            {
+                objHumanblob = ilstHumanBlob[0];
+                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                itemDoc.LoadXml(sXMLContent);
+            }
+
+
+            // XmlText = new XmlTextReader(strXmlHumanFilePath);
+            //itemDoc.Load(XmlText);
+
+            int iAge = 0;
+            iAge = UtilityManager.CalculateAge(ListToUpdateHuman[0].Birth_Date);
+
+            XmlNodeList xmlAge = itemDoc.GetElementsByTagName("Age");
+            if (xmlAge != null && xmlAge.Count > 0)
+                xmlAge[0].Attributes[0].Value = iAge.ToString();
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+            }
+
+            //XmlText.Close();
+            // itemDoc.Save(strXmlHumanFilePath);
+            //int trycount = 0;
+            //trytosaveagain:
+            try
+            {
+                //itemDoc.Save(strXmlHumanFilePath);
+                IList<Human_Blob> ilstUpdateBlob = new List<Human_Blob>();
+                byte[] bytes = null;
+                try
+                {
+                    bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                objHumanblob.Human_XML = bytes;
+                ilstUpdateBlob.Add(objHumanblob);
+                HumanBlobMngr.SaveHumanBlobWithTransaction(ilstUpdateBlob, string.Empty);
+            }
+            catch (Exception xmlexcep)
+            {
+                throw new Exception(xmlexcep.Message.ToString());
+
+                //trycount++;
+                //if (trycount <= 3)
+                //{
+                //    int TimeMilliseconds = 0;
+                //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                //    Thread.Sleep(TimeMilliseconds);
+                //    string sMsg = string.Empty;
+                //    string sExStackTrace = string.Empty;
+
+                //    string version = "";
+                //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                //    string[] server = version.Split('|');
+                //    string serverno = "";
+                //    if (server.Length > 1)
+                //        serverno = server[1].Trim();
+
+                //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                //        sMsg = xmlexcep.InnerException.Message;
+                //    else
+                //        sMsg = xmlexcep.Message;
+
+                //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                //        sExStackTrace = xmlexcep.StackTrace;
+
+                //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                //    string ConnectionData;
+                //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                //    {
+                //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                //        {
+                //            cmd.Connection = con;
+                //            try
+                //            {
+                //                con.Open();
+                //                cmd.ExecuteNonQuery();
+                //                con.Close();
+                //            }
+                //            catch
+                //            {
+                //            }
+                //        }
+                //    }
+                //    goto trytosaveagain;
+                //}
+            }
+        }
     }
 }

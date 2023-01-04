@@ -417,7 +417,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     //Assessment Save in Xml to be seperated from maangerbase.cs//For Bug Id 56330
                                     //iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ListToInsertAssessment, ref ListToUpdate, ListToDelete, MySession, sMacAddress, true, true, EncounterORHumanId, string.Empty, ref xmlobjEncounter);
 
-                                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ListToInsertAssessment, ref ListToUpdate, ListToDelete, MySession, sMacAddress, false, false, EncounterORHumanId, string.Empty, ref xmlobjEncounter);
+                                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref ListToInsertAssessment, ref ListToUpdate, ListToDelete, MySession, sMacAddress, true, true, EncounterORHumanId, string.Empty, ref xmlobjEncounter);
 
                                     // iResult = SaveUpdateDeleteWithoutTransaction(ref ListToInsertAssessment, ListToUpdate, ListToDelete, MySession, sMacAddress);
                                     //if bResult = false then, the deadlock is occured 
@@ -1102,39 +1102,42 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
 
                                 //For Bug Id 56330
-                                if (ListToInsertAssessment != null && ListToInsertAssessment.Count > 0 && ListToUpdate != null && ListToUpdate.Count > 0)
-                                {
-                                    GenerateXml objGenXml = new GenerateXml();
-                                    EncounterORHumanId = ListToInsertAssessment[0].Encounter_ID;
-                                    IList<Assessment> lstInsertpdate = new List<Assessment>();
-                                    lstInsertpdate = ListToInsertAssessment.Concat(ListToUpdate).ToList();
-                                    List<object> lstObj = lstInsertpdate.Cast<object>().ToList();
+                                //if (ListToInsertAssessment != null && ListToInsertAssessment.Count > 0 && ListToUpdate != null && ListToUpdate.Count > 0)
+                                //{
+                                //    GenerateXml objGenXml = new GenerateXml();
+                                //    EncounterORHumanId = ListToInsertAssessment[0].Encounter_ID;
+                                //    IList<Assessment> lstInsertpdate = new List<Assessment>();
+                                //    lstInsertpdate = ListToInsertAssessment.Concat(ListToUpdate).ToList();
+                                //    List<object> lstObj = lstInsertpdate.Cast<object>().ToList();
+                                //    objGenXml.itemDoc = null;
+                                //    objGenXml.GenerateXmlSave(lstObj, EncounterORHumanId, string.Empty, false, false, true, false, objGenXml);
+                                //}
+                                //if (ListToInsertAssessment != null && ListToInsertAssessment.Count > 0 && ListToUpdate != null && ListToUpdate.Count == 0)
+                                //{
+                                //    GenerateXml objGenXml = new GenerateXml();
+                                //    EncounterORHumanId = ListToInsertAssessment[0].Encounter_ID;
+                                //    List<object> lstObj = ListToInsertAssessment.Cast<object>().ToList();
+                                //    objGenXml.itemDoc = null;
+                                //    objGenXml.GenerateXmlSave(lstObj, EncounterORHumanId, string.Empty, false, false, true, false, objGenXml);
+                                //}
+                                //if (ListToInsertAssessment != null && ListToInsertAssessment.Count == 0 && ListToUpdate != null && ListToUpdate.Count > 0)
+                                //{
+                                //    GenerateXml objGenXml = new GenerateXml();
+                                //    EncounterORHumanId = ListToUpdate[0].Encounter_ID;
+                                //    List<object> lstObj = ListToUpdate.Cast<object>().ToList();
+                                //    objGenXml.itemDoc = null;
+                                //    objGenXml.GenerateXmlSave(lstObj, EncounterORHumanId, string.Empty, false, false, true, false, objGenXml);
+                                //}
+                                //if (ListToDelete != null && ListToDelete.Count > 0)
+                                //{
+                                //    GenerateXml objGenXml = new GenerateXml();
+                                //    EncounterORHumanId = ListToDelete[0].Encounter_ID;
+                                //    List<object> lstObj = ListToDelete.Cast<object>().ToList();
+                                //    objGenXml.GenerateXmlDelete(lstObj, EncounterORHumanId, string.Empty, true, objGenXml);
+                                 
+                                //   // WriteBlob( ulEncounterID, objGenXml.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, objGenXml, false);
 
-                                    objGenXml.GenerateXmlSave(lstObj, EncounterORHumanId, string.Empty, false, false, true, false);
-                                }
-                                if (ListToInsertAssessment != null && ListToInsertAssessment.Count > 0 && ListToUpdate != null && ListToUpdate.Count == 0)
-                                {
-                                    GenerateXml objGenXml = new GenerateXml();
-                                    EncounterORHumanId = ListToInsertAssessment[0].Encounter_ID;
-                                    List<object> lstObj = ListToInsertAssessment.Cast<object>().ToList();
-                                    objGenXml.GenerateXmlSave(lstObj, EncounterORHumanId, string.Empty, false, false, true, false);
-                                }
-                                if (ListToInsertAssessment != null && ListToInsertAssessment.Count == 0 && ListToUpdate != null && ListToUpdate.Count > 0)
-                                {
-                                    GenerateXml objGenXml = new GenerateXml();
-                                    EncounterORHumanId = ListToUpdate[0].Encounter_ID;
-                                    List<object> lstObj = ListToUpdate.Cast<object>().ToList();
-                                    objGenXml.GenerateXmlSave(lstObj, EncounterORHumanId, string.Empty, false, false, true, false);
-                                }
-                                if (ListToDelete != null && ListToDelete.Count > 0)
-                                {
-                                    GenerateXml objGenXml = new GenerateXml();
-                                    EncounterORHumanId = ListToDelete[0].Encounter_ID;
-                                    List<object> lstObj = ListToDelete.Cast<object>().ToList();
-                                    objGenXml.GenerateXmlDelete(lstObj, EncounterORHumanId, string.Empty, true);
-                                    WriteBlob( ulEncounterID, objGenXml.itemDoc, MySession, ListToInsert, ListToUpdate, ListToDelete, objGenXml, false);
-
-                                }
+                                //}
                                 trans.Commit();
 
                             }

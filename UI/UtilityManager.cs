@@ -217,6 +217,7 @@ namespace Acurus.Capella.UI
                     else
                     {
                         using (
+                            
                             StreamWriter outputFile = new StreamWriter(Path.Combine(ConfigurationManager.AppSettings["UsageLogPath"], "UsageLog_" + HttpContext.Current.Session.SessionID + ".txt"), true))
                         {
 

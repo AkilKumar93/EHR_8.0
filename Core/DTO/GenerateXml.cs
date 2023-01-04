@@ -113,7 +113,7 @@ namespace Acurus.Capella.Core.DTO
             //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-               
+
                 if (XMLObj.itemDoc != null && XMLObj.itemDoc.InnerXml != "")
                 {
                     itemDoc = XMLObj.itemDoc;
@@ -1649,7 +1649,7 @@ namespace Acurus.Capella.Core.DTO
             }
         }
 
-        public void GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, bool IsPhoneEncounter, bool IsAssessment, bool IsRcopiaMedication)
+        public void GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, bool IsPhoneEncounter, bool IsAssessment, bool IsRcopiaMedication,GenerateXml XMLObj)
         {
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
@@ -1680,13 +1680,20 @@ namespace Acurus.Capella.Core.DTO
             // strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (FileName.Contains("Human"))
+                if (XMLObj.itemDoc != null && XMLObj.itemDoc.InnerXml != "")
                 {
-                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                    itemDoc = XMLObj.itemDoc;
                 }
-                else if (FileName.Contains("Encounter"))
+                else
                 {
-                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                    if (FileName.Contains("Human"))
+                    {
+                        itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                    }
+                    else if (FileName.Contains("Encounter"))
+                    {
+                        itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                    }
                 }
                 //  if (File.Exists(strXmlFilePath) == true)
                 if (FileName.Contains("Human"))
@@ -2483,8 +2490,8 @@ namespace Acurus.Capella.Core.DTO
 
         public void GenerateXmlUpdate(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, GenerateXml XMLObj)
         {
-            
-                string sLocalTime = string.Empty;
+
+            string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
             XmlTextReader XmlText = null;
             if (obj.Count > 0)
@@ -3867,7 +3874,7 @@ namespace Acurus.Capella.Core.DTO
             }
         }
 
-        public void GenerateXmlDelete(IList<object> ilstobj, ulong EncounterOrHumanId, string sGeneralNotesText, bool IsAssessment)
+        public void GenerateXmlDelete(IList<object> ilstobj, ulong EncounterOrHumanId, string sGeneralNotesText, bool IsAssessment,GenerateXml XMLObj)
         {
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";
             ulEncounterID = EncounterOrHumanId;
@@ -3891,13 +3898,20 @@ namespace Acurus.Capella.Core.DTO
             //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             try
             {
-                if (FileName.Contains("Human"))
+                if (XMLObj.itemDoc != null && XMLObj.itemDoc.InnerXml != "")
                 {
-                    itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                    itemDoc = XMLObj.itemDoc;
                 }
-                else if (FileName.Contains("Encounter"))
+                else
                 {
-                    itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                    if (FileName.Contains("Human"))
+                    {
+                        itemDoc = ReadBlob("Human", EncounterOrHumanId);
+                    }
+                    else if (FileName.Contains("Encounter"))
+                    {
+                        itemDoc = ReadBlob("Encounter", EncounterOrHumanId);
+                    }
                 }
                 //  if (File.Exists(strXmlFilePath) == true)
                 if (itemDoc != null && itemDoc.OuterXml != string.Empty)

@@ -19,57 +19,74 @@ namespace Acurus.Capella.UI
         {
             //To Get Patient Details
             Human objFillHuman = new Human();
-            XmlTextReader XmlText = null;
+            //XmlTextReader XmlText = null;
             XmlDocument itemDoc = new XmlDocument();
-            XmlNodeList xmlTagName = null;
+            //XmlNodeList xmlTagName = null;
 
             if (ClientSession.HumanId != 0)
             {
-            ln:
-                string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                try
+                IList<string> ilstHumanTag = new List<string>();
+                ilstHumanTag.Add("HumanList");
+
+                IList<object> ilstHumanBlobList = new List<object>();
+                ilstHumanBlobList = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHumanTag);
+
+                if (ilstHumanBlobList != null && ilstHumanBlobList.Count > 0)
                 {
-                    if (File.Exists(strXmlFilePath) == true)
+                    if (ilstHumanBlobList[0] != null)
                     {
-                        XmlText = new XmlTextReader(strXmlFilePath);
-
-                        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobList[0]).Count; iCount++)
                         {
-                            itemDoc.Load(fs);
-                            XmlText.Close();
-
-                            if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
-                            {
-                                xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
-
-                                if (xmlTagName != null)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        if (xmlTagName[j].Attributes["Id"].Value == ClientSession.HumanId.ToString())
-                                        {
-                                            objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
-                                            objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
-                                            objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
-                                            objFillHuman.EMail = xmlTagName[j].Attributes["EMail"].Value;
-                                        }
-                                    }
-                                }
-                            }
-                            fs.Close();
-                            fs.Dispose();
+                            objFillHuman = ((Human)((IList<object>)ilstHumanBlobList[0])[iCount]);
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    XmlText.Close();
-                    //Thread.Sleep(5000);
-                    UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
 
-                    goto ln;
-                }
+            //ln:
+            //    string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //    try
+            //    {
+            //        if (File.Exists(strXmlFilePath) == true)
+            //        {
+            //            XmlText = new XmlTextReader(strXmlFilePath);
+
+            //            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //            {
+            //                itemDoc.Load(fs);
+            //                XmlText.Close();
+
+            //                if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
+            //                {
+            //                    xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
+
+            //                    if (xmlTagName != null)
+            //                    {
+            //                        for (int j = 0; j < xmlTagName.Count; j++)
+            //                        {
+            //                            if (xmlTagName[j].Attributes["Id"].Value == ClientSession.HumanId.ToString())
+            //                            {
+            //                                objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
+            //                                objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
+            //                                objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
+            //                                objFillHuman.EMail = xmlTagName[j].Attributes["EMail"].Value;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                fs.Close();
+            //                fs.Dispose();
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        XmlText.Close();
+            //        //Thread.Sleep(5000);
+            //        UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+
+            //        goto ln;
+            //    }
             }
 
             //To Get Physician Details

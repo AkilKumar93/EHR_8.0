@@ -9650,7 +9650,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     GenerateXml objXml = new GenerateXml();
                     List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     //objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
-                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false);
+                    objXml.itemDoc = null;
+                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, objXml);
                 }
 
                 if (SavePlan != null && SavePlan.Count > 0)
@@ -9869,7 +9870,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     GenerateXml objXml = new GenerateXml();
                     List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     //objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
-                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false);
+                    objXml.itemDoc = null;
+                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, objXml);
                 }
 
                 if (SavePlan != null && SavePlan.Count > 0)

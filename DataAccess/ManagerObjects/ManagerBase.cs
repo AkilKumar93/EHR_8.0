@@ -1460,10 +1460,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     {
                                         IList<object> lstObj = SaveUpdateList.Cast<object>().ToList();
                                         lstobjxml = lstObj;
-                                        XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false);
+                                        GenerateXml objtempxml = new GenerateXml();
+                                        objtempxml.itemDoc = null;
+                                        XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false, objtempxml);
                                         if (XmlObjHuman != null)
                                         {
-                                            XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false);
+                                            XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false, objtempxml);
                                         }
 
                                         bsavehit = true;
@@ -1607,7 +1609,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 IList<object> lstObj = deleteList.Cast<object>().ToList();
                                 lstobjxml = lstObj;
-                                XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
+                                GenerateXml objtempxml = new GenerateXml();
+                                objtempxml.itemDoc = null;  
+                                XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false, objtempxml);
                                 bsavehit = true;
                             }
                         #region XML type
@@ -1744,7 +1748,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             objxml = new GenerateXml();
                                             lstMed = objMedmngr.GetMedicationByHumanID(uHumanId);
                                             IList<object> lstObj = lstMed.Cast<object>().ToList();
-                                            objxml.GenerateXmlSave(lstObj, uHumanId, string.Empty, true, false, false, true);
+                                            GenerateXml Xmltemp = new GenerateXml();
+                                                Xmltemp.itemDoc=null;
+                                            objxml.GenerateXmlSave(lstObj, uHumanId, string.Empty, true, false, false, true, Xmltemp);
 
                                         }
                                     }
@@ -2140,7 +2146,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         IList<object> lstObj = deleteList.Cast<object>().ToList();
                         lstobjxml = lstObj;
-                        XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
+                        XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
                         bsavehit = true;
                     }
                     if (!bSaveStatic)
@@ -2154,10 +2160,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             IList<object> lstObj = SaveUpdateList.Cast<object>().ToList();
                             lstobjxml = lstObj;
-                            XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false);
+                            XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false, XMLObj);
                             if (XmlObjHuman != null)
                             {
-                                XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false);
+                                XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false, XMLObj);
                             }
                             bsavehit = true;
                         }
@@ -2401,11 +2407,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 if (ilstXMLBlob.Count == 2)
                 {
-                    if (objGenerateXml != null && EntityID == objGenerateXml.ulEncounterID)
+                    if (objGenerateXml!=null && EntityID == objGenerateXml.ulEncounterID)
                     {
                         sXMLType = "Blob_Encounter";
                     }
-                    else if (objGenerateXml != null && EntityID == objGenerateXml.ulHumanID)
+                   else if (objGenerateXml != null && EntityID == objGenerateXml.ulHumanID)
                     {
                         sXMLType = "Blob_Human";
                     }
@@ -2426,8 +2432,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     HumanBlobManager HumanBlobMngr = new HumanBlobManager();
                     objhumanblob.Human_ID = EntityID;
                     objhumanblob.Id = EntityID;
-                    if (objGenerateXml != null)
-                        objhumanblob.Version = objGenerateXml.iHumanBlobVersion;
+                    if(objGenerateXml!=null)
+                    objhumanblob.Version = objGenerateXml.iHumanBlobVersion;
                     byte[] bytes = null;
                     try
                     {
@@ -2960,21 +2966,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         xmlserializer = new XmlSerializer(typeof(GeneralNotes));
                         break;
                     }
-                case "GeneralNotesSocialHistoryList":
-                    {
-                        xmlserializer = new XmlSerializer(typeof(SocialHistory));
-                        break;
-                    }
-                case "SocialHistoryList":
-                    {
-                        xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                        break;
-                    }
-                case "SocialHistoryMasterList":
-                    {
-                        xmlserializer = new XmlSerializer(typeof(SocialHistoryMaster));
-                        break;
-                    }
+
             }
             return xmlserializer;
         }

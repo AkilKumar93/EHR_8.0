@@ -18,7 +18,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         int SaveEncounterBlobWithoutTransaction(IList<Encounter_Blob> ListToInsertEncounterBlob, IList<Encounter_Blob> ListToUpdateEncounterBlob, ISession MySession, string MACAddress);
 
         IList<Encounter_Blob> GetEncounterBlob(ulong ulEncounterID);
+
+        void SaveEncounterBlobWithTransaction( IList<Encounter_Blob> ListToUpdateEncounterBlob, string MACAddress);
     }
+
     public partial class EncounterBlobManager : ManagerBase<Encounter_Blob, ulong>, IEncounterBlobManager
     {
         #region Constructors
@@ -52,6 +55,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstEncounterBlob;
         }
 
+        public void SaveEncounterBlobWithTransaction( IList<Encounter_Blob> ListToUpdateEncounterBlob, string MACAddress)
+        {
+            IList<Encounter_Blob> ilstEncounterBlob = null;
+            SaveUpdateDeleteWithTransaction(ref ilstEncounterBlob,ListToUpdateEncounterBlob, null, MACAddress);
+        }
         #endregion
     }
 }
