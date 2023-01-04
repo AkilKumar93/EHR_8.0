@@ -75,13 +75,16 @@ namespace Acurus.Capella.UI
                 ClientSession.IsDirtySocialHistory = true;
                 if (SocialHistoryDetails == null)
                 {
-                    string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";// "Base_XML" + "_" + ClientSession.EncounterId + ".xml";
-                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                    if (File.Exists(strXmlFilePath) == false)
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "HideAllControls();", true);
-                        return;
-                    }
+                    #region "Comment by balaji.TJ  - 2023-03-01"
+
+                    //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";// "Base_XML" + "_" + ClientSession.EncounterId + ".xml";
+                    //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    //if (File.Exists(strXmlFilePath) == false)
+                    //{
+                    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "HideAllControls();", true);
+                    //    return;
+                    //}
+                    #endregion
                     problemDTO = GetSocialHistory();
                     if (problemDTO.SocialList != null && problemDTO.SocialList.Count > 0)
                     {
@@ -89,69 +92,129 @@ namespace Acurus.Capella.UI
                         IList<SocialHistory> ilistMarital = SocialHistoryDetails.Where(a => a.Social_Info == "Marital Status").ToList<SocialHistory>();
                         if (ilistMarital == null || ilistMarital.Count == 0)
                         {
-                            string HumanFileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                            string XmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                            try
-                            {
-                                if (File.Exists(XmlFilePath) == true)
-                                {
-                                    XmlDocument itemDoc = new XmlDocument();
-                                    XmlTextReader XmlText = new XmlTextReader(XmlFilePath);
-                                    // itemDoc.Load(XmlText);
-                                    using (FileStream fs = new FileStream(XmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                                    {
-                                        itemDoc.Load(fs);
 
-                                        XmlText.Close();
-                                        if (itemDoc.GetElementsByTagName("Human").Count > 0 && itemDoc.GetElementsByTagName("Human")[0] != null && itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value != "")
-                                        {
-                                            SocialHistory objSocHis = new SocialHistory();
-                                            objSocHis.Social_Info = "Marital Status";
-                                            objSocHis.Value = itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
-                                            objSocHis.Is_Present = "Y";
-                                            SocialHistoryDetails.Add(objSocHis);
-                                        }
-                                        fs.Close();
-                                        fs.Dispose();
+                            #region "Modified by balaji.TJ  - 2023-03-01" 
+                            IList<string> ilstHScList = new List<string>();
+                            ilstHScList.Add("HumanList");
+
+                            IList<object> ilstHSBlobFinal = new List<object>();
+                            ilstHSBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHScList);
+                            if (ilstHSBlobFinal != null && ilstHSBlobFinal.Count > 0)
+                            {
+                                if (ilstHSBlobFinal[0] != null)
+                                {
+                                    for (int i = 0; i < ((List<object>)ilstHSBlobFinal[0]).Count; i++)
+                                    {
+                                        SocialHistory objSocHis = new SocialHistory();
+                                        objSocHis.Social_Info = "Marital Status";
+                                        objSocHis.Value = ((Human)((List<object>)ilstHSBlobFinal[0])[i]).Marital_Status;//itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
+                                        objSocHis.Is_Present = "Y";
+                                        SocialHistoryDetails.Add(objSocHis);                                                                               
                                     }
                                 }
-                            }
-                            catch (Exception ex)
-                            {
-                                throw new Exception(ex.Message + " - " + XmlFilePath);
+
                             }
 
+                            #endregion
+
+                            #region "Comment by balaji.TJ  - 2023-03-01"   
+
+                            //string HumanFileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                            //string XmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                            //try
+                            //{
+                            //    if (File.Exists(XmlFilePath) == true)
+                            //    {
+                            //        XmlDocument itemDoc = new XmlDocument();
+                            //        XmlTextReader XmlText = new XmlTextReader(XmlFilePath);
+                            //        // itemDoc.Load(XmlText);
+                            //        using (FileStream fs = new FileStream(XmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            //        {
+                            //            itemDoc.Load(fs);
+
+                            //            XmlText.Close();
+                            //            if (itemDoc.GetElementsByTagName("Human").Count > 0 && itemDoc.GetElementsByTagName("Human")[0] != null && itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value != "")
+                            //            {
+                            //                SocialHistory objSocHis = new SocialHistory();
+                            //                objSocHis.Social_Info = "Marital Status";
+                            //                objSocHis.Value = itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
+                            //                objSocHis.Is_Present = "Y";
+                            //                SocialHistoryDetails.Add(objSocHis);
+                            //            }
+                            //            fs.Close();
+                            //            fs.Dispose();
+                            //        }
+                            //    }
+                            //}
+                            //catch (Exception ex)
+                            //{
+                            //    throw new Exception(ex.Message + " - " + XmlFilePath);
+                            //}
+                            #endregion
                         }
                     }
                     else
                     {
                         SocialHistoryDetails = new List<SocialHistory>();
-                        string HumanFileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                        string XmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                        if (File.Exists(XmlFilePath) == true)
-                        {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(XmlFilePath);
-                            // itemDoc.Load(XmlText);
-                            using (FileStream fs = new FileStream(XmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                            {
-                                itemDoc.Load(fs);
 
-                                XmlText.Close();
-                                if (itemDoc.GetElementsByTagName("Human").Count > 0 && itemDoc.GetElementsByTagName("Human")[0] != null && itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value != "")
+                        #region "Modified by balaji.TJ  - 2023-03-01" 
+                        IList<string> ilstHScList = new List<string>();
+                        ilstHScList.Add("HumanList");
+
+                        IList<object> ilstHSBlobFinal = new List<object>();
+                        ilstHSBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHScList);
+                        if (ilstHSBlobFinal != null && ilstHSBlobFinal.Count > 0)
+                        {
+                            if (ilstHSBlobFinal[0] != null)
+                            {
+                                for (int i = 0; i < ((List<object>)ilstHSBlobFinal[0]).Count; i++)
                                 {
+                                    
                                     SocialHistory objSocHis = new SocialHistory();
                                     objSocHis.Social_Info = "Marital Status";
-                                    objSocHis.Value = itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
+                                    objSocHis.Value = ((Human)((List<object>)ilstHSBlobFinal[0])[i]).Marital_Status;//itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
                                     objSocHis.Is_Present = "Y";
                                     SocialHistoryDetails.Add(objSocHis);
                                     chkShowAll.Checked = true;
                                     bCheckUnsaved = true;
+
+                                    //SocialHistoryDetails.Add((SocialHistory)((List<object>)ilstHSBlobFinal[0])[i]);
                                 }
-                                fs.Close();
-                                fs.Dispose();
                             }
+
                         }
+
+                        #endregion
+
+                        #region "Comment by balaji.TJ  - 2023-03-01"   
+
+                        //string HumanFileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                        //string XmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                        //if (File.Exists(XmlFilePath) == true)
+                        //{
+                        //    XmlDocument itemDoc = new XmlDocument();
+                        //    XmlTextReader XmlText = new XmlTextReader(XmlFilePath);
+                        //    // itemDoc.Load(XmlText);
+                        //    using (FileStream fs = new FileStream(XmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        //    {
+                        //        itemDoc.Load(fs);
+
+                        //        XmlText.Close();
+                        //        if (itemDoc.GetElementsByTagName("Human").Count > 0 && itemDoc.GetElementsByTagName("Human")[0] != null && itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value != "")
+                        //        {
+                        //            SocialHistory objSocHis = new SocialHistory();
+                        //            objSocHis.Social_Info = "Marital Status";
+                        //            objSocHis.Value = itemDoc.GetElementsByTagName("Human")[0].Attributes["Marital_Status"].Value;
+                        //            objSocHis.Is_Present = "Y";
+                        //            SocialHistoryDetails.Add(objSocHis);
+                        //            chkShowAll.Checked = true;
+                        //            bCheckUnsaved = true;
+                        //        }
+                        //        fs.Close();
+                        //        fs.Dispose();
+                        //    }
+                        //}
+                        #endregion
                     }
                 }
                 Session["SocialHistoryDetails"] = SocialHistoryDetails;
@@ -195,167 +258,215 @@ namespace Acurus.Capella.UI
             IList<SocialHistoryMaster> SocHisMasterlst = new List<SocialHistoryMaster>();
             IList<SocialHistoryMaster> SocHisMasterlstTemp = new List<SocialHistoryMaster>();
             GeneralNotes genrlNotesSoc = new GeneralNotes();
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            try{
-            if (File.Exists(strXmlFilePath) == true)
+
+            #region "Modified by balaji.TJ  - 2023-03-01"
+            IList<string> listHistorysocialList = new List<string>();
+            listHistorysocialList.Add("SocialHistoryList");
+            listHistorysocialList.Add("GeneralNotesSocialHistoryList");
+            listHistorysocialList.Add("SocialHistoryMasterList");
+
+            IList<object> ilstHistorysocialBlobFinal = new List<object>();
+            ilstHistorysocialBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, listHistorysocialList);
+            if (ilstHistorysocialBlobFinal != null && ilstHistorysocialBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstHistorysocialBlobFinal[0] != null)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-
-                    if (itemDoc.GetElementsByTagName("SocialHistoryList")[0] != null)
+                    for (int i = 0; i < ((IList<object>)ilstHistorysocialBlobFinal[0]).Count; i++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("SocialHistoryList")[0].ChildNodes;
-
-                        if (xmlTagName != null && xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(SocialHistory));
-                                SocialHistory SocialHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SocialHistory;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((SocialHistory)SocialHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(SocialHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(SocialHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(SocialHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(SocialHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(SocialHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                SocHislst.Add(SocialHistory);
-                                //This session is used to find either the S.H load from master table or SH table
-                                Session["SocialHistoryCheck"] = SocHisMasterlst;
-                            }
-                        }
+                        SocHislst.Add((SocialHistory)((IList<object>)ilstHistorysocialBlobFinal[0])[i]);
                     }
-                    if (itemDoc.GetElementsByTagName("GeneralNotesSocialHistoryList")[0] != null)
+                    Session["SocialHistoryCheck"] = SocHisMasterlst;
+                }
+
+                if (ilstHistorysocialBlobFinal[1] != null)
+                {
+                    for (int J = 0; J < ((IList<object>)ilstHistorysocialBlobFinal[1]).Count; J++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesSocialHistoryList")[0].ChildNodes;
-
-                        if (xmlTagName != null && xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                                GeneralNotes GeneralNotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((GeneralNotes)GeneralNotes).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(GeneralNotes, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(GeneralNotes, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(GeneralNotes, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(GeneralNotes, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(GeneralNotes, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                lstGenNotesAll.Add(GeneralNotes);
-                            }
-                        }
+                        lstGenNotesAll.Add((GeneralNotes)((IList<object>)ilstHistorysocialBlobFinal[1])[J]);
                     }
-                    if (itemDoc.GetElementsByTagName("SocialHistoryMasterList")[0] != null)
+                }
+                if (ilstHistorysocialBlobFinal[2] != null)
+                {
+                    for (int k = 0; k < ((IList<object>)ilstHistorysocialBlobFinal[2]).Count; k++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("SocialHistoryMasterList")[0].ChildNodes;
-                        if (xmlTagName != null && xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(SocialHistoryMaster));
-                                SocialHistoryMaster SocialHistorymas = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SocialHistoryMaster;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((SocialHistoryMaster)SocialHistorymas).GetType().GetProperties() select obji;
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(SocialHistorymas, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(SocialHistorymas, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(SocialHistorymas, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(SocialHistorymas, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(SocialHistorymas, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                SocHisMasterlstTemp.Add(SocialHistorymas);
+                        SocHisMasterlstTemp.Add((SocialHistoryMaster)((IList<object>)ilstHistorysocialBlobFinal[2])[k]);
+                    }
 
-                                if (SocHisMasterlstTemp.Count > 0)
-                                {
-                                    SocHisMasterlst = SocHisMasterlstTemp.Where(p => p.Is_Deleted == "N").ToList();
-
-                                }
-
-                            }
-                        }
+                    if (SocHisMasterlstTemp.Count > 0)
+                    {
+                        SocHisMasterlst = SocHisMasterlstTemp.Where(p => p.Is_Deleted == "N").ToList();
                     }
                     Session["SocialHistoryMaster"] = SocHisMasterlst;
-                    fs.Close();
-                    fs.Dispose();
                 }
             }
-            }catch (Exception ex)
-{
-    throw new Exception(ex.Message + " - " + strXmlFilePath);
-}
+
+            #endregion
+
+            #region "Comment by balaji.TJ  - 2023-03-01"
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //try
+            //{
+            //    if (File.Exists(strXmlFilePath) == true)
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //        XmlNodeList xmlTagName = null;
+            //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //        {
+            //            itemDoc.Load(fs);
+
+            //            XmlText.Close();
+
+            //            if (itemDoc.GetElementsByTagName("SocialHistoryList")[0] != null)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("SocialHistoryList")[0].ChildNodes;
+
+            //                if (xmlTagName != null && xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+
+            //                        string TagName = xmlTagName[j].Name;
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(SocialHistory));
+            //                        SocialHistory SocialHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SocialHistory;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+            //                        propInfo = from obji in ((SocialHistory)SocialHistory).GetType().GetProperties() select obji;
+
+            //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                        {
+            //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                            {
+            //                                if (propInfo != null)
+            //                                {
+            //                                    foreach (PropertyInfo property in propInfo)
+            //                                    {
+            //                                        if (property.Name == nodevalue.Name)
+            //                                        {
+            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                property.SetValue(SocialHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                property.SetValue(SocialHistory, Convert.ToString(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                property.SetValue(SocialHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                property.SetValue(SocialHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                            else
+            //                                                property.SetValue(SocialHistory, nodevalue.Value, null);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+
+            //                        SocHislst.Add(SocialHistory);
+            //                        //This session is used to find either the S.H load from master table or SH table
+            //                        Session["SocialHistoryCheck"] = SocHisMasterlst;
+            //                    }
+            //                }
+            //            }
+            //            if (itemDoc.GetElementsByTagName("GeneralNotesSocialHistoryList")[0] != null)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesSocialHistoryList")[0].ChildNodes;
+
+            //                if (xmlTagName != null && xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+            //                        string TagName = xmlTagName[j].Name;
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+            //                        GeneralNotes GeneralNotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+            //                        propInfo = from obji in ((GeneralNotes)GeneralNotes).GetType().GetProperties() select obji;
+
+            //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                        {
+            //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                            {
+            //                                if (propInfo != null)
+            //                                {
+            //                                    foreach (PropertyInfo property in propInfo)
+            //                                    {
+            //                                        if (property.Name == nodevalue.Name)
+            //                                        {
+            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                property.SetValue(GeneralNotes, Convert.ToUInt64(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                property.SetValue(GeneralNotes, Convert.ToString(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                property.SetValue(GeneralNotes, Convert.ToDateTime(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                property.SetValue(GeneralNotes, Convert.ToInt32(nodevalue.Value), null);
+            //                                            else
+            //                                                property.SetValue(GeneralNotes, nodevalue.Value, null);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                        lstGenNotesAll.Add(GeneralNotes);
+            //                    }
+            //                }
+            //            }
+            //            if (itemDoc.GetElementsByTagName("SocialHistoryMasterList")[0] != null)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("SocialHistoryMasterList")[0].ChildNodes;
+            //                if (xmlTagName != null && xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+            //                        string TagName = xmlTagName[j].Name;
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(SocialHistoryMaster));
+            //                        SocialHistoryMaster SocialHistorymas = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SocialHistoryMaster;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+            //                        propInfo = from obji in ((SocialHistoryMaster)SocialHistorymas).GetType().GetProperties() select obji;
+            //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                        {
+            //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                            {
+            //                                if (propInfo != null)
+            //                                {
+            //                                    foreach (PropertyInfo property in propInfo)
+            //                                    {
+            //                                        if (property.Name == nodevalue.Name)
+            //                                        {
+            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                property.SetValue(SocialHistorymas, Convert.ToUInt64(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                property.SetValue(SocialHistorymas, Convert.ToString(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                property.SetValue(SocialHistorymas, Convert.ToDateTime(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                property.SetValue(SocialHistorymas, Convert.ToInt32(nodevalue.Value), null);
+            //                                            else
+            //                                                property.SetValue(SocialHistorymas, nodevalue.Value, null);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                        SocHisMasterlstTemp.Add(SocialHistorymas);
+
+            //                        if (SocHisMasterlstTemp.Count > 0)
+            //                        {
+            //                            SocHisMasterlst = SocHisMasterlstTemp.Where(p => p.Is_Deleted == "N").ToList();
+
+            //                        }
+
+            //                    }
+            //                }
+            //            }
+            //            Session["SocialHistoryMaster"] = SocHisMasterlst;
+            //            fs.Close();
+            //            fs.Dispose();
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception(ex.Message + " - " + strXmlFilePath);
+            //}
+            #endregion
 
             if ((sScreenMode != "" && sScreenMode.ToUpper() == "MENU") || (SocHislst != null && SocHislst.Count == 0))
             {
@@ -1215,62 +1326,85 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                #region "Modified By Balaji.TJ  - 2023-03-01"
+                IList<string> lstSocHisMasLst = new List<string>();
+                lstSocHisMasLst.Add("SocialHistoryMasterList");
+
+                IList<object> ilstSocHisBlobFinal = new List<object>();
+                ilstSocHisBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, lstSocHisMasLst);
+
+                if (ilstSocHisBlobFinal != null && ilstSocHisBlobFinal.Count > 0)
                 {
-                    itemDoc.Load(fs);
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("SocialHistoryMasterList")[0] != null)
+                    if (ilstSocHisBlobFinal[0] != null)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("SocialHistoryMasterList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
+                        for (int i = 0; i < ((IList<object>)ilstSocHisBlobFinal[0]).Count; i++)
                         {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(SocialHistoryMaster));
-                                SocialHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SocialHistoryMaster;
-
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((SocialHistoryMaster)objHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null && propInfo.Count() > 0)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                lstScoialHisMaster.Add(objHistory);
-                            }
+                            lstScoialHisMaster.Add((SocialHistoryMaster)((IList<object>)ilstSocHisBlobFinal[0])[i]);
                         }
                     }
-                    fs.Close();
-                    fs.Dispose();
                 }
+
+                #endregion
+                #region "Comment By Balaji.TJ  - 2023-03-01"
+
+                //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //XmlDocument itemDoc = new XmlDocument();
+                //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //XmlNodeList xmlTagName = null;
+                //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //{
+                //    itemDoc.Load(fs);
+                //    XmlText.Close();
+                //    if (itemDoc.GetElementsByTagName("SocialHistoryMasterList")[0] != null)
+                //    {
+                //        xmlTagName = itemDoc.GetElementsByTagName("SocialHistoryMasterList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(SocialHistoryMaster));
+                //                SocialHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SocialHistoryMaster;
+
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                propInfo = from obji in ((SocialHistoryMaster)objHistory).GetType().GetProperties() select obji;
+
+                //                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                {
+                //                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                    {
+                //                        if (propInfo != null && propInfo.Count() > 0)
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(objHistory, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                //                lstScoialHisMaster.Add(objHistory);
+                //            }
+                //        }
+                //    }
+                //    fs.Close();
+                //    fs.Dispose();
+
+                //}
+                #endregion
             }
             #endregion
 
@@ -1764,7 +1898,7 @@ namespace Acurus.Capella.UI
             istaticLookup = new List<string>{"Light cigarette smoker|230060001|Yes|Light cigarette smoker",
 "Moderate cigarette smoker|230062009|Yes|Light cigarette smoker",
 "Heavy cigarette smoker|230063004|Yes|Light cigarette smoker",
-"Very heavy cigarette smoker|230064005|Yes|Light cigarette smoker", 
+"Very heavy cigarette smoker|230064005|Yes|Light cigarette smoker",
 "Rolls own cigarettes|160619003|Yes|Light cigarette smoker",
 "Snuff user|228494002|Yes|Light cigarette smoker",
 "User of moist powdered tobacco|228504007|Yes|Light cigarette smoker",

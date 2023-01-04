@@ -2960,7 +2960,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         xmlserializer = new XmlSerializer(typeof(GeneralNotes));
                         break;
                     }
-
+                case "GeneralNotesSocialHistoryList":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(SocialHistory));
+                        break;
+                    }
+                case "SocialHistoryList":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                        break;
+                    }
+                case "SocialHistoryMasterList":
+                    {
+                        xmlserializer = new XmlSerializer(typeof(SocialHistoryMaster));
+                        break;
+                    }
             }
             return xmlserializer;
         }
