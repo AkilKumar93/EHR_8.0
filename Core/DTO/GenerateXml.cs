@@ -80,6 +80,9 @@ namespace Acurus.Capella.Core.DTO
         public ulong ulHumanID = 0;
         public ulong ulEncounterID = 0;
 
+        public string sCreatedBy = string.Empty;
+        public DateTime dtCreatedDateandTime = DateTime.MinValue;
+
         /*Added a bool bSave_In_Human in GenerateXml-Save,SaveStatic,Update and Copy_Previous_ to indicate that the list(Encounterlist) needs to be saved/updated in HUmanXML too.
          bSave_In_Human is set to "true" when EncounterTag is saved in HumanXML.*/
         public void GenerateXmlSaveStatic(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, GenerateXml XMLObj)
@@ -5470,6 +5473,8 @@ namespace Acurus.Capella.Core.DTO
                     sXMLContent = System.Text.Encoding.UTF8.GetString((byte[])dt.Rows[0]["Human_XML"]);
                     xmlDoc.LoadXml(sXMLContent);
                     iHumanBlobVersion = (int)dt.Rows[0]["Version"];
+                    sCreatedBy = (string)dt.Rows[0]["Created_By"];
+                    dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
                 }
             }
             else if (sXMLType == "Encounter")
@@ -5483,6 +5488,8 @@ namespace Acurus.Capella.Core.DTO
                     sXMLContent = System.Text.Encoding.UTF8.GetString((byte[])dt.Rows[0]["Encounter_XML"]);
                     xmlDoc.LoadXml(sXMLContent);
                     iEncounterBlobVersion = (int)dt.Rows[0]["Version"];
+                    sCreatedBy = (string)dt.Rows[0]["Created_By"];
+                    dtCreatedDateandTime = Convert.ToDateTime(dt.Rows[0]["Created_Date_And_Time"].ToString());
                 }
             }
 

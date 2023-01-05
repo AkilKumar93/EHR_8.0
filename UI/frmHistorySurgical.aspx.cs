@@ -680,96 +680,143 @@ namespace Acurus.Capella.UI
             {
                 if (Is_Load)
                 {
+                    IList<object> ilstInSurgicalHistoryBlobFinal = new List<object>();
+                    IList<string> ilstSurgicalHistoryTagList = new List<string>();
                     bool _is_from_current_encounter_data = false;
                     SurgicalHistoryDTO SurgHistDTO = new SurgicalHistoryDTO();
                     IList<SurgicalHistory> SurgHislst = new List<SurgicalHistory>();
-                    string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                    try
+
+                    #region Commented By Deepak
+
+
+                    //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                    //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    //try
+                    //{
+                    //    if (File.Exists(strXmlFilePath) == true)
+                    //    {
+                    //        XmlDocument itemDoc = new XmlDocument();
+                    //        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                    //        XmlNodeList xmlTagName = null;
+                    //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //        {
+                    //            itemDoc.Load(fs);
+                    //            XmlText.Close();
+                    //            if (itemDoc.GetElementsByTagName("SurgicalHistoryList")[0] != null)
+                    //            {
+                    //                xmlTagName = itemDoc.GetElementsByTagName("SurgicalHistoryList")[0].ChildNodes;
+                    //                if (xmlTagName != null && xmlTagName.Count > 0)
+                    //                {
+                    //                    for (int j = 0; j < xmlTagName.Count; j++)
+                    //                    {
+                    //                        string TagName = xmlTagName[j].Name;
+                    //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(SurgicalHistory));
+                    //                        SurgicalHistory SurgicalHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SurgicalHistory;
+                    //                        IEnumerable<PropertyInfo> propInfo = null;
+                    //                        propInfo = from obji in ((SurgicalHistory)SurgicalHistory).GetType().GetProperties() select obji;
+                    //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                    //                        {
+                    //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                    //                            {
+                    //                                if (propInfo != null)
+                    //                                {
+                    //                                    foreach (PropertyInfo property in propInfo)
+                    //                                    {
+                    //                                        if (property.Name == nodevalue.Name)
+                    //                                        {
+                    //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+                    //                                                property.SetValue(SurgicalHistory, Convert.ToUInt64(nodevalue.Value), null);
+                    //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+                    //                                                property.SetValue(SurgicalHistory, Convert.ToString(nodevalue.Value), null);
+                    //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                    //                                                property.SetValue(SurgicalHistory, Convert.ToDateTime(nodevalue.Value), null);
+                    //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+                    //                                                property.SetValue(SurgicalHistory, Convert.ToInt32(nodevalue.Value), null);
+                    //                                            else
+                    //                                                property.SetValue(SurgicalHistory, nodevalue.Value, null);
+                    //                                        }
+                    //                                    }
+                    //                                }
+                    //                            }
+                    //                        }
+
+                    //                        SurgHislst.Add(SurgicalHistory);
+                    //                        if (SurgicalHistory.Encounter_Id == ClientSession.EncounterId)
+                    //                            _is_from_current_encounter_data = true;
+                    //                    }
+                    //                    if (!_is_from_current_encounter_data)
+                    //                    {
+                    //                        SurgHislst.Clear();
+                    //                        LoadFromMaster(Is_Load, objSurgicalHistoryDTO, is_delete);
+                    //                        if (Session["SurgicalHistoryDTO"] != null)
+                    //                            objSurgicalHistoryDTO = (SurgicalHistoryDTO)Session["SurgicalHistoryDTO"];
+                    //                    }
+                    //                }
+                    //            }
+                    //            else
+                    //            {
+                    //                LoadFromMaster(Is_Load, objSurgicalHistoryDTO, is_delete);
+                    //                if (Session["SurgicalHistoryDTO"] != null)
+                    //                    objSurgicalHistoryDTO = (SurgicalHistoryDTO)Session["SurgicalHistoryDTO"];
+                    //            }
+
+                    //            if (itemDoc.GetElementsByTagName("dob")[0] != null)
+                    //            {
+                    //                SurgHistDTO.PatientDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("dob")[0].InnerText);
+                    //            }
+                    //            fs.Close();
+                    //            fs.Dispose();
+                    //        }
+                    //    }
+
+
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    throw new Exception(ex.Message + " - " + strXmlFilePath);
+                    //}
+                    #endregion
+
+                    ilstSurgicalHistoryTagList.Add("SurgicalHistoryList");
+                    ilstInSurgicalHistoryBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstSurgicalHistoryTagList);
+
+                    if (ilstInSurgicalHistoryBlobFinal != null && ilstInSurgicalHistoryBlobFinal.Count > 0)
                     {
-                        if (File.Exists(strXmlFilePath) == true)
+                        if (ilstInSurgicalHistoryBlobFinal[0] != null)
                         {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                            XmlNodeList xmlTagName = null;
-                            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            for (int iCount = 0; iCount < ((IList<object>)ilstInSurgicalHistoryBlobFinal[0]).Count; iCount++)
                             {
-                                itemDoc.Load(fs);
-                                XmlText.Close();
-                                if (itemDoc.GetElementsByTagName("SurgicalHistoryList")[0] != null)
-                                {
-                                    xmlTagName = itemDoc.GetElementsByTagName("SurgicalHistoryList")[0].ChildNodes;
-                                    if (xmlTagName != null && xmlTagName.Count > 0)
-                                    {
-                                        for (int j = 0; j < xmlTagName.Count; j++)
-                                        {
-                                            string TagName = xmlTagName[j].Name;
-                                            XmlSerializer xmlserializer = new XmlSerializer(typeof(SurgicalHistory));
-                                            SurgicalHistory SurgicalHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SurgicalHistory;
-                                            IEnumerable<PropertyInfo> propInfo = null;
-                                            propInfo = from obji in ((SurgicalHistory)SurgicalHistory).GetType().GetProperties() select obji;
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    if (propInfo != null)
-                                                    {
-                                                        foreach (PropertyInfo property in propInfo)
-                                                        {
-                                                            if (property.Name == nodevalue.Name)
-                                                            {
-                                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                    property.SetValue(SurgicalHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                    property.SetValue(SurgicalHistory, Convert.ToString(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                    property.SetValue(SurgicalHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                    property.SetValue(SurgicalHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                                else
-                                                                    property.SetValue(SurgicalHistory, nodevalue.Value, null);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                SurgHislst.Add((SurgicalHistory)((IList<object>)ilstInSurgicalHistoryBlobFinal[0])[iCount]);
 
-                                            SurgHislst.Add(SurgicalHistory);
-                                            if (SurgicalHistory.Encounter_Id == ClientSession.EncounterId)
-                                                _is_from_current_encounter_data = true;
-                                        }
-                                        if (!_is_from_current_encounter_data)
-                                        {
-                                            SurgHislst.Clear();
-                                            LoadFromMaster(Is_Load, objSurgicalHistoryDTO, is_delete);
-                                            if (Session["SurgicalHistoryDTO"] != null)
-                                                objSurgicalHistoryDTO = (SurgicalHistoryDTO)Session["SurgicalHistoryDTO"];
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    LoadFromMaster(Is_Load, objSurgicalHistoryDTO, is_delete);
-                                    if (Session["SurgicalHistoryDTO"] != null)
-                                        objSurgicalHistoryDTO = (SurgicalHistoryDTO)Session["SurgicalHistoryDTO"];
-                                }
-
-                                if (itemDoc.GetElementsByTagName("dob")[0] != null)
-                                {
-                                    SurgHistDTO.PatientDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("dob")[0].InnerText);
-                                }
-                                fs.Close();
-                                fs.Dispose();
+                                if (((SurgicalHistory)((IList<object>)ilstInSurgicalHistoryBlobFinal[0])[iCount]).Encounter_Id == ClientSession.EncounterId)
+                                    _is_from_current_encounter_data = true;
+                            }
+                            if (!_is_from_current_encounter_data)
+                            {
+                                SurgHislst.Clear();
+                                LoadFromMaster(Is_Load, objSurgicalHistoryDTO, is_delete);
+                                if (Session["SurgicalHistoryDTO"] != null)
+                                    objSurgicalHistoryDTO = (SurgicalHistoryDTO)Session["SurgicalHistoryDTO"];
                             }
                         }
+                        else
+                        {
+                            LoadFromMaster(Is_Load, objSurgicalHistoryDTO, is_delete);
+                            if (Session["SurgicalHistoryDTO"] != null)
+                                objSurgicalHistoryDTO = (SurgicalHistoryDTO)Session["SurgicalHistoryDTO"];
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.Message + " - " + strXmlFilePath);
-                    }
+                        if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0 && (ClientSession.PatientPaneList[0]).Birth_Date != null)
+                        {
+                            objSurgicalHistoryDTO.PatientDOB = ClientSession.PatientPaneList[0].Birth_Date;
+                        }
+
+
+
 
                     if (SurgHislst != null && SurgHislst.Count > 0)
                     {
+
                         IList<SurgicalHistory> lstSurgCurrEnc = new List<SurgicalHistory>();
                         lstSurgCurrEnc = (from item in SurgHislst where item.Encounter_Id == ClientSession.EncounterId select item).ToList<SurgicalHistory>();
                         if (lstSurgCurrEnc != null && lstSurgCurrEnc.Count > 0)
@@ -995,75 +1042,103 @@ namespace Acurus.Capella.UI
             {
                 SurgicalHistoryDTO SurgHistDTO = new SurgicalHistoryDTO();
                 IList<SurgicalHistoryMaster> SurgicalLoadMasterlst = new List<SurgicalHistoryMaster>();
-                string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                try
-                {
-                    if (File.Exists(strXmlFilePath) == true)
-                    {
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                        XmlNodeList xmlTagName = null;
-                        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        {
-                            itemDoc.Load(fs);
-                            XmlText.Close();
-                            if (itemDoc.GetElementsByTagName("SurgicalHistoryMasterList")[0] != null)
-                            {
-                                xmlTagName = itemDoc.GetElementsByTagName("SurgicalHistoryMasterList")[0].ChildNodes;
-                                if (xmlTagName != null && xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(SurgicalHistoryMaster));
-                                        SurgicalHistoryMaster objMasterSurgicalHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SurgicalHistoryMaster;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        propInfo = from obji in ((SurgicalHistoryMaster)objMasterSurgicalHistory).GetType().GetProperties() select obji;
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                if (propInfo != null)
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(objMasterSurgicalHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(objMasterSurgicalHistory, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(objMasterSurgicalHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(objMasterSurgicalHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(objMasterSurgicalHistory, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (objMasterSurgicalHistory.Is_Deleted != "Y")
-                                            SurgicalLoadMasterlst.Add(objMasterSurgicalHistory);
-                                    }
-                                }
-                            }
+                IList<object> ilstInSurgicalLoadMasterlstBlobFinal = new List<object>();
+                IList<string> ilstSurgicalLoadMasterlstTagList = new List<string>();
 
-                            if (itemDoc.GetElementsByTagName("dob")[0] != null)
+                #region Commented By Deepak
+                
+                //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //try
+                //{
+                //    if (File.Exists(strXmlFilePath) == true)
+                //    {
+                //        XmlDocument itemDoc = new XmlDocument();
+                //        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //        XmlNodeList xmlTagName = null;
+                //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //        {
+                //            itemDoc.Load(fs);
+                //            XmlText.Close();
+                //            if (itemDoc.GetElementsByTagName("SurgicalHistoryMasterList")[0] != null)
+                //            {
+                //                xmlTagName = itemDoc.GetElementsByTagName("SurgicalHistoryMasterList")[0].ChildNodes;
+                //                if (xmlTagName != null && xmlTagName.Count > 0)
+                //                {
+                //                    for (int j = 0; j < xmlTagName.Count; j++)
+                //                    {
+                //                        string TagName = xmlTagName[j].Name;
+                //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(SurgicalHistoryMaster));
+                //                        SurgicalHistoryMaster objMasterSurgicalHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as SurgicalHistoryMaster;
+                //                        IEnumerable<PropertyInfo> propInfo = null;
+                //                        propInfo = from obji in ((SurgicalHistoryMaster)objMasterSurgicalHistory).GetType().GetProperties() select obji;
+                //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                        {
+                //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                            {
+                //                                if (propInfo != null)
+                //                                {
+                //                                    foreach (PropertyInfo property in propInfo)
+                //                                    {
+                //                                        if (property.Name == nodevalue.Name)
+                //                                        {
+                //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                                property.SetValue(objMasterSurgicalHistory, Convert.ToUInt64(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                                property.SetValue(objMasterSurgicalHistory, Convert.ToString(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                                property.SetValue(objMasterSurgicalHistory, Convert.ToDateTime(nodevalue.Value), null);
+                //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                                property.SetValue(objMasterSurgicalHistory, Convert.ToInt32(nodevalue.Value), null);
+                //                                            else
+                //                                                property.SetValue(objMasterSurgicalHistory, nodevalue.Value, null);
+                //                                        }
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                        if (objMasterSurgicalHistory.Is_Deleted != "Y")
+                //                            SurgicalLoadMasterlst.Add(objMasterSurgicalHistory);
+                //                    }
+                //                }
+                //            }
+
+                //            if (itemDoc.GetElementsByTagName("dob")[0] != null)
+                //            {
+                //                SurgHistDTO.PatientDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("dob")[0].InnerText);
+                //            }
+                //            fs.Close();
+                //            fs.Dispose();
+                //        }
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    throw new Exception(ex.Message + " - " + strXmlFilePath);
+                //}
+                #endregion
+                ilstSurgicalLoadMasterlstTagList.Add("SurgicalHistoryMasterList");
+                ilstInSurgicalLoadMasterlstBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstSurgicalLoadMasterlstTagList);
+
+                if (ilstInSurgicalLoadMasterlstBlobFinal != null && ilstInSurgicalLoadMasterlstBlobFinal.Count > 0)
+                {
+                    if (ilstInSurgicalLoadMasterlstBlobFinal[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstInSurgicalLoadMasterlstBlobFinal[0]).Count; iCount++)
+                        {
+                            if (((SurgicalHistoryMaster)((IList<object>)ilstInSurgicalLoadMasterlstBlobFinal[0])[iCount]).Is_Deleted != "Y")
                             {
-                                SurgHistDTO.PatientDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("dob")[0].InnerText);
+                                SurgicalLoadMasterlst.Add((SurgicalHistoryMaster)((IList<object>)ilstInSurgicalLoadMasterlstBlobFinal[0])[iCount]);
                             }
-                            fs.Close();
-                            fs.Dispose();
                         }
                     }
                 }
-                catch (Exception ex)
+
+                if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0 && (ClientSession.PatientPaneList[0]).Birth_Date != null)
                 {
-                    throw new Exception(ex.Message + " - " + strXmlFilePath);
+                    SurgHistDTO.PatientDOB = (ClientSession.PatientPaneList[0]).Birth_Date;
                 }
+
 
                 if (SurgicalLoadMasterlst != null && SurgicalLoadMasterlst.Count > 0)
                 {

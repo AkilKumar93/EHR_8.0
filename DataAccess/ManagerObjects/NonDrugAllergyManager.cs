@@ -542,13 +542,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         if (bDataNDA && bDataNotes)
                         {
-                            trans.Commit();
+                            //trans.Commit();
                            // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                             int trycount = 0;
                         trytosaveagain:
                             try
                             {
-                                XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                #region "Comment by Balaji.TJ - 2023-01-04"
+                                //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                #endregion
+
+                                #region "Modified by Balaji.TJ - 2023-01-04"
+                                WriteBlob(HumanID, XMLObj.itemDoc, MySession, insertList, updateList, deleteList, XMLObj, false);
+                                #endregion
                             }
                             catch (Exception xmlexcep)
                             {
@@ -602,7 +608,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     goto trytosaveagain;
                                 }
                             }
-
+                            trans.Commit();
                         }
                         else
                             throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");

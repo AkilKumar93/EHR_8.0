@@ -553,70 +553,88 @@ namespace Acurus.Capella.UI.WebServices
                     }
                 }
             IList<ProblemList> SummaryBarRefreshlist = new List<ProblemList>();
+            IList<object> ilstProblemListBlobFinal = new List<object>();
+            IList<string> ilstProblemListTagList = new List<string>();
             DateTime CurrentDOS = DateTime.MinValue;
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+            #region Commented By Deepak
+
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //   // itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+            //        if (itemDoc.GetElementsByTagName("ProblemListList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
+            //                    ProblemList ProblemList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((ProblemList)ProblemList).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(ProblemList, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(ProblemList, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(ProblemList, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(ProblemList, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(ProblemList, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+
+
+            //                    SummaryBarRefreshlist.Add(ProblemList);
+
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
+            #endregion
+
+            ilstProblemListTagList.Add("ProblemListList");
+            ilstProblemListBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstProblemListTagList);
+
+            if (ilstProblemListBlobFinal != null && ilstProblemListBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-               // itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstProblemListBlobFinal[0] != null)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("ProblemListList")[0] != null)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstProblemListBlobFinal[0]).Count; iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
-                                ProblemList ProblemList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((ProblemList)ProblemList).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(ProblemList, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(ProblemList, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(ProblemList, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(ProblemList, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(ProblemList, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-
-
-
-                                SummaryBarRefreshlist.Add(ProblemList);
-
-                            }
-                        }
+                        SummaryBarRefreshlist.Add((ProblemList)((IList<object>)ilstProblemListBlobFinal[0])[iCount]);
                     }
-                    fs.Close();
-                    fs.Dispose();
                 }
             }
-
 
             string[] strarray = new string[2];
             UtilityManager objmngr = new UtilityManager();

@@ -178,179 +178,291 @@ namespace Acurus.Capella.UI
             IList<AdvanceDirectiveMaster> AdvncDrctveMasterlst = new List<AdvanceDirectiveMaster>();
             IList<PhysicianPatientMaster> PhyPatMasterlst = new List<PhysicianPatientMaster>();
 
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+            IList<object> ilstAdvanceDirectiveMasterBlobFinal = new List<object>();
+            IList<string> ilstAdvanceDirectiveMasterTagList = new List<string>();
+
+            #region Commented By Deepak
+
+
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //   // itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+            //        XmlText.Close();
+            //        if (ScreenMode == "Queue")
+            //        {
+            //            if (itemDoc.GetElementsByTagName("AdvanceDirectiveList")[0] != null)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("AdvanceDirectiveList")[0].ChildNodes;
+
+            //                if (xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+            //                        string TagName = xmlTagName[j].Name;
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(AdvanceDirective));
+            //                        AdvanceDirective AdvanceDirective = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as AdvanceDirective;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+            //                        propInfo = from obji in ((AdvanceDirective)AdvanceDirective).GetType().GetProperties() select obji;
+
+            //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                        {
+            //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(AdvanceDirective, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(AdvanceDirective, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(AdvanceDirective, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(AdvanceDirective, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(AdvanceDirective, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                        AdvncDrctvelst.Add(AdvanceDirective);
+            //                        if (AdvanceDirective.Encounter_Id == ClientSession.EncounterId)
+            //                            _is_from_current_encounter_data = true;
+            //                    }
+            //                    if (!_is_from_current_encounter_data)
+            //                    {
+            //                        AdvncDrctvelst.Clear();
+            //                        fillOthrHis = LoadFromMaster(fillOthrHis);
+            //                    }
+            //                }
+            //            }
+            //            else if (itemDoc.GetElementsByTagName("AdvanceDirectiveMasterList")[0] != null)
+            //            {
+            //                fillOthrHis = LoadFromMaster(fillOthrHis);
+            //            }
+            //            if (itemDoc.GetElementsByTagName("PhysicianPatientList")[0] != null)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("PhysicianPatientList")[0].ChildNodes;
+
+            //                if (xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+            //                        string TagName = xmlTagName[j].Name;
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(PhysicianPatient));
+            //                        PhysicianPatient PhysicianPatient = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PhysicianPatient;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+            //                        propInfo = from obji in ((PhysicianPatient)PhysicianPatient).GetType().GetProperties() select obji;
+
+            //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                        {
+            //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(PhysicianPatient, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(PhysicianPatient, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(PhysicianPatient, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(PhysicianPatient, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(PhysicianPatient, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                        PhyPatlst.Add(PhysicianPatient);
+            //                        if (PhysicianPatient.Encounter_Id == ClientSession.EncounterId)
+            //                            _is_from_current_encounter_data = true;
+            //                    }
+            //                    if (!_is_from_current_encounter_data)
+            //                    {
+            //                        PhyPatlst.Clear();
+            //                        fillOthrHis = LoadFromMaster(fillOthrHis);
+            //                    }
+            //                }
+            //            }
+            //            else if (itemDoc.GetElementsByTagName("PhysicianPatientMasterList")[0] != null)
+            //            {
+            //                fillOthrHis = LoadFromMaster(fillOthrHis);
+            //            }
+
+            //            //Want to copy
+            //            if (AdvncDrctvelst != null && AdvncDrctvelst.Count > 0)
+            //            {
+            //                IList<AdvanceDirective> lstAdnDirCurrEnc = new List<AdvanceDirective>();
+            //                lstAdnDirCurrEnc = (from item in AdvncDrctvelst where item.Encounter_Id == ClientSession.EncounterId select item).ToList<AdvanceDirective>();
+            //                if (lstAdnDirCurrEnc != null && lstAdnDirCurrEnc.Count > 0)
+            //                {
+            //                    fillOthrHis.Advance_Directive = lstAdnDirCurrEnc;
+            //                }
+            //                else
+            //                {
+            //                    IList<ulong> lstEncId = (from item in AdvncDrctvelst select item.Encounter_Id).Distinct().ToList<ulong>();
+            //                    ulong maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //                    foreach (ulong item in lstEncId)
+            //                        if (item > maxEncId && item < ClientSession.EncounterId)
+            //                            maxEncId = item;
+            //                    lstAdnDirCurrEnc = (from item in AdvncDrctvelst where item.Encounter_Id == maxEncId select item).ToList<AdvanceDirective>();
+            //                    fillOthrHis.Advance_Directive = lstAdnDirCurrEnc;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                fillOthrHis.Advance_Directive = AdvncDrctvelst;
+            //            }
+            //            if (PhyPatlst != null && PhyPatlst.Count > 0)
+            //            {
+            //                IList<PhysicianPatient> lstPhyPatCurrEnc = new List<PhysicianPatient>();
+            //                lstPhyPatCurrEnc = (from item in PhyPatlst where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PhysicianPatient>();
+            //                if (lstPhyPatCurrEnc != null && lstPhyPatCurrEnc.Count > 0)
+            //                {
+            //                    fillOthrHis.PhysicianPatientList = lstPhyPatCurrEnc;
+            //                }
+            //                else
+            //                {
+            //                    IList<ulong> lstEncId = (from item in PhyPatlst select item.Encounter_Id).Distinct().ToList<ulong>();
+            //                    ulong maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //                    foreach (ulong item in lstEncId)
+            //                        if (item > maxEncId && item < ClientSession.EncounterId)
+            //                            maxEncId = item;
+            //                    lstPhyPatCurrEnc = (from item in PhyPatlst where item.Encounter_Id == maxEncId select item).ToList<PhysicianPatient>();
+            //                    fillOthrHis.PhysicianPatientList = lstPhyPatCurrEnc;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                fillOthrHis.PhysicianPatientList = PhyPatlst;
+            //            }
+            //        }
+            //        else if (ScreenMode == "Menu")
+            //        {
+            //            fillOthrHis = LoadFromMaster(fillOthrHis);
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+
+            //    }
+            //}
+            #endregion
+
+            ilstAdvanceDirectiveMasterTagList.Add("AdvanceDirectiveList");
+            ilstAdvanceDirectiveMasterTagList.Add("AdvanceDirectiveMasterList");
+            ilstAdvanceDirectiveMasterTagList.Add("PhysicianPatientList");
+            ilstAdvanceDirectiveMasterTagList.Add("PhysicianPatientMasterList");
+
+            ilstAdvanceDirectiveMasterBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstAdvanceDirectiveMasterTagList);
+
+            if (ScreenMode == "Queue")
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-               // itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstAdvanceDirectiveMasterBlobFinal != null && ilstAdvanceDirectiveMasterBlobFinal.Count > 0)
                 {
-                    itemDoc.Load(fs);
-                    XmlText.Close();
-                    if (ScreenMode == "Queue")
+                    if (ilstAdvanceDirectiveMasterBlobFinal[0] != null)
                     {
-                        if (itemDoc.GetElementsByTagName("AdvanceDirectiveList")[0] != null)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[0]).Count; iCount++)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("AdvanceDirectiveList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(AdvanceDirective));
-                                    AdvanceDirective AdvanceDirective = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as AdvanceDirective;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    propInfo = from obji in ((AdvanceDirective)AdvanceDirective).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(AdvanceDirective, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(AdvanceDirective, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(AdvanceDirective, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(AdvanceDirective, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(AdvanceDirective, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    AdvncDrctvelst.Add(AdvanceDirective);
-                                    if (AdvanceDirective.Encounter_Id == ClientSession.EncounterId)
-                                        _is_from_current_encounter_data = true;
-                                }
-                                if (!_is_from_current_encounter_data)
-                                {
-                                    AdvncDrctvelst.Clear();
-                                    fillOthrHis = LoadFromMaster(fillOthrHis);
-                                }
-                            }
+                            AdvncDrctvelst.Add((AdvanceDirective)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[0])[iCount]);
+                            if (((AdvanceDirective)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[0])[iCount]).Encounter_Id == ClientSession.EncounterId)
+                                _is_from_current_encounter_data = true;
                         }
-                        else if (itemDoc.GetElementsByTagName("AdvanceDirectiveMasterList")[0] != null)
+                        if (!_is_from_current_encounter_data)
                         {
+                            AdvncDrctvelst.Clear();
                             fillOthrHis = LoadFromMaster(fillOthrHis);
-                        }
-                        if (itemDoc.GetElementsByTagName("PhysicianPatientList")[0] != null)
-                        {
-                            xmlTagName = itemDoc.GetElementsByTagName("PhysicianPatientList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(PhysicianPatient));
-                                    PhysicianPatient PhysicianPatient = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PhysicianPatient;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    propInfo = from obji in ((PhysicianPatient)PhysicianPatient).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(PhysicianPatient, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(PhysicianPatient, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(PhysicianPatient, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(PhysicianPatient, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(PhysicianPatient, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    PhyPatlst.Add(PhysicianPatient);
-                                    if (PhysicianPatient.Encounter_Id == ClientSession.EncounterId)
-                                        _is_from_current_encounter_data = true;
-                                }
-                                if (!_is_from_current_encounter_data)
-                                {
-                                    PhyPatlst.Clear();
-                                    fillOthrHis = LoadFromMaster(fillOthrHis);
-                                }
-                            }
-                        }
-                        else if (itemDoc.GetElementsByTagName("PhysicianPatientMasterList")[0] != null)
-                        {
-                            fillOthrHis = LoadFromMaster(fillOthrHis);
-                        }
-                        if (AdvncDrctvelst != null && AdvncDrctvelst.Count > 0)
-                        {
-                            IList<AdvanceDirective> lstAdnDirCurrEnc = new List<AdvanceDirective>();
-                            lstAdnDirCurrEnc = (from item in AdvncDrctvelst where item.Encounter_Id == ClientSession.EncounterId select item).ToList<AdvanceDirective>();
-                            if (lstAdnDirCurrEnc != null && lstAdnDirCurrEnc.Count > 0)
-                            {
-                                fillOthrHis.Advance_Directive = lstAdnDirCurrEnc;
-                            }
-                            else
-                            {
-                                IList<ulong> lstEncId = (from item in AdvncDrctvelst select item.Encounter_Id).Distinct().ToList<ulong>();
-                                ulong maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                                foreach (ulong item in lstEncId)
-                                    if (item > maxEncId && item < ClientSession.EncounterId)
-                                        maxEncId = item;
-                                lstAdnDirCurrEnc = (from item in AdvncDrctvelst where item.Encounter_Id == maxEncId select item).ToList<AdvanceDirective>();
-                                fillOthrHis.Advance_Directive = lstAdnDirCurrEnc;
-                            }
-                        }
-                        else
-                        {
-                            fillOthrHis.Advance_Directive = AdvncDrctvelst;
-                        }
-                        if (PhyPatlst != null && PhyPatlst.Count > 0)
-                        {
-                            IList<PhysicianPatient> lstPhyPatCurrEnc = new List<PhysicianPatient>();
-                            lstPhyPatCurrEnc = (from item in PhyPatlst where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PhysicianPatient>();
-                            if (lstPhyPatCurrEnc != null && lstPhyPatCurrEnc.Count > 0)
-                            {
-                                fillOthrHis.PhysicianPatientList = lstPhyPatCurrEnc;
-                            }
-                            else
-                            {
-                                IList<ulong> lstEncId = (from item in PhyPatlst select item.Encounter_Id).Distinct().ToList<ulong>();
-                                ulong maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                                foreach (ulong item in lstEncId)
-                                    if (item > maxEncId && item < ClientSession.EncounterId)
-                                        maxEncId = item;
-                                lstPhyPatCurrEnc = (from item in PhyPatlst where item.Encounter_Id == maxEncId select item).ToList<PhysicianPatient>();
-                                fillOthrHis.PhysicianPatientList = lstPhyPatCurrEnc;
-                            }
-                        }
-                        else
-                        {
-                            fillOthrHis.PhysicianPatientList = PhyPatlst;
                         }
                     }
-                    else if (ScreenMode == "Menu")
+                    else if (ilstAdvanceDirectiveMasterBlobFinal[1] != null)
                     {
                         fillOthrHis = LoadFromMaster(fillOthrHis);
                     }
-                    fs.Close();
-                    fs.Dispose();
-
+                    if (ilstAdvanceDirectiveMasterBlobFinal[2] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[2]).Count; iCount++)
+                        {
+                            PhyPatlst.Add((PhysicianPatient)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[2])[iCount]);
+                            if (((PhysicianPatient)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[2])[iCount]).Encounter_Id == ClientSession.EncounterId)
+                                _is_from_current_encounter_data = true;
+                        }
+                        if (!_is_from_current_encounter_data)
+                        {
+                            PhyPatlst.Clear();
+                            fillOthrHis = LoadFromMaster(fillOthrHis);
+                        }
+                    }
+                    else if (ilstAdvanceDirectiveMasterBlobFinal[3] != null)
+                    {
+                        fillOthrHis = LoadFromMaster(fillOthrHis);
+                    }
                 }
+
+                if (AdvncDrctvelst != null && AdvncDrctvelst.Count > 0)
+                {
+                    IList<AdvanceDirective> lstAdnDirCurrEnc = new List<AdvanceDirective>();
+                    lstAdnDirCurrEnc = (from item in AdvncDrctvelst where item.Encounter_Id == ClientSession.EncounterId select item).ToList<AdvanceDirective>();
+                    if (lstAdnDirCurrEnc != null && lstAdnDirCurrEnc.Count > 0)
+                    {
+                        fillOthrHis.Advance_Directive = lstAdnDirCurrEnc;
+                    }
+                    else
+                    {
+                        IList<ulong> lstEncId = (from item in AdvncDrctvelst select item.Encounter_Id).Distinct().ToList<ulong>();
+                        ulong maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                        foreach (ulong item in lstEncId)
+                            if (item > maxEncId && item < ClientSession.EncounterId)
+                                maxEncId = item;
+                        lstAdnDirCurrEnc = (from item in AdvncDrctvelst where item.Encounter_Id == maxEncId select item).ToList<AdvanceDirective>();
+                        fillOthrHis.Advance_Directive = lstAdnDirCurrEnc;
+                    }
+                }
+                else
+                {
+                    fillOthrHis.Advance_Directive = AdvncDrctvelst;
+                }
+                if (PhyPatlst != null && PhyPatlst.Count > 0)
+                {
+                    IList<PhysicianPatient> lstPhyPatCurrEnc = new List<PhysicianPatient>();
+                    lstPhyPatCurrEnc = (from item in PhyPatlst where item.Encounter_Id == ClientSession.EncounterId select item).ToList<PhysicianPatient>();
+                    if (lstPhyPatCurrEnc != null && lstPhyPatCurrEnc.Count > 0)
+                    {
+                        fillOthrHis.PhysicianPatientList = lstPhyPatCurrEnc;
+                    }
+                    else
+                    {
+                        IList<ulong> lstEncId = (from item in PhyPatlst select item.Encounter_Id).Distinct().ToList<ulong>();
+                        ulong maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                        foreach (ulong item in lstEncId)
+                            if (item > maxEncId && item < ClientSession.EncounterId)
+                                maxEncId = item;
+                        lstPhyPatCurrEnc = (from item in PhyPatlst where item.Encounter_Id == maxEncId select item).ToList<PhysicianPatient>();
+                        fillOthrHis.PhysicianPatientList = lstPhyPatCurrEnc;
+                    }
+                }
+                else
+                {
+                    fillOthrHis.PhysicianPatientList = PhyPatlst;
+                }
+
+
             }
-            
+            else if (ScreenMode == "Menu")
+            {
+                fillOthrHis = LoadFromMaster(fillOthrHis);
+            }
+
             return fillOthrHis;
         }
 
@@ -1120,102 +1232,139 @@ namespace Acurus.Capella.UI
             IList<AdvanceDirectiveMaster> AdvncDrctveMasterlst = new List<AdvanceDirectiveMaster>();
             IList<PhysicianPatientMaster> PhyPatMasterlst = new List<PhysicianPatientMaster>();
 
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            if (File.Exists(strXmlFilePath) == true)
+            IList<object> ilstAdvanceDirectiveMasterBlobFinal = new List<object>();
+            IList<string> ilstAdvanceDirectiveMasterListTagList = new List<string>();
+
+            #region Commented By Deepak
+
+
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+            //        XmlText.Close();
+            //        if (itemDoc.GetElementsByTagName("AdvanceDirectiveMasterList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("AdvanceDirectiveMasterList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(AdvanceDirectiveMaster));
+            //                    AdvanceDirectiveMaster AdvanceDirectiveMaster = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as AdvanceDirectiveMaster;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((AdvanceDirectiveMaster)AdvanceDirectiveMaster).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(AdvanceDirectiveMaster, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(AdvanceDirectiveMaster, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(AdvanceDirectiveMaster, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(AdvanceDirectiveMaster, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(AdvanceDirectiveMaster, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    AdvncDrctveMasterlst.Add(AdvanceDirectiveMaster);
+            //                }
+            //            }
+            //        }
+            //        if (itemDoc.GetElementsByTagName("PhysicianPatientMasterList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("PhysicianPatientMasterList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(PhysicianPatientMaster));
+            //                    PhysicianPatientMaster _PhysicianPatientMaster = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PhysicianPatientMaster;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((PhysicianPatientMaster)_PhysicianPatientMaster).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(_PhysicianPatientMaster, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(_PhysicianPatientMaster, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(_PhysicianPatientMaster, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(_PhysicianPatientMaster, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(_PhysicianPatientMaster, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    if (_PhysicianPatientMaster.Is_Deleted != "Y")
+            //                    PhyPatMasterlst.Add(_PhysicianPatientMaster);
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
+            #endregion
+
+            ilstAdvanceDirectiveMasterListTagList.Add("AdvanceDirectiveMasterList");
+            ilstAdvanceDirectiveMasterListTagList.Add("PhysicianPatientMasterList");
+
+            ilstAdvanceDirectiveMasterBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstAdvanceDirectiveMasterListTagList);
+
+            if (ilstAdvanceDirectiveMasterBlobFinal != null && ilstAdvanceDirectiveMasterBlobFinal.Count > 0)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstAdvanceDirectiveMasterBlobFinal[0] != null)
                 {
-                    itemDoc.Load(fs);
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("AdvanceDirectiveMasterList")[0] != null)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[0]).Count; iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("AdvanceDirectiveMasterList")[0].ChildNodes;
 
-                        if (xmlTagName.Count > 0)
+                        AdvncDrctveMasterlst.Add((AdvanceDirectiveMaster)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[0])[iCount]);
+                    }
+                }
+
+                if (ilstAdvanceDirectiveMasterBlobFinal[1] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[1]).Count; iCount++)
+                    {
+                        if (((PhysicianPatientMaster)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[1])[iCount]).Is_Deleted != "Y")
                         {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(AdvanceDirectiveMaster));
-                                AdvanceDirectiveMaster AdvanceDirectiveMaster = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as AdvanceDirectiveMaster;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((AdvanceDirectiveMaster)AdvanceDirectiveMaster).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(AdvanceDirectiveMaster, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(AdvanceDirectiveMaster, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(AdvanceDirectiveMaster, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(AdvanceDirectiveMaster, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(AdvanceDirectiveMaster, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-                                AdvncDrctveMasterlst.Add(AdvanceDirectiveMaster);
-                            }
+                            PhyPatMasterlst.Add((PhysicianPatientMaster)((IList<object>)ilstAdvanceDirectiveMasterBlobFinal[0])[iCount]);
                         }
                     }
-                    if (itemDoc.GetElementsByTagName("PhysicianPatientMasterList")[0] != null)
-                    {
-                        xmlTagName = itemDoc.GetElementsByTagName("PhysicianPatientMasterList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(PhysicianPatientMaster));
-                                PhysicianPatientMaster _PhysicianPatientMaster = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as PhysicianPatientMaster;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((PhysicianPatientMaster)_PhysicianPatientMaster).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        foreach (PropertyInfo property in propInfo)
-                                        {
-                                            if (property.Name == nodevalue.Name)
-                                            {
-                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                    property.SetValue(_PhysicianPatientMaster, Convert.ToUInt64(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                    property.SetValue(_PhysicianPatientMaster, Convert.ToString(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                    property.SetValue(_PhysicianPatientMaster, Convert.ToDateTime(nodevalue.Value), null);
-                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                    property.SetValue(_PhysicianPatientMaster, Convert.ToInt32(nodevalue.Value), null);
-                                                else
-                                                    property.SetValue(_PhysicianPatientMaster, nodevalue.Value, null);
-                                            }
-                                        }
-                                    }
-                                }
-                                if (_PhysicianPatientMaster.Is_Deleted != "Y")
-                                PhyPatMasterlst.Add(_PhysicianPatientMaster);
-                            }
-                        }
-                    }
-                    fs.Close();
-                    fs.Dispose();
                 }
             }
+
+
             if (AdvncDrctveMasterlst != null && AdvncDrctveMasterlst.Count > 0)
                 fillOthrHis.Advance_Directive_Master = AdvncDrctveMasterlst;
 

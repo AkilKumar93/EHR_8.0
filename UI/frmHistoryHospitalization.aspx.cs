@@ -1729,7 +1729,7 @@ namespace Acurus.Capella.UI
                         }
 
                     }
-                    if ((ClientSession.PatientPaneList[0]).Birth_Date != null)
+                    if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0 && (ClientSession.PatientPaneList[0]).Birth_Date != null)
                     {
                         HospHistDTO.DateofBirth = (ClientSession.PatientPaneList[0]).Birth_Date;
                     }

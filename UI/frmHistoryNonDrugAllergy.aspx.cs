@@ -261,161 +261,207 @@ namespace Acurus.Capella.UI
                 IList<NonDrugAllergy> NonDruglst = new List<NonDrugAllergy>();
                 IList<GeneralNotes> lstGenNotesAll = new List<GeneralNotes>();
                 GeneralNotes genrlNotesDrug = new GeneralNotes();
-                string FileName = "Human" + "_" + ClientSession.HumanId + ".xml"; //"Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                if (File.Exists(strXmlFilePath) == true)
+
+                #region "Code Modified by balaji.TJ - 2023-04-01"
+
+                IList<string> ilstNonDrugTagList = new List<string>();
+                ilstNonDrugTagList.Add("NonDrugAllergyList");
+                ilstNonDrugTagList.Add("NonDrugAllergyMasterList");
+                ilstNonDrugTagList.Add("GeneralNotesNonDrugAllergyList");
+
+                IList<object> ilstNonDrugBlobFinal = new List<object>();
+                ilstNonDrugBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstNonDrugTagList);
+
+                if (ilstNonDrugBlobFinal != null && ilstNonDrugBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    XmlNodeList xmlTagName = null;
-                    // itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstNonDrugBlobFinal[0] != null && ((IList<object>)ilstNonDrugBlobFinal[0]).Count >0)
                     {
-                        itemDoc.Load(fs);
-                        XmlText.Close();
-                        if (itemDoc.GetElementsByTagName("NonDrugAllergyList") != null && itemDoc.GetElementsByTagName("NonDrugAllergyList").Count > 0)
+                        for (int i = 0; i < ((IList<object>)ilstNonDrugBlobFinal[0]).Count; i++)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("NonDrugAllergyList")[0].ChildNodes;
-                            if (xmlTagName != null && xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(NonDrugAllergy));
-                                    NonDrugAllergy NonDrugAllergy = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as NonDrugAllergy;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    //NonDrugAllergy = (NonDrugAllergy)NonDrugAllergy;
-                                    propInfo = from obji in ((NonDrugAllergy)NonDrugAllergy).GetType().GetProperties() select obji;
+                            NonDruglst.Add((NonDrugAllergy)((IList<object>)ilstNonDrugBlobFinal[0])[i]);
 
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(NonDrugAllergy, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(NonDrugAllergy, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(NonDrugAllergy, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(NonDrugAllergy, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-
-                                                            property.SetValue(NonDrugAllergy, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    NonDruglst.Add(NonDrugAllergy);
-                                    if (NonDrugAllergy.Encounter_Id == ClientSession.EncounterId)
-                                        _is_from_current_encounter_data = true;
-                                }
-                                if (!_is_from_current_encounter_data)
-                                {
-                                    NonDruglst.Clear();
-                                    nonDrugDTO = LoadFromMaster(nonDrugDTO);
-                                }
-                            }
-
+                            if (((NonDrugAllergy)((List<object>)ilstNonDrugBlobFinal[0])[i]).Encounter_Id == ClientSession.EncounterId)
+                                _is_from_current_encounter_data = true;
                         }
-                        else if (itemDoc.GetElementsByTagName("NonDrugAllergyMasterList") != null && itemDoc.GetElementsByTagName("NonDrugAllergyMasterList").Count > 0)
+                        if (!_is_from_current_encounter_data)
                         {
+                            NonDruglst.Clear();
                             nonDrugDTO = LoadFromMaster(nonDrugDTO);
                         }
-                        if (itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList") != null && itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList").Count > 0)
-                        {
-                            xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList")[0].ChildNodes;
-
-                            if (xmlTagName != null && xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    string TagName = xmlTagName[j].Name;
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                                    GeneralNotes GeneralNotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[0])) as GeneralNotes;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    //GeneralNotes = (GeneralNotes)GeneralNotes;
-                                    propInfo = from obji in ((GeneralNotes)GeneralNotes).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[0].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[0].Attributes[i];
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(GeneralNotes, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(GeneralNotes, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(GeneralNotes, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(GeneralNotes, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(GeneralNotes, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    lstGenNotesAll.Add(GeneralNotes);
-                                }
-                            }
-                        }/////
-                        fs.Close();
-                        fs.Dispose();
                     }
-                    #region Commented
-                    /*if (xmlTagName.Count > 0)
+                    else if (ilstNonDrugBlobFinal[1] != null && ((IList<object>)ilstNonDrugBlobFinal[1]).Count > 0)
                     {
-
-                        string TagName = xmlTagName[0].Name;
-                        XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                        GeneralNotes GeneralNotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[0])) as GeneralNotes;
-                        IEnumerable<PropertyInfo> propInfo = null;
-                        //GeneralNotes = (GeneralNotes)GeneralNotes;
-                        propInfo = from obji in ((GeneralNotes)GeneralNotes).GetType().GetProperties() select obji;
-
-                        for (int i = 0; i < xmlTagName[0].Attributes.Count; i++)
-                        {
-                            XmlNode nodevalue = xmlTagName[0].Attributes[i];
-                            {
-                                foreach (PropertyInfo property in propInfo)
-                                {
-                                    if (property.Name == nodevalue.Name)
-                                    {
-                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                            property.SetValue(GeneralNotes, Convert.ToUInt64(nodevalue.Value), null);
-                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                            property.SetValue(GeneralNotes, Convert.ToString(nodevalue.Value), null);
-                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                            property.SetValue(GeneralNotes, Convert.ToDateTime(nodevalue.Value), null);
-                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                            property.SetValue(GeneralNotes, Convert.ToInt32(nodevalue.Value), null);
-                                        else
-                                            property.SetValue(GeneralNotes, nodevalue.Value, null);
-                                    }
-                                }
-                            }
-                        }
-                        genrlNotesDrug = GeneralNotes;
+                        nonDrugDTO = LoadFromMaster(nonDrugDTO);
                     }
-                }*/
-                    #endregion
+                    if (ilstNonDrugBlobFinal[2] != null && ((IList<object>)ilstNonDrugBlobFinal[2]).Count > 0)
+                    {
+                        for (int j = 0; j < ((IList<object>)ilstNonDrugBlobFinal[2]).Count; j++)
+                        {
+                            lstGenNotesAll.Add((GeneralNotes)((IList<object>)ilstNonDrugBlobFinal[2])[j]);
+                        }
+                    }
+                   
                 }
+                #endregion
 
+                #region "Comment by balaji.TJ -2023-01-04"
+                //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml"; //"Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //    XmlNodeList xmlTagName = null;
+                //    // itemDoc.Load(XmlText);
+                //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+                //        XmlText.Close();
+                //        if (itemDoc.GetElementsByTagName("NonDrugAllergyList") != null && itemDoc.GetElementsByTagName("NonDrugAllergyList").Count > 0)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("NonDrugAllergyList")[0].ChildNodes;
+                //            if (xmlTagName != null && xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    string TagName = xmlTagName[j].Name;
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(NonDrugAllergy));
+                //                    NonDrugAllergy NonDrugAllergy = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as NonDrugAllergy;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    //NonDrugAllergy = (NonDrugAllergy)NonDrugAllergy;
+                //                    propInfo = from obji in ((NonDrugAllergy)NonDrugAllergy).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            if (propInfo != null)
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+                //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                            property.SetValue(NonDrugAllergy, Convert.ToUInt64(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                            property.SetValue(NonDrugAllergy, Convert.ToString(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                            property.SetValue(NonDrugAllergy, Convert.ToDateTime(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                            property.SetValue(NonDrugAllergy, Convert.ToInt32(nodevalue.Value), null);
+                //                                        else
+
+                //                                            property.SetValue(NonDrugAllergy, nodevalue.Value, null);
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+
+                //                    NonDruglst.Add(NonDrugAllergy);
+                //                    if (NonDrugAllergy.Encounter_Id == ClientSession.EncounterId)
+                //                        _is_from_current_encounter_data = true;
+                //                }
+                //                if (!_is_from_current_encounter_data)
+                //                {
+                //                    NonDruglst.Clear();
+                //                    nonDrugDTO = LoadFromMaster(nonDrugDTO);
+                //                }
+                //            }
+
+                //        }
+                //        else if (itemDoc.GetElementsByTagName("NonDrugAllergyMasterList") != null && itemDoc.GetElementsByTagName("NonDrugAllergyMasterList").Count > 0)
+                //        {
+                //            nonDrugDTO = LoadFromMaster(nonDrugDTO);
+                //        }
+                //        if (itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList") != null && itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList").Count > 0)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesNonDrugAllergyList")[0].ChildNodes;
+
+                //            if (xmlTagName != null && xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    string TagName = xmlTagName[j].Name;
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                //                    GeneralNotes GeneralNotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[0])) as GeneralNotes;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    //GeneralNotes = (GeneralNotes)GeneralNotes;
+                //                    propInfo = from obji in ((GeneralNotes)GeneralNotes).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[0].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[0].Attributes[i];
+                //                        {
+                //                            if (propInfo != null)
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+                //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                            property.SetValue(GeneralNotes, Convert.ToUInt64(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                            property.SetValue(GeneralNotes, Convert.ToString(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                            property.SetValue(GeneralNotes, Convert.ToDateTime(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                            property.SetValue(GeneralNotes, Convert.ToInt32(nodevalue.Value), null);
+                //                                        else
+                //                                            property.SetValue(GeneralNotes, nodevalue.Value, null);
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    lstGenNotesAll.Add(GeneralNotes);
+                //                }
+                //            }
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //    #region Commented
+                //    /*if (xmlTagName.Count > 0)
+                //    {
+
+                //        string TagName = xmlTagName[0].Name;
+                //        XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                //        GeneralNotes GeneralNotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[0])) as GeneralNotes;
+                //        IEnumerable<PropertyInfo> propInfo = null;
+                //        //GeneralNotes = (GeneralNotes)GeneralNotes;
+                //        propInfo = from obji in ((GeneralNotes)GeneralNotes).GetType().GetProperties() select obji;
+
+                //        for (int i = 0; i < xmlTagName[0].Attributes.Count; i++)
+                //        {
+                //            XmlNode nodevalue = xmlTagName[0].Attributes[i];
+                //            {
+                //                foreach (PropertyInfo property in propInfo)
+                //                {
+                //                    if (property.Name == nodevalue.Name)
+                //                    {
+                //                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                            property.SetValue(GeneralNotes, Convert.ToUInt64(nodevalue.Value), null);
+                //                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                            property.SetValue(GeneralNotes, Convert.ToString(nodevalue.Value), null);
+                //                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                            property.SetValue(GeneralNotes, Convert.ToDateTime(nodevalue.Value), null);
+                //                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                            property.SetValue(GeneralNotes, Convert.ToInt32(nodevalue.Value), null);
+                //                        else
+                //                            property.SetValue(GeneralNotes, nodevalue.Value, null);
+                //                    }
+                //                }
+                //            }
+                //        }
+                //        genrlNotesDrug = GeneralNotes;
+                //    }
+                //}*/
+                //    #endregion
+                //}
+
+
+                #endregion
                 if (NonDruglst != null && NonDruglst.Count > 0)
                 {
                     IList<NonDrugAllergy> lstNDACurrEnc = new List<NonDrugAllergy>();
@@ -1310,6 +1356,39 @@ namespace Acurus.Capella.UI
             IList<NonDrugAllergyMaster> NonDrugMasterlst = new List<NonDrugAllergyMaster>();
             IList<GeneralNotes> lstGenNotesAll = new List<GeneralNotes>();
             GeneralNotes genrlNotesDrug = new GeneralNotes();
+
+            #region "Code Modified by balaji.TJ - 2023-04-01"
+            IList<string> ilstNonDrugTagList = new List<string>();
+            ilstNonDrugTagList.Add("NonDrugAllergyMasterList");
+            ilstNonDrugTagList.Add("GeneralNotesROSList");
+
+            IList<object> ilstNonDrugBlobList = new List<object>();
+            ilstNonDrugBlobList = UtilityManager.ReadBlob(ClientSession.HumanId, ilstNonDrugTagList);
+
+            if (ilstNonDrugBlobList != null && ilstNonDrugBlobList.Count > 0)
+            {
+                if (ilstNonDrugBlobList[0] != null && ((IList<object>)ilstNonDrugBlobList[0]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstNonDrugBlobList[0]).Count; i++)
+                    {
+                        if (((NonDrugAllergyMaster)((List<object>)ilstNonDrugBlobList[0])[i]).Is_Deleted != "Y")
+                            NonDrugMasterlst.Add((NonDrugAllergyMaster)((IList<object>)ilstNonDrugBlobList[0])[i]);                       
+                    }                    
+                }
+                if (ilstNonDrugBlobList[1] != null && ((IList<object>)ilstNonDrugBlobList[1]).Count > 0)
+                {
+                    for (int K = 0; K < ((IList<object>)ilstNonDrugBlobList[1]).Count; K++)
+                    {
+                        lstGenNotesAll.Add((GeneralNotes)((IList<object>)ilstNonDrugBlobList[1])[K]);
+                    }
+
+                }
+            }
+
+            #endregion
+
+            #region "Comment by balaji.TJ  - 2023-01-04"   
+            /*
             string FileName = "Human" + "_" + ClientSession.HumanId + ".xml"; //"Encounter" + "_" + ClientSession.EncounterId + ".xml";
             string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             if (File.Exists(strXmlFilePath) == true)
@@ -1412,7 +1491,8 @@ namespace Acurus.Capella.UI
                     fs.Dispose();
                 }
             }
-
+            */
+            #endregion
             if (NonDrugMasterlst != null && NonDrugMasterlst.Count > 0)
             {
                 nonDrugDTO.NonDrugMasterList = NonDrugMasterlst;

@@ -3168,54 +3168,74 @@ namespace Acurus.Capella.UI
             IList<Human> objhuman = new List<Human>();
             //HumanManager humanMngr = new HumanManager();
             //objhuman = humanMngr.patientdetails(hdnHumanID.Value);
-            string FileName = "Human" + "_" + hdnHumanID.Value + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-            if (File.Exists(strXmlFilePath) == true)
+            IList<string> ilstEditAppTagList = new List<string>();
+            ilstEditAppTagList.Add("HumanList");
+
+            IList<object> ilstEditAppFinal = new List<object>();
+            ilstEditAppFinal = UtilityManager.ReadBlob(Convert.ToUInt64(hdnHumanID.Value), ilstEditAppTagList);
+
+            if (ilstEditAppFinal.Count > 0 && ilstEditAppFinal != null)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                // itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstEditAppFinal[0]!=null)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-
-                    if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
+                    for(int iCount=0; iCount < ((IList<object>)ilstEditAppFinal[0]).Count; iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
-
-                        if (xmlTagName != null && xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                if (xmlTagName[j].Attributes["Id"].Value == hdnHumanID.Value)
-                                {
-                                    Human objhumanlst = new Human();
-                                    objhumanlst.Id = Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Id").Value);
-                                    objhumanlst.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes.GetNamedItem("Birth_Date").Value);
-                                    objhumanlst.First_Name = xmlTagName[j].Attributes.GetNamedItem("First_Name").Value;
-                                    objhumanlst.Last_Name = xmlTagName[j].Attributes.GetNamedItem("Last_Name").Value;
-                                    objhumanlst.MI = xmlTagName[j].Attributes.GetNamedItem("MI").Value;
-                                    objhumanlst.Sex = xmlTagName[j].Attributes.GetNamedItem("Sex").Value;
-                                    objhumanlst.Suffix = xmlTagName[j].Attributes.GetNamedItem("Suffix").Value;
-                                    objhumanlst.Medical_Record_Number = xmlTagName[j].Attributes.GetNamedItem("Medical_Record_Number").Value;
-                                    objhumanlst.Home_Phone_No = xmlTagName[j].Attributes.GetNamedItem("Home_Phone_No").Value;
-                                    objhumanlst.Human_Type = xmlTagName[j].Attributes.GetNamedItem("Human_Type").Value;
-                                    objhumanlst.Patient_Account_External = xmlTagName[j].Attributes.GetNamedItem("Patient_Account_External").Value;
-                                    objhumanlst.Cell_Phone_Number = xmlTagName[j].Attributes.GetNamedItem("Cell_Phone_Number").Value;
-
-                                    objhuman.Add(objhumanlst);
-                                }
-                            }
-                        }
+                        objhuman.Add((Human)((IList<object>)ilstEditAppFinal[0])[iCount]);
                     }
-                    fs.Close();
-                    fs.Dispose();
                 }
+
             }
+
+
+            //string FileName = "Human" + "_" + hdnHumanID.Value + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    // itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+
+            //        if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
+
+            //            if (xmlTagName != null && xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    if (xmlTagName[j].Attributes["Id"].Value == hdnHumanID.Value)
+            //                    {
+            //                        Human objhumanlst = new Human();
+            //                        objhumanlst.Id = Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Id").Value);
+            //                        objhumanlst.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes.GetNamedItem("Birth_Date").Value);
+            //                        objhumanlst.First_Name = xmlTagName[j].Attributes.GetNamedItem("First_Name").Value;
+            //                        objhumanlst.Last_Name = xmlTagName[j].Attributes.GetNamedItem("Last_Name").Value;
+            //                        objhumanlst.MI = xmlTagName[j].Attributes.GetNamedItem("MI").Value;
+            //                        objhumanlst.Sex = xmlTagName[j].Attributes.GetNamedItem("Sex").Value;
+            //                        objhumanlst.Suffix = xmlTagName[j].Attributes.GetNamedItem("Suffix").Value;
+            //                        objhumanlst.Medical_Record_Number = xmlTagName[j].Attributes.GetNamedItem("Medical_Record_Number").Value;
+            //                        objhumanlst.Home_Phone_No = xmlTagName[j].Attributes.GetNamedItem("Home_Phone_No").Value;
+            //                        objhumanlst.Human_Type = xmlTagName[j].Attributes.GetNamedItem("Human_Type").Value;
+            //                        objhumanlst.Patient_Account_External = xmlTagName[j].Attributes.GetNamedItem("Patient_Account_External").Value;
+            //                        objhumanlst.Cell_Phone_Number = xmlTagName[j].Attributes.GetNamedItem("Cell_Phone_Number").Value;
+
+            //                        objhuman.Add(objhumanlst);
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
             if (objhuman.Count > 0)
             {
                 txtPatientName.Text = objhuman[0].First_Name;

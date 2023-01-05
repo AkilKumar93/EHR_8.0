@@ -2432,8 +2432,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     HumanBlobManager HumanBlobMngr = new HumanBlobManager();
                     objhumanblob.Human_ID = EntityID;
                     objhumanblob.Id = EntityID;
-                    if(objGenerateXml!=null)
-                    objhumanblob.Version = objGenerateXml.iHumanBlobVersion;
+                    if (objGenerateXml != null)
+                    {
+                        objhumanblob.Version = objGenerateXml.iHumanBlobVersion;
+                        objhumanblob.Created_By = objGenerateXml.sCreatedBy;
+                        objhumanblob.Created_Date_And_Time = objGenerateXml.dtCreatedDateandTime;
+                    }
                     byte[] bytes = null;
                     try
                     {
@@ -2497,6 +2501,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (objGenerateXml != null)
                     {
                         objEncounterblob.Version = objGenerateXml.iEncounterBlobVersion;
+                        objEncounterblob.Created_By = objGenerateXml.sCreatedBy;
+                        objEncounterblob.Created_Date_And_Time = objGenerateXml.dtCreatedDateandTime;
                     }
 
                     byte[] bytes = null;

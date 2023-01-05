@@ -5071,7 +5071,7 @@ namespace Acurus.Capella.UI
 
         }
 
-        public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName)
+        public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName, string sMyXMLType = "")
         {
             string sXMLType = "";
 
@@ -5083,7 +5083,14 @@ namespace Acurus.Capella.UI
             ilstXMLBlob = NHibernateSessionUtility.Instance.MyMapXMLBlobList.Where(a => a.XML_Tag_Name == ilstTagName[0].ToString()).ToList();
             if (ilstXMLBlob.Count > 0)
             {
-                sXMLType = ilstXMLBlob[0].Table_Name;
+                if (sMyXMLType != string.Empty)
+                {
+                    sXMLType = sMyXMLType;
+                }
+                else
+                {
+                    sXMLType = ilstXMLBlob[0].Table_Name;
+                }
                 if (sXMLType == "Blob_Human")
                 {
                     HumanBlobManager HumanBlobMngr = new HumanBlobManager();
