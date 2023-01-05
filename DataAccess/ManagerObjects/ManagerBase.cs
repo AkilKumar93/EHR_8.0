@@ -2480,7 +2480,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(deleteList[0], null));
                             }
-                            else if (updateList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+                            else if (deleteList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
                             {
                                 objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(deleteList[0], null));
                             }
