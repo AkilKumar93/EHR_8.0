@@ -2984,11 +2984,12 @@ namespace Acurus.Capella.UI
             GeneralNotesManager objGeneralNotesManager = new GeneralNotesManager();
             var ROSGenSysList = objGeneralNotesManager.GetGeneralNotes(encounterId, "SYSTEM");
 
+            
 
-            string FileName = "Encounter" + "_" + encounterId + ".xml";
-            string strXmlFilePath = string.Empty;
-            if (File.Exists(Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName)))
-                strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                   // string FileName = "Encounter" + "_" + encounterId + ".xml";
+           // string strXmlFilePath = string.Empty;
+           // if (File.Exists(Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName)))
+               // strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             if (ilstROS.Count > 0)
             {
                 List<string> ilstSystemName = new List<string>();
@@ -3014,29 +3015,32 @@ namespace Acurus.Capella.UI
                 }
                 ilstSystemName = ilstSystemName.Distinct().ToList();
 
+                GenerateXml objxml = new GenerateXml();
 
-
-                if (File.Exists(strXmlFilePath) == true && encounterid > 0)
+                
+                //   if (File.Exists(strXmlFilePath) == true && encounterid > 0)
                 {
                     XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    itemDoc.Load(XmlText);
-                    XmlText.Close();
+                    
 
-                    XmlNodeList xmlsysCheck = itemDoc.GetElementsByTagName("ROSSystemList");
+                    objxml.itemDoc = objxml.ReadBlob("Encounter", encounterId);
+                      
+
+
+                     XmlNodeList xmlsysCheck = objxml.itemDoc.GetElementsByTagName("ROSSystemList");
                     if (xmlsysCheck[0] != null)
                     {
 
 
-                        XmlNodeList ParentNodeList = itemDoc.GetElementsByTagName("ROSSystemList");
-                        XmlNodeList xmlModules = itemDoc.GetElementsByTagName("Modules");
+                        XmlNodeList ParentNodeList = objxml.itemDoc.GetElementsByTagName("ROSSystemList");
+                        XmlNodeList xmlModules = objxml.itemDoc.GetElementsByTagName("Modules");
                         xmlModules[0].RemoveChild(ParentNodeList[0]);
 
                     }
                     if (xmlsysCheck[0] == null && ilstSystemName.Count > 0)
                     {
-                        XmlNode xmlSystemNodeParent = itemDoc.CreateNode(XmlNodeType.Element, "ROSSystemList", "");
-                        XmlNodeList xmlModule = itemDoc.GetElementsByTagName("Modules");
+                        XmlNode xmlSystemNodeParent = objxml.itemDoc.CreateNode(XmlNodeType.Element, "ROSSystemList", "");
+                        XmlNodeList xmlModule = objxml.itemDoc.GetElementsByTagName("Modules");
                         xmlModule[0].AppendChild(xmlSystemNodeParent);
 
                     }
@@ -3050,82 +3054,36 @@ namespace Acurus.Capella.UI
                     {
                         for (int i = 0; i < ilstSystemName.Count; i++)
                         {
-                            xmlSystemNode = itemDoc.CreateNode(XmlNodeType.Element, "SystemName", "");
+                            xmlSystemNode = objxml.itemDoc.CreateNode(XmlNodeType.Element, "SystemName", "");
 
-                            attSysName = itemDoc.CreateAttribute("System_Name");
+                            attSysName = objxml.itemDoc.CreateAttribute("System_Name");
                             attSysName.Value = ilstSystemName[i];
                             xmlSystemNode.Attributes.Append(attSysName);
 
-                            attEncounterid = itemDoc.CreateAttribute("Encounter_ID");
+                            attEncounterid = objxml.itemDoc.CreateAttribute("Encounter_ID");
                             attEncounterid.Value = encounterid.ToString();
                             xmlSystemNode.Attributes.Append(attEncounterid);
 
-                            atthuman_id = itemDoc.CreateAttribute("Human_ID");
+                            atthuman_id = objxml.itemDoc.CreateAttribute("Human_ID");
                             atthuman_id.Value = humanid.ToString();
                             xmlSystemNode.Attributes.Append(atthuman_id);
 
-                            XmlNodeList xmlsysList = itemDoc.GetElementsByTagName("ROSSystemList");
+                            XmlNodeList xmlsysList = objxml.itemDoc.GetElementsByTagName("ROSSystemList");
                             xmlsysList[0].AppendChild(xmlSystemNode);
                         }
                     }
                     //itemDoc.Save(strXmlFilePath);
-                    int trycount = 0;
-                trytosaveagain:
+                  
+           
                     try
                     {
-                        itemDoc.Save(strXmlFilePath);
+                        ROSManager objros = new ROSManager();
+                        objros.writesystem(encounterId, objxml);
+                        //itemDoc.Save(strXmlFilePath);
                     }
                     catch (Exception xmlexcep)
                     {
-                        trycount++;
-                        if (trycount <= 3)
-                        {
-                            int TimeMilliseconds = 0;
-                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                            Thread.Sleep(TimeMilliseconds);
-                            string sMsg = string.Empty;
-                            string sExStackTrace = string.Empty;
-
-                            string version = "";
-                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                            string[] server = version.Split('|');
-                            string serverno = "";
-                            if (server.Length > 1)
-                                serverno = server[1].Trim();
-
-                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                sMsg = xmlexcep.InnerException.Message;
-                            else
-                                sMsg = xmlexcep.Message;
-
-                            if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                sExStackTrace = xmlexcep.StackTrace;
-
-                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                            string ConnectionData;
-                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                            {
-                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                {
-                                    cmd.Connection = con;
-                                    try
-                                    {
-                                        con.Open();
-                                        cmd.ExecuteNonQuery();
-                                        con.Close();
-                                    }
-                                    catch
-                                    {
-                                    }
-                                }
-                            }
-                            goto trytosaveagain;
-                        }
+                        throw xmlexcep;
                     }
                 }
             }
