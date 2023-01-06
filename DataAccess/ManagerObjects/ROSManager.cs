@@ -79,10 +79,42 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         //BugID:54702
         int iTryCount = 0;
-        
+
+        public void writesystem(ulong encounterid,GenerateXml objxml)
+        {
+            ISession MySession = Session.GetISession();
+            // ITransaction trans = null;
 
 
-        public FillROS BatchOperationsToRosAndGeneralNotes(IList<ROS> ListToInsertRos, IList<ROS> ListToUpdateRos, IList<ROS> ListToDeleteRos, IList<GeneralNotes> ListToInsertGeneralNotes, IList<GeneralNotes> ListToUpdateGeneralNotes, GeneralNotes rosGeneralNotes, ulong EncounterId, string sMacAddress,   List<string> ilstSystemName)
+            using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            {
+                IList<ROS> lst = new List<ROS>();
+                IList<string> ilstROSTagList = new List<string>();
+                ilstROSTagList.Add("ROSList");
+                
+
+
+                IList<object> ilstROSBlobFinal = new List<object>();
+                ilstROSBlobFinal = ReadBlob(encounterid, ilstROSTagList);
+
+                if (ilstROSBlobFinal != null && ilstROSBlobFinal.Count > 0)
+                {
+                    if (ilstROSBlobFinal[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstROSBlobFinal[0]).Count; iCount++)
+                        {
+                            lst.Add((ROS)((IList<object>)ilstROSBlobFinal[0])[iCount]);
+                        }
+                    }
+                }
+                    WriteBlob(encounterid, objxml.itemDoc, MySession, null, lst, null, objxml, false);
+                trans.Commit();
+            }
+
+
+        }
+
+        public FillROS BatchOperationsToRosAndGeneralNotes(IList<ROS> ListToInsertRos, IList<ROS> ListToUpdateRos, IList<ROS> ListToDeleteRos, IList<GeneralNotes> ListToInsertGeneralNotes, IList<GeneralNotes> ListToUpdateGeneralNotes, GeneralNotes rosGeneralNotes, ulong EncounterId, string sMacAddress, List<string> ilstSystemName)
         {
             GeneralNotesManager generalNotesMngr = new GeneralNotesManager();
             GeneralNotesManager generalNotesManager = new GeneralNotesManager();
@@ -346,8 +378,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     xmlSystemNode.Attributes.Append(attEncounterid);
 
                                     atthuman_id = XMLObj.itemDoc.CreateAttribute("Human_ID");
-                                    if(ListToInsertROS!=null && ListToInsertROS.Count>0)
-                                    atthuman_id.Value = ListToInsertROS[0].Human_ID.ToString();
+                                    if (ListToInsertROS != null && ListToInsertROS.Count > 0)
+                                        atthuman_id.Value = ListToInsertROS[0].Human_ID.ToString();
                                     else if (ListToUpdateRos.Count > 0)
                                         atthuman_id.Value = ListToUpdateRos[0].Human_ID.ToString();
                                     xmlSystemNode.Attributes.Append(atthuman_id);
@@ -366,11 +398,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     xmlModules[0].RemoveChild(ParentNodeList[0]);
                                 }
                             }
-                                WriteBlob(EncounterId, XMLObj.itemDoc, MySession, ListToInsertROS, ListToUpdateRos, ListToDeleteRos, XMLObj, false);
-                                trans.Commit();
-                            }
-                           
-                        
+                            WriteBlob(EncounterId, XMLObj.itemDoc, MySession, ListToInsertROS, ListToUpdateRos, ListToDeleteRos, XMLObj, false);
+                            trans.Commit();
+                        }
+
+
                         else
                             throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
                         fillros.Ros_List = lstSaveUpdateROS;

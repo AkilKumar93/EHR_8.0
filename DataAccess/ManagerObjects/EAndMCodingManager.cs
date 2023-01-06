@@ -26,7 +26,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<EAndMCoding> GetEMCodeList(ulong ulEncID);
         int GetEMCount(ulong ulEncID);
         Boolean IsPrimaryFilled(ulong ulEncID, string UserRole);
-        IList<PhysicianProcedure> GetPhysicianProcedure(ulong Physician_Id, string Procedure_Type, ulong Lab_Id,string sLegalOrg);
+        IList<PhysicianProcedure> GetPhysicianProcedure(ulong Physician_Id, string Procedure_Type, ulong Lab_Id, string sLegalOrg);
         int SaveUpdateEandMCoding(IList<EAndMCoding> eandm, IList<EAndMCoding> eandmICD, string MACAddress);
         int SaveUpdateEandMCodingICD(IList<EandMCodingICD> SaveList, IList<EandMCodingICD> UpdateList, string MACAddress);
         void SaveBillingInstruction(IList<PatientNotes> MsgDetails, IList<Encounter> EncountList, string MACAddress);
@@ -426,7 +426,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IList<PhysicianProcedure> GetPhysicianProcedure(ulong Physician_Id, string Procedure_Type, ulong Lab_Id, string sLegalOrg)
         {
             IPhysicianProcedureManager PhysicianProcedureMgr = new ManagerFactory().GetPhysicianProcedureManager();
-            IList<PhysicianProcedure> temp = PhysicianProcedureMgr.GetProceduresUsingPhysicianIDAndLabID(Physician_Id, Procedure_Type, Lab_Id,sLegalOrg);
+            IList<PhysicianProcedure> temp = PhysicianProcedureMgr.GetProceduresUsingPhysicianIDAndLabID(Physician_Id, Procedure_Type, Lab_Id, sLegalOrg);
             if (temp != null && temp.Count > 0)
             {
                 if (Procedure_Type != "OTHER PROCEDURE")
@@ -1068,7 +1068,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 List<string> InProcCPT = new List<string>();
                 List<string> OrderCPT = new List<string>();
                 List<string> OrderCPT1 = new List<string>();
-               
+
                 //BugID:46231
                 IList<string> lstStatus_Assessment = new List<string>();
                 if (System.Configuration.ConfigurationSettings.AppSettings["ServProcCodeExclutionStatus"] != null)
@@ -1079,960 +1079,106 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 XmlDocument xmlEncounterdoc = new XmlDocument();
 
                 #region EncounterXML
-                string FileNames = "Encounter" + "_" + ulEncID + ".xml";
-                string strXmlFilePaths = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileNames);
-                if (File.Exists(strXmlFilePaths) == true)
+                IList<string> ilstEandMTagList = new List<string>();
+                ilstEandMTagList.Add("EandMCodingICDList");
+                ilstEandMTagList.Add("AssessmentList");
+                ilstEandMTagList.Add("EAndMCodingList");
+                ilstEandMTagList.Add("EncounterList");
+                
+
+                eandmCode.EandMCodingICDList = new List<EandMCodingICD>();
+                IList<EandMCodingICD> lst = new List<EandMCodingICD>();
+                IList<EAndMCoding> lsteandm = new List<EAndMCoding>();
+                IList<Assessment> lstass = new List<Assessment>();
+                IList<object> ilstEandMBlobFinal = new List<object>();
+                eandmCode.EandMCodingList = new List<EAndMCoding>();
+                ilstEandMBlobFinal = ReadBlob(ulEncID, ilstEandMTagList);
+
+                if (ilstEandMBlobFinal != null && ilstEandMBlobFinal.Count > 0)
                 {
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePaths);
-                    XmlNodeList xmlTagName = null;
-                    // itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePaths
-                        , FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstEandMBlobFinal[0] != null)
                     {
-                        xmlEncounterdoc.Load(fs);
-
-                        XmlText.Close();
-                        eandmCode.EandMCodingICDList = new List<EandMCodingICD>();
-                        if (xmlEncounterdoc.GetElementsByTagName("EandMCodingICDList") != null)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[0]).Count; iCount++)
                         {
-                            if (xmlEncounterdoc.GetElementsByTagName("EandMCodingICDList").Count > 0)
-                            {
-                                xmlTagName = xmlEncounterdoc.GetElementsByTagName("EandMCodingICDList")[0].ChildNodes;
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(EandMCodingICD));
-                                        EandMCodingICD EandMCodingICD = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EandMCodingICD;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        if (EandMCodingICD != null)
-                                        {
-                                            propInfo = from obji in ((EandMCodingICD)EandMCodingICD).GetType().GetProperties() select obji;
-
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(EandMCodingICD, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(EandMCodingICD, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(EandMCodingICD, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(EandMCodingICD, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(EandMCodingICD, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(EandMCodingICD, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            //if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" || EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT")
-                                            //    EMCodingAssessmentSequence.Add(EandMCodingICD);
-                                            if (EandMCodingICD.Encounter_ID == ulEncID && (EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
-                                            {
-                                                eandmCode.EandMCodingICDList.Add(EandMCodingICD);
-                                                //if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" && !EandMAssICDs.Contains(EandMCodingICD.ICD.Trim()))
-                                                //    EandMAssICDs.Add(EandMCodingICD.ICD.Trim());
-                                                //if (EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT" && !EandMOrdersAssICDs.Contains(EandMCodingICD.ICD.Trim()))
-                                                //    EandMOrdersAssICDs.Add(EandMCodingICD.ICD.Trim());
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            lst.Add((EandMCodingICD)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
                         }
-                        if (!Is_CMG_Ancillary)//BugID:52857
-                        {
-                            #region AssessmentList
-                            if (xmlEncounterdoc.GetElementsByTagName("AssessmentList") != null)
-                            {
-                                if (xmlEncounterdoc.GetElementsByTagName("AssessmentList").Count > 0)
-                                {
-                                    xmlTagName = xmlEncounterdoc.GetElementsByTagName("AssessmentList")[0].ChildNodes;
-                                    eandmCode.AssessmentList = new List<Assessment>();
-                                    if (xmlTagName.Count > 0)
-                                    {
-                                        for (int j = 0; j < xmlTagName.Count; j++)
-                                        {
-                                            string TagName = xmlTagName[j].Name;
-                                            XmlSerializer xmlserializer = new XmlSerializer(typeof(Assessment));
-                                            Assessment Assessment = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Assessment;
-                                            IEnumerable<PropertyInfo> propInfo = null;
-                                            if (Assessment != null)
-                                            {
-                                                propInfo = from obji in ((Assessment)Assessment).GetType().GetProperties() select obji;
+                        eandmCode.EandMCodingICDList = (from m in lst where m.Encounter_ID == ulEncID && (m.Is_Delete == "N" || m.Is_Delete == "") select m).ToList<EandMCodingICD>();
 
-                                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                                {
-                                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                    {
-                                                        foreach (PropertyInfo property in propInfo)
-                                                        {
-                                                            if (property.Name == nodevalue.Name)
-                                                            {
-                                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                    property.SetValue(Assessment, Convert.ToUInt64(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                    property.SetValue(Assessment, Convert.ToString(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                    property.SetValue(Assessment, Convert.ToDateTime(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                    property.SetValue(Assessment, Convert.ToInt32(nodevalue.Value), null);
-                                                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                    property.SetValue(Assessment, Convert.ToDecimal(nodevalue.Value), null);
-                                                                else
-                                                                    property.SetValue(Assessment, nodevalue.Value, null);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                if (Assessment.Encounter_ID == ulEncID && !(lstStatus_Assessment.Contains(Assessment.Assessment_Status)) && Assessment.Version_Year == ICDType && Assessment.Diagnosis_Source != "VITALS|DELETED")
-                                                {
-                                                    //if (aryAccessICD.Contains(Assessment.ICD) == false)
-                                                    //{
-                                                    //    eandmCode.AssessmentList.Add(Assessment);
-                                                    //    if (IsPrimaryChecked == false)
-                                                    //    {
-                                                    //        sAssesmentPrimary = Assessment.Primary_Diagnosis;
-                                                    //    }
-                                                    //    ICDList.Add("ASSESSMENT" + "~" + Assessment.ICD + "~" + Assessment.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "");
-                                                    //    aryAccessICD.Add(Assessment.ICD);
-                                                    //}
-
-                                                    if (AssessmentICDs.Contains(Assessment.ICD) == false)
-                                                    {
-                                                        AssessmentICDs.Add(Assessment.ICD.Trim());
-                                                        eandmCode.AssessmentList.Add(Assessment);
-                                                    }
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            #endregion
-                        }
-                        #region EandMCodingICD
-
-
-                        //BugID:48192 
-                        IList<Assessment> lstAssment = new List<Assessment>();
-                        IList<EandMCodingICD> lstEmICD = new List<EandMCodingICD>();
-                        string AssPriICD = string.Empty, EMPriICD = string.Empty;
-                        if (eandmCode.AssessmentList != null && eandmCode.AssessmentList.Count > 0)
-                            lstAssment = eandmCode.AssessmentList.Where(a => a.Primary_Diagnosis.ToUpper() == "Y").ToList<Assessment>();
-                        if (lstAssment != null && lstAssment.Count > 0)
-                        {
-                            AssPriICD = lstAssment[0].ICD.Trim();
-                        }
-                        if (eandmCode.EandMCodingICDList != null && eandmCode.EandMCodingICDList.Count > 0)
-                            lstEmICD = eandmCode.EandMCodingICDList.Where(a => a.Is_Delete.ToUpper() == "N" && a.ICD_Category.ToUpper() == "PRIMARY").ToList<EandMCodingICD>();
-                        if (lstEmICD != null && lstEmICD.Count > 0)
-                        {
-                            EMPriICD = lstEmICD[0].ICD.Trim();
-                        }
-
-                        if (AssPriICD.Trim().Equals(EMPriICD.Trim()))
-                            EMPriICDSet = true;
-
-                        if (eandmCode.EandMCodingICDList != null)
-                        {
-                            eandmCode.EandMCodingICDList = eandmCode.EandMCodingICDList.OrderBy(a => a.Sequence).ToList();
-                            for (int j = 0; j < eandmCode.EandMCodingICDList.Count; j++)
-                            {
-                                string sPrimary = string.Empty;
-
-                                var eandMICDList = from eandmICD in eandmCode.EandMCodingICDList where eandmICD.ICD.Trim() == eandmCode.EandMCodingICDList[j].ICD.Trim() select eandmICD;
-                                IList<EandMCodingICD> templist = eandMICDList.ToList<EandMCodingICD>();
-                                string sICDID = eandmCode.EandMCodingICDList[j].Id.ToString();
-                                string sICDVersion = eandmCode.EandMCodingICDList[j].Version.ToString();
-                                string Source = string.Empty;
-                                if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "EMICD")
-                                {
-                                    Source = "EMICD";
-                                    if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
-                                        sPrimary = ((AssPriICD == string.Empty) ? "Pri" : "");
-                                }
-                                //else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT" && AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
-                                ////else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT")
-                                //{
-                                //    if (AssessmentICDs != null && AssessmentICDs.Count == 0)
-                                //    {
-                                //        if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
-                                //            sPrimary = "Pri";
-                                //    }
-                                //    else if (AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
-                                //    {
-                                //        if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
-                                //            sPrimary = ((EMPriICDSet == true) ? "Pri" : "");
-                                //        else if (eandmCode.EandMCodingICDList[j].ICD.Trim().Equals(AssPriICD))
-                                //            sPrimary = "Pri";
-                                //    }
-                                //    Source = "ASSESSMENT";
-
-                                //}
-                                //else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ORDERS_ASSESSMENT")
-                                //{
-                                //    Source = "ORDERS_ASSESSMENT";
-                                //}
-                                if (Source.Trim() != string.Empty && Source == "EMICD")
-                                {
-                                    if (!ICDList.Any(a => a.Split('~')[1] == eandmCode.EandMCodingICDList[j].ICD))
-                                        ICDList.Add(Source + "~" + eandmCode.EandMCodingICDList[j].ICD + "~" + eandmCode.EandMCodingICDList[j].ICD_Description + "~" + sICDVersion + "~" + sPrimary + "~" + sICDID + "~" + eandmCode.EandMCodingICDList[j].Sequence + "~" + ",");
-                                    else
-                                    {
-                                        IList<string> sReomveICDDesc = ICDList.Select(a => a.Split('~')[1]).ToList();
-                                        int iIndex = sReomveICDDesc.IndexOf(eandmCode.EandMCodingICDList[j].ICD);
-                                        //if (iIndex > -1)
-                                        //    if (ICDList[iIndex].Split('~').Length == 8)
-                                        //    {
-                                        //        //added for 6th ICD Column Marking
-                                        //        if (ICDList[iIndex].Split('~')[ICDList[iIndex].Split('~').Length - 1].Split(',').Length < 6)
-                                        //        {
-                                        //            for (int i = 0; i < eandmCode.EandMCodingICDList[j].Sequence; i++)
-                                        //            {
-                                        //                if (eandmCode.EandMCodingICDList[j].Sequence - 1 == i)
-                                        //                    ICDList[iIndex] += eandmCode.EandMCodingICDList[j].Sequence;
-                                        //                else if (ICDList[iIndex].Split('~')[ICDList[iIndex].Split('~').Length - 1].Split(',').Length != eandmCode.EandMCodingICDList[j].Sequence)
-                                        //                    ICDList[iIndex] += ",";
-                                        //            }
-                                        //        }
-                                        //    }
-                                    }
-                                }
-
-                                aryAccessICD.Add(eandmCode.EandMCodingICDList[j].ICD);
-                            }
-                        }
-                        int iAssessmentSequence = 1;
-                        //if (eandmCode.EandMCodingICDList.Count != 0)
-                        if (EMCodingAssessmentSequence.Count != 0)
-                        {
-                            IList<EandMCodingICD> lstEmcoding = EMCodingAssessmentSequence.OrderBy(a => Convert.ToUInt32(a.Sequence.Replace("A", "").Replace("B", ""))).ToList();
-                            iAssessmentSequence = Convert.ToInt32(lstEmcoding[EMCodingAssessmentSequence.Count - 1].Sequence.Replace("A", "").Replace("B", "")) + 1;
-                          //iAssessmentSequence = Convert.ToInt32(eandmCode.EandMCodingICDList[eandmCode.EandMCodingICDList.Count - 1].Sequence.Replace("A", "").Replace("B", "")) + 1;
-                        }
-
-                        if (eandmCode.AssessmentList != null && eandmCode.AssessmentList.Count > 0)
-                        {
-                            IList<EandMCodingICD> lstemp = new List<EandMCodingICD>();
-                            lstemp = (from m in eandmCode.EandMCodingICDList where m.Source == "ASSESSMENT" select m).ToList<EandMCodingICD>();
-                            IList < Assessment > ICDListinAss_notinEMICD = new List<Assessment>();
-                            ICDListinAss_notinEMICD = (from a in eandmCode.AssessmentList where !(EandMAssICDs.Contains(a.ICD.Trim())) select a).ToList<Assessment>();
-
-
-                            if (ICDListinAss_notinEMICD != null && ICDListinAss_notinEMICD.Count > 0)
-                                foreach (Assessment assICD in ICDListinAss_notinEMICD)
-                                {
-                                    sAssesmentPrimary = string.Empty;
-                                    if (assICD.Primary_Diagnosis.ToUpper() == "Y")
-                                        sAssesmentPrimary = "Pri";
-                                         string sequencrtemp = "";
-                                     if(lstemp.Count>0)
-                                        {
-                                            IList<EandMCodingICD> temp=(from a in lstemp where a.ICD== assICD.ICD select a).ToList<EandMCodingICD>();
-                                            if(temp.Count>0)
-                                            {
-                                                sequencrtemp = temp[0].Sequence;
-                                            }
-                                            else
-                                            {
-                                                sequencrtemp = "A" + iAssessmentSequence.ToString();
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            sequencrtemp = "A" + iAssessmentSequence.ToString();
-                                        }
-                                    ICDList.Add("ASSESSMENT" + "~" + assICD.ICD + "~" + assICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + sequencrtemp + "~" + "");
-                                    //ICDList.Add("ASSESSMENT" + "~" + assICD.ICD + "~" + assICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
-                                    iAssessmentSequence += 1;
-                                }
-                        }
-                        if (OrdersAssICDList != null && OrdersAssICDList.Count > 0)
-                        {
-                            IList<OrdersAssIcd> ICDListinOrders_notinEMICD = new List<OrdersAssIcd>();
-                            ICDListinOrders_notinEMICD = (from a in OrdersAssICDList where !(EandMOrdersAssICDs.Contains(a.ICD.Trim())) select a).ToList<OrdersAssIcd>();
-                            if (ICDListinOrders_notinEMICD != null && ICDListinOrders_notinEMICD.Count > 0)
-                                foreach (OrdersAssIcd assOrderICD in ICDListinOrders_notinEMICD)
-                                {
-                                    sAssesmentPrimary = string.Empty;
-                                    //ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
-                                    ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "A" + iAssessmentSequence.ToString() + "~" + "");
-                                    iAssessmentSequence += 1;
-                                }
-                        }
-
-                        #endregion
-
-                        #region EAndMCodingList
-                        eandmCode.EandMCodingList = new List<EAndMCoding>();
-                        if (xmlEncounterdoc.GetElementsByTagName("EAndMCodingList") != null)
-                        {
-                            if (xmlEncounterdoc.GetElementsByTagName("EAndMCodingList").Count > 0)
-                            {
-                                xmlTagName = xmlEncounterdoc.GetElementsByTagName("EAndMCodingList")[0].ChildNodes;
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(EAndMCoding));
-                                        EAndMCoding EAndMCoding = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EAndMCoding;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        if (EAndMCoding != null)
-                                        {
-                                            propInfo = from obji in ((EAndMCoding)EAndMCoding).GetType().GetProperties() select obji;
-
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(EAndMCoding, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(EAndMCoding, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(EAndMCoding, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(EAndMCoding, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(EAndMCoding, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(EAndMCoding, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if (EAndMCoding.Encounter_ID == ulEncID)
-                                            {
-                                                if (EandMCPTs.IndexOf(EAndMCoding.Procedure_Code) == -1)
-                                                    EandMCPTs.Add(EAndMCoding.Procedure_Code);//BugID:49118
-                                                if (EAndMCoding.Is_Delete == "N" || EAndMCoding.Is_Delete == "")
-                                                {
-                                                    //if (aryAccessCPT.Contains(EAndMCoding.Procedure_Code) == false)
-                                                    //{
-                                                    eandmCode.EandMCodingList.Add(EAndMCoding);
-                                                    ProcList.Add(EAndMCoding.Procedure_Code + "~" + EAndMCoding.Procedure_Code_Description + "~" + EAndMCoding.Id + "~" + EAndMCoding.Units + "~" + EAndMCoding.Modifier1 + "~" + EAndMCoding.Modifier2 + "~" + EAndMCoding.Modifier3 + "~" + EAndMCoding.Modifier4 + "~" + string.Empty + "~" + EAndMCoding.Version + "~" + EAndMCoding.Diagnosis_Pointer_1 + "~" + EAndMCoding.Diagnosis_Pointer_2 + "~" + EAndMCoding.Diagnosis_Pointer_3 + "~" + EAndMCoding.Diagnosis_Pointer_4 + "~" + EAndMCoding.Diagnosis_Pointer_5 + "~" + EAndMCoding.Diagnosis_Pointer_6 + "~" + EAndMCoding.Sort_Order);
-                                                    //    aryAccessCPT.Add(EAndMCoding.Procedure_Code);
-                                                    //}
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        #endregion
-                        fs.Close();
-                        fs.Dispose();
                     }
+                    if (ilstEandMBlobFinal[3] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[3]).Count; iCount++)
+                        {
+                            eandmCode.EncounterList.Add((Encounter)((IList<object>)ilstEandMBlobFinal[3])[iCount]);
+                        }
+                       // eandmCode.EandMCodingICDList = (from m in lst where m.Encounter_ID == ulEncID && (m.Is_Delete == "N" || m.Is_Delete == "") select m).ToList<EandMCodingICD>();
+
+                    }
+                   
+                    if (!Is_CMG_Ancillary)//BugID:52857
+                    {
+                        if (ilstEandMBlobFinal[1] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[1]).Count; iCount++)
+                            {
+                                lstass.Add((Assessment)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
+                            }
+                            for (int i = 0; i < lstass.Count; i++)
+                            {
+                                if (lstass[i].Encounter_ID == ulEncID && !(lstStatus_Assessment.Contains(lstass[i].Assessment_Status)) && lstass[i].Version_Year == ICDType && lstass[i].Diagnosis_Source != "VITALS|DELETED")
+                                {
+
+
+                                    if (AssessmentICDs.Contains(lstass[i].ICD) == false)
+                                    {
+                                        AssessmentICDs.Add(lstass[i].ICD.Trim());
+                                        eandmCode.AssessmentList.Add(lstass[i]);
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    }
+                    if (ilstEandMBlobFinal[2] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[2]).Count; iCount++)
+                        {
+                            lsteandm.Add((EAndMCoding)((IList<object>)ilstEandMBlobFinal[2])[iCount]);
+                        }
+                        for (int i = 0; i < lsteandm.Count; i++)
+                        {
+                            if (lsteandm[i].Encounter_ID == ulEncID)
+                            {
+                                if (EandMCPTs.IndexOf(lsteandm[i].Procedure_Code) == -1)
+                                    EandMCPTs.Add(lsteandm[i].Procedure_Code);//BugID:49118
+                                if (lsteandm[i].Is_Delete == "N" || lsteandm[i].Is_Delete == "")
+                                {
+                                    //if (aryAccessCPT.Contains(EAndMCoding.Procedure_Code) == false)
+                                    //{
+                                    eandmCode.EandMCodingList.Add(lsteandm[i]);
+                                    ProcList.Add(lsteandm[i].Procedure_Code + "~" + lsteandm[i].Procedure_Code_Description + "~" + lsteandm[i].Id + "~" + lsteandm[i].Units + "~" + lsteandm[i].Modifier1 + "~" + lsteandm[i].Modifier2 + "~" + lsteandm[i].Modifier3 + "~" + lsteandm[i].Modifier4 + "~" + string.Empty + "~" + lsteandm[i].Version + "~" + lsteandm[i].Diagnosis_Pointer_1 + "~" + lsteandm[i].Diagnosis_Pointer_2 + "~" + lsteandm[i].Diagnosis_Pointer_3 + "~" + lsteandm[i].Diagnosis_Pointer_4 + "~" + lsteandm[i].Diagnosis_Pointer_5 + "~" + lsteandm[i].Diagnosis_Pointer_6 + "~" + lsteandm[i].Sort_Order);
+                                    //    aryAccessCPT.Add(EAndMCoding.Procedure_Code);
+                                    //}
+                                }
+                            }
+
+                        }
+
+                    }
+
+        
+
+
                 }
-
-                string FileName = "Human" + "_" + ulHumanID + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                if (File.Exists(strXmlFilePath) == true)
-                {
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    XmlNodeList xmlTagName = null;
-                    // itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        xmlHumandoc.Load(fs);
-
-                        XmlText.Close();
-
-                        //BugID:46231
-                        #region ProblemList
-                        //if (itemDoc.GetElementsByTagName("ProblemListList") != null)
-                        //{
-                        //    if (itemDoc.GetElementsByTagName("ProblemListList").Count > 0)
-                        //    {
-                        //        xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
-
-                        //        if (xmlTagName.Count > 0)
-                        //        {
-                        //            for (int j = 0; j < xmlTagName.Count; j++)
-                        //            {
-                        //                string TagName = xmlTagName[j].Name;
-                        //                XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
-                        //                ProblemList ProblemList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
-                        //                IEnumerable<PropertyInfo> propInfo = null;
-                        //                if (ProblemList != null)
-                        //                {
-                        //                    propInfo = from obji in ((ProblemList)ProblemList).GetType().GetProperties() select obji;
-
-                        //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                        //                    {
-                        //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                        //                        {
-                        //                            foreach (PropertyInfo property in propInfo)
-                        //                            {
-                        //                                if (property.Name == nodevalue.Name)
-                        //                                {
-                        //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                        //                                        property.SetValue(ProblemList, Convert.ToUInt64(nodevalue.Value), null);
-                        //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                        //                                        property.SetValue(ProblemList, Convert.ToString(nodevalue.Value), null);
-                        //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                        //                                        property.SetValue(ProblemList, Convert.ToDateTime(nodevalue.Value), null);
-                        //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                        //                                        property.SetValue(ProblemList, Convert.ToInt32(nodevalue.Value), null);
-                        //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                        //                                        property.SetValue(ProblemList, Convert.ToDecimal(nodevalue.Value), null);
-                        //                                    else
-                        //                                        property.SetValue(ProblemList, nodevalue.Value, null);
-                        //                                }
-                        //                            }
-                        //                        }
-                        //                    }
-                        //                    if (ProblemList.Human_ID == ulHumanID && ProblemList.Status == "Active" && ProblemList.Is_Active == "Y" && ProblemList.Version_Year == ICDType)
-                        //                    {
-                        //                        if (aryAccessICD.Contains(ProblemList.ICD) == false && ProblemList.ICD != string.Empty && ProblemList.ICD != "0000")
-                        //                        {
-                        //                            ICDList.Add("PROBLEMLIST" + "~" + ProblemList.ICD + "~" + ProblemList.Problem_Description + "~" + 0 + "~" + "N" + "~" + "0" + "~" + "6" + "~" + "");
-                        //                            probList.Add(ProblemList);
-                        //                        }
-                        //                    }
-                        //                }
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                        #endregion
-                        #region ImmunizationTab
-                        //if (eandmCode.EandMCodingList.Count == 0 && xmlHumandoc.GetElementsByTagName("ImmunizationList") != null)
-                        if (xmlHumandoc.GetElementsByTagName("ImmunizationList") != null)
-                        {
-                            if (xmlHumandoc.GetElementsByTagName("ImmunizationList").Count > 0)
-                            {
-                                xmlTagName = xmlHumandoc.GetElementsByTagName("ImmunizationList")[0].ChildNodes;
-
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(Immunization));
-                                        Immunization Immunization = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Immunization;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        if (Immunization != null)
-                                        {
-                                            propInfo = from obji in ((Immunization)Immunization).GetType().GetProperties() select obji;
-
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(Immunization, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(Immunization, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(Immunization, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(Immunization, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(Immunization, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(Immunization, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if (Immunization.Encounter_Id == ulEncID && Immunization.Vaccine_In_House == "Y" && Immunization.Is_Administration_Refused.ToUpper() != "Y" && Immunization.Is_Deleted.ToUpper() == "N")//if Administration Refused Do not suggest in EandMCoding Screen
-                                            {
-                                                // TempProcedureList.Add(Immunization.Procedure_Code + "~" + Immunization.Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
-                                                TempProcedureListImmunization.Add(Immunization.Procedure_Code + "~" + Immunization.Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
-                                                //if (aryAccessCPT.Contains(Immunization.Procedure_Code) == false)
-                                                //{
-                                                //    ProcList.Add(Immunization.Procedure_Code + "~" + Immunization.Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
-                                                //    aryAccessCPT.Add(Immunization.Procedure_Code);
-                                                //}
-                                                ImmCPT.Add(Immunization.Procedure_Code);
-                                                ImmDose.Add(Immunization.Administered_Amount.ToString());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (ImmCPT.Count > 0)
-                            lstprocedure = obj.GetProcedureList(ImmCPT);
-                        for (int i = 0; i < ImmCPT.Count; i++)
-                        {
-
-                            IList<ProcedureCodeLibrary> temp = (from m in lstprocedure
-                                                                where
-                                                                    m.Procedure_Code == ImmCPT[i].ToString() && m.Default_Dose != ""
-                                                                select m).ToList<ProcedureCodeLibrary>();
-                            if (temp.Count > 0)
-                            {
-                                if (ImmDose[i] != "" && ImmDose[i] != "0")
-                                {
-                                    var dose = Math.Ceiling(Convert.ToDouble(ImmDose[i]) / Convert.ToDouble(temp[0].Default_Dose.Split(' ')[0]));
-                                    Immcptunit.Add(ImmCPT[i] + "~" + dose.ToString());
-                                }
-                                else
-                                {
-                                    Immcptunit.Add(ImmCPT[i] + "~" + "1");
-                                }
-
-
-                            }
-                            else
-                            {
-                                Immcptunit.Add(ImmCPT[i] + "~" + "1");
-                            }
-
-                            IList<string> FinalProcedurelist = (from m in TempProcedureListImmunization where m.Split('~')[0] == ImmCPT[i].ToString() select m).ToList<string>();
-
-
-                            if (FinalProcedurelist.Count > 0)
-                            {
-                                IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == ImmCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
-                                if (tempSort.Count > 0)
-                                {
-                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
-                                }
-                            }
-                        }
-                        //  var temp = from m in lstprocedure where m.Default_Dose != "" && (from n in ImmDose select n.Split('~')).Contains(m.Procedure_Code) select m;
-
-                        #endregion
-                        #region ProceduresTab
-                        //if (eandmCode.EandMCodingList.Count == 0 && xmlHumandoc.GetElementsByTagName("InHouseProcedureList") != null)
-                        if (xmlHumandoc.GetElementsByTagName("InHouseProcedureList") != null)
-                        {
-                            if (xmlHumandoc.GetElementsByTagName("InHouseProcedureList").Count > 0)
-                            {
-                                xmlTagName = xmlHumandoc.GetElementsByTagName("InHouseProcedureList")[0].ChildNodes;
-
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(InHouseProcedure));
-                                        InHouseProcedure InHouseProcedure = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as InHouseProcedure;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        if (InHouseProcedure != null)
-                                        {
-                                            propInfo = from obji in ((InHouseProcedure)InHouseProcedure).GetType().GetProperties() select obji;
-
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(InHouseProcedure, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(InHouseProcedure, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(InHouseProcedure, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(InHouseProcedure, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(InHouseProcedure, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(InHouseProcedure, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if (InHouseProcedure.Encounter_ID == ulEncID)
-                                            {
-                                                if (InHouseProcedure.Procedure_Code != "99999")
-                                                {
-                                                    /*
-                                                     int sSort_Order = 0;
-                                                       if (lstprocedure != null && lstprocedure.Count > 0)
-                                                       {
-                                                           IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == InHouseProcedure.Procedure_Code select m).ToList<ProcedureCodeLibrary>();
-                                                           if (temp1.Count > 0)
-                                                           {
-                                                               sSort_Order = temp1[0].Sort_Order;
-                                                           }
-                                                       }
-                                                       else
-                                                       {
-                                                           lstprocedure = obj.GetProcedureList(ImmCPT);
-                                                           IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == InHouseProcedure.Procedure_Code select m).ToList<ProcedureCodeLibrary>();
-                                                           if (temp1.Count > 0)
-                                                           {
-                                                               sSort_Order = temp1[0].Sort_Order;
-                                                           }
-                                                       }
-                                                       TempProcedureList.Add(InHouseProcedure.Procedure_Code + "~" + InHouseProcedure.Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + sSort_Order);*/
-                                                    InProcCPT.Add(InHouseProcedure.Procedure_Code);
-                                                    TempProcedureListInhousePro.Add(InHouseProcedure.Procedure_Code + "~" + InHouseProcedure.Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
-                                                }
-                                                //if (aryAccessCPT.Contains(InHouseProcedure.Procedure_Code) == false)
-                                                //{
-                                                //    ProcList.Add(InHouseProcedure.Procedure_Code + "~" + InHouseProcedure.Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
-                                                //    aryAccessCPT.Add(InHouseProcedure.Procedure_Code);
-                                                //}
-                                            }
-                                        }
-                                    }
-
-                                    //For SortOrder
-                                    if (InProcCPT.Count > 0)
-                                        lstprocedure = obj.GetProcedureList(InProcCPT);
-                                    for (int i = 0; i < InProcCPT.Count; i++)
-                                    {
-                                        IList<string> FinalProcedurelist = (from m in TempProcedureListInhousePro where m.Split('~')[0] == InProcCPT[i].ToString() select m).ToList<string>();
-
-
-                                        if (FinalProcedurelist.Count > 0)
-                                        {
-                                            IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == InProcCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
-                                            if (tempSort.Count > 0)
-                                            {
-                                                TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
-                                            }
-                                        }
-                                    }
-
-
-                                }
-                            }
-                        }
-                        #endregion
-
-                        //CMG Ancilliary
-                        #region OrdersSubmitTab
-                        if (Is_CMG_Ancillary)
-                        {
-                            IList<string> OrdersSubmitIDLst = new List<string>();
-                            IList<string> OrdersIDLst = new List<string>();
-                            //if (eandmCode.EandMCodingList.Count == 0 && xmlHumandoc.GetElementsByTagName("OrdersSubmitList") != null)
-                            if (xmlHumandoc.GetElementsByTagName("OrdersSubmitList") != null)
-                            {
-                                if (xmlHumandoc.GetElementsByTagName("OrdersSubmitList").Count > 0)
-                                {
-                                    xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersSubmitList")[0].ChildNodes;
-
-                                    if (xmlTagName.Count > 0)
-                                    {
-                                        for (int j = 0; j < xmlTagName.Count; j++)
-                                        {
-                                            if (xmlTagName[j].Attributes.GetNamedItem("Is_Deleted").Value.Equals("N") && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
-                                            {
-                                                OrdersSubmitIDLst.Add(xmlTagName[j].Attributes.GetNamedItem("Id").Value.ToString().Trim());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            //BugID:52776
-                           // if (eandmCode.EandMCodingList.Count == 0 && xmlHumandoc.GetElementsByTagName("OrdersList") != null)
-                            if (xmlHumandoc.GetElementsByTagName("OrdersList") != null)
-                            {
-                                if (xmlHumandoc.GetElementsByTagName("OrdersList").Count > 0 && OrdersSubmitIDLst.Count > 0)
-                                {
-                                    xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersList")[0].ChildNodes;
-
-                                    if (xmlTagName.Count > 0)
-                                    {
-                                        for (int j = 0; j < xmlTagName.Count; j++)
-                                        {
-                                            if (OrdersSubmitIDLst.Contains(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString().Trim()) && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
-                                            {
-                                                string Lab_Procedure = xmlTagName[j].Attributes.GetNamedItem("Lab_Procedure").Value.ToString().Trim();
-                                                string Lab_Procedure_Description = xmlTagName[j].Attributes.GetNamedItem("Lab_Procedure_Description").Value.ToString().Trim();
-                                                /*
-                                                int sSort_Order = 0;
-                                                if (lstprocedure != null && lstprocedure.Count > 0)
-                                                {
-                                                    IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == Lab_Procedure select m).ToList<ProcedureCodeLibrary>();
-                                                    if (temp1.Count > 0)
-                                                    {
-                                                        sSort_Order = temp1[0].Sort_Order;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    lstprocedure = obj.GetProcedureList(ImmCPT);
-                                                    IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == Lab_Procedure select m).ToList<ProcedureCodeLibrary>();
-                                                    if (temp1.Count > 0)
-                                                    {
-                                                        sSort_Order = temp1[0].Sort_Order;
-                                                    }
-                                                }
-                                                TempProcedureList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + sSort_Order);
-                                                 */
-                                                OrderCPT.Add(Lab_Procedure);
-                                                TempProcedureListOrdersList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
-                                                OrdersIDLst.Add(xmlTagName[j].Attributes.GetNamedItem("Id").Value.ToString().Trim());
-                                            }
-                                        }
-
-                                        //For SortOrder
-                                        if (OrderCPT.Count > 0)
-                                            lstprocedure = obj.GetProcedureList(OrderCPT);
-                                        for (int i = 0; i < OrderCPT.Count; i++)
-                                        {
-                                            IList<string> FinalProcedurelist = (from m in TempProcedureListOrdersList where m.Split('~')[0] == OrderCPT[i].ToString() select m).ToList<string>();
-
-
-                                            if (FinalProcedurelist.Count > 0)
-                                            {
-                                                IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
-                                                if (tempSort.Count > 0)
-                                                {
-                                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                }
-                            }
-                            if (xmlHumandoc.GetElementsByTagName("OrdersAssessmentList") != null)
-                            {
-                                if (xmlHumandoc.GetElementsByTagName("OrdersAssessmentList").Count > 0)
-                                {
-                                    xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersAssessmentList")[0].ChildNodes;
-
-                                    if (xmlTagName.Count > 0)
-                                    {
-                                        for (int j = 0; j < xmlTagName.Count; j++)
-                                        {
-                                            //if (OrdersIDLst.Contains(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString().Trim()) && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
-                                            if (OrdersSubmitIDLst.Contains(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString().Trim()) && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
-                                            {
-                                                string Ass_ICD = xmlTagName[j].Attributes.GetNamedItem("ICD").Value.ToString();
-                                                string Ass_ICDDesc = xmlTagName[j].Attributes.GetNamedItem("ICD_Description").Value.ToString();
-                                                ulong AssOrder_ID = Convert.ToUInt32(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString());
-
-                                                if (OrdersAssessmentICDs.Contains(Ass_ICD) == false)
-                                                {
-                                                    OrdersAssessmentICDs.Add(Ass_ICD.Trim());
-                                                    OrdersAssIcd objOrderAssIcd = new OrdersAssIcd();
-                                                    objOrderAssIcd.ICD = Ass_ICD;
-                                                    objOrderAssIcd.ICD_Description = Ass_ICDDesc;
-                                                    objOrderAssIcd.Order_ID = AssOrder_ID;
-                                                    OrdersAssICDList.Add(objOrderAssIcd);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    int iAssessmentSequence = 1;
-                                    if (OrdersAssICDList != null && OrdersAssICDList.Count > 0)
-                                    {
-                                        IList<OrdersAssIcd> ICDListinOrders_notinEMICD = new List<OrdersAssIcd>();
-                                        ICDListinOrders_notinEMICD = (from a in OrdersAssICDList where !(EandMOrdersAssICDs.Contains(a.ICD.Trim())) select a).ToList<OrdersAssIcd>();
-                                        if (ICDListinOrders_notinEMICD != null && ICDListinOrders_notinEMICD.Count > 0)
-                                            foreach (OrdersAssIcd assOrderICD in ICDListinOrders_notinEMICD)
-                                            {
-                                                sAssesmentPrimary = string.Empty;
-                                                //ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
-                                                ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "A" + iAssessmentSequence.ToString() + "~" + "");
-                                                iAssessmentSequence += 1;
-                                            }
-                                    }
-                                }
-                            }
-                        }
-                        #endregion
-                        fs.Close();
-                        fs.Dispose();
-                    }
-                }
-
-                #region CMG In House Lab
-                //IQuery query1 = iMySession.GetNamedQuery("Fill.IN-HOUSE PROCEDURES.List");
-                //query1.SetParameter(0, ulEncID);
-                //query1.SetParameter(1, "CMG Anc.-In House");
-                //ArrayList arrList = new ArrayList(query1.List());
-                //for (int i = 0; i < arrList.Count; i++)
-                //{
-                //    object[] ccObject = (object[])arrList[i];
-                //eandmCode.OrderProcedureID.Add(Convert.ToUInt64(ccObject[0].ToString()));
-                //eandmCode.OrderProcedure.Add(ccObject[1].ToString());
-                //eandmCode.OrderProcedureDesc.Add(ccObject[2].ToString());
-                //    TempProcedureList.Add(eandmCode.OrderProcedure[i] + "~" + eandmCode.OrderProcedureDesc[i] + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
-                //}
-                if (!Is_CMG_Ancillary)
-                {
-                    IList<string> OrdersSubmitIDLst = new List<string>();
-                    IList<string> OrdersIDLst = new List<string>();
-                    XmlNodeList xmlTagName = null;
-
-                    if (xmlHumandoc.GetElementsByTagName("OrdersSubmitList") != null)
-                    {
-                        if (xmlHumandoc.GetElementsByTagName("OrdersSubmitList").Count > 0)
-                        {
-                            xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersSubmitList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    if (xmlTagName[j].Attributes.GetNamedItem("Is_Deleted").Value.Equals("N") && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()) && xmlTagName[j].Attributes.GetNamedItem("Order_Code_Type").Value.Equals("CMG ANC.-IN HOUSE"))
-                                    {
-                                        OrdersSubmitIDLst.Add(xmlTagName[j].Attributes.GetNamedItem("Id").Value.ToString().Trim());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //BugID:52776
-                    if (xmlHumandoc.GetElementsByTagName("OrdersList") != null)
-                    {
-                        if (xmlHumandoc.GetElementsByTagName("OrdersList").Count > 0 && OrdersSubmitIDLst.Count > 0)
-                        {
-                            xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    if (OrdersSubmitIDLst.Contains(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString().Trim()) && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
-                                    {
-                                        string Lab_Procedure = xmlTagName[j].Attributes.GetNamedItem("Lab_Procedure").Value.ToString().Trim();
-                                        string Lab_Procedure_Description = xmlTagName[j].Attributes.GetNamedItem("Lab_Procedure_Description").Value.ToString().Trim();
-                                       
-                                        /*
-                                        int sSort_Order = 0;
-                                        if (lstprocedure != null && lstprocedure.Count > 0)
-                                        {
-                                            IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == Lab_Procedure select m).ToList<ProcedureCodeLibrary>();
-                                            if (temp1.Count > 0)
-                                            {
-                                                sSort_Order = temp1[0].Sort_Order;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            lstprocedure = obj.GetProcedureList(ImmCPT);
-                                            IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == Lab_Procedure select m).ToList<ProcedureCodeLibrary>();
-                                            if (temp1.Count > 0)
-                                            {
-                                                sSort_Order = temp1[0].Sort_Order;
-                                            }
-                                        }
-
-                                        TempProcedureList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + sSort_Order);
-                                        */
-                                        TempProcedureListOrdersList1.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" );
-                                        OrderCPT1.Add(Lab_Procedure);
-                                        OrdersIDLst.Add(xmlTagName[j].Attributes.GetNamedItem("Id").Value.ToString().Trim());
-                                    }
-                                }
-
-                                //For SortOrder
-                                if (OrderCPT1.Count > 0)
-                                    lstprocedure = obj.GetProcedureList(OrderCPT1);
-                                for (int i = 0; i < OrderCPT1.Count; i++)
-                                {
-                                    IList<string> FinalProcedurelist = (from m in TempProcedureListOrdersList1 where m.Split('~')[0] == OrderCPT1[i].ToString() select m).ToList<string>();
-
-
-                                    if (FinalProcedurelist.Count > 0)
-                                    {
-                                        IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT1[i].ToString() select m).ToList<ProcedureCodeLibrary>();
-                                        if (tempSort.Count > 0)
-                                        {
-                                            TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                #endregion
-
-                #endregion
-
-                #endregion
-
-
+                GenerateXml objxml = new GenerateXml();
+                
+               xmlHumandoc = objxml.ReadBlob("Human", ulHumanID);
+                xmlEncounterdoc = objxml.ReadBlob("Encounter", ulEncID);
 
                 string sDOSYear = string.Empty;
                 sDOSYear = Convert.ToString(date_of_service.Year);
-                //Encounter enc = EM.GetById(ulEncID);
-                //eandmCode.EncounterList.Add(enc);
-                #region EncountersTab
-                if (xmlEncounterdoc.GetElementsByTagName("EncounterList") != null)
-                {
-                    if (xmlEncounterdoc.GetElementsByTagName("EncounterList").Count > 0)
-                    {
-                        XmlNodeList xmlTagName = null;
-                        xmlTagName = xmlEncounterdoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
-                                Encounter enc = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Encounter;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                if (enc != null)
-                                {
-                                    propInfo = from obji in ((Encounter)enc).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(enc, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(enc, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(enc, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(enc, Convert.ToInt32(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                        property.SetValue(enc, Convert.ToDecimal(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(enc, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    eandmCode.EncounterList.Add(enc);
-                                }
-                            }
-                        }
-                    }
-                }
-                #endregion
-
-                #region ProcedureCodeRuleMaster
                 XmlNodeList xmlTypeofVisit = xmlEncounterdoc.SelectNodes("/notes/Modules/EncounterList/Encounter[@Visit_Type!='RETINAL EYE SCAN']");
                 //if (eandmCode.EandMCodingList.Count == 0 && xmlTypeofVisit.Count > 0)
                 if (xmlTypeofVisit.Count > 0)
@@ -2055,7 +1201,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     bool bDoNotAdd = false;
                     XmlNodeList xmlPhysicianList = null;
 
-
+                    
                     for (int iCount = 0; iCount < ProcedureList.Count; iCount++)
                     {
                         var proc = from p in ProcedureList where p.Procedure_Code == ProcedureList[iCount].Procedure_Code select p;
@@ -2103,6 +1249,1287 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     }
                 }
+                //string FileNames = "Encounter" + "_" + ulEncID + ".xml";
+                //string strXmlFilePaths = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileNames);
+                //if (File.Exists(strXmlFilePaths) == true)
+                //{
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePaths);
+                //    XmlNodeList xmlTagName = null;
+                //    // itemDoc.Load(XmlText);
+                //    using (FileStream fs = new FileStream(strXmlFilePaths
+                //        , FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        xmlEncounterdoc.Load(fs);
+
+                //        XmlText.Close();
+
+                //if (xmlEncounterdoc.GetElementsByTagName("EandMCodingICDList") != null)
+                //{
+                //    if (xmlEncounterdoc.GetElementsByTagName("EandMCodingICDList").Count > 0)
+                //    {
+                //        xmlTagName = xmlEncounterdoc.GetElementsByTagName("EandMCodingICDList")[0].ChildNodes;
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(EandMCodingICD));
+                //                EandMCodingICD EandMCodingICD = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EandMCodingICD;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                if (EandMCodingICD != null)
+                //                {
+                //                    propInfo = from obji in ((EandMCodingICD)EandMCodingICD).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                        property.SetValue(EandMCodingICD, Convert.ToDecimal(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(EandMCodingICD, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    //if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" || EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT")
+                //                    //    EMCodingAssessmentSequence.Add(EandMCodingICD);
+                //                    if (EandMCodingICD.Encounter_ID == ulEncID && (EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
+                //                    {
+                //                        eandmCode.EandMCodingICDList.Add(EandMCodingICD);
+                //                        //if (EandMCodingICD.Source.ToUpper() == "ASSESSMENT" && !EandMAssICDs.Contains(EandMCodingICD.ICD.Trim()))
+                //                        //    EandMAssICDs.Add(EandMCodingICD.ICD.Trim());
+                //                        //if (EandMCodingICD.Source.ToUpper() == "ORDERS_ASSESSMENT" && !EandMOrdersAssICDs.Contains(EandMCodingICD.ICD.Trim()))
+                //                        //    EandMOrdersAssICDs.Add(EandMCodingICD.ICD.Trim());
+
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                //if (!Is_CMG_Ancillary)//BugID:52857
+                //{
+                //    #region AssessmentList
+                //    if (xmlEncounterdoc.GetElementsByTagName("AssessmentList") != null)
+                //    {
+                //        if (xmlEncounterdoc.GetElementsByTagName("AssessmentList").Count > 0)
+                //        {
+                //            xmlTagName = xmlEncounterdoc.GetElementsByTagName("AssessmentList")[0].ChildNodes;
+                //            eandmCode.AssessmentList = new List<Assessment>();
+                //            if (xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    string TagName = xmlTagName[j].Name;
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(Assessment));
+                //                    Assessment Assessment = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Assessment;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    if (Assessment != null)
+                //                    {
+                //                        propInfo = from obji in ((Assessment)Assessment).GetType().GetProperties() select obji;
+
+                //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                        {
+                //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+                //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                            property.SetValue(Assessment, Convert.ToUInt64(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                            property.SetValue(Assessment, Convert.ToString(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                            property.SetValue(Assessment, Convert.ToDateTime(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                            property.SetValue(Assessment, Convert.ToInt32(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                            property.SetValue(Assessment, Convert.ToDecimal(nodevalue.Value), null);
+                //                                        else
+                //                                            property.SetValue(Assessment, nodevalue.Value, null);
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                        if (Assessment.Encounter_ID == ulEncID && !(lstStatus_Assessment.Contains(Assessment.Assessment_Status)) && Assessment.Version_Year == ICDType && Assessment.Diagnosis_Source != "VITALS|DELETED")
+                //                        {
+                //                            //if (aryAccessICD.Contains(Assessment.ICD) == false)
+                //                            //{
+                //                            //    eandmCode.AssessmentList.Add(Assessment);
+                //                            //    if (IsPrimaryChecked == false)
+                //                            //    {
+                //                            //        sAssesmentPrimary = Assessment.Primary_Diagnosis;
+                //                            //    }
+                //                            //    ICDList.Add("ASSESSMENT" + "~" + Assessment.ICD + "~" + Assessment.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "");
+                //                            //    aryAccessICD.Add(Assessment.ICD);
+                //                            //}
+
+                //                            if (AssessmentICDs.Contains(Assessment.ICD) == false)
+                //                            {
+                //                                AssessmentICDs.Add(Assessment.ICD.Trim());
+                //                                eandmCode.AssessmentList.Add(Assessment);
+                //                            }
+
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //    #endregion
+                //}
+                #region EandMCodingICD
+
+
+                //BugID:48192 
+                IList<Assessment> lstAssment = new List<Assessment>();
+                IList<EandMCodingICD> lstEmICD = new List<EandMCodingICD>();
+                string AssPriICD = string.Empty, EMPriICD = string.Empty;
+                if (eandmCode.AssessmentList != null && eandmCode.AssessmentList.Count > 0)
+                    lstAssment = eandmCode.AssessmentList.Where(a => a.Primary_Diagnosis.ToUpper() == "Y").ToList<Assessment>();
+                if (lstAssment != null && lstAssment.Count > 0)
+                {
+                    AssPriICD = lstAssment[0].ICD.Trim();
+                }
+                if (eandmCode.EandMCodingICDList != null && eandmCode.EandMCodingICDList.Count > 0)
+                    lstEmICD = eandmCode.EandMCodingICDList.Where(a => a.Is_Delete.ToUpper() == "N" && a.ICD_Category.ToUpper() == "PRIMARY").ToList<EandMCodingICD>();
+                if (lstEmICD != null && lstEmICD.Count > 0)
+                {
+                    EMPriICD = lstEmICD[0].ICD.Trim();
+                }
+
+                if (AssPriICD.Trim().Equals(EMPriICD.Trim()))
+                    EMPriICDSet = true;
+
+                if (eandmCode.EandMCodingICDList != null)
+                {
+                    eandmCode.EandMCodingICDList = eandmCode.EandMCodingICDList.OrderBy(a => a.Sequence).ToList();
+                    for (int j = 0; j < eandmCode.EandMCodingICDList.Count; j++)
+                    {
+                        string sPrimary = string.Empty;
+
+                        var eandMICDList = from eandmICD in eandmCode.EandMCodingICDList where eandmICD.ICD.Trim() == eandmCode.EandMCodingICDList[j].ICD.Trim() select eandmICD;
+                        IList<EandMCodingICD> templist = eandMICDList.ToList<EandMCodingICD>();
+                        string sICDID = eandmCode.EandMCodingICDList[j].Id.ToString();
+                        string sICDVersion = eandmCode.EandMCodingICDList[j].Version.ToString();
+                        string Source = string.Empty;
+                        if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "EMICD")
+                        {
+                            Source = "EMICD";
+                            if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
+                                sPrimary = ((AssPriICD == string.Empty) ? "Pri" : "");
+                        }
+                        //else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT" && AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
+                        ////else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ASSESSMENT")
+                        //{
+                        //    if (AssessmentICDs != null && AssessmentICDs.Count == 0)
+                        //    {
+                        //        if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
+                        //            sPrimary = "Pri";
+                        //    }
+                        //    else if (AssessmentICDs.Contains(eandmCode.EandMCodingICDList[j].ICD.Trim()))
+                        //    {
+                        //        if (eandmCode.EandMCodingICDList[j].ICD_Category.ToUpper() == "PRIMARY")
+                        //            sPrimary = ((EMPriICDSet == true) ? "Pri" : "");
+                        //        else if (eandmCode.EandMCodingICDList[j].ICD.Trim().Equals(AssPriICD))
+                        //            sPrimary = "Pri";
+                        //    }
+                        //    Source = "ASSESSMENT";
+
+                        //}
+                        //else if (eandmCode.EandMCodingICDList[j].Source.ToUpper() == "ORDERS_ASSESSMENT")
+                        //{
+                        //    Source = "ORDERS_ASSESSMENT";
+                        //}
+                        if (Source.Trim() != string.Empty && Source == "EMICD")
+                        {
+                            if (!ICDList.Any(a => a.Split('~')[1] == eandmCode.EandMCodingICDList[j].ICD))
+                                ICDList.Add(Source + "~" + eandmCode.EandMCodingICDList[j].ICD + "~" + eandmCode.EandMCodingICDList[j].ICD_Description + "~" + sICDVersion + "~" + sPrimary + "~" + sICDID + "~" + eandmCode.EandMCodingICDList[j].Sequence + "~" + ",");
+                            else
+                            {
+                                IList<string> sReomveICDDesc = ICDList.Select(a => a.Split('~')[1]).ToList();
+                                int iIndex = sReomveICDDesc.IndexOf(eandmCode.EandMCodingICDList[j].ICD);
+                                //if (iIndex > -1)
+                                //    if (ICDList[iIndex].Split('~').Length == 8)
+                                //    {
+                                //        //added for 6th ICD Column Marking
+                                //        if (ICDList[iIndex].Split('~')[ICDList[iIndex].Split('~').Length - 1].Split(',').Length < 6)
+                                //        {
+                                //            for (int i = 0; i < eandmCode.EandMCodingICDList[j].Sequence; i++)
+                                //            {
+                                //                if (eandmCode.EandMCodingICDList[j].Sequence - 1 == i)
+                                //                    ICDList[iIndex] += eandmCode.EandMCodingICDList[j].Sequence;
+                                //                else if (ICDList[iIndex].Split('~')[ICDList[iIndex].Split('~').Length - 1].Split(',').Length != eandmCode.EandMCodingICDList[j].Sequence)
+                                //                    ICDList[iIndex] += ",";
+                                //            }
+                                //        }
+                                //    }
+                            }
+                        }
+
+                        aryAccessICD.Add(eandmCode.EandMCodingICDList[j].ICD);
+                    }
+                }
+                int iAssessmentSequence = 1;
+                //if (eandmCode.EandMCodingICDList.Count != 0)
+                if (EMCodingAssessmentSequence.Count != 0)
+                {
+                    IList<EandMCodingICD> lstEmcoding = EMCodingAssessmentSequence.OrderBy(a => Convert.ToUInt32(a.Sequence.Replace("A", "").Replace("B", ""))).ToList();
+                    iAssessmentSequence = Convert.ToInt32(lstEmcoding[EMCodingAssessmentSequence.Count - 1].Sequence.Replace("A", "").Replace("B", "")) + 1;
+                    //iAssessmentSequence = Convert.ToInt32(eandmCode.EandMCodingICDList[eandmCode.EandMCodingICDList.Count - 1].Sequence.Replace("A", "").Replace("B", "")) + 1;
+                }
+
+                if (eandmCode.AssessmentList != null && eandmCode.AssessmentList.Count > 0)
+                {
+                    IList<EandMCodingICD> lstemp = new List<EandMCodingICD>();
+                    lstemp = (from m in eandmCode.EandMCodingICDList where m.Source == "ASSESSMENT" select m).ToList<EandMCodingICD>();
+                    IList<Assessment> ICDListinAss_notinEMICD = new List<Assessment>();
+                    ICDListinAss_notinEMICD = (from a in eandmCode.AssessmentList where !(EandMAssICDs.Contains(a.ICD.Trim())) select a).ToList<Assessment>();
+
+
+                    if (ICDListinAss_notinEMICD != null && ICDListinAss_notinEMICD.Count > 0)
+                        foreach (Assessment assICD in ICDListinAss_notinEMICD)
+                        {
+                            sAssesmentPrimary = string.Empty;
+                            if (assICD.Primary_Diagnosis.ToUpper() == "Y")
+                                sAssesmentPrimary = "Pri";
+                            string sequencrtemp = "";
+                            if (lstemp.Count > 0)
+                            {
+                                IList<EandMCodingICD> temp = (from a in lstemp where a.ICD == assICD.ICD select a).ToList<EandMCodingICD>();
+                                if (temp.Count > 0)
+                                {
+                                    sequencrtemp = temp[0].Sequence;
+                                }
+                                else
+                                {
+                                    sequencrtemp = "A" + iAssessmentSequence.ToString();
+                                }
+
+                            }
+                            else
+                            {
+                                sequencrtemp = "A" + iAssessmentSequence.ToString();
+                            }
+                            ICDList.Add("ASSESSMENT" + "~" + assICD.ICD + "~" + assICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + sequencrtemp + "~" + "");
+                            //ICDList.Add("ASSESSMENT" + "~" + assICD.ICD + "~" + assICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
+                            iAssessmentSequence += 1;
+                        }
+                }
+                if (OrdersAssICDList != null && OrdersAssICDList.Count > 0)
+                {
+                    IList<OrdersAssIcd> ICDListinOrders_notinEMICD = new List<OrdersAssIcd>();
+                    ICDListinOrders_notinEMICD = (from a in OrdersAssICDList where !(EandMOrdersAssICDs.Contains(a.ICD.Trim())) select a).ToList<OrdersAssIcd>();
+                    if (ICDListinOrders_notinEMICD != null && ICDListinOrders_notinEMICD.Count > 0)
+                        foreach (OrdersAssIcd assOrderICD in ICDListinOrders_notinEMICD)
+                        {
+                            sAssesmentPrimary = string.Empty;
+                            //ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
+                            ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "A" + iAssessmentSequence.ToString() + "~" + "");
+                            iAssessmentSequence += 1;
+                        }
+                }
+
+                #endregion
+
+                #region EAndMCodingList
+
+                //if (xmlEncounterdoc.GetElementsByTagName("EAndMCodingList") != null)
+                //{
+                //    if (xmlEncounterdoc.GetElementsByTagName("EAndMCodingList").Count > 0)
+                //    {
+                //        xmlTagName = xmlEncounterdoc.GetElementsByTagName("EAndMCodingList")[0].ChildNodes;
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(EAndMCoding));
+                //                EAndMCoding EAndMCoding = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EAndMCoding;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                if (EAndMCoding != null)
+                //                {
+                //                    propInfo = from obji in ((EAndMCoding)EAndMCoding).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(EAndMCoding, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(EAndMCoding, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(EAndMCoding, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(EAndMCoding, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                        property.SetValue(EAndMCoding, Convert.ToDecimal(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(EAndMCoding, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    if (EAndMCoding.Encounter_ID == ulEncID)
+                //                    {
+                //                        if (EandMCPTs.IndexOf(EAndMCoding.Procedure_Code) == -1)
+                //                            EandMCPTs.Add(EAndMCoding.Procedure_Code);//BugID:49118
+                //                        if (EAndMCoding.Is_Delete == "N" || EAndMCoding.Is_Delete == "")
+                //                        {
+                //                            //if (aryAccessCPT.Contains(EAndMCoding.Procedure_Code) == false)
+                //                            //{
+                //                            eandmCode.EandMCodingList.Add(EAndMCoding);
+                //                            ProcList.Add(EAndMCoding.Procedure_Code + "~" + EAndMCoding.Procedure_Code_Description + "~" + EAndMCoding.Id + "~" + EAndMCoding.Units + "~" + EAndMCoding.Modifier1 + "~" + EAndMCoding.Modifier2 + "~" + EAndMCoding.Modifier3 + "~" + EAndMCoding.Modifier4 + "~" + string.Empty + "~" + EAndMCoding.Version + "~" + EAndMCoding.Diagnosis_Pointer_1 + "~" + EAndMCoding.Diagnosis_Pointer_2 + "~" + EAndMCoding.Diagnosis_Pointer_3 + "~" + EAndMCoding.Diagnosis_Pointer_4 + "~" + EAndMCoding.Diagnosis_Pointer_5 + "~" + EAndMCoding.Diagnosis_Pointer_6 + "~" + EAndMCoding.Sort_Order);
+                //                            //    aryAccessCPT.Add(EAndMCoding.Procedure_Code);
+                //                            //}
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
+                //fs.Close();
+                //fs.Dispose();
+                // }
+                //  }
+                IList<string> ilstEandMHumanTagList = new List<string>();
+                ilstEandMHumanTagList.Add("ImmunizationList");
+                ilstEandMHumanTagList.Add("InHouseProcedureList");
+                ilstEandMHumanTagList.Add("OrdersSubmitList");
+                ilstEandMHumanTagList.Add("OrdersList");
+                ilstEandMHumanTagList.Add("OrdersAssessmentList");
+
+                IList<string> OrdersSubmitIDLst = new List<string>();
+                IList<string> OrdersIDLst = new List<string>();
+
+                //eandmCode.EandMCodingICDList = new List<EandMCodingICD>();
+
+                IList<object> ilstEandMHumanBlobFinal = new List<object>();
+                IList<Immunization> lstimm = new List<Immunization>();
+                IList<InHouseProcedure> lstinhouse = new List<InHouseProcedure>();
+                IList<OrdersSubmit> lstordersub = new List<OrdersSubmit>();
+                IList<Orders> lstorder = new List<Orders>();
+                IList<OrdersAssessment> lstorderass = new List<OrdersAssessment>();
+                ilstEandMHumanBlobFinal = ReadBlob(ulHumanID, ilstEandMHumanTagList);
+
+                if (ilstEandMHumanBlobFinal != null && ilstEandMHumanBlobFinal.Count > 0)
+                {
+                    if (ilstEandMHumanBlobFinal[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMHumanBlobFinal[0]).Count; iCount++)
+                        {
+                            lstimm.Add((Immunization)((IList<object>)ilstEandMHumanBlobFinal[0])[iCount]);
+                        }
+                        for (int i = 0; i < lstimm.Count; i++)
+                        {
+                            if (lstimm[i].Encounter_Id == ulEncID && lstimm[i].Vaccine_In_House == "Y" && lstimm[i].Is_Administration_Refused.ToUpper() != "Y" && lstimm[i].Is_Deleted.ToUpper() == "N")//if Administration Refused Do not suggest in EandMCoding Screen
+                            {
+                                // TempProcedureList.Add(Immunization.Procedure_Code + "~" + Immunization.Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                                TempProcedureListImmunization.Add(lstimm[i].Procedure_Code + "~" + lstimm[i].Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                                //if (aryAccessCPT.Contains(Immunization.Procedure_Code) == false)
+                                //{
+                                //    ProcList.Add(Immunization.Procedure_Code + "~" + Immunization.Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                                //    aryAccessCPT.Add(Immunization.Procedure_Code);
+                                //}
+                                ImmCPT.Add(lstimm[i].Procedure_Code);
+                                ImmDose.Add(lstimm[i].Administered_Amount.ToString());
+                            }
+                        }
+                        if (ImmCPT.Count > 0)
+                            lstprocedure = obj.GetProcedureList(ImmCPT);
+                        for (int i = 0; i < ImmCPT.Count; i++)
+                        {
+
+                            IList<ProcedureCodeLibrary> temp = (from m in lstprocedure
+                                                                where
+                                                                    m.Procedure_Code == ImmCPT[i].ToString() && m.Default_Dose != ""
+                                                                select m).ToList<ProcedureCodeLibrary>();
+                            if (temp.Count > 0)
+                            {
+                                if (ImmDose[i] != "" && ImmDose[i] != "0")
+                                {
+                                    var dose = Math.Ceiling(Convert.ToDouble(ImmDose[i]) / Convert.ToDouble(temp[0].Default_Dose.Split(' ')[0]));
+                                    Immcptunit.Add(ImmCPT[i] + "~" + dose.ToString());
+                                }
+                                else
+                                {
+                                    Immcptunit.Add(ImmCPT[i] + "~" + "1");
+                                }
+
+
+                            }
+                            else
+                            {
+                                Immcptunit.Add(ImmCPT[i] + "~" + "1");
+                            }
+
+                            IList<string> FinalProcedurelist = (from m in TempProcedureListImmunization where m.Split('~')[0] == ImmCPT[i].ToString() select m).ToList<string>();
+
+
+                            if (FinalProcedurelist.Count > 0)
+                            {
+                                IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == ImmCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                                if (tempSort.Count > 0)
+                                {
+                                    TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                                }
+                            }
+                        }
+                    }
+                    if (ilstEandMHumanBlobFinal[1] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstEandMHumanBlobFinal[1]).Count; iCount++)
+                        {
+                            lstinhouse.Add((InHouseProcedure)((IList<object>)ilstEandMHumanBlobFinal[1])[iCount]);
+                        }
+                        for (int i = 0; i < lstinhouse.Count; i++)
+                        {
+                            if (lstinhouse[i].Encounter_ID == ulEncID)
+                            {
+                                if (lstinhouse[i].Procedure_Code != "99999")
+                                {
+
+                                    InProcCPT.Add(lstinhouse[i].Procedure_Code);
+                                    TempProcedureListInhousePro.Add(lstinhouse[i].Procedure_Code + "~" + lstinhouse[i].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                                }
+                            }
+                        }
+                    }
+                    if (Is_CMG_Ancillary)
+                    {
+
+                        if (ilstEandMHumanBlobFinal[2] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEandMHumanBlobFinal[2]).Count; iCount++)
+                            {
+                                lstordersub.Add((OrdersSubmit)((IList<object>)ilstEandMHumanBlobFinal[2])[iCount]);
+                            }
+                            for (int i = 0; i < lstordersub.Count; i++)
+                            {
+                                if (lstordersub[i].Is_Deleted == "N" && lstordersub[i].Encounter_ID == ulEncID)
+                                {
+                                    OrdersSubmitIDLst.Add(lstordersub[i].Id.ToString().Trim());
+                                }
+                            }
+                        }
+                        if (ilstEandMHumanBlobFinal[3] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEandMHumanBlobFinal[3]).Count; iCount++)
+                            {
+                                lstorder.Add((Orders)((IList<object>)ilstEandMHumanBlobFinal[3])[iCount]);
+                            }
+                            for (int i = 0; i < lstorder.Count; i++)
+                            {
+                                if (OrdersSubmitIDLst.Contains(lstorder[i].Order_Submit_ID.ToString().Trim()) && lstorder[i].Encounter_ID == ulEncID)
+                                {
+                                    string Lab_Procedure = lstorder[i].Lab_Procedure.ToString().Trim();
+                                    string Lab_Procedure_Description = lstorder[i].Lab_Procedure_Description.ToString().Trim();
+
+                                    OrderCPT.Add(Lab_Procedure);
+                                    TempProcedureListOrdersList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                                    OrdersIDLst.Add(lstorder[i].Id.ToString().Trim());
+                                }
+                            }
+                            //For SortOrder
+                            if (OrderCPT.Count > 0)
+                                lstprocedure = obj.GetProcedureList(OrderCPT);
+                            for (int i = 0; i < OrderCPT.Count; i++)
+                            {
+                                IList<string> FinalProcedurelist = (from m in TempProcedureListOrdersList where m.Split('~')[0] == OrderCPT[i].ToString() select m).ToList<string>();
+
+
+                                if (FinalProcedurelist.Count > 0)
+                                {
+                                    IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                                    if (tempSort.Count > 0)
+                                    {
+                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                                    }
+                                }
+                            }
+                        }
+                        if (ilstEandMHumanBlobFinal[4] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEandMHumanBlobFinal[4]).Count; iCount++)
+                            {
+                                lstorderass.Add((OrdersAssessment)((IList<object>)ilstEandMHumanBlobFinal[4])[iCount]);
+                            }
+                            for (int i = 0; i < lstorderass.Count; i++)
+                            {
+                                if (OrdersSubmitIDLst.Contains(lstorderass[i].Order_Submit_ID.ToString().Trim()) && lstorderass[i].Encounter_ID == ulEncID)
+                                {
+                                    string Ass_ICD = lstorderass[i].ICD.ToString();
+                                    string Ass_ICDDesc = lstorderass[i].ICD_Description.ToString();
+                                    ulong AssOrder_ID = Convert.ToUInt32(lstorderass[i].Order_Submit_ID.ToString());
+
+                                    if (OrdersAssessmentICDs.Contains(Ass_ICD) == false)
+                                    {
+                                        OrdersAssessmentICDs.Add(Ass_ICD.Trim());
+                                        OrdersAssIcd objOrderAssIcd = new OrdersAssIcd();
+                                        objOrderAssIcd.ICD = Ass_ICD;
+                                        objOrderAssIcd.ICD_Description = Ass_ICDDesc;
+                                        objOrderAssIcd.Order_ID = AssOrder_ID;
+                                        OrdersAssICDList.Add(objOrderAssIcd);
+                                    }
+                                }
+                            }
+                            iAssessmentSequence = 1;
+                            if (OrdersAssICDList != null && OrdersAssICDList.Count > 0)
+                            {
+                                IList<OrdersAssIcd> ICDListinOrders_notinEMICD = new List<OrdersAssIcd>();
+                                ICDListinOrders_notinEMICD = (from a in OrdersAssICDList where !(EandMOrdersAssICDs.Contains(a.ICD.Trim())) select a).ToList<OrdersAssIcd>();
+                                if (ICDListinOrders_notinEMICD != null && ICDListinOrders_notinEMICD.Count > 0)
+                                    foreach (OrdersAssIcd assOrderICD in ICDListinOrders_notinEMICD)
+                                    {
+                                        sAssesmentPrimary = string.Empty;
+                                        //ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
+                                        ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "A" + iAssessmentSequence.ToString() + "~" + "");
+                                        iAssessmentSequence += 1;
+                                    }
+                            }
+                        }
+                    }
+                    if (!Is_CMG_Ancillary)
+                    {
+
+                        if (ilstEandMHumanBlobFinal[2] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEandMHumanBlobFinal[2]).Count; iCount++)
+                            {
+                                lstordersub.Add((OrdersSubmit)((IList<object>)ilstEandMHumanBlobFinal[2])[iCount]);
+                            }
+                            for (int i = 0; i < lstordersub.Count; i++)
+                            {
+                                if (lstordersub[i].Is_Deleted == "N" && lstordersub[i].Encounter_ID == ulEncID && lstordersub[i].Order_Code_Type == "CMG ANC.-IN HOUSE")
+                                {
+                                    OrdersSubmitIDLst.Add(lstordersub[i].Id.ToString().Trim());
+                                }
+                            }
+                        }
+
+                        if (ilstEandMHumanBlobFinal[3] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEandMHumanBlobFinal[3]).Count; iCount++)
+                            {
+                                lstorder.Add((Orders)((IList<object>)ilstEandMHumanBlobFinal[3])[iCount]);
+                            }
+                            for (int i = 0; i < lstorder.Count; i++)
+                            {
+
+
+                                if (OrdersSubmitIDLst.Contains(lstorder[i].Order_Submit_ID.ToString().Trim()) && lstorder[i].Encounter_ID == ulEncID)
+                                {
+                                    string Lab_Procedure = lstorder[i].Lab_Procedure.ToString().Trim();
+                                    string Lab_Procedure_Description = lstorder[i].Lab_Procedure_Description.ToString().Trim();
+
+
+                                    TempProcedureListOrdersList1.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                                    OrderCPT1.Add(Lab_Procedure);
+                                    OrdersIDLst.Add(lstorder[i].Id.ToString().Trim());
+                                }
+                            }
+
+                            //For SortOrder
+                            if (OrderCPT1.Count > 0)
+                                lstprocedure = obj.GetProcedureList(OrderCPT1);
+                            for (int i = 0; i < OrderCPT1.Count; i++)
+                            {
+                                IList<string> FinalProcedurelist = (from m in TempProcedureListOrdersList1 where m.Split('~')[0] == OrderCPT1[i].ToString() select m).ToList<string>();
+
+
+                                if (FinalProcedurelist.Count > 0)
+                                {
+                                    IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT1[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                                    if (tempSort.Count > 0)
+                                    {
+                                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+                // string FileName = "Human" + "_" + ulHumanID + ".xml";
+                // string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //    XmlNodeList xmlTagName = null;
+                //    // itemDoc.Load(XmlText);
+                //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        xmlHumandoc.Load(fs);
+
+                //        XmlText.Close();
+
+                //BugID:46231
+                #region ProblemList
+                //if (itemDoc.GetElementsByTagName("ProblemListList") != null)
+                //{
+                //    if (itemDoc.GetElementsByTagName("ProblemListList").Count > 0)
+                //    {
+                //        xmlTagName = itemDoc.GetElementsByTagName("ProblemListList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(ProblemList));
+                //                ProblemList ProblemList = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ProblemList;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                if (ProblemList != null)
+                //                {
+                //                    propInfo = from obji in ((ProblemList)ProblemList).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(ProblemList, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(ProblemList, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(ProblemList, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(ProblemList, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                        property.SetValue(ProblemList, Convert.ToDecimal(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(ProblemList, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    if (ProblemList.Human_ID == ulHumanID && ProblemList.Status == "Active" && ProblemList.Is_Active == "Y" && ProblemList.Version_Year == ICDType)
+                //                    {
+                //                        if (aryAccessICD.Contains(ProblemList.ICD) == false && ProblemList.ICD != string.Empty && ProblemList.ICD != "0000")
+                //                        {
+                //                            ICDList.Add("PROBLEMLIST" + "~" + ProblemList.ICD + "~" + ProblemList.Problem_Description + "~" + 0 + "~" + "N" + "~" + "0" + "~" + "6" + "~" + "");
+                //                            probList.Add(ProblemList);
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
+                #region ImmunizationTab
+                //if (eandmCode.EandMCodingList.Count == 0 && xmlHumandoc.GetElementsByTagName("ImmunizationList") != null)
+                //if (xmlHumandoc.GetElementsByTagName("ImmunizationList") != null)
+                //{
+                //    if (xmlHumandoc.GetElementsByTagName("ImmunizationList").Count > 0)
+                //    {
+                //        xmlTagName = xmlHumandoc.GetElementsByTagName("ImmunizationList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(Immunization));
+                //                Immunization Immunization = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Immunization;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                if (Immunization != null)
+                //                {
+                //                    propInfo = from obji in ((Immunization)Immunization).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(Immunization, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(Immunization, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(Immunization, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(Immunization, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                        property.SetValue(Immunization, Convert.ToDecimal(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(Immunization, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    if (Immunization.Encounter_Id == ulEncID && Immunization.Vaccine_In_House == "Y" && Immunization.Is_Administration_Refused.ToUpper() != "Y" && Immunization.Is_Deleted.ToUpper() == "N")//if Administration Refused Do not suggest in EandMCoding Screen
+                //                    {
+                //                        // TempProcedureList.Add(Immunization.Procedure_Code + "~" + Immunization.Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                //                        TempProcedureListImmunization.Add(Immunization.Procedure_Code + "~" + Immunization.Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                //                        //if (aryAccessCPT.Contains(Immunization.Procedure_Code) == false)
+                //                        //{
+                //                        //    ProcList.Add(Immunization.Procedure_Code + "~" + Immunization.Immunization_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                //                        //    aryAccessCPT.Add(Immunization.Procedure_Code);
+                //                        //}
+                //                        ImmCPT.Add(Immunization.Procedure_Code);
+                //                        ImmDose.Add(Immunization.Administered_Amount.ToString());
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+                //if (ImmCPT.Count > 0)
+                //    lstprocedure = obj.GetProcedureList(ImmCPT);
+                //for (int i = 0; i < ImmCPT.Count; i++)
+                //{
+
+                //    IList<ProcedureCodeLibrary> temp = (from m in lstprocedure
+                //                                        where
+                //                                            m.Procedure_Code == ImmCPT[i].ToString() && m.Default_Dose != ""
+                //                                        select m).ToList<ProcedureCodeLibrary>();
+                //    if (temp.Count > 0)
+                //    {
+                //        if (ImmDose[i] != "" && ImmDose[i] != "0")
+                //        {
+                //            var dose = Math.Ceiling(Convert.ToDouble(ImmDose[i]) / Convert.ToDouble(temp[0].Default_Dose.Split(' ')[0]));
+                //            Immcptunit.Add(ImmCPT[i] + "~" + dose.ToString());
+                //        }
+                //        else
+                //        {
+                //            Immcptunit.Add(ImmCPT[i] + "~" + "1");
+                //        }
+
+
+                //    }
+                //    else
+                //    {
+                //        Immcptunit.Add(ImmCPT[i] + "~" + "1");
+                //    }
+
+                //    IList<string> FinalProcedurelist = (from m in TempProcedureListImmunization where m.Split('~')[0] == ImmCPT[i].ToString() select m).ToList<string>();
+
+
+                //    if (FinalProcedurelist.Count > 0)
+                //    {
+                //        IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == ImmCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                //        if (tempSort.Count > 0)
+                //        {
+                //            TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                //        }
+                //    }
+                //}
+                //  var temp = from m in lstprocedure where m.Default_Dose != "" && (from n in ImmDose select n.Split('~')).Contains(m.Procedure_Code) select m;
+
+                #endregion
+                #region ProceduresTab
+                //if (eandmCode.EandMCodingList.Count == 0 && xmlHumandoc.GetElementsByTagName("InHouseProcedureList") != null)
+                //if (xmlHumandoc.GetElementsByTagName("InHouseProcedureList") != null)
+                //{
+                //    if (xmlHumandoc.GetElementsByTagName("InHouseProcedureList").Count > 0)
+                //    {
+                //        xmlTagName = xmlHumandoc.GetElementsByTagName("InHouseProcedureList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(InHouseProcedure));
+                //                InHouseProcedure InHouseProcedure = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as InHouseProcedure;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                if (InHouseProcedure != null)
+                //                {
+                //                    propInfo = from obji in ((InHouseProcedure)InHouseProcedure).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(InHouseProcedure, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(InHouseProcedure, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(InHouseProcedure, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(InHouseProcedure, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                        property.SetValue(InHouseProcedure, Convert.ToDecimal(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(InHouseProcedure, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    if (InHouseProcedure.Encounter_ID == ulEncID)
+                //                    {
+                //                        if (InHouseProcedure.Procedure_Code != "99999")
+                //                        {
+                //                            /*
+                //                             int sSort_Order = 0;
+                //                               if (lstprocedure != null && lstprocedure.Count > 0)
+                //                               {
+                //                                   IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == InHouseProcedure.Procedure_Code select m).ToList<ProcedureCodeLibrary>();
+                //                                   if (temp1.Count > 0)
+                //                                   {
+                //                                       sSort_Order = temp1[0].Sort_Order;
+                //                                   }
+                //                               }
+                //                               else
+                //                               {
+                //                                   lstprocedure = obj.GetProcedureList(ImmCPT);
+                //                                   IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == InHouseProcedure.Procedure_Code select m).ToList<ProcedureCodeLibrary>();
+                //                                   if (temp1.Count > 0)
+                //                                   {
+                //                                       sSort_Order = temp1[0].Sort_Order;
+                //                                   }
+                //                               }
+                //                               TempProcedureList.Add(InHouseProcedure.Procedure_Code + "~" + InHouseProcedure.Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + sSort_Order);*/
+                //                            InProcCPT.Add(InHouseProcedure.Procedure_Code);
+                //                            TempProcedureListInhousePro.Add(InHouseProcedure.Procedure_Code + "~" + InHouseProcedure.Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                //                        }
+                //                        //if (aryAccessCPT.Contains(InHouseProcedure.Procedure_Code) == false)
+                //                        //{
+                //                        //    ProcList.Add(InHouseProcedure.Procedure_Code + "~" + InHouseProcedure.Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                //                        //    aryAccessCPT.Add(InHouseProcedure.Procedure_Code);
+                //                        //}
+                //                    }
+                //                }
+                //            }
+
+                //            //For SortOrder
+                //            if (InProcCPT.Count > 0)
+                //                lstprocedure = obj.GetProcedureList(InProcCPT);
+                //            for (int i = 0; i < InProcCPT.Count; i++)
+                //            {
+                //                IList<string> FinalProcedurelist = (from m in TempProcedureListInhousePro where m.Split('~')[0] == InProcCPT[i].ToString() select m).ToList<string>();
+
+
+                //                if (FinalProcedurelist.Count > 0)
+                //                {
+                //                    IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == InProcCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                //                    if (tempSort.Count > 0)
+                //                    {
+                //                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                //                    }
+                //                }
+                //            }
+
+
+                //        }
+                //    }
+                //}
+                #endregion
+
+                //CMG Ancilliary
+                #region OrdersSubmitTab
+                //if (Is_CMG_Ancillary)
+                //{
+
+                //if (eandmCode.EandMCodingList.Count == 0 && xmlHumandoc.GetElementsByTagName("OrdersSubmitList") != null)
+                //if (xmlHumandoc.GetElementsByTagName("OrdersSubmitList") != null)
+                //{
+                //    if (xmlHumandoc.GetElementsByTagName("OrdersSubmitList").Count > 0)
+                //    {
+                //        xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersSubmitList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                if (xmlTagName[j].Attributes.GetNamedItem("Is_Deleted").Value.Equals("N") && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
+                //                {
+                //                    OrdersSubmitIDLst.Add(xmlTagName[j].Attributes.GetNamedItem("Id").Value.ToString().Trim());
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                //BugID:52776
+                // if (eandmCode.EandMCodingList.Count == 0 && xmlHumandoc.GetElementsByTagName("OrdersList") != null)
+                //if (xmlHumandoc.GetElementsByTagName("OrdersList") != null)
+                //{
+                //    if (xmlHumandoc.GetElementsByTagName("OrdersList").Count > 0 && OrdersSubmitIDLst.Count > 0)
+                //    {
+                //        xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                if (OrdersSubmitIDLst.Contains(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString().Trim()) && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
+                //                {
+                //                    string Lab_Procedure = xmlTagName[j].Attributes.GetNamedItem("Lab_Procedure").Value.ToString().Trim();
+                //                    string Lab_Procedure_Description = xmlTagName[j].Attributes.GetNamedItem("Lab_Procedure_Description").Value.ToString().Trim();
+                //                    /*
+                //                    int sSort_Order = 0;
+                //                    if (lstprocedure != null && lstprocedure.Count > 0)
+                //                    {
+                //                        IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == Lab_Procedure select m).ToList<ProcedureCodeLibrary>();
+                //                        if (temp1.Count > 0)
+                //                        {
+                //                            sSort_Order = temp1[0].Sort_Order;
+                //                        }
+                //                    }
+                //                    else
+                //                    {
+                //                        lstprocedure = obj.GetProcedureList(ImmCPT);
+                //                        IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == Lab_Procedure select m).ToList<ProcedureCodeLibrary>();
+                //                        if (temp1.Count > 0)
+                //                        {
+                //                            sSort_Order = temp1[0].Sort_Order;
+                //                        }
+                //                    }
+                //                    TempProcedureList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + sSort_Order);
+                //                     */
+                //                    OrderCPT.Add(Lab_Procedure);
+                //                    TempProcedureListOrdersList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                //                    OrdersIDLst.Add(xmlTagName[j].Attributes.GetNamedItem("Id").Value.ToString().Trim());
+                //                }
+                //            }
+
+                //            //For SortOrder
+                //            if (OrderCPT.Count > 0)
+                //                lstprocedure = obj.GetProcedureList(OrderCPT);
+                //            for (int i = 0; i < OrderCPT.Count; i++)
+                //            {
+                //                IList<string> FinalProcedurelist = (from m in TempProcedureListOrdersList where m.Split('~')[0] == OrderCPT[i].ToString() select m).ToList<string>();
+
+
+                //                if (FinalProcedurelist.Count > 0)
+                //                {
+                //                    IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                //                    if (tempSort.Count > 0)
+                //                    {
+                //                        TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                //                    }
+                //                }
+                //            }
+
+                //        }
+                //    }
+                //}
+                //    if (xmlHumandoc.GetElementsByTagName("OrdersAssessmentList") != null)
+                //    {
+                //        if (xmlHumandoc.GetElementsByTagName("OrdersAssessmentList").Count > 0)
+                //        {
+                //            xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersAssessmentList")[0].ChildNodes;
+
+                //            if (xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    //if (OrdersIDLst.Contains(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString().Trim()) && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
+                //                    if (OrdersSubmitIDLst.Contains(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString().Trim()) && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
+                //                    {
+                //                        string Ass_ICD = xmlTagName[j].Attributes.GetNamedItem("ICD").Value.ToString();
+                //                        string Ass_ICDDesc = xmlTagName[j].Attributes.GetNamedItem("ICD_Description").Value.ToString();
+                //                        ulong AssOrder_ID = Convert.ToUInt32(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString());
+
+                //                        if (OrdersAssessmentICDs.Contains(Ass_ICD) == false)
+                //                        {
+                //                            OrdersAssessmentICDs.Add(Ass_ICD.Trim());
+                //                            OrdersAssIcd objOrderAssIcd = new OrdersAssIcd();
+                //                            objOrderAssIcd.ICD = Ass_ICD;
+                //                            objOrderAssIcd.ICD_Description = Ass_ICDDesc;
+                //                            objOrderAssIcd.Order_ID = AssOrder_ID;
+                //                            OrdersAssICDList.Add(objOrderAssIcd);
+                //                        }
+                //                    }
+                //                }
+                //            }
+
+                //             iAssessmentSequence = 1;
+                //            if (OrdersAssICDList != null && OrdersAssICDList.Count > 0)
+                //            {
+                //                IList<OrdersAssIcd> ICDListinOrders_notinEMICD = new List<OrdersAssIcd>();
+                //                ICDListinOrders_notinEMICD = (from a in OrdersAssICDList where !(EandMOrdersAssICDs.Contains(a.ICD.Trim())) select a).ToList<OrdersAssIcd>();
+                //                if (ICDListinOrders_notinEMICD != null && ICDListinOrders_notinEMICD.Count > 0)
+                //                    foreach (OrdersAssIcd assOrderICD in ICDListinOrders_notinEMICD)
+                //                    {
+                //                        sAssesmentPrimary = string.Empty;
+                //                        //ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
+                //                        ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "A" + iAssessmentSequence.ToString() + "~" + "");
+                //                        iAssessmentSequence += 1;
+                //                    }
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //}
+
+                #region CMG In House Lab
+                //IQuery query1 = iMySession.GetNamedQuery("Fill.IN-HOUSE PROCEDURES.List");
+                //query1.SetParameter(0, ulEncID);
+                //query1.SetParameter(1, "CMG Anc.-In House");
+                //ArrayList arrList = new ArrayList(query1.List());
+                //for (int i = 0; i < arrList.Count; i++)
+                //{
+                //    object[] ccObject = (object[])arrList[i];
+                //eandmCode.OrderProcedureID.Add(Convert.ToUInt64(ccObject[0].ToString()));
+                //eandmCode.OrderProcedure.Add(ccObject[1].ToString());
+                //eandmCode.OrderProcedureDesc.Add(ccObject[2].ToString());
+                //    TempProcedureList.Add(eandmCode.OrderProcedure[i] + "~" + eandmCode.OrderProcedureDesc[i] + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                //}
+                //if (!Is_CMG_Ancillary)
+                //{
+                //    IList<string> OrdersSubmitIDLst = new List<string>();
+                //    IList<string> OrdersIDLst = new List<string>();
+                //    XmlNodeList xmlTagName = null;
+
+                //if (xmlHumandoc.GetElementsByTagName("OrdersSubmitList") != null)
+                //{
+                //    if (xmlHumandoc.GetElementsByTagName("OrdersSubmitList").Count > 0)
+                //    {
+                //        xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersSubmitList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                if (xmlTagName[j].Attributes.GetNamedItem("Is_Deleted").Value.Equals("N") && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()) && xmlTagName[j].Attributes.GetNamedItem("Order_Code_Type").Value.Equals("CMG ANC.-IN HOUSE"))
+                //                {
+                //                    OrdersSubmitIDLst.Add(xmlTagName[j].Attributes.GetNamedItem("Id").Value.ToString().Trim());
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                //BugID:52776
+                //    if (xmlHumandoc.GetElementsByTagName("OrdersList") != null)
+                //    {
+                //        if (xmlHumandoc.GetElementsByTagName("OrdersList").Count > 0 && OrdersSubmitIDLst.Count > 0)
+                //        {
+                //            xmlTagName = xmlHumandoc.GetElementsByTagName("OrdersList")[0].ChildNodes;
+
+                //            if (xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    if (OrdersSubmitIDLst.Contains(xmlTagName[j].Attributes.GetNamedItem("Order_Submit_ID").Value.ToString().Trim()) && xmlTagName[j].Attributes.GetNamedItem("Encounter_ID").Value.Equals(ulEncID.ToString()))
+                //                    {
+                //                        string Lab_Procedure = xmlTagName[j].Attributes.GetNamedItem("Lab_Procedure").Value.ToString().Trim();
+                //                        string Lab_Procedure_Description = xmlTagName[j].Attributes.GetNamedItem("Lab_Procedure_Description").Value.ToString().Trim();
+
+                //                        /*
+                //                        int sSort_Order = 0;
+                //                        if (lstprocedure != null && lstprocedure.Count > 0)
+                //                        {
+                //                            IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == Lab_Procedure select m).ToList<ProcedureCodeLibrary>();
+                //                            if (temp1.Count > 0)
+                //                            {
+                //                                sSort_Order = temp1[0].Sort_Order;
+                //                            }
+                //                        }
+                //                        else
+                //                        {
+                //                            lstprocedure = obj.GetProcedureList(ImmCPT);
+                //                            IList<ProcedureCodeLibrary> temp1 = (from m in lstprocedure where m.Procedure_Code == Lab_Procedure select m).ToList<ProcedureCodeLibrary>();
+                //                            if (temp1.Count > 0)
+                //                            {
+                //                                sSort_Order = temp1[0].Sort_Order;
+                //                            }
+                //                        }
+
+                //                        TempProcedureList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + sSort_Order);
+                //                        */
+                //                        TempProcedureListOrdersList1.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                //                        OrderCPT1.Add(Lab_Procedure);
+                //                        OrdersIDLst.Add(xmlTagName[j].Attributes.GetNamedItem("Id").Value.ToString().Trim());
+                //                    }
+                //                }
+
+                //                //For SortOrder
+                //                if (OrderCPT1.Count > 0)
+                //                    lstprocedure = obj.GetProcedureList(OrderCPT1);
+                //                for (int i = 0; i < OrderCPT1.Count; i++)
+                //                {
+                //                    IList<string> FinalProcedurelist = (from m in TempProcedureListOrdersList1 where m.Split('~')[0] == OrderCPT1[i].ToString() select m).ToList<string>();
+
+
+                //                    if (FinalProcedurelist.Count > 0)
+                //                    {
+                //                        IList<ProcedureCodeLibrary> tempSort = (from m in lstprocedure where m.Procedure_Code == OrderCPT1[i].ToString() select m).ToList<ProcedureCodeLibrary>();
+                //                        if (tempSort.Count > 0)
+                //                        {
+                //                            TempProcedureList.Add(FinalProcedurelist[0] + "~" + tempSort[0].Sort_Order);
+                //                        }
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
+
+                #endregion
+
+                #endregion
+
+
+
+
+                //Encounter enc = EM.GetById(ulEncID);
+                //eandmCode.EncounterList.Add(enc);
+                #region EncountersTab
+                //if (xmlEncounterdoc.GetElementsByTagName("EncounterList") != null)
+                //{
+                //    if (xmlEncounterdoc.GetElementsByTagName("EncounterList").Count > 0)
+                //    {
+                //        XmlNodeList xmlTagName = null;
+                //        xmlTagName = xmlEncounterdoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                string TagName = xmlTagName[j].Name;
+                //                XmlSerializer xmlserializer = new XmlSerializer(typeof(Encounter));
+                //                Encounter enc = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as Encounter;
+                //                IEnumerable<PropertyInfo> propInfo = null;
+                //                if (enc != null)
+                //                {
+                //                    propInfo = from obji in ((Encounter)enc).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(enc, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(enc, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(enc, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(enc, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                //                                        property.SetValue(enc, Convert.ToDecimal(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(enc, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    eandmCode.EncounterList.Add(enc);
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
+
+                #region ProcedureCodeRuleMaster
+                //string sDOSYear = string.Empty;
+                //sDOSYear = Convert.ToString(date_of_service.Year);
+                //XmlNodeList xmlTypeofVisit = xmlEncounterdoc.SelectNodes("/notes/Modules/EncounterList/Encounter[@Visit_Type!='RETINAL EYE SCAN']");
+                ////if (eandmCode.EandMCodingList.Count == 0 && xmlTypeofVisit.Count > 0)
+                //if (xmlTypeofVisit.Count > 0)
+                //{
+                //    IList<ProcedureCodeRuleMaster> ProcedureList = new List<ProcedureCodeRuleMaster>();
+                //    ISQLQuery procsql = iMySession.CreateSQLQuery("SELECT p.* FROM procedure_code_rule_master p where  p.DOS_Year='" + sDOSYear + "' or p.DOS_Year=' ' order by p.Sort_Order,p.XML_Type").AddEntity("p", typeof(ProcedureCodeRuleMaster));
+                //    ProcedureList = procsql.List<ProcedureCodeRuleMaster>();
+                //    ArrayList arrayList1 = new ArrayList();
+
+                //    Hashtable result = new Hashtable();
+                //    Hashtable hashResultList = new Hashtable();
+                //    string sTemp1 = string.Empty;
+                //    string sTemp2 = string.Empty;
+                //    ArrayList arrayList = new ArrayList();
+
+                //    //var HumanBasedProcedureList = from p in ProcedureList where p.XML_Type == "HUMAN" select p;
+                //    //IList<ProcedureCodeRuleMaster> ilstHumanBasedProcedureList = HumanBasedProcedureList.ToList<ProcedureCodeRuleMaster>();
+
+                //    bool bMatchingFailed = false;
+                //    bool bDoNotAdd = false;
+                //    XmlNodeList xmlPhysicianList = null;
+
+
+                //    for (int iCount = 0; iCount < ProcedureList.Count; iCount++)
+                //    {
+                //        var proc = from p in ProcedureList where p.Procedure_Code == ProcedureList[iCount].Procedure_Code select p;
+                //        IList<ProcedureCodeRuleMaster> tempList = proc.ToList<ProcedureCodeRuleMaster>();
+
+                //        bDoNotAdd = false;
+
+                //        if (tempList.Count > 1) //If one CPT has more than 1 condition
+                //        {
+                //            if (tempList[tempList.Count - 1].Id == ProcedureList[iCount].Id) //If the current iteration is the last condition for the CPT then, we can suggest the CPT
+                //                bDoNotAdd = false; //False for last iteration for that CPT, True for other than last iteration for the CPT
+                //            else
+                //                bDoNotAdd = true; //False for last iteration for that CPT, True for other than last iteration for the CPT
+
+                //            if (tempList[0].Id == ProcedureList[iCount].Id) //If the current iteration is the first condition for the CPT then, we reset the Matching failed variable
+                //                bMatchingFailed = false;  //False for no restriction, True in case if one of the previous rule is failed for the CPT then, prevent from suggesting the CPT
+                //        }
+                //        else
+                //        {
+                //            bDoNotAdd = false;
+                //            bMatchingFailed = false;
+                //        }
+
+                //        if (ProcedureList[iCount].XML_Type == "HUMAN")
+                //        {
+                //            xmlPhysicianList = xmlHumandoc.SelectNodes(ProcedureList[iCount].XML_Query.Replace(":EncID", ulEncID.ToString()).Replace(":From12MonthDate", DateTime.Now.AddDays(-365).ToString("yyyy-MM-dd")).Replace(":From24MonthDate", DateTime.Now.AddDays(-730).ToString("yyyyMMdd")).Replace(":ToDate", DateTime.Now.ToString("yyyy-MM-dd")));
+                //        }
+                //        else
+                //        {
+                //            xmlPhysicianList = xmlEncounterdoc.SelectNodes(ProcedureList[iCount].XML_Query);
+                //        }
+
+                //        if (xmlPhysicianList.Count > 0 && bDoNotAdd == false && bMatchingFailed == false)
+                //        {
+                //            eandmCode.ProcedureMasterList.Add(ProcedureList[iCount].Procedure_Code + "~" + ProcedureList[iCount].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + ProcedureList[iCount].Sort_Order);
+                //            TempProcedureList.Add(ProcedureList[iCount].Procedure_Code + "~" + ProcedureList[iCount].Procedure_Code_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + ProcedureList[iCount].Sort_Order);
+                //        }
+
+                //        if (bDoNotAdd == true)
+                //        {
+                //            if (xmlPhysicianList.Count == 0)
+                //            {
+                //                bMatchingFailed = true;
+                //            }
+                //        }
+                //    }
+                //}
 
                 #endregion
                 IList<EAndMCoding> EMList = eandmCode.EandMCodingList;
@@ -2322,6 +2749,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             GenerateXml XMLObjHuman = new GenerateXml();
 
             ulong EncounterOrHumanId = 0;
+            ulong humanid = 0;
             bool bEandMCodingConsistent = true, bEandMCodingICDConsistent = true, bEandMCodingICDafterDeleteConsistent = true, bEncounterConsistent = true;
             string FileNames;
             string strXmlFilePaths;
@@ -2356,10 +2784,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         //}
                         //iResult = SaveUpdateDeleteWithoutTransaction(ref SaveListCPT, UpdateListCPT, DeleteCPTList, MySession, string.Empty);
                         if (SaveListCPT != null && SaveListCPT.Count > 0)
+                        {
                             EncounterOrHumanId = SaveListCPT[0].Encounter_ID;
+                            humanid = SaveListCPT[0].Human_ID;
+                        }
                         else
                             if (UpdateListCPT != null && UpdateListCPT.Count > 0)
-                                EncounterOrHumanId = UpdateListCPT[0].Encounter_ID;
+                        {
+                            EncounterOrHumanId = UpdateListCPT[0].Encounter_ID;
+                            humanid = UpdateListCPT[0].Human_ID;
+                        }
                         iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveListCPT, ref UpdateListCPT, null, MySession, string.Empty, true, true, EncounterOrHumanId, string.Empty, ref XMLObj);
 
                         if (iResult == 2)
@@ -2789,7 +3223,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
 
                         }
-                        if (ImmHisDelList != null && ImmHisDelList.Count > 0 && ImmHisDelList[0].Immunization_History_Master_ID!=0)
+                        if (ImmHisDelList != null && ImmHisDelList.Count > 0 && ImmHisDelList[0].Immunization_History_Master_ID != 0)
                         {
                             IList<ImmunizationHistory> ImmHisSavelst = new List<ImmunizationHistory>();
                             IList<ImmunizationHistory> ImmHisUpdatelst = new List<ImmunizationHistory>();
@@ -2802,7 +3236,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             IList<ImmunizationMasterHistory> lstsave = new List<ImmunizationMasterHistory>();
 
                             lst = obj.GetImmunizationDeteailsbyID(ImmHisDelList[0].Immunization_History_Master_ID);
-                            if (lst!=null && lst.Count > 0)
+                            if (lst != null && lst.Count > 0)
                             {
                                 lst[0].Is_Deleted = "Y";
                                 lst[0].Modified_Date_And_Time = System.DateTime.Now;
@@ -2971,14 +3405,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         if (bEandMCodingConsistent && bEandMCodingICDConsistent && bEandMCodingICDafterDeleteConsistent && bEncounterConsistent)
                         {
-                            if (XMLObj != null && XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                           //if (XMLObj != null && XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                           if(XMLObj!=null)
                             {
-                               // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                 int trycount = 0;
                             trytosaveagain:
                                 try
                                 {
-                                    XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    WriteBlob(EncounterOrHumanId, XMLObj.itemDoc,MySession, SaveListCPT, UpdateListCPT, null, XMLObj, false);
                                 }
                                 catch (Exception xmlexcep)
                                 {
@@ -3033,14 +3469,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     }
                                 }
                             }
-                            if (XMLObjHuman != null && XMLObjHuman.strXmlFilePath != null && XMLObjHuman.strXmlFilePath != "")
+                           // if (XMLObjHuman != null && XMLObjHuman.strXmlFilePath != null && XMLObjHuman.strXmlFilePath != "")
+                            if(XMLObjHuman!=null)
                             {
-                               // XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
+                                // XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
                                 int trycount = 0;
                             trytosaveagain:
                                 try
                                 {
-                                    XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
+                                    ImmunizationHistoryManager objman = new ImmunizationHistoryManager();
+                                    ImmunizationManager objmanimm = new ImmunizationManager();
+                                    if ((ImmHisDelList != null && ImmHisDelList.Count > 0 && ImmHisDelList[0].Immunization_History_Master_ID != 0))
+                                    {
+                                        objman.WriteBlob(humanid, XMLObjHuman.itemDoc, MySession, null, null, ImmHisDelList, XMLObjHuman, false);
+                                    }
+                                    if (ImmDelList != null && ImmDelList.Count > 0) 
+                                    {
+                                        objmanimm.WriteBlob(humanid, XMLObjHuman.itemDoc, MySession, null, null, ImmDelList, XMLObjHuman, false);
+                                    }
+
+                                    //XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
                                 }
                                 catch (Exception xmlexcep)
                                 {
@@ -3165,210 +3613,325 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ArrayList aryAccessICD = new ArrayList();
             bool IsPrimaryChecked = false;
             string sAssesmentPrimary = string.Empty;
-            FileNames = "Encounter" + "_" + EncounterOrHumanId + ".xml";
-            strXmlFilePaths = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileNames);
-            XmlTextReader XmlText1 = null;
-            try
+
+
+            IList<string> ilstEandMTagList = new List<string>();
+            ilstEandMTagList.Add("EandMCodingICDList");
+          
+            ilstEandMTagList.Add("EAndMCodingList");
+            ilstEandMTagList.Add("EncounterList");
+
+
+   
+            IList<EandMCodingICD> lsticd = new List<EandMCodingICD>();
+            IList<EAndMCoding> lsteandm = new List<EAndMCoding>();
+            IList<Assessment> lstass = new List<Assessment>();
+            IList<object> ilstEandMBlobFinal = new List<object>();
+      
+            ilstEandMBlobFinal = ReadBlob(EncounterOrHumanId, ilstEandMTagList);
+
+            if (ilstEandMBlobFinal != null && ilstEandMBlobFinal.Count > 0)
             {
-                if (File.Exists(strXmlFilePaths) == true)
+                if (ilstEandMBlobFinal[0] != null)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlText1 = new XmlTextReader(strXmlFilePaths);
-                    XmlNodeList xmlTagName = null;
-                    //  itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePaths, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[0]).Count; iCount++)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlText1.Close();
-
-                        #region EandMCodingICD
-                        DTO.EandMCodingICDList = new List<EandMCodingICD>();
-                        if (itemDoc.GetElementsByTagName("EandMCodingICDList") != null)
+                        lsticd.Add((EandMCodingICD)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
+                    }
+                    for (int i = 0; i < lsticd.Count; i++)
+                    {
+                        if (lsticd[i].Encounter_ID == EncounterOrHumanId && (lsticd[i].Is_Delete == "N" || lsticd[i].Is_Delete == ""))
                         {
-                            if (itemDoc.GetElementsByTagName("EandMCodingICDList").Count > 0)
-                            {
-                                xmlTagName = itemDoc.GetElementsByTagName("EandMCodingICDList")[0].ChildNodes;
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(EandMCodingICD));
-                                        EandMCodingICD EandMCodingICD = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EandMCodingICD;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        if (EandMCodingICD != null)
-                                        {
-                                            propInfo = from obji in ((EandMCodingICD)EandMCodingICD).GetType().GetProperties() select obji;
-
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(EandMCodingICD, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(EandMCodingICD, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(EandMCodingICD, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(EandMCodingICD, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(EandMCodingICD, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(EandMCodingICD, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if (EandMCodingICD.Encounter_ID == EncounterOrHumanId && (EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
-                                            {
-                                                DTO.EandMCodingICDList.Add(EandMCodingICD);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            DTO.EandMCodingICDList.Add(lsticd[i]);
                         }
-                        if (DTO.EandMCodingICDList != null)
+                    }
+                    if (DTO.EandMCodingICDList != null)
+                    {
+                        DTO.EandMCodingICDList = DTO.EandMCodingICDList.OrderBy(a => a.Sequence).ToList();
+                        for (int j = 0; j < DTO.EandMCodingICDList.Count; j++)
                         {
-                            DTO.EandMCodingICDList = DTO.EandMCodingICDList.OrderBy(a => a.Sequence).ToList();
-                            for (int j = 0; j < DTO.EandMCodingICDList.Count; j++)
+                            string sPrimary = string.Empty;
+                            if (DTO.EandMCodingICDList[j].ICD_Category == "Primary")
                             {
-                                string sPrimary = string.Empty;
-                                if (DTO.EandMCodingICDList[j].ICD_Category == "Primary")
-                                {
-                                    sPrimary = "Y";
-                                    IsPrimaryChecked = true;
-                                }
+                                sPrimary = "Y";
+                                IsPrimaryChecked = true;
+                            }
 
-                                var eandMICDList = from eandmICD in DTO.EandMCodingICDList where eandmICD.ICD == DTO.EandMCodingICDList[j].ICD select eandmICD;
-                                IList<EandMCodingICD> templist = eandMICDList.ToList<EandMCodingICD>();
-                                string sIDList = string.Empty;
-                                string sICDVersion = string.Empty;
-                                for (int k = 0; k < templist.Count; k++)
+                            var eandMICDList = from eandmICD in DTO.EandMCodingICDList where eandmICD.ICD == DTO.EandMCodingICDList[j].ICD select eandmICD;
+                            IList<EandMCodingICD> templist = eandMICDList.ToList<EandMCodingICD>();
+                            string sIDList = string.Empty;
+                            string sICDVersion = string.Empty;
+                            for (int k = 0; k < templist.Count; k++)
+                            {
+                                if (k == 0)
                                 {
-                                    if (k == 0)
-                                    {
-                                        sIDList = templist[k].Id.ToString();
-                                        sICDVersion = templist[k].Version.ToString();
-                                    }
-                                    else
-                                    {
-                                        sIDList += "," + templist[k].Id.ToString();
-                                        sICDVersion = "," + templist[k].Version.ToString();
-                                    }
+                                    sIDList = templist[k].Id.ToString();
+                                    sICDVersion = templist[k].Version.ToString();
                                 }
-
-                                if (!ICDList.Any(a => a.Split('~')[1] == DTO.EandMCodingICDList[j].ICD))
-                                    ICDList.Add("ASSESSMENT" + "~" + DTO.EandMCodingICDList[j].ICD + "~" + DTO.EandMCodingICDList[j].ICD_Description + "~" + sICDVersion + "~" + sPrimary + "~" + sIDList + "~" + DTO.EandMCodingICDList[j].Sequence + "~" + ",");
                                 else
                                 {
-                                    IList<string> sReomveICDDesc = ICDList.Select(a => a.Split('~')[1]).ToList();
-                                    int iIndex = sReomveICDDesc.IndexOf(DTO.EandMCodingICDList[j].ICD);
-                                    //if (iIndex > -1)
-                                    //    if (ICDList[iIndex].Split('~').Length == 8)
-                                    //    {
-                                    //        //added for 6th ICD Column Marking
-                                    //        if (ICDList[iIndex].Split('~')[ICDList[iIndex].Split('~').Length - 1].Split(',').Length < 6)
-                                    //        {
-                                    //            for (int i = 0; i < DTO.EandMCodingICDList[j].Sequence; i++)
-                                    //            {
-                                    //                if (DTO.EandMCodingICDList[j].Sequence - 1 == i)
-                                    //                    ICDList[iIndex] += DTO.EandMCodingICDList[j].Sequence;
-                                    //                else if (ICDList[iIndex].Split('~')[ICDList[iIndex].Split('~').Length - 1].Split(',').Length != DTO.EandMCodingICDList[j].Sequence)
-                                    //                    ICDList[iIndex] += ",";
-                                    //            }
-                                    //        }
-                                    //    }
+                                    sIDList += "," + templist[k].Id.ToString();
+                                    sICDVersion = "," + templist[k].Version.ToString();
                                 }
-                                aryAccessICD.Add(DTO.EandMCodingICDList[j].ICD);
                             }
-                        }
-                        #endregion
 
-                        #region EAndMCodingList
-                        DTO.EandMCodingList = new List<EAndMCoding>();
-                        if (itemDoc.GetElementsByTagName("EAndMCodingList") != null)
-                        {
-                            if (itemDoc.GetElementsByTagName("EAndMCodingList").Count > 0)
+                            if (!ICDList.Any(a => a.Split('~')[1] == DTO.EandMCodingICDList[j].ICD))
+                                ICDList.Add("ASSESSMENT" + "~" + DTO.EandMCodingICDList[j].ICD + "~" + DTO.EandMCodingICDList[j].ICD_Description + "~" + sICDVersion + "~" + sPrimary + "~" + sIDList + "~" + DTO.EandMCodingICDList[j].Sequence + "~" + ",");
+                            else
                             {
-                                xmlTagName = itemDoc.GetElementsByTagName("EAndMCodingList")[0].ChildNodes;
-                                if (xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(EAndMCoding));
-                                        EAndMCoding EAndMCoding = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EAndMCoding;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        if (EAndMCoding != null)
-                                        {
-                                            propInfo = from obji in ((EAndMCoding)EAndMCoding).GetType().GetProperties() select obji;
-
-                                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                            {
-                                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name == nodevalue.Name)
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(EAndMCoding, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(EAndMCoding, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(EAndMCoding, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(EAndMCoding, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(EAndMCoding, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(EAndMCoding, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            IList<string> ProcList = new List<string>();
-                                            if (EAndMCoding.Encounter_ID == EncounterOrHumanId && (EAndMCoding.Is_Delete == "N" || EAndMCoding.Is_Delete == ""))
-                                            {
-                                                //#region setCPTOrder
-                                                //if (CombinedSaveUpdateList != null && CombinedSaveUpdateList.Count > 0)
-                                                //{
-                                                //    IList<EAndMCoding> cptlst = CombinedSaveUpdateList.Where(a => a.Id == EAndMCoding.Id).ToList<EAndMCoding>();
-                                                //    if (cptlst != null && cptlst.Count > 0)
-                                                //        EAndMCoding.CPT_Order = cptlst[0].CPT_Order;
-                                                //}
-                                                //#endregion
-
-                                                DTO.EandMCodingList.Add(EAndMCoding);
-                                                ProcList.Add(EAndMCoding.Procedure_Code + "~" + EAndMCoding.Procedure_Code_Description + "~" + EAndMCoding.Id + "~" + EAndMCoding.Units + "~" + EAndMCoding.Modifier1 + "~" + EAndMCoding.Modifier2 + "~" + EAndMCoding.Modifier3 + "~" + EAndMCoding.Modifier4 + "~" + string.Empty + "~" + EAndMCoding.Version + "~" + EAndMCoding.Diagnosis_Pointer_1 + "~" + EAndMCoding.Diagnosis_Pointer_2 + "~" + EAndMCoding.Diagnosis_Pointer_3 + "~" + EAndMCoding.Diagnosis_Pointer_4 + "~" + EAndMCoding.Diagnosis_Pointer_5 + "~" + EAndMCoding.Diagnosis_Pointer_6);
-
-                                            }
-                                        }
-                                    }
-                                }
+                                IList<string> sReomveICDDesc = ICDList.Select(a => a.Split('~')[1]).ToList();
+                                int iIndex = sReomveICDDesc.IndexOf(DTO.EandMCodingICDList[j].ICD);
+                              
                             }
+                            aryAccessICD.Add(DTO.EandMCodingICDList[j].ICD);
                         }
-                        #endregion
-                        fs.Close();
-                        fs.Dispose();
-
                     }
                 }
-            }
-            catch (Exception Ex)
-            {
-                if (XmlText1 != null)
-                    XmlText1.Close();
+              
 
-                throw Ex;
+               
+                if (ilstEandMBlobFinal[1] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[1]).Count; iCount++)
+                    {
+                        lsteandm.Add((EAndMCoding)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
+                    }
+                    for (int i = 0; i < lsteandm.Count; i++)
+                    {
+                        IList<string> ProcList = new List<string>();
+                        if (lsteandm[i].Encounter_ID == EncounterOrHumanId && (lsteandm[i].Is_Delete == "N" || lsteandm[i].Is_Delete == ""))
+                        {
+                            //#region setCPTOrder
+                            //if (CombinedSaveUpdateList != null && CombinedSaveUpdateList.Count > 0)
+                            //{
+                            //    IList<EAndMCoding> cptlst = CombinedSaveUpdateList.Where(a => a.Id == EAndMCoding.Id).ToList<EAndMCoding>();
+                            //    if (cptlst != null && cptlst.Count > 0)
+                            //        EAndMCoding.CPT_Order = cptlst[0].CPT_Order;
+                            //}
+                            //#endregion
+
+                            DTO.EandMCodingList.Add(lsteandm[i]);
+                            ProcList.Add(lsteandm[i].Procedure_Code + "~" + lsteandm[i].Procedure_Code_Description + "~" + lsteandm[i].Id + "~" + lsteandm[i].Units + "~" + lsteandm[i].Modifier1 + "~" + lsteandm[i].Modifier2 + "~" + lsteandm[i].Modifier3 + "~" + lsteandm[i].Modifier4 + "~" + string.Empty + "~" + lsteandm[i].Version + "~" + lsteandm[i].Diagnosis_Pointer_1 + "~" + lsteandm[i].Diagnosis_Pointer_2 + "~" + lsteandm[i].Diagnosis_Pointer_3 + "~" + lsteandm[i].Diagnosis_Pointer_4 + "~" + lsteandm[i].Diagnosis_Pointer_5 + "~" + lsteandm[i].Diagnosis_Pointer_6);
+
+                        }
+
+                    }
+
+                }
+
+
+
+
             }
+
+
+
+
+
+            //FileNames = "Encounter" + "_" + EncounterOrHumanId + ".xml";
+            //strXmlFilePaths = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileNames);
+            //XmlTextReader XmlText1 = null;
+            //try
+            //{
+            //    if (File.Exists(strXmlFilePaths) == true)
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlText1 = new XmlTextReader(strXmlFilePaths);
+            //        XmlNodeList xmlTagName = null;
+            //        //  itemDoc.Load(XmlText);
+            //        using (FileStream fs = new FileStream(strXmlFilePaths, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //        {
+            //            itemDoc.Load(fs);
+
+            //            XmlText1.Close();
+
+            //            #region EandMCodingICD
+            //            DTO.EandMCodingICDList = new List<EandMCodingICD>();
+            //            if (itemDoc.GetElementsByTagName("EandMCodingICDList") != null)
+            //            {
+            //                if (itemDoc.GetElementsByTagName("EandMCodingICDList").Count > 0)
+            //                {
+            //                    xmlTagName = itemDoc.GetElementsByTagName("EandMCodingICDList")[0].ChildNodes;
+            //                    if (xmlTagName.Count > 0)
+            //                    {
+            //                        for (int j = 0; j < xmlTagName.Count; j++)
+            //                        {
+            //                            string TagName = xmlTagName[j].Name;
+            //                            XmlSerializer xmlserializer = new XmlSerializer(typeof(EandMCodingICD));
+            //                            EandMCodingICD EandMCodingICD = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EandMCodingICD;
+            //                            IEnumerable<PropertyInfo> propInfo = null;
+            //                            if (EandMCodingICD != null)
+            //                            {
+            //                                propInfo = from obji in ((EandMCodingICD)EandMCodingICD).GetType().GetProperties() select obji;
+
+            //                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                                {
+            //                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                                    {
+            //                                        foreach (PropertyInfo property in propInfo)
+            //                                        {
+            //                                            if (property.Name == nodevalue.Name)
+            //                                            {
+            //                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                    property.SetValue(EandMCodingICD, Convert.ToUInt64(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                    property.SetValue(EandMCodingICD, Convert.ToString(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                    property.SetValue(EandMCodingICD, Convert.ToDateTime(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                    property.SetValue(EandMCodingICD, Convert.ToInt32(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+            //                                                    property.SetValue(EandMCodingICD, Convert.ToDecimal(nodevalue.Value), null);
+            //                                                else
+            //                                                    property.SetValue(EandMCodingICD, nodevalue.Value, null);
+            //                                            }
+            //                                        }
+            //                                    }
+            //                                }
+            //                                if (EandMCodingICD.Encounter_ID == EncounterOrHumanId && (EandMCodingICD.Is_Delete == "N" || EandMCodingICD.Is_Delete == ""))
+            //                                {
+            //                                    DTO.EandMCodingICDList.Add(EandMCodingICD);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if (DTO.EandMCodingICDList != null)
+            //            {
+            //                DTO.EandMCodingICDList = DTO.EandMCodingICDList.OrderBy(a => a.Sequence).ToList();
+            //                for (int j = 0; j < DTO.EandMCodingICDList.Count; j++)
+            //                {
+            //                    string sPrimary = string.Empty;
+            //                    if (DTO.EandMCodingICDList[j].ICD_Category == "Primary")
+            //                    {
+            //                        sPrimary = "Y";
+            //                        IsPrimaryChecked = true;
+            //                    }
+
+            //                    var eandMICDList = from eandmICD in DTO.EandMCodingICDList where eandmICD.ICD == DTO.EandMCodingICDList[j].ICD select eandmICD;
+            //                    IList<EandMCodingICD> templist = eandMICDList.ToList<EandMCodingICD>();
+            //                    string sIDList = string.Empty;
+            //                    string sICDVersion = string.Empty;
+            //                    for (int k = 0; k < templist.Count; k++)
+            //                    {
+            //                        if (k == 0)
+            //                        {
+            //                            sIDList = templist[k].Id.ToString();
+            //                            sICDVersion = templist[k].Version.ToString();
+            //                        }
+            //                        else
+            //                        {
+            //                            sIDList += "," + templist[k].Id.ToString();
+            //                            sICDVersion = "," + templist[k].Version.ToString();
+            //                        }
+            //                    }
+
+            //                    if (!ICDList.Any(a => a.Split('~')[1] == DTO.EandMCodingICDList[j].ICD))
+            //                        ICDList.Add("ASSESSMENT" + "~" + DTO.EandMCodingICDList[j].ICD + "~" + DTO.EandMCodingICDList[j].ICD_Description + "~" + sICDVersion + "~" + sPrimary + "~" + sIDList + "~" + DTO.EandMCodingICDList[j].Sequence + "~" + ",");
+            //                    else
+            //                    {
+            //                        IList<string> sReomveICDDesc = ICDList.Select(a => a.Split('~')[1]).ToList();
+            //                        int iIndex = sReomveICDDesc.IndexOf(DTO.EandMCodingICDList[j].ICD);
+            //                        //if (iIndex > -1)
+            //                        //    if (ICDList[iIndex].Split('~').Length == 8)
+            //                        //    {
+            //                        //        //added for 6th ICD Column Marking
+            //                        //        if (ICDList[iIndex].Split('~')[ICDList[iIndex].Split('~').Length - 1].Split(',').Length < 6)
+            //                        //        {
+            //                        //            for (int i = 0; i < DTO.EandMCodingICDList[j].Sequence; i++)
+            //                        //            {
+            //                        //                if (DTO.EandMCodingICDList[j].Sequence - 1 == i)
+            //                        //                    ICDList[iIndex] += DTO.EandMCodingICDList[j].Sequence;
+            //                        //                else if (ICDList[iIndex].Split('~')[ICDList[iIndex].Split('~').Length - 1].Split(',').Length != DTO.EandMCodingICDList[j].Sequence)
+            //                        //                    ICDList[iIndex] += ",";
+            //                        //            }
+            //                        //        }
+            //                        //    }
+            //                    }
+            //                    aryAccessICD.Add(DTO.EandMCodingICDList[j].ICD);
+            //                }
+            //            }
+            //            #endregion
+
+            //            #region EAndMCodingList
+            //            DTO.EandMCodingList = new List<EAndMCoding>();
+            //            if (itemDoc.GetElementsByTagName("EAndMCodingList") != null)
+            //            {
+            //                if (itemDoc.GetElementsByTagName("EAndMCodingList").Count > 0)
+            //                {
+            //                    xmlTagName = itemDoc.GetElementsByTagName("EAndMCodingList")[0].ChildNodes;
+            //                    if (xmlTagName.Count > 0)
+            //                    {
+            //                        for (int j = 0; j < xmlTagName.Count; j++)
+            //                        {
+            //                            string TagName = xmlTagName[j].Name;
+            //                            XmlSerializer xmlserializer = new XmlSerializer(typeof(EAndMCoding));
+            //                            EAndMCoding EAndMCoding = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as EAndMCoding;
+            //                            IEnumerable<PropertyInfo> propInfo = null;
+            //                            if (EAndMCoding != null)
+            //                            {
+            //                                propInfo = from obji in ((EAndMCoding)EAndMCoding).GetType().GetProperties() select obji;
+
+            //                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                                {
+            //                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                                    {
+            //                                        foreach (PropertyInfo property in propInfo)
+            //                                        {
+            //                                            if (property.Name == nodevalue.Name)
+            //                                            {
+            //                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                    property.SetValue(EAndMCoding, Convert.ToUInt64(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                    property.SetValue(EAndMCoding, Convert.ToString(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                    property.SetValue(EAndMCoding, Convert.ToDateTime(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                    property.SetValue(EAndMCoding, Convert.ToInt32(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+            //                                                    property.SetValue(EAndMCoding, Convert.ToDecimal(nodevalue.Value), null);
+            //                                                else
+            //                                                    property.SetValue(EAndMCoding, nodevalue.Value, null);
+            //                                            }
+            //                                        }
+            //                                    }
+            //                                }
+            //                                IList<string> ProcList = new List<string>();
+            //                                if (EAndMCoding.Encounter_ID == EncounterOrHumanId && (EAndMCoding.Is_Delete == "N" || EAndMCoding.Is_Delete == ""))
+            //                                {
+            //                                    //#region setCPTOrder
+            //                                    //if (CombinedSaveUpdateList != null && CombinedSaveUpdateList.Count > 0)
+            //                                    //{
+            //                                    //    IList<EAndMCoding> cptlst = CombinedSaveUpdateList.Where(a => a.Id == EAndMCoding.Id).ToList<EAndMCoding>();
+            //                                    //    if (cptlst != null && cptlst.Count > 0)
+            //                                    //        EAndMCoding.CPT_Order = cptlst[0].CPT_Order;
+            //                                    //}
+            //                                    //#endregion
+
+            //                                    DTO.EandMCodingList.Add(EAndMCoding);
+            //                                    ProcList.Add(EAndMCoding.Procedure_Code + "~" + EAndMCoding.Procedure_Code_Description + "~" + EAndMCoding.Id + "~" + EAndMCoding.Units + "~" + EAndMCoding.Modifier1 + "~" + EAndMCoding.Modifier2 + "~" + EAndMCoding.Modifier3 + "~" + EAndMCoding.Modifier4 + "~" + string.Empty + "~" + EAndMCoding.Version + "~" + EAndMCoding.Diagnosis_Pointer_1 + "~" + EAndMCoding.Diagnosis_Pointer_2 + "~" + EAndMCoding.Diagnosis_Pointer_3 + "~" + EAndMCoding.Diagnosis_Pointer_4 + "~" + EAndMCoding.Diagnosis_Pointer_5 + "~" + EAndMCoding.Diagnosis_Pointer_6);
+
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            #endregion
+            //            fs.Close();
+            //            fs.Dispose();
+
+            //        }
+            //    }
+            //}
+            //catch (Exception Ex)
+            //{
+            //    if (XmlText1 != null)
+            //        XmlText1.Close();
+
+            //    throw Ex;
+            //}
 
             #endregion
             if (ilstUpdateList != null)
@@ -3435,7 +3998,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             EncounterOrHumanId = SaveListCPT[0].Encounter_ID;
                         else
                             if (UpdateListCPT != null && UpdateListCPT.Count > 0)
-                                EncounterOrHumanId = UpdateListCPT[0].Encounter_ID;
+                            EncounterOrHumanId = UpdateListCPT[0].Encounter_ID;
                         iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveListCPT, ref UpdateListCPT, null, MySession, string.Empty, true, true, EncounterOrHumanId, string.Empty, ref XMLObj);
 
                         if (iResult == 2)
@@ -3484,7 +4047,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 EncounterOrHumanId = eandmICDList[0].Encounter_ID;
                             else
                                 if (UpdateEMICDList != null && UpdateEMICDList.Count > 0)
-                                    EncounterOrHumanId = UpdateEMICDList[0].Encounter_ID;
+                                EncounterOrHumanId = UpdateEMICDList[0].Encounter_ID;
 
                             iResult = eandmicdMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref eandmICDList, ref UpdateEMICDList, null, MySession, string.Empty, true, true, EncounterOrHumanId, string.Empty, ref XMLObj);
                             // iResult = eandmicdMngr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveEMICDList, ref UpdateEMICDList, null, MySession, string.Empty, true, true, EncounterOrHumanId, string.Empty, ref XMLObj);
@@ -3847,136 +4410,138 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         //    }
                         //}
 
-                        if (bEandMCodingConsistent && bEandMCodingICDConsistent && bEandMCodingICDafterDeleteConsistent && bEncounterConsistent)
+                        //if (bEandMCodingConsistent && bEandMCodingICDConsistent && bEandMCodingICDafterDeleteConsistent && bEncounterConsistent)
+                        //{
+                        if (XMLObj != null)
                         {
-                            if (XMLObj != null && XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                            //  XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                            int trycount = 0;
+                        trytosaveagain:
+                            try
                             {
-                              //  XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                int trycount = 0;
-                            trytosaveagain:
-                                try
+                                //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                WriteBlob(EncounterOrHumanId, XMLObj.itemDoc, MySession, SaveListCPT, UpdateListCPT, null, XMLObj, false);
+                            }
+                            catch (Exception xmlexcep)
+                            {
+                                trycount++;
+                                if (trycount <= 3)
                                 {
-                                    XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                }
-                                catch (Exception xmlexcep)
-                                {
-                                    trycount++;
-                                    if (trycount <= 3)
+                                    int TimeMilliseconds = 0;
+                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                                    Thread.Sleep(TimeMilliseconds);
+                                    string sMsg = string.Empty;
+                                    string sExStackTrace = string.Empty;
+
+                                    string version = "";
+                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                                    string[] server = version.Split('|');
+                                    string serverno = "";
+                                    if (server.Length > 1)
+                                        serverno = server[1].Trim();
+
+                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                        sMsg = xmlexcep.InnerException.Message;
+                                    else
+                                        sMsg = xmlexcep.Message;
+
+                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                        sExStackTrace = xmlexcep.StackTrace;
+
+                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    string ConnectionData;
+                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
                                     {
-                                        int TimeMilliseconds = 0;
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                        Thread.Sleep(TimeMilliseconds);
-                                        string sMsg = string.Empty;
-                                        string sExStackTrace = string.Empty;
-
-                                        string version = "";
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                        string[] server = version.Split('|');
-                                        string serverno = "";
-                                        if (server.Length > 1)
-                                            serverno = server[1].Trim();
-
-                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                            sMsg = xmlexcep.InnerException.Message;
-                                        else
-                                            sMsg = xmlexcep.Message;
-
-                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                            sExStackTrace = xmlexcep.StackTrace;
-
-                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                        string ConnectionData;
-                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
                                         {
-                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                            cmd.Connection = con;
+                                            try
                                             {
-                                                cmd.Connection = con;
-                                                try
-                                                {
-                                                    con.Open();
-                                                    cmd.ExecuteNonQuery();
-                                                    con.Close();
-                                                }
-                                                catch
-                                                {
-                                                }
+                                                con.Open();
+                                                cmd.ExecuteNonQuery();
+                                                con.Close();
+                                            }
+                                            catch
+                                            {
                                             }
                                         }
-                                        goto trytosaveagain;
                                     }
+                                    goto trytosaveagain;
                                 }
                             }
-                            if (XMLObjHuman != null && XMLObjHuman.strXmlFilePath != null && XMLObjHuman.strXmlFilePath != "")
-                            {
-                              //  XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
-                                int trycount = 0;
-                            trytosaveagain:
-                                try
-                                {
-                                    XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
-                                }
-                                catch (Exception xmlexcep)
-                                {
-                                    trycount++;
-                                    if (trycount <= 3)
-                                    {
-                                        int TimeMilliseconds = 0;
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-                                        Thread.Sleep(TimeMilliseconds);
-                                        string sMsg = string.Empty;
-                                        string sExStackTrace = string.Empty;
-
-                                        string version = "";
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-                                        string[] server = version.Split('|');
-                                        string serverno = "";
-                                        if (server.Length > 1)
-                                            serverno = server[1].Trim();
-
-                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                            sMsg = xmlexcep.InnerException.Message;
-                                        else
-                                            sMsg = xmlexcep.Message;
-
-                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                            sExStackTrace = xmlexcep.StackTrace;
-
-                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                        string ConnectionData;
-                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                        {
-                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                            {
-                                                cmd.Connection = con;
-                                                try
-                                                {
-                                                    con.Open();
-                                                    cmd.ExecuteNonQuery();
-                                                    con.Close();
-                                                }
-                                                catch
-                                                {
-                                                }
-                                            }
-                                        }
-                                        goto trytosaveagain;
-                                    }
-                                }
-                            }
-                            trans.Commit();
                         }
-                        else
-                            throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
+                        if (XMLObjHuman != null)
+                        {
+                            //  XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
+                            int trycount = 0;
+                        trytosaveagain:
+                            try
+                            {
+                                //XMLObjHuman.itemDoc.Save(XMLObjHuman.strXmlFilePath);
+                                //WriteBlob(EncounterOrHumanId, XMLObjHuman.itemDoc, MySession, SaveListCPT, UpdateListCPT, null, XMLObjHuman, false);
+                            }
+                            catch (Exception xmlexcep)
+                            {
+                                trycount++;
+                                if (trycount <= 3)
+                                {
+                                    int TimeMilliseconds = 0;
+                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+                                    Thread.Sleep(TimeMilliseconds);
+                                    string sMsg = string.Empty;
+                                    string sExStackTrace = string.Empty;
+
+                                    string version = "";
+                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+                                    string[] server = version.Split('|');
+                                    string serverno = "";
+                                    if (server.Length > 1)
+                                        serverno = server[1].Trim();
+
+                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                        sMsg = xmlexcep.InnerException.Message;
+                                    else
+                                        sMsg = xmlexcep.Message;
+
+                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                        sExStackTrace = xmlexcep.StackTrace;
+
+                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    string ConnectionData;
+                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                    {
+                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                        {
+                                            cmd.Connection = con;
+                                            try
+                                            {
+                                                con.Open();
+                                                cmd.ExecuteNonQuery();
+                                                con.Close();
+                                            }
+                                            catch
+                                            {
+                                            }
+                                        }
+                                    }
+                                    goto trytosaveagain;
+                                }
+                            }
+                        }
+                        trans.Commit();
+                        //}
+                        //else
+                        //    throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
 
                     }
                     catch (NHibernate.Exceptions.GenericADOException ex)

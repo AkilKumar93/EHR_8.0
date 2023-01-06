@@ -115,23 +115,48 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             string[] lstStatus ={"BP-Sitting Sys/Dia Status","BP-Sitting$ Sys/Dia Status" ,"BP-Standing Sys/Dia Status",
                                  "BP-Standing$ Sys/Dia Status","BP-Lying Sys/Dia Status","BP-Lying$ Sys/Dia Status"};
             var Status = string.Empty;
-            string humanXMl = "Human_" + ulHumanId + ".xml";
-            string xmlpath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["XMLPath"], humanXMl);
-            if (File.Exists(xmlpath))
+
+            IList<string> ilstplanTagList = new List<string>();
+            ilstplanTagList.Add("PatientResultsList");
+            IList<PatientResults> lstvitals = new List<PatientResults>();
+
+
+            IList<object> ilstplanlobFinal = new List<object>();
+            ilstplanlobFinal = ReadBlob(ulHumanId, ilstplanTagList);
+
+            if (ilstplanlobFinal != null && ilstplanlobFinal.Count > 0)
             {
-                XmlDocument xmldoc = new XmlDocument();
-                XmlTextReader xmltxtReader = new XmlTextReader(xmlpath);
-                xmldoc.Load(xmltxtReader);
-                xmltxtReader.Close();
-                XmlNodeList xmlnodeList = xmldoc.GetElementsByTagName("PatientResultsList");
-                if (xmlnodeList != null && xmlnodeList.Count > 0 && xmlnodeList[0].ChildNodes != null && xmlnodeList[0].ChildNodes.Count > 0)
+                if (ilstplanlobFinal[0] != null)
                 {
-                    Status = xmlnodeList[0].ChildNodes.Cast<XmlNode>().Where(a => a.Attributes["Encounter_ID"].Value == ulEncounterId.ToString()
-                             && lstStatus.Contains(a.Attributes["Loinc_Observation"].Value) && a.Attributes["Value"].Value.Trim() != ""
-                             && a.Attributes["Results_Type"].Value.ToUpper() == "VITALS").OrderByDescending(a => a.Attributes["Captured_date_and_time"].Value)
-                        .Select(a => a.Attributes["Value"].Value).FirstOrDefault();
+                    for (int iCount = 0; iCount < ((IList<object>)ilstplanlobFinal[0]).Count; iCount++)
+                    {
+                        lstvitals.Add((PatientResults)((IList<object>)ilstplanlobFinal[0])[iCount]);
+                    }
                 }
             }
+            if(lstvitals.Count>0)
+            Status = lstvitals.Where(a => a.Encounter_ID == ulEncounterId && lstStatus.Contains(a.Loinc_Observation) && a.Results_Type.ToUpper() == "VITALS" && a.Value != "").ToList<PatientResults>().OrderByDescending(m => m.Captured_date_and_time).Select(z => z.Value).FirstOrDefault();
+          
+            
+            //string humanXMl = "Human_" + ulHumanId + ".xml";
+            //string xmlpath = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["XMLPath"], humanXMl);
+            //if (File.Exists(xmlpath))
+            //{
+            //    XmlDocument xmldoc = new XmlDocument();
+            //    XmlTextReader xmltxtReader = new XmlTextReader(xmlpath);
+            //    xmldoc.Load(xmltxtReader);
+            //    xmltxtReader.Close();
+            //    XmlNodeList xmlnodeList = xmldoc.GetElementsByTagName("PatientResultsList");
+            //    if (xmlnodeList != null && xmlnodeList.Count > 0 && xmlnodeList[0].ChildNodes != null && xmlnodeList[0].ChildNodes.Count > 0)
+            //    {
+            //        Status = xmlnodeList[0].ChildNodes.Cast<XmlNode>().Where(a => a.Attributes["Encounter_ID"].Value
+            //        == ulEncounterId.ToString()
+            //                 && lstStatus.Contains(a.Attributes["Loinc_Observation"].Value) &&
+            //                 a.Attributes["Value"].Value.Trim() != ""
+            //                 && a.Attributes["Results_Type"].Value.ToUpper() == "VITALS").OrderByDescending(a => a.Attributes["Captured_date_and_time"].Value)
+            //            .Select(a => a.Attributes["Value"].Value).FirstOrDefault();
+            //    }
+            //}
             #endregion
             if (Status != null && Status.ToString().Trim() != string.Empty)
                 BPStatusValue = Status;
@@ -361,6 +386,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 trytosaveagain:
                     try
                     {
+                    WriteBlob(Encounter_id, XMLObj.itemDoc, MySession, SaveList, UpdateList, null, XMLObj, false);
                         //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                     }
                     catch (Exception xmlexcep)

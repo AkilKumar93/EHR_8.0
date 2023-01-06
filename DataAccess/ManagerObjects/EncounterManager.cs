@@ -9814,10 +9814,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     ulEncId = SaveEncounter[0].Id;
                     //Crerate Encounter xml when save Phone Encounter 
-                    string EncounterFileName = "Encounter" + "_" + ulEncId + ".xml";
-                    string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
-                    if (File.Exists(strXmlEncounterFilePath) == false)
-                    {
+                   
+                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                    //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ulEncId);
+                    //if (ilstEncounterBlob.Count < 0)
+                    //{ 
+                    //    string EncounterFileName = "Encounter" + "_" + ulEncId + ".xml";
+                    //string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
+                    //if (File.Exists(strXmlEncounterFilePath) == false)
+                    //{
                         // string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                         //string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
                         string sXmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template_XML\\Base_XML.xml");
@@ -9864,14 +9869,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                         }
 
-
-                        itemDoc.Save(strXmlEncounterFilePath);
-                    }
-                    GenerateXml objXml = new GenerateXml();
-                    List<object> lstObj = SaveEncounter.Cast<object>().ToList();
+                        //itemDoc.Save(strXmlEncounterFilePath);
+                       
+                        WriteBlob(ulEncId, itemDoc, MySession, SaveEncounter, null, null, null, true);
+                    trans.Commit();
+                    trans = MySession.BeginTransaction();
+                    //GenerateXml objXml = new GenerateXml();
+                    // List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     //objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
-                    objXml.itemDoc = null;
-                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, objXml);
+                    //objXml.itemDoc = null;
+                    // XMLObj.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, XMLObj);
                 }
 
                 if (SavePlan != null && SavePlan.Count > 0)
