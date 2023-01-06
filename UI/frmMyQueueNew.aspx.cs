@@ -689,55 +689,93 @@ namespace Acurus.Capella.UI
                         sLocal_Time = apptDt.ToString("yyyy-MM-dd hh:mm:ss tt");
                     }
 
-                    string FileName = "Human" + "_" + data[0] + ".xml";
-                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    //string FileName = "Human" + "_" + data[0] + ".xml";
+                    //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
                     XmlTextReader XmlText = null;
 
-                    if (File.Exists(strXmlFilePath) == true)
+                    XmlDocument xmlDoc = new XmlDocument();
+                    string sXMLContent = String.Empty;
+
+                    //if (File.Exists(strXmlFilePath) == true)
+                    //{
+                    try
                     {
-                        try
-                        {
 
 
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlText = new XmlTextReader(strXmlFilePath);
-                            itemDoc.Load(XmlText);
-                            XmlText.Close();
+                            //XmlDocument itemDoc = new XmlDocument();
+                            //XmlText = new XmlTextReader(strXmlFilePath);
+                            //itemDoc.Load(XmlText);
+                            //XmlText.Close();
+
+                            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                            IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
+                            if (ilstHumanBlob.Count > 0)
+                            {
+                                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                                xmlDoc.LoadXml(sXMLContent);
+                            }
+                            else
+                            {
+                                throw new Exception("Human XML is not found");
+                            }
+                        
+
                         }
                         catch (Exception ex)
                         {
-                            XmlText.Close();
+                            //sXmlText.Close();
                             UtilityManager.GenerateXML(data[0], "Human");
                             goto loop;
                         }
-                    }
+                //}
 
                 loop:
 
-                     FileName = "Encounter" + "_" + data[1] + ".xml";
-                     strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    //FileName = "Encounter" + "_" + data[1] + ".xml";
+                    //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-                   // XmlTextReader XmlText = null;
+                    // XmlTextReader XmlText = null;
 
-                    if (File.Exists(strXmlFilePath) == true)
+                    // if (File.Exists(strXmlFilePath) == true)
+                    // {
+                    try
                     {
-                        try
-                        {
 
 
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlText = new XmlTextReader(strXmlFilePath);
-                            itemDoc.Load(XmlText);
-                            XmlText.Close();
-                        }
-                        catch (Exception ex)
+                        //XmlDocument itemDoc = new XmlDocument();
+                        //XmlText = new XmlTextReader(strXmlFilePath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
+
+                        EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                        IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(data[1]));
+                        if (ilstEncounterBlob.Count > 0)
                         {
-                            XmlText.Close();
-                            UtilityManager.GenerateXML(data[1], "Encounter");
-                            goto ln;
+                            try
+                            {
+                                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                                xmlDoc.LoadXml(sXMLContent);
+                            }
+                            catch
+                            {
+                                throw new Exception("Encounter XML is invalid");
+                            }
                         }
+                        else
+                        {
+                            throw new Exception("Encounter XML is not found");
+                        }
+
+
                     }
+                    catch (Exception ex)
+                    {
+                        //XmlText.Close();
+                        UtilityManager.GenerateXML(data[1], "Encounter");
+                        goto ln;
+                    }
+                    //}
 
                 ln:
                     EncMngr.UpdateDateOfService(Convert.ToUInt64(data[1]), dt, string.Empty, sLocal_Time);
@@ -1239,29 +1277,44 @@ namespace Acurus.Capella.UI
                 //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue ProcessGenEncounter UpdateEncounterforMyQueue DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
 
 
-                string FileName = "Human" + "_" + data[0] + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //string FileName = "Human" + "_" + data[0] + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                XmlDocument xmlDoc = new XmlDocument();
+                string sXMLContent = String.Empty;
 
-                XmlTextReader XmlText = null;
+                //XmlTextReader XmlText = null;
 
-                if (File.Exists(strXmlFilePath) == true)
-                {
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
                     try
                     {
 
 
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlText = new XmlTextReader(strXmlFilePath);
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
+                        //XmlDocument itemDoc = new XmlDocument();
+                        //XmlText = new XmlTextReader(strXmlFilePath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
+
+                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                        IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
+                        if (ilstHumanBlob.Count > 0)
+                        {
+                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                            xmlDoc.LoadXml(sXMLContent);
+                        }
+                        else
+                        {
+                            throw new Exception("Human XML is not found");
+                        }
+
                     }
                     catch (Exception ex)
                     {
-                        XmlText.Close();
+                       // XmlText.Close();
                         UtilityManager.GenerateXML(data[0], "Human");
                         goto ln;
                     }
-                }
+                //}
 
             ln:
                 if (ClientSession.UserCurrentProcess == "MA_PROCESS")

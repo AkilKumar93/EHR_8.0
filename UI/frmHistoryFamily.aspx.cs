@@ -103,393 +103,98 @@ namespace Acurus.Capella.UI
                 //Session["stFieldLook"] = objStaticLookupManager.getStaticLookupByFieldName("RELATION", "Sort_Order");//comment by balaji.TJ
             }
             FamilyDTO objFamilyDTO = new FamilyDTO();
-            //string FileName = "Base_XML" + "_" + "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-            if (File.Exists(strXmlFilePath) == true)
+            #region "Code Modified by Balaji.TJ 2023-01-05"
+
+            IList<string> ilstFamilyHisList = new List<string>();
+            ilstFamilyHisList.Add("FamilyHistoryList");
+            ilstFamilyHisList.Add("FamilyHistoryMasterList");
+            ilstFamilyHisList.Add("FamilyDiseaseList");
+            ilstFamilyHisList.Add("FamilyDiseaseMasterList"); 
+            ilstFamilyHisList.Add("GeneralNotesFamilyHistoryList");
+
+            IList<object> ilstFamilyHisBlobFinal = new List<object>();
+            ilstFamilyHisBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstFamilyHisList);
+            IList<FamilyHistory> lstFmlyHis = new List<FamilyHistory>();
+            IList<FamilyHistoryMaster> lstFmlyHisMasterTemp = new List<FamilyHistoryMaster>();
+            IList<FamilyHistoryMaster> lstFmlyHisMaster = new List<FamilyHistoryMaster>();
+            IList<FamilyDisease> lstFmlyDisease = new List<FamilyDisease>();
+            IList<FamilyDiseaseMaster> lstFmlyDiseaseMaster = new List<FamilyDiseaseMaster>();
+            IList<GeneralNotes> lstGenNotes = new List<GeneralNotes>();
+
+
+            if (ilstFamilyHisBlobFinal != null && ilstFamilyHisBlobFinal.Count > 0)
             {
-                IList<FamilyHistory> lstFmlyHis = new List<FamilyHistory>();
-                IList<FamilyDisease> lstFmlyDisease = new List<FamilyDisease>();
-                IList<FamilyDiseaseMaster> lstFmlyDiseaseMaster = new List<FamilyDiseaseMaster>();
-                IList<GeneralNotes> lstGenNotes = new List<GeneralNotes>();
-                IList<FamilyHistoryMaster> lstFmlyHisMaster = new List<FamilyHistoryMaster>();
-                IList<FamilyHistoryMaster> lstFmlyHisMasterTemp = new List<FamilyHistoryMaster>();
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                //   itemDoc.Load(XmlText);
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstFamilyHisBlobFinal[0] != null && ((IList<object>)ilstFamilyHisBlobFinal[0]).Count > 0)
                 {
-                    itemDoc.Load(fs);
-
-                    XmlText.Close();
-
-
-                    if (itemDoc.GetElementsByTagName("FamilyHistoryList")[0] != null)
+                    for (int i = 0; i < ((IList<object>)ilstFamilyHisBlobFinal[0]).Count; i++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("FamilyHistoryList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyHistory));
-                                FamilyHistory objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyHistory;
-
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((FamilyHistory)objHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null && propInfo.Count() > 0) //added by balaji 2015-11-18
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                lstFmlyHis.Add(objHistory);
-                            }
-                        }
-                    }
-                    //if (lstFmlyHis != null && lstFmlyHis.Count() == 0)
-                    //{
-                    if (itemDoc.GetElementsByTagName("FamilyHistoryMasterList")[0] != null)
+                        lstFmlyHis.Add((FamilyHistory)((IList<object>)ilstFamilyHisBlobFinal[0])[i]);                      
+                    }                   
+                }
+                if (lstFmlyHis != null && lstFmlyHis.Count > 0)
+                {
+                    IList<FamilyHistory> lstHisCurrEnc = new List<FamilyHistory>();
+                    lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == ClientSession.EncounterId select item).ToList<FamilyHistory>();
+                    if (lstHisCurrEnc != null && lstHisCurrEnc.Count > 0)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("FamilyHistoryMasterList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyHistoryMaster));
-                                FamilyHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyHistoryMaster;
-
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((FamilyHistoryMaster)objHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null && propInfo.Count() > 0) //added by balaji 2015-11-18
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                lstFmlyHisMasterTemp.Add(objHistory);
-                                if (lstFmlyHisMasterTemp.Count > 0)
-                                {
-                                    lstFmlyHisMaster = lstFmlyHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
-                                    Session["FamilyHistoryMaster"] = lstFmlyHisMaster;
-                                    objFamilyDTO.Family_History_Master = lstFmlyHisMaster;
-
-                                }
-
-                            }
-                        }
+                        objFamilyDTO.Family_History = lstHisCurrEnc;
+                        bHistoryFromPrevEnc = false;
                     }
-                    // }
-                    if (lstFmlyHis != null && lstFmlyHis.Count > 0)
+                }
+                if (ilstFamilyHisBlobFinal[1] != null && ((IList<object>)ilstFamilyHisBlobFinal[1]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstFamilyHisBlobFinal[1]).Count; i++)
                     {
-                        IList<FamilyHistory> lstHisCurrEnc = new List<FamilyHistory>();
-                        lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == ClientSession.EncounterId select item).ToList<FamilyHistory>();
-                        if (lstHisCurrEnc != null && lstHisCurrEnc.Count > 0)
-                        {
-                            objFamilyDTO.Family_History = lstHisCurrEnc;
-                            bHistoryFromPrevEnc = false;
-                        }
-                        //else
-                        //{
-                        //    //ulong maxEncId = 0;
-                        //    //IList<ulong> lstEncId = (from item in lstFmlyHis select item.Encounter_Id).Distinct().ToList<ulong>();
-                        //    //if(lstEncId.Count>0)
-                        //    //maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                        //    //foreach (ulong item in lstEncId.ToList())
-                        //    //    if (item > maxEncId && item < ClientSession.EncounterId)
-                        //    //        maxEncId = item;
-                        //    //lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == maxEncId select item).ToList<FamilyHistory>();
-
-                        //    if (lstFmlyHisMaster != null && lstFmlyHisMaster.Count() > 0)
-                        //    {
-                        //        foreach (FamilyHistoryMaster objMaster in lstFmlyHisMaster)
-                        //        {
-                        //            FamilyHistory objtempFH = new FamilyHistory();
-                        //            objtempFH.Human_ID = objMaster.Human_ID;
-                        //            objtempFH.RelationShip = objMaster.RelationShip;
-                        //            objtempFH.Age = objMaster.Age;
-                        //            objtempFH.Status = objMaster.Status;
-                        //            objtempFH.Cause_Of_Death = objMaster.Cause_Of_Death;
-                        //            objtempFH.Created_By = ClientSession.UserName;
-                        //            objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
-                        //            objtempFH.Encounter_Id = ClientSession.EncounterId;
-                        //            lstHisCurrEnc.Add(objtempFH);
-                        //        }
-                        //        objFamilyDTO.Family_History = lstHisCurrEnc;
-
-                        //    }
-                        //    bHistoryFromPrevEnc = true;
-                        //}
+                        lstFmlyHisMasterTemp.Add((FamilyHistoryMaster)((IList<object>)ilstFamilyHisBlobFinal[1])[i]);
                     }
-                    //else
-                    //{
-                    //    if (lstFmlyHisMaster != null && lstFmlyHisMaster.Count() > 0)
-                    //    {
-                    //        List<FamilyHistory> lstHisCurrEnc = new List<FamilyHistory>();
-                    //        foreach (FamilyHistoryMaster objMaster in lstFmlyHisMaster)
-                    //        {
-                    //            FamilyHistory objtempFH = new FamilyHistory();
-                    //            objtempFH.Human_ID = objMaster.Human_ID;
-                    //            objtempFH.RelationShip = objMaster.RelationShip;
-                    //            objtempFH.Age = objMaster.Age;
-                    //            objtempFH.Status = objMaster.Status;
-                    //            objtempFH.Cause_Of_Death = objMaster.Cause_Of_Death;
-                    //            objtempFH.Created_By = ClientSession.UserName;
-                    //            objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
-                    //            objtempFH.Encounter_Id = ClientSession.EncounterId;
-                    //            lstHisCurrEnc.Add(objtempFH);
-                    //        }
-                    //        objFamilyDTO.Family_History = lstHisCurrEnc;
-
-                    //    }
-                    //    else
-                    //        objFamilyDTO.Family_History = lstFmlyHis;
-                    //}
-
-                    #region Commmented
-                    //else
-                    //{
-
-                    // Session["FamilyDTO"] = objFamilyHistoryManager.GetFamilyHistory(ClientSession.HumanId, ClientSession.EncounterId);
-
-                    //}
-                    //
-                    #endregion
-                    if (itemDoc.GetElementsByTagName("FamilyDiseaseList")[0] != null)
+                    if (lstFmlyHisMasterTemp.Count > 0)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("FamilyDiseaseList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyDisease));
-                                FamilyDisease objDisease = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyDisease;
-                                IEnumerable<PropertyInfo> propInfo = null;
-
-                                propInfo = from obji in ((FamilyDisease)objDisease).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null && propInfo.Count() > 0)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objDisease, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objDisease, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objDisease, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objDisease, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objDisease, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                lstFmlyDisease.Add(objDisease);
-                            }
-                        }
+                        lstFmlyHisMaster = lstFmlyHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
+                        Session["FamilyHistoryMaster"] = lstFmlyHisMaster;
+                        objFamilyDTO.Family_History_Master = lstFmlyHisMaster;
                     }
-
-                    if (lstFmlyDisease != null && lstFmlyDisease.Count > 0)
+                }
+                
+                if (ilstFamilyHisBlobFinal[2] != null && ((IList<object>)ilstFamilyHisBlobFinal[2]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstFamilyHisBlobFinal[2]).Count; i++)
                     {
-                        IList<FamilyDisease> lstDisCurrEnc = new List<FamilyDisease>();
-                        for (int i = 0; i < objFamilyDTO.Family_History.Count; i++)
-                        {
-                            lstDisCurrEnc = lstDisCurrEnc.Concat((from item in lstFmlyDisease where item.Family_History_ID == objFamilyDTO.Family_History[i].Id select item).ToList<FamilyDisease>()).ToList<FamilyDisease>();
-                        }
-                        if (lstDisCurrEnc != null && lstDisCurrEnc.Count > 0)
-                            objFamilyDTO.Family_Disease = lstDisCurrEnc;
-                        else
-                            objFamilyDTO.Family_Disease = new List<FamilyDisease>();
+                        lstFmlyDisease.Add((FamilyDisease)((IList<object>)ilstFamilyHisBlobFinal[2])[i]);
+                    }                    
+                }
+
+                if (lstFmlyDisease != null && lstFmlyDisease.Count > 0)
+                {
+                    IList<FamilyDisease> lstDisCurrEnc = new List<FamilyDisease>();
+                    for (int i = 0; i < objFamilyDTO.Family_History.Count; i++)
+                    {
+                        lstDisCurrEnc = lstDisCurrEnc.Concat((from item in lstFmlyDisease where item.Family_History_ID == objFamilyDTO.Family_History[i].Id select item).ToList<FamilyDisease>()).ToList<FamilyDisease>();
                     }
+                    if (lstDisCurrEnc != null && lstDisCurrEnc.Count > 0)
+                        objFamilyDTO.Family_Disease = lstDisCurrEnc;
                     else
+                        objFamilyDTO.Family_Disease = new List<FamilyDisease>();
+                }
+                else
+                {
+                    objFamilyDTO.Family_Disease = lstFmlyDisease;
+                }
+
+                if (ilstFamilyHisBlobFinal[3] != null && ((IList<object>)ilstFamilyHisBlobFinal[3]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstFamilyHisBlobFinal[3]).Count; i++)
                     {
-                        objFamilyDTO.Family_Disease = lstFmlyDisease;
+                        lstFmlyDiseaseMaster.Add((FamilyDiseaseMaster)((IList<object>)ilstFamilyHisBlobFinal[3])[i]);
                     }
-
-                    //if (lstFmlyDisease != null && lstFmlyDisease.Count == 0)
-                    //{
-                        //Disease Master
-                        if (itemDoc.GetElementsByTagName("FamilyDiseaseMasterList")[0] != null)
-                        {
-                            xmlTagName = itemDoc.GetElementsByTagName("FamilyDiseaseMasterList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyDiseaseMaster));
-                                    FamilyDiseaseMaster objDisease = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyDiseaseMaster;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-
-                                    propInfo = from obji in ((FamilyDiseaseMaster)objDisease).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            if (propInfo != null && propInfo.Count() > 0)
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(objDisease, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(objDisease, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(objDisease, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(objDisease, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(objDisease, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    lstFmlyDiseaseMaster.Add(objDisease);
-                                    objFamilyDTO.Family_Disease_Master = lstFmlyDiseaseMaster;
-                                }
-                            }
-                        }
-                        //if (lstFmlyDiseaseMaster != null && lstFmlyDiseaseMaster.Count > 0)
-                        //{
-                        //    IList<FamilyDisease> lstDisCurrEnc = new List<FamilyDisease>();
-                        //    IList<FamilyDiseaseMaster> lstDisCurrEncMas = new List<FamilyDiseaseMaster>();
-                        //    //for (int i = 0; i < objFamilyDTO.Family_History.Count; i++)
-                        //    //{
-                        //    //    lstDisCurrEncMas = lstDisCurrEncMas.Concat((from item in lstFmlyDiseaseMaster where item.Family_History_ID == objFamilyDTO.Family_History[i].Id select item).ToList<FamilyDiseaseMaster>()).ToList<FamilyDiseaseMaster>();
-                        //    //}
-                        //    for (int i = 0; i < objFamilyDTO.Family_History_Master.Count; i++)
-                        //    {
-                        //        lstDisCurrEncMas = lstDisCurrEncMas.Concat((from item in lstFmlyDiseaseMaster where item.Family_History_Master_ID == objFamilyDTO.Family_History_Master[i].Id select item).ToList<FamilyDiseaseMaster>()).ToList<FamilyDiseaseMaster>();
-                        //    }
-                        //    if (lstDisCurrEncMas != null && lstDisCurrEncMas.Count > 0)
-                        //    {
-                        //        foreach (FamilyDiseaseMaster objMaster in lstDisCurrEncMas)
-                        //        {
-                        //            FamilyDisease objtempFH = new FamilyDisease();
-                        //            objtempFH.Human_ID = objMaster.Human_ID;
-                        //            objtempFH.Disease = objMaster.Disease;
-                        //            objtempFH.Created_By = ClientSession.UserName;
-                        //            objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
-                        //            lstDisCurrEnc.Add(objtempFH);
-                        //        }
-                        //        objFamilyDTO.Family_Disease = lstDisCurrEnc;
-                        //    }
-                        //    else
-                        //        objFamilyDTO.Family_Disease = new List<FamilyDisease>();
-                        //}
-                        //else
-                        //{
-                        //    objFamilyDTO.Family_Disease = lstFmlyDisease;
-                        //}
-                    //}
-                    //
-                    if (itemDoc.GetElementsByTagName("GeneralNotesFamilyHistoryList")[0] != null)
+                    objFamilyDTO.Family_Disease_Master = lstFmlyDiseaseMaster;
+                }
+                if (ilstFamilyHisBlobFinal[4] != null && ((IList<object>)ilstFamilyHisBlobFinal[4]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstFamilyHisBlobFinal[4]).Count; i++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesFamilyHistoryList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                                GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
-                                IEnumerable<PropertyInfo> propInfo = null;
-
-                                propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null && propInfo.Count() > 0)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(generalnotes, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                lstGenNotes.Add(generalnotes);
-                            }
-                        }
-                    }
-                    fs.Close();
-                    fs.Dispose();
+                        lstGenNotes.Add((GeneralNotes)((IList<object>)ilstFamilyHisBlobFinal[4])[i]);
+                    }                    
                 }
                 if (lstGenNotes != null && lstGenNotes.Count > 0)
                 {
@@ -514,11 +219,432 @@ namespace Acurus.Capella.UI
                             objFamilyDTO.objGeneralNotes = lstGenCurrEnc[0];
                         }
                     }
-                }
-
-                Session["FamilyDTO"] = objFamilyDTO;
+                }                
             }
+            Session["FamilyDTO"] = objFamilyDTO;
 
+            #endregion
+
+
+            #region "Code comment by Balaji.TJ 2023-01-05"
+            ////string FileName = "Base_XML" + "_" + "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            ///**/
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    IList<FamilyHistory> lstFmlyHis = new List<FamilyHistory>();
+            //    IList<FamilyDisease> lstFmlyDisease = new List<FamilyDisease>();
+            //    IList<FamilyDiseaseMaster> lstFmlyDiseaseMaster = new List<FamilyDiseaseMaster>();
+            //    IList<GeneralNotes> lstGenNotes = new List<GeneralNotes>();
+            //    IList<FamilyHistoryMaster> lstFmlyHisMaster = new List<FamilyHistoryMaster>();
+            //    IList<FamilyHistoryMaster> lstFmlyHisMasterTemp = new List<FamilyHistoryMaster>();
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    //   itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+
+
+            //        if (itemDoc.GetElementsByTagName("FamilyHistoryList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("FamilyHistoryList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyHistory));
+            //                    FamilyHistory objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyHistory;
+
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((FamilyHistory)objHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null && propInfo.Count() > 0) //added by balaji 2015-11-18
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(objHistory, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+            //                    lstFmlyHis.Add(objHistory);
+            //                }
+            //            }
+            //        }
+            //        //if (lstFmlyHis != null && lstFmlyHis.Count() == 0)
+            //        //{
+            //        if (itemDoc.GetElementsByTagName("FamilyHistoryMasterList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("FamilyHistoryMasterList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyHistoryMaster));
+            //                    FamilyHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyHistoryMaster;
+
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((FamilyHistoryMaster)objHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null && propInfo.Count() > 0) //added by balaji 2015-11-18
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(objHistory, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+            //                    lstFmlyHisMasterTemp.Add(objHistory);
+            //                    if (lstFmlyHisMasterTemp.Count > 0)
+            //                    {
+            //                        lstFmlyHisMaster = lstFmlyHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
+            //                        Session["FamilyHistoryMaster"] = lstFmlyHisMaster;
+            //                        objFamilyDTO.Family_History_Master = lstFmlyHisMaster;
+
+            //                    }
+
+            //                }
+            //            }
+            //        }
+            //        // }
+            //        if (lstFmlyHis != null && lstFmlyHis.Count > 0)
+            //        {
+            //            IList<FamilyHistory> lstHisCurrEnc = new List<FamilyHistory>();
+            //            lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == ClientSession.EncounterId select item).ToList<FamilyHistory>();
+            //            if (lstHisCurrEnc != null && lstHisCurrEnc.Count > 0)
+            //            {
+            //                objFamilyDTO.Family_History = lstHisCurrEnc;
+            //                bHistoryFromPrevEnc = false;
+            //            }
+            //            //else
+            //            //{
+            //            //    //ulong maxEncId = 0;
+            //            //    //IList<ulong> lstEncId = (from item in lstFmlyHis select item.Encounter_Id).Distinct().ToList<ulong>();
+            //            //    //if(lstEncId.Count>0)
+            //            //    //maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //            //    //foreach (ulong item in lstEncId.ToList())
+            //            //    //    if (item > maxEncId && item < ClientSession.EncounterId)
+            //            //    //        maxEncId = item;
+            //            //    //lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == maxEncId select item).ToList<FamilyHistory>();
+
+            //            //    if (lstFmlyHisMaster != null && lstFmlyHisMaster.Count() > 0)
+            //            //    {
+            //            //        foreach (FamilyHistoryMaster objMaster in lstFmlyHisMaster)
+            //            //        {
+            //            //            FamilyHistory objtempFH = new FamilyHistory();
+            //            //            objtempFH.Human_ID = objMaster.Human_ID;
+            //            //            objtempFH.RelationShip = objMaster.RelationShip;
+            //            //            objtempFH.Age = objMaster.Age;
+            //            //            objtempFH.Status = objMaster.Status;
+            //            //            objtempFH.Cause_Of_Death = objMaster.Cause_Of_Death;
+            //            //            objtempFH.Created_By = ClientSession.UserName;
+            //            //            objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
+            //            //            objtempFH.Encounter_Id = ClientSession.EncounterId;
+            //            //            lstHisCurrEnc.Add(objtempFH);
+            //            //        }
+            //            //        objFamilyDTO.Family_History = lstHisCurrEnc;
+
+            //            //    }
+            //            //    bHistoryFromPrevEnc = true;
+            //            //}
+            //        }
+            //        //else
+            //        //{
+            //        //    if (lstFmlyHisMaster != null && lstFmlyHisMaster.Count() > 0)
+            //        //    {
+            //        //        List<FamilyHistory> lstHisCurrEnc = new List<FamilyHistory>();
+            //        //        foreach (FamilyHistoryMaster objMaster in lstFmlyHisMaster)
+            //        //        {
+            //        //            FamilyHistory objtempFH = new FamilyHistory();
+            //        //            objtempFH.Human_ID = objMaster.Human_ID;
+            //        //            objtempFH.RelationShip = objMaster.RelationShip;
+            //        //            objtempFH.Age = objMaster.Age;
+            //        //            objtempFH.Status = objMaster.Status;
+            //        //            objtempFH.Cause_Of_Death = objMaster.Cause_Of_Death;
+            //        //            objtempFH.Created_By = ClientSession.UserName;
+            //        //            objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
+            //        //            objtempFH.Encounter_Id = ClientSession.EncounterId;
+            //        //            lstHisCurrEnc.Add(objtempFH);
+            //        //        }
+            //        //        objFamilyDTO.Family_History = lstHisCurrEnc;
+
+            //        //    }
+            //        //    else
+            //        //        objFamilyDTO.Family_History = lstFmlyHis;
+            //        //}
+
+            //        #region Commmented
+            //        //else
+            //        //{
+
+            //        // Session["FamilyDTO"] = objFamilyHistoryManager.GetFamilyHistory(ClientSession.HumanId, ClientSession.EncounterId);
+
+            //        //}
+            //        //
+            //        #endregion
+            //        if (itemDoc.GetElementsByTagName("FamilyDiseaseList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("FamilyDiseaseList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyDisease));
+            //                    FamilyDisease objDisease = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyDisease;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+
+            //                    propInfo = from obji in ((FamilyDisease)objDisease).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null && propInfo.Count() > 0)
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(objDisease, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(objDisease, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(objDisease, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(objDisease, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(objDisease, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    lstFmlyDisease.Add(objDisease);
+            //                }
+            //            }
+            //        }
+
+            //        if (lstFmlyDisease != null && lstFmlyDisease.Count > 0)
+            //        {
+            //            IList<FamilyDisease> lstDisCurrEnc = new List<FamilyDisease>();
+            //            for (int i = 0; i < objFamilyDTO.Family_History.Count; i++)
+            //            {
+            //                lstDisCurrEnc = lstDisCurrEnc.Concat((from item in lstFmlyDisease where item.Family_History_ID == objFamilyDTO.Family_History[i].Id select item).ToList<FamilyDisease>()).ToList<FamilyDisease>();
+            //            }
+            //            if (lstDisCurrEnc != null && lstDisCurrEnc.Count > 0)
+            //                objFamilyDTO.Family_Disease = lstDisCurrEnc;
+            //            else
+            //                objFamilyDTO.Family_Disease = new List<FamilyDisease>();
+            //        }
+            //        else
+            //        {
+            //            objFamilyDTO.Family_Disease = lstFmlyDisease;
+            //        }
+
+            //        //if (lstFmlyDisease != null && lstFmlyDisease.Count == 0)
+            //        //{
+            //            //Disease Master
+            //            if (itemDoc.GetElementsByTagName("FamilyDiseaseMasterList")[0] != null)
+            //            {
+            //                xmlTagName = itemDoc.GetElementsByTagName("FamilyDiseaseMasterList")[0].ChildNodes;
+
+            //                if (xmlTagName.Count > 0)
+            //                {
+            //                    for (int j = 0; j < xmlTagName.Count; j++)
+            //                    {
+            //                        XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyDiseaseMaster));
+            //                        FamilyDiseaseMaster objDisease = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyDiseaseMaster;
+            //                        IEnumerable<PropertyInfo> propInfo = null;
+
+            //                        propInfo = from obji in ((FamilyDiseaseMaster)objDisease).GetType().GetProperties() select obji;
+
+            //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                        {
+            //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                            {
+            //                                if (propInfo != null && propInfo.Count() > 0)
+            //                                {
+            //                                    foreach (PropertyInfo property in propInfo)
+            //                                    {
+            //                                        if (property.Name == nodevalue.Name)
+            //                                        {
+            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                property.SetValue(objDisease, Convert.ToUInt64(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                property.SetValue(objDisease, Convert.ToString(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                property.SetValue(objDisease, Convert.ToDateTime(nodevalue.Value), null);
+            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                property.SetValue(objDisease, Convert.ToInt32(nodevalue.Value), null);
+            //                                            else
+            //                                                property.SetValue(objDisease, nodevalue.Value, null);
+            //                                        }
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                        lstFmlyDiseaseMaster.Add(objDisease);
+            //                        objFamilyDTO.Family_Disease_Master = lstFmlyDiseaseMaster;
+            //                    }
+            //                }
+            //            }
+            //            //if (lstFmlyDiseaseMaster != null && lstFmlyDiseaseMaster.Count > 0)
+            //            //{
+            //            //    IList<FamilyDisease> lstDisCurrEnc = new List<FamilyDisease>();
+            //            //    IList<FamilyDiseaseMaster> lstDisCurrEncMas = new List<FamilyDiseaseMaster>();
+            //            //    //for (int i = 0; i < objFamilyDTO.Family_History.Count; i++)
+            //            //    //{
+            //            //    //    lstDisCurrEncMas = lstDisCurrEncMas.Concat((from item in lstFmlyDiseaseMaster where item.Family_History_ID == objFamilyDTO.Family_History[i].Id select item).ToList<FamilyDiseaseMaster>()).ToList<FamilyDiseaseMaster>();
+            //            //    //}
+            //            //    for (int i = 0; i < objFamilyDTO.Family_History_Master.Count; i++)
+            //            //    {
+            //            //        lstDisCurrEncMas = lstDisCurrEncMas.Concat((from item in lstFmlyDiseaseMaster where item.Family_History_Master_ID == objFamilyDTO.Family_History_Master[i].Id select item).ToList<FamilyDiseaseMaster>()).ToList<FamilyDiseaseMaster>();
+            //            //    }
+            //            //    if (lstDisCurrEncMas != null && lstDisCurrEncMas.Count > 0)
+            //            //    {
+            //            //        foreach (FamilyDiseaseMaster objMaster in lstDisCurrEncMas)
+            //            //        {
+            //            //            FamilyDisease objtempFH = new FamilyDisease();
+            //            //            objtempFH.Human_ID = objMaster.Human_ID;
+            //            //            objtempFH.Disease = objMaster.Disease;
+            //            //            objtempFH.Created_By = ClientSession.UserName;
+            //            //            objtempFH.Created_Date_And_Time = UtilityManager.ConvertToUniversal(); ;
+            //            //            lstDisCurrEnc.Add(objtempFH);
+            //            //        }
+            //            //        objFamilyDTO.Family_Disease = lstDisCurrEnc;
+            //            //    }
+            //            //    else
+            //            //        objFamilyDTO.Family_Disease = new List<FamilyDisease>();
+            //            //}
+            //            //else
+            //            //{
+            //            //    objFamilyDTO.Family_Disease = lstFmlyDisease;
+            //            //}
+            //        //}
+            //        //
+            //        if (itemDoc.GetElementsByTagName("GeneralNotesFamilyHistoryList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesFamilyHistoryList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+            //                    GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+
+            //                    propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null && propInfo.Count() > 0)
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(generalnotes, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    lstGenNotes.Add(generalnotes);
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //    if (lstGenNotes != null && lstGenNotes.Count > 0)
+            //    {
+            //        IList<GeneralNotes> lstGenCurrEnc = new List<GeneralNotes>();
+            //        lstGenCurrEnc = (from item in lstGenNotes where item.Encounter_ID == ClientSession.EncounterId select item).ToList<GeneralNotes>();
+            //        if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+            //        {
+            //            objFamilyDTO.objGeneralNotes = lstGenCurrEnc[0];
+            //        }
+            //        else
+            //        {
+            //            ulong maxEncId = 0;
+            //            IList<ulong> lstEncId = (from item in lstGenNotes select item.Encounter_ID).Distinct().ToList<ulong>();
+            //            if (lstEncId.Count > 0)
+            //                maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+            //            foreach (ulong item in lstEncId.ToList())
+            //                if (item > maxEncId && item < ClientSession.EncounterId)
+            //                    maxEncId = item;
+            //            lstGenCurrEnc = (from item in lstGenNotes where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
+            //            if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+            //            {
+            //                objFamilyDTO.objGeneralNotes = lstGenCurrEnc[0];
+            //            }
+            //        }
+            //    }
+
+            //    Session["FamilyDTO"] = objFamilyDTO;
+            //}
+
+            #endregion
 
             //
 
@@ -1012,7 +1138,7 @@ namespace Acurus.Capella.UI
             IList<FamilyHistory> lstFamilyHistoryDelete = new List<FamilyHistory>();
 
             IList<FamilyDisease> lstFamilyDiseaseSave = new List<FamilyDisease>();
-         //   IList<FamilyDisease> lstFamilyDiseaseUpdate = new List<FamilyDisease>();
+            //   IList<FamilyDisease> lstFamilyDiseaseUpdate = new List<FamilyDisease>();
             IList<FamilyDisease> lstFamilyDiseaseDelete = new List<FamilyDisease>();
 
             IList<FamilyHistoryMaster> lstFamilyHistorySaveMaster = new List<FamilyHistoryMaster>();
@@ -1020,7 +1146,7 @@ namespace Acurus.Capella.UI
             IList<FamilyHistoryMaster> lstFamilyHistoryDeleteMaster = new List<FamilyHistoryMaster>();
 
             IList<FamilyDiseaseMaster> lstFamilyDiseaseSaveMaster = new List<FamilyDiseaseMaster>();
-           // IList<FamilyDiseaseMaster> lstFamilyDiseaseUpdateMaster = new List<FamilyDiseaseMaster>();
+            // IList<FamilyDiseaseMaster> lstFamilyDiseaseUpdateMaster = new List<FamilyDiseaseMaster>();
             IList<FamilyDiseaseMaster> lstFamilyDiseaseDeleteMaster = new List<FamilyDiseaseMaster>();
 
 
@@ -1049,7 +1175,7 @@ namespace Acurus.Capella.UI
                 CustomDLCNew objCustomDLCCauseOfDeath = ((CustomDLCNew)divFamilyHistory.FindControl("DLCCauseOfDeath" + item.Value.Replace(" ", "")));
                 CustomDLCNew objDLCFamilyDisease = ((CustomDLCNew)divFamilyHistory.FindControl("DLCFamilyDisease" + item.Value.Replace(" ", "")));
                 Label objlbl = ((Label)divFamilyHistory.FindControl("lblID" + item.Value));
-                string[] Original = ((CustomDLCNew)divFamilyHistory.FindControl("DLCFamilyDisease" + item.Value.Replace(" ", ""))).txtDLC.Text.Replace(", ",",").Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                string[] Original = ((CustomDLCNew)divFamilyHistory.FindControl("DLCFamilyDisease" + item.Value.Replace(" ", ""))).txtDLC.Text.Replace(", ", ",").Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
                 if (objlbl.Text.Trim() != "0")
                 {
                     if (FamDto != null && FamDto.Family_History != null)
@@ -1747,120 +1873,156 @@ namespace Acurus.Capella.UI
             IList<FamilyHistoryMaster> lstFamilyHisMasterTemp = new List<FamilyHistoryMaster>();
             IList<FamilyDiseaseMaster> lstFamilyDiseaseHisMaster = new List<FamilyDiseaseMaster>();
 
-            string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            XmlDocument itemDoc = new XmlDocument();
-            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-            XmlNodeList xmlTagName = null;
-            try
+            #region "Code Modified by balaji.TJ - 2023-04-01"
+
+            IList<string> ilstHsFyDrugTagList = new List<string>();
+            ilstHsFyDrugTagList.Add("FamilyHistoryMasterList");
+            ilstHsFyDrugTagList.Add("FamilyDiseaseMasterList");
+           
+                IList<object> ilstHsFyBlobFinal = new List<object>();
+                ilstHsFyBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstHsFyDrugTagList);
+            if (ilstHsFyBlobFinal != null && ilstHsFyBlobFinal.Count > 0)
             {
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                if (ilstHsFyBlobFinal[0] != null && ((IList<object>)ilstHsFyBlobFinal[0]).Count > 0)
                 {
-                    itemDoc.Load(fs);
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("FamilyHistoryMasterList")[0] != null)
+                    for (int i = 0; i < ((IList<object>)ilstHsFyBlobFinal[0]).Count; i++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("FamilyHistoryMasterList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyHistoryMaster));
-                                FamilyHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyHistoryMaster;
-
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((FamilyHistoryMaster)objHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null && propInfo.Count() > 0)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                lstFamilyHisMasterTemp.Add(objHistory);
-                                if (lstFamilyHisMasterTemp.Count > 0)
-                                {
-                                    lstFamilyHisMaster = lstFamilyHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
-
-                                }
-                            }
-                        }
+                        lstFamilyHisMasterTemp.Add((FamilyHistoryMaster)((IList<object>)ilstHsFyBlobFinal[0])[i]);
                     }
-                    //Family disease
-                    if (itemDoc.GetElementsByTagName("FamilyDiseaseMasterList")[0] != null)
+                    if (lstFamilyHisMasterTemp.Count > 0)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("FamilyDiseaseMasterList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyDiseaseMaster));
-                                FamilyDiseaseMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyDiseaseMaster;
-
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                propInfo = from obji in ((FamilyDiseaseMaster)objHistory).GetType().GetProperties() select obji;
-
-                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                {
-                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                    {
-                                        if (propInfo != null && propInfo.Count() > 0)
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objHistory, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                lstFamilyDiseaseHisMaster.Add(objHistory);
-                            }
-                        }
+                        lstFamilyHisMaster = lstFamilyHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
                     }
-                    fs.Close();
-                    fs.Dispose();
+                }
+                if (ilstHsFyBlobFinal[1] != null && ((IList<object>)ilstHsFyBlobFinal[1]).Count > 0)
+                {
+                    for (int i = 0; i < ((IList<object>)ilstHsFyBlobFinal[1]).Count; i++)
+                    {
+                        lstFamilyDiseaseHisMaster.Add((FamilyDiseaseMaster)((IList<object>)ilstHsFyBlobFinal[1])[i]);
+                    }
+
                 }
             }
-            catch(Exception ex)
-            {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Frmfamilyhistory.aspx.cs Line No - 1857 - XML Path -" + strXmlFilePath +" - "+ ex.Message, DateTime.Now, "0", "frmimageviewer");
-                           
-            }
+
+            #endregion
+
+            #region "code comment by Balaji.TJ 2023-01-05"
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //XmlDocument itemDoc = new XmlDocument();
+            //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //XmlNodeList xmlTagName = null;
+            //try
+            //{
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+            //        XmlText.Close();
+            //        if (itemDoc.GetElementsByTagName("FamilyHistoryMasterList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("FamilyHistoryMasterList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyHistoryMaster));
+            //                    FamilyHistoryMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyHistoryMaster;
+
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((FamilyHistoryMaster)objHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null && propInfo.Count() > 0)
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(objHistory, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    lstFamilyHisMasterTemp.Add(objHistory);
+            //                    if (lstFamilyHisMasterTemp.Count > 0)
+            //                    {
+            //                        lstFamilyHisMaster = lstFamilyHisMasterTemp.Where(p => p.Is_Deleted == "N").ToList();
+
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        //Family disease
+            //        if (itemDoc.GetElementsByTagName("FamilyDiseaseMasterList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("FamilyDiseaseMasterList")[0].ChildNodes;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyDiseaseMaster));
+            //                    FamilyDiseaseMaster objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyDiseaseMaster;
+
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((FamilyDiseaseMaster)objHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null && propInfo.Count() > 0)
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(objHistory, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    lstFamilyDiseaseHisMaster.Add(objHistory);
+            //                }
+            //            }
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
+            //catch(Exception ex)
+            //{
+            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Frmfamilyhistory.aspx.cs Line No - 1857 - XML Path -" + strXmlFilePath +" - "+ ex.Message, DateTime.Now, "0", "frmimageviewer");
+
+            //}
+
+            #endregion
             //  }
             #endregion
             //Save PastmedicalHistoryMaster table
@@ -2232,209 +2394,85 @@ namespace Acurus.Capella.UI
                 FamDto = (FamilyDTO)Session["FamilyDTO"];
             else
             {
-                string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                if (File.Exists(strXmlFilePath) == true)
+                #region "code Modified by balaji.TJ"
+                IList<string> ilstFamilyHisList = new List<string>();
+                ilstFamilyHisList.Add("FamilyHistoryList");               
+                ilstFamilyHisList.Add("FamilyDiseaseList");
+                ilstFamilyHisList.Add("GeneralNotesFamilyHistoryList");
+                
+                IList<object> ilstFamilyHisBlobFinal = new List<object>();
+                ilstFamilyHisBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstFamilyHisList);
+
+                IList<FamilyHistory> lstFmlyHis = new List<FamilyHistory>();
+                IList<FamilyDisease> lstFmlyDisease = new List<FamilyDisease>();
+                IList<GeneralNotes> lstGenNotes = new List<GeneralNotes>();
+                if (ilstFamilyHisBlobFinal != null && ilstFamilyHisBlobFinal.Count > 0)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    XmlNodeList xmlTagName = null;
-                    IList<FamilyHistory> lstFmlyHis = new List<FamilyHistory>();
-                    IList<FamilyDisease> lstFmlyDisease = new List<FamilyDisease>();
-                    IList<GeneralNotes> lstGenNotes = new List<GeneralNotes>();
-
-                    //itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstFamilyHisBlobFinal[0] != null && ((IList<object>)ilstFamilyHisBlobFinal[0]).Count > 0)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlText.Close();
-
-
-                        if (itemDoc.GetElementsByTagName("FamilyHistoryList")[0] != null)
+                        for (int i = 0; i < ((IList<object>)ilstFamilyHisBlobFinal[0]).Count; i++)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("FamilyHistoryList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyHistory));
-                                    FamilyHistory objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyHistory;
-
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    objHistory = (FamilyHistory)objHistory;
-                                    propInfo = from obji in ((FamilyHistory)objHistory).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            if (propInfo != null && propInfo.Count() > 0) //added by balaji 2015-11-18
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(objHistory, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    lstFmlyHis.Add(objHistory);
-                                }
-                            }
-
+                            lstFmlyHis.Add((FamilyHistory)((IList<object>)ilstFamilyHisBlobFinal[0])[i]);
                         }
-
-                        if (lstFmlyHis != null && lstFmlyHis.Count > 0)
+                    }
+                    if (lstFmlyHis != null && lstFmlyHis.Count > 0)
+                    {
+                        IList<FamilyHistory> lstHisCurrEnc = new List<FamilyHistory>();
+                        lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == ClientSession.EncounterId select item).ToList<FamilyHistory>();
+                        if (lstHisCurrEnc != null && lstHisCurrEnc.Count > 0)
                         {
-                            IList<FamilyHistory> lstHisCurrEnc = new List<FamilyHistory>();
-                            lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == ClientSession.EncounterId select item).ToList<FamilyHistory>();
-                            if (lstHisCurrEnc != null && lstHisCurrEnc.Count > 0)
-                            {
-                                FamDto.Family_History = lstHisCurrEnc;
-                                bHistoryFromPrevEnc = false;
-                            }
-                            else
-                            {
-                                ulong maxEncId = 0;
-                                IList<ulong> lstEncId = (from item in lstFmlyHis select item.Encounter_Id).Distinct().ToList<ulong>();
-                                if (lstEncId.Count > 0)
-                                    maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
-                                foreach (ulong item in lstEncId.ToList())
-                                    if (item > maxEncId && item < ClientSession.EncounterId)
-                                        maxEncId = item;
-                                lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == maxEncId select item).ToList<FamilyHistory>();
-                                FamDto.Family_History = lstHisCurrEnc;
-                                bHistoryFromPrevEnc = true;
-                            }
+                            FamDto.Family_History = lstHisCurrEnc;
+                            bHistoryFromPrevEnc = false;
                         }
                         else
                         {
-                            FamDto.Family_History = lstFmlyHis;
+                            ulong maxEncId = 0;
+                            IList<ulong> lstEncId = (from item in lstFmlyHis select item.Encounter_Id).Distinct().ToList<ulong>();
+                            if (lstEncId.Count > 0)
+                                maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                            foreach (ulong item in lstEncId.ToList())
+                                if (item > maxEncId && item < ClientSession.EncounterId)
+                                    maxEncId = item;
+                            lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == maxEncId select item).ToList<FamilyHistory>();
+                            FamDto.Family_History = lstHisCurrEnc;
+                            bHistoryFromPrevEnc = true;
                         }
-                        if (itemDoc.GetElementsByTagName("FamilyDiseaseList")[0] != null)
+                    }
+                    else
+                    {
+                        FamDto.Family_History = lstFmlyHis;
+                    }
+
+                    if (ilstFamilyHisBlobFinal[1] != null && ((IList<object>)ilstFamilyHisBlobFinal[1]).Count > 0)
+                    {
+                        for (int i = 0; i < ((IList<object>)ilstFamilyHisBlobFinal[1]).Count; i++)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("FamilyDiseaseList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyDisease));
-                                    FamilyDisease objDisease = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyDisease;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-
-                                    propInfo = from obji in ((FamilyDisease)objDisease).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(objDisease, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(objDisease, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(objDisease, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(objDisease, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(objDisease, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    lstFmlyDisease.Add(objDisease);
-                                }
-                            }
+                            lstFmlyDisease.Add((FamilyDisease)((IList<object>)ilstFamilyHisBlobFinal[1])[i]);
                         }
-
-                        if (lstFmlyDisease != null && lstFmlyDisease.Count > 0)
+                    }
+                    if (lstFmlyDisease != null && lstFmlyDisease.Count > 0)
+                    {
+                        IList<FamilyDisease> lstDisCurrEnc = new List<FamilyDisease>();
+                        for (int i = 0; i < FamDto.Family_History.Count; i++)
                         {
-                            IList<FamilyDisease> lstDisCurrEnc = new List<FamilyDisease>();
-                            for (int i = 0; i < FamDto.Family_History.Count; i++)
-                            {
-                                lstDisCurrEnc = lstDisCurrEnc.Concat((from item in lstFmlyDisease where item.Family_History_ID == FamDto.Family_History[i].Id select item).ToList<FamilyDisease>()).ToList<FamilyDisease>();
-                            }
-                            if (lstDisCurrEnc != null && lstDisCurrEnc.Count > 0)
-                                FamDto.Family_Disease = lstDisCurrEnc;
-                            else
-                                FamDto.Family_Disease = new List<FamilyDisease>();
+                            lstDisCurrEnc = lstDisCurrEnc.Concat((from item in lstFmlyDisease where item.Family_History_ID == FamDto.Family_History[i].Id select item).ToList<FamilyDisease>()).ToList<FamilyDisease>();
                         }
+                        if (lstDisCurrEnc != null && lstDisCurrEnc.Count > 0)
+                            FamDto.Family_Disease = lstDisCurrEnc;
                         else
+                            FamDto.Family_Disease = new List<FamilyDisease>();
+                    }
+                    else
+                    {
+                        FamDto.Family_Disease = lstFmlyDisease;
+                    }
+
+                    if (ilstFamilyHisBlobFinal[2] != null && ((IList<object>)ilstFamilyHisBlobFinal[2]).Count > 0)
+                    {
+                        for (int i = 0; i < ((IList<object>)ilstFamilyHisBlobFinal[2]).Count; i++)
                         {
-                            FamDto.Family_Disease = lstFmlyDisease;
+                            lstGenNotes.Add((GeneralNotes)((IList<object>)ilstFamilyHisBlobFinal[2])[i]);
                         }
-                        //
-                        if (itemDoc.GetElementsByTagName("GeneralNotesFamilyHistoryList")[0] != null)
-                        {
-                            xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesFamilyHistoryList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
-                            {
-
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
-                                    GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    generalnotes = (GeneralNotes)generalnotes;
-
-                                    propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            if (propInfo != null)
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(generalnotes, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    lstGenNotes.Add(generalnotes);
-                                }
-                            }
-                        }
-                        fs.Close();
-                        fs.Dispose();
                     }
                     if (lstGenNotes != null && lstGenNotes.Count > 0)
                     {
@@ -2461,8 +2499,245 @@ namespace Acurus.Capella.UI
                         }
                     }
 
-                    Session["FamilyDTO"] = FamDto;
                 }
+                Session["FamilyDTO"] = FamDto;
+
+                #endregion
+
+                #region "Code comment By Balaji.TJ 2023-01-05"
+
+                //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                //    XmlNodeList xmlTagName = null;
+                //    IList<FamilyHistory> lstFmlyHis = new List<FamilyHistory>();
+                //    IList<FamilyDisease> lstFmlyDisease = new List<FamilyDisease>();
+                //    IList<GeneralNotes> lstGenNotes = new List<GeneralNotes>();
+
+                //    //itemDoc.Load(XmlText);
+                //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //    {
+                //        itemDoc.Load(fs);
+
+                //        XmlText.Close();
+
+
+                //        if (itemDoc.GetElementsByTagName("FamilyHistoryList")[0] != null)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("FamilyHistoryList")[0].ChildNodes;
+
+                //            if (xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyHistory));
+                //                    FamilyHistory objHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyHistory;
+
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    objHistory = (FamilyHistory)objHistory;
+                //                    propInfo = from obji in ((FamilyHistory)objHistory).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            if (propInfo != null && propInfo.Count() > 0) //added by balaji 2015-11-18
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+
+                //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                            property.SetValue(objHistory, Convert.ToUInt64(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                            property.SetValue(objHistory, Convert.ToString(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                            property.SetValue(objHistory, Convert.ToDateTime(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                            property.SetValue(objHistory, Convert.ToInt32(nodevalue.Value), null);
+                //                                        else
+                //                                            property.SetValue(objHistory, nodevalue.Value, null);
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+
+                //                    lstFmlyHis.Add(objHistory);
+                //                }
+                //            }
+
+                //        }
+
+                //        if (lstFmlyHis != null && lstFmlyHis.Count > 0)
+                //        {
+                //            IList<FamilyHistory> lstHisCurrEnc = new List<FamilyHistory>();
+                //            lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == ClientSession.EncounterId select item).ToList<FamilyHistory>();
+                //            if (lstHisCurrEnc != null && lstHisCurrEnc.Count > 0)
+                //            {
+                //                FamDto.Family_History = lstHisCurrEnc;
+                //                bHistoryFromPrevEnc = false;
+                //            }
+                //            else
+                //            {
+                //                ulong maxEncId = 0;
+                //                IList<ulong> lstEncId = (from item in lstFmlyHis select item.Encounter_Id).Distinct().ToList<ulong>();
+                //                if (lstEncId.Count > 0)
+                //                    maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                //                foreach (ulong item in lstEncId.ToList())
+                //                    if (item > maxEncId && item < ClientSession.EncounterId)
+                //                        maxEncId = item;
+                //                lstHisCurrEnc = (from item in lstFmlyHis where item.Encounter_Id == maxEncId select item).ToList<FamilyHistory>();
+                //                FamDto.Family_History = lstHisCurrEnc;
+                //                bHistoryFromPrevEnc = true;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            FamDto.Family_History = lstFmlyHis;
+                //        }
+                //        if (itemDoc.GetElementsByTagName("FamilyDiseaseList")[0] != null)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("FamilyDiseaseList")[0].ChildNodes;
+
+                //            if (xmlTagName.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(FamilyDisease));
+                //                    FamilyDisease objDisease = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as FamilyDisease;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+
+                //                    propInfo = from obji in ((FamilyDisease)objDisease).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            if (propInfo != null)
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+                //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                            property.SetValue(objDisease, Convert.ToUInt64(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                            property.SetValue(objDisease, Convert.ToString(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                            property.SetValue(objDisease, Convert.ToDateTime(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                            property.SetValue(objDisease, Convert.ToInt32(nodevalue.Value), null);
+                //                                        else
+                //                                            property.SetValue(objDisease, nodevalue.Value, null);
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    lstFmlyDisease.Add(objDisease);
+                //                }
+                //            }
+                //        }
+
+                //        if (lstFmlyDisease != null && lstFmlyDisease.Count > 0)
+                //        {
+                //            IList<FamilyDisease> lstDisCurrEnc = new List<FamilyDisease>();
+                //            for (int i = 0; i < FamDto.Family_History.Count; i++)
+                //            {
+                //                lstDisCurrEnc = lstDisCurrEnc.Concat((from item in lstFmlyDisease where item.Family_History_ID == FamDto.Family_History[i].Id select item).ToList<FamilyDisease>()).ToList<FamilyDisease>();
+                //            }
+                //            if (lstDisCurrEnc != null && lstDisCurrEnc.Count > 0)
+                //                FamDto.Family_Disease = lstDisCurrEnc;
+                //            else
+                //                FamDto.Family_Disease = new List<FamilyDisease>();
+                //        }
+                //        else
+                //        {
+                //            FamDto.Family_Disease = lstFmlyDisease;
+                //        }
+                //        //
+                //        if (itemDoc.GetElementsByTagName("GeneralNotesFamilyHistoryList")[0] != null)
+                //        {
+                //            xmlTagName = itemDoc.GetElementsByTagName("GeneralNotesFamilyHistoryList")[0].ChildNodes;
+
+                //            if (xmlTagName.Count > 0)
+                //            {
+
+                //                for (int j = 0; j < xmlTagName.Count; j++)
+                //                {
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(GeneralNotes));
+                //                    GeneralNotes generalnotes = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as GeneralNotes;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    generalnotes = (GeneralNotes)generalnotes;
+
+                //                    propInfo = from obji in ((GeneralNotes)generalnotes).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            if (propInfo != null)
+                //                            {
+                //                                foreach (PropertyInfo property in propInfo)
+                //                                {
+                //                                    if (property.Name == nodevalue.Name)
+                //                                    {
+
+                //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                            property.SetValue(generalnotes, Convert.ToUInt64(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                            property.SetValue(generalnotes, Convert.ToString(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                            property.SetValue(generalnotes, Convert.ToDateTime(nodevalue.Value), null);
+                //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                            property.SetValue(generalnotes, Convert.ToInt32(nodevalue.Value), null);
+                //                                        else
+                //                                            property.SetValue(generalnotes, nodevalue.Value, null);
+                //                                    }
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                    lstGenNotes.Add(generalnotes);
+                //                }
+                //            }
+                //        }
+                //        fs.Close();
+                //        fs.Dispose();
+                //    }
+                //    if (lstGenNotes != null && lstGenNotes.Count > 0)
+                //    {
+                //        IList<GeneralNotes> lstGenCurrEnc = new List<GeneralNotes>();
+                //        lstGenCurrEnc = (from item in lstGenNotes where item.Encounter_ID == ClientSession.EncounterId select item).ToList<GeneralNotes>();
+                //        if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+                //        {
+                //            FamDto.objGeneralNotes = lstGenCurrEnc[0];
+                //        }
+                //        else
+                //        {
+                //            ulong maxEncId = 0;
+                //            IList<ulong> lstEncId = (from item in lstGenNotes select item.Encounter_ID).Distinct().ToList<ulong>();
+                //            if (lstEncId.Count > 0)
+                //                maxEncId = (lstEncId.Min() < ClientSession.EncounterId) ? lstEncId.Min() : 0;
+                //            foreach (ulong item in lstEncId.ToList())
+                //                if (item > maxEncId && item < ClientSession.EncounterId)
+                //                    maxEncId = item;
+                //            lstGenCurrEnc = (from item in lstGenNotes where item.Encounter_ID == maxEncId select item).ToList<GeneralNotes>();
+                //            if (lstGenCurrEnc != null && lstGenCurrEnc.Count > 0)
+                //            {
+                //                FamDto.objGeneralNotes = lstGenCurrEnc[0];
+                //            }
+                //        }
+                //    }
+
+                //    Session["FamilyDTO"] = FamDto;
+                //}
+                #endregion
             }
 
             if (FamDto != null && FamDto.objGeneralNotes != null)

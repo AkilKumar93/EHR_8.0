@@ -2518,11 +2518,29 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //if (saveList != null && saveList.Count > 0 && saveList[0].GetType().Name.ToUpper() == "ENCOUNTER") //To be changed for Process_Encounter
                     if (bIsEncounterXMLCreate == true)
                     {
-                        objEncounterblob.Created_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
-                        objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
-                        ilstEncounterBlob.Add(objEncounterblob);
+                        if (updateList != null && updateList.Count > 0)
+                        {
+                            objEncounterblob.Created_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
+                            objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
+                            ilstEncounterBlob.Add(objEncounterblob);
 
-                        EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstEncounterBlob, null, MySession, string.Empty);
+                            EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstEncounterBlob, null, MySession, string.Empty);
+                        }
+                        else if (saveList != null && saveList.Count > 0)
+                        {
+                            objEncounterblob.Created_By = saveList[0].GetType().GetProperty("Created_By").GetValue(saveList[0], null) as string;
+                            if (saveList[0].GetType().GetProperty("Created_Date_And_Time") != null)
+                            {
+                                objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(saveList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+                            }
+                            else
+                            {
+                                objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(DateTime.Now);
+                            }
+                            ilstEncounterBlob.Add(objEncounterblob);
+
+                            EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstEncounterBlob, null, MySession, string.Empty);
+                        }
                     }
                     else
                     {
