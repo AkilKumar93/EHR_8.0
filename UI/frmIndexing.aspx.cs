@@ -4531,35 +4531,54 @@ namespace Acurus.Capella.UI
         string HumanDetails(string shumanId)
         {
             string humanDetails = "";
-            // string FileName = "Human" + "_" + shumanId + ".xml";
-            string strXmlFilePath = Path.Combine(ConfigurationManager.AppSettings["XMLPath"], "Human_" + shumanId + ".xml");
-            try
+            IList<string> ilstIndexTagList = new List<string>();
+            ilstIndexTagList.Add("HumanList");
+            
+            IList<object> ilstIndexBlobFinal = new List<object>();
+            ilstIndexBlobFinal = UtilityManager.ReadBlob(Convert.ToUInt64(shumanId), ilstIndexTagList);
+             
+            if (ilstIndexBlobFinal != null && ilstIndexBlobFinal.Count > 0)
             {
-                if (File.Exists(strXmlFilePath) == true)
+                if (ilstIndexBlobFinal[0] != null)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    XmlNodeList xmlTagName = null;
-                    itemDoc.Load(XmlText);
-                    XmlText.Close();
-                    if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                    for (int iCount = 0; iCount < ((IList<object>)ilstIndexBlobFinal[0]).Count; iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
-
-                        if (xmlTagName.Count > 0)
-                        {
-                            humanDetails = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value + ", " + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value + " " + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("MI").Value + "|" + Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("dd-MMM-yyyy") + "|" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Sex").Value + " |Acc #:" + shumanId;
-                            hdnHumanID.Value = shumanId.ToString();
-                            ClientSession.HumanId = Convert.ToUInt32(hdnHumanID.Value);
-                        }
+                        humanDetails = ((Human)((IList<object>)ilstIndexBlobFinal[0])[iCount]).Last_Name + ", " + ((Human)((IList<object>)ilstIndexBlobFinal[0])[iCount]).First_Name + " " + ((Human)((IList<object>)ilstIndexBlobFinal[0])[iCount]).MI + "|" + ((Human)((IList<object>)ilstIndexBlobFinal[0])[iCount]).Birth_Date.ToString("dd-MMM-yyyy") + "|" + ((Human)((IList<object>)ilstIndexBlobFinal[0])[iCount]).Sex + " |Acc #:" + shumanId; ;
+                        hdnHumanID.Value = shumanId.ToString();
+                        ClientSession.HumanId = Convert.ToUInt32(hdnHumanID.Value);
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 3831 - XmlPath - " + strXmlFilePath + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
+               
+            // string FileName = "Human" + "_" + shumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(ConfigurationManager.AppSettings["XMLPath"], "Human_" + shumanId + ".xml");
+            //try
+            //{
+            //    if (File.Exists(strXmlFilePath) == true)
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //        XmlNodeList xmlTagName = null;
+            //        itemDoc.Load(XmlText);
+            //        XmlText.Close();
+            //        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
 
-            }
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                humanDetails = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value + ", " + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value + " " + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("MI").Value + "|" + Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("dd-MMM-yyyy") + "|" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Sex").Value + " |Acc #:" + shumanId;
+            //                hdnHumanID.Value = shumanId.ToString();
+            //                ClientSession.HumanId = Convert.ToUInt32(hdnHumanID.Value);
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 3831 - XmlPath - " + strXmlFilePath + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
+
+            //}
 
             return humanDetails;
         }
