@@ -27,5 +27,6 @@ namespace Acurus.Capella.PatientPortal
         public static IList<ProcessMaster> processMasterList = null;
         public static IList<Element> elementList = null;
         public static string macAddress = string.Empty;
+        public static IList<MapXMLBlob> ilstMapXMLBlob = null;
     }
 }

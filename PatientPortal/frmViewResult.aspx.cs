@@ -2796,41 +2796,63 @@ namespace Acurus.Capella.PatientPortal
                 Session["human_id"] = human_id;
 
                 #region Populate Patient Info
-                string FileName = "Human" + "_" + human_id + ".xml";
-                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                if (File.Exists(strXmlFilePath) == true)
+
+                #region  Commented By Deepak
+                //string FileName = "Human" + "_" + human_id + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                // if (File.Exists(strXmlFilePath) == true)
+                // {
+
+                //XmlDocument itemDoc = new XmlDocument();
+                //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+
+                // using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                // {
+                //itemDoc.Load(fs);
+
+                //XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
+                //Human objFillHuman = new Human();
+                //IList<Human> lstHuman = new List<Human>();
+                //if (xmlhumanList != null && xmlhumanList.Count > 0)
+                //{
+                //    objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
+                //    objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
+                //    objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
+                //    objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
+                //    objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
+                //    objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
+                //    objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
+                //    objFillHuman.Medical_Record_Number = xmlhumanList[0].Attributes.GetNamedItem("Medical_Record_Number").Value;
+                //    objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Home_Phone_No").Value;
+                //    objFillHuman.Human_Type = xmlhumanList[0].Attributes.GetNamedItem("Human_Type").Value;
+                //    objFillHuman.Patient_Account_External = xmlhumanList[0].Attributes.GetNamedItem("Patient_Account_External").Value;
+                //    //objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
+                //    objFillHuman.Cell_Phone_Number = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
+
+                //    lstHuman.Add(objFillHuman);
+                //}
+                #endregion
+                IList<string> ilstHumanTag = new List<string>();
+                ilstHumanTag.Add("HumanList");
+
+                IList<object> ilstHumanBlobList = new List<object>();
+                ilstHumanBlobList = UtilityManager.ReadBlob(human_id, ilstHumanTag);
+                IList<Human> lstHuman = new List<Human>();
+                Human objFillHuman = new Human();
+
+                if (ilstHumanBlobList != null && ilstHumanBlobList.Count > 0)
                 {
-
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    if (ilstHumanBlobList[0] != null)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
-                        Human objFillHuman = new Human();
-                        IList<Human> lstHuman = new List<Human>();
-                        if (xmlhumanList != null && xmlhumanList.Count > 0)
+                        for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobList[0]).Count; iCount++)
                         {
-                            objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
-                            objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
-                            objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
-                            objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
-                            objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
-                            objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
-                            objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
-                            objFillHuman.Medical_Record_Number = xmlhumanList[0].Attributes.GetNamedItem("Medical_Record_Number").Value;
-                            objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Home_Phone_No").Value;
-                            objFillHuman.Human_Type = xmlhumanList[0].Attributes.GetNamedItem("Human_Type").Value;
-                            objFillHuman.Patient_Account_External = xmlhumanList[0].Attributes.GetNamedItem("Patient_Account_External").Value;
-                            //objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
-                            objFillHuman.Cell_Phone_Number = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
-
+                            objFillHuman = ((Human)((IList<object>)ilstHumanBlobList[0])[iCount]);
                             lstHuman.Add(objFillHuman);
                         }
+                    }
+                }
 
-                        string phoneno = "";
+                string phoneno = "";
                         if (lstHuman != null && lstHuman.Count > 0)
                         {
                             if(objFillHuman.Home_Phone_No.Length == 14)
@@ -2854,8 +2876,9 @@ namespace Acurus.Capella.PatientPortal
                        " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
                        "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type;
                         }
-                    }
-                }
+                   // }
+                //}
+                
                 #endregion
 
                 #region Opening from Patient_Pane

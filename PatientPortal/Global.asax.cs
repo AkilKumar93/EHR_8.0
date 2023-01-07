@@ -43,6 +43,9 @@ namespace Acurus.Capella.PatientPortal
             ElementManager objElementManager = new ElementManager();
             ApplicationObject.elementList = objElementManager.GetAllElement(string.Empty);
 
+            MapXMLBlobManager mapXMLBlobManager = new MapXMLBlobManager();
+            ApplicationObject.ilstMapXMLBlob = mapXMLBlobManager.GetMapXMLBlobList();
+
             log4net.Config.XmlConfigurator.Configure();
         }
 
