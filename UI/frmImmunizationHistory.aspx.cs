@@ -1456,8 +1456,8 @@ namespace Acurus.Capella.UI
 
                 //}
                 //if (!_is_entries_deleted && itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count > 0)
-                if (ImmHislst.Count > 0)
-                {
+                //if (ImmHislst.Count > 0)
+               // {
                     //xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
 
                     //if (xmlTagName != null && xmlTagName.Count > 0)
@@ -1586,7 +1586,7 @@ namespace Acurus.Capella.UI
                         ImmHislst.Clear();
                         LoadFromMaster(ResultList, FileName, strXmlFilePath);
                     }
-                }
+                //}
 
 
             }
