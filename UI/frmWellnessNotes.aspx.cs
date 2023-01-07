@@ -157,6 +157,8 @@ namespace Acurus.Capella.UI
                         if (ilstHumanBlob.Count > 0)
                         {
                             sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                            if (sXMLContent.Substring(0, 1) != "<")
+                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                             itemDoc.LoadXml(sXMLContent);
                         }
                         else
@@ -300,6 +302,8 @@ namespace Acurus.Capella.UI
             if (ilstHumanBlob.Count > 0)
             {
                 sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                if (sXMLHumanDoc.Substring(0, 1) != "<")
+                    sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
             }
 
             IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
@@ -307,6 +311,8 @@ namespace Acurus.Capella.UI
             if (ilstEncounterBlob.Count > 0)
             {
                 sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                if (sXMLEncounterDoc.Substring(0, 1) != "<")
+                    sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
             }
 
             DataSet ds;

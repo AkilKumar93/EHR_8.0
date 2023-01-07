@@ -769,7 +769,7 @@ namespace Acurus.Capella.UI
                     {
                         for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[3]).Count; iCount++)
                         {
-                            if (((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Human_ID == ClientSession.HumanId && ((Rcopia_Medication)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Deleted == "N")
+                            if (((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Human_ID == ClientSession.HumanId && ((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Deleted == "N")
                             {
                                 objFillPatientChart.AllergyList.Add((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]);
                             }
@@ -5101,6 +5101,8 @@ namespace Acurus.Capella.UI
                     if (ilstHumanBlob.Count > 0)
                     {
                         sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        if (sXMLContent.Substring(0, 1) != "<")
+                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                         xmlDoc.LoadXml(sXMLContent);
                     }
                     else
@@ -5117,6 +5119,8 @@ namespace Acurus.Capella.UI
                         try
                         {
                             sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                            if (sXMLContent.Substring(0, 1) != "<")
+                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                             xmlDoc.LoadXml(sXMLContent);
                         }
                         catch

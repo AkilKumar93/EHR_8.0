@@ -750,7 +750,7 @@ namespace Acurus.Capella.UI
                 {
                     for (int iCount = 0; iCount < ((IList<object>)ilstHumanBlobFinal[3]).Count; iCount++)
                     {
-                        if (((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Human_ID == ClientSession.HumanId && ((Rcopia_Medication)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Deleted == "N")
+                        if (((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Human_ID == ClientSession.HumanId && ((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]).Deleted == "N")
                         {
                             objFillPatientChart.AllergyList.Add((Rcopia_Allergy)((IList<object>)ilstHumanBlobFinal[3])[iCount]);
                         }

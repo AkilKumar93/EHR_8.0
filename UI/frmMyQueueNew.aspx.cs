@@ -713,7 +713,9 @@ namespace Acurus.Capella.UI
                             if (ilstHumanBlob.Count > 0)
                             {
                                 sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                                xmlDoc.LoadXml(sXMLContent);
+                            if (sXMLContent.Substring(0, 1) != "<")
+                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                            xmlDoc.LoadXml(sXMLContent);
                             }
                             else
                             {
@@ -755,6 +757,8 @@ namespace Acurus.Capella.UI
                             try
                             {
                                 sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                                if (sXMLContent.Substring(0, 1) != "<")
+                                    sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                                 xmlDoc.LoadXml(sXMLContent);
                             }
                             catch
@@ -1300,7 +1304,9 @@ namespace Acurus.Capella.UI
                         if (ilstHumanBlob.Count > 0)
                         {
                             sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                            xmlDoc.LoadXml(sXMLContent);
+                        if (sXMLContent.Substring(0, 1) != "<")
+                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                        xmlDoc.LoadXml(sXMLContent);
                         }
                         else
                         {
