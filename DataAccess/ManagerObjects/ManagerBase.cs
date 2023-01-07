@@ -1493,6 +1493,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         xmlobjtemp.itemDoc = null;
                                         IList<object> lstObj = updateList.Cast<object>().ToList();
                                         lstobjxml = lstObj;
+                                        if(saveList.Count > 0)
+                                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
+                                        else
                                         XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false, xmlobjtemp);
                                         if (XmlObjHuman != null)
                                             XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true, xmlobjtemp);
