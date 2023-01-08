@@ -2402,8 +2402,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 tagname = deleteList[0].GetType().Name;
 
             }
-            if (!tagname.Contains("List"))
+
+            //if (!tagname.Contains("List"))
                 tagname = tagname + "List";
+
             IList<MapXMLBlob> ilstXMLBlob = new List<MapXMLBlob>();
             ilstXMLBlob = NHibernateSessionUtility.Instance.MyMapXMLBlobList.Where(a => a.XML_Tag_Name == tagname).ToList();
             if (ilstXMLBlob.Count > 0)
