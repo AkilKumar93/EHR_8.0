@@ -230,11 +230,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             try
                             {
+                                //int trycount = 0;
                                 //if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
-                                //{
-                                // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                int trycount = 0;
-                            trytosaveagain:
+                                if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
+                                {
+                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    
+                            //trytosaveagain:
                                 try
                                 {
                                     // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
@@ -243,123 +245,125 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                                 catch (Exception xmlexcep)
                                 {
-                                    trycount++;
-                                    if (trycount <= 3)
-                                    {
-                                        int TimeMilliseconds = 0;
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                                    //trycount++;
+                                    //if (trycount <= 3)
+                                    //{
+                                    //    int TimeMilliseconds = 0;
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                    //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                        Thread.Sleep(TimeMilliseconds);
-                                        string sMsg = string.Empty;
-                                        string sExStackTrace = string.Empty;
+                                    //    Thread.Sleep(TimeMilliseconds);
+                                    //    string sMsg = string.Empty;
+                                    //    string sExStackTrace = string.Empty;
 
-                                        string version = "";
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                                    //    string version = "";
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                    //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                        string[] server = version.Split('|');
-                                        string serverno = "";
-                                        if (server.Length > 1)
-                                            serverno = server[1].Trim();
+                                    //    string[] server = version.Split('|');
+                                    //    string serverno = "";
+                                    //    if (server.Length > 1)
+                                    //        serverno = server[1].Trim();
 
-                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                            sMsg = xmlexcep.InnerException.Message;
-                                        else
-                                            sMsg = xmlexcep.Message;
+                                    //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                    //        sMsg = xmlexcep.InnerException.Message;
+                                    //    else
+                                    //        sMsg = xmlexcep.Message;
 
-                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                            sExStackTrace = xmlexcep.StackTrace;
+                                    //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                    //        sExStackTrace = xmlexcep.StackTrace;
 
-                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                        string ConnectionData;
-                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                        {
-                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                            {
-                                                cmd.Connection = con;
-                                                try
-                                                {
-                                                    con.Open();
-                                                    cmd.ExecuteNonQuery();
-                                                    con.Close();
-                                                }
-                                                catch
-                                                {
-                                                }
-                                            }
-                                        }
-                                        goto trytosaveagain;
-                                    }
+                                    //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    //    string ConnectionData;
+                                    //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                    //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                    //    {
+                                    //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                    //        {
+                                    //            cmd.Connection = con;
+                                    //            try
+                                    //            {
+                                    //                con.Open();
+                                    //                cmd.ExecuteNonQuery();
+                                    //                con.Close();
+                                    //            }
+                                    //            catch
+                                    //            {
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //    goto trytosaveagain;
+                                    //}
                                 }
 
-                                //}
+                                }
                                 //if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
-                                //{
-                                //XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
-                               // int trycount = 0;
-                           // trytosaveagain:
-                                try
+                                if (XMLObjEncounter.itemDoc.InnerXml != null && XMLObjEncounter.itemDoc.InnerXml != "")
                                 {
                                     //XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
-                                    WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, saveList, null, null, XMLObjEncounter, true);
+                                    // int trycount = 0;
+                                    // trytosaveagain:
+                                    try
+                                {
+                                        //XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                        //WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, saveList, null, null, XMLObjEncounter, true);
+                                        objTreatmentPlanMgr.WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, Insert_Tplan, Update_Tplan, Delete_Tplan, XMLObjEncounter, false);
 
-                                }
+                                    }
                                 catch (Exception xmlexcep)
                                 {
-                                    trycount++;
-                                    if (trycount <= 3)
-                                    {
-                                        int TimeMilliseconds = 0;
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                                    //trycount++;
+                                    //if (trycount <= 3)
+                                    //{
+                                    //    int TimeMilliseconds = 0;
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                    //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                        Thread.Sleep(TimeMilliseconds);
-                                        string sMsg = string.Empty;
-                                        string sExStackTrace = string.Empty;
+                                    //    Thread.Sleep(TimeMilliseconds);
+                                    //    string sMsg = string.Empty;
+                                    //    string sExStackTrace = string.Empty;
 
-                                        string version = "";
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                                    //    string version = "";
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                    //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                        string[] server = version.Split('|');
-                                        string serverno = "";
-                                        if (server.Length > 1)
-                                            serverno = server[1].Trim();
+                                    //    string[] server = version.Split('|');
+                                    //    string serverno = "";
+                                    //    if (server.Length > 1)
+                                    //        serverno = server[1].Trim();
 
-                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                            sMsg = xmlexcep.InnerException.Message;
-                                        else
-                                            sMsg = xmlexcep.Message;
+                                    //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                    //        sMsg = xmlexcep.InnerException.Message;
+                                    //    else
+                                    //        sMsg = xmlexcep.Message;
 
-                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                            sExStackTrace = xmlexcep.StackTrace;
+                                    //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                    //        sExStackTrace = xmlexcep.StackTrace;
 
-                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                        string ConnectionData;
-                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                        {
-                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                            {
-                                                cmd.Connection = con;
-                                                try
-                                                {
-                                                    con.Open();
-                                                    cmd.ExecuteNonQuery();
-                                                    con.Close();
-                                                }
-                                                catch
-                                                {
-                                                }
-                                            }
-                                        }
-                                        goto trytosaveagain;
-                                    }
+                                    //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    //    string ConnectionData;
+                                    //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                    //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                    //    {
+                                    //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                    //        {
+                                    //            cmd.Connection = con;
+                                    //            try
+                                    //            {
+                                    //                con.Open();
+                                    //                cmd.ExecuteNonQuery();
+                                    //                con.Close();
+                                    //            }
+                                    //            catch
+                                    //            {
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //    goto trytosaveagain;
+                                    //}
                                 }
 
-                                // }
+                                }
                                 trans.Commit();
                             }
                             catch (XmlException xmlexcep)
@@ -417,6 +421,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         public ReferralOrderDTO UpdateToReferralOrders(IList<ReferralOrder> updtList, IList<ReferralOrdersAssessment> ordAssSaveList, IList<ReferralOrdersAssessment> ordAssDelList, ulong EncounterID, string MACAddress, string sOldText, string sNewText, ulong HumanID)
         {
+            IList<TreatmentPlan> SaveTreatementPlanList = null;
+            IList<TreatmentPlan> UpdateTreatmentPlanList = new List<TreatmentPlan>();
             IList<ReferralOrder> saveList = new List<ReferralOrder>();
             IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
             GenerateXml XMLObj = new GenerateXml();
@@ -620,8 +626,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         if (UpdateTreatmentPlan != null)
                         {
-                            IList<TreatmentPlan> SaveTreatementPlanList = null;
-                            IList<TreatmentPlan> UpdateTreatmentPlanList = new List<TreatmentPlan>();
+                            
                             UpdateTreatmentPlanList.Add(UpdateTreatmentPlan);
 
                             iResult = objTreatmentPlanMgr.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveTreatementPlanList, ref UpdateTreatmentPlanList, null, MySession, MACAddress, true, true, EncounterID, string.Empty, ref XMLObjEncounter);
@@ -727,7 +732,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     try
                                     {
                                         //XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
-                                        WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, null, updtList, null, XMLObjEncounter, true);
+                                        //WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, null, updtList, null, XMLObjEncounter, true);
+                                        objTreatmentPlanMgr.WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, SaveTreatementPlanList, UpdateTreatmentPlanList, null, XMLObjEncounter, false);
                                     }
                                     catch (Exception xmlexcep)
                                     {
@@ -853,87 +859,109 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 obj = GetById(obj.Id);
             }
+            IList<TreatmentPlan> SaveTreatmentPlanList = null;
+            IList<TreatmentPlan> UpdateTreatmentPlanList = null;
+            IList<TreatmentPlan> DeleteTreatmentPlanList = new List<TreatmentPlan>();
             IList<ReferralOrder> list = null;
             IList<ReferralOrder> delList = new List<ReferralOrder>();
             IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
             delList.Add(obj);
             iTryCount = 0;
-            string FileName = "Encounter" + "_" + EncounterID + ".xml";
-            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //string FileName = "Encounter" + "_" + EncounterID + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-            XmlTextReader XmlText = null;
+            //XmlTextReader XmlText = null;
             try
             {
-                if (File.Exists(strXmlFilePath) == true)
-                {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlText = new XmlTextReader(strXmlFilePath);
+                #region Commented By Deepak
+                // if (File.Exists(strXmlFilePath) == true)
+                // {
+                XmlDocument itemDoc = new XmlDocument();
+                    //XmlText = new XmlTextReader(strXmlFilePath);
                     XmlNodeList xmlTagName = null;
-                    //itemDoc.Load(XmlText);
-                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //itemDoc.Load(XmlText);
+                //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //{
+                //    itemDoc.Load(fs);
+
+                //    XmlText.Close();
+                //    #region Treatment_plan
+                //    if (itemDoc.GetElementsByTagName("TreatmentPlanList")[0] != null)
+                //    {
+                //        xmlTagName = itemDoc.GetElementsByTagName("TreatmentPlanList")[0].ChildNodes;
+
+                //        if (xmlTagName.Count > 0)
+                //        {
+                //            for (int j = 0; j < xmlTagName.Count; j++)
+                //            {
+                //                if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == EncounterID && Convert.ToString(xmlTagName[j].Attributes.GetNamedItem("Plan_Type").Value).Equals("REFERRAL ORDER"))
+                //                {
+
+                //                    string TagName = xmlTagName[j].Name;
+                //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(TreatmentPlan));
+                //                    TreatmentPlan TreatmentPlan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as TreatmentPlan;
+                //                    IEnumerable<PropertyInfo> propInfo = null;
+                //                    TreatmentPlan = (TreatmentPlan)TreatmentPlan;
+                //                    propInfo = from obji in ((TreatmentPlan)TreatmentPlan).GetType().GetProperties() select obji;
+
+                //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                //                    {
+
+                //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                //                        {
+                //                            foreach (PropertyInfo property in propInfo)
+                //                            {
+                //                                if (property.Name == nodevalue.Name)
+                //                                {
+                //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+                //                                        property.SetValue(TreatmentPlan, Convert.ToUInt64(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+                //                                        property.SetValue(TreatmentPlan, Convert.ToString(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                //                                        property.SetValue(TreatmentPlan, Convert.ToDateTime(nodevalue.Value), null);
+                //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+                //                                        property.SetValue(TreatmentPlan, Convert.ToInt32(nodevalue.Value), null);
+                //                                    else
+                //                                        property.SetValue(TreatmentPlan, nodevalue.Value, null);
+                //                                }
+                //                            }
+                //                        }
+
+                //                    }
+                //                    objTreatmentPlan.Add(TreatmentPlan);
+                //                }
+                //            }
+                //        }
+                //    }
+                //#endregion
+                #endregion
+                IList<string> ilstEncounterTag = new List<string>();
+                    ilstEncounterTag.Add("TreatmentPlanList");
+
+                    IList<object> ilstEncounterBlobList = new List<object>();
+
+                    ilstEncounterBlobList = ReadBlob(EncounterID, ilstEncounterTag);
+
+                    if (ilstEncounterBlobList != null && ilstEncounterBlobList.Count > 0)
                     {
-                        itemDoc.Load(fs);
-
-                        XmlText.Close();
-                        #region Treatment_plan
-                        if (itemDoc.GetElementsByTagName("TreatmentPlanList")[0] != null)
+                        if (ilstEncounterBlobList[0] != null)
                         {
-                            xmlTagName = itemDoc.GetElementsByTagName("TreatmentPlanList")[0].ChildNodes;
-
-                            if (xmlTagName.Count > 0)
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEncounterBlobList[0]).Count; iCount++)
                             {
-                                for (int j = 0; j < xmlTagName.Count; j++)
-                                {
-                                    if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == EncounterID && Convert.ToString(xmlTagName[j].Attributes.GetNamedItem("Plan_Type").Value).Equals("REFERRAL ORDER"))
-                                    {
-
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(TreatmentPlan));
-                                        TreatmentPlan TreatmentPlan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as TreatmentPlan;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        TreatmentPlan = (TreatmentPlan)TreatmentPlan;
-                                        propInfo = from obji in ((TreatmentPlan)TreatmentPlan).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                            property.SetValue(TreatmentPlan, Convert.ToUInt64(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(TreatmentPlan, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(TreatmentPlan, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(TreatmentPlan, Convert.ToInt32(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(TreatmentPlan, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-
-                                        }
-                                        objTreatmentPlan.Add(TreatmentPlan);
-                                    }
-                                }
+                                objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstEncounterBlobList[0])[iCount]);
                             }
                         }
-                        #endregion
-
-                        fs.Close();
-                        fs.Dispose();
                     }
-                }
+
+                                //fs.Close();
+                                //fs.Dispose();
+                                //}
+                           // }
             }
             catch(Exception Ex)
             {
-                if (XmlText != null)
-                    XmlText.Close();
+                //if (XmlText != null)
+                //    XmlText.Close();
                 throw Ex;
             }
 
@@ -1093,9 +1121,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         if (UpdateTreatmentPlan != null || DeleteTreatmentPlan != null)
                         {
-                            IList<TreatmentPlan> SaveTreatmentPlanList = null;
-                            IList<TreatmentPlan> UpdateTreatmentPlanList = null;
-                            IList<TreatmentPlan> DeleteTreatmentPlanList = new List<TreatmentPlan>();
+                            
                             if (DeleteTreatmentPlan != null)
                                 DeleteTreatmentPlanList.Add(DeleteTreatmentPlan);
 
@@ -1139,14 +1165,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         try
                         {
-                            if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                            //if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                            if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
                             {
                                 //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                 int trycount = 0;
                             trytosaveagain:
                                 try
                                 {
-                                    XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    WriteBlob(HumanID, XMLObj.itemDoc, MySession,null,null, delList, XMLObj,false);
                                 }
                                 catch (Exception xmlexcep)
                                 {
@@ -1208,7 +1236,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             trytosaveagain:
                                 try
                                 {
-                                    XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                    //XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                   // WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, null, null, delList, XMLObjEncounter, false);
+                                    objTreatmentPlanMgr.WriteBlob(EncounterID, XMLObjEncounter.itemDoc, MySession, SaveTreatmentPlanList, UpdateTreatmentPlanList, DeleteTreatmentPlanList, XMLObjEncounter, false);
+
                                 }
                                 catch (Exception xmlexcep)
                                 {
@@ -1731,68 +1762,70 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                               }
                           }
-                          trans.Commit();
+                         
                           if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
                           {
                              // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                               int trycount = 0;
-                          trytosaveagain:
-                              try
-                              {
-                                  XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                              }
-                              catch (Exception xmlexcep)
-                              {
-                                  trycount++;
-                                  if (trycount <= 3)
-                                  {
-                                      int TimeMilliseconds = 0;
-                                      if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                          TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                            trytosaveagain:
+                                try
+                                {
+                                    XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    WriteBlob(referralOrderList[0].Human_ID, XMLObj.itemDoc, MySession, null, referralOrderList, null, XMLObj, false);
+                                    trans.Commit();
+                                }
+                                catch (Exception xmlexcep)
+                                {
+                                    trycount++;
+                                    if (trycount <= 3)
+                                    {
+                                        int TimeMilliseconds = 0;
+                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                      Thread.Sleep(TimeMilliseconds);
-                                      string sMsg = string.Empty;
-                                      string sExStackTrace = string.Empty;
+                                        Thread.Sleep(TimeMilliseconds);
+                                        string sMsg = string.Empty;
+                                        string sExStackTrace = string.Empty;
 
-                                      string version = "";
-                                      if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                          version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                                        string version = "";
+                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                      string[] server = version.Split('|');
-                                      string serverno = "";
-                                      if (server.Length > 1)
-                                          serverno = server[1].Trim();
+                                        string[] server = version.Split('|');
+                                        string serverno = "";
+                                        if (server.Length > 1)
+                                            serverno = server[1].Trim();
 
-                                      if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                          sMsg = xmlexcep.InnerException.Message;
-                                      else
-                                          sMsg = xmlexcep.Message;
+                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                            sMsg = xmlexcep.InnerException.Message;
+                                        else
+                                            sMsg = xmlexcep.Message;
 
-                                      if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                          sExStackTrace = xmlexcep.StackTrace;
+                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                            sExStackTrace = xmlexcep.StackTrace;
 
-                                      string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                      string ConnectionData;
-                                      ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                      using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                      {
-                                          using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                          {
-                                              cmd.Connection = con;
-                                              try
-                                              {
-                                                  con.Open();
-                                                  cmd.ExecuteNonQuery();
-                                                  con.Close();
-                                              }
-                                              catch
-                                              {
-                                              }
-                                          }
-                                      }
-                                      goto trytosaveagain;
-                                  }
-                              }
+                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                        string ConnectionData;
+                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                        {
+                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                            {
+                                                cmd.Connection = con;
+                                                try
+                                                {
+                                                    con.Open();
+                                                    cmd.ExecuteNonQuery();
+                                                    con.Close();
+                                                }
+                                                catch
+                                                {
+                                                }
+                                            }
+                                        }
+                                        goto trytosaveagain;
+                                    }
+                                }
                           }
                       }
                   }
