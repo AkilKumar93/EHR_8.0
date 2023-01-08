@@ -1907,335 +1907,526 @@ namespace Acurus.Capella.UI
                     ilstSaveImmunizationHistory.Add(objImmunizationHistory);
                     #region
                     //Add Bug ID:66113 
-                    ImmunizationHistoryDTO ResultList = new ImmunizationHistoryDTO();
-                    string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                    ImmunizationHistoryManager immunizationMngr = new ImmunizationHistoryManager();
+
                     IList<ImmunizationHistory> ImmHislst = new List<ImmunizationHistory>();
+                    IList<ImmunizationMasterHistory> ImmMasterHislst = new List<ImmunizationMasterHistory>();
                     bool _is_from_current_encounter_data = false;
                     bool _is_entries_deleted = true;
-                    if (File.Exists(strXmlFilePath) == true)
+                    IList<string> ilstImmunizationTagList = new List<string>();
+                    ilstImmunizationTagList.Add("ImmunizationHistoryList");                   
+
+                    IList<object> ilstImmunizationBlobFinal = new List<object>();
+                    ilstImmunizationBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstImmunizationTagList);
+
+                    if (ilstImmunizationBlobFinal != null && ilstImmunizationBlobFinal.Count > 0)
                     {
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                        XmlNodeList xmlTagName = null;
-                        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        if (ilstImmunizationBlobFinal[0] != null)
                         {
-                            itemDoc.Load(fs);
-
-                            XmlText.Close();
-                            //BugId:61234
-                            if (itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count > 0)
+                            for (int iCount = 0; iCount < ((IList<object>)ilstImmunizationBlobFinal[0]).Count; iCount++)
                             {
-                                XmlNodeList xmlDeleteCheckTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
-                                _is_entries_deleted = true;
-
-                                for (int j = 0; j < xmlDeleteCheckTagName.Count; j++)
+                               string sDeleted = ((ImmunizationHistory)((IList<object>)ilstImmunizationBlobFinal[0])[iCount]).Is_Deleted;
+                                if (sDeleted == "N")
                                 {
-                                    for (int i = 0; i < xmlDeleteCheckTagName[j].Attributes.Count; i++)
-                                    {
-                                        if (xmlDeleteCheckTagName[j].Attributes[i].Name == "Is_Deleted")
-                                        {
-                                            if (xmlDeleteCheckTagName[j].Attributes[i].InnerText == "N")
-                                            {
-                                                _is_entries_deleted = false;
-                                                break;
-                                            }
-                                        }
-
-                                    }
+                                    _is_entries_deleted = false;
+                                    break;
+                                }
+                            }
+                            if (!_is_entries_deleted)
+                            {
+                                for (int iCount = 0; iCount < ((IList<object>)ilstImmunizationBlobFinal[0]).Count; iCount++)
+                                {
+                                    ImmHislst.Add((ImmunizationHistory)((IList<object>)ilstImmunizationBlobFinal[0])[iCount]);
+                                    if (((ImmunizationHistory)((IList<object>)ilstImmunizationBlobFinal[0])[iCount]).Encounter_ID == ClientSession.EncounterId)
+                                {
+                                    _is_from_current_encounter_data = true;
                                 }
 
-                            }
-                            if (!_is_entries_deleted && itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count > 0)
-                            {
-                                xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
-
-                                if (xmlTagName != null && xmlTagName.Count > 0)
-                                {
-                                    for (int j = 0; j < xmlTagName.Count; j++)
-                                    {
-                                        string TagName = xmlTagName[j].Name;
-                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
-                                        ImmunizationHistory ImmunizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ImmunizationHistory;
-                                        IEnumerable<PropertyInfo> propInfo = null;
-                                        propInfo = from obji in ((ImmunizationHistory)ImmunizationHistory).GetType().GetProperties() select obji;
-
-                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                            {
-                                                if (propInfo != null)
-                                                {
-                                                    foreach (PropertyInfo property in propInfo)
-                                                    {
-                                                        if (property.Name.ToUpper() == nodevalue.Name.ToUpper())
-                                                        {
-                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                property.SetValue(ImmunizationHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                property.SetValue(ImmunizationHistory, Convert.ToString(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                property.SetValue(ImmunizationHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                property.SetValue(ImmunizationHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                property.SetValue(ImmunizationHistory, Convert.ToDecimal(nodevalue.Value), null);
-                                                            else
-                                                                property.SetValue(ImmunizationHistory, nodevalue.Value, null);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        ImmHislst.Add(ImmunizationHistory);
-                                        if (ImmunizationHistory.Encounter_ID == ClientSession.EncounterId)
-                                            _is_from_current_encounter_data = true;
-                                    }
                                     if (_is_from_current_encounter_data)
                                     {
                                         //ilstSaveImmunizationHistory.Add(objImmunizationHistory);
                                     }
                                     else
                                     {
-                                        ImmunizationMasterHistoryManager immunizationMasterMngr = new ImmunizationMasterHistoryManager();
-                                        IList<ImmunizationMasterHistory> ImmMasterHislst = new List<ImmunizationMasterHistory>();
-                                        if (File.Exists(strXmlFilePath) == true)
+
+                                        IList<string> ilstImmunizationHisTagList = new List<string>();
+                                        ilstImmunizationHisTagList.Add("ImmunizationMasterHistoryList");
+
+                                        IList<object> ilstImmunizationHisBlobFinal = new List<object>();
+                                        ilstImmunizationHisBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstImmunizationHisTagList);
+
+                                        if (ilstImmunizationHisBlobFinal != null && ilstImmunizationHisBlobFinal.Count > 0)
                                         {
-                                            XmlDocument itemDocMaster = new XmlDocument();
-                                            XmlTextReader XmlTextMaster = new XmlTextReader(strXmlFilePath);
-                                            XmlNodeList xmlTagNameMaster = null;
-                                            using (FileStream fsMaster = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                                            if (ilstImmunizationHisBlobFinal[0] != null)
                                             {
-                                                itemDocMaster.Load(fsMaster);
-
-                                                XmlTextMaster.Close();
-
-                                                if (itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList") != null && itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList").Count > 0)
+                                                for (int icount = 0; icount < ((IList<object>)ilstImmunizationHisBlobFinal[0]).Count; icount++)
                                                 {
-                                                    xmlTagNameMaster = itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList")[0].ChildNodes;
-
-                                                    if (xmlTagNameMaster != null && xmlTagNameMaster.Count > 0)
-                                                    {
-                                                        for (int j = 0; j < xmlTagNameMaster.Count; j++)
-                                                        {
-                                                            string TagName = xmlTagNameMaster[j].Name;
-                                                            XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationMasterHistory));
-                                                            ImmunizationMasterHistory ImmunizationMasterHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagNameMaster[j])) as ImmunizationMasterHistory;
-                                                            IEnumerable<PropertyInfo> propInfo = null;
-                                                            propInfo = from obji in ((ImmunizationMasterHistory)ImmunizationMasterHistory).GetType().GetProperties() select obji;
-
-                                                            for (int i = 0; i < xmlTagNameMaster[j].Attributes.Count; i++)
-                                                            {
-                                                                XmlNode nodevalue = xmlTagNameMaster[j].Attributes[i];
-                                                                {
-                                                                    if (propInfo != null)
-                                                                    {
-                                                                        foreach (PropertyInfo property in propInfo)
-                                                                        {
-                                                                            if (property.Name.ToUpper() == nodevalue.Name.ToUpper())
-                                                                            {
-                                                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                                    property.SetValue(ImmunizationMasterHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                                    property.SetValue(ImmunizationMasterHistory, Convert.ToString(nodevalue.Value), null);
-                                                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                                    property.SetValue(ImmunizationMasterHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                                    property.SetValue(ImmunizationMasterHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                                                else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                                    property.SetValue(ImmunizationMasterHistory, Convert.ToDecimal(nodevalue.Value), null);
-                                                                                else
-                                                                                    property.SetValue(ImmunizationMasterHistory, nodevalue.Value, null);
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                            if (ImmunizationMasterHistory.Is_Deleted != "Y")
-                                                                ImmMasterHislst.Add(ImmunizationMasterHistory);
-                                                        }
-                                                    }
+                                                    string sDeleted = ((ImmunizationMasterHistory)((IList<object>)ilstImmunizationHisBlobFinal[0])[icount]).Is_Deleted;
+                                                    if (sDeleted != "Y")
+                                                        ImmMasterHislst.Add(((ImmunizationMasterHistory)((IList<object>)ilstImmunizationHisBlobFinal[0])[icount]));
                                                 }
-                                                fsMaster.Close();
-                                                fsMaster.Dispose();
                                             }
-                                        }
-                                        if (ImmMasterHislst != null && ImmMasterHislst.Count > 0)
-                                        {
-                                            foreach (ImmunizationMasterHistory item in ImmMasterHislst)
+                                            if (ImmMasterHislst != null && ImmMasterHislst.Count > 0)
                                             {
-                                                ImmunizationHistory objHistory = new ImmunizationHistory();
-                                                //bugId:61103 
-                                                //AddorUpdateImmunizationHistory(objHistory);
+                                                foreach (ImmunizationMasterHistory item in ImmMasterHislst)
+                                                {
+                                                    ImmunizationHistory objHistory = new ImmunizationHistory();
+                                                    //bugId:61103 
+                                                    //AddorUpdateImmunizationHistory(objHistory);
 
-                                                objHistory.Immunization_Description = item.Immunization_Description;
-                                                objHistory.CVX_Code = item.CVX_Code;
-                                                objHistory.Route_Of_Administration = item.Route_Of_Administration;
+                                                    objHistory.Immunization_Description = item.Immunization_Description;
+                                                    objHistory.CVX_Code = item.CVX_Code;
+                                                    objHistory.Route_Of_Administration = item.Route_Of_Administration;
 
-                                                objHistory.Is_VIS_Given = item.Is_VIS_Given;
-                                                objHistory.Date_On_Vis = item.Date_On_Vis;
-                                                objHistory.Vis_Given_Date = item.Vis_Given_Date;
-                                                objHistory.Procedure_Code = item.Procedure_Code;
-                                                objHistory.Human_ID = ClientSession.HumanId;
-                                                objHistory.Physician_ID = ClientSession.PhysicianId;
+                                                    objHistory.Is_VIS_Given = item.Is_VIS_Given;
+                                                    objHistory.Date_On_Vis = item.Date_On_Vis;
+                                                    objHistory.Vis_Given_Date = item.Vis_Given_Date;
+                                                    objHistory.Procedure_Code = item.Procedure_Code;
+                                                    objHistory.Human_ID = ClientSession.HumanId;
+                                                    objHistory.Physician_ID = ClientSession.PhysicianId;
 
-                                                objHistory.Lot_Number = item.Lot_Number;
+                                                    objHistory.Lot_Number = item.Lot_Number;
 
-                                                objHistory.Administered_Amount = item.Administered_Amount;
+                                                    objHistory.Administered_Amount = item.Administered_Amount;
 
-                                                objHistory.Administered_Date = item.Administered_Date;
+                                                    objHistory.Administered_Date = item.Administered_Date;
 
-                                                objHistory.Manufacturer = item.Manufacturer;
-                                                objHistory.Administered_Unit = item.Administered_Unit;
+                                                    objHistory.Manufacturer = item.Manufacturer;
+                                                    objHistory.Administered_Unit = item.Administered_Unit;
 
-                                                objHistory.Expiry_Date = item.Expiry_Date;
-                                                objHistory.Immunization_Source = item.Immunization_Source;
-                                                objHistory.Location = item.Location;
-                                                objHistory.Protection_State = item.Protection_State;
+                                                    objHistory.Expiry_Date = item.Expiry_Date;
+                                                    objHistory.Immunization_Source = item.Immunization_Source;
+                                                    objHistory.Location = item.Location;
+                                                    objHistory.Protection_State = item.Protection_State;
 
-                                                objHistory.Dose = item.Dose;
+                                                    objHistory.Dose = item.Dose;
 
-                                                objHistory.Dose_No = item.Dose_No;
-                                                objHistory.Notes = item.Notes;
-                                                objHistory.Snomed_Code = item.Snomed_Code;
-                                                objHistory.Immunization_History_Master_ID = item.Id;
-                                                objHistory.Created_By = ClientSession.UserName;
-                                                objHistory.Is_Deleted = "N";
-                                                objHistory.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                                                objHistory.Encounter_ID = ClientSession.EncounterId;
-                                                objHistory.Version = item.Version;
-                                                ilstSaveImmunizationHistory.Add(objHistory);
+                                                    objHistory.Dose_No = item.Dose_No;
+                                                    objHistory.Notes = item.Notes;
+                                                    objHistory.Snomed_Code = item.Snomed_Code;
+                                                    objHistory.Immunization_History_Master_ID = item.Id;
+                                                    objHistory.Created_By = ClientSession.UserName;
+                                                    objHistory.Is_Deleted = "N";
+                                                    objHistory.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                                                    objHistory.Encounter_ID = ClientSession.EncounterId;
+                                                    objHistory.Version = item.Version;
+                                                    ilstSaveImmunizationHistory.Add(objHistory);
+                                                }
                                             }
                                         }
-                                        //Master
+
                                     }
                                 }
                             }
-                            else if (itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count == 0)
+
+
+                            else if(ilstImmunizationBlobFinal[0] != null)
                             {
-                                ImmunizationMasterHistoryManager immunizationMasterMngr = new ImmunizationMasterHistoryManager();
-                                IList<ImmunizationMasterHistory> ImmMasterHislst = new List<ImmunizationMasterHistory>();
-                                if (File.Exists(strXmlFilePath) == true)
-                                {
-                                    XmlDocument itemDocMaster = new XmlDocument();
-                                    XmlTextReader XmlTextMaster = new XmlTextReader(strXmlFilePath);
-                                    XmlNodeList xmlTagNameMaster = null;
-                                    using (FileStream fsMaster = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                                    {
-                                        itemDocMaster.Load(fsMaster);
+                                      IList<string> ilstImmunizationHisTagList = new List<string>();
+                                        ilstImmunizationHisTagList.Add("ImmunizationMasterHistoryList");
 
-                                        XmlTextMaster.Close();
+                                        IList<object> ilstImmunizationHisBlobFinal = new List<object>();
+                                        ilstImmunizationHisBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstImmunizationHisTagList);
 
-                                        if (itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList") != null && itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList").Count > 0)
+                                        if (ilstImmunizationHisBlobFinal != null && ilstImmunizationHisBlobFinal.Count > 0)
                                         {
-                                            xmlTagNameMaster = itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList")[0].ChildNodes;
-
-                                            if (xmlTagNameMaster != null && xmlTagNameMaster.Count > 0)
+                                            if (ilstImmunizationHisBlobFinal[0] != null)
                                             {
-                                                for (int j = 0; j < xmlTagNameMaster.Count; j++)
+                                                for (int icount = 0; icount < ((IList<object>)ilstImmunizationHisBlobFinal[0]).Count; icount++)
                                                 {
-                                                    string TagName = xmlTagNameMaster[j].Name;
-                                                    XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationMasterHistory));
-                                                    ImmunizationMasterHistory ImmunizationMasterHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagNameMaster[j])) as ImmunizationMasterHistory;
-                                                    IEnumerable<PropertyInfo> propInfo = null;
-                                                    propInfo = from obji in ((ImmunizationMasterHistory)ImmunizationMasterHistory).GetType().GetProperties() select obji;
+                                                    string sDeleted = ((ImmunizationMasterHistory)((IList<object>)ilstImmunizationHisBlobFinal[0])[icount]).Is_Deleted;
+                                                    if (sDeleted != "Y")
+                                                        ImmMasterHislst.Add(((ImmunizationMasterHistory)((IList<object>)ilstImmunizationHisBlobFinal[0])[icount]));
+                                                }
+                                            }
+                                            if (ImmMasterHislst != null && ImmMasterHislst.Count > 0)
+                                            {
+                                                foreach (ImmunizationMasterHistory item in ImmMasterHislst)
+                                                {
+                                                    ImmunizationHistory objHistory = new ImmunizationHistory();
+                                                    //bugId:61103 
+                                                    //AddorUpdateImmunizationHistory(objHistory);
 
-                                                    for (int i = 0; i < xmlTagNameMaster[j].Attributes.Count; i++)
-                                                    {
-                                                        XmlNode nodevalue = xmlTagNameMaster[j].Attributes[i];
-                                                        {
-                                                            if (propInfo != null)
-                                                            {
-                                                                foreach (PropertyInfo property in propInfo)
-                                                                {
-                                                                    if (property.Name.ToUpper() == nodevalue.Name.ToUpper())
-                                                                    {
-                                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                            property.SetValue(ImmunizationMasterHistory, Convert.ToUInt64(nodevalue.Value), null);
-                                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                            property.SetValue(ImmunizationMasterHistory, Convert.ToString(nodevalue.Value), null);
-                                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                            property.SetValue(ImmunizationMasterHistory, Convert.ToDateTime(nodevalue.Value), null);
-                                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                            property.SetValue(ImmunizationMasterHistory, Convert.ToInt32(nodevalue.Value), null);
-                                                                        else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                                            property.SetValue(ImmunizationMasterHistory, Convert.ToDecimal(nodevalue.Value), null);
-                                                                        else
-                                                                            property.SetValue(ImmunizationMasterHistory, nodevalue.Value, null);
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    if (ImmunizationMasterHistory.Is_Deleted != "Y")
-                                                        ImmMasterHislst.Add(ImmunizationMasterHistory);
+                                                    objHistory.Immunization_Description = item.Immunization_Description;
+                                                    objHistory.CVX_Code = item.CVX_Code;
+                                                    objHistory.Route_Of_Administration = item.Route_Of_Administration;
+
+                                                    objHistory.Is_VIS_Given = item.Is_VIS_Given;
+                                                    objHistory.Date_On_Vis = item.Date_On_Vis;
+                                                    objHistory.Vis_Given_Date = item.Vis_Given_Date;
+                                                    objHistory.Procedure_Code = item.Procedure_Code;
+                                                    objHistory.Human_ID = ClientSession.HumanId;
+                                                    objHistory.Physician_ID = ClientSession.PhysicianId;
+
+                                                    objHistory.Lot_Number = item.Lot_Number;
+
+                                                    objHistory.Administered_Amount = item.Administered_Amount;
+
+                                                    objHistory.Administered_Date = item.Administered_Date;
+
+                                                    objHistory.Manufacturer = item.Manufacturer;
+                                                    objHistory.Administered_Unit = item.Administered_Unit;
+
+                                                    objHistory.Expiry_Date = item.Expiry_Date;
+                                                    objHistory.Immunization_Source = item.Immunization_Source;
+                                                    objHistory.Location = item.Location;
+                                                    objHistory.Protection_State = item.Protection_State;
+
+                                                    objHistory.Dose = item.Dose;
+
+                                                    objHistory.Dose_No = item.Dose_No;
+                                                    objHistory.Notes = item.Notes;
+                                                    objHistory.Snomed_Code = item.Snomed_Code;
+                                                    objHistory.Immunization_History_Master_ID = item.Id;
+                                                    objHistory.Created_By = ClientSession.UserName;
+                                                    objHistory.Is_Deleted = "N";
+                                                    objHistory.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                                                    objHistory.Encounter_ID = ClientSession.EncounterId;
+                                                    objHistory.Version = item.Version;
+                                                    ilstSaveImmunizationHistory.Add(objHistory);
                                                 }
                                             }
                                         }
-                                        fsMaster.Close();
-                                        fsMaster.Dispose();
+
                                     }
                                 }
-                                if (ImmMasterHislst != null && ImmMasterHislst.Count > 0)
-                                {
-                                    foreach (ImmunizationMasterHistory item in ImmMasterHislst)
-                                    {
-                                        ImmunizationHistory objHistory = new ImmunizationHistory();
-                                        //bugId:61103 
-                                        //AddorUpdateImmunizationHistory(objHistory);
 
-                                        objHistory.Immunization_Description = item.Immunization_Description;
-                                        objHistory.CVX_Code = item.CVX_Code;
-                                        objHistory.Route_Of_Administration = item.Route_Of_Administration;
-
-                                        objHistory.Is_VIS_Given = item.Is_VIS_Given;
-                                        objHistory.Date_On_Vis = item.Date_On_Vis;
-                                        objHistory.Vis_Given_Date = item.Vis_Given_Date;
-                                        objHistory.Procedure_Code = item.Procedure_Code;
-                                        objHistory.Human_ID = ClientSession.HumanId;
-                                        objHistory.Physician_ID = ClientSession.PhysicianId;
-
-                                        objHistory.Lot_Number = item.Lot_Number;
-
-                                        objHistory.Administered_Amount = item.Administered_Amount;
-
-                                        objHistory.Administered_Date = item.Administered_Date;
-
-                                        objHistory.Manufacturer = item.Manufacturer;
-                                        objHistory.Administered_Unit = item.Administered_Unit;
-
-                                        objHistory.Expiry_Date = item.Expiry_Date;
-                                        objHistory.Immunization_Source = item.Immunization_Source;
-                                        objHistory.Location = item.Location;
-                                        objHistory.Protection_State = item.Protection_State;
-
-                                        objHistory.Dose = item.Dose;
-
-                                        objHistory.Dose_No = item.Dose_No;
-                                        objHistory.Notes = item.Notes;
-                                        objHistory.Snomed_Code = item.Snomed_Code;
-                                        objHistory.Immunization_History_Master_ID = item.Id;
-                                        objHistory.Created_By = ClientSession.UserName;
-                                        objHistory.Is_Deleted = "N";
-                                        objHistory.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                                        objHistory.Encounter_ID = ClientSession.EncounterId;
-                                        objHistory.Version = item.Version;
-                                        ilstSaveImmunizationHistory.Add(objHistory);
-                                    }
-                                }
-                                //Master
                             }
-                            fs.Close();
-                            fs.Dispose();
-                        }
-                    }
 
-                    //End
+                        
 
-                    #endregion
-                    bool IsInjection = false;
+                    
+
+            //ImmunizationHistoryDTO ResultList = new ImmunizationHistoryDTO();
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //ImmunizationHistoryManager immunizationMngr = new ImmunizationHistoryManager();
+            //IList<ImmunizationHistory> ImmHislst = new List<ImmunizationHistory>();
+            //bool _is_from_current_encounter_data = false;
+            //bool _is_entries_deleted = true;
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+
+            //        XmlText.Close();
+            //        //BugId:61234
+            //        if (itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count > 0)
+            //        {
+            //            XmlNodeList xmlDeleteCheckTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
+            //            _is_entries_deleted = true;
+
+            //            for (int j = 0; j < xmlDeleteCheckTagName.Count; j++)
+            //            {
+            //                for (int i = 0; i < xmlDeleteCheckTagName[j].Attributes.Count; i++)
+            //                {
+            //                    if (xmlDeleteCheckTagName[j].Attributes[i].Name == "Is_Deleted")
+            //                    {
+            //                        if (xmlDeleteCheckTagName[j].Attributes[i].InnerText == "N")
+            //                        {
+            //                            _is_entries_deleted = false;
+            //                            break;
+            //                        }
+            //                    }
+
+            //                }
+            //            }
+
+            //        }
+            //        if (!_is_entries_deleted && itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count > 0)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("ImmunizationHistoryList")[0].ChildNodes;
+
+            //            if (xmlTagName != null && xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationHistory));
+            //                    ImmunizationHistory ImmunizationHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ImmunizationHistory;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    propInfo = from obji in ((ImmunizationHistory)ImmunizationHistory).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            if (propInfo != null)
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name.ToUpper() == nodevalue.Name.ToUpper())
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(ImmunizationHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(ImmunizationHistory, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(ImmunizationHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(ImmunizationHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+            //                                            property.SetValue(ImmunizationHistory, Convert.ToDecimal(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(ImmunizationHistory, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+
+            //                    ImmHislst.Add(ImmunizationHistory);
+            //                    if (ImmunizationHistory.Encounter_ID == ClientSession.EncounterId)
+            //                        _is_from_current_encounter_data = true;
+            //                }
+            //                if (_is_from_current_encounter_data)
+            //                {
+            //                    //ilstSaveImmunizationHistory.Add(objImmunizationHistory);
+            //                }
+            //                else
+            //                {
+            //                    ImmunizationMasterHistoryManager immunizationMasterMngr = new ImmunizationMasterHistoryManager();
+            //                    IList<ImmunizationMasterHistory> ImmMasterHislst = new List<ImmunizationMasterHistory>();
+            //                    if (File.Exists(strXmlFilePath) == true)
+            //                    {
+            //                        XmlDocument itemDocMaster = new XmlDocument();
+            //                        XmlTextReader XmlTextMaster = new XmlTextReader(strXmlFilePath);
+            //                        XmlNodeList xmlTagNameMaster = null;
+            //                        using (FileStream fsMaster = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //                        {
+            //                            itemDocMaster.Load(fsMaster);
+
+            //                            XmlTextMaster.Close();
+
+            //                            if (itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList") != null && itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList").Count > 0)
+            //                            {
+            //                                xmlTagNameMaster = itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList")[0].ChildNodes;
+
+            //                                if (xmlTagNameMaster != null && xmlTagNameMaster.Count > 0)
+            //                                {
+            //                                    for (int j = 0; j < xmlTagNameMaster.Count; j++)
+            //                                    {
+            //                                        string TagName = xmlTagNameMaster[j].Name;
+            //                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationMasterHistory));
+            //                                        ImmunizationMasterHistory ImmunizationMasterHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagNameMaster[j])) as ImmunizationMasterHistory;
+            //                                        IEnumerable<PropertyInfo> propInfo = null;
+            //                                        propInfo = from obji in ((ImmunizationMasterHistory)ImmunizationMasterHistory).GetType().GetProperties() select obji;
+
+            //                                        for (int i = 0; i < xmlTagNameMaster[j].Attributes.Count; i++)
+            //                                        {
+            //                                            XmlNode nodevalue = xmlTagNameMaster[j].Attributes[i];
+            //                                            {
+            //                                                if (propInfo != null)
+            //                                                {
+            //                                                    foreach (PropertyInfo property in propInfo)
+            //                                                    {
+            //                                                        if (property.Name.ToUpper() == nodevalue.Name.ToUpper())
+            //                                                        {
+            //                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                                property.SetValue(ImmunizationMasterHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                                property.SetValue(ImmunizationMasterHistory, Convert.ToString(nodevalue.Value), null);
+            //                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                                property.SetValue(ImmunizationMasterHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                                property.SetValue(ImmunizationMasterHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+            //                                                                property.SetValue(ImmunizationMasterHistory, Convert.ToDecimal(nodevalue.Value), null);
+            //                                                            else
+            //                                                                property.SetValue(ImmunizationMasterHistory, nodevalue.Value, null);
+            //                                                        }
+            //                                                    }
+            //                                                }
+            //                                            }
+            //                                        }
+            //                                        if (ImmunizationMasterHistory.Is_Deleted != "Y")
+            //                                            ImmMasterHislst.Add(ImmunizationMasterHistory);
+            //                                    }
+            //                                }
+            //                            }
+            //                            fsMaster.Close();
+            //                            fsMaster.Dispose();
+            //                        }
+            //                    }
+            //                    if (ImmMasterHislst != null && ImmMasterHislst.Count > 0)
+            //                    {
+            //                        foreach (ImmunizationMasterHistory item in ImmMasterHislst)
+            //                        {
+            //                            ImmunizationHistory objHistory = new ImmunizationHistory();
+            //                            //bugId:61103 
+            //                            //AddorUpdateImmunizationHistory(objHistory);
+
+            //                            objHistory.Immunization_Description = item.Immunization_Description;
+            //                            objHistory.CVX_Code = item.CVX_Code;
+            //                            objHistory.Route_Of_Administration = item.Route_Of_Administration;
+
+            //                            objHistory.Is_VIS_Given = item.Is_VIS_Given;
+            //                            objHistory.Date_On_Vis = item.Date_On_Vis;
+            //                            objHistory.Vis_Given_Date = item.Vis_Given_Date;
+            //                            objHistory.Procedure_Code = item.Procedure_Code;
+            //                            objHistory.Human_ID = ClientSession.HumanId;
+            //                            objHistory.Physician_ID = ClientSession.PhysicianId;
+
+            //                            objHistory.Lot_Number = item.Lot_Number;
+
+            //                            objHistory.Administered_Amount = item.Administered_Amount;
+
+            //                            objHistory.Administered_Date = item.Administered_Date;
+
+            //                            objHistory.Manufacturer = item.Manufacturer;
+            //                            objHistory.Administered_Unit = item.Administered_Unit;
+
+            //                            objHistory.Expiry_Date = item.Expiry_Date;
+            //                            objHistory.Immunization_Source = item.Immunization_Source;
+            //                            objHistory.Location = item.Location;
+            //                            objHistory.Protection_State = item.Protection_State;
+
+            //                            objHistory.Dose = item.Dose;
+
+            //                            objHistory.Dose_No = item.Dose_No;
+            //                            objHistory.Notes = item.Notes;
+            //                            objHistory.Snomed_Code = item.Snomed_Code;
+            //                            objHistory.Immunization_History_Master_ID = item.Id;
+            //                            objHistory.Created_By = ClientSession.UserName;
+            //                            objHistory.Is_Deleted = "N";
+            //                            objHistory.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+            //                            objHistory.Encounter_ID = ClientSession.EncounterId;
+            //                            objHistory.Version = item.Version;
+            //                            ilstSaveImmunizationHistory.Add(objHistory);
+            //                        }
+            //                    }
+            //                    //Master
+            //                }
+            //            }
+            //        }
+            //        else if (itemDoc.GetElementsByTagName("ImmunizationHistoryList") != null && itemDoc.GetElementsByTagName("ImmunizationHistoryList").Count == 0)
+            //        {
+            //            ImmunizationMasterHistoryManager immunizationMasterMngr = new ImmunizationMasterHistoryManager();
+            //            IList<ImmunizationMasterHistory> ImmMasterHislst = new List<ImmunizationMasterHistory>();
+            //            if (File.Exists(strXmlFilePath) == true)
+            //            {
+            //                XmlDocument itemDocMaster = new XmlDocument();
+            //                XmlTextReader XmlTextMaster = new XmlTextReader(strXmlFilePath);
+            //                XmlNodeList xmlTagNameMaster = null;
+            //                using (FileStream fsMaster = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //                {
+            //                    itemDocMaster.Load(fsMaster);
+
+            //                    XmlTextMaster.Close();
+
+            //                    if (itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList") != null && itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList").Count > 0)
+            //                    {
+            //                        xmlTagNameMaster = itemDocMaster.GetElementsByTagName("ImmunizationMasterHistoryList")[0].ChildNodes;
+
+            //                        if (xmlTagNameMaster != null && xmlTagNameMaster.Count > 0)
+            //                        {
+            //                            for (int j = 0; j < xmlTagNameMaster.Count; j++)
+            //                            {
+            //                                string TagName = xmlTagNameMaster[j].Name;
+            //                                XmlSerializer xmlserializer = new XmlSerializer(typeof(ImmunizationMasterHistory));
+            //                                ImmunizationMasterHistory ImmunizationMasterHistory = xmlserializer.Deserialize(new XmlNodeReader(xmlTagNameMaster[j])) as ImmunizationMasterHistory;
+            //                                IEnumerable<PropertyInfo> propInfo = null;
+            //                                propInfo = from obji in ((ImmunizationMasterHistory)ImmunizationMasterHistory).GetType().GetProperties() select obji;
+
+            //                                for (int i = 0; i < xmlTagNameMaster[j].Attributes.Count; i++)
+            //                                {
+            //                                    XmlNode nodevalue = xmlTagNameMaster[j].Attributes[i];
+            //                                    {
+            //                                        if (propInfo != null)
+            //                                        {
+            //                                            foreach (PropertyInfo property in propInfo)
+            //                                            {
+            //                                                if (property.Name.ToUpper() == nodevalue.Name.ToUpper())
+            //                                                {
+            //                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                        property.SetValue(ImmunizationMasterHistory, Convert.ToUInt64(nodevalue.Value), null);
+            //                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                        property.SetValue(ImmunizationMasterHistory, Convert.ToString(nodevalue.Value), null);
+            //                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                        property.SetValue(ImmunizationMasterHistory, Convert.ToDateTime(nodevalue.Value), null);
+            //                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                        property.SetValue(ImmunizationMasterHistory, Convert.ToInt32(nodevalue.Value), null);
+            //                                                    else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+            //                                                        property.SetValue(ImmunizationMasterHistory, Convert.ToDecimal(nodevalue.Value), null);
+            //                                                    else
+            //                                                        property.SetValue(ImmunizationMasterHistory, nodevalue.Value, null);
+            //                                                }
+            //                                            }
+            //                                        }
+            //                                    }
+            //                                }
+            //                                if (ImmunizationMasterHistory.Is_Deleted != "Y")
+            //                                    ImmMasterHislst.Add(ImmunizationMasterHistory);
+            //                            }
+            //                        }
+            //                    }
+            //                    fsMaster.Close();
+            //                    fsMaster.Dispose();
+            //                }
+            //            }
+
+
+            //            if (ImmMasterHislst != null && ImmMasterHislst.Count > 0)
+            //            {
+            //                foreach (ImmunizationMasterHistory item in ImmMasterHislst)
+            //                {
+            //                    ImmunizationHistory objHistory = new ImmunizationHistory();
+            //                    //bugId:61103 
+            //                    //AddorUpdateImmunizationHistory(objHistory);
+
+            //                    objHistory.Immunization_Description = item.Immunization_Description;
+            //                    objHistory.CVX_Code = item.CVX_Code;
+            //                    objHistory.Route_Of_Administration = item.Route_Of_Administration;
+
+            //                    objHistory.Is_VIS_Given = item.Is_VIS_Given;
+            //                    objHistory.Date_On_Vis = item.Date_On_Vis;
+            //                    objHistory.Vis_Given_Date = item.Vis_Given_Date;
+            //                    objHistory.Procedure_Code = item.Procedure_Code;
+            //                    objHistory.Human_ID = ClientSession.HumanId;
+            //                    objHistory.Physician_ID = ClientSession.PhysicianId;
+
+            //                    objHistory.Lot_Number = item.Lot_Number;
+
+            //                    objHistory.Administered_Amount = item.Administered_Amount;
+
+            //                    objHistory.Administered_Date = item.Administered_Date;
+
+            //                    objHistory.Manufacturer = item.Manufacturer;
+            //                    objHistory.Administered_Unit = item.Administered_Unit;
+
+            //                    objHistory.Expiry_Date = item.Expiry_Date;
+            //                    objHistory.Immunization_Source = item.Immunization_Source;
+            //                    objHistory.Location = item.Location;
+            //                    objHistory.Protection_State = item.Protection_State;
+
+            //                    objHistory.Dose = item.Dose;
+
+            //                    objHistory.Dose_No = item.Dose_No;
+            //                    objHistory.Notes = item.Notes;
+            //                    objHistory.Snomed_Code = item.Snomed_Code;
+            //                    objHistory.Immunization_History_Master_ID = item.Id;
+            //                    objHistory.Created_By = ClientSession.UserName;
+            //                    objHistory.Is_Deleted = "N";
+            //                    objHistory.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+            //                    objHistory.Encounter_ID = ClientSession.EncounterId;
+            //                    objHistory.Version = item.Version;
+            //                    ilstSaveImmunizationHistory.Add(objHistory);
+            //                }
+            //            }
+            //            //Master
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
+
+            //End
+
+            #endregion
+            bool IsInjection = false;
                     if (txtImmunizationProcedure.Text.ToUpper().StartsWith("J".ToUpper()))
                     {
                         IsInjection = true;
