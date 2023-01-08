@@ -658,7 +658,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             try
                             {
-                                if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                                //if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                                if(XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
                                 {
                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     int trycount = 0;
@@ -724,7 +725,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         //}
                                     }
                                 }
-                                if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                                //if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                                if (XMLObjEncounter.itemDoc.InnerXml != null && XMLObjEncounter.itemDoc.InnerXml != "")
                                 {
                                    // XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
                                     int trycount = 0;
@@ -1229,10 +1231,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     }
                                 }
                             }
-                            if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                            // if (XMLObjEncounter.strXmlFilePath != null && XMLObjEncounter.strXmlFilePath != "")
+                            if (XMLObjEncounter.itemDoc.InnerXml != null && XMLObjEncounter.itemDoc.InnerXml != "")
                             {
-                                //XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
-                                int trycount = 0;
+                                
+                                
+                                    //XMLObjEncounter.itemDoc.Save(XMLObjEncounter.strXmlFilePath);
+                                    int trycount = 0;
                             trytosaveagain:
                                 try
                                 {
@@ -1762,9 +1767,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                               }
                           }
-                         
-                          if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
-                          {
+
+                            //if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                            if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
+                            {
                              // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                               int trycount = 0;
                             trytosaveagain:
