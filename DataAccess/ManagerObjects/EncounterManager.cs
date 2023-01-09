@@ -10142,10 +10142,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //        xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
             //    itemDoc.Save(strXmlEncounterFilePath);
             //}
-            IList<object> ilstEncBlob = new List<object>();
-            IList<string> ilstEncounterTagList = new List<string>();
-            ilstEncounterTagList.Add("EncounterList");
-            ilstEncBlob = ReadBlob( ulEncID, ilstEncounterTagList);
+            //IList<object> ilstEncBlob = new List<object>();
+            //IList<string> ilstEncounterTagList = new List<string>();
+            //ilstEncounterTagList.Add("EncounterList");
+            //ilstEncBlob = ReadBlob( ulEncID, ilstEncounterTagList);
             
             //if (File.Exists(strXmlEncounterFilePath) == false)
             //{
@@ -10166,7 +10166,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
                 {
-                    WriteBlob( ulEncID, itemDoc, session, null, null, null, null, true);
+                    WriteBlob( ulEncID, itemDoc, session, null, encupdateList, null, null, true);
 
                     trans.Commit();
                 }

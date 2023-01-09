@@ -325,9 +325,11 @@ namespace Acurus.Capella.UI
             ds = new DataSet();
             //ds.ReadXml(xmlDataFile);
             StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLHumanDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+
             string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
-            sb.Append(sXMLEncounterDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+
+            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
             ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
             xmlDoc = new XmlDataDocument(ds);
