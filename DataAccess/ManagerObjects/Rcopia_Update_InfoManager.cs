@@ -275,9 +275,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //string CmdElementText2 = ((XmlElement)xmlReqNode[0]).InnerText;
 
                     //InsertinToRcopia_Update_info(CmdElementText2, Convert.ToDateTime(CmdElementText1, culture), string.Empty, sMACAddress);
-
-                    objHuman.RCopia_Allergy_Last_Updated_Date_Time = Convert.ToDateTime(CmdElementText1.ToString());
-
+                    if (CmdElementText1.ToString() != string.Empty)
+                    {
+                        objHuman.RCopia_Allergy_Last_Updated_Date_Time = Convert.ToDateTime(CmdElementText1.ToString());
+                    }
                 }
             }
 
@@ -298,7 +299,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     //InsertinToRcopia_Update_info(CmdElementText2, Convert.ToDateTime(CmdElementText1, culture), string.Empty, sMACAddress);
 
-                    objHuman.RCopia_Medication_Last_Updated_Date_Time = Convert.ToDateTime(CmdElementText1.ToString());
+                    if (CmdElementText1.ToString() != string.Empty)
+                    {
+                        objHuman.RCopia_Medication_Last_Updated_Date_Time = Convert.ToDateTime(CmdElementText1.ToString());
+                    }
                 }
             }
             //sInputXML = rcopiaXML.CreateUpdateProblemXML();
@@ -325,8 +329,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //string CmdElementText2 = ((XmlElement)xmlReqNode[0]).InnerText;
 
                     //InsertinToRcopia_Update_info(CmdElementText2, Convert.ToDateTime(CmdElementText1, culture), string.Empty, sMACAddress);
-
-                    objHuman.RCopia_Prescription_Last_Updated_Date_Time = Convert.ToDateTime(CmdElementText1.ToString());
+                    if (CmdElementText1.ToString() != string.Empty)
+                    {
+                        objHuman.RCopia_Prescription_Last_Updated_Date_Time = Convert.ToDateTime(CmdElementText1.ToString());
+                    }
                 }
             }
 

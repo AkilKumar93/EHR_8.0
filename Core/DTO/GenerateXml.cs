@@ -1652,7 +1652,7 @@ namespace Acurus.Capella.Core.DTO
             }
         }
 
-        public void GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, bool IsPhoneEncounter, bool IsAssessment, bool IsRcopiaMedication, GenerateXml XMLObj)
+        public void GenerateXmlSave(IList<object> obj, ulong EncounterOrHumanId, string sGeneralNotesText, bool bSave_In_Human, bool IsPhoneEncounter, bool IsAssessment, bool IsRcopiaMedication,ref GenerateXml XMLObj)
         {
             string sLocalTime = string.Empty;
             string FileName = "Encounter" + "_" + EncounterOrHumanId + ".xml";

@@ -203,7 +203,7 @@ namespace Acurus.Capella.UI
 
 
                 IList<object> ilstSummaryBlob_Final = new List<object>();
-                ilstSummaryBlob_Final = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstSummaryTag_List);
+                ilstSummaryBlob_Final = UtilityManager.ReadBlob(Encounter_Id, ilstSummaryTag_List);
 
                 if (ilstSummaryBlob_Final != null && ilstSummaryBlob_Final.Count > 0)
                 {

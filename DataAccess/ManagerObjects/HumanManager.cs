@@ -5898,14 +5898,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
 
                         }
+
                         trans.Commit();
+
+                        MySession.Close();
+
                         /*Generating Human XML*/
                         GenerateXml objXML = new GenerateXml();
                         if (objHuman.Id != 0)
                         {
-                            string HumanFileName = "Human" + "_" + objHuman.Id + ".xml";
-                            string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
-                            if (File.Exists(strXmlHumanFilePath) == false && objHuman.Id > 0)
+                            //string HumanFileName = "Human" + "_" + objHuman.Id + ".xml";
+                            //string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                            //if (File.Exists(strXmlHumanFilePath) == false && objHuman.Id > 0)
+                            //{
+                            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                            Human_Blob objHumanblob = new Human_Blob();
+                            IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(objHuman.Id);
+                            if (ilstHumanBlob.Count == 0 && objHuman.Id > 0)
                             {
                                 string sDirectoryPath = HttpContext.Current.Server.MapPath("Template_XML");
                                 string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
@@ -5929,63 +5938,104 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                                 XmlText.Close();
                                 //itemDoc.Save(strXmlHumanFilePath);
-                                int trycount = 0;
-                            trytosaveagain:
+                            //    int trycount = 0;
+                            //trytosaveagain:
                                 try
                                 {
-                                    itemDoc.Save(strXmlHumanFilePath);
+
+                                    //itemDoc.Save(strXmlHumanFilePath);
+                                    IList<Human_Blob> ilstUpdateBlob = new List<Human_Blob>();
+                                    byte[] bytes = null;
+                                    try
+                                    {
+                                        bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);    
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                    objHumanblob.Id = objHuman.Id;
+                                    objHumanblob.Human_ID= objHuman.Id;
+                                    objHumanblob.Human_XML = bytes;
+                                    objHumanblob.Created_By = objHuman.Created_By;
+                                    objHumanblob.Created_Date_And_Time = objHuman.Created_Date_And_Time;
+
+                                    ilstUpdateBlob.Add(objHumanblob);
+                                 
+                                    MySession = session.GetISession();
+
+                                    using (ITransaction trans1 = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+                                    {
+                                        try
+                                        {
+                                            HumanBlobMngr.SaveHumanBlobWithoutTransaction(ilstUpdateBlob, null, MySession, string.Empty);
+
+                                            trans1.Commit();
+                                        }
+                                        catch (Exception ex1)
+                                        {
+                                            trans1.Rollback();
+                                        }
+                                    }
+
+                                    MySession.Close();
+
+                                  //  MySession = session.GetISession();
+
                                 }
                                 catch (Exception xmlexcep)
                                 {
-                                    trycount++;
-                                    if (trycount <= 3)
-                                    {
-                                        int TimeMilliseconds = 0;
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+                                    throw new Exception(xmlexcep.Message.ToString());
 
-                                        Thread.Sleep(TimeMilliseconds);
-                                        string sMsg = string.Empty;
-                                        string sExStackTrace = string.Empty;
+                                    //trycount++;
+                                    //if (trycount <= 3)
+                                    //{
+                                    //    int TimeMilliseconds = 0;
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+                                    //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                        string version = "";
-                                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+                                    //    Thread.Sleep(TimeMilliseconds);
+                                    //    string sMsg = string.Empty;
+                                    //    string sExStackTrace = string.Empty;
 
-                                        string[] server = version.Split('|');
-                                        string serverno = "";
-                                        if (server.Length > 1)
-                                            serverno = server[1].Trim();
+                                    //    string version = "";
+                                    //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                                    //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                            sMsg = xmlexcep.InnerException.Message;
-                                        else
-                                            sMsg = xmlexcep.Message;
+                                    //    string[] server = version.Split('|');
+                                    //    string serverno = "";
+                                    //    if (server.Length > 1)
+                                    //        serverno = server[1].Trim();
 
-                                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                            sExStackTrace = xmlexcep.StackTrace;
+                                    //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+                                    //        sMsg = xmlexcep.InnerException.Message;
+                                    //    else
+                                    //        sMsg = xmlexcep.Message;
 
-                                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                        string ConnectionData;
-                                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                        {
-                                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                            {
-                                                cmd.Connection = con;
-                                                try
-                                                {
-                                                    con.Open();
-                                                    cmd.ExecuteNonQuery();
-                                                    con.Close();
-                                                }
-                                                catch
-                                                {
-                                                }
-                                            }
-                                        }
-                                        goto trytosaveagain;
-                                    }
+                                    //    if (xmlexcep != null && xmlexcep.StackTrace != null)
+                                    //        sExStackTrace = xmlexcep.StackTrace;
+
+                                    //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                                    //    string ConnectionData;
+                                    //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                                    //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+                                    //    {
+                                    //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                                    //        {
+                                    //            cmd.Connection = con;
+                                    //            try
+                                    //            {
+                                    //                con.Open();
+                                    //                cmd.ExecuteNonQuery();
+                                    //                con.Close();
+                                    //            }
+                                    //            catch
+                                    //            {
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //    goto trytosaveagain;
+                                    //}
                                 }
 
 
@@ -5997,7 +6047,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 objXML.Copy_Previous_GenerateXmlSave(lsthumanObj, objHuman.Id, string.Empty, false, ref objXML);
                             }
                         }
-
+                       
                     }
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
@@ -6013,7 +6063,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     finally
                     {
-                        MySession.Close();
+                       if (MySession != null && MySession.IsOpen == true)
+                        {
+                            MySession.Close();
+                        }
                     }
                 }
             }

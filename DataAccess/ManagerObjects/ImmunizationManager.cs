@@ -536,8 +536,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         try
                                         {
                                             // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                            WriteBlob(ImnuHistorysaveList[0].Human_ID, XMLObj.itemDoc, MySession, null, immulist, null, XMLObj, false);
-
+                                            if (immun != null)
+                                            {
+                                                WriteBlob(immun.Human_ID, XMLObj.itemDoc, MySession, null, immulist, null, XMLObj, false);
+                                            }
                                         }
                                         catch (Exception xmlexcep)
                                         {

@@ -9651,7 +9651,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     //objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
                     objXml.itemDoc = null;
-                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, objXml);
+                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref objXml);
                 }
 
                 if (SavePlan != null && SavePlan.Count > 0)
@@ -9790,7 +9790,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (SaveEncounter != null && SaveEncounter.Count > 0)
                 {
                     //iResult = SaveUpdateDeleteWithoutTransaction(ref SaveEncounter, null, null, MySession, sMacAddress);
-                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveEncounter, ref EncListUpdate, null, MySession, sMacAddress, false, false, SaveEncounter[0].Id, string.Empty, ref XMLObj);
+                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveEncounter, ref EncListUpdate, null, MySession, sMacAddress, false, false, SaveEncounter[0].Id, string.Empty, ref XMLObj) ;
 
                     if (iResult == 2)
                     {
@@ -9828,15 +9828,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         string sXmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template_XML\\Base_XML.xml");
                         XmlDocument itemDoc = new XmlDocument();
                         XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                        itemDoc.Load(XmlText);
+                    XMLObj.itemDoc.Load(XmlText);
                         XmlText.Close();
 
-                        XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+                        XmlNodeList xmlAgenode = XMLObj.itemDoc.GetElementsByTagName("Age");
                         if (xmlAgenode != null)
                             xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
                         IEnumerable<XElement> ilstPhysician = null;
-                        XmlNodeList xmlMember_ID = itemDoc.GetElementsByTagName("Encounter_Provider_Name");
+                        XmlNodeList xmlMember_ID = XMLObj.itemDoc.GetElementsByTagName("Encounter_Provider_Name");
 
                         string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
                         XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
@@ -9847,7 +9847,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
 
                         string sPhysicianid = SaveEncounter[0].Encounter_Provider_ID.ToString();
-                        XmlNodeList xmlPhysicianAddress = itemDoc.GetElementsByTagName("Physician_Address");
+                        XmlNodeList xmlPhysicianAddress = XMLObj.itemDoc.GetElementsByTagName("Physician_Address");
                         if (xmlPhysicianAddress != null)
                         {
                             string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
@@ -9871,14 +9871,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         //itemDoc.Save(strXmlEncounterFilePath);
                        
-                        WriteBlob(ulEncId, itemDoc, MySession, SaveEncounter, null, null, null, true);
+                       
+                    GenerateXml objXml = new GenerateXml();
+                    List<object> lstObj = SaveEncounter.Cast<object>().ToList();
+                   // objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
+                   // objXml.itemDoc = null;
+                    XMLObj.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref XMLObj);
+                    WriteBlob(ulEncId, XMLObj.itemDoc, MySession, SaveEncounter, null, null, XMLObj, true);
                     trans.Commit();
                     trans = MySession.BeginTransaction();
-                    //GenerateXml objXml = new GenerateXml();
-                    // List<object> lstObj = SaveEncounter.Cast<object>().ToList();
-                    //objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
-                    //objXml.itemDoc = null;
-                    // XMLObj.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, XMLObj);
+
+
                 }
 
                 if (SavePlan != null && SavePlan.Count > 0)
