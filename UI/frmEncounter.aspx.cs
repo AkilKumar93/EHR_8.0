@@ -395,80 +395,104 @@ namespace Acurus.Capella.UI
 
             // UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "OpeningEncounterXMLfromMyQ");
 
-        //        string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-        //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-        //ln:
-        //    XmlTextReader XmlText = null;
+            //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+        ln:
+            XmlTextReader XmlText = null;
 
-        //    if (File.Exists(strXmlFilePath) == true)
-        //    {
-        //        try
-        //        {
+            //if (File.Exists(strXmlFilePath) == true)
+            EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+            Encounter_Blob objEncounterblob = null;
+            string sXMLContent = string.Empty;
+            IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
+            if (ilstEncounterBlob.Count > 0 && ClientSession.EncounterId > 0)
+            {
+                objEncounterblob = ilstEncounterBlob[0];
 
+                try
+                {
+                        XmlDocument itemDoc = new XmlDocument();
 
-        //            XmlDocument itemDoc = new XmlDocument();
-        //             XmlText = new XmlTextReader(strXmlFilePath);
-        //            itemDoc.Load(XmlText);
-        //            XmlText.Close();
-        //            XmlNodeList xmlMember_ID = itemDoc.GetElementsByTagName("Encounter_Provider_Name");
-        //            if (xmlMember_ID != null && xmlMember_ID.Count > 0)
-        //                xmlMember_ID[0].InnerText = strPhysicianDetails;
+                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                        if (sXMLContent.Substring(0, 1) != "<")
+                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                        itemDoc.LoadXml(sXMLContent);
 
-        //            string sPhysicianid = string.Empty;
-        //            if (ClientSession.PhysicianId != null)
-        //                sPhysicianid = ClientSession.PhysicianId.ToString();
-        //            XmlNodeList xmlPhysicianAddress = itemDoc.GetElementsByTagName("Physician_Address");
-        //            if (xmlPhysicianAddress != null)
-        //            {
-        //                string sPhysicianXmlPath = string.Empty;
-        //                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml"))
-        //                    sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-        //                XmlDocument itemPhysiciandoc = new XmlDocument();
-        //                XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-        //                itemPhysiciandoc.Load(XmlPhysicianText);
+                    //XmlText = new XmlTextReader(strXmlFilePath);
+                    //itemDoc.Load(XmlText);
+                    //XmlText.Close();
+                    XmlNodeList xmlMember_ID = itemDoc.GetElementsByTagName("Encounter_Provider_Name");
+                    if (xmlMember_ID != null && xmlMember_ID.Count > 0)
+                        xmlMember_ID[0].InnerText = strPhysicianDetails;
 
-        //                XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
-        //                if (xmlphy != null && xmlphy.Count > 0)
-        //                {
-        //                    if (xmlphy[0].Attributes[0].Value != null)
-        //                        xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
-        //                    if (xmlphy[0].Attributes[1].Value != null)
-        //                        xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
-        //                    if (xmlphy[0].Attributes[2].Value != null)
-        //                        xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
-        //                    if (xmlphy[0].Attributes[3].Value != null)
-        //                        xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
-        //                    if (xmlphy[0].Attributes[4].Value != null)
-        //                        xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
-        //                    if (xmlphy[0].Attributes[5].Value != null)
-        //                        xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
-        //                    if (xmlphy[0].Attributes[6].Value != null)
-        //                        xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
-        //                    if (xmlphy[0].Attributes[7].Value != null)
-        //                        xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
-        //                }
-        //            }
-        //            itemDoc.Save(strXmlFilePath);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
-        //            {
-        //               // ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
+                    string sPhysicianid = string.Empty;
+                    if (ClientSession.PhysicianId != null)
+                        sPhysicianid = ClientSession.PhysicianId.ToString();
+                    XmlNodeList xmlPhysicianAddress = itemDoc.GetElementsByTagName("Physician_Address");
+                    if (xmlPhysicianAddress != null)
+                    {
+                        string sPhysicianXmlPath = string.Empty;
+                        if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml"))
+                            sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                        XmlDocument itemPhysiciandoc = new XmlDocument();
+                        XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                        itemPhysiciandoc.Load(XmlPhysicianText);
 
-        //                issuccess = false;
-        //                XmlText.Close();
-        //               // UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
-        //               // goto ln;
-        //                return issuccess;
-        //            }
+                        XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
+                        if (xmlphy != null && xmlphy.Count > 0)
+                        {
+                            if (xmlphy[0].Attributes[0].Value != null)
+                                xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
+                            if (xmlphy[0].Attributes[1].Value != null)
+                                xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
+                            if (xmlphy[0].Attributes[2].Value != null)
+                                xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
+                            if (xmlphy[0].Attributes[3].Value != null)
+                                xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
+                            if (xmlphy[0].Attributes[4].Value != null)
+                                xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
+                            if (xmlphy[0].Attributes[5].Value != null)
+                                xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
+                            if (xmlphy[0].Attributes[6].Value != null)
+                                xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
+                            if (xmlphy[0].Attributes[7].Value != null)
+                                xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
+                        }
+                    }
+                        //itemDoc.Save(strXmlFilePath);
+                        IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
+                        byte[] bytes = null;
+                        try
+                        {
+                            bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                        }
+                        catch (Exception ex)
+                        {
 
-        //        }
-        //    }
-        //    else
-        //    {
-        //        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryXMlAlert();", true);
-        //    }
+                        }
+                        objEncounterblob.Encounter_XML = bytes;
+                        ilstUpdateBlob.Add(objEncounterblob);
+                        EncounterBlobMngr.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                    }
+                catch (Exception ex)
+                {
+                    // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+                    {
+                        // ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
+
+                        issuccess = false;
+                        XmlText.Close();
+                        // UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
+                        // goto ln;
+                        return issuccess;
+                    }
+
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryXMlAlert();", true);
+            }
 
             if (EncRecord.Date_of_Service != null)
             {

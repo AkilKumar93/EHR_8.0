@@ -15668,22 +15668,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (xmlAgenode != null && xmlAgenode.Count > 0)
                     xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
-
-            IEnumerable<XElement> ilstPhysician = null;
-            XmlNodeList xmlMember_ID = itemDoc.GetElementsByTagName("Encounter_Provider_Name");
-
-            string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
-            XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
-            ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == updateEncounterList[0].Encounter_Provider_ID.ToString());
-            if (ilstPhysician != null && ilstPhysician.Count() > 0)
-            {
-                xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();
-            }
-
             // itemDoc.Save(strXmlEncounterFilePath);
 
-            int trycount = 0;
-            trytosaveagain:
+            //int trycount = 0;
+            //trytosaveagain:
                 try
                 {
                 // itemDoc.Save(strXmlEncounterFilePath);

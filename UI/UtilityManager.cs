@@ -5081,7 +5081,7 @@ namespace Acurus.Capella.UI
             IList<object> ilstResult = new List<object>();
             IList<object> ilstEntity = new List<object>();
             XmlDocument xmlDoc = new XmlDocument();
-            string sXMLContent = String.Empty;
+            string sXMLContent = string.Empty;
             IList<MapXMLBlob> ilstXMLBlob = new List<MapXMLBlob>();
             ilstXMLBlob = ApplicationObject.ilstMapXMLBlob.Where(a => a.XML_Tag_Name == ilstTagName[0].ToString()).ToList();
             if (ilstXMLBlob.Count > 0)
