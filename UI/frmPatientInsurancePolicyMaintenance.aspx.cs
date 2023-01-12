@@ -63,38 +63,72 @@ namespace Acurus.Capella.UI
                 btnMakeActive.Enabled = false;
                 btnOK.Enabled = false;
                 btnMakeInactive.Enabled = false;
-                if (System.Text.RegularExpressions.Regex.IsMatch(Request["HumanId"], "^[0-9]*$") == true)
+                if (System.Text.RegularExpressions.Regex.IsMatch(Request["HumanId"].Trim(), "^[0-9]*$") == true)
                 {
-                    ulMyHumanID = Convert.ToUInt64(Request["HumanId"]);
+                    ulMyHumanID = Convert.ToUInt64(Request["HumanId"].Trim());
                 }
                 hdnHumanID.Value = ulMyHumanID.ToString();
                 //to enter first name,last name and account number field in the form.
                 //IList<Human> humanList = HumanMngr.GetPatientDetailsUsingPatientInformattion(ulMyHumanID);
                 IList<Human> humanList = HumanMngr.GetPatientDetailsUsingPatientInformattion(ulMyHumanID);
                 // Assign PatientStrip Values
+
                 string phoneno = "";
                 string FileName = "Human" + "_" + ulMyHumanID + ".xml";
                 string sPatientSex = string.Empty;
-                Human objFillHuman = new Human();
-                IList<string> ilstGeneralPlanTagList = new List<string>();
-                ilstGeneralPlanTagList.Add("HumanList");
-                IList<Human> lsthuman = new List<Human>();
 
-                IList<object> ilstGeneralPlanBlobFinal = new List<object>();
-                ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(ulMyHumanID, ilstGeneralPlanTagList);
-                if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
+                #region "Code Modified by Balaji.TJ 2023-01-11"
+                
+                IList<string> ilstPatIns = new List<string>();
+                ilstPatIns.Add("HumanList");
+
+                IList<object> ilstPatInsBlobFinal = new List<object>();
+                ilstPatInsBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPatIns);
+                if (ilstPatInsBlobFinal != null && ilstPatInsBlobFinal.Count > 0)
                 {
-                    if (ilstGeneralPlanBlobFinal[0] != null)
+                    if (ilstPatInsBlobFinal[0] != null && ((IList<object>)ilstPatInsBlobFinal[0]).Count > 0)
                     {
-                        for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                        for (int i = 0; i < ((IList<object>)ilstPatInsBlobFinal[0]).Count; i++)
                         {
-                            objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
-                            lsthuman.Add(objFillHuman);
+                            humanList.Add((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]);
+                           
+                            if (humanList != null && humanList.Count > 0)
+                            {
+                                if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Home_Phone_No.Length == 14)
+                                {
+                                    phoneno = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Home_Phone_No;
+                                }
+                                else
+                                {
+                                    phoneno = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Cell_Phone_Number;
+                                }
+                            }
+                            if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex != string.Empty)
+                            {
+                                if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex.Substring(0, 1).ToUpper() == "U")
+                                {
+                                    sPatientSex = "UNK";
+                                }
+                                else
+                                {
+                                    sPatientSex = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex.Substring(0, 1);
+                                }
+                            }
+                            else
+                            {
+                                sPatientSex = "";
+                            }
                         }
                     }
+                    
                 }
-               
-          //  retry:
+
+
+                #endregion
+                #region "Code Comment by Balaji.TJ 2023-01-11"
+
+
+                //retry:
                 //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
                 //if (File.Exists(strXmlFilePath) == true)
                 //{
@@ -167,6 +201,8 @@ namespace Acurus.Capella.UI
                 //        goto retry;
                 //    }
                 //}
+                #endregion
+
 
                 if (humanList != null && humanList.Count > 0)     //code added by balaji.TJ 2015-12-17          
                     objHumanList = humanList[0];
