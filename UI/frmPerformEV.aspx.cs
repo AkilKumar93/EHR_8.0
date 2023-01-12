@@ -56,133 +56,145 @@ namespace Acurus.Capella.UI
                 divPatientstrip.InnerText = sdivPatientstrip;
             }
 
+            string sXMLContent = String.Empty;
+            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+            Human_Blob objHumanblob = null;
+            XmlDocument itemDoc = new XmlDocument();
+            IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(humanID);
+            if (ilstHumanBlob.Count > 0)
+            {
+                objHumanblob = ilstHumanBlob[0];
+                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                if (sXMLContent.Substring(0, 1) != "<")
+                    sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                itemDoc.LoadXml(sXMLContent);
+            }
 
             //string FileName = "Human" + "_" + humanID + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             //if (File.Exists(strXmlFilePath) == true)
             //{
-            //    try
-            //    {
-            //        XmlDocument itemDoc = new XmlDocument();
-            //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            //        {
-            //            itemDoc.Load(fs);
+                try
+                {
+                    //XmlDocument itemDoc = new XmlDocument();
+                    //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    //{
+                        //itemDoc.Load(fs);
 
-            //            XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
-            //            Human objFillHuman = new Human();
-            //            IList<Human> lstHuman = new List<Human>();
-            //            if (xmlhumanList != null && xmlhumanList.Count > 0)
-            //            {
-            //                objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
-            //                objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
-            //                objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
-            //                objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
-            //                objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
-            //                objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
-            //                objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
-            //                objFillHuman.Medical_Record_Number = xmlhumanList[0].Attributes.GetNamedItem("Medical_Record_Number").Value;
-            //                objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Home_Phone_No").Value;
-            //                objFillHuman.Human_Type = xmlhumanList[0].Attributes.GetNamedItem("Human_Type").Value;
-            //                objFillHuman.Patient_Account_External = xmlhumanList[0].Attributes.GetNamedItem("Patient_Account_External").Value;
-            //                objFillHuman.Guarantor_Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Last_Name").Value;
+                        XmlNodeList xmlhumanList = itemDoc.GetElementsByTagName("Human");
+                        Human objFillHuman = new Human();
+                        IList<Human> lstHuman = new List<Human>();
+                        if (xmlhumanList != null && xmlhumanList.Count > 0)
+                        {
+                            objFillHuman.Id = Convert.ToUInt64(xmlhumanList[0].Attributes.GetNamedItem("Id").Value);
+                            objFillHuman.Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Birth_Date").Value);
+                            objFillHuman.First_Name = xmlhumanList[0].Attributes.GetNamedItem("First_Name").Value;
+                            objFillHuman.Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Last_Name").Value;
+                            objFillHuman.MI = xmlhumanList[0].Attributes.GetNamedItem("MI").Value;
+                            objFillHuman.Sex = xmlhumanList[0].Attributes.GetNamedItem("Sex").Value;
+                            objFillHuman.Suffix = xmlhumanList[0].Attributes.GetNamedItem("Suffix").Value;
+                            objFillHuman.Medical_Record_Number = xmlhumanList[0].Attributes.GetNamedItem("Medical_Record_Number").Value;
+                            objFillHuman.Home_Phone_No = xmlhumanList[0].Attributes.GetNamedItem("Home_Phone_No").Value;
+                            objFillHuman.Human_Type = xmlhumanList[0].Attributes.GetNamedItem("Human_Type").Value;
+                            objFillHuman.Patient_Account_External = xmlhumanList[0].Attributes.GetNamedItem("Patient_Account_External").Value;
+                            objFillHuman.Guarantor_Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Last_Name").Value;
 
-            //                objFillHuman.Guarantor_Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Last_Name").Value;
-            //                objFillHuman.Guarantor_MI = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_MI").Value;
-            //                objFillHuman.Guarantor_Sex = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Sex").Value;
+                            objFillHuman.Guarantor_Last_Name = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Last_Name").Value;
+                            objFillHuman.Guarantor_MI = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_MI").Value;
+                            objFillHuman.Guarantor_Sex = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Sex").Value;
 
-            //                objFillHuman.Guarantor_Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Street_Address1").Value;
-            //                objFillHuman.Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address1").Value;
-            //                objFillHuman.Guarantor_Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Birth_Date").Value);
-            //                objFillHuman.Cell_Phone_Number = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
-            //                // objFillHuman.Policy_Holder_Id = xmlhumanList[0].Attributes.GetNamedItem("Policy_Holder_Id").Value;
-            //                //objFillHuman.Plan_Id = xmlhumanList[0].Attributes.GetNamedItem("Plan_Id");
+                            objFillHuman.Guarantor_Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Street_Address1").Value;
+                            objFillHuman.Street_Address1 = xmlhumanList[0].Attributes.GetNamedItem("Street_Address1").Value;
+                            objFillHuman.Guarantor_Birth_Date = Convert.ToDateTime(xmlhumanList[0].Attributes.GetNamedItem("Guarantor_Birth_Date").Value);
+                            objFillHuman.Cell_Phone_Number = xmlhumanList[0].Attributes.GetNamedItem("Cell_Phone_Number").Value;
+                            // objFillHuman.Policy_Holder_Id = xmlhumanList[0].Attributes.GetNamedItem("Policy_Holder_Id").Value;
+                            //objFillHuman.Plan_Id = xmlhumanList[0].Attributes.GetNamedItem("Plan_Id");
 
-            //                lstHuman.Add(objFillHuman);
-            //            }
+                            lstHuman.Add(objFillHuman);
+                        }
 
-            //            string phoneno = "";
+                        string phoneno = "";
 
-            //            if (lstHuman != null && lstHuman.Count > 0)
-            //            {
+                        if (lstHuman != null && lstHuman.Count > 0)
+                        {
 
-            //                if (objFillHuman.Home_Phone_No.Length == 14)
-            //                {
-            //                    phoneno = objFillHuman.Home_Phone_No;
-            //                }
-            //                else
-            //                {
-            //                    phoneno = objFillHuman.Cell_Phone_Number;
-            //                }
+                            if (objFillHuman.Home_Phone_No.Length == 14)
+                            {
+                                phoneno = objFillHuman.Home_Phone_No;
+                            }
+                            else
+                            {
+                                phoneno = objFillHuman.Cell_Phone_Number;
+                            }
+                        }
 
-            //            }
-
-            //            string sPatientSex = string.Empty;
-
-
-            //            if (objFillHuman.Sex != string.Empty)
-            //            {
-            //                if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
-            //                {
-            //                    sPatientSex = "UNK";
-            //                }
-            //                else
-            //                {
-            //                    sPatientSex = objFillHuman.Sex.Substring(0, 1);
-            //                }
-            //            }
-            //            else
-            //            {
-            //                sPatientSex = "";
-            //            }
-
-            //            if (lstHuman != null && lstHuman.Count > 0)
-            //            {
-
-            //                //     txtpatientName.Value = objFillHuman.Last_Name + "," + objFillHuman.First_Name +
-            //                //"  " + objFillHuman.MI + "  " + objFillHuman.Suffix + "|" + objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
-            //                // objFillHuman.Sex + " | " + humanID;
-            //                if (objFillHuman.Patient_Account_External == "")
-            //                {
-            //                    hdnHumanDetails.Value = humanID + "~" + objFillHuman.Last_Name + "~" + objFillHuman.First_Name + "~0~" + objFillHuman.Human_Type + "~"
-            //                        + ClientSession.EncounterId + "~" + ClientSession.UserCurrentProcess +
-            //                        "~" + sPatientSex + "~" + objFillHuman.Street_Address1 + "~" + objFillHuman.Birth_Date
-            //                        + "~" + objFillHuman.Guarantor_Birth_Date + "~" + objFillHuman.Guarantor_First_Name + "~" + objFillHuman.Guarantor_Last_Name + "~" +
-            //                        objFillHuman.Guarantor_MI + "~" + objFillHuman.Guarantor_Sex + "~" + objFillHuman.MI + "~" + objFillHuman.Suffix;
-            //                }
-            //                else
-            //                {
-            //                    hdnHumanDetails.Value = humanID + "~" + objFillHuman.Last_Name + "~" + objFillHuman.First_Name + "~"
-            //                        + objFillHuman.Patient_Account_External + "~" + objFillHuman.Human_Type + "~" +
-            //                        ClientSession.EncounterId + "~" + ClientSession.UserCurrentProcess +
-            //                        "~" + sPatientSex + "~" + objFillHuman.Street_Address1 + "~" + objFillHuman.Birth_Date
-            //                        + "~" + objFillHuman.Guarantor_Birth_Date + "~" + objFillHuman.Guarantor_First_Name + "~" + objFillHuman.Guarantor_Last_Name + "~" +
-            //                        objFillHuman.Guarantor_MI + "~" + objFillHuman.Guarantor_Sex + "~" + objFillHuman.MI + "~" + objFillHuman.Suffix;
-            //                    ;
-            //                }
-
-            //                divPatientstrip.InnerText = " " + objFillHuman.Last_Name + "," + objFillHuman.First_Name +
-            //   "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + " | " +
-            //    objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
-            //   (CalculateAge(objFillHuman.Birth_Date)).ToString() +
-            //   "  year(s) | " + sPatientSex + " | Acc #:" + humanID +
-            //   " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
-            //   "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type;
-            //            }
-            //            fs.Close();
-            //            fs.Dispose();
-            //        }
-            //    }
-            //    catch (Exception Ex)
-            //    {
-            //        //XmlText.Close();
-            //        // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
-            //        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + humanID.ToString() + "','Human','ev');", true);
+                        string sPatientSex = string.Empty;
 
 
-            //        //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                        if (objFillHuman.Sex != string.Empty)
+                        {
+                            if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
+                            {
+                                sPatientSex = "UNK";
+                            }
+                            else
+                            {
+                                sPatientSex = objFillHuman.Sex.Substring(0, 1);
+                            }
+                        }
+                        else
+                        {
+                            sPatientSex = "";
+                        }
 
-            //        return;
-            //    }
+                        if (lstHuman != null && lstHuman.Count > 0)
+                        {
+
+                            //     txtpatientName.Value = objFillHuman.Last_Name + "," + objFillHuman.First_Name +
+                            //"  " + objFillHuman.MI + "  " + objFillHuman.Suffix + "|" + objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
+                            // objFillHuman.Sex + " | " + humanID;
+                            if (objFillHuman.Patient_Account_External == "")
+                            {
+                                hdnHumanDetails.Value = humanID + "~" + objFillHuman.Last_Name + "~" + objFillHuman.First_Name + "~0~" + objFillHuman.Human_Type + "~"
+                                    + ClientSession.EncounterId + "~" + ClientSession.UserCurrentProcess +
+                                    "~" + sPatientSex + "~" + objFillHuman.Street_Address1 + "~" + objFillHuman.Birth_Date
+                                    + "~" + objFillHuman.Guarantor_Birth_Date + "~" + objFillHuman.Guarantor_First_Name + "~" + objFillHuman.Guarantor_Last_Name + "~" +
+                                    objFillHuman.Guarantor_MI + "~" + objFillHuman.Guarantor_Sex + "~" + objFillHuman.MI + "~" + objFillHuman.Suffix;
+                            }
+                            else
+                            {
+                                hdnHumanDetails.Value = humanID + "~" + objFillHuman.Last_Name + "~" + objFillHuman.First_Name + "~"
+                                    + objFillHuman.Patient_Account_External + "~" + objFillHuman.Human_Type + "~" +
+                                    ClientSession.EncounterId + "~" + ClientSession.UserCurrentProcess +
+                                    "~" + sPatientSex + "~" + objFillHuman.Street_Address1 + "~" + objFillHuman.Birth_Date
+                                    + "~" + objFillHuman.Guarantor_Birth_Date + "~" + objFillHuman.Guarantor_First_Name + "~" + objFillHuman.Guarantor_Last_Name + "~" +
+                                    objFillHuman.Guarantor_MI + "~" + objFillHuman.Guarantor_Sex + "~" + objFillHuman.MI + "~" + objFillHuman.Suffix;
+                                ;
+                            }
+
+                            divPatientstrip.InnerText = " " + objFillHuman.Last_Name + "," + objFillHuman.First_Name +
+               "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + " | " +
+                objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
+               (CalculateAge(objFillHuman.Birth_Date)).ToString() +
+               "  year(s) | " + sPatientSex + " | Acc #:" + humanID +
+               " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
+               "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type;
+                        }
+                        //fs.Close();
+                        //fs.Dispose();
+                    //}
+                }
+                catch (Exception Ex)
+                {
+                    //XmlText.Close();
+                    // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "RegenerateXML('" + humanID.ToString() + "','Human','ev');", true);
+
+
+                    //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+
+                    return;
+                }
             //}
 
 
