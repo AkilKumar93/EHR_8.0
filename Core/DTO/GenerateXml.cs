@@ -1703,8 +1703,8 @@ namespace Acurus.Capella.Core.DTO
                 {
                     if (itemDoc.OuterXml == string.Empty)
                     {
-                        string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
-                        string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                        //string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
+                        //string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
                         string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                         string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");

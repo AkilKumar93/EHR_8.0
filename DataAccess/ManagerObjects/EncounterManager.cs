@@ -9641,28 +9641,40 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         throw new Exception("Exception occurred. Transaction failed.");
                     }
                     ulEncId = SaveEncounter[0].Id;
+                    GenerateXml objXml = new GenerateXml();
+                    EncounterBlobManager blobmanager = new EncounterBlobManager();
+                    IList<Encounter_Blob> obj = new List<Encounter_Blob>();
+                    obj= blobmanager.GetEncounterBlob(ulEncId);
+
                     //Crerate Encounter xml when save Phone Encounter 
-                    string EncounterFileName = "Encounter" + "_" + ulEncId + ".xml";
-                    string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
-                    if (File.Exists(strXmlEncounterFilePath) == false)
+                    // string EncounterFileName = "Encounter" + "_" + ulEncId + ".xml";
+                    // string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
+                    // if (File.Exists(strXmlEncounterFilePath) == false)
+                    if(obj.Count==0)
                     {
                         string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                         string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
                         XmlDocument itemDoc = new XmlDocument();
                         XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                        itemDoc.Load(XmlText);
+                        objXml.itemDoc.Load(XmlText);
                         XmlText.Close();
 
                         XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
                         if (xmlAgenode != null)
                             xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-                        itemDoc.Save(strXmlEncounterFilePath);
+                       // itemDoc.Save(strXmlEncounterFilePath);
                     }
-                    GenerateXml objXml = new GenerateXml();
                     List<object> lstObj = SaveEncounter.Cast<object>().ToList();
+                    // objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
+                    // objXml.itemDoc = null;
+                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, ref objXml);
+                    WriteBlob(ulEncId, objXml.itemDoc, MySession, SaveEncounter, null, null, objXml, true);
+                    trans.Commit();
+                    trans = MySession.BeginTransaction();
+                   // List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     //objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
-                    objXml.itemDoc = null;
-                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref objXml);
+                    //objXml.itemDoc = null;
+                  //  objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref objXml);
                 }
 
                 if (SavePlan != null && SavePlan.Count > 0)
@@ -15766,155 +15778,156 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), ObjType, sModifiedBy, string.Empty);
         }
 
+        // This method not in use
+        //public WFObject UpdateEncounterforCheckin(ulong 
+        //    ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime,
+        //    DateTime dtDateOfService, string ObjType, string ExamRoom, string MACAddress, string sLocal_Time, ref ulong EncProviderID, ref string FacilityName)
+        //{
+        //    ulong ID = 0;
+        //    IList<Encounter> updateEncounterList = GetEncounterByEncounterID(ulEncID);
+        //    updateEncounterList[0].Encounter_ID = ulEncID;
+        //    updateEncounterList[0].Modified_By = sModifiedBy;
+        //    updateEncounterList[0].Modified_Date_and_Time = dtModifiedDateandTime;
+        //    updateEncounterList[0].Date_of_Service = dtDateOfService;
+        //    updateEncounterList[0].Local_Time = sLocal_Time;
+        //    updateEncounterList[0].Exam_Room = ExamRoom;
+        //    if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "TECHNICIAN")
+        //        updateEncounterList[0].Technician_ID = ID;
+        //    else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "PHYSICIAN")
+        //        updateEncounterList[0].Reading_Provider_ID = ID;
+        //    //else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "MEDICAL ASSISTANT")  //Commented for avoid Assigned_Med_Asst_User_Name in encounter while check in to provider by MA.
+        //    //    updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
 
-        public WFObject UpdateEncounterforCheckin(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime,
-            DateTime dtDateOfService, string ObjType, string ExamRoom, string MACAddress, string sLocal_Time, ref ulong EncProviderID, ref string FacilityName)
-        {
-            ulong ID = 0;
-            IList<Encounter> updateEncounterList = GetEncounterByEncounterID(ulEncID);
-            updateEncounterList[0].Encounter_ID = ulEncID;
-            updateEncounterList[0].Modified_By = sModifiedBy;
-            updateEncounterList[0].Modified_Date_and_Time = dtModifiedDateandTime;
-            updateEncounterList[0].Date_of_Service = dtDateOfService;
-            updateEncounterList[0].Local_Time = sLocal_Time;
-            updateEncounterList[0].Exam_Room = ExamRoom;
-            if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "TECHNICIAN")
-                updateEncounterList[0].Technician_ID = ID;
-            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "PHYSICIAN")
-                updateEncounterList[0].Reading_Provider_ID = ID;
-            //else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "MEDICAL ASSISTANT")  //Commented for avoid Assigned_Med_Asst_User_Name in encounter while check in to provider by MA.
-            //    updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
+        //    IList<Encounter> addEncounterList = null;
+        //    EncProviderID = Convert.ToUInt64(updateEncounterList[0].Encounter_Provider_ID);
+        //    FacilityName = updateEncounterList[0].Facility_Name;
+        //    string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
+        //    string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
+        //    if (File.Exists(strXmlEncounterFilePath) == false)
+        //    {
+        //        string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+        //        string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+        //        XmlDocument itemDoc = new XmlDocument();
+        //        XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+        //        itemDoc.Load(XmlText);
+        //        XmlText.Close();
 
-            IList<Encounter> addEncounterList = null;
-            EncProviderID = Convert.ToUInt64(updateEncounterList[0].Encounter_Provider_ID);
-            FacilityName = updateEncounterList[0].Facility_Name;
-            string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
-            string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
-            if (File.Exists(strXmlEncounterFilePath) == false)
-            {
-                string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
-                string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
+        //        XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+        //        if (xmlAgenode != null && xmlAgenode.Count > 0)
+        //            xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
+        //       // itemDoc.Save(strXmlEncounterFilePath);
 
-                XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
-                if (xmlAgenode != null && xmlAgenode.Count > 0)
-                    xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-               // itemDoc.Save(strXmlEncounterFilePath);
+        //        int trycount = 0;
+        //    trytosaveagain:
+        //        try
+        //        {
+        //            itemDoc.Save(strXmlEncounterFilePath);
+        //        }
+        //        catch (Exception xmlexcep)
+        //        {
+        //            trycount++;
+        //            if (trycount <= 3)
+        //            {
+        //                int TimeMilliseconds = 0;
+        //                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+        //                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                int trycount = 0;
-            trytosaveagain:
-                try
-                {
-                    itemDoc.Save(strXmlEncounterFilePath);
-                }
-                catch (Exception xmlexcep)
-                {
-                    trycount++;
-                    if (trycount <= 3)
-                    {
-                        int TimeMilliseconds = 0;
-                        if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                            TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+        //                Thread.Sleep(TimeMilliseconds);
+        //                string sMsg = string.Empty;
+        //                string sExStackTrace = string.Empty;
 
-                        Thread.Sleep(TimeMilliseconds);
-                        string sMsg = string.Empty;
-                        string sExStackTrace = string.Empty;
+        //                string version = "";
+        //                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+        //                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                        string version = "";
-                        if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                            version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+        //                string[] server = version.Split('|');
+        //                string serverno = "";
+        //                if (server.Length > 1)
+        //                    serverno = server[1].Trim();
 
-                        string[] server = version.Split('|');
-                        string serverno = "";
-                        if (server.Length > 1)
-                            serverno = server[1].Trim();
+        //                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+        //                    sMsg = xmlexcep.InnerException.Message;
+        //                else
+        //                    sMsg = xmlexcep.Message;
 
-                        if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                            sMsg = xmlexcep.InnerException.Message;
-                        else
-                            sMsg = xmlexcep.Message;
+        //                if (xmlexcep != null && xmlexcep.StackTrace != null)
+        //                    sExStackTrace = xmlexcep.StackTrace;
 
-                        if (xmlexcep != null && xmlexcep.StackTrace != null)
-                            sExStackTrace = xmlexcep.StackTrace;
+        //                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+        //                string ConnectionData;
+        //                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+        //                using (MySqlConnection con = new MySqlConnection(ConnectionData))
+        //                {
+        //                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+        //                    {
+        //                        cmd.Connection = con;
+        //                        try
+        //                        {
+        //                            con.Open();
+        //                            cmd.ExecuteNonQuery();
+        //                            con.Close();
+        //                        }
+        //                        catch
+        //                        {
+        //                        }
+        //                    }
+        //                }
+        //                goto trytosaveagain;
+        //            }
+        //        }
+        //    }
 
-                        string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                        string ConnectionData;
-                        ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                        using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                        {
-                            using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                            {
-                                cmd.Connection = con;
-                                try
-                                {
-                                    con.Open();
-                                    cmd.ExecuteNonQuery();
-                                    con.Close();
-                                }
-                                catch
-                                {
-                                }
-                            }
-                        }
-                        goto trytosaveagain;
-                    }
-                }
-            }
-
-            //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
-            SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, true, false, ulEncID, string.Empty);
-            //WFObjectManager objWFObjectManager = new WFObjectManager();
-            //objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), ObjType, sModifiedBy, string.Empty);
-
-
-            WFObject lstwfobject = new WFObject();
-            WFObjectManager objwfobject = new WFObjectManager();
-            lstwfobject = objwfobject.GetByObjectSystemId(Convert.ToUInt64(ulEncID), "ENCOUNTER");
-
-            bool VerifyPFSH = false;
-            string Source = string.Empty, If_Source_Of_Information_Others = string.Empty;
+        //    //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
+        //    SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, true, false, ulEncID, string.Empty);
+        //    //WFObjectManager objWFObjectManager = new WFObjectManager();
+        //    //objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), ObjType, sModifiedBy, string.Empty);
 
 
+        //    WFObject lstwfobject = new WFObject();
+        //    WFObjectManager objwfobject = new WFObjectManager();
+        //    lstwfobject = objwfobject.GetByObjectSystemId(Convert.ToUInt64(ulEncID), "ENCOUNTER");
 
-            MoveVerificationDTO objMoveVerifyDTO;
-            string username = "";
-            string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-            if (File.Exists(strXmlFilePath1) == true)
-            {
-                XmlDocument xmldocUser = new XmlDocument();
-                xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
-
-                XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
+        //    bool VerifyPFSH = false;
+        //    string Source = string.Empty, If_Source_Of_Information_Others = string.Empty;
 
 
-                if (xmlUserList.Count > 0)
-                {
-                    foreach (XmlNode item in xmlUserList)
-                    {
-                        if (EncProviderID.ToString() == item.Attributes["Physician_Library_ID"].Value)
-                        {
-                            username = item.Attributes["User_Name"].Value;
 
-                            break;
-                        }
-                    }
+        //    MoveVerificationDTO objMoveVerifyDTO;
+        //    string username = "";
+        //    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
+        //    if (File.Exists(strXmlFilePath1) == true)
+        //    {
+        //        XmlDocument xmldocUser = new XmlDocument();
+        //        xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
 
-                }
-            }
+        //        XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
 
-            if (lstwfobject != null)
-                objMoveVerifyDTO = PerformMovetoProvider(Convert.ToUInt64(ulEncID),
-                   EncProviderID,
-               updateEncounterList[0].Human_ID, System.DateTime.Now, FacilityName, username, VerifyPFSH, Source, If_Source_Of_Information_Others,
-               "", string.Empty, "", false, "", "btnMove", false, "",
-              lstwfobject,
-              updateEncounterList[0], "", 0, false, "", username, string.Empty);
-            return lstwfobject;
 
-        }
+        //        if (xmlUserList.Count > 0)
+        //        {
+        //            foreach (XmlNode item in xmlUserList)
+        //            {
+        //                if (EncProviderID.ToString() == item.Attributes["Physician_Library_ID"].Value)
+        //                {
+        //                    username = item.Attributes["User_Name"].Value;
+
+        //                    break;
+        //                }
+        //            }
+
+        //        }
+        //    }
+
+        //    if (lstwfobject != null)
+        //        objMoveVerifyDTO = PerformMovetoProvider(Convert.ToUInt64(ulEncID),
+        //           EncProviderID,
+        //       updateEncounterList[0].Human_ID, System.DateTime.Now, FacilityName, username, VerifyPFSH, Source, If_Source_Of_Information_Others,
+        //       "", string.Empty, "", false, "", "btnMove", false, "",
+        //      lstwfobject,
+        //      updateEncounterList[0], "", 0, false, "", username, string.Empty);
+        //    return lstwfobject;
+
+        //}
         public IList<MyQ> UpdateEncounterMoveTo(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, string CurrentObjType, string ExamRoom, string FacName, string objtype, string[] processtype, Boolean bShowall, int DefaultNoofDays, string MACAddress)
         {
             ulong ID = 0;

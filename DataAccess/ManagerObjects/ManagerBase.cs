@@ -1396,8 +1396,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (saveList != null && saveList.Count > 0)
                             {
                                 EncounterOrHumanId = Convert.ToUInt32(saveList[0].GetType().GetProperty("Id").GetValue(saveList[0], null));
-                                string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
-                                string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                               // string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
+                               // string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
                                 string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                                 string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
@@ -2049,8 +2049,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (saveList != null && saveList.Count > 0)
                     {
                         EncounterOrHumanId = Convert.ToUInt32(saveList[0].GetType().GetProperty("Id").GetValue(saveList[0], null));
-                        string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
-                        string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                       // string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
+                       // string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
                         string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                         string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");

@@ -3091,82 +3091,98 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             IList<TreatmentPlan> delTplanlst = new List<TreatmentPlan>();
                             //BugID:46789
                             #region TPlanGET
-                            string FileName = "Encounter" + "_" + Enc_ID + ".xml";
-                            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                            XmlTextReader XmlText = null;
-                            try
+                            //string FileName = "Encounter" + "_" + Enc_ID + ".xml";
+                            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                            IList<string> ilstGeneralPlanTagList = new List<string>();
+                            ilstGeneralPlanTagList.Add("TreatmentPlanList");
+
+
+                            IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+                            ilstGeneralPlanBlobFinal = ReadBlob(Enc_ID, ilstGeneralPlanTagList);
+                            if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
                             {
-                                if (File.Exists(strXmlFilePath) == true)
+                                if (ilstGeneralPlanBlobFinal[0] != null)
                                 {
-                                    XmlDocument itemDoc = new XmlDocument();
-                                    XmlText = new XmlTextReader(strXmlFilePath);
-                                    XmlNodeList xmlTagName = null;
-                                    // itemDoc.Load(XmlText);
-                                    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                                    for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
                                     {
-                                        itemDoc.Load(fs);
-
-                                        XmlText.Close();
-                                        #region Treatment_plan
-                                        if (itemDoc.GetElementsByTagName("TreatmentPlanList")[0] != null)
-                                        {
-                                            xmlTagName = itemDoc.GetElementsByTagName("TreatmentPlanList")[0].ChildNodes;
-
-                                            if (xmlTagName.Count > 0)
-                                            {
-                                                for (int j = 0; j < xmlTagName.Count; j++)
-                                                {
-                                                    if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == Enc_ID && Convert.ToString(xmlTagName[j].Attributes.GetNamedItem("Plan_Type").Value).Equals("IMMUNIZATION/INJECTION"))
-                                                    {
-
-                                                        string TagName = xmlTagName[j].Name;
-                                                        XmlSerializer xmlserializer = new XmlSerializer(typeof(TreatmentPlan));
-                                                        TreatmentPlan TreatmentPlan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as TreatmentPlan;
-                                                        IEnumerable<PropertyInfo> propInfo = null;
-                                                        propInfo = from obji in ((TreatmentPlan)TreatmentPlan).GetType().GetProperties() select obji;
-
-                                                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                                        {
-
-                                                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                                            {
-                                                                foreach (PropertyInfo property in propInfo)
-                                                                {
-                                                                    if (property.Name == nodevalue.Name)
-                                                                    {
-                                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                                            property.SetValue(TreatmentPlan, Convert.ToUInt64(nodevalue.Value), null);
-                                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                                            property.SetValue(TreatmentPlan, Convert.ToString(nodevalue.Value), null);
-                                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                                            property.SetValue(TreatmentPlan, Convert.ToDateTime(nodevalue.Value), null);
-                                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                                            property.SetValue(TreatmentPlan, Convert.ToInt32(nodevalue.Value), null);
-                                                                        else
-                                                                            property.SetValue(TreatmentPlan, nodevalue.Value, null);
-                                                                    }
-                                                                }
-                                                            }
-
-                                                        }
-                                                        objTreatmentPlan.Add(TreatmentPlan);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        #endregion
-                                        fs.Close();
-                                        fs.Dispose();
+                                        objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
                                     }
                                 }
                             }
-                            catch (Exception Ex)
-                            {
-                                if (XmlText != null)
-                                    XmlText.Close();
-                                throw Ex;
+                            //  XmlTextReader XmlText = null;
+                            //try
+                            //{
+                            //    if (File.Exists(strXmlFilePath) == true)
+                            //    {
+                            //        XmlDocument itemDoc = new XmlDocument();
+                            //        XmlText = new XmlTextReader(strXmlFilePath);
+                            //        XmlNodeList xmlTagName = null;
+                            //        // itemDoc.Load(XmlText);
+                            //        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            //        {
+                            //            itemDoc.Load(fs);
 
-                            }
+                            //            XmlText.Close();
+                            //            #region Treatment_plan
+                            //            if (itemDoc.GetElementsByTagName("TreatmentPlanList")[0] != null)
+                            //            {
+                            //                xmlTagName = itemDoc.GetElementsByTagName("TreatmentPlanList")[0].ChildNodes;
+
+                            //                if (xmlTagName.Count > 0)
+                            //                {
+                            //                    for (int j = 0; j < xmlTagName.Count; j++)
+                            //                    {
+                            //                        if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == Enc_ID && Convert.ToString(xmlTagName[j].Attributes.GetNamedItem("Plan_Type").Value).Equals("IMMUNIZATION/INJECTION"))
+                            //                        {
+
+                            //                            string TagName = xmlTagName[j].Name;
+                            //                            XmlSerializer xmlserializer = new XmlSerializer(typeof(TreatmentPlan));
+                            //                            TreatmentPlan TreatmentPlan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as TreatmentPlan;
+                            //                            IEnumerable<PropertyInfo> propInfo = null;
+                            //                            propInfo = from obji in ((TreatmentPlan)TreatmentPlan).GetType().GetProperties() select obji;
+
+                            //                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+                            //                            {
+
+                            //                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
+                            //                                {
+                            //                                    foreach (PropertyInfo property in propInfo)
+                            //                                    {
+                            //                                        if (property.Name == nodevalue.Name)
+                            //                                        {
+                            //                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+                            //                                                property.SetValue(TreatmentPlan, Convert.ToUInt64(nodevalue.Value), null);
+                            //                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+                            //                                                property.SetValue(TreatmentPlan, Convert.ToString(nodevalue.Value), null);
+                            //                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                            //                                                property.SetValue(TreatmentPlan, Convert.ToDateTime(nodevalue.Value), null);
+                            //                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+                            //                                                property.SetValue(TreatmentPlan, Convert.ToInt32(nodevalue.Value), null);
+                            //                                            else
+                            //                                                property.SetValue(TreatmentPlan, nodevalue.Value, null);
+                            //                                        }
+                            //                                    }
+                            //                                }
+
+                            //                            }
+                            //                            objTreatmentPlan.Add(TreatmentPlan);
+                            //                        }
+                            //                    }
+                            //                }
+                            //            }
+                            //            #endregion
+                            //            fs.Close();
+                            //            fs.Dispose();
+                            //        }
+                            //    }
+                            //}
+                            //catch (Exception Ex)
+                            //{
+                            //    if (XmlText != null)
+                            //        XmlText.Close();
+                            //    throw Ex;
+
+                            //}
                             if (Enc_ID != 0)
                             {
                                 delTplanlst = (from oj in objTreatmentPlan where ImmDelList.Any(a => a.Id == oj.Source_ID) select oj).ToList<TreatmentPlan>();

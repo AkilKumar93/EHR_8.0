@@ -2709,8 +2709,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objPotentialDiagnosis=(from m in lsttemp where m.Move_To_Assessment!="Y" select m).ToList<PotentialDiagnosis>();
                     }
                 }
-                string HumanFileName = "Human" + "_" + humanID + ".xml";
-                string HumanXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                //string HumanFileName = "Human" + "_" + humanID + ".xml";
+                //string HumanXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
                 //if (File.Exists(HumanXmlFilePath) == true)
                 //{
 
