@@ -7725,7 +7725,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             trytosaveagain:
                                 try
                                 {
-                                    XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                   // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     WriteBlob(EncounterID, XMLObj.itemDoc, MySession, saveList, null, null, XMLObj, true);
                                     trans.Commit();
                                 }

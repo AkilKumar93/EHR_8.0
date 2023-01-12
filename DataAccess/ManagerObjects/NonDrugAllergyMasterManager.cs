@@ -150,14 +150,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             bDataNotes = XMLObj.CheckDataConsistency(lstSaveUpdateNotes.Cast<object>().ToList(), true, "NonDrugAllergyMaster");
                         }
                         if (bDataNDA && bDataNotes)
-                        {
-                            trans.Commit();
+                        {  
                             //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                             int trycount = 0;
                         trytosaveagain:
                             try
                             {
-                                XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                WriteBlob(HumanID, XMLObj.itemDoc, MySession, insertList, updateList, deleteList, XMLObj, false);
+                                trans.Commit();
+
+                                //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                             }
                             catch (Exception xmlexcep)
                             {

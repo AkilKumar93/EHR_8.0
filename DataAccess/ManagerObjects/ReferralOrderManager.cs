@@ -1776,7 +1776,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             trytosaveagain:
                                 try
                                 {
-                                    XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     WriteBlob(referralOrderList[0].Human_ID, XMLObj.itemDoc, MySession, null, referralOrderList, null, XMLObj, false);
                                     trans.Commit();
                                 }

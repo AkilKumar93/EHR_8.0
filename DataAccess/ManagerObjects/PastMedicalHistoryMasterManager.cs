@@ -20,7 +20,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     public interface IPastMedicalHistoryMasterManager : IManagerBase<PastMedicalHistoryMaster, uint>
     {
         //ProblemHistoryDTO SaveUpdateDeleteProblemMedicalHistory(IList<PastMedicalHistoryMaster> insertList, IList<PastMedicalHistoryMaster> updateList, IList<PastMedicalHistoryMaster> deleteList, GeneralNotes generalNotesObject, string macAddress, ulong Encounter_ID, ulong Human_Id, ulong Physician_ID, string UserName, DateTime date, string medicalInfo, string Version_Yr, Dictionary<string, string> Data);
-        ProblemHistoryDTO SaveUpdateDeletePastMedicalHistory(IList<PastMedicalHistoryMaster> SavePastMedicalList, IList<PastMedicalHistoryMaster> UpdatePastMedicalList, IList<PastMedicalHistoryMaster> DeletePastMedicalList, IList<ProblemList> SaveProblemList, IList<ProblemList> UpdateProblemList, IList<GeneralNotes> SaveGeneralNotes, IList<GeneralNotes> UpdateGeneralNotes, string macAddress, ulong HumanId);
+        //sProblemHistoryDTO SaveUpdateDeletePastMedicalHistory(IList<PastMedicalHistoryMaster> SavePastMedicalList, IList<PastMedicalHistoryMaster> UpdatePastMedicalList, IList<PastMedicalHistoryMaster> DeletePastMedicalList, IList<ProblemList> SaveProblemList, IList<ProblemList> UpdateProblemList, IList<GeneralNotes> SaveGeneralNotes, IList<GeneralNotes> UpdateGeneralNotes, string macAddress, ulong HumanId);
     }
     public partial class PastMedicalHistoryMasterManager : ManagerBase<PastMedicalHistoryMaster, uint>, IPastMedicalHistoryMasterManager
     {
@@ -772,241 +772,241 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //    return pblm;
         //  //  return GetPastMedicalHistoryByHumanID(Human_Id, Encounter_ID, medicalInfo, Physician_ID, "PAST MEDICAL INFO", "Sort_Order");
         //}
-        public ProblemHistoryDTO SaveUpdateDeletePastMedicalHistory(IList<PastMedicalHistoryMaster> SavePastMedicalList, IList<PastMedicalHistoryMaster> UpdatePastMedicalList, IList<PastMedicalHistoryMaster> DeletePastMedicalList, IList<ProblemList> SaveProblemList, IList<ProblemList> UpdateProblemList, IList<GeneralNotes> SaveGeneralNotes, IList<GeneralNotes> UpdateGeneralNotes, string macAddress, ulong HumanId)
-        {
-            GeneralNotesManager generalNotesManager = new GeneralNotesManager();
-            ProblemListManager objProblemListManager = new ProblemListManager();
-            ProblemHistoryDTO pblm = new ProblemHistoryDTO();
-            GenerateXml XMLObj = new GenerateXml();
-            iTryCount = 0;
-        TryAgain:
-            int iResult = 0;
-            ISession MySession = Session.GetISession();
-            try
-            {
-                using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
-                {
-                    try
-                    {
-                        bool IsPastMedicalHistory = true, IsProblemList = true, IsGeneralNotes = true;
-                        if ((SavePastMedicalList != null && SavePastMedicalList.Count > 0) || (UpdatePastMedicalList != null && UpdatePastMedicalList.Count > 0) || (DeletePastMedicalList != null && DeletePastMedicalList.Count > 0))
-                        {
-                            iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SavePastMedicalList, ref UpdatePastMedicalList, DeletePastMedicalList, MySession, macAddress, true, true, HumanId, string.Empty, ref XMLObj);
-                            if (iResult == 2)
-                            {
-                                if (iTryCount < 5)
-                                {
-                                    iTryCount++;
-                                    goto TryAgain;
-                                }
-                                else
-                                {
-                                    trans.Rollback();
-                                    throw new Exception("Deadlock occurred. Transaction failed.");
-                                }
-                            }
-                            else if (iResult == 1)
-                            {
-                                trans.Rollback();
-                                throw new Exception("Exception occurred. Transaction failed.");
-                            }
-                            //pblm.PastMedicalList = SavePastMedicalList.Concat(UpdatePastMedicalList).ToList<PastMedicalHistoryMaster>();
-                            IsPastMedicalHistory = XMLObj.CheckDataConsistency(SavePastMedicalList.Concat(UpdatePastMedicalList).Cast<object>().ToList(), false, string.Empty);
-                        }
-                        if ((SaveProblemList != null && SaveProblemList.Count > 0) || (UpdateProblemList != null && UpdateProblemList.Count > 0))
-                        {
-                            iResult = objProblemListManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveProblemList, ref UpdateProblemList, null, MySession, macAddress, true, true, HumanId, string.Empty, ref XMLObj);
-                            if (iResult == 2)
-                            {
-                                if (iTryCount < 5)
-                                {
-                                    iTryCount++;
-                                    goto TryAgain;
-                                }
-                                else
-                                {
-                                    trans.Rollback();
-                                    throw new Exception("Deadlock occurred. Transaction failed.");
-                                }
-                            }
-                            else if (iResult == 1)
-                            {
-                                trans.Rollback();
-                                throw new Exception("Exception occurred. Transaction failed.");
-                            }
-                            pblm.ProblemList = SaveProblemList.Concat(UpdateProblemList).ToList<ProblemList>();
-                            IsProblemList = XMLObj.CheckDataConsistency(SaveProblemList.Concat(UpdateProblemList).Cast<object>().ToList(), true, string.Empty);
-                        }
-                        if ((SaveGeneralNotes != null && SaveGeneralNotes.Count > 0) || (UpdateGeneralNotes != null && UpdateGeneralNotes.Count > 0))
-                        {
-                            iResult = generalNotesManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveGeneralNotes, ref UpdateGeneralNotes, null, MySession, macAddress, true, true, HumanId, "PastMedicalHistory", ref XMLObj);
-                            if (iResult == 2)
-                            {
-                                if (iTryCount < 5)
-                                {
-                                    iTryCount++;
-                                    goto TryAgain;
-                                }
-                                else
-                                {
-                                    trans.Rollback();
-                                    throw new Exception("Deadlock occurred. Transaction failed.");
-                                }
-                            }
-                            else if (iResult == 1)
-                            {
-                                trans.Rollback();
-                                throw new Exception("Exception occurred. Transaction failed.");
-                            }
-                            pblm.GeneralNotesObject = SaveGeneralNotes.Count > 0 ? SaveGeneralNotes[0] : UpdateGeneralNotes.Count > 0 ? UpdateGeneralNotes[0] : new GeneralNotes();
-                            IsGeneralNotes = XMLObj.CheckDataConsistency(SaveGeneralNotes.Concat(UpdateGeneralNotes).Cast<object>().ToList(), false, "PastMedicalHistory");
-                        }
-                        if (IsPastMedicalHistory && IsProblemList && IsGeneralNotes)
-                        {
-                            trans.Commit();
-                            //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                            int trycount = 0;
-                        trytosaveagain:
-                            try
-                            {
-                                XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                            }
-                            catch (Exception xmlexcep)
-                            {
-                                trycount++;
-                                if (trycount <= 3)
-                                {
-                                    int TimeMilliseconds = 0;
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+        //public ProblemHistoryDTO SaveUpdateDeletePastMedicalHistory(IList<PastMedicalHistoryMaster> SavePastMedicalList, IList<PastMedicalHistoryMaster> UpdatePastMedicalList, IList<PastMedicalHistoryMaster> DeletePastMedicalList, IList<ProblemList> SaveProblemList, IList<ProblemList> UpdateProblemList, IList<GeneralNotes> SaveGeneralNotes, IList<GeneralNotes> UpdateGeneralNotes, string macAddress, ulong HumanId)
+        //{
+        //    GeneralNotesManager generalNotesManager = new GeneralNotesManager();
+        //    ProblemListManager objProblemListManager = new ProblemListManager();
+        //    ProblemHistoryDTO pblm = new ProblemHistoryDTO();
+        //    GenerateXml XMLObj = new GenerateXml();
+        //    iTryCount = 0;
+        //TryAgain:
+        //    int iResult = 0;
+        //    ISession MySession = Session.GetISession();
+        //    try
+        //    {
+        //        using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+        //        {
+        //            try
+        //            {
+        //                bool IsPastMedicalHistory = true, IsProblemList = true, IsGeneralNotes = true;
+        //                if ((SavePastMedicalList != null && SavePastMedicalList.Count > 0) || (UpdatePastMedicalList != null && UpdatePastMedicalList.Count > 0) || (DeletePastMedicalList != null && DeletePastMedicalList.Count > 0))
+        //                {
+        //                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SavePastMedicalList, ref UpdatePastMedicalList, DeletePastMedicalList, MySession, macAddress, true, true, HumanId, string.Empty, ref XMLObj);
+        //                    if (iResult == 2)
+        //                    {
+        //                        if (iTryCount < 5)
+        //                        {
+        //                            iTryCount++;
+        //                            goto TryAgain;
+        //                        }
+        //                        else
+        //                        {
+        //                            trans.Rollback();
+        //                            throw new Exception("Deadlock occurred. Transaction failed.");
+        //                        }
+        //                    }
+        //                    else if (iResult == 1)
+        //                    {
+        //                        trans.Rollback();
+        //                        throw new Exception("Exception occurred. Transaction failed.");
+        //                    }
+        //                    //pblm.PastMedicalList = SavePastMedicalList.Concat(UpdatePastMedicalList).ToList<PastMedicalHistoryMaster>();
+        //                    IsPastMedicalHistory = XMLObj.CheckDataConsistency(SavePastMedicalList.Concat(UpdatePastMedicalList).Cast<object>().ToList(), false, string.Empty);
+        //                }
+        //                if ((SaveProblemList != null && SaveProblemList.Count > 0) || (UpdateProblemList != null && UpdateProblemList.Count > 0))
+        //                {
+        //                    iResult = objProblemListManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveProblemList, ref UpdateProblemList, null, MySession, macAddress, true, true, HumanId, string.Empty, ref XMLObj);
+        //                    if (iResult == 2)
+        //                    {
+        //                        if (iTryCount < 5)
+        //                        {
+        //                            iTryCount++;
+        //                            goto TryAgain;
+        //                        }
+        //                        else
+        //                        {
+        //                            trans.Rollback();
+        //                            throw new Exception("Deadlock occurred. Transaction failed.");
+        //                        }
+        //                    }
+        //                    else if (iResult == 1)
+        //                    {
+        //                        trans.Rollback();
+        //                        throw new Exception("Exception occurred. Transaction failed.");
+        //                    }
+        //                    pblm.ProblemList = SaveProblemList.Concat(UpdateProblemList).ToList<ProblemList>();
+        //                    IsProblemList = XMLObj.CheckDataConsistency(SaveProblemList.Concat(UpdateProblemList).Cast<object>().ToList(), true, string.Empty);
+        //                }
+        //                if ((SaveGeneralNotes != null && SaveGeneralNotes.Count > 0) || (UpdateGeneralNotes != null && UpdateGeneralNotes.Count > 0))
+        //                {
+        //                    iResult = generalNotesManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveGeneralNotes, ref UpdateGeneralNotes, null, MySession, macAddress, true, true, HumanId, "PastMedicalHistory", ref XMLObj);
+        //                    if (iResult == 2)
+        //                    {
+        //                        if (iTryCount < 5)
+        //                        {
+        //                            iTryCount++;
+        //                            goto TryAgain;
+        //                        }
+        //                        else
+        //                        {
+        //                            trans.Rollback();
+        //                            throw new Exception("Deadlock occurred. Transaction failed.");
+        //                        }
+        //                    }
+        //                    else if (iResult == 1)
+        //                    {
+        //                        trans.Rollback();
+        //                        throw new Exception("Exception occurred. Transaction failed.");
+        //                    }
+        //                    pblm.GeneralNotesObject = SaveGeneralNotes.Count > 0 ? SaveGeneralNotes[0] : UpdateGeneralNotes.Count > 0 ? UpdateGeneralNotes[0] : new GeneralNotes();
+        //                    IsGeneralNotes = XMLObj.CheckDataConsistency(SaveGeneralNotes.Concat(UpdateGeneralNotes).Cast<object>().ToList(), false, "PastMedicalHistory");
+        //                }
+        //                if (IsPastMedicalHistory && IsProblemList && IsGeneralNotes)
+        //                {
+        //                    trans.Commit();
+        //                    //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+        //                    int trycount = 0;
+        //                trytosaveagain:
+        //                    try
+        //                    {
+        //                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+        //                    }
+        //                    catch (Exception xmlexcep)
+        //                    {
+        //                        trycount++;
+        //                        if (trycount <= 3)
+        //                        {
+        //                            int TimeMilliseconds = 0;
+        //                            if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+        //                                TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                                    Thread.Sleep(TimeMilliseconds);
-                                    string sMsg = string.Empty;
-                                    string sExStackTrace = string.Empty;
+        //                            Thread.Sleep(TimeMilliseconds);
+        //                            string sMsg = string.Empty;
+        //                            string sExStackTrace = string.Empty;
 
-                                    string version = "";
-                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+        //                            string version = "";
+        //                            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+        //                                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
 
-                                    string[] server = version.Split('|');
-                                    string serverno = "";
-                                    if (server.Length > 1)
-                                        serverno = server[1].Trim();
+        //                            string[] server = version.Split('|');
+        //                            string serverno = "";
+        //                            if (server.Length > 1)
+        //                                serverno = server[1].Trim();
 
-                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                                        sMsg = xmlexcep.InnerException.Message;
-                                    else
-                                        sMsg = xmlexcep.Message;
+        //                            if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+        //                                sMsg = xmlexcep.InnerException.Message;
+        //                            else
+        //                                sMsg = xmlexcep.Message;
 
-                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                                        sExStackTrace = xmlexcep.StackTrace;
+        //                            if (xmlexcep != null && xmlexcep.StackTrace != null)
+        //                                sExStackTrace = xmlexcep.StackTrace;
 
-                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                                    string ConnectionData;
-                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                                    {
-                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                                        {
-                                            cmd.Connection = con;
-                                            try
-                                            {
-                                                con.Open();
-                                                cmd.ExecuteNonQuery();
-                                                con.Close();
-                                            }
-                                            catch
-                                            {
-                                            }
-                                        }
-                                    }
-                                    goto trytosaveagain;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
-                        }
-                    }
-                    catch (NHibernate.Exceptions.GenericADOException ex)
-                    {
-                        trans.Rollback();
-                        throw new Exception(ex.Message);
-                    }
-                    catch (Exception e)
-                    {
-                        trans.Rollback();
-                        throw new Exception(e.Message);
-                    }
-                    finally
-                    {
-                        MySession.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            #region XMLSaveUpdateDelete
-            /*
-            pblm.PastMedicalList = new List<PastMedicalHistoryMaster>();
-            pblm.ProblemList = new List<ProblemList>();
-            if (SavePastMedicalList.Count > 0)
-            {
-                foreach (PastMedicalHistory obj in SavePastMedicalList)
-                {
-                    pblm.PastMedicalList.Add(obj);
-                }
-                XMLObj.GenerateXmlSaveStatic(SavePastMedicalList.Cast<object>().ToList(), SavePastMedicalList[0].Human_ID, string.Empty);
-            }
-            if (UpdatePastMedicalList.Count > 0)
-            {
-                foreach (PastMedicalHistory obj in UpdatePastMedicalList)
-                {
-                    pblm.PastMedicalList.Add(obj);
-                }
-                foreach (var obj in UpdatePastMedicalList)
-                    obj.Version += 1;
-                XMLObj.GenerateXmlUpdate(UpdatePastMedicalList.Cast<object>().ToList(), UpdatePastMedicalList[0].Human_ID, string.Empty);
-            }
-            if (DeletePastMedicalList.Count > 0)
-            {
-                XMLObj.DeleteXmlNode(DeletePastMedicalList[0].Human_ID, DeletePastMedicalList.Cast<object>().ToList(), string.Empty);
-            }
-            if (SaveProblemList.Count > 0)
-            {
-                foreach (ProblemList obj in SaveProblemList)
-                {
-                    pblm.ProblemList.Add(obj);
-                }
-                XMLObj.GenerateXmlSaveStatic(SaveProblemList.Cast<object>().ToList(), SaveProblemList[0].Human_ID, string.Empty);
-            }
-            if (UpdateProblemList.Count > 0)
-            {
-                foreach (ProblemList obj in UpdateProblemList)
-                {
-                    pblm.ProblemList.Add(obj);
-                }
-                foreach (var obj in UpdateProblemList)
-                    obj.Version += 1;
-                XMLObj.GenerateXmlUpdate(UpdateProblemList.Cast<object>().ToList(), UpdateProblemList[0].Human_ID, string.Empty);
-            }
-            if (SaveGeneralNotes.Count > 0)
-            {
-                pblm.GeneralNotesObject = SaveGeneralNotes[0];
-                XMLObj.GenerateXmlSaveStatic(SaveGeneralNotes.Cast<object>().ToList(), SaveGeneralNotes[0].Human_ID, "PastMedicalHistory");
-            }
-            else if (UpdateGeneralNotes.Count > 0)
-            {
-                pblm.GeneralNotesObject = UpdateGeneralNotes[0];
-                UpdateGeneralNotes[0].Version += 1;
-                XMLObj.GenerateXmlUpdate(UpdateGeneralNotes.Cast<object>().ToList(), UpdateGeneralNotes[0].Human_ID, "PastMedicalHistory");
-            }*/
-            #endregion
-            return pblm;
-        }
+        //                            string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+        //                            string ConnectionData;
+        //                            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+        //                            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+        //                            {
+        //                                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+        //                                {
+        //                                    cmd.Connection = con;
+        //                                    try
+        //                                    {
+        //                                        con.Open();
+        //                                        cmd.ExecuteNonQuery();
+        //                                        con.Close();
+        //                                    }
+        //                                    catch
+        //                                    {
+        //                                    }
+        //                                }
+        //                            }
+        //                            goto trytosaveagain;
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    throw new Exception("Data inconsistency detected while saving. Please try again or notify support.");
+        //                }
+        //            }
+        //            catch (NHibernate.Exceptions.GenericADOException ex)
+        //            {
+        //                trans.Rollback();
+        //                throw new Exception(ex.Message);
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                trans.Rollback();
+        //                throw new Exception(e.Message);
+        //            }
+        //            finally
+        //            {
+        //                MySession.Close();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
+        //    #region XMLSaveUpdateDelete
+        //    /*
+        //    pblm.PastMedicalList = new List<PastMedicalHistoryMaster>();
+        //    pblm.ProblemList = new List<ProblemList>();
+        //    if (SavePastMedicalList.Count > 0)
+        //    {
+        //        foreach (PastMedicalHistory obj in SavePastMedicalList)
+        //        {
+        //            pblm.PastMedicalList.Add(obj);
+        //        }
+        //        XMLObj.GenerateXmlSaveStatic(SavePastMedicalList.Cast<object>().ToList(), SavePastMedicalList[0].Human_ID, string.Empty);
+        //    }
+        //    if (UpdatePastMedicalList.Count > 0)
+        //    {
+        //        foreach (PastMedicalHistory obj in UpdatePastMedicalList)
+        //        {
+        //            pblm.PastMedicalList.Add(obj);
+        //        }
+        //        foreach (var obj in UpdatePastMedicalList)
+        //            obj.Version += 1;
+        //        XMLObj.GenerateXmlUpdate(UpdatePastMedicalList.Cast<object>().ToList(), UpdatePastMedicalList[0].Human_ID, string.Empty);
+        //    }
+        //    if (DeletePastMedicalList.Count > 0)
+        //    {
+        //        XMLObj.DeleteXmlNode(DeletePastMedicalList[0].Human_ID, DeletePastMedicalList.Cast<object>().ToList(), string.Empty);
+        //    }
+        //    if (SaveProblemList.Count > 0)
+        //    {
+        //        foreach (ProblemList obj in SaveProblemList)
+        //        {
+        //            pblm.ProblemList.Add(obj);
+        //        }
+        //        XMLObj.GenerateXmlSaveStatic(SaveProblemList.Cast<object>().ToList(), SaveProblemList[0].Human_ID, string.Empty);
+        //    }
+        //    if (UpdateProblemList.Count > 0)
+        //    {
+        //        foreach (ProblemList obj in UpdateProblemList)
+        //        {
+        //            pblm.ProblemList.Add(obj);
+        //        }
+        //        foreach (var obj in UpdateProblemList)
+        //            obj.Version += 1;
+        //        XMLObj.GenerateXmlUpdate(UpdateProblemList.Cast<object>().ToList(), UpdateProblemList[0].Human_ID, string.Empty);
+        //    }
+        //    if (SaveGeneralNotes.Count > 0)
+        //    {
+        //        pblm.GeneralNotesObject = SaveGeneralNotes[0];
+        //        XMLObj.GenerateXmlSaveStatic(SaveGeneralNotes.Cast<object>().ToList(), SaveGeneralNotes[0].Human_ID, "PastMedicalHistory");
+        //    }
+        //    else if (UpdateGeneralNotes.Count > 0)
+        //    {
+        //        pblm.GeneralNotesObject = UpdateGeneralNotes[0];
+        //        UpdateGeneralNotes[0].Version += 1;
+        //        XMLObj.GenerateXmlUpdate(UpdateGeneralNotes.Cast<object>().ToList(), UpdateGeneralNotes[0].Human_ID, "PastMedicalHistory");
+        //    }*/
+        //    #endregion
+        //    return pblm;
+        //}
 
     }
 }

@@ -1243,15 +1243,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                             }
                             MySession.Flush();
-                            trans.Commit();
-                            if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
+                          //  if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
                             {
                                // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                 int trycount = 0;
                             trytosaveagain:
                                 try
                                 {
-                                    XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                    WriteBlob(orderList[0].Human_ID, XMLObj.itemDoc, MySession, null, orderList, null, XMLObj, false);
+                                    trans.Commit();
+
                                 }
                                 catch (Exception xmlexcep)
                                 {

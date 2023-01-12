@@ -273,6 +273,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             int iResult = 0;
             bool bDocumentsConsistent = true, bDocumentsConsistent1 = true;
             ISession MySession = Session.GetISession();
+            ulong encounter_id = 0;
             //  ITransaction trans = null;
             try
             {
@@ -301,7 +302,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 else if (DeleteDocuList != null && DeleteDocuList.Count > 0)
                                     SaveUpdateList = DeleteDocuList;
 
-                                ulong encounter_id = 0;
+                                 encounter_id = 0;
                                 if (SaveUpdateList.Count > 0)
                                 {
                                     encounter_id = SaveUpdateList[0].Encounter_ID;
@@ -358,7 +359,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 else if (deletePlanList != null && deletePlanList.Count > 0)
                                     SaveUpdateTreatList = deletePlanList;
 
-                                ulong encounter_id = 0;
+                                 encounter_id = 0;
                                 if (SaveUpdateTreatList.Count > 0)
                                 {
                                     encounter_id = SaveUpdateTreatList[0].Encounter_Id;
@@ -398,7 +399,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //trans.Commit();
                             if (bDocumentsConsistent && bDocumentsConsistent1)
                             {
-                                trans.Commit();
+                               
                                 if (XMLObj.strXmlFilePath != string.Empty)
                                 {
                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
@@ -406,7 +407,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 trytosaveagain:
                                     try
                                     {
-                                        XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                        TreatmentPlanManager obj = new TreatmentPlanManager();
+                                        obj.WriteBlob(encounter_id, XMLObj.itemDoc, MySession, SavePlanList, updatePlanList, deletePlanList, XMLObj, false);
+                                        // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                                        trans.Commit();
                                     }
                                     catch (Exception xmlexcep)
                                     {
