@@ -73,6 +73,7 @@ namespace Acurus.Capella.UI
                 IList<Human> humanList = HumanMngr.GetPatientDetailsUsingPatientInformattion(ulMyHumanID);
                 // Assign PatientStrip Values
 
+
                 string phoneno = "";
                 string FileName = "Human" + "_" + ulMyHumanID + ".xml";
                 string sPatientSex = string.Empty;
@@ -81,48 +82,56 @@ namespace Acurus.Capella.UI
                 
                 IList<string> ilstPatIns = new List<string>();
                 ilstPatIns.Add("HumanList");
-
-                IList<object> ilstPatInsBlobFinal = new List<object>();
-                ilstPatInsBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPatIns);
-                if (ilstPatInsBlobFinal != null && ilstPatInsBlobFinal.Count > 0)
+                retry:
+                try
                 {
-                    if (ilstPatInsBlobFinal[0] != null && ((IList<object>)ilstPatInsBlobFinal[0]).Count > 0)
+                    IList<object> ilstPatInsBlobFinal = new List<object>();
+                    ilstPatInsBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPatIns);
+                    if (ilstPatInsBlobFinal != null && ilstPatInsBlobFinal.Count > 0)
                     {
-                        for (int i = 0; i < ((IList<object>)ilstPatInsBlobFinal[0]).Count; i++)
+                        if (ilstPatInsBlobFinal[0] != null && ((IList<object>)ilstPatInsBlobFinal[0]).Count > 0)
                         {
-                            humanList.Add((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]);
-                           
-                            if (humanList != null && humanList.Count > 0)
+                            for (int i = 0; i < ((IList<object>)ilstPatInsBlobFinal[0]).Count; i++)
                             {
-                                if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Home_Phone_No.Length == 14)
+                                humanList.Add((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]);
+
+                                if (humanList != null && humanList.Count > 0)
                                 {
-                                    phoneno = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Home_Phone_No;
+                                    if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Home_Phone_No.Length == 14)
+                                    {
+                                        phoneno = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Home_Phone_No;
+                                    }
+                                    else
+                                    {
+                                        phoneno = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Cell_Phone_Number;
+                                    }
+                                }
+                                if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex != string.Empty)
+                                {
+                                    if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex.Substring(0, 1).ToUpper() == "U")
+                                    {
+                                        sPatientSex = "UNK";
+                                    }
+                                    else
+                                    {
+                                        sPatientSex = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex.Substring(0, 1);
+                                    }
                                 }
                                 else
                                 {
-                                    phoneno = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Cell_Phone_Number;
+                                    sPatientSex = "";
                                 }
-                            }
-                            if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex != string.Empty)
-                            {
-                                if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex.Substring(0, 1).ToUpper() == "U")
-                                {
-                                    sPatientSex = "UNK";
-                                }
-                                else
-                                {
-                                    sPatientSex = ((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex.Substring(0, 1);
-                                }
-                            }
-                            else
-                            {
-                                sPatientSex = "";
                             }
                         }
-                    }
-                    
-                }
 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    UtilityManager.GenerateXML(ulMyHumanID.ToString(), "Human");
+                    //return;
+                    goto retry;
+                }
 
                 #endregion
                 #region "Code Comment by Balaji.TJ 2023-01-11"

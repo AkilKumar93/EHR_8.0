@@ -51,12 +51,22 @@ namespace Acurus.Capella.UI
                 ulHumanID = ClientSession.HumanId;
             }
             txtAccount.Text = ulHumanID.ToString();
-
-
-            string sdivPatientstrip = UtilityManager.FillPatientStrip(ulHumanID);
-            if (sdivPatientstrip != null)
+            ln:
+            try
             {
-                divPatientstrip.InnerText = sdivPatientstrip;
+                string sdivPatientstrip = UtilityManager.FillPatientStrip(ulHumanID);
+                if (sdivPatientstrip != null)
+                {
+                    divPatientstrip.InnerText = sdivPatientstrip;
+                }
+            }
+            catch (Exception ex)
+            {
+                //XmlText.Close();
+                //Thread.Sleep(5000);
+                UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
+
+                goto ln;
             }
 
 

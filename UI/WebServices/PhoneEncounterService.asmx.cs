@@ -50,14 +50,14 @@ namespace Acurus.Capella.UI.WebServices
             XmlTextReader XmlText = null;
             if (ulHumanID != 0)
             {
-                // ln:
+                 ln:
 
                 IList<String> ilstPhoneEncounterTaglist = new List<String>();
                 ilstPhoneEncounterTaglist.Add("HumanList");
 
                 IList<object> ilstPhoneEncounterFinal = new List<object>();
                 ilstPhoneEncounterFinal = UtilityManager.ReadBlob(ulHumanID, ilstPhoneEncounterTaglist);
-
+                try { 
                 if (ilstPhoneEncounterFinal != null && ilstPhoneEncounterFinal.Count > 0)
                 {
                     if (ilstPhoneEncounterFinal[0] != null)
@@ -170,22 +170,31 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
                 {
                     sPatientstrip += sAcoEligiblePatient + "   |   ";
                 }
-                //                    }
-                //                }
-                //                fs.Close();
-                //                fs.Dispose();
-                //            }
-                //        }
-                //    }
-                //    catch(Exception ex)
-                //    {
-                //        XmlText.Close();
-                //        //Thread.Sleep(5000);
-                //       UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
-
-                //        goto ln;
-                //    }
             }
+            catch (Exception ex)
+            {
+                //XmlText.Close();
+                //Thread.Sleep(5000);
+                UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
+
+                goto ln;
+            }
+            //                    }
+            //                }
+            //                fs.Close();
+            //                fs.Dispose();
+            //            }
+            //        }
+            //    }
+            //    catch(Exception ex)
+            //    {
+            //        XmlText.Close();
+            //        //Thread.Sleep(5000);
+            //       UtilityManager.GenerateXML(ulHumanID.ToString(), "Human");
+
+            //        goto ln;
+            //    }
+        }
             IList<StaticLookup> lstStaticCallDuration = new List<StaticLookup>();
             StaticLookupManager objStaticLookup = new StaticLookupManager();
             lstStaticCallDuration = objStaticLookup.getStaticLookupByFieldName("PHONE ENCOUNTER CALL DURATION");

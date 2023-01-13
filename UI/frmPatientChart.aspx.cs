@@ -284,7 +284,7 @@ namespace Acurus.Capella.UI
 
                     //UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
                     return;
-                    return;
+                    
                 }
                 XmlText.Close();
                 //itemDoc.Save(strXmlFilePath1);

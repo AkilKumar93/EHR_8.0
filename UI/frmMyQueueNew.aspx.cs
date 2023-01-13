@@ -697,18 +697,19 @@ namespace Acurus.Capella.UI
                     XmlDocument xmlDoc = new XmlDocument();
                     string sXMLContent = String.Empty;
 
-                    //if (File.Exists(strXmlFilePath) == true)
-                    //{
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                loop:
                     try
                     {
 
 
-                            //XmlDocument itemDoc = new XmlDocument();
-                            //XmlText = new XmlTextReader(strXmlFilePath);
-                            //itemDoc.Load(XmlText);
-                            //XmlText.Close();
-
-                            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                    //XmlDocument itemDoc = new XmlDocument();
+                    //XmlText = new XmlTextReader(strXmlFilePath);
+                    //itemDoc.Load(XmlText);
+                    //XmlText.Close();
+                  
+                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
                             IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
                             if (ilstHumanBlob.Count > 0)
                             {
@@ -732,15 +733,16 @@ namespace Acurus.Capella.UI
                         }
                 //}
 
-                loop:
 
-                    //FileName = "Encounter" + "_" + data[1] + ".xml";
-                    //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-                    // XmlTextReader XmlText = null;
+                //FileName = "Encounter" + "_" + data[1] + ".xml";
+                //strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-                    // if (File.Exists(strXmlFilePath) == true)
-                    // {
+                // XmlTextReader XmlText = null;
+
+                // if (File.Exists(strXmlFilePath) == true)
+                // {
+                ln:
                     try
                     {
 
@@ -752,8 +754,10 @@ namespace Acurus.Capella.UI
 
                         EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                         IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(data[1]));
+                   
                         if (ilstEncounterBlob.Count > 0)
                         {
+                        
                             try
                             {
                                 sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
@@ -781,7 +785,7 @@ namespace Acurus.Capella.UI
                     }
                     //}
 
-                ln:
+              
                     EncMngr.UpdateDateOfService(Convert.ToUInt64(data[1]), dt, string.Empty, sLocal_Time);
                 }
             }
@@ -1286,11 +1290,12 @@ namespace Acurus.Capella.UI
                 XmlDocument xmlDoc = new XmlDocument();
                 string sXMLContent = String.Empty;
 
-                //XmlTextReader XmlText = null;
+            //XmlTextReader XmlText = null;
 
-                //if (File.Exists(strXmlFilePath) == true)
-                //{
-                    try
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            ln:
+                try
                     {
 
 
@@ -1322,7 +1327,7 @@ namespace Acurus.Capella.UI
                     }
                 //}
 
-            ln:
+            
                 if (ClientSession.UserCurrentProcess == "MA_PROCESS")
                     EncMngr.UpdateEncounterforMyQueue(Convert.ToUInt64(data[1]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime), dt, ClientSession.CurrentObjectType, ExamRoom, string.Empty, sLocal_Time);
                 else

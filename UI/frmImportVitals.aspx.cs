@@ -118,134 +118,144 @@ namespace Acurus.Capella.UI
             XmlTextReader XmlText = null;
             if (MyHumanID != 0)
             {
-
-                string sdivPatientstrip = UtilityManager.FillPatientStrip(MyHumanID);
-                if (sdivPatientstrip != null)
+            ln:
+                try
                 {
-                    lblPatientStrip.Items[0].Text = sdivPatientstrip;
+                    string sdivPatientstrip = UtilityManager.FillPatientStrip(MyHumanID);
+                    if (sdivPatientstrip != null)
+                    {
+                        lblPatientStrip.Items[0].Text = sdivPatientstrip;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    XmlText.Close();
+                    //Thread.Sleep(5000);
+                    UtilityManager.GenerateXML(MyHumanID.ToString(), "Human");
+
+                    goto ln;
                 }
 
 
+                //ln:
 
-            //ln:
+                //    string FileName = "Human" + "_" + MyHumanID + ".xml";
+                //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //    try
+                //    {
+                //        if (File.Exists(strXmlFilePath) == true)
+                //        {
+                //            XmlDocument itemDoc = new XmlDocument();
+                //            XmlText = new XmlTextReader(strXmlFilePath);
+                //            XmlNodeList xmlTagName = null;
+                //            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //            {
+                //                itemDoc.Load(fs);
+                //                XmlText.Close();
 
-            //    string FileName = "Human" + "_" + MyHumanID + ".xml";
-            //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            //    try
-            //    {
-            //        if (File.Exists(strXmlFilePath) == true)
-            //        {
-            //            XmlDocument itemDoc = new XmlDocument();
-            //            XmlText = new XmlTextReader(strXmlFilePath);
-            //            XmlNodeList xmlTagName = null;
-            //            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            //            {
-            //                itemDoc.Load(fs);
-            //                XmlText.Close();
+                //                if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
+                //                {
+                //                    xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
 
-            //                if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
-            //                {
-            //                    xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
+                //                    if (xmlTagName != null)
+                //                    {
+                //                        for (int j = 0; j < xmlTagName.Count; j++)
+                //                        {
+                //                            if (xmlTagName[j].Attributes["Id"].Value == MyHumanID.ToString())
+                //                            {
+                //                                objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
+                //                                sBirth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
+                //                                objFillHuman.Id = Convert.ToUInt32(xmlTagName[j].Attributes["Id"].Value);
+                //                                objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
+                //                                objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
+                //                                objFillHuman.MI = xmlTagName[j].Attributes["MI"].Value;
+                //                                objFillHuman.Suffix = xmlTagName[j].Attributes["Suffix"].Value;
+                //                                objFillHuman.Sex = xmlTagName[j].Attributes["Sex"].Value;
+                //                                objFillHuman.Work_Phone_No = xmlTagName[j].Attributes["Work_Phone_No"].Value;
+                //                                objFillHuman.Work_Phone_Ext = xmlTagName[j].Attributes["Work_Phone_Ext"].Value;
+                //                                objFillHuman.Home_Phone_No = xmlTagName[j].Attributes["Home_Phone_No"].Value;
+                //                                objFillHuman.Cell_Phone_Number = xmlTagName[j].Attributes["Cell_Phone_Number"].Value;
+                //                                if (xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != null && xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != string.Empty)
+                //                                    objFillHuman.ACO_Is_Eligible_Patient = xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value.ToString();
+                //                                else
+                //                                    objFillHuman.ACO_Is_Eligible_Patient = "";
 
-            //                    if (xmlTagName != null)
-            //                    {
-            //                        for (int j = 0; j < xmlTagName.Count; j++)
-            //                        {
-            //                            if (xmlTagName[j].Attributes["Id"].Value == MyHumanID.ToString())
-            //                            {
-            //                                objFillHuman.Birth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
-            //                                sBirth_Date = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value).ToString("dd-MMM-yyyy");
-            //                                objFillHuman.Id = Convert.ToUInt32(xmlTagName[j].Attributes["Id"].Value);
-            //                                objFillHuman.Last_Name = xmlTagName[j].Attributes["Last_Name"].Value;
-            //                                objFillHuman.First_Name = xmlTagName[j].Attributes["First_Name"].Value;
-            //                                objFillHuman.MI = xmlTagName[j].Attributes["MI"].Value;
-            //                                objFillHuman.Suffix = xmlTagName[j].Attributes["Suffix"].Value;
-            //                                objFillHuman.Sex = xmlTagName[j].Attributes["Sex"].Value;
-            //                                objFillHuman.Work_Phone_No = xmlTagName[j].Attributes["Work_Phone_No"].Value;
-            //                                objFillHuman.Work_Phone_Ext = xmlTagName[j].Attributes["Work_Phone_Ext"].Value;
-            //                                objFillHuman.Home_Phone_No = xmlTagName[j].Attributes["Home_Phone_No"].Value;
-            //                                objFillHuman.Cell_Phone_Number = xmlTagName[j].Attributes["Cell_Phone_Number"].Value;
-            //                                if (xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != null && xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value != string.Empty)
-            //                                    objFillHuman.ACO_Is_Eligible_Patient = xmlTagName[j].Attributes.GetNamedItem("ACO_Is_Eligible_Patient").Value.ToString();
-            //                                else
-            //                                    objFillHuman.ACO_Is_Eligible_Patient = "";
+                //                                lstHuman.Add(objFillHuman);
+                //                            }
+                //                        }
 
-            //                                lstHuman.Add(objFillHuman);
-            //                            }
-            //                        }
+                //                        string phoneno = "";
 
-            //                        string phoneno = "";
+                //                        if (lstHuman != null && lstHuman.Count > 0)
+                //                        {
 
-            //                        if (lstHuman != null && lstHuman.Count > 0)
-            //                        {
+                //                            if (objFillHuman.Home_Phone_No.Length == 14)
+                //                            {
+                //                                phoneno = objFillHuman.Home_Phone_No;
+                //                            }
+                //                            else
+                //                            {
+                //                                phoneno = objFillHuman.Cell_Phone_Number;
+                //                            }
 
-            //                            if (objFillHuman.Home_Phone_No.Length == 14)
-            //                            {
-            //                                phoneno = objFillHuman.Home_Phone_No;
-            //                            }
-            //                            else
-            //                            {
-            //                                phoneno = objFillHuman.Cell_Phone_Number;
-            //                            }
+                //                        }
 
-            //                        }
-
-            //                        string sPatientSex = string.Empty;
+                //                        string sPatientSex = string.Empty;
 
 
-            //                        if (objFillHuman.Sex != string.Empty)
-            //                        {
-            //                            if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
-            //                            {
-            //                                sPatientSex = "UNK";
-            //                            }
-            //                            else
-            //                            {
-            //                                sPatientSex = objFillHuman.Sex.Substring(0, 1);
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            sPatientSex = "";
-            //                        }
+                //                        if (objFillHuman.Sex != string.Empty)
+                //                        {
+                //                            if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
+                //                            {
+                //                                sPatientSex = "UNK";
+                //                            }
+                //                            else
+                //                            {
+                //                                sPatientSex = objFillHuman.Sex.Substring(0, 1);
+                //                            }
+                //                        }
+                //                        else
+                //                        {
+                //                            sPatientSex = "";
+                //                        }
 
-            //                        string sAcoEligiblePatient = string.Empty;
-            //                        sAcoEligiblePatient = objFillHuman.ACO_Is_Eligible_Patient;
+                //                        string sAcoEligiblePatient = string.Empty;
+                //                        sAcoEligiblePatient = objFillHuman.ACO_Is_Eligible_Patient;
 
-            //                        sPatientstrip = " " + objFillHuman.Last_Name + "," + objFillHuman.First_Name
-            //                            + "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + " | " +
-            //    objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
-            //   (CalculateAge(objFillHuman.Birth_Date)).ToString() +
-            //   "  year(s) | " + sPatientSex + " | Acc #:" + MyHumanID.ToString() +
-            //   " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
-            //   "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type + " | ";
+                //                        sPatientstrip = " " + objFillHuman.Last_Name + "," + objFillHuman.First_Name
+                //                            + "  " + objFillHuman.MI + "  " + objFillHuman.Suffix + " | " +
+                //    objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
+                //   (CalculateAge(objFillHuman.Birth_Date)).ToString() +
+                //   "  year(s) | " + sPatientSex + " | Acc #:" + MyHumanID.ToString() +
+                //   " | " + "Med Rec #:" + objFillHuman.Medical_Record_Number + " | " +
+                //   "Phone #:" + phoneno + " | Patient Type:" + objFillHuman.Human_Type + " | ";
 
-            //                        if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
-            //                        {
-            //                            sPatientstrip += sAcoEligiblePatient + "   |   ";
-            //                        }
+                //                        if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
+                //                        {
+                //                            sPatientstrip += sAcoEligiblePatient + "   |   ";
+                //                        }
 
-            //                        lblPatientStrip.Items[0].Text = sPatientstrip;
-            //                    }
-            //                }
-            //                fs.Close();
-            //                fs.Dispose();
-            //            }
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        XmlText.Close();
-            //        //Thread.Sleep(5000);
-            //        UtilityManager.GenerateXML(MyHumanID.ToString(), "Human");
+                //                        lblPatientStrip.Items[0].Text = sPatientstrip;
+                //                    }
+                //                }
+                //                fs.Close();
+                //                fs.Dispose();
+                //            }
+                //        }
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        XmlText.Close();
+                //        //Thread.Sleep(5000);
+                //        UtilityManager.GenerateXML(MyHumanID.ToString(), "Human");
 
-            //        goto ln;
-            //    }
+                //        goto ln;
+                //    }
             }
 
-            //lblPatientStrip.Items[0].Text = ClientSession.PatientPane.Replace("^", "");
-            //lblPatientStrip.ToolTip = lblPatientStrip.Items[0].Text;
-            txtPhysicianName.ReadOnly = true;
+                //lblPatientStrip.Items[0].Text = ClientSession.PatientPane.Replace("^", "");
+                //lblPatientStrip.ToolTip = lblPatientStrip.Items[0].Text;
+                txtPhysicianName.ReadOnly = true;
             txtPhysicianName.ForeColor = System.Drawing.Color.Black;
             txtPhysicianName.BorderWidth = 1;
             txtPhysicianName.BorderColor = System.Drawing.Color.Black;

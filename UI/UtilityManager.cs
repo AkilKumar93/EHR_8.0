@@ -694,42 +694,62 @@ namespace Acurus.Capella.UI
                 IList<string> ilstPatientSummaryBarTagEncounterList = new List<string>();
                 ilstPatientSummaryBarTagEncounterList.Add("EncounterList");
                 ilstPatientSummaryBarTagEncounterList.Add("ChiefComplaintsList");
-
-                IList<object> ilstEncBlobFinal = new List<object>();
-                ilstEncBlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstPatientSummaryBarTagEncounterList);
-
-                if (ilstEncBlobFinal != null && ilstEncBlobFinal.Count > 0)
+            loop1:
+                try
                 {
-                    if (ilstEncBlobFinal[0] != null)
-                    {
-                        for (int iCount = 0; iCount < ((IList<object>)ilstEncBlobFinal[0]).Count; iCount++)
-                        {
-                            objFillPatientChart.EncounterIDList.Add(Convert.ToUInt32(((Encounter)((IList<object>)ilstEncBlobFinal[0])[iCount]).Id));
-                            
-                            objFillPatientChart.EncounterDateList.Add(Convert.ToDateTime(((Encounter)((IList<object>)ilstEncBlobFinal[0])[iCount]).Date_of_Service));
-                        }
-                    }
+                    IList<object> ilstEncBlobFinal = new List<object>();
+                    ilstEncBlobFinal = UtilityManager.ReadBlob(ClientSession.EncounterId, ilstPatientSummaryBarTagEncounterList);
 
-                    if (ilstEncBlobFinal[1] != null)
+                    if (ilstEncBlobFinal != null && ilstEncBlobFinal.Count > 0)
                     {
-                        for (int iCount = 0; iCount < ((IList<object>)ilstEncBlobFinal[1]).Count; iCount++)
+                        if (ilstEncBlobFinal[0] != null)
                         {
-                            if (((ChiefComplaints)((IList<object>)ilstEncBlobFinal[1])[iCount]).HPI_Element == "Chief Complaints")
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEncBlobFinal[0]).Count; iCount++)
                             {
-                                objFillPatientChart.ChiefComplaintList.Add((ChiefComplaints)((IList<object>)ilstEncBlobFinal[1])[iCount]);
+                                objFillPatientChart.EncounterIDList.Add(Convert.ToUInt32(((Encounter)((IList<object>)ilstEncBlobFinal[0])[iCount]).Id));
+
+                                objFillPatientChart.EncounterDateList.Add(Convert.ToDateTime(((Encounter)((IList<object>)ilstEncBlobFinal[0])[iCount]).Date_of_Service));
+                            }
+                        }
+
+                        if (ilstEncBlobFinal[1] != null)
+                        {
+                            for (int iCount = 0; iCount < ((IList<object>)ilstEncBlobFinal[1]).Count; iCount++)
+                            {
+                                if (((ChiefComplaints)((IList<object>)ilstEncBlobFinal[1])[iCount]).HPI_Element == "Chief Complaints")
+                                {
+                                    objFillPatientChart.ChiefComplaintList.Add((ChiefComplaints)((IList<object>)ilstEncBlobFinal[1])[iCount]);
+                                }
                             }
                         }
                     }
+
+                }
+
+
+                catch (Exception ex)
+                {
+                    // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+                    {
+                        //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
+
+                        //XmlText.Close();
+                        UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
+                        goto loop1;
+                    }
+
                 }
             }
 
-                IList<string> ilstPatientSummaryBarTagHumanList = new List<string>();
+            IList<string> ilstPatientSummaryBarTagHumanList = new List<string>();
                 ilstPatientSummaryBarTagHumanList.Add("ProblemListList");
                 ilstPatientSummaryBarTagHumanList.Add("PatientResultsList");
                 ilstPatientSummaryBarTagHumanList.Add("Rcopia_MedicationList");
                 ilstPatientSummaryBarTagHumanList.Add("Rcopia_AllergyList");
-                ilstPatientSummaryBarTagHumanList.Add("NonDrugAllergyList");
-
+            ilstPatientSummaryBarTagHumanList.Add("NonDrugAllergyList");
+            ln:
+            try
+            {
                 IList<object> ilstHumanBlobFinal = new List<object>();
                 ilstHumanBlobFinal = UtilityManager.ReadBlob(ClientSession.HumanId, ilstPatientSummaryBarTagHumanList);
 
@@ -811,116 +831,128 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+                {
+                    //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
+
+                    //XmlText.Close();
+                    UtilityManager.GenerateXML(ClientSession.HumanId.ToString(), "Human");
+                    goto ln;
+                }
+
+            }
+
+            //    string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //loop1:
+            //    if (File.Exists(strXmlFilePath) == true)
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //        XmlNodeList xmlTagName = null;
+            //        // itemDoc.Load(XmlText);
+            //        try
+            //        {
+            //            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //            {
+            //                itemDoc.Load(fs);
+
+            //                XmlText.Close();
+            //                if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
+            //                {
+            //                    xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
+
+            //                    if (xmlTagName.Count > 0)
+            //                    {
+            //                        for (int j = 0; j < xmlTagName.Count; j++)
+            //                        {
+            //                            objFillPatientChart.EncounterIDList.Add(Convert.ToUInt32(xmlTagName[j].Attributes.GetNamedItem("Id").Value));
+
+            //                            objFillPatientChart.EncounterDateList.Add(Convert.ToDateTime(xmlTagName[j].Attributes.GetNamedItem("Date_of_Service").Value));
+            //                            //if (xmlTagName[j].Attributes[0].Value == ClientSession.EncounterId.ToString())
+            //                            //    CurrentDOS = Convert.ToDateTime(xmlTagName[j].Attributes[4].Value);
+            //                        }
+            //                        //    for (int j = 0; j < xmlTagName.Count; j++)
+            //                        //    {
+            //                        //       if (EncounterID.Count < 2)
+            //                        //{
+            //                        //    if (EncounterLst[k].Date_of_Service <= CurrentDOS)
+            //                        //    {
+            //                        //        if (CurrentDOS.ToString() != DateTime.MinValue.ToString())
+            //                    }
+            //                }
+            //                if (itemDoc.GetElementsByTagName("ChiefComplaintsList")[0] != null)
+            //                {
+            //                    xmlTagName = itemDoc.GetElementsByTagName("ChiefComplaintsList")[0].ChildNodes;
+
+            //                    if (xmlTagName.Count > 0)
+            //                    {
+            //                        for (int j = 0; j < xmlTagName.Count; j++)
+            //                        {
+            //                            if (xmlTagName[j].Attributes.GetNamedItem("HPI_Element").Value == "Chief Complaints")
+            //                            {
+            //                                string TagName = xmlTagName[j].Name;
+            //                                XmlSerializer xmlserializer = new XmlSerializer(typeof(ChiefComplaints));
+            //                                ChiefComplaints ChiefComplaints = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ChiefComplaints;
+            //                                IEnumerable<PropertyInfo> propInfo = null;
+            //                                ChiefComplaints = (ChiefComplaints)ChiefComplaints;
+            //                                propInfo = from obji in ((ChiefComplaints)ChiefComplaints).GetType().GetProperties() select obji;
+
+            //                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                                {
+            //                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                                    {
+            //                                        foreach (PropertyInfo property in propInfo)
+            //                                        {
+            //                                            if (property.Name == nodevalue.Name)
+            //                                            {
+            //                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                                    property.SetValue(ChiefComplaints, Convert.ToUInt64(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                                    property.SetValue(ChiefComplaints, Convert.ToString(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                                    property.SetValue(ChiefComplaints, Convert.ToDateTime(nodevalue.Value), null);
+            //                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                                    property.SetValue(ChiefComplaints, Convert.ToInt32(nodevalue.Value), null);
+            //                                                else
+            //                                                    property.SetValue(ChiefComplaints, nodevalue.Value, null);
+            //                                            }
+            //                                        }
+            //                                    }
+            //                                }
+            //                                objFillPatientChart.ChiefComplaintList.Add(ChiefComplaints);
+            //                            }
+            //                        }
+
+            //                    }
+            //                }
+            //                fs.Close();
+            //                fs.Dispose();
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+            //            {
+            //                //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
+
+            //                XmlText.Close();
+            //                UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
+            //                goto loop1;
+            //            }
+
+            //        }
+            //    }
+            //}
 
 
-                //    string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                //    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                //loop1:
-                //    if (File.Exists(strXmlFilePath) == true)
-                //    {
-                //        XmlDocument itemDoc = new XmlDocument();
-                //        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                //        XmlNodeList xmlTagName = null;
-                //        // itemDoc.Load(XmlText);
-                //        try
-                //        {
-                //            using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                //            {
-                //                itemDoc.Load(fs);
-
-                //                XmlText.Close();
-                //                if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
-                //                {
-                //                    xmlTagName = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes;
-
-                //                    if (xmlTagName.Count > 0)
-                //                    {
-                //                        for (int j = 0; j < xmlTagName.Count; j++)
-                //                        {
-                //                            objFillPatientChart.EncounterIDList.Add(Convert.ToUInt32(xmlTagName[j].Attributes.GetNamedItem("Id").Value));
-
-                //                            objFillPatientChart.EncounterDateList.Add(Convert.ToDateTime(xmlTagName[j].Attributes.GetNamedItem("Date_of_Service").Value));
-                //                            //if (xmlTagName[j].Attributes[0].Value == ClientSession.EncounterId.ToString())
-                //                            //    CurrentDOS = Convert.ToDateTime(xmlTagName[j].Attributes[4].Value);
-                //                        }
-                //                        //    for (int j = 0; j < xmlTagName.Count; j++)
-                //                        //    {
-                //                        //       if (EncounterID.Count < 2)
-                //                        //{
-                //                        //    if (EncounterLst[k].Date_of_Service <= CurrentDOS)
-                //                        //    {
-                //                        //        if (CurrentDOS.ToString() != DateTime.MinValue.ToString())
-                //                    }
-                //                }
-                //                if (itemDoc.GetElementsByTagName("ChiefComplaintsList")[0] != null)
-                //                {
-                //                    xmlTagName = itemDoc.GetElementsByTagName("ChiefComplaintsList")[0].ChildNodes;
-
-                //                    if (xmlTagName.Count > 0)
-                //                    {
-                //                        for (int j = 0; j < xmlTagName.Count; j++)
-                //                        {
-                //                            if (xmlTagName[j].Attributes.GetNamedItem("HPI_Element").Value == "Chief Complaints")
-                //                            {
-                //                                string TagName = xmlTagName[j].Name;
-                //                                XmlSerializer xmlserializer = new XmlSerializer(typeof(ChiefComplaints));
-                //                                ChiefComplaints ChiefComplaints = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as ChiefComplaints;
-                //                                IEnumerable<PropertyInfo> propInfo = null;
-                //                                ChiefComplaints = (ChiefComplaints)ChiefComplaints;
-                //                                propInfo = from obji in ((ChiefComplaints)ChiefComplaints).GetType().GetProperties() select obji;
-
-                //                                for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                //                                {
-                //                                    XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                //                                    {
-                //                                        foreach (PropertyInfo property in propInfo)
-                //                                        {
-                //                                            if (property.Name == nodevalue.Name)
-                //                                            {
-                //                                                if (property.PropertyType.Name.ToUpper() == "UINT64")
-                //                                                    property.SetValue(ChiefComplaints, Convert.ToUInt64(nodevalue.Value), null);
-                //                                                else if (property.PropertyType.Name.ToUpper() == "STRING")
-                //                                                    property.SetValue(ChiefComplaints, Convert.ToString(nodevalue.Value), null);
-                //                                                else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                //                                                    property.SetValue(ChiefComplaints, Convert.ToDateTime(nodevalue.Value), null);
-                //                                                else if (property.PropertyType.Name.ToUpper() == "INT32")
-                //                                                    property.SetValue(ChiefComplaints, Convert.ToInt32(nodevalue.Value), null);
-                //                                                else
-                //                                                    property.SetValue(ChiefComplaints, nodevalue.Value, null);
-                //                                            }
-                //                                        }
-                //                                    }
-                //                                }
-                //                                objFillPatientChart.ChiefComplaintList.Add(ChiefComplaints);
-                //                            }
-                //                        }
-
-                //                    }
-                //                }
-                //                fs.Close();
-                //                fs.Dispose();
-                //            }
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            // if (ex.Message.ToLower().Contains("input string was not") == true || ex.Message.ToLower().Contains("element") == true||ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
-                //            {
-                //                //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
-
-                //                XmlText.Close();
-                //                UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
-                //                goto loop1;
-                //            }
-
-                //        }
-                //    }
-                //}
-
-
-        //        string HumanFileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-        //    string HumanXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
-        //ln:
-        //    if (File.Exists(HumanXmlFilePath) == true)
+            //        string HumanFileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //    string HumanXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+            //ln:
+            //    if (File.Exists(HumanXmlFilePath) == true)
             //{
             //    XmlTextReader XmlText = new XmlTextReader(HumanXmlFilePath);
             //    try
@@ -4293,8 +4325,7 @@ namespace Acurus.Capella.UI
         }
         public static string GenerateXML(string sXMLID, string sXMLType)
         {
-            return "Success";
-
+          
             string sResult = string.Empty;
 
 

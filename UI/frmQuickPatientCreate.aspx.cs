@@ -2439,7 +2439,7 @@ namespace Acurus.Capella.UI
             //}
 
 
-            ln:
+            
             if (cboMethodOfPayment.Text != string.Empty)
             {
                 if (cboRelation.Text == string.Empty)

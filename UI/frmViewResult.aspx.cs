@@ -521,10 +521,24 @@ namespace Acurus.Capella.UI
             // btnSave.Click += new EventHandler(btnSave_Click);
             //btnSave.Attributes.Add("onclick", "btnSave_ClientClick();");
             #region Populate Patient Info
-            string sPatientstrip = UtilityManager.FillPatientStrip(human_id);
-            if (sPatientstrip != null)
+            try
             {
-                txtPatientInformation.Value = sPatientstrip;
+                string sPatientstrip = UtilityManager.FillPatientStrip(human_id);
+                if (sPatientstrip != null)
+                {
+                    txtPatientInformation.Value = sPatientstrip;
+                }
+            }
+            catch (Exception Ex)
+            {
+                //XmlText.Close();
+                // ScriptManager.RegisterStartupScript(this, typeof(frmPatientChart), "ErrorMessage", "alert('The XML file is corrupted. Kindly contact support team to regenerate the XML.');", true);
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Regeneratexml", "RegenerateXML('" + human_id.ToString() + "','Human','result');", true);
+                return;
+
+                // UtilityManager.GenerateXML(human_id.ToString(), "Human");
+
+                //goto retry;
             }
 
 
@@ -1380,77 +1394,96 @@ namespace Acurus.Capella.UI
                             IList<Human> lsthuman = new List<Human>();
                             IList<string> ilstGeneralPlanTagList = new List<string>();
                             ilstGeneralPlanTagList.Add("HumanList");
-                            IList<object> ilstGeneralPlanBlobFinal = new List<object>();
-                            ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(Convert.ToUInt64(lstScanFiles[0].Human_ID.ToString()), ilstGeneralPlanTagList);
-                            if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
+                        retry:
+                            try
                             {
-                                if (ilstGeneralPlanBlobFinal[0] != null)
+                                IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+                                ilstGeneralPlanBlobFinal = UtilityManager.ReadBlob(Convert.ToUInt64(lstScanFiles[0].Human_ID.ToString()), ilstGeneralPlanTagList);
+                                if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
                                 {
-                                    for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                                    if (ilstGeneralPlanBlobFinal[0] != null)
                                     {
-                                        //objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
-                                        lsthuman.Add((Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
+                                        for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                                        {
+                                            //objFillHuman = (Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount];
+                                            lsthuman.Add((Human)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
+                                        }
+                                        sFaxFirstname = "_" + lsthuman[0].First_Name;
+                                        sFaxLastName = "_" + lsthuman[0].Last_Name;
+
+                                        hdnFaxSubject.Value = "Result" + sFaxLastName + sFaxFirstname + "_" + UtilityManager.ConvertToLocal(lstScanFiles[0].Document_Date).ToString("dd-MMM-yyyy");
+
                                     }
-                                    sFaxFirstname = "_" + lsthuman[0].First_Name;
-                                    sFaxLastName = "_" + lsthuman[0].Last_Name;
-
-                                    hdnFaxSubject.Value = "Result" + sFaxLastName + sFaxFirstname + "_" + UtilityManager.ConvertToLocal(lstScanFiles[0].Document_Date).ToString("dd-MMM-yyyy");
-
                                 }
                             }
-                                //    string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + lstScanFiles[0].Human_ID.ToString() + ".xml");
-                                //    XmlTextReader XmlText = null;
-                                //retry:
-                                //    //try
+
+                            catch (Exception ex)
+                            {
+                                //if (ex.Message.ToLower().Contains("there is an unclosed literal string") == true || ex.Message.ToLower().Contains("root element is missing") == true || ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
                                 //{
-                                //    if (File.Exists(strXmlHumanPath) == true)
-                                //    {
-                                //        XmlDocument itemDoc = new XmlDocument();
-                                //        XmlText = new XmlTextReader(strXmlHumanPath);
-                                //        using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                                //        {
-                                //            itemDoc.Load(fs);
-
-                                //            XmlText.Close();
-                                //            if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
-                                //            {
-                                //                if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
-                                //                {
-                                //                    if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
-                                //                    {
-                                //                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != null)
-                                //                            sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
-                                //                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != null)
-                                //                            sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
-
-                                //                    }
-                                //                }
-                                //            }
-                                //            fs.Close();
-                                //            fs.Dispose();
-                                //        }
-
-                                //        hdnFaxSubject.Value = "Result" + sFaxLastName + sFaxFirstname + "_" + UtilityManager.ConvertToLocal(lstScanFiles[0].Document_Date).ToString("dd-MMM-yyyy");
-                                //        //
-                                //    }
+                                // XmlText.Close();
+                                UtilityManager.GenerateXML(lstScanFiles[0].Human_ID.ToString().ToString(), "Human");
+                                //return;
+                                goto retry;
                                 //}
-                                //catch (Exception ex)
+                                //else
                                 //{
-                                //    //if (ex.Message.ToLower().Contains("there is an unclosed literal string") == true || ex.Message.ToLower().Contains("root element is missing") == true || ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
-                                //    //{
-                                //    XmlText.Close();
-                                //    UtilityManager.GenerateXML(lstScanFiles[0].Human_ID.ToString().ToString(), "Human");
-                                //    //return;
-                                //    goto retry;
-                                //    //}
-                                //    //else
-                                //    //{
-                                //    //    throw new Exception(ex.Message + " - " + strXmlHumanPath);
-                                //    //}
+                                //    throw new Exception(ex.Message + " - " + strXmlHumanPath);
                                 //}
-
-
                             }
+                            //    string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + lstScanFiles[0].Human_ID.ToString() + ".xml");
+                            //    XmlTextReader XmlText = null;
+                            //retry:
+                            //    //try
+                            //{
+                            //    if (File.Exists(strXmlHumanPath) == true)
+                            //    {
+                            //        XmlDocument itemDoc = new XmlDocument();
+                            //        XmlText = new XmlTextReader(strXmlHumanPath);
+                            //        using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            //        {
+                            //            itemDoc.Load(fs);
+
+                            //            XmlText.Close();
+                            //            if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                            //            {
+                            //                if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
+                            //                {
+                            //                    if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
+                            //                    {
+                            //                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != null)
+                            //                            sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+                            //                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != null)
+                            //                            sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+
+                            //                    }
+                            //                }
+                            //            }
+                            //            fs.Close();
+                            //            fs.Dispose();
+                            //        }
+
+                            //        hdnFaxSubject.Value = "Result" + sFaxLastName + sFaxFirstname + "_" + UtilityManager.ConvertToLocal(lstScanFiles[0].Document_Date).ToString("dd-MMM-yyyy");
+                            //        //
+                            //    }
+                            //}
+                            //catch (Exception ex)
+                            //{
+                            //    //if (ex.Message.ToLower().Contains("there is an unclosed literal string") == true || ex.Message.ToLower().Contains("root element is missing") == true || ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true)
+                            //    //{
+                            //    XmlText.Close();
+                            //    UtilityManager.GenerateXML(lstScanFiles[0].Human_ID.ToString().ToString(), "Human");
+                            //    //return;
+                            //    goto retry;
+                            //    //}
+                            //    //else
+                            //    //{
+                            //    //    throw new Exception(ex.Message + " - " + strXmlHumanPath);
+                            //    //}
+                            //}
+
+
+                        }
                     }
 
                 }
