@@ -505,22 +505,22 @@ namespace Acurus.Capella.UI
             {
                 if (selectedItem["Current Process"].Text == "MA_PROCESS")
                 {
-                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                    IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text));
+                    //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                    //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text));
 
-                    if (ilstEncounterBlob == null && ilstEncounterBlob.Count == 0)
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "string.Empty", "DisplayErrorMessage('700013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                        return;
-                    }
-
-                    //    string FileName = "Encounter" + "_" + grdAdminModule.SelectedItems[0].Cells[2].Text + ".xml";
-                    //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                    //if (File.Exists(strXmlFilePath) == false)
+                    //if (ilstEncounterBlob == null && ilstEncounterBlob.Count == 0)
                     //{
                     //    ScriptManager.RegisterStartupScript(this, this.GetType(), "string.Empty", "DisplayErrorMessage('700013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                     //    return;
                     //}
+
+                    string FileName = "Encounter" + "_" + grdAdminModule.SelectedItems[0].Cells[2].Text + ".xml";
+                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    if (File.Exists(strXmlFilePath) == false)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "string.Empty", "DisplayErrorMessage('700013'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                        return;
+                    }
                 }
             }
             //IList<User> userMyList = new List<User>();
@@ -624,8 +624,8 @@ namespace Acurus.Capella.UI
                         enc.Encounter_Provider_ID = Physician_Library_ID; // Convert.ToInt32(cboUpdateOwner.Items[cboUpdateOwner.SelectedIndex].Value);
                     }
 
-                    //string FileName = "Encounter" + "_" + enc.Id + ".xml";
-                    //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                    string FileName = "Encounter" + "_" + enc.Id + ".xml";
+                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
                     //if (File.Exists(strXmlFilePath) == false)
                     //{
@@ -704,25 +704,25 @@ namespace Acurus.Capella.UI
                     encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" });
 
                     XmlDocument itemDoc = new XmlDocument();
-                    string sXMLContent = String.Empty;
-                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                    Encounter_Blob objEncounterblob = null;
-                    IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(enc.Id);
-                    if (ilstEncounterBlob.Count > 0)
-                    {
-                        objEncounterblob= ilstEncounterBlob[0];
-                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
-                        if (sXMLContent.Substring(0, 1) != "<")
-                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                        itemDoc.LoadXml(sXMLContent);
-
-                    
-                    //if (File.Exists(strXmlFilePath) == true)
+                    //string sXMLContent = String.Empty;
+                    //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                    //Encounter_Blob objEncounterblob = null;
+                    //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(enc.Id);
+                    //if (ilstEncounterBlob.Count > 0)
                     //{
-                    //    XmlDocument itemDoc = new XmlDocument();
-                    //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                    //    itemDoc.Load(XmlText);
-                    //    XmlText.Close();
+                    //    objEncounterblob= ilstEncounterBlob[0];
+                    //    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    //    if (sXMLContent.Substring(0, 1) != "<")
+                    //        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                    //    itemDoc.LoadXml(sXMLContent);
+
+
+                    if (File.Exists(strXmlFilePath) == true)
+                    {
+                       // XmlDocument itemDoc = new XmlDocument();
+                        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                        itemDoc.Load(XmlText);
+                        XmlText.Close();
                         IEnumerable<XElement> ilstPhysician = null;
                         XmlNodeList xmlMember_ID = itemDoc.GetElementsByTagName("Encounter_Provider_Name");
 
@@ -756,21 +756,21 @@ namespace Acurus.Capella.UI
                                 xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
                             }
                         }
-                        //itemDoc.Save(strXmlFilePath);
-                        IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
-                        byte[] bytes = null;
-                        try
-                        {
-                            bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
-                        }
-                        catch (Exception ex)
-                        {
+                        itemDoc.Save(strXmlFilePath);
+                        //IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
+                        //byte[] bytes = null;
+                        //try
+                        //{
+                        //    bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                        //}
+                        //catch (Exception ex)
+                        //{
 
-                        }
-                        objEncounterblob.Encounter_XML = bytes;
-                        ilstUpdateBlob.Add(objEncounterblob);
-                        EncounterBlobManager EncBlobManager = new EncounterBlobManager();
-                        EncBlobManager.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                        //}
+                        //objEncounterblob.Encounter_XML = bytes;
+                        //ilstUpdateBlob.Add(objEncounterblob);
+                        //EncounterBlobManager EncBlobManager = new EncounterBlobManager();
+                        //EncBlobManager.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
                     }
 
 

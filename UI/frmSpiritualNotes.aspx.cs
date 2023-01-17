@@ -22,6 +22,7 @@ namespace Acurus.Capella.UI
         string strXmlFilePath = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
+            XmlDocument itemDoc = new XmlDocument();
             string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
             string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml"; 
          //  string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
@@ -44,13 +45,27 @@ namespace Acurus.Capella.UI
             IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
             EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
             string sXMLEncounterDoc = "";
-            ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
-            if (ilstEncounterBlob.Count > 0)
+            //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
+            //if (ilstEncounterBlob.Count > 0)
+            //{
+            //    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+            //    if (sXMLEncounterDoc.Substring(0, 1) != "<")
+            //        sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+            //}
+
+            try
             {
-                sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                GenerateXml objxmlEnc = new GenerateXml();
+                itemDoc = objxmlEnc.ReadBlob("Human", Convert.ToUInt64(ClientSession.EncounterId));
+                sXMLEncounterDoc = itemDoc.InnerXml;
                 if (sXMLEncounterDoc.Substring(0, 1) != "<")
                     sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
             //XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
             ds.ReadXml(EncXMLContent);

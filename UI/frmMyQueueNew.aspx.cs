@@ -704,24 +704,32 @@ namespace Acurus.Capella.UI
                     {
 
 
-                    //XmlDocument itemDoc = new XmlDocument();
-                    //XmlText = new XmlTextReader(strXmlFilePath);
-                    //itemDoc.Load(XmlText);
-                    //XmlText.Close();
-                  
-                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                            IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
-                            if (ilstHumanBlob.Count > 0)
-                            {
-                                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                            if (sXMLContent.Substring(0, 1) != "<")
-                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                            xmlDoc.LoadXml(sXMLContent);
-                            }
-                            else
-                            {
-                                throw new Exception("Human XML is not found");
-                            }
+                        //XmlDocument itemDoc = new XmlDocument();
+                        //XmlText = new XmlTextReader(strXmlFilePath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
+                        try
+                        {
+                            GenerateXml objxml = new GenerateXml();
+                            xmlDoc = objxml.ReadBlob("Human", Convert.ToUInt64(data[0]));
+                        }
+                        catch(Exception ex)
+                        {
+                            throw ex;
+                        }
+                        //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                        //    IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
+                        //    if (ilstHumanBlob.Count > 0)
+                        //    {
+                        //        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        //    if (sXMLContent.Substring(0, 1) != "<")
+                        //        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                        //    xmlDoc.LoadXml(sXMLContent);
+                        //    }
+                        //    else
+                        //    {
+                        //        throw new Exception("Human XML is not found");
+                        //    }
                         
 
                         }
@@ -752,29 +760,43 @@ namespace Acurus.Capella.UI
                         //itemDoc.Load(XmlText);
                         //XmlText.Close();
 
-                        EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                        IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(data[1]));
-                   
-                        if (ilstEncounterBlob.Count > 0)
-                        {
-                        
-                            try
-                            {
-                                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
-                                if (sXMLContent.Substring(0, 1) != "<")
-                                    sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                                xmlDoc.LoadXml(sXMLContent);
-                            }
-                            catch
-                            {
-                                throw new Exception("Encounter XML is invalid");
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Encounter XML is not found");
-                        }
+                        //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                        //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(data[1]));
 
+                        //if (ilstEncounterBlob.Count > 0)
+                        //{
+
+                        //    try
+                        //    {
+                        //        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                        //        if (sXMLContent.Substring(0, 1) != "<")
+                        //            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                        //        xmlDoc.LoadXml(sXMLContent);
+                        //    }
+                        //    catch
+                        //    {
+                        //        throw new Exception("Encounter XML is invalid");
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    throw new Exception("Encounter XML is not found");
+                        //}
+
+                        try
+                        {
+                            XmlDocument itemDoc = new XmlDocument();
+                            GenerateXml objxml = new GenerateXml();
+                            itemDoc = objxml.ReadBlob("Human", Convert.ToUInt64(Convert.ToUInt64(data[1])));
+                            sXMLContent = itemDoc.InnerXml;
+                            if (sXMLContent.Substring(0, 1) != "<")
+                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                            xmlDoc.LoadXml(sXMLContent);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
 
                     }
                     catch (Exception ex)
@@ -1299,24 +1321,32 @@ namespace Acurus.Capella.UI
                     {
 
 
-                        //XmlDocument itemDoc = new XmlDocument();
-                        //XmlText = new XmlTextReader(strXmlFilePath);
-                        //itemDoc.Load(XmlText);
-                        //XmlText.Close();
-
-                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                        IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
-                        if (ilstHumanBlob.Count > 0)
-                        {
-                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                        if (sXMLContent.Substring(0, 1) != "<")
-                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                        xmlDoc.LoadXml(sXMLContent);
-                        }
-                        else
-                        {
-                            throw new Exception("Human XML is not found");
-                        }
+                    //XmlDocument itemDoc = new XmlDocument();
+                    //XmlText = new XmlTextReader(strXmlFilePath);
+                    //itemDoc.Load(XmlText);
+                    //XmlText.Close();
+                    try
+                    {
+                        GenerateXml objxml = new GenerateXml();
+                        xmlDoc = objxml.ReadBlob("Human", Convert.ToUInt64(data[0]));
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                    //    IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
+                    //    if (ilstHumanBlob.Count > 0)
+                    //    {
+                    //        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                    //    if (sXMLContent.Substring(0, 1) != "<")
+                    //        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                    //    xmlDoc.LoadXml(sXMLContent);
+                    //    }
+                    //    else
+                    //    {
+                    //        throw new Exception("Human XML is not found");
+                    //    }
 
                     }
                     catch (Exception ex)

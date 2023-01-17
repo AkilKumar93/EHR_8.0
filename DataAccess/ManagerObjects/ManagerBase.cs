@@ -1396,8 +1396,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (saveList != null && saveList.Count > 0)
                             {
                                 EncounterOrHumanId = Convert.ToUInt32(saveList[0].GetType().GetProperty("Id").GetValue(saveList[0], null));
-                               // string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
-                               // string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                                 string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
+                                 string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
                                 string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                                 string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
@@ -1462,10 +1462,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         lstobjxml = lstObj;
                                         GenerateXml objtempxml = new GenerateXml();
                                         objtempxml.itemDoc = null;
-                                        XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false,ref objtempxml);
+                                        XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false);
                                         if (XmlObjHuman != null)
                                         {
-                                            XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false,ref objtempxml);
+                                            XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false);
                                         }
 
                                         bsavehit = true;
@@ -1481,9 +1481,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         GenerateXml xmlobjtemp = new GenerateXml();
                                         xmlobjtemp.itemDoc = null;
 
-                                        XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false, xmlobjtemp);
+                                        XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
                                         if (XmlObjHuman != null)
-                                            XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true, xmlobjtemp);
+                                            XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true);
                                         bsavehit = true;
                                         lstCheckDataConsistency = lstObj;
                                     }
@@ -1493,12 +1493,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         xmlobjtemp.itemDoc = null;
                                         IList<object> lstObj = updateList.Cast<object>().ToList();
                                         lstobjxml = lstObj;
-                                        if(saveList != null && saveList.Count > 0)
-                                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
+                                        if (saveList != null && saveList.Count > 0)
+                                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
                                         else
-                                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false, xmlobjtemp);
+                                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
                                         if (XmlObjHuman != null)
-                                            XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true, xmlobjtemp);
+                                            XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true);
                                         bsavehit = true;
                                         lstCheckDataConsistency = lstCheckDataConsistency.Concat(lstObj).ToList<object>();
                                     }
@@ -1525,7 +1525,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             lstobjxml = lstObj;
                                             GenerateXml xmlobjtemp = new GenerateXml();
                                             xmlobjtemp.itemDoc = null;
-                                            tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false, xmlobjtemp);
+                                            tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false);
                                             bsavehit = true;
                                             XMLObjList.Add(tempXMLObj);
                                             lstPrevHumanIDs.Add(uHuman_id);
@@ -1544,7 +1544,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             {
                                                 GenerateXml xmlobjtemp = new GenerateXml();
                                                 xmlobjtemp.itemDoc = null;
-                                                tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false, xmlobjtemp);
+                                                tempXMLObj.GenerateXmlSaveStatic(lstObj, uHuman_id, string.Empty, false);
                                             }
                                             bsavehit = true;
 
@@ -1574,7 +1574,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             GenerateXml xmlobjtemp = new GenerateXml();
                                             xmlobjtemp.itemDoc = null;
                                             tempXMLObj = new GenerateXml();
-                                            tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false, xmlobjtemp);
+                                            tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false);
                                             bsavehit = true;
                                             lstobjxml = lstObj;
                                             XMLObjList.Add(tempXMLObj);
@@ -1593,7 +1593,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                                 goto ln;
                                             }
                                             else
-                                                tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false, XMLObjtemp);
+                                                tempXMLObj.GenerateXmlUpdate(lstObj, uHuman_id, string.Empty, false);
                                             bsavehit = true;
                                         }
                                         lstCheckDataConsistency = lstCheckDataConsistency.Concat(lstObj).ToList<object>();
@@ -1613,8 +1613,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<object> lstObj = deleteList.Cast<object>().ToList();
                                 lstobjxml = lstObj;
                                 GenerateXml objtempxml = new GenerateXml();
-                                objtempxml.itemDoc = null;  
-                                XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false, objtempxml);
+                                objtempxml.itemDoc = null;
+                                XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
                                 bsavehit = true;
                             }
                         #region XML type
@@ -1754,8 +1754,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                             lstMed = objMedmngr.GetMedicationByHumanID(uHumanId);
                                             IList<object> lstObj = lstMed.Cast<object>().ToList();
                                             GenerateXml Xmltemp = new GenerateXml();
-                                                Xmltemp.itemDoc=null;
-                                            objxml.GenerateXmlSave(lstObj, uHumanId, string.Empty, true, false, false, true,ref Xmltemp);
+                                            Xmltemp.itemDoc = null;
+                                            objxml.GenerateXmlSave(lstObj, uHumanId, string.Empty, true, false, false, true);
 
                                         }
                                     }
@@ -2049,8 +2049,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (saveList != null && saveList.Count > 0)
                     {
                         EncounterOrHumanId = Convert.ToUInt32(saveList[0].GetType().GetProperty("Id").GetValue(saveList[0], null));
-                       // string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
-                       // string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
+                         string HumanFileName = "Human" + "_" + EncounterOrHumanId + ".xml";
+                        string strXmlHumanFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], HumanFileName);
 
                         string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                         string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
@@ -2067,7 +2067,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     trytosaveagain:
                         try
                         {
-                            //itemDoc.Save(strXmlHumanFilePath);
+                            itemDoc.Save(strXmlHumanFilePath);
                         }
                         catch (Exception xmlexcep)
                         {
@@ -2151,7 +2151,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         IList<object> lstObj = deleteList.Cast<object>().ToList();
                         lstobjxml = lstObj;
-                        XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
+                        XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
                         bsavehit = true;
                     }
                     if (!bSaveStatic)
@@ -2165,10 +2165,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             IList<object> lstObj = SaveUpdateList.Cast<object>().ToList();
                             lstobjxml = lstObj;
-                            XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false,ref XMLObj);
+                            XMLObj.GenerateXmlSave(lstObj, EncounterOrHumanId, sGeneralNotesText, false, false, false, false);
                             if (XmlObjHuman != null)
                             {
-                                XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false,ref XmlObjHuman);
+                                XmlObjHuman.GenerateXmlSave(lstObj, HumanID_EncSave, sGeneralNotesText, true, false, false, false);
                             }
                             bsavehit = true;
                         }
@@ -2179,18 +2179,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             IList<object> lstObj = saveList.Cast<object>().ToList();
                             lstobjxml = lstObj;
-                            XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
+                            XMLObj.GenerateXmlSaveStatic(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
                             if (XmlObjHuman != null)
-                                XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true, XmlObjHuman);
+                                XmlObjHuman.GenerateXmlSaveStatic(lstObj, HumanID_EncSave, sGeneralNotesText, true);
                             bsavehit = true;
                         }
                         if (updateList != null && updateList.Count > 0)
                         {
                             IList<object> lstObj = updateList.Cast<object>().ToList();
                             lstobjxml = lstObj;
-                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
+                            XMLObj.GenerateXmlUpdate(lstObj, EncounterOrHumanId, sGeneralNotesText, false);
                             if (XmlObjHuman != null)
-                                XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true, XmlObjHuman);
+                                XmlObjHuman.GenerateXmlUpdate(lstObj, HumanID_EncSave, sGeneralNotesText, true);
                             bsavehit = true;
                         }
                     }
@@ -2389,205 +2389,209 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public void WriteBlob(ulong EntityID, XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml, Boolean bIsEncounterXMLCreate)
         {
-            string sXMLType = "";
-            string tagname = "";
-            if (saveList != null && saveList.Count > 0)
+            if (objGenerateXml.strXmlFilePath != null && objGenerateXml.strXmlFilePath != "")
             {
-                tagname = saveList[0].GetType().Name;
+                objGenerateXml.itemDoc.Save(objGenerateXml.strXmlFilePath);
             }
-            else if (updateList != null && updateList.Count > 0)
-            {
-                tagname = updateList[0].GetType().Name;
-            }
-            else if (deleteList != null && deleteList.Count > 0)
-            {
-                tagname = deleteList[0].GetType().Name;
+            //string sXMLType = "";
+            //string tagname = "";
+            //if (saveList != null && saveList.Count > 0)
+            //{
+            //    tagname = saveList[0].GetType().Name;
+            //}
+            //else if (updateList != null && updateList.Count > 0)
+            //{
+            //    tagname = updateList[0].GetType().Name;
+            //}
+            //else if (deleteList != null && deleteList.Count > 0)
+            //{
+            //    tagname = deleteList[0].GetType().Name;
 
-            }
+            //}
 
-            //if (!tagname.Contains("List"))
-                tagname = tagname + "List";
+            ////if (!tagname.Contains("List"))
+            //    tagname = tagname + "List";
 
-            IList<MapXMLBlob> ilstXMLBlob = new List<MapXMLBlob>();
-            ilstXMLBlob = NHibernateSessionUtility.Instance.MyMapXMLBlobList.Where(a => a.XML_Tag_Name == tagname).ToList();
-            if (ilstXMLBlob.Count > 0)
-            {
-                if (ilstXMLBlob.Count == 2)
-                {
-                    if (objGenerateXml!=null && EntityID == objGenerateXml.ulEncounterID)
-                    {
-                        sXMLType = "Blob_Encounter";
-                    }
-                   else if (objGenerateXml != null && EntityID == objGenerateXml.ulHumanID)
-                    {
-                        sXMLType = "Blob_Human";
-                    }
-                    else
-                    {
-                        sXMLType = ilstXMLBlob[0].Table_Name;
-                    }
-                }
-                else
-                {
-                    sXMLType = ilstXMLBlob[0].Table_Name;
-                }
-                string sXMLContent = String.Empty;
-                if (sXMLType == "Blob_Human")
-                {
-                    Human_Blob objhumanblob = new Human_Blob();
-                    IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-                    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                    objhumanblob.Human_ID = EntityID;
-                    objhumanblob.Id = EntityID;
-                    if (objGenerateXml != null)
-                    {
-                        objhumanblob.Version = objGenerateXml.iHumanBlobVersion;
-                        objhumanblob.Created_By = objGenerateXml.sCreatedBy;
-                        objhumanblob.Created_Date_And_Time = objGenerateXml.dtCreatedDateandTime;
-                    }
-                    byte[] bytes = null;
-                    try
-                    {
-                        bytes = System.Text.Encoding.Default.GetBytes(xmlDoc.OuterXml);
-                    }
-                    catch (Exception ex)
-                    {
+            //IList<MapXMLBlob> ilstXMLBlob = new List<MapXMLBlob>();
+            //ilstXMLBlob = NHibernateSessionUtility.Instance.MyMapXMLBlobList.Where(a => a.XML_Tag_Name == tagname).ToList();
+            //if (ilstXMLBlob.Count > 0)
+            //{
+            //    if (ilstXMLBlob.Count == 2)
+            //    {
+            //        if (objGenerateXml!=null && EntityID == objGenerateXml.ulEncounterID)
+            //        {
+            //            sXMLType = "Blob_Encounter";
+            //        }
+            //       else if (objGenerateXml != null && EntityID == objGenerateXml.ulHumanID)
+            //        {
+            //            sXMLType = "Blob_Human";
+            //        }
+            //        else
+            //        {
+            //            sXMLType = ilstXMLBlob[0].Table_Name;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        sXMLType = ilstXMLBlob[0].Table_Name;
+            //    }
+            //    string sXMLContent = String.Empty;
+            //    if (sXMLType == "Blob_Human")
+            //    {
+            //        Human_Blob objhumanblob = new Human_Blob();
+            //        IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            //        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+            //        objhumanblob.Human_ID = EntityID;
+            //        objhumanblob.Id = EntityID;
+            //        if (objGenerateXml != null)
+            //        {
+            //            objhumanblob.Version = objGenerateXml.iHumanBlobVersion;
+            //            objhumanblob.Created_By = objGenerateXml.sCreatedBy;
+            //            objhumanblob.Created_Date_And_Time = objGenerateXml.dtCreatedDateandTime;
+            //        }
+            //        byte[] bytes = null;
+            //        try
+            //        {
+            //            bytes = System.Text.Encoding.Default.GetBytes(xmlDoc.OuterXml);
+            //        }
+            //        catch (Exception ex)
+            //        {
 
-                    }
-                    objhumanblob.Human_XML = bytes;
-                    if (saveList != null && saveList.Count > 0 && saveList[0].GetType().Name.ToUpper() == "HUMAN")
-                    {
-                        objhumanblob.Created_By = saveList[0].GetType().GetProperty("Created_By").GetValue(saveList[0], null) as string;
-                        objhumanblob.Created_Date_And_Time = Convert.ToDateTime(saveList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
-                        ilstHumanBlob.Add(objhumanblob);
+            //        }
+            //        objhumanblob.Human_XML = bytes;
+            //        if (saveList != null && saveList.Count > 0 && saveList[0].GetType().Name.ToUpper() == "HUMAN")
+            //        {
+            //            objhumanblob.Created_By = saveList[0].GetType().GetProperty("Created_By").GetValue(saveList[0], null) as string;
+            //            objhumanblob.Created_Date_And_Time = Convert.ToDateTime(saveList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+            //            ilstHumanBlob.Add(objhumanblob);
 
-                        HumanBlobMngr.SaveHumanBlobWithoutTransaction(ilstHumanBlob, null, MySession, string.Empty);
-                    }
-                    else
-                    {
-                        IList<Human_Blob> ilstInsertHumanBlob = null;
-                        if (updateList != null && updateList.Count > 0)
-                        {
-                            objhumanblob.Modified_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
-                            //objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
-                            if (updateList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
-                            {
-                                objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
-                            }
-                            else if (updateList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
-                            {
-                                objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(updateList[0], null));
-                            }
-                        }
-                        else if (deleteList != null && deleteList.Count > 0)
-                        {
-                            objhumanblob.Modified_By = deleteList[0].GetType().GetProperty("Modified_By").GetValue(deleteList[0], null) as string;
-                            //objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
-                            if (deleteList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
-                            {
-                                objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(deleteList[0], null));
-                            }
-                            else if (deleteList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
-                            {
-                                objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(deleteList[0], null));
-                            }
-                        }
-                        ilstHumanBlob.Add(objhumanblob);
+            //            HumanBlobMngr.SaveHumanBlobWithoutTransaction(ilstHumanBlob, null, MySession, string.Empty);
+            //        }
+            //        else
+            //        {
+            //            IList<Human_Blob> ilstInsertHumanBlob = null;
+            //            if (updateList != null && updateList.Count > 0)
+            //            {
+            //                objhumanblob.Modified_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
+            //                //objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+            //                if (updateList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
+            //                {
+            //                    objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
+            //                }
+            //                else if (updateList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+            //                {
+            //                    objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(updateList[0], null));
+            //                }
+            //            }
+            //            else if (deleteList != null && deleteList.Count > 0)
+            //            {
+            //                objhumanblob.Modified_By = deleteList[0].GetType().GetProperty("Modified_By").GetValue(deleteList[0], null) as string;
+            //                //objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+            //                if (deleteList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
+            //                {
+            //                    objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(deleteList[0], null));
+            //                }
+            //                else if (deleteList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+            //                {
+            //                    objhumanblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(deleteList[0], null));
+            //                }
+            //            }
+            //            ilstHumanBlob.Add(objhumanblob);
 
-                        HumanBlobMngr.SaveHumanBlobWithoutTransaction(ilstInsertHumanBlob, ilstHumanBlob, MySession, string.Empty);
-                    }
+            //            HumanBlobMngr.SaveHumanBlobWithoutTransaction(ilstInsertHumanBlob, ilstHumanBlob, MySession, string.Empty);
+            //        }
 
-                }
-                else if (sXMLType == "Blob_Encounter")
-                {
-                    Encounter_Blob objEncounterblob = new Encounter_Blob();
-                    IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                    objEncounterblob.Encounter_ID = EntityID;
-                    objEncounterblob.Id = EntityID;
-                    if (objGenerateXml != null)
-                    {
-                        objEncounterblob.Version = objGenerateXml.iEncounterBlobVersion;
-                        objEncounterblob.Created_By = objGenerateXml.sCreatedBy;
-                        objEncounterblob.Created_Date_And_Time = objGenerateXml.dtCreatedDateandTime;
-                    }
+            //    }
+            //    else if (sXMLType == "Blob_Encounter")
+            //    {
+            //        Encounter_Blob objEncounterblob = new Encounter_Blob();
+            //        IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+            //        EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+            //        objEncounterblob.Encounter_ID = EntityID;
+            //        objEncounterblob.Id = EntityID;
+            //        if (objGenerateXml != null)
+            //        {
+            //            objEncounterblob.Version = objGenerateXml.iEncounterBlobVersion;
+            //            objEncounterblob.Created_By = objGenerateXml.sCreatedBy;
+            //            objEncounterblob.Created_Date_And_Time = objGenerateXml.dtCreatedDateandTime;
+            //        }
 
-                    byte[] bytes = null;
-                    try
-                    {
-                        bytes = System.Text.Encoding.Default.GetBytes(xmlDoc.OuterXml);
-                    }
-                    catch (Exception ex)
-                    {
+            //        byte[] bytes = null;
+            //        try
+            //        {
+            //            bytes = System.Text.Encoding.Default.GetBytes(xmlDoc.OuterXml);
+            //        }
+            //        catch (Exception ex)
+            //        {
 
-                    }
-                    objEncounterblob.Encounter_XML = bytes;
-                    //if (saveList != null && saveList.Count > 0 && saveList[0].GetType().Name.ToUpper() == "ENCOUNTER") //To be changed for Process_Encounter
-                    if (bIsEncounterXMLCreate == true)
-                    {
-                        if (updateList != null && updateList.Count > 0)
-                        {
-                            objEncounterblob.Created_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
-                            objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
-                            ilstEncounterBlob.Add(objEncounterblob);
+            //        }
+            //        objEncounterblob.Encounter_XML = bytes;
+            //        //if (saveList != null && saveList.Count > 0 && saveList[0].GetType().Name.ToUpper() == "ENCOUNTER") //To be changed for Process_Encounter
+            //        if (bIsEncounterXMLCreate == true)
+            //        {
+            //            if (updateList != null && updateList.Count > 0)
+            //            {
+            //                objEncounterblob.Created_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
+            //                objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
+            //                ilstEncounterBlob.Add(objEncounterblob);
 
-                            EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstEncounterBlob, null, MySession, string.Empty);
-                        }
-                        else if (saveList != null && saveList.Count > 0)
-                        {
-                            objEncounterblob.Created_By = saveList[0].GetType().GetProperty("Created_By").GetValue(saveList[0], null) as string;
-                            if (saveList[0].GetType().GetProperty("Created_Date_And_Time") != null)
-                            {
-                                objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(saveList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
-                            }
-                            else
-                            {
-                                objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(DateTime.Now);
-                            }
-                            ilstEncounterBlob.Add(objEncounterblob);
+            //                EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstEncounterBlob, null, MySession, string.Empty);
+            //            }
+            //            else if (saveList != null && saveList.Count > 0)
+            //            {
+            //                objEncounterblob.Created_By = saveList[0].GetType().GetProperty("Created_By").GetValue(saveList[0], null) as string;
+            //                if (saveList[0].GetType().GetProperty("Created_Date_And_Time") != null)
+            //                {
+            //                    objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(saveList[0].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[0], null));
+            //                }
+            //                else
+            //                {
+            //                    objEncounterblob.Created_Date_And_Time = Convert.ToDateTime(DateTime.Now);
+            //                }
+            //                ilstEncounterBlob.Add(objEncounterblob);
 
-                            EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstEncounterBlob, null, MySession, string.Empty);
-                        }
-                    }
-                    else
-                    {
-                        IList<Encounter_Blob> ilstInsertEncounterBlob = null;
-                        if (updateList != null && updateList.Count > 0)
-                        {
-                            objEncounterblob.Modified_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
-                            if (updateList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
-                            {
-                                objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
-                            }
-                            else if (updateList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
-                            {
-                                objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(updateList[0], null));
-                            }
+            //                EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstEncounterBlob, null, MySession, string.Empty);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            IList<Encounter_Blob> ilstInsertEncounterBlob = null;
+            //            if (updateList != null && updateList.Count > 0)
+            //            {
+            //                objEncounterblob.Modified_By = updateList[0].GetType().GetProperty("Modified_By").GetValue(updateList[0], null) as string;
+            //                if (updateList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
+            //                {
+            //                    objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(updateList[0], null));
+            //                }
+            //                else if (updateList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+            //                {
+            //                    objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(updateList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(updateList[0], null));
+            //                }
 
-                        }
-                        else if (deleteList != null && deleteList.Count > 0)
-                        {
-                            objEncounterblob.Modified_By = deleteList[0].GetType().GetProperty("Modified_By").GetValue(deleteList[0], null) as string;
-                            if (deleteList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
-                            {
-                                objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(deleteList[0], null));
-                            }
-                            else if (deleteList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
-                            {
-                                objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(deleteList[0], null));
-                            }
-                        }
-                        ilstEncounterBlob.Add(objEncounterblob);
+            //            }
+            //            else if (deleteList != null && deleteList.Count > 0)
+            //            {
+            //                objEncounterblob.Modified_By = deleteList[0].GetType().GetProperty("Modified_By").GetValue(deleteList[0], null) as string;
+            //                if (deleteList[0].GetType().GetProperty("Modified_Date_and_Time") != null)
+            //                {
+            //                    objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_and_Time").GetValue(deleteList[0], null));
+            //                }
+            //                else if (deleteList[0].GetType().GetProperty("Modified_Date_And_Time") != null)
+            //                {
+            //                    objEncounterblob.Modified_Date_And_Time = Convert.ToDateTime(deleteList[0].GetType().GetProperty("Modified_Date_And_Time").GetValue(deleteList[0], null));
+            //                }
+            //            }
+            //            ilstEncounterBlob.Add(objEncounterblob);
 
-                        EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstInsertEncounterBlob, ilstEncounterBlob, MySession, string.Empty);
-                    }
-                }
+            //            EncounterBlobMngr.SaveEncounterBlobWithoutTransaction(ilstInsertEncounterBlob, ilstEncounterBlob, MySession, string.Empty);
+            //        }
+            //    }
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
 
-            }
+            //}
         }
         public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName)
         {
@@ -2604,41 +2608,84 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 sXMLType = ilstXMLBlob[0].Table_Name;
                 if (sXMLType == "Blob_Human")
                 {
-                    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                    IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
-                    if (ilstHumanBlob.Count > 0)
+                    //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                    //IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
+                    //if (ilstHumanBlob.Count > 0)
+                    //{
+                    //    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                    //    if (sXMLContent.Substring(0, 1) != "<")
+                    //        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                    //    xmlDoc.LoadXml(sXMLContent);
+                    //}
+                    try
                     {
-                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                        if (sXMLContent.Substring(0, 1) != "<")
-                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                        xmlDoc.LoadXml(sXMLContent);
+                        string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + EntityID.ToString() + ".xml");
+                        if (File.Exists(strXmlHumanPath) == true)
+                        {
+                            using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            {
+                                XmlDocument itemDoc = new XmlDocument();
+                                XmlTextReader xmltxtReader = new XmlTextReader(fs);
+                                itemDoc.Load(xmltxtReader);
+                                xmlDoc.LoadXml(itemDoc.InnerXml);
+                                xmltxtReader.Close();
+                            }
+                        }
+
+                        else
+                        {
+                            throw new Exception("Human XML is not found");
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        throw new Exception("Human XML is not found");
+                        throw new Exception(ex.Message);
                     }
                 }
                 else if (sXMLType == "Blob_Encounter")
                 {
-                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                    IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(EntityID);
-                    if (ilstEncounterBlob.Count > 0)
+                    //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                    //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(EntityID);
+                    //if (ilstEncounterBlob.Count > 0)
+                    //{
+                    //    try
+                    //    {
+                    //        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    //        if (sXMLContent.Substring(0, 1) != "<")
+                    //            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                    //        xmlDoc.LoadXml(sXMLContent);
+                    //    }
+                    //    catch
+                    //    {
+                    //        throw new Exception("Encounter XML is invalid");
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    throw new Exception("Encounter XML is not found");
+                    //}
+                    try
                     {
-                        try
+                        string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Encounter_" + EntityID.ToString() + ".xml");
+                        if (File.Exists(strXmlEncounterPath) == true)
                         {
-                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
-                            if (sXMLContent.Substring(0, 1) != "<")
-                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                            xmlDoc.LoadXml(sXMLContent);
+                            using (FileStream fs = new FileStream(strXmlEncounterPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            {
+                                XmlDocument itemDoc = new XmlDocument();
+                                XmlTextReader xmltxtReader = new XmlTextReader(fs);
+                                itemDoc.Load(xmltxtReader);
+                                xmlDoc.LoadXml(itemDoc.InnerXml);
+                                xmltxtReader.Close();
+                            }
                         }
-                        catch
+                        else
                         {
-                            throw new Exception("Encounter XML is invalid");
+                            throw new Exception("Encounter XML is not found");
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        throw new Exception("Encounter XML is not found");
+                        throw new Exception(ex.Message);
                     }
                 }
 

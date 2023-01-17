@@ -117,18 +117,18 @@ namespace Acurus.Capella.UI
                 }
             }
             //
-            //
-            //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-            //if (File.Exists(strXmlFilePath) == false && ClientSession.EncounterId > 0)
-            //{
-            EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-            Encounter_Blob objEncounterblob = null;
-            IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
-            if (ilstEncounterBlob.Count == 0 && ClientSession.EncounterId > 0)
+            string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+
+            if (File.Exists(strXmlFilePath) == false && ClientSession.EncounterId > 0)
             {
-                objEncounterblob = ilstEncounterBlob[0];
+            //    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+            //Encounter_Blob objEncounterblob = null;
+            //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
+            //if (ilstEncounterBlob.Count == 0 && ClientSession.EncounterId > 0)
+            //{
+            //    objEncounterblob = ilstEncounterBlob[0];
 
                 string sDirectoryPath = string.Empty;
                 if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
@@ -176,21 +176,21 @@ namespace Acurus.Capella.UI
             //trytosaveagain:
                 try
                 {
-                    //itemDoc.Save(strXmlFilePath);
+                    itemDoc.Save(strXmlFilePath);
 
-                    IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
-                    byte[] bytes = null;
-                    try
-                    {
-                        bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
-                    }
-                    catch (Exception ex)
-                    {
+                    //IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
+                    //byte[] bytes = null;
+                    //try
+                    //{
+                    //    bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                    //}
+                    //catch (Exception ex)
+                    //{
 
-                    }
-                    objEncounterblob.Encounter_XML = bytes;
-                    ilstUpdateBlob.Add(objEncounterblob);
-                    EncounterBlobMngr.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                    //}
+                    //objEncounterblob.Encounter_XML = bytes;
+                    //ilstUpdateBlob.Add(objEncounterblob);
+                    //EncounterBlobMngr.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
                 }
                 catch (Exception xmlexcep)
                 {
@@ -247,19 +247,19 @@ namespace Acurus.Capella.UI
                 }
             }
 
-            //string FileName1 = "Human" + "_" + ClientSession.HumanId + ".xml";
-            //string strXmlFilePath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName1);
+            string FileName1 = "Human" + "_" + ClientSession.HumanId + ".xml";
+            string strXmlFilePath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName1);
 
-            //if (File.Exists(strXmlFilePath1) == false && ClientSession.HumanId > 0)
-            //{
-
-
-            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-            Human_Blob objHumanblob = null;
-            IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
-            if (ilstHumanBlob.Count == 0 && ClientSession.HumanId > 0)
+            if (File.Exists(strXmlFilePath1) == false && ClientSession.HumanId > 0)
             {
-                objHumanblob = ilstHumanBlob[0];
+
+
+            //    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+            //Human_Blob objHumanblob = null;
+            //IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
+            //if (ilstHumanBlob.Count == 0 && ClientSession.HumanId > 0)
+            //{
+            //    objHumanblob = ilstHumanBlob[0];
 
                 string sDirectoryPath = string.Empty;
                 if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
@@ -292,21 +292,21 @@ namespace Acurus.Capella.UI
             //trytosaveagain:
                 try
                 {
-                    //itemDoc.Save(strXmlFilePath1);
+                    itemDoc.Save(strXmlFilePath1);
 
-                    IList<Human_Blob> ilstUpdateBlob = new List<Human_Blob>();
-                    byte[] bytes = null;
-                    try
-                    {
-                        bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
-                    }
-                    catch (Exception ex)
-                    {
+                    //IList<Human_Blob> ilstUpdateBlob = new List<Human_Blob>();
+                    //byte[] bytes = null;
+                    //try
+                    //{
+                    //    bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                    //}
+                    //catch (Exception ex)
+                    //{
 
-                    }
-                    objHumanblob.Human_XML = bytes;
-                    ilstUpdateBlob.Add(objHumanblob);
-                    HumanBlobMngr.SaveHumanBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                    //}
+                    //objHumanblob.Human_XML = bytes;
+                    //ilstUpdateBlob.Add(objHumanblob);
+                    //HumanBlobMngr.SaveHumanBlobWithTransaction(ilstUpdateBlob, string.Empty);
                 }
                 catch (Exception xmlexcep)
                 {
@@ -1960,18 +1960,18 @@ namespace Acurus.Capella.UI
                 }
                 //
                 //
-                //string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                string FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
 
-                //if (File.Exists(strXmlFilePath) == false && ClientSession.EncounterId > 0)
-                //{
-
-                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                Encounter_Blob objEncounterblob = null;
-                IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
-                if (ilstEncounterBlob.Count == 0 && ClientSession.EncounterId > 0)
+                if (File.Exists(strXmlFilePath) == false && ClientSession.EncounterId > 0)
                 {
-                    objEncounterblob = ilstEncounterBlob[0];
+
+                //    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                //Encounter_Blob objEncounterblob = null;
+                //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
+                //if (ilstEncounterBlob.Count == 0 && ClientSession.EncounterId > 0)
+                //{
+                //    objEncounterblob = ilstEncounterBlob[0];
 
                     string sDirectoryPath = string.Empty;
                     if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
@@ -2016,25 +2016,25 @@ namespace Acurus.Capella.UI
 
                    // itemDoc.Save(strXmlFilePath);
 
-                //    int trycount = 0;
-                //trytosaveagain:
+                    int trycount = 0;
+                trytosaveagain:
                     try
                     {
-                        //itemDoc.Save(strXmlFilePath);
+                        itemDoc.Save(strXmlFilePath);
 
-                        IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
-                        byte[] bytes = null;
-                        try
-                        {
-                            bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
-                        }
-                        catch (Exception ex)
-                        {
+                        //IList<Encounter_Blob> ilstUpdateBlob = new List<Encounter_Blob>();
+                        //byte[] bytes = null;
+                        //try
+                        //{
+                        //    bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                        //}
+                        //catch (Exception ex)
+                        //{
 
-                        }
-                        objEncounterblob.Encounter_XML = bytes;
-                        ilstUpdateBlob.Add(objEncounterblob);
-                        EncounterBlobMngr.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                        //}
+                        //objEncounterblob.Encounter_XML = bytes;
+                        //ilstUpdateBlob.Add(objEncounterblob);
+                        //EncounterBlobMngr.SaveEncounterBlobWithTransaction(ilstUpdateBlob, string.Empty);
                     }
                     catch (Exception xmlexcep)
                     {
@@ -2091,18 +2091,18 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-                //string FileName1 = "Human" + "_" + ClientSession.HumanId + ".xml";
-                //string strXmlFilePath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName1);
+                string FileName1 = "Human" + "_" + ClientSession.HumanId + ".xml";
+                string strXmlFilePath1 = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName1);
 
-                //if (File.Exists(strXmlFilePath1) == false && ClientSession.HumanId > 0)
-                //{
-
-                HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                Human_Blob objHumanblob = null;
-                IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
-                if (ilstHumanBlob.Count == 0 && ClientSession.HumanId > 0)
+                if (File.Exists(strXmlFilePath1) == false && ClientSession.HumanId > 0)
                 {
-                    objHumanblob = ilstHumanBlob[0];
+
+                    //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                    //Human_Blob objHumanblob = null;
+                    //IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
+                    //if (ilstHumanBlob.Count == 0 && ClientSession.HumanId > 0)
+                    //{
+                    //    objHumanblob = ilstHumanBlob[0];
 
                     string sDirectoryPath = string.Empty;
                     if (Directory.Exists(HttpContext.Current.Server.MapPath("Template_XML")))
@@ -2134,21 +2134,21 @@ namespace Acurus.Capella.UI
                 //trytosaveagain:
                     try
                     {
-                        //itemDoc.Save(strXmlFilePath1);
+                        itemDoc.Save(strXmlFilePath1);
 
-                        IList<Human_Blob> ilstUpdateBlob = new List<Human_Blob>();
-                        byte[] bytes = null;
-                        try
-                        {
-                            bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
-                        }
-                        catch (Exception ex)
-                        {
+                        //IList<Human_Blob> ilstUpdateBlob = new List<Human_Blob>();
+                        //byte[] bytes = null;
+                        //try
+                        //{
+                        //    bytes = System.Text.Encoding.Default.GetBytes(itemDoc.OuterXml);
+                        //}
+                        //catch (Exception ex)
+                        //{
 
-                        }
-                        objHumanblob.Human_XML = bytes;
-                        ilstUpdateBlob.Add(objHumanblob);
-                        HumanBlobMngr.SaveHumanBlobWithTransaction(ilstUpdateBlob, string.Empty);
+                        //}
+                        //objHumanblob.Human_XML = bytes;
+                        //ilstUpdateBlob.Add(objHumanblob);
+                        //HumanBlobMngr.SaveHumanBlobWithTransaction(ilstUpdateBlob, string.Empty);
                     }
                     catch (Exception xmlexcep)
                     {

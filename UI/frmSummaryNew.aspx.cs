@@ -28,8 +28,7 @@ using System.Web.Services;
 using Newtonsoft.Json;
 using MySql.Data.MySqlClient;
 using System.Threading;
-
-
+using Acurus.Capella.Core.DTO;
 
 namespace Acurus.Capella.UI
 {
@@ -505,23 +504,46 @@ namespace Acurus.Capella.UI
                 }
 
             }
-
-            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-            ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(HumanID));
-            if (ilstHumanBlob.Count>0)
+            XmlDocument itemDoc = new XmlDocument();
+            //IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            //ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(HumanID));
+            //if (ilstHumanBlob.Count>0)
+            //{
+            //    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+            //    if (sXMLHumanDoc.Substring(0, 1) != "<")
+            //        sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+            //}
+            try
             {
-                sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                GenerateXml objxml = new GenerateXml();
+                itemDoc = objxml.ReadBlob("Human", Convert.ToUInt64(HumanID));
+                sXMLHumanDoc = itemDoc.InnerXml;
                 if (sXMLHumanDoc.Substring(0, 1) != "<")
                     sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
             }
-            
-            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-            ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
-            if (ilstEncounterBlob.Count > 0)
+            catch (Exception ex)
             {
-                sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                throw ex;
+            }
+            //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+            //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+            //if (ilstEncounterBlob.Count > 0)
+            //{
+            //    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+            //    if (sXMLEncounterDoc.Substring(0, 1) != "<")
+            //        sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+            //}
+            try
+            {
+                GenerateXml objxmlEnc = new GenerateXml();
+                itemDoc = objxmlEnc.ReadBlob("Encounter", Convert.ToUInt64(Encounter_Id));
+                sXMLEncounterDoc = itemDoc.InnerXml;
                 if (sXMLEncounterDoc.Substring(0, 1) != "<")
                     sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             //if (!IsPostBack)
             {

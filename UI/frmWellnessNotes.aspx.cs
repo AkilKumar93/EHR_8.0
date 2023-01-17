@@ -20,6 +20,7 @@ using Acurus.Capella.Core.DomainObjects;
 
 using Acurus.Capella.DataAccess.ManagerObjects;
 using System.Text.RegularExpressions;
+using Acurus.Capella.Core.DTO;
 
 namespace Acurus.Capella.UI
 {
@@ -47,30 +48,60 @@ namespace Acurus.Capella.UI
             string FileName = string.Empty;
             if (Encounter_Id != 0)
             {
-                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-               
-                ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
-                if (ilstEncounterBlob.Count > 0)
+                //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+
+                //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Encounter_Id);
+                //if (ilstEncounterBlob.Count > 0)
+                //{
+                //    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                //    if (sXMLEncounterDoc.Substring(0, 1) != "<")
+                //        sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                //}
+
+                try
                 {
-                    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    XmlDocument itemDoc = new XmlDocument();
+                    GenerateXml objxmlEnc = new GenerateXml();
+                    itemDoc = objxmlEnc.ReadBlob("Human", Convert.ToUInt64(Encounter_Id));
+                    sXMLEncounterDoc = itemDoc.InnerXml;
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                 }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
                 FileName = "Encounter" + "_" + Encounter_Id + ".xml";
             }
             else
             {
-                IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-              
-                ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
-                if (ilstEncounterBlob.Count > 0)
+                //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+                //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+
+                //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ClientSession.EncounterId);
+                //if (ilstEncounterBlob.Count > 0)
+                //{
+                //    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                //    if (sXMLEncounterDoc.Substring(0, 1) != "<")
+                //        sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+                //}
+
+                try
                 {
-                    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    XmlDocument itemDoc = new XmlDocument();
+                    GenerateXml objxmlEnc = new GenerateXml();
+                    itemDoc = objxmlEnc.ReadBlob("Human", Convert.ToUInt64(Encounter_Id));
+                    sXMLEncounterDoc = itemDoc.InnerXml;
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                 }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
                 FileName = "Encounter" + "_" + ClientSession.EncounterId + ".xml";
             }
 
@@ -171,31 +202,40 @@ namespace Acurus.Capella.UI
                         string sDOB = string.Empty;
                         XmlDocument itemDoc = new XmlDocument();
                         string sXMLContent = string.Empty;
-
-                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                        IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
-                        if (ilstHumanBlob.Count > 0)
+                        try
                         {
-                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                            if (sXMLContent.Substring(0, 1) != "<")
-                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                            itemDoc.LoadXml(sXMLContent);
+                            GenerateXml objxml = new GenerateXml();
+                            itemDoc = objxml.ReadBlob("Human", Convert.ToUInt64(ClientSession.HumanId));
+                          
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            throw new Exception("Human XML is not found");
+                            throw ex;
                         }
+                        //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                        //IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
+                        //if (ilstHumanBlob.Count > 0)
+                        //{
+                        //    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        //    if (sXMLContent.Substring(0, 1) != "<")
+                        //        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                        //    itemDoc.LoadXml(sXMLContent);
+                        //}
+                        //else
+                        //{
+                        //    throw new Exception("Human XML is not found");
+                        //}
 
                         //string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml";
 
                         //string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
                         //if (File.Exists(strXmlHumanPath) == true)
                         //{
-                            
-                            //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
-                            //itemDoc.Load(XmlText);
-                            //XmlText.Close();
-                            if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+
+                        //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
+                        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
                             {
                                 //if (result.ToUpper().Contains("MEMBER"))
                                 //{
@@ -316,25 +356,50 @@ namespace Acurus.Capella.UI
         }
         public void DownloadNotes(string xsltFile, string NotesName, string sNotesName)
         {
-           // string xmlDataFile = strXmlEncounterPath1;
+            XmlDocument itemDoc = new XmlDocument();
+            // string xmlDataFile = strXmlEncounterPath1;
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
-            IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-            ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64( ClientSession.HumanId));
-            if (ilstHumanBlob.Count > 0)
+            //IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            //ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64( ClientSession.HumanId));
+            //if (ilstHumanBlob.Count > 0)
+            //{
+            //    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+            //    if (sXMLHumanDoc.Substring(0, 1) != "<")
+            //        sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+            //}
+            try
             {
-                sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                GenerateXml objxml = new GenerateXml();
+                itemDoc = objxml.ReadBlob("Human", Convert.ToUInt64(ClientSession.HumanId));
+                sXMLHumanDoc = itemDoc.InnerXml;
                 if (sXMLHumanDoc.Substring(0, 1) != "<")
                     sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
             }
-
-            IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
-            ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(ClientSession.EncounterId));
-            if (ilstEncounterBlob.Count > 0)
+            catch (Exception ex)
             {
-                sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                throw ex;
+            }
+            //IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+            //ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(ClientSession.EncounterId));
+            //if (ilstEncounterBlob.Count > 0)
+            //{
+            //    sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+            //    if (sXMLEncounterDoc.Substring(0, 1) != "<")
+            //        sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+            //}
+            try
+            {
+                itemDoc = new XmlDocument();
+                GenerateXml objxmlEnc = new GenerateXml();
+                itemDoc = objxmlEnc.ReadBlob("Human", Convert.ToUInt64(ClientSession.EncounterId));
+                sXMLEncounterDoc = itemDoc.InnerXml;
                 if (sXMLEncounterDoc.Substring(0, 1) != "<")
                     sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             DataSet ds;

@@ -11,6 +11,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Configuration;
+using Acurus.Capella.Core.DTO;
+using DocumentFormat.OpenXml.Tools.ClassExplorer;
 
 namespace Acurus.Capella.UI
 {
@@ -56,25 +58,33 @@ namespace Acurus.Capella.UI
                 divPatientstrip.InnerText = sdivPatientstrip;
             }
 
-            string sXMLContent = String.Empty;
-            HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-            Human_Blob objHumanblob = null;
+            //string sXMLContent = String.Empty;
+            //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+            //Human_Blob objHumanblob = null;
             XmlDocument itemDoc = new XmlDocument();
-            IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(humanID);
-            if (ilstHumanBlob.Count > 0)
+            //IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(humanID);
+            //if (ilstHumanBlob.Count > 0)
+            //{
+            //    objHumanblob = ilstHumanBlob[0];
+            //    sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+            //    if (sXMLContent.Substring(0, 1) != "<")
+            //        sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+            //    itemDoc.LoadXml(sXMLContent);
+            //}
+            try
             {
-                objHumanblob = ilstHumanBlob[0];
-                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                if (sXMLContent.Substring(0, 1) != "<")
-                    sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                itemDoc.LoadXml(sXMLContent);
+                GenerateXml objxml = new GenerateXml();
+                itemDoc = objxml.ReadBlob("Human", Convert.ToUInt64(humanID));
             }
-
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             //string FileName = "Human" + "_" + humanID + ".xml";
             //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
             //if (File.Exists(strXmlFilePath) == true)
             //{
-                try
+            try
                 {
                     //XmlDocument itemDoc = new XmlDocument();
                     //using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))

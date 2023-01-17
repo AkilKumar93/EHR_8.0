@@ -41,7 +41,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //FillAppointment GetAppointmentByDateandPhy(DateTime DOS, ulong[] PhyID, string[] FacName);
         IList<FillWillingonCancel> GetAppointmentsforPatientwithStatus(ulong ulHumanID, Boolean bShowPastAlso, int PageNumber, int MaxResultSet);
         AppointmentPreChecks CheckDuplicateAppointment(ulong PatientId, ulong PhysicianId, DateTime DOS, string FacilityName, DateTime Blockdate, string Time, int Duration, ulong EncID);
-        FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName,string sLegalorg);
+        FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, string sLegalorg);
         //ChargePostingDTO CreateEncounterforCoding(IList<Encounter> EncList, IList<WFObjectBilling> WfList, string MacAddress);
         //IList<AppointmentReport> GetAppointmentReport(DateTime AppointmentDateFrom, DateTime AppointmentDateTo);
         DataSet dsPendingHccReport(string sAnnualProcedure, string strCarrierName);
@@ -652,12 +652,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (bEncounter)
                 {
                     trans.Commit();
-                   // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                     int trycount = 0;
                 trytosaveagain:
                     try
                     {
-                       // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                        // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                     }
                     catch (Exception xmlexcep)
                     {
@@ -792,7 +792,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (bEncounter)
                     {
                         trans.Commit();
-                       // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
+                        // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
 
                         int trycount = 0;
                     trytosaveagain:
@@ -2349,10 +2349,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     goto m;
                                 }
 
-                                //.Contains("G0438").ToString()||obj.Contains("G0439"))
+                            //.Contains("G0438").ToString()||obj.Contains("G0439"))
                             //obj[q]=obj.Contains("")
 
-                                //if (Gcode == false)
+                            //if (Gcode == false)
                             //{
                             l:
                                 if (obj[0].ToString() == sAnnualPhysicalProcedure[0].ToString() || obj[0].ToString() == sAnnualPhysicalProcedure[1].ToString())
@@ -3442,7 +3442,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //}
         //vinoth branch 3_0_43
 
-        public FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName,string sLegalorg)
+        public FillPatientSummaryBarDTO LoadPatientSummaryBar(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, string sLegalorg)
         {
             FillPatientSummaryBarDTO objPatientSummary = new FillPatientSummaryBarDTO();
             //  ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
@@ -3708,7 +3708,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
 
         //Saravanan Loadpatientsummary
-        public FillPatientSummaryBarDTO LoadPatientSummaryBarUsingList(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, IList<int> ilstChangeSummaryBar,string sLegalorg)
+        public FillPatientSummaryBarDTO LoadPatientSummaryBarUsingList(ulong EncounterId, ulong HumanId, DateTime LocalDate, string UserName, IList<int> ilstChangeSummaryBar, string sLegalorg)
         {
             FillPatientSummaryBarDTO objPatientSummary = new FillPatientSummaryBarDTO();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -8566,8 +8566,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     */
                     // Added by Valli
                     IDictionary<string, IList<string>> CPTICD = new Dictionary<string, IList<string>>();
-                  string  sE_And_M_CPT_And_ICD= System.Configuration.ConfigurationSettings.AppSettings["E_And_M_CPT_And_ICD"].ToString();
-                  string sPlan = "";// System.Configuration.ConfigurationSettings.AppSettings["Primary_Plan"].ToString();
+                    string sE_And_M_CPT_And_ICD = System.Configuration.ConfigurationSettings.AppSettings["E_And_M_CPT_And_ICD"].ToString();
+                    string sPlan = "";// System.Configuration.ConfigurationSettings.AppSettings["Primary_Plan"].ToString();
                     if (sE_And_M_CPT_And_ICD != "")
                     {
                         string[] sVal = sE_And_M_CPT_And_ICD.Split('$');
@@ -8625,9 +8625,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
 
                         }
-                       
-                            objMoveVerifyDTO.IsICDPresent = GcodeCheckList.Contains("False") == true ? false : true;
-                           
+
+                        objMoveVerifyDTO.IsICDPresent = GcodeCheckList.Contains("False") == true ? false : true;
+
                         if (Convert.ToBoolean(objMoveVerifyDTO.IsGcodePresent) == true && Convert.ToBoolean(objMoveVerifyDTO.IsICDPresent) == false)
                         {
                             bGCodeCheck = true;
@@ -8729,11 +8729,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                                 if (objDocWfObject.Current_Process == "REVIEW_CODING")
                                 {
-                                    ICriteria criteriaPlan = iMySession.CreateCriteria(typeof(TreatmentPlan)).Add(Expression.Eq("Encounter_Id", EncRecord.Id)).Add(Expression.Eq("Amendment_Type","Corrections to be Made")); //selectedPhyID
-                                    if (EncRecord.Encounter_Provider_Review_ID==0)
+                                    ICriteria criteriaPlan = iMySession.CreateCriteria(typeof(TreatmentPlan)).Add(Expression.Eq("Encounter_Id", EncRecord.Id)).Add(Expression.Eq("Amendment_Type", "Corrections to be Made")); //selectedPhyID
+                                    if (EncRecord.Encounter_Provider_Review_ID == 0)
                                     {
                                         objWfMngr.MoveToNextProcess(objDocWfObject.Obj_System_Id, objDocWfObject.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
-                                    } 
+                                    }
                                     else if (criteriaPlan.List<TreatmentPlan>() != null && criteriaPlan.List<TreatmentPlan>().Count > 0)
                                     {
                                         objWfMngr.MoveToNextProcess(objDocWfObject.Obj_System_Id, objDocWfObject.Obj_Type, 6, sOwner, currentDate, MACAddress, null, null);
@@ -8742,7 +8742,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     {
                                         objWfMngr.MoveToNextProcess(objDocWfObject.Obj_System_Id, objDocWfObject.Obj_Type, 5, sOwner, currentDate, MACAddress, null, null);
                                     }
-                                     objMoveVerifyDTO.IsWorkflowPushed = true;
+                                    objMoveVerifyDTO.IsWorkflowPushed = true;
                                 }
                                 else
                                 {
@@ -8833,7 +8833,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     else if (objDocWfObject.Current_Process == "PROVIDER_REVIEW_CORRECTION")
                     {
                         string sEquivalantOwner = string.Empty;
-                           
+
                         //To get the equivalant allocation process to get the owner
                         if (objDocWfObject.Process_Allocation != string.Empty)
                         {
@@ -8850,7 +8850,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     }
                                 }
                             }
-                            else if (objDocWfObject.Process_Allocation.Contains("PROVIDER_REVIEW")==true)
+                            else if (objDocWfObject.Process_Allocation.Contains("PROVIDER_REVIEW") == true)
                             {
                                 string[] sAlloc = objDocWfObject.Process_Allocation.Split('|');
                                 for (int i = 0; i < sAlloc.Length; i++)
@@ -9044,8 +9044,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     wfObjMngr.MoveToNextProcess(EncounterWfObject.Obj_System_Id, EncounterWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
 
                     // Move to Checkout from physician GITLAB #3084
-                   if(UserRole.ToUpper()!= "MEDICAL ASSISTANT" && encounterRecord.Is_EandM_Submitted!="Y")
-                    encounterRecord.Is_EandM_Submitted = "N";
+                    if (UserRole.ToUpper() != "MEDICAL ASSISTANT" && encounterRecord.Is_EandM_Submitted != "Y")
+                        encounterRecord.Is_EandM_Submitted = "N";
                     else
                         encounterRecord.Is_EandM_Submitted = "Y";
 
@@ -9059,7 +9059,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         wfObjMngr.MoveToNextProcess(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, 2, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
                         if (BillingWfObject.Current_Process == "BATCHING_WAIT")
-                        wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
+                            wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
                     }
                 }
             }
@@ -9143,8 +9143,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (encounterRecord != null)
                     {
                         //Provider review Move to next process  GITLAB #3084
-                        if(sButtonName.ToUpper() != "MOVE TO PHYSICIAN ASSISTANT")
-                        encounterRecord.Is_EandM_Submitted = "Y";
+                        if (sButtonName.ToUpper() != "MOVE TO PHYSICIAN ASSISTANT")
+                            encounterRecord.Is_EandM_Submitted = "Y";
 
                         if (DocumentationWfObject.Current_Process.ToUpper() == "PROVIDER_REVIEW_2" && DocumentationWfObject.Process_Allocation.IndexOf("REVIEW_CODING") > -1)
                         {
@@ -9184,7 +9184,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     }
                 }
-               
+
                 /*else if (DocumentReviewWfObject != null && DocumentReviewWfObject.Current_Process.ToUpper() == "PROVIDER_REVIEW")
                 {
                     //if (sRoleLoginUser.ToUpper() == "PHYSICIAN")
@@ -9644,13 +9644,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     GenerateXml objXml = new GenerateXml();
                     EncounterBlobManager blobmanager = new EncounterBlobManager();
                     IList<Encounter_Blob> obj = new List<Encounter_Blob>();
-                    obj= blobmanager.GetEncounterBlob(ulEncId);
+                    obj = blobmanager.GetEncounterBlob(ulEncId);
 
                     //Crerate Encounter xml when save Phone Encounter 
                     // string EncounterFileName = "Encounter" + "_" + ulEncId + ".xml";
                     // string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
                     // if (File.Exists(strXmlEncounterFilePath) == false)
-                    if(obj.Count==0)
+                    if (obj.Count == 0)
                     {
                         string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
                         string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
@@ -9662,19 +9662,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
                         if (xmlAgenode != null)
                             xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-                       // itemDoc.Save(strXmlEncounterFilePath);
+                        // itemDoc.Save(strXmlEncounterFilePath);
                     }
                     List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     // objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
                     // objXml.itemDoc = null;
-                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false, ref objXml);
+                    objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false);
                     WriteBlob(ulEncId, objXml.itemDoc, MySession, SaveEncounter, null, null, objXml, true);
                     trans.Commit();
                     trans = MySession.BeginTransaction();
-                   // List<object> lstObj = SaveEncounter.Cast<object>().ToList();
+                    // List<object> lstObj = SaveEncounter.Cast<object>().ToList();
                     //objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
                     //objXml.itemDoc = null;
-                  //  objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref objXml);
+                    //  objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref objXml);
                 }
 
                 if (SavePlan != null && SavePlan.Count > 0)
@@ -9813,7 +9813,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (SaveEncounter != null && SaveEncounter.Count > 0)
                 {
                     //iResult = SaveUpdateDeleteWithoutTransaction(ref SaveEncounter, null, null, MySession, sMacAddress);
-                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveEncounter, ref EncListUpdate, null, MySession, sMacAddress, false, false, SaveEncounter[0].Id, string.Empty, ref XMLObj) ;
+                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref SaveEncounter, ref EncListUpdate, null, MySession, sMacAddress, false, false, SaveEncounter[0].Id, string.Empty, ref XMLObj);
 
                     if (iResult == 2)
                     {
@@ -9837,7 +9837,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     ulEncId = SaveEncounter[0].Id;
                     //Crerate Encounter xml when save Phone Encounter 
-                   
+
                     EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                     //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ulEncId);
                     //if (ilstEncounterBlob.Count < 0)
@@ -9846,60 +9846,60 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
                     //if (File.Exists(strXmlEncounterFilePath) == false)
                     //{
-                        // string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
-                        //string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                        string sXmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template_XML\\Base_XML.xml");
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+                    // string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+                    //string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                    string sXmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Template_XML\\Base_XML.xml");
+                    XmlDocument itemDoc = new XmlDocument();
+                    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
                     XMLObj.itemDoc.Load(XmlText);
-                        XmlText.Close();
+                    XmlText.Close();
 
-                        XmlNodeList xmlAgenode = XMLObj.itemDoc.GetElementsByTagName("Age");
-                        if (xmlAgenode != null)
-                            xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
+                    XmlNodeList xmlAgenode = XMLObj.itemDoc.GetElementsByTagName("Age");
+                    if (xmlAgenode != null)
+                        xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
-                        IEnumerable<XElement> ilstPhysician = null;
-                        XmlNodeList xmlMember_ID = XMLObj.itemDoc.GetElementsByTagName("Encounter_Provider_Name");
+                    IEnumerable<XElement> ilstPhysician = null;
+                    XmlNodeList xmlMember_ID = XMLObj.itemDoc.GetElementsByTagName("Encounter_Provider_Name");
 
-                        string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
-                        XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
-                        ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == SaveEncounter[0].Encounter_Provider_ID.ToString());
-                        if (ilstPhysician != null && ilstPhysician.Count() > 0)
+                    string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
+                    XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
+                    ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == SaveEncounter[0].Encounter_Provider_ID.ToString());
+                    if (ilstPhysician != null && ilstPhysician.Count() > 0)
+                    {
+                        xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();
+                    }
+
+                    string sPhysicianid = SaveEncounter[0].Encounter_Provider_ID.ToString();
+                    XmlNodeList xmlPhysicianAddress = XMLObj.itemDoc.GetElementsByTagName("Physician_Address");
+                    if (xmlPhysicianAddress != null)
+                    {
+                        string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                        XmlDocument itemPhysiciandoc = new XmlDocument();
+                        XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                        itemPhysiciandoc.Load(XmlPhysicianText);
+
+                        XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
+                        if (xmlphy.Count > 0)
                         {
-                            xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();
+                            xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
+                            xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
+                            xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
+                            xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
+                            xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
+                            xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
+                            xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
+                            xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
                         }
+                    }
 
-                        string sPhysicianid = SaveEncounter[0].Encounter_Provider_ID.ToString();
-                        XmlNodeList xmlPhysicianAddress = XMLObj.itemDoc.GetElementsByTagName("Physician_Address");
-                        if (xmlPhysicianAddress != null)
-                        {
-                            string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
-                            XmlDocument itemPhysiciandoc = new XmlDocument();
-                            XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
-                            itemPhysiciandoc.Load(XmlPhysicianText);
+                    //itemDoc.Save(strXmlEncounterFilePath);
 
-                            XmlNodeList xmlphy = itemPhysiciandoc.GetElementsByTagName("p" + sPhysicianid);
-                            if (xmlphy.Count > 0)
-                            {
-                                xmlPhysicianAddress[0].Attributes[0].Value = xmlphy[0].Attributes[0].Value;
-                                xmlPhysicianAddress[0].Attributes[1].Value = xmlphy[0].Attributes[1].Value;
-                                xmlPhysicianAddress[0].Attributes[2].Value = xmlphy[0].Attributes[2].Value;
-                                xmlPhysicianAddress[0].Attributes[3].Value = xmlphy[0].Attributes[3].Value;
-                                xmlPhysicianAddress[0].Attributes[4].Value = xmlphy[0].Attributes[4].Value;
-                                xmlPhysicianAddress[0].Attributes[5].Value = xmlphy[0].Attributes[5].Value;
-                                xmlPhysicianAddress[0].Attributes[6].Value = xmlphy[0].Attributes[6].Value;
-                                xmlPhysicianAddress[0].Attributes[7].Value = xmlphy[0].Attributes[7].Value;
-                            }
-                        }
 
-                        //itemDoc.Save(strXmlEncounterFilePath);
-                       
-                       
                     GenerateXml objXml = new GenerateXml();
                     List<object> lstObj = SaveEncounter.Cast<object>().ToList();
-                   // objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
-                   // objXml.itemDoc = null;
-                    XMLObj.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false,ref XMLObj);
+                    // objXml.GenerateXmlSave(lstObj, ulEncId, string.Empty, true);
+                    // objXml.itemDoc = null;
+                    XMLObj.GenerateXmlSave(lstObj, ulEncId, string.Empty, false, true, false, false);
                     WriteBlob(ulEncId, XMLObj.itemDoc, MySession, SaveEncounter, null, null, XMLObj, true);
                     trans.Commit();
                     trans = MySession.BeginTransaction();
@@ -10172,27 +10172,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //IList<string> ilstEncounterTagList = new List<string>();
             //ilstEncounterTagList.Add("EncounterList");
             //ilstEncBlob = ReadBlob( ulEncID, ilstEncounterTagList);
-            
+
             //if (File.Exists(strXmlEncounterFilePath) == false)
             //{
-                string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
-                string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
+            string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+            string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+            XmlDocument itemDoc = new XmlDocument();
+            XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+            itemDoc.Load(XmlText);
+            XmlText.Close();
 
-                XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
-                if (xmlAgenode != null && xmlAgenode.Count > 0)
-                    xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-                //itemDoc.Save(strXmlEncounterFilePath);
+            XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+            if (xmlAgenode != null && xmlAgenode.Count > 0)
+                xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
+            //itemDoc.Save(strXmlEncounterFilePath);
 
             ISession session = Session.GetISession();
             try
             {
                 using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
                 {
-                    WriteBlob( ulEncID, itemDoc, session, null, encupdateList, null, null, true);
+                    WriteBlob(ulEncID, itemDoc, session, null, encupdateList, null, null, true);
 
                     trans.Commit();
                 }
@@ -10638,19 +10638,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 wfObjMngr.MoveToNextProcess(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, 5, sCurrentOwner, dtCurrentDateTime, sMacAddress, null, null);
 
-                                 DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
-                                 if (DocumentationWfObject.Current_Process == "PROVIDER_REVIEW")
-                                 {
-                                     if (ulSelectedPhyID != 0)
-                                     {
-                                         ICriteria criteria = iMySession.CreateCriteria(typeof(User)).Add(Expression.Eq("Physician_Library_ID", ulSelectedPhyID));
-                                         if (criteria.List<User>() != null && criteria.List<User>().Count > 0)
-                                         {
-                                             sCurrentOwner = criteria.List<User>()[0].user_name;
-                                             wfObjMngr.UpdateOwner(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, sCurrentOwner, string.Empty);
-                                         }
-                                     }
-                                 }
+                                DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
+                                if (DocumentationWfObject.Current_Process == "PROVIDER_REVIEW")
+                                {
+                                    if (ulSelectedPhyID != 0)
+                                    {
+                                        ICriteria criteria = iMySession.CreateCriteria(typeof(User)).Add(Expression.Eq("Physician_Library_ID", ulSelectedPhyID));
+                                        if (criteria.List<User>() != null && criteria.List<User>().Count > 0)
+                                        {
+                                            sCurrentOwner = criteria.List<User>()[0].user_name;
+                                            wfObjMngr.UpdateOwner(DocumentationWfObject.Obj_System_Id, DocumentationWfObject.Obj_Type, sCurrentOwner, string.Empty);
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
@@ -10697,7 +10697,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE")
                             {
                                 BillingWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "BILLING");
-                                if (BillingWfObject.Current_Process =="BATCHING_WAIT")
+                                if (BillingWfObject.Current_Process == "BATCHING_WAIT")
                                     wfObjMngr.MoveToNextProcess(BillingWfObject.Obj_System_Id, BillingWfObject.Obj_Type, CloseType, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
                             }
                         }
@@ -10717,7 +10717,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 iMySession.Close();
             }
-                #endregion
+            #endregion
         }
 
         //added By suresh on 11-April-2012 for Summary Report 
@@ -13745,7 +13745,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //objhumanmanager.SaveUpdateDeleteWithTransaction(ref humanListadd, temp_lst, null, macAddress);
                             objhumanmanager.SaveUpdateDelete_DBAndXML_WithTransaction(ref humanListadd, ref temp_lst, null, macAddress, true, false, temp_lst[0].Id, string.Empty);
                             RCopiaTransactionManager objRcopiaMngr = new RCopiaTransactionManager();
-                            objRcopiaMngr.SendPatientToRCopia(Human_Id, macAddress,sLegalOrg);
+                            objRcopiaMngr.SendPatientToRCopia(Human_Id, macAddress, sLegalOrg);
                         }
                     }
                     else
@@ -13758,7 +13758,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objHuman.Human_Type = "REGULAR";
                         objHuman.Account_Status = "Active";
                         IList<Human> ilstHuman = new List<Human>();
-                        Human_Id = objhumanmanager.AppendHumanFromImport(objHuman,sLegalOrg);
+                        Human_Id = objhumanmanager.AppendHumanFromImport(objHuman, sLegalOrg);
                         //ilstHuman = objhumanmanager.SaveHumanforSummary(lsthuman);
                         // Human_Id = ilstHuman[0].Id;
 
@@ -14175,7 +14175,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
                 RCopiaGenerateXML objMedicationmanager = new RCopiaGenerateXML();
-                objMedicationmanager.creteSendAllergyXml(lstallergy.ToArray(), null, null,sLegalOrg);
+                objMedicationmanager.creteSendAllergyXml(lstallergy.ToArray(), null, null, sLegalOrg);
 
                 #endregion
 
@@ -14191,7 +14191,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                 }
                 RCopiaGenerateXML objMedicationmanagerobjMedicationmanager = new RCopiaGenerateXML();
-                objMedicationmanagerobjMedicationmanager.creteSendMedicationXml(lstmedication, null, null,sLegalOrg);
+                objMedicationmanagerobjMedicationmanager.creteSendMedicationXml(lstmedication, null, null, sLegalOrg);
                 RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
                 Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
 
@@ -14200,7 +14200,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, UserName, macAddress, DateTime.UtcNow, FacilityName, EncID);
 
                 //Patient Level RCopia Download - Commented
-                objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, UserName, macAddress, DateTime.UtcNow, FacilityName, EncID, Human_Id,sLegalOrg);
+                objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.UploadAddress, UserName, macAddress, DateTime.UtcNow, FacilityName, EncID, Human_Id, sLegalOrg);
                 #endregion
 
 
@@ -15069,7 +15069,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
  + "and f.doc_sub_type in (" + newList + ")  and  (w.current_process='BILLING_WAIT' OR w.current_process='BILLING_COMPLETE') and f.result_master_id<>0  and m.Result_Review_Comments like '%Test Reviewed: %'").AddEntity("f", typeof(FileManagementIndex));
 
                         IList<FileManagementIndex> queryoutput = sqlquery.List<FileManagementIndex>();
-                        
+
                         for (int i = 0; i < queryoutput.Count; i++)
                         {
                             //sDescList.Add("StressTestReport" + "^" + queryoutput[i].Id + "^" + queryoutput[i].Document_Date.ToString("dd-MMM-yyyy hh:mm tt") + "^" + "Stress Test Signed Report" + "^" + queryoutput[i].File_Path + "^" + queryoutput[i].Document_Type + "^" + queryoutput[i].Order_ID + "^" + queryoutput[i].Result_Master_ID);
@@ -15667,632 +15667,585 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 updateEncounterList[0].Assigned_Scribe_User_Name = sModifiedBy;
             IList<Encounter> addEncounterList = null;
 
-            //string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
-            //string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
-            //if (File.Exists(strXmlEncounterFilePath) == false || (File.Exists(strXmlEncounterFilePath)==true && File.ReadAllBytes(strXmlEncounterFilePath).Length ==0))
-            //{
+            string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
+            string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
+            if (File.Exists(strXmlEncounterFilePath) == false || (File.Exists(strXmlEncounterFilePath) == true && File.ReadAllBytes(strXmlEncounterFilePath).Length == 0))
+            {
 
-            //IList<object> ilstEncBlob = new List<object>();
-            //IList<string> ilstEncounterTagList = new List<string>();
-            //ilstEncounterTagList.Add("EncounterList");
-            //ilstEncBlob = ReadBlob("Encounter", ulEncID, ilstEncounterTagList);
+                IList<object> ilstEncBlob = new List<object>();
+                IList<string> ilstEncounterTagList = new List<string>();
+                ilstEncounterTagList.Add("EncounterList");
+                // ilstEncBlob = ReadBlob("Encounter", ulEncID, ilstEncounterTagList);
 
-            //if (File.Exists(strXmlEncounterFilePath) == false)
-            //{
-            //itemDoc.Save(strXmlEncounterFilePath);
-
-           
-
-            string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
-                string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-
-                XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
-                if (xmlAgenode != null && xmlAgenode.Count > 0)
-                    xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-
-            // itemDoc.Save(strXmlEncounterFilePath);
-
-            //int trycount = 0;
-            //trytosaveagain:
-                try
+                if (File.Exists(strXmlEncounterFilePath) == false)
                 {
-                // itemDoc.Save(strXmlEncounterFilePath);
-                ISession session = Session.GetISession();
-                try
-                {
-                    using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
+                    //itemDoc.Save(strXmlEncounterFilePath);
+
+
+
+                    string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+                    string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+                    XmlDocument itemDoc = new XmlDocument();
+                    XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+                    itemDoc.Load(XmlText);
+                    XmlText.Close();
+
+                    XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+                    if (xmlAgenode != null && xmlAgenode.Count > 0)
+                        xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
+
+                    // itemDoc.Save(strXmlEncounterFilePath);
+
+                    //int trycount = 0;
+                    //trytosaveagain:
+                    try
                     {
-                        WriteBlob( ulEncID, itemDoc, session, null, updateEncounterList, null, null, true);
+                        itemDoc.Save(strXmlEncounterFilePath);
+                        //ISession session = Session.GetISession();
+                        //try
+                        //{
+                        //    using (ITransaction trans = session.BeginTransaction(IsolationLevel.ReadUncommitted))
+                        //    {
+                        //        WriteBlob( ulEncID, itemDoc, session, null, updateEncounterList, null, null, true);
 
-                        trans.Commit();
+                        //        trans.Commit();
+                        //    }
+                        //}
+                        //catch (Exception ex1)
+                        ////{
+
+                        //    throw new Exception(ex1.Message);
+                        //}
+
+                    }
+                    catch (Exception xmlexcep)
+                    {
+                        throw xmlexcep;
                     }
                 }
-                catch (Exception ex1)
-                {
 
-                    throw new Exception(ex1.Message);
-                }
-
+                //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
+                SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, true, false, ulEncID, string.Empty);
+                WFObjectManager objWFObjectManager = new WFObjectManager();
+                objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), ObjType, sModifiedBy, string.Empty);
             }
-                catch (Exception xmlexcep)
-                {
-                    //trycount++;
-                    //if (trycount <= 3)
-                    //{
-                    //    int TimeMilliseconds = 0;
-                    //    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-                    //        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+        }
 
-                    //    Thread.Sleep(TimeMilliseconds);
-                    //    string sMsg = string.Empty;
-                    //    string sExStackTrace = string.Empty;
+            // This method not in use
+            //public WFObject UpdateEncounterforCheckin(ulong 
+            //    ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime,
+            //    DateTime dtDateOfService, string ObjType, string ExamRoom, string MACAddress, string sLocal_Time, ref ulong EncProviderID, ref string FacilityName)
+            //{
+            //    ulong ID = 0;
+            //    IList<Encounter> updateEncounterList = GetEncounterByEncounterID(ulEncID);
+            //    updateEncounterList[0].Encounter_ID = ulEncID;
+            //    updateEncounterList[0].Modified_By = sModifiedBy;
+            //    updateEncounterList[0].Modified_Date_and_Time = dtModifiedDateandTime;
+            //    updateEncounterList[0].Date_of_Service = dtDateOfService;
+            //    updateEncounterList[0].Local_Time = sLocal_Time;
+            //    updateEncounterList[0].Exam_Room = ExamRoom;
+            //    if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "TECHNICIAN")
+            //        updateEncounterList[0].Technician_ID = ID;
+            //    else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "PHYSICIAN")
+            //        updateEncounterList[0].Reading_Provider_ID = ID;
+            //    //else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "MEDICAL ASSISTANT")  //Commented for avoid Assigned_Med_Asst_User_Name in encounter while check in to provider by MA.
+            //    //    updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
 
-                    //    string version = "";
-                    //    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-                    //        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+            //    IList<Encounter> addEncounterList = null;
+            //    EncProviderID = Convert.ToUInt64(updateEncounterList[0].Encounter_Provider_ID);
+            //    FacilityName = updateEncounterList[0].Facility_Name;
+            //    string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
+            //    string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
+            //    if (File.Exists(strXmlEncounterFilePath) == false)
+            //    {
+            //        string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
+            //        string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader XmlText = new XmlTextReader(sXmlPath);
+            //        itemDoc.Load(XmlText);
+            //        XmlText.Close();
 
-                    //    string[] server = version.Split('|');
-                    //    string serverno = "";
-                    //    if (server.Length > 1)
-                    //        serverno = server[1].Trim();
+            //        XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
+            //        if (xmlAgenode != null && xmlAgenode.Count > 0)
+            //            xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
+            //       // itemDoc.Save(strXmlEncounterFilePath);
 
-                    //    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-                    //        sMsg = xmlexcep.InnerException.Message;
-                    //    else
-                    //        sMsg = xmlexcep.Message;
+            //        int trycount = 0;
+            //    trytosaveagain:
+            //        try
+            //        {
+            //            itemDoc.Save(strXmlEncounterFilePath);
+            //        }
+            //        catch (Exception xmlexcep)
+            //        {
+            //            trycount++;
+            //            if (trycount <= 3)
+            //            {
+            //                int TimeMilliseconds = 0;
+            //                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+            //                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
 
-                    //    if (xmlexcep != null && xmlexcep.StackTrace != null)
-                    //        sExStackTrace = xmlexcep.StackTrace;
+            //                Thread.Sleep(TimeMilliseconds);
+            //                string sMsg = string.Empty;
+            //                string sExStackTrace = string.Empty;
 
-                    //    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-                    //    string ConnectionData;
-                    //    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-                    //    using (MySqlConnection con = new MySqlConnection(ConnectionData))
-                    //    {
-                    //        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-                    //        {
-                    //            cmd.Connection = con;
-                    //            try
-                    //            {
-                    //                con.Open();
-                    //                cmd.ExecuteNonQuery();
-                    //                con.Close();
-                    //            }
-                    //            catch
-                    //            {
-                    //            }
-                    //        }
-                    //    }
-                    //    goto trytosaveagain;
-                    //}
-                }
+            //                string version = "";
+            //                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+            //                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+            //                string[] server = version.Split('|');
+            //                string serverno = "";
+            //                if (server.Length > 1)
+            //                    serverno = server[1].Trim();
+
+            //                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+            //                    sMsg = xmlexcep.InnerException.Message;
+            //                else
+            //                    sMsg = xmlexcep.Message;
+
+            //                if (xmlexcep != null && xmlexcep.StackTrace != null)
+            //                    sExStackTrace = xmlexcep.StackTrace;
+
+            //                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+            //                string ConnectionData;
+            //                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            //                using (MySqlConnection con = new MySqlConnection(ConnectionData))
+            //                {
+            //                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+            //                    {
+            //                        cmd.Connection = con;
+            //                        try
+            //                        {
+            //                            con.Open();
+            //                            cmd.ExecuteNonQuery();
+            //                            con.Close();
+            //                        }
+            //                        catch
+            //                        {
+            //                        }
+            //                    }
+            //                }
+            //                goto trytosaveagain;
+            //            }
+            //        }
+            //    }
+
+            //    //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
+            //    SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, true, false, ulEncID, string.Empty);
+            //    //WFObjectManager objWFObjectManager = new WFObjectManager();
+            //    //objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), ObjType, sModifiedBy, string.Empty);
+
+
+            //    WFObject lstwfobject = new WFObject();
+            //    WFObjectManager objwfobject = new WFObjectManager();
+            //    lstwfobject = objwfobject.GetByObjectSystemId(Convert.ToUInt64(ulEncID), "ENCOUNTER");
+
+            //    bool VerifyPFSH = false;
+            //    string Source = string.Empty, If_Source_Of_Information_Others = string.Empty;
+
+
+
+            //    MoveVerificationDTO objMoveVerifyDTO;
+            //    string username = "";
+            //    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
+            //    if (File.Exists(strXmlFilePath1) == true)
+            //    {
+            //        XmlDocument xmldocUser = new XmlDocument();
+            //        xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
+
+            //        XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
+
+
+            //        if (xmlUserList.Count > 0)
+            //        {
+            //            foreach (XmlNode item in xmlUserList)
+            //            {
+            //                if (EncProviderID.ToString() == item.Attributes["Physician_Library_ID"].Value)
+            //                {
+            //                    username = item.Attributes["User_Name"].Value;
+
+            //                    break;
+            //                }
+            //            }
+
+            //        }
+            //    }
+
+            //    if (lstwfobject != null)
+            //        objMoveVerifyDTO = PerformMovetoProvider(Convert.ToUInt64(ulEncID),
+            //           EncProviderID,
+            //       updateEncounterList[0].Human_ID, System.DateTime.Now, FacilityName, username, VerifyPFSH, Source, If_Source_Of_Information_Others,
+            //       "", string.Empty, "", false, "", "btnMove", false, "",
+            //      lstwfobject,
+            //      updateEncounterList[0], "", 0, false, "", username, string.Empty);
+            //    return lstwfobject;
+
             //}
-
-            //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
-            SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, true, false, ulEncID, string.Empty);
-            WFObjectManager objWFObjectManager = new WFObjectManager();
-            objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), ObjType, sModifiedBy, string.Empty);
-        }
-
-        // This method not in use
-        //public WFObject UpdateEncounterforCheckin(ulong 
-        //    ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime,
-        //    DateTime dtDateOfService, string ObjType, string ExamRoom, string MACAddress, string sLocal_Time, ref ulong EncProviderID, ref string FacilityName)
-        //{
-        //    ulong ID = 0;
-        //    IList<Encounter> updateEncounterList = GetEncounterByEncounterID(ulEncID);
-        //    updateEncounterList[0].Encounter_ID = ulEncID;
-        //    updateEncounterList[0].Modified_By = sModifiedBy;
-        //    updateEncounterList[0].Modified_Date_and_Time = dtModifiedDateandTime;
-        //    updateEncounterList[0].Date_of_Service = dtDateOfService;
-        //    updateEncounterList[0].Local_Time = sLocal_Time;
-        //    updateEncounterList[0].Exam_Room = ExamRoom;
-        //    if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "TECHNICIAN")
-        //        updateEncounterList[0].Technician_ID = ID;
-        //    else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "PHYSICIAN")
-        //        updateEncounterList[0].Reading_Provider_ID = ID;
-        //    //else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "MEDICAL ASSISTANT")  //Commented for avoid Assigned_Med_Asst_User_Name in encounter while check in to provider by MA.
-        //    //    updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
-
-        //    IList<Encounter> addEncounterList = null;
-        //    EncProviderID = Convert.ToUInt64(updateEncounterList[0].Encounter_Provider_ID);
-        //    FacilityName = updateEncounterList[0].Facility_Name;
-        //    string EncounterFileName = "Encounter" + "_" + ulEncID + ".xml";
-        //    string strXmlEncounterFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], EncounterFileName);
-        //    if (File.Exists(strXmlEncounterFilePath) == false)
-        //    {
-        //        string sDirectoryPath = System.Web.HttpContext.Current.Server.MapPath("Template_XML");
-        //        string sXmlPath = Path.Combine(sDirectoryPath, "Base_XML.xml");
-        //        XmlDocument itemDoc = new XmlDocument();
-        //        XmlTextReader XmlText = new XmlTextReader(sXmlPath);
-        //        itemDoc.Load(XmlText);
-        //        XmlText.Close();
-
-        //        XmlNodeList xmlAgenode = itemDoc.GetElementsByTagName("Age");
-        //        if (xmlAgenode != null && xmlAgenode.Count > 0)
-        //            xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
-        //       // itemDoc.Save(strXmlEncounterFilePath);
-
-        //        int trycount = 0;
-        //    trytosaveagain:
-        //        try
-        //        {
-        //            itemDoc.Save(strXmlEncounterFilePath);
-        //        }
-        //        catch (Exception xmlexcep)
-        //        {
-        //            trycount++;
-        //            if (trycount <= 3)
-        //            {
-        //                int TimeMilliseconds = 0;
-        //                if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
-        //                    TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
-
-        //                Thread.Sleep(TimeMilliseconds);
-        //                string sMsg = string.Empty;
-        //                string sExStackTrace = string.Empty;
-
-        //                string version = "";
-        //                if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
-        //                    version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
-
-        //                string[] server = version.Split('|');
-        //                string serverno = "";
-        //                if (server.Length > 1)
-        //                    serverno = server[1].Trim();
-
-        //                if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
-        //                    sMsg = xmlexcep.InnerException.Message;
-        //                else
-        //                    sMsg = xmlexcep.Message;
-
-        //                if (xmlexcep != null && xmlexcep.StackTrace != null)
-        //                    sExStackTrace = xmlexcep.StackTrace;
-
-        //                string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
-        //                string ConnectionData;
-        //                ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
-        //                using (MySqlConnection con = new MySqlConnection(ConnectionData))
-        //                {
-        //                    using (MySqlCommand cmd = new MySqlCommand(insertQuery))
-        //                    {
-        //                        cmd.Connection = con;
-        //                        try
-        //                        {
-        //                            con.Open();
-        //                            cmd.ExecuteNonQuery();
-        //                            con.Close();
-        //                        }
-        //                        catch
-        //                        {
-        //                        }
-        //                    }
-        //                }
-        //                goto trytosaveagain;
-        //            }
-        //        }
-        //    }
-
-        //    //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
-        //    SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, true, false, ulEncID, string.Empty);
-        //    //WFObjectManager objWFObjectManager = new WFObjectManager();
-        //    //objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), ObjType, sModifiedBy, string.Empty);
-
-
-        //    WFObject lstwfobject = new WFObject();
-        //    WFObjectManager objwfobject = new WFObjectManager();
-        //    lstwfobject = objwfobject.GetByObjectSystemId(Convert.ToUInt64(ulEncID), "ENCOUNTER");
-
-        //    bool VerifyPFSH = false;
-        //    string Source = string.Empty, If_Source_Of_Information_Others = string.Empty;
-
-
-
-        //    MoveVerificationDTO objMoveVerifyDTO;
-        //    string username = "";
-        //    string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-        //    if (File.Exists(strXmlFilePath1) == true)
-        //    {
-        //        XmlDocument xmldocUser = new XmlDocument();
-        //        xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "User" + ".xml");
-
-        //        XmlNodeList xmlUserList = xmldocUser.GetElementsByTagName("User");
-
-
-        //        if (xmlUserList.Count > 0)
-        //        {
-        //            foreach (XmlNode item in xmlUserList)
-        //            {
-        //                if (EncProviderID.ToString() == item.Attributes["Physician_Library_ID"].Value)
-        //                {
-        //                    username = item.Attributes["User_Name"].Value;
-
-        //                    break;
-        //                }
-        //            }
-
-        //        }
-        //    }
-
-        //    if (lstwfobject != null)
-        //        objMoveVerifyDTO = PerformMovetoProvider(Convert.ToUInt64(ulEncID),
-        //           EncProviderID,
-        //       updateEncounterList[0].Human_ID, System.DateTime.Now, FacilityName, username, VerifyPFSH, Source, If_Source_Of_Information_Others,
-        //       "", string.Empty, "", false, "", "btnMove", false, "",
-        //      lstwfobject,
-        //      updateEncounterList[0], "", 0, false, "", username, string.Empty);
-        //    return lstwfobject;
-
-        //}
-        public IList<MyQ> UpdateEncounterMoveTo(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, string CurrentObjType, string ExamRoom, string FacName, string objtype, string[] processtype, Boolean bShowall, int DefaultNoofDays, string MACAddress)
-        {
-            ulong ID = 0;
-            IList<Encounter> updateEncounterList = GetEncounterByEncounterID(ulEncID);
-            updateEncounterList[0].Encounter_ID = ulEncID;
-            updateEncounterList[0].Modified_By = sModifiedBy;
-            updateEncounterList[0].Modified_Date_and_Time = dtModifiedDateandTime;
-            updateEncounterList[0].Exam_Room = ExamRoom;
-            if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "TECHNICIAN")
-                updateEncounterList[0].Technician_ID = ID;
-            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "PHYSICIAN")
-                updateEncounterList[0].Reading_Provider_ID = ID;
-            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "MEDICAL ASSISTANT")
-                updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
-            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "OFFICE MANAGER")
-                updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
-            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "SCRIBE")
-                updateEncounterList[0].Assigned_Scribe_User_Name = sModifiedBy;
-
-            IList<Encounter> addEncounterList = null;
-            //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
-            SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, false, false, ulEncID, string.Empty);
-            WFObjectManager objWFObjectManager = new WFObjectManager();
-            objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), objtype, sModifiedBy, string.Empty);
-            string[] ObjType = new string[4];
-            ObjType[0] = "ENCOUNTER";
-            ObjType[1] = "DOCUMENTATION";
-            ObjType[2] = "PHONE ENCOUNTER";
-            ObjType[3] = "DOCUMENT REVIEW";
-            IList<MyQ> MyqList = objWFObjectManager.GetListObjects(FacName, ObjType, processtype, sMedAsstName, bShowall, DefaultNoofDays, string.Empty);
-            return MyqList;
-        }
-
-
-        public MoveVerificationDTO PerformMovetoProvider(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, string IsPatientDiscussed, ulong IsDiscussedBy, bool bAcoCheck, string sRoleName, string sUsername, string scribeprocess)
-        {
-            MoveVerificationDTO objMoveVerifyDTO = new MoveVerificationDTO();
-            WFObjectManager objWfMngr = new WFObjectManager();
-            IList<object> query1 = new List<object>();
-
-
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            public IList<MyQ> UpdateEncounterMoveTo(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, string CurrentObjType, string ExamRoom, string FacName, string objtype, string[] processtype, Boolean bShowall, int DefaultNoofDays, string MACAddress)
             {
-                // objWfMngr.MoveToNextProcess(objEncWfObj.Obj_System_Id, objEncWfObj.Obj_Type, 4, "UNKNOWN", currentDate, MACAddress, null, null);bugid-41466
+                ulong ID = 0;
+                IList<Encounter> updateEncounterList = GetEncounterByEncounterID(ulEncID);
+                updateEncounterList[0].Encounter_ID = ulEncID;
+                updateEncounterList[0].Modified_By = sModifiedBy;
+                updateEncounterList[0].Modified_Date_and_Time = dtModifiedDateandTime;
+                updateEncounterList[0].Exam_Room = ExamRoom;
+                if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "TECHNICIAN")
+                    updateEncounterList[0].Technician_ID = ID;
+                else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "PHYSICIAN")
+                    updateEncounterList[0].Reading_Provider_ID = ID;
+                else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "MEDICAL ASSISTANT")
+                    updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
+                else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "OFFICE MANAGER")
+                    updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
+                else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "SCRIBE")
+                    updateEncounterList[0].Assigned_Scribe_User_Name = sModifiedBy;
 
-                if (IsPatientDiscussed != "" && IsDiscussedBy != 0 && bAcoCheck)
-                {
-                    query1 = iMySession.CreateSQLQuery("Update human set ACO_Is_Eligible_Patient='" + IsPatientDiscussed + "',ACO_Patient_Discussed_By='" + IsDiscussedBy + "' where Human_ID='" + ulMyHumanID + "'").List<object>();
-                }
-                EncRecord.Encounter_Provider_ID = Convert.ToInt32(selectedPhysicianID);
-                EncRecord.Modified_By = UserName;
-                EncRecord.Modified_Date_and_Time = currentDate;
-                if (sRoleName.Trim().ToUpper() == "PHYSICIAN")
-                {
-                    EncRecord.Is_Physician_Asst_Process = "N";
-                }
-                else if (sRoleName == "Physician Assistant")
-                {
-                    EncRecord.Is_Physician_Asst_Process = "Y";
-                }
-                if (UserRole.Trim().ToUpper() == "TECHNICIAN" && userCurrentProcess.ToUpper() == "TECHNICIAN_PROCESS")//BugID:53885 -- Added for CMG LAB AND ANCILLARY-- When moved to Coder EandMSubmitted is set to 'Y'
-                {
-                    EncRecord.Is_EandM_Submitted = "Y";
-                    EncRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
-                }
-                EncRecord.Is_PFSH_Verified = "Y";
-                EncRecord.Source_Of_Information = "Self";
+                IList<Encounter> addEncounterList = null;
+                //SaveUpdateDeleteWithTransaction(ref addEncounterList, updateEncounterList, null, MACAddress);
+                SaveUpdateDelete_DBAndXML_WithTransaction(ref addEncounterList, ref updateEncounterList, null, MACAddress, false, false, ulEncID, string.Empty);
+                WFObjectManager objWFObjectManager = new WFObjectManager();
+                objWFObjectManager.UpdateOwner(Convert.ToUInt64(ulEncID), objtype, sModifiedBy, string.Empty);
+                string[] ObjType = new string[4];
+                ObjType[0] = "ENCOUNTER";
+                ObjType[1] = "DOCUMENTATION";
+                ObjType[2] = "PHONE ENCOUNTER";
+                ObjType[3] = "DOCUMENT REVIEW";
+                IList<MyQ> MyqList = objWFObjectManager.GetListObjects(FacName, ObjType, processtype, sMedAsstName, bShowall, DefaultNoofDays, string.Empty);
+                return MyqList;
+            }
 
-                if (UserRole.Trim().ToUpper() == "MEDICAL ASSISTANT" && userCurrentProcess.ToUpper().Trim() == "MA_PROCESS" && btnPhyCorrectionText.ToUpper().Trim() == "MOVE TO PROVIDER" && scribeprocess == string.Empty)
+
+            public MoveVerificationDTO PerformMovetoProvider(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, string IsPatientDiscussed, ulong IsDiscussedBy, bool bAcoCheck, string sRoleName, string sUsername, string scribeprocess)
+            {
+                MoveVerificationDTO objMoveVerifyDTO = new MoveVerificationDTO();
+                WFObjectManager objWfMngr = new WFObjectManager();
+                IList<object> query1 = new List<object>();
+
+
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                 {
-                    EncRecord.Assigned_Scribe_User_Name = string.Empty;
-                }
-                EncounterManager EncMngr = new EncounterManager();
+                    // objWfMngr.MoveToNextProcess(objEncWfObj.Obj_System_Id, objEncWfObj.Obj_Type, 4, "UNKNOWN", currentDate, MACAddress, null, null);bugid-41466
 
-                IList<WFObject> iWfObject = new List<WFObject>();
-                iWfObject = objWfMngr.GetByDocumentObjectSystemId(ulMyEncounterID, "DOCUMENTATION");
-                //if (iWfObject != null && iWfObject.Count == 0)
-                //{
-                //    WFObject WFObj = new WFObject();
-
-                //    WFObj.Fac_Name = FacilityName;
-                //    WFObj.Obj_Type = "DOCUMENTATION";
-                //    WFObj.Parent_Obj_Type = "ENCOUNTER";
-                //    WFObj.Parent_Obj_System_Id = ulMyEncounterID;
-                //    WFObj.Obj_System_Id = ulMyEncounterID;
-                //    WFObj.Current_Process = "START";
-                //    WFObj.Current_Arrival_Time = currentDate;
-                //    string sOwner = string.Empty, sRole = string.Empty;
-
-                //    WFObj.Current_Owner = sUsername;
-                //    if (UserRole.ToUpper().Trim() == "TECHNICIAN")//CMG Ancilliary
-                //        WFObj.Current_Owner = "UNKNOWN";
-                //    if (scribeprocess.ToUpper() == "SCRIBE")
-                //    {
-                //        WFObj.Current_Owner = "UNKNOWN";
-                //        EncMngr.UpdateEncounterWithEncounterChild(EncRecord, WFObj, objEncWfObj, MACAddress, 6);
-
-                //    }
-                //    else
-                //        EncMngr.UpdateEncounterWithEncounterChild(EncRecord, WFObj, objEncWfObj, MACAddress, 1);
-                //}
-                //check for current_process to prevent DOCUMENTATION Object from Moving to REVIEW_CODING from PROVIDER_PROCESS on click of Move to Provider from MA
-                if (iWfObject != null && iWfObject.Count > 0)
-                {
-                    if (iWfObject != null && iWfObject.Count > 0 && (iWfObject[0].Current_Process.ToUpper() == "PROVIDER_PROCESS_WAIT" || iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS_WAIT" ||  iWfObject[0].Current_Process.ToUpper() == "MA_PROCESS"))
+                    if (IsPatientDiscussed != "" && IsDiscussedBy != 0 && bAcoCheck)
                     {
+                        query1 = iMySession.CreateSQLQuery("Update human set ACO_Is_Eligible_Patient='" + IsPatientDiscussed + "',ACO_Patient_Discussed_By='" + IsDiscussedBy + "' where Human_ID='" + ulMyHumanID + "'").List<object>();
+                    }
+                    EncRecord.Encounter_Provider_ID = Convert.ToInt32(selectedPhysicianID);
+                    EncRecord.Modified_By = UserName;
+                    EncRecord.Modified_Date_and_Time = currentDate;
+                    if (sRoleName.Trim().ToUpper() == "PHYSICIAN")
+                    {
+                        EncRecord.Is_Physician_Asst_Process = "N";
+                    }
+                    else if (sRoleName == "Physician Assistant")
+                    {
+                        EncRecord.Is_Physician_Asst_Process = "Y";
+                    }
+                    if (UserRole.Trim().ToUpper() == "TECHNICIAN" && userCurrentProcess.ToUpper() == "TECHNICIAN_PROCESS")//BugID:53885 -- Added for CMG LAB AND ANCILLARY-- When moved to Coder EandMSubmitted is set to 'Y'
+                    {
+                        EncRecord.Is_EandM_Submitted = "Y";
+                        EncRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
+                    }
+                    EncRecord.Is_PFSH_Verified = "Y";
+                    EncRecord.Source_Of_Information = "Self";
 
+                    if (UserRole.Trim().ToUpper() == "MEDICAL ASSISTANT" && userCurrentProcess.ToUpper().Trim() == "MA_PROCESS" && btnPhyCorrectionText.ToUpper().Trim() == "MOVE TO PROVIDER" && scribeprocess == string.Empty)
+                    {
+                        EncRecord.Assigned_Scribe_User_Name = string.Empty;
+                    }
+                    EncounterManager EncMngr = new EncounterManager();
 
+                    IList<WFObject> iWfObject = new List<WFObject>();
+                    iWfObject = objWfMngr.GetByDocumentObjectSystemId(ulMyEncounterID, "DOCUMENTATION");
+                    //if (iWfObject != null && iWfObject.Count == 0)
+                    //{
+                    //    WFObject WFObj = new WFObject();
 
+                    //    WFObj.Fac_Name = FacilityName;
+                    //    WFObj.Obj_Type = "DOCUMENTATION";
+                    //    WFObj.Parent_Obj_Type = "ENCOUNTER";
+                    //    WFObj.Parent_Obj_System_Id = ulMyEncounterID;
+                    //    WFObj.Obj_System_Id = ulMyEncounterID;
+                    //    WFObj.Current_Process = "START";
+                    //    WFObj.Current_Arrival_Time = currentDate;
+                    //    string sOwner = string.Empty, sRole = string.Empty;
 
-                        if (scribeprocess.ToUpper() == "SCRIBE" && (iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS_WAIT" || iWfObject[0].Current_Process.ToUpper() == "PROVIDER_PROCESS_WAIT"))
+                    //    WFObj.Current_Owner = sUsername;
+                    //    if (UserRole.ToUpper().Trim() == "TECHNICIAN")//CMG Ancilliary
+                    //        WFObj.Current_Owner = "UNKNOWN";
+                    //    if (scribeprocess.ToUpper() == "SCRIBE")
+                    //    {
+                    //        WFObj.Current_Owner = "UNKNOWN";
+                    //        EncMngr.UpdateEncounterWithEncounterChild(EncRecord, WFObj, objEncWfObj, MACAddress, 6);
+
+                    //    }
+                    //    else
+                    //        EncMngr.UpdateEncounterWithEncounterChild(EncRecord, WFObj, objEncWfObj, MACAddress, 1);
+                    //}
+                    //check for current_process to prevent DOCUMENTATION Object from Moving to REVIEW_CODING from PROVIDER_PROCESS on click of Move to Provider from MA
+                    if (iWfObject != null && iWfObject.Count > 0)
+                    {
+                        if (iWfObject != null && iWfObject.Count > 0 && (iWfObject[0].Current_Process.ToUpper() == "PROVIDER_PROCESS_WAIT" || iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS_WAIT" || iWfObject[0].Current_Process.ToUpper() == "MA_PROCESS"))
                         {
-                            if (EncRecord.Assigned_Scribe_User_Name != string.Empty)
+
+
+
+
+                            if (scribeprocess.ToUpper() == "SCRIBE" && (iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS_WAIT" || iWfObject[0].Current_Process.ToUpper() == "PROVIDER_PROCESS_WAIT"))
                             {
-                                sUsername = EncRecord.Assigned_Scribe_User_Name;
-                                objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 6, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
+                                if (EncRecord.Assigned_Scribe_User_Name != string.Empty)
+                                {
+                                    sUsername = EncRecord.Assigned_Scribe_User_Name;
+                                    objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 6, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
+                                    EncMngr.UpdateDocumentationEncounterWithEncounterChild(EncRecord, objEncWfObj, MACAddress, 1);
+                                }
+
+
+                                else
+                                {
+                                    sUsername = "UNKNOWN";
+                                    objWfMngr.MoveToNextProcessscribe(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 6, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
+                                    EncMngr.UpdateDocumentationEncounterWithEncounterChild(EncRecord, objEncWfObj, MACAddress, 1);
+                                }
+                            }
+                            else if (iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS_WAIT")
+                            {
+                                //sUsername = EncRecord.Assigned_Scribe_User_Name;
+
+                                objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
                                 EncMngr.UpdateDocumentationEncounterWithEncounterChild(EncRecord, objEncWfObj, MACAddress, 1);
                             }
-
-
-                            else
+                            else if (iWfObject[0].Current_Process.ToUpper() == "MA_PROCESS")
                             {
-                                sUsername = "UNKNOWN";
-                                objWfMngr.MoveToNextProcessscribe(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 6, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-                                EncMngr.UpdateDocumentationEncounterWithEncounterChild(EncRecord, objEncWfObj, MACAddress, 1);
-                            }
-                        }
-                        else if (iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS_WAIT")
-                        {
-                            //sUsername = EncRecord.Assigned_Scribe_User_Name;
+                                //sUsername = EncRecord.Assigned_Scribe_User_Name;
+                                if (scribeprocess.ToUpper() == "SCRIBE")
+                                {
+                                    sUsername = "UNKNOWN";
+                                    objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 6, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
+                                }
+                                else
+                                {
+                                    objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
 
-                            objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-                            EncMngr.UpdateDocumentationEncounterWithEncounterChild(EncRecord, objEncWfObj, MACAddress, 1);
-                        }
-                        else if (iWfObject[0].Current_Process.ToUpper() == "MA_PROCESS")
-                        {
-                            //sUsername = EncRecord.Assigned_Scribe_User_Name;
-                            if (scribeprocess.ToUpper() == "SCRIBE")
-                            {
-                                sUsername = "UNKNOWN";
-                                objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 6, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
+                                }
+                                IList<Encounter> lstAddEncounter = null;
+                                IList<Encounter> lstUpdateEncounter = new List<Encounter>();
+                                lstUpdateEncounter.Add(EncRecord);
+                                EncMngr.SaveUpdateDelete_DBAndXML_WithTransaction(ref lstAddEncounter, ref lstUpdateEncounter, null, MACAddress, true, true, EncRecord.Id, string.Empty);
                             }
                             else
                             {
                                 objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-                         
+                                EncMngr.UpdateDocumentationEncounterWithEncounterChild(EncRecord, objEncWfObj, MACAddress, 1);
                             }
-                            IList<Encounter> lstAddEncounter = null;
-                            IList<Encounter> lstUpdateEncounter = new List<Encounter>();
-                            lstUpdateEncounter.Add(EncRecord);
-                            EncMngr.SaveUpdateDelete_DBAndXML_WithTransaction(ref lstAddEncounter, ref lstUpdateEncounter, null, MACAddress, true, true, EncRecord.Id, string.Empty);
+                        }
+                        if (iWfObject != null && iWfObject.Count > 0 && (iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS" || iWfObject[0].Current_Process.ToUpper() == "SCRIBE_CORRECTION" || iWfObject[0].Current_Process.ToUpper() == "SCRIBE_REVIEW_CORRECTION"))
+                        {
+                            objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
+
+                        }
+                        if (iWfObject != null && iWfObject.Count > 0 && iWfObject[0].Current_Process.ToUpper() == "TECHNICIAN_PROCESS")
+                        {
+                            objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, "UNKNOWN", System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
+
+                            objWfMngr.MoveToNextProcess(objEncWfObj.Obj_System_Id, objEncWfObj.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
+
+                            WFObject objBillingWfObj = objWfMngr.GetByObjectSystemId(iWfObject[0].Obj_System_Id, "BILLING");
+                            if (objBillingWfObj.Current_Process == "BATCHING_WAIT")
+                                objWfMngr.MoveToNextProcess(objBillingWfObj.Obj_System_Id, objBillingWfObj.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
+
+                            EncMngr.UpdateEncounterList(EncRecord, string.Empty);
+                        }
+                    }
+
+                    objMoveVerifyDTO.IsPFSHVerified = EncRecord.Is_PFSH_Verified;
+                    objMoveVerifyDTO.IsWorkflowPushed = true;
+
+                    iMySession.Close();
+                }
+
+                return objMoveVerifyDTO;
+            }
+
+            public MoveVerificationDTO PerformMovetoNextProcess(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, WFObject objDocWfobj, WFObject objDocReviewWfobj, string IsPatientDiscussed, ulong IsDiscussedBy)
+            {
+                MoveVerificationDTO objMoveVerifyDTO = new MoveVerificationDTO();
+                int EMICDCount = 0;
+
+                EAndMCodingManager emMnger = new EAndMCodingManager();
+                EandMCodingICDManager emICDMngr = new EandMCodingICDManager();
+                IList<EandMCodingICD> eandmICDList = new List<EandMCodingICD>();
+                IList<string> GcodeCheckList = new List<string>();
+                bool bGCodeCheck = false;
+
+                objMoveVerifyDTO.EandMCodingList = emMnger.GetEMCodeList(ulMyEncounterID);
+                EMICDCount = emICDMngr.GetEMICDCount(ulMyEncounterID);
+
+
+                //  var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Id;
+                var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Encounter_ID;
+
+                if (GcodeList != null && GcodeList.Count() > 0)
+                {
+                    objMoveVerifyDTO.IsGcodePresent = true;
+                    for (int i = 0; i < GcodeList.Count(); i++)
+                    {
+                        eandmICDList = emICDMngr.EandMcodingList(Convert.ToUInt32(GcodeList.ElementAt(i)));
+                        if (eandmICDList.Count > 0)
+                        {
+                            GcodeCheckList.Add(eandmICDList.Any(a => a.ICD == "V70.0").ToString());
+
+
+                        }
+
+                    }
+                    objMoveVerifyDTO.IsICDPresent = GcodeCheckList.Contains("False") == true ? false : true;
+                    if (Convert.ToBoolean(objMoveVerifyDTO.IsGcodePresent) == true && Convert.ToBoolean(objMoveVerifyDTO.IsICDPresent) == false)
+                    {
+                        bGCodeCheck = true;
+                    }
+                    else
+                    {
+                        bGCodeCheck = false;
+                    }
+                }
+
+
+                if (Convert.ToBoolean(bDuplicateCheck) == false)
+                {
+                    objMoveVerifyDTO.IsDuplicatePresent = false;
+                    bGCodeCheck = false;
+                }
+                else
+                {
+                    int EandMListCount = objMoveVerifyDTO.EandMCodingList.Count;
+                    var EandMDistinctListCount = (from d in objMoveVerifyDTO.EandMCodingList select d.Procedure_Code).Distinct();
+                    if (EandMListCount != EandMDistinctListCount.Count())
+                    {
+                        objMoveVerifyDTO.IsDuplicatePresent = true;
+                    }
+                }
+
+
+                if (objDocWfobj.Current_Process == "PROVIDER_PROCESS")
+                {
+                    if (UserRole == "Physician")
+                    {
+
+                        //HumanManager objHumanManger = new HumanManager();
+                        //objMoveVerifyDTO.IsACOValid = objHumanManger.IsACOValid(ulMyHumanID);
+
+                        if (objMoveVerifyDTO.EandMCodingList.Count == 0)
+                        {
+                            objMoveVerifyDTO.IsWorkflowPushed = false;
+                        }
+                        else if (EMICDCount == 0)
+                        {
+                            objMoveVerifyDTO.IsICDFilled = false;
+                            objMoveVerifyDTO.IsWorkflowPushed = false;
                         }
                         else
                         {
-                            objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-                            EncMngr.UpdateDocumentationEncounterWithEncounterChild(EncRecord, objEncWfObj, MACAddress, 1);
+
+                            MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfobj, objDocReviewWfobj, UserRole);
+                            objMoveVerifyDTO.IsWorkflowPushed = true;
                         }
                     }
-                    if (iWfObject != null && iWfObject.Count > 0 && (iWfObject[0].Current_Process.ToUpper() == "SCRIBE_PROCESS" || iWfObject[0].Current_Process.ToUpper() == "SCRIBE_CORRECTION" || iWfObject[0].Current_Process.ToUpper() == "SCRIBE_REVIEW_CORRECTION"))
+                    else
                     {
-                        objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, sUsername, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-
-                    }
-                    if (iWfObject != null && iWfObject.Count > 0 && iWfObject[0].Current_Process.ToUpper() == "TECHNICIAN_PROCESS" )
-                    {
-                        objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, "UNKNOWN", System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-
-                        objWfMngr.MoveToNextProcess(objEncWfObj.Obj_System_Id, objEncWfObj.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
-
-                        WFObject objBillingWfObj = objWfMngr.GetByObjectSystemId(iWfObject[0].Obj_System_Id, "BILLING");
-                        if (objBillingWfObj.Current_Process == "BATCHING_WAIT")
-                            objWfMngr.MoveToNextProcess(objBillingWfObj.Obj_System_Id, objBillingWfObj.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
-
-                        EncMngr.UpdateEncounterList(EncRecord, string.Empty);
+                        if (objMoveVerifyDTO.EandMCodingList.Count == 0)
+                        {
+                            objMoveVerifyDTO.IsWorkflowPushed = false;
+                            objMoveVerifyDTO.IsPFSHVerified = EncRecord.Is_PFSH_Verified;
+                        }
+                        else
+                        {
+                            MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfobj, objDocReviewWfobj, UserRole);
+                            objMoveVerifyDTO.IsWorkflowPushed = true;
+                        }
                     }
                 }
 
-                objMoveVerifyDTO.IsPFSHVerified = EncRecord.Is_PFSH_Verified;
-                objMoveVerifyDTO.IsWorkflowPushed = true;
 
+                return objMoveVerifyDTO;
+
+            }
+            public Boolean CheckBillableCodes(ulong ulEncID)
+            {
+                Boolean bCheck = false;
+
+                ISQLQuery sql = session.GetISession().CreateSQLQuery("select count(*) from procedure_code_library where procedure_code in (select procedure_code from e_m_coding where encounter_id='" + ulEncID + "' and is_delete!='Y' and (procedure_code in ('99080','99024','MAVST','NCVST','NO CHARGE','NOBILL','NURSE','TB','WT','BP','A9270','99421','99422','99423') or procedure_charge >=1.00));");
+
+                ArrayList ilistObj = new ArrayList(sql.List());
+                if (ilistObj != null && ilistObj.Count > 0)
+                {
+                    if (Convert.ToUInt64(ilistObj[0]) >= 1)
+                        bCheck = true;
+                    else
+                        bCheck = false;
+                }
+
+                return bCheck;
+            }
+
+            public Encounter UpdateE_SuperBill(IList<Encounter> EncListupdate, string MACAddress)
+            {
+                IList<Encounter> EncSaveList = null;
+                //SaveUpdateDeleteWithTransaction(ref EncSaveList, EncListupdate, null, MACAddress);
+                SaveUpdateDelete_DBAndXML_WithTransaction(ref EncSaveList, ref EncListupdate, null, MACAddress, true, false, EncListupdate[0].Id, string.Empty);
+
+                WFObjectManager objWfMngr = new WFObjectManager();
+                IList<WFObject> iWfObject = new List<WFObject>();
+                iWfObject = objWfMngr.GetByDocumentObjectSystemId(EncListupdate[0].Id, "BILLING");
+
+                if (iWfObject[0].Current_Process == "BATCHING_WAIT")
+                    objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, "UNKNOWN", System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
+
+                //if (EncListupdate != null)
+                //{
+                //    if (EncListupdate.Count > 0)
+                //    {
+                //        for (int i = 0; i < EncListupdate.Count; i++)
+                //        {
+                //            EncListupdate[i].Version = EncListupdate[i].Version + 1;
+                //        }
+                //        GenerateXml XMLObj = new GenerateXml();
+                //        ulong encounterid = EncListupdate[0].Id;
+                //        List<object> lstObj = EncListupdate.Cast<object>().ToList();
+                //        XMLObj.GenerateXmlUpdate(lstObj, encounterid, string.Empty);
+                //    }
+                //}
+                return GetById(EncListupdate[0].Id);
+            }
+
+            public string GetPreviousEncounterID(ulong HumanID, DateTime DateofService)
+            {
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+                ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from encounter e where e.human_id='" + HumanID + "' and e.date_of_service<'" + DateofService.ToString("yyyy-MM-dd HH:mm:ss") + "' order by e.date_of_service desc limit 1").AddEntity("e", typeof(Encounter));
+                ilstEncounter = sqlquery.List<Encounter>();
+                string PrevEncouterID = string.Empty;
+                if (ilstEncounter.Count > 0 && ilstEncounter[0].Id != 0)
+                {
+                    PrevEncouterID = ilstEncounter[0].Id.ToString();
+                }
                 iMySession.Close();
+                return PrevEncouterID;
             }
 
-            return objMoveVerifyDTO;
-        }
-
-        public MoveVerificationDTO PerformMovetoNextProcess(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, WFObject objDocWfobj, WFObject objDocReviewWfobj, string IsPatientDiscussed, ulong IsDiscussedBy)
-        {
-            MoveVerificationDTO objMoveVerifyDTO = new MoveVerificationDTO();
-            int EMICDCount = 0;
-
-            EAndMCodingManager emMnger = new EAndMCodingManager();
-            EandMCodingICDManager emICDMngr = new EandMCodingICDManager();
-            IList<EandMCodingICD> eandmICDList = new List<EandMCodingICD>();
-            IList<string> GcodeCheckList = new List<string>();
-            bool bGCodeCheck = false;
-
-            objMoveVerifyDTO.EandMCodingList = emMnger.GetEMCodeList(ulMyEncounterID);
-            EMICDCount = emICDMngr.GetEMICDCount(ulMyEncounterID);
-
-
-          //  var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Id;
-            var GcodeList = from g in objMoveVerifyDTO.EandMCodingList where (g.Procedure_Code == "G0438" || g.Procedure_Code == "G0439") select g.Encounter_ID;
-
-            if (GcodeList != null && GcodeList.Count() > 0)
+            public IList<Encounter> GetBillingInstructions(ulong EncounterID, string Keyword)
             {
-                objMoveVerifyDTO.IsGcodePresent = true;
-                for (int i = 0; i < GcodeList.Count(); i++)
-                {
-                    eandmICDList = emICDMngr.EandMcodingList(Convert.ToUInt32(GcodeList.ElementAt(i)));
-                    if (eandmICDList.Count > 0)
-                    {
-                        GcodeCheckList.Add(eandmICDList.Any(a => a.ICD == "V70.0").ToString());
-
-
-                    }
-
-                }
-                objMoveVerifyDTO.IsICDPresent = GcodeCheckList.Contains("False") == true ? false : true;
-                if (Convert.ToBoolean(objMoveVerifyDTO.IsGcodePresent) == true && Convert.ToBoolean(objMoveVerifyDTO.IsICDPresent) == false)
-                {
-                    bGCodeCheck = true;
-                }
-                else
-                {
-                    bGCodeCheck = false;
-                }
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+                ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from encounter e where e.Billing_Instruction like '%" + Keyword + "%' order by e.Billing_Instruction").AddEntity("e", typeof(Encounter));
+                ilstEncounter = sqlquery.List<Encounter>();
+                return ilstEncounter;
             }
 
-
-            if (Convert.ToBoolean(bDuplicateCheck) == false)
+            public IList<Encounter> GetPreviousEncounter(ulong EncounterId, ulong humanId, ulong physicianId)
             {
-                objMoveVerifyDTO.IsDuplicatePresent = false;
-                bGCodeCheck = false;
-            }
-            else
-            {
-                int EandMListCount = objMoveVerifyDTO.EandMCodingList.Count;
-                var EandMDistinctListCount = (from d in objMoveVerifyDTO.EandMCodingList select d.Procedure_Code).Distinct();
-                if (EandMListCount != EandMDistinctListCount.Count())
-                {
-                    objMoveVerifyDTO.IsDuplicatePresent = true;
-                }
-            }
-
-
-            if (objDocWfobj.Current_Process == "PROVIDER_PROCESS")
-            {
-                if (UserRole == "Physician")
-                {
-
-                    //HumanManager objHumanManger = new HumanManager();
-                    //objMoveVerifyDTO.IsACOValid = objHumanManger.IsACOValid(ulMyHumanID);
-
-                    if (objMoveVerifyDTO.EandMCodingList.Count == 0)
-                    {
-                        objMoveVerifyDTO.IsWorkflowPushed = false;
-                    }
-                    else if (EMICDCount == 0)
-                    {
-                        objMoveVerifyDTO.IsICDFilled = false;
-                        objMoveVerifyDTO.IsWorkflowPushed = false;
-                    }
-                    else
-                    {
-
-                        MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfobj, objDocReviewWfobj, UserRole);
-                        objMoveVerifyDTO.IsWorkflowPushed = true;
-                    }
-                }
-                else
-                {
-                    if (objMoveVerifyDTO.EandMCodingList.Count == 0)
-                    {
-                        objMoveVerifyDTO.IsWorkflowPushed = false;
-                        objMoveVerifyDTO.IsPFSHVerified = EncRecord.Is_PFSH_Verified;
-                    }
-                    else
-                    {
-                        MoveToNextProcessFromAfterPlan(EncRecord, ulMyEncounterID, ulMyHumanID, selectedPhysicianID, UserName, btnPhyCorrectionText, FacilityName, string.Empty, Convert.ToDateTime(currentDate), breview, objEncWfObj, objDocWfobj, objDocReviewWfobj, UserRole);
-                        objMoveVerifyDTO.IsWorkflowPushed = true;
-                    }
-                }
-            }
-
-
-            return objMoveVerifyDTO;
-
-        }
-        public Boolean CheckBillableCodes(ulong ulEncID)
-        {
-            Boolean bCheck = false;
-
-            ISQLQuery sql = session.GetISession().CreateSQLQuery("select count(*) from procedure_code_library where procedure_code in (select procedure_code from e_m_coding where encounter_id='" + ulEncID +"' and is_delete!='Y' and (procedure_code in ('99080','99024','MAVST','NCVST','NO CHARGE','NOBILL','NURSE','TB','WT','BP','A9270','99421','99422','99423') or procedure_charge >=1.00));");
-
-            ArrayList ilistObj = new ArrayList(sql.List());
-            if (ilistObj != null && ilistObj.Count>0)
-            {
-                if (Convert.ToUInt64(ilistObj[0]) >= 1)
-                    bCheck = true;
-                else
-                    bCheck = false;
-            }
-
-            return bCheck;
-        }
-
-        public Encounter UpdateE_SuperBill(IList<Encounter> EncListupdate, string MACAddress)
-        {
-            IList<Encounter> EncSaveList = null;
-            //SaveUpdateDeleteWithTransaction(ref EncSaveList, EncListupdate, null, MACAddress);
-            SaveUpdateDelete_DBAndXML_WithTransaction(ref EncSaveList, ref EncListupdate, null, MACAddress, true, false, EncListupdate[0].Id, string.Empty);
-
-            WFObjectManager objWfMngr = new WFObjectManager();
-            IList<WFObject> iWfObject = new List<WFObject>();
-            iWfObject = objWfMngr.GetByDocumentObjectSystemId(EncListupdate[0].Id, "BILLING");
-
-            if (iWfObject[0].Current_Process=="BATCHING_WAIT")
-                objWfMngr.MoveToNextProcess(iWfObject[0].Obj_System_Id, iWfObject[0].Obj_Type, 1, "UNKNOWN", System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), iWfObject[0].Current_Process, null, null);
-                       
-            //if (EncListupdate != null)
-            //{
-            //    if (EncListupdate.Count > 0)
-            //    {
-            //        for (int i = 0; i < EncListupdate.Count; i++)
-            //        {
-            //            EncListupdate[i].Version = EncListupdate[i].Version + 1;
-            //        }
-            //        GenerateXml XMLObj = new GenerateXml();
-            //        ulong encounterid = EncListupdate[0].Id;
-            //        List<object> lstObj = EncListupdate.Cast<object>().ToList();
-            //        XMLObj.GenerateXmlUpdate(lstObj, encounterid, string.Empty);
-            //    }
-            //}
-            return GetById(EncListupdate[0].Id);
-        }
-
-        public string GetPreviousEncounterID(ulong HumanID, DateTime DateofService)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from encounter e where e.human_id='" + HumanID + "' and e.date_of_service<'" + DateofService.ToString("yyyy-MM-dd HH:mm:ss") + "' order by e.date_of_service desc limit 1").AddEntity("e", typeof(Encounter));
-            ilstEncounter = sqlquery.List<Encounter>();
-            string PrevEncouterID = string.Empty;
-            if (ilstEncounter.Count > 0 && ilstEncounter[0].Id != 0)
-            {
-                PrevEncouterID = ilstEncounter[0].Id.ToString();
-            }
-            iMySession.Close();
-            return PrevEncouterID;
-        }
-
-        public IList<Encounter> GetBillingInstructions(ulong EncounterID, string Keyword)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from encounter e where e.Billing_Instruction like '%" + Keyword + "%' order by e.Billing_Instruction").AddEntity("e", typeof(Encounter));
-            ilstEncounter = sqlquery.List<Encounter>();
-            return ilstEncounter;
-        }
-
-        public IList<Encounter> GetPreviousEncounter(ulong EncounterId, ulong humanId, ulong physicianId)
-        {
-            ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            var query = @"SELECT E.* 
+                ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+                var query = @"SELECT E.* 
                           FROM   ENCOUNTER E 
                           WHERE  E.HUMAN_ID = :HUMANID 
                                  AND E.ENCOUNTER_PROVIDER_ID = :PHYSICIANID 
@@ -16304,222 +16257,222 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                  AND E.IS_PHONE_ENCOUNTER <> 'Y' 
                           ORDER  BY E.DATE_OF_SERVICE DESC ";
 
-            ISQLQuery ResultList = iMySession.CreateSQLQuery(query).AddEntity("e", typeof(Encounter));
+                ISQLQuery ResultList = iMySession.CreateSQLQuery(query).AddEntity("e", typeof(Encounter));
 
-            ResultList.SetParameter("HUMANID", humanId);
-            ResultList.SetParameter("PHYSICIANID", Convert.ToInt32(physicianId));
-            ResultList.SetParameter("ENCOUNTERID", EncounterId);
+                ResultList.SetParameter("HUMANID", humanId);
+                ResultList.SetParameter("PHYSICIANID", Convert.ToInt32(physicianId));
+                ResultList.SetParameter("ENCOUNTERID", EncounterId);
 
-            var ilstEncounter = ResultList.List<Encounter>();
+                var ilstEncounter = ResultList.List<Encounter>();
 
-            iMySession.Close();
+                iMySession.Close();
 
-            return ilstEncounter;
-        }
-
-        public IList<Encounter> GetEncounterUsingHumanIDOrderByEncID(ulong ulHumanID)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from encounter e where e.human_id='" + ulHumanID + "'  and e.date_of_service='0001-01-01 00:00:00' and date(e.Appointment_Date)>='" + DateTime.Now.ToString("yyyy-MM-dd") + "' order by e.Appointment_Date asc ").AddEntity("e", typeof(Encounter));
-            ilstEncounter = sqlquery.List<Encounter>();
-
-            iMySession.Close();
-            return ilstEncounter;
-
-
-        }
-
-        // Copy Previous Encounter
-
-        public string CopyPreviousEncounter(ulong encounterId, ulong humanId, ulong physicianId,
-                                           string currentUserName, ulong previousEncounterId, string userRole, DateTime dtCurrentDOS)
-        {
-            try
-            {
-                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-                {
-                    IQuery iQuery = iMySession.GetNamedQuery("SP.CopyPrevious.Encounter");
-
-                    iQuery.SetParameter("HUMANID", humanId);
-                    iQuery.SetParameter("PREVIOUSENCOUNTER", previousEncounterId);
-                    iQuery.SetParameter("CURRENTENCOUNTER", encounterId);
-                    iQuery.SetParameter("CURRENTPHYSICIAN", physicianId);
-                    iQuery.SetParameter("ROLE", userRole);
-                    iQuery.SetParameter("CURRENTUSER", currentUserName);
-                    iQuery.SetParameter("CURRENTDOS", dtCurrentDOS.ToString("yyyy-MM-dd"));
-
-                    ArrayList arlstReturn = new ArrayList(iQuery.List());
-
-                    iMySession.Close();
-
-                    if (arlstReturn.Count > 0)
-                    {
-                        var returnValue = Convert.ToString(arlstReturn[0]);
-                        return returnValue;
-                    }
-
-                    return string.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return "ERROR~" + Convert.ToString(ex.InnerException.Message).Replace(Environment.NewLine, string.Empty);
-                }
-
-                return "ERROR~" + Convert.ToString(ex.Message).Replace(Environment.NewLine, string.Empty);
-            }
-        }
-
-        //        public IList<Encounter> GetPreviousEncounterDetails(ulong ulEncounterID, ulong uHumanID,
-        //                                                       ulong uPhysicianID, out bool isPhysicianProcess, out bool isFromArchive)
-        //        {
-        //            IList<Encounter> lstPreviousEncounter = new List<Encounter>();
-        //            WFObjectManager objWFObjectManager = new WFObjectManager();
-
-        //            isPhysicianProcess = false;
-        //            isFromArchive = false;
-
-        //            if (uHumanID == 0)
-        //            {
-        //                return lstPreviousEncounter;
-        //            }
-
-        //            ulong previousEncounterId = 0;
-
-        //            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-        //            {
-        //                try
-        //                {
-        //                    var querySQL = @"SELECT E.* 
-        //                                     FROM   ENCOUNTER E 
-        //                                     WHERE  E.HUMAN_ID=:HUMAN_ID 
-        //                                     AND    E.ENCOUNTER_PROVIDER_ID=:PHYSICIAN_ID 
-        //                                     AND    E.DATE_OF_SERVICE <>'0001-01-01 00:00:00'
-        //                                     AND    E.ENCOUNTER_ID <> :ENCOUNTER_ID 
-        //                                     AND    E.IS_PHONE_ENCOUNTER <> 'Y' 
-        //                                     AND    E.DATE_OF_SERVICE < 
-        //                                            ( SELECT   E.DATE_OF_SERVICE 
-        //                                              FROM     ENCOUNTER E 
-        //                                              WHERE    E.ENCOUNTER_ID=:ENCOUNTER_ID ) 
-        //                                     ORDER BY E.DATE_OF_SERVICE DESC";
-
-
-        //                    var SQLQuery = iMySession.CreateSQLQuery(querySQL)
-        //                           .AddEntity("E", typeof(Encounter));
-
-        //                    SQLQuery.SetParameter("ENCOUNTER_ID", ulEncounterID);
-        //                    SQLQuery.SetParameter("HUMAN_ID", uHumanID);
-        //                    SQLQuery.SetParameter("PHYSICIAN_ID", uPhysicianID);
-
-        //                    var lstEncounter = SQLQuery.List<Encounter>();
-
-        //                    if (lstEncounter.Count == 0)
-        //                    {
-        //                        querySQL = @"SELECT E.* 
-        //                                     FROM   ENCOUNTER_ARC E 
-        //                                     WHERE  E.HUMAN_ID=:HUMAN_ID 
-        //                                     AND    E.ENCOUNTER_PROVIDER_ID=:PHYSICIAN_ID 
-        //                                     AND    E.DATE_OF_SERVICE <>'0001-01-01 00:00:00'
-        //                                     AND    E.ENCOUNTER_ID <> :ENCOUNTER_ID 
-        //                                     AND    E.IS_PHONE_ENCOUNTER <> 'Y'                                      
-        //                                     ORDER BY E.DATE_OF_SERVICE DESC";
-
-        //                        SQLQuery = iMySession.CreateSQLQuery(querySQL)
-        //                             .AddEntity("E", typeof(Encounter));
-
-        //                        SQLQuery.SetParameter("ENCOUNTER_ID", ulEncounterID);
-        //                        SQLQuery.SetParameter("HUMAN_ID", uHumanID);
-        //                        SQLQuery.SetParameter("PHYSICIAN_ID", uPhysicianID);
-
-        //                        lstEncounter = SQLQuery.List<Encounter>();
-        //                        isFromArchive = !(lstEncounter.Count == 0);
-        //                    }
-
-        //                    if (lstEncounter.Count == 0)
-        //                    {
-        //                        previousEncounterId = 0;
-        //                    }
-        //                    //else  // added to avoid the check for the current_process="Provider Process" for the previous encounter BugID:43191,41676 
-        //                    //{
-        //                    //    previousEncounterId = lstEncounter[0].Id;
-        //                    //    isPhysicianProcess = true;
-
-        //                    //    lstPreviousEncounter = lstEncounter.Where(a => a.Id == previousEncounterId)
-        //                    //                                       .ToList<Encounter>();
-        //                    //}
-        //                    // commented to avoid the check for the current_process="Provider Process" for the previous encounter BugID:43191,41676 
-        //                    else if (lstEncounter.Count == 1)
-        //                    {
-        //                        previousEncounterId = lstEncounter[0].Id;
-        //                        isPhysicianProcess = objWFObjectManager.IsPreviousEncounterPhysicianProcess(previousEncounterId, isFromArchive);
-
-        //                        lstPreviousEncounter = lstEncounter.Where(a => a.Id == previousEncounterId)
-        //                                                           .ToList<Encounter>();
-        //                        if (!isPhysicianProcess)
-        //                        {
-        //                            return lstPreviousEncounter;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        for (int i = 0; i < lstEncounter.Count; i++)
-        //                        {
-        //                            isPhysicianProcess = objWFObjectManager.IsPreviousEncounterPhysicianProcess(lstEncounter[i].Id, isFromArchive);
-
-        //                            if (isPhysicianProcess)
-        //                            {
-        //                                previousEncounterId = lstEncounter[i].Id;
-        //                                lstPreviousEncounter = lstEncounter.Where(a => a.Id == previousEncounterId)
-        //                                                                   .ToList<Encounter>();
-        //                                break;
-        //                            }
-        //                        }
-        //                        if (!isPhysicianProcess)
-        //                        {
-        //                            lstPreviousEncounter = lstEncounter.Where(a => a.Id == lstEncounter[0].Id)
-        //                                                                   .ToList<Encounter>();
-        //                            return lstPreviousEncounter;
-        //                        }
-        //                    }
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    previousEncounterId = 0;
-        //                }
-
-        //                iMySession.Close();
-        //            }
-        //            return lstPreviousEncounter;
-        //        }
-
-
-
-
-        public IList<Encounter> GetPreviousEncounterDetails(ulong ulEncounterID, ulong uHumanID,
-                                                    ulong uPhysicianID, out bool isPhysicianProcess, out bool isFromArchive)
-        {
-            IList<Encounter> lstPreviousEncounter = new List<Encounter>();
-            WFObjectManager objWFObjectManager = new WFObjectManager();
-
-            isPhysicianProcess = false;
-            isFromArchive = false;
-
-            if (uHumanID == 0)
-            {
-                return lstPreviousEncounter;
+                return ilstEncounter;
             }
 
-            ulong previousEncounterId = 0;
+            public IList<Encounter> GetEncounterUsingHumanIDOrderByEncID(ulong ulHumanID)
+            {
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+                ISQLQuery sqlquery = iMySession.CreateSQLQuery("select e.* from encounter e where e.human_id='" + ulHumanID + "'  and e.date_of_service='0001-01-01 00:00:00' and date(e.Appointment_Date)>='" + DateTime.Now.ToString("yyyy-MM-dd") + "' order by e.Appointment_Date asc ").AddEntity("e", typeof(Encounter));
+                ilstEncounter = sqlquery.List<Encounter>();
 
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                iMySession.Close();
+                return ilstEncounter;
+
+
+            }
+
+            // Copy Previous Encounter
+
+            public string CopyPreviousEncounter(ulong encounterId, ulong humanId, ulong physicianId,
+                                               string currentUserName, ulong previousEncounterId, string userRole, DateTime dtCurrentDOS)
             {
                 try
                 {
+                    using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                    {
+                        IQuery iQuery = iMySession.GetNamedQuery("SP.CopyPrevious.Encounter");
 
-                    var querySQL = @"SELECT E.*
+                        iQuery.SetParameter("HUMANID", humanId);
+                        iQuery.SetParameter("PREVIOUSENCOUNTER", previousEncounterId);
+                        iQuery.SetParameter("CURRENTENCOUNTER", encounterId);
+                        iQuery.SetParameter("CURRENTPHYSICIAN", physicianId);
+                        iQuery.SetParameter("ROLE", userRole);
+                        iQuery.SetParameter("CURRENTUSER", currentUserName);
+                        iQuery.SetParameter("CURRENTDOS", dtCurrentDOS.ToString("yyyy-MM-dd"));
+
+                        ArrayList arlstReturn = new ArrayList(iQuery.List());
+
+                        iMySession.Close();
+
+                        if (arlstReturn.Count > 0)
+                        {
+                            var returnValue = Convert.ToString(arlstReturn[0]);
+                            return returnValue;
+                        }
+
+                        return string.Empty;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null)
+                    {
+                        return "ERROR~" + Convert.ToString(ex.InnerException.Message).Replace(Environment.NewLine, string.Empty);
+                    }
+
+                    return "ERROR~" + Convert.ToString(ex.Message).Replace(Environment.NewLine, string.Empty);
+                }
+            }
+
+            //        public IList<Encounter> GetPreviousEncounterDetails(ulong ulEncounterID, ulong uHumanID,
+            //                                                       ulong uPhysicianID, out bool isPhysicianProcess, out bool isFromArchive)
+            //        {
+            //            IList<Encounter> lstPreviousEncounter = new List<Encounter>();
+            //            WFObjectManager objWFObjectManager = new WFObjectManager();
+
+            //            isPhysicianProcess = false;
+            //            isFromArchive = false;
+
+            //            if (uHumanID == 0)
+            //            {
+            //                return lstPreviousEncounter;
+            //            }
+
+            //            ulong previousEncounterId = 0;
+
+            //            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            //            {
+            //                try
+            //                {
+            //                    var querySQL = @"SELECT E.* 
+            //                                     FROM   ENCOUNTER E 
+            //                                     WHERE  E.HUMAN_ID=:HUMAN_ID 
+            //                                     AND    E.ENCOUNTER_PROVIDER_ID=:PHYSICIAN_ID 
+            //                                     AND    E.DATE_OF_SERVICE <>'0001-01-01 00:00:00'
+            //                                     AND    E.ENCOUNTER_ID <> :ENCOUNTER_ID 
+            //                                     AND    E.IS_PHONE_ENCOUNTER <> 'Y' 
+            //                                     AND    E.DATE_OF_SERVICE < 
+            //                                            ( SELECT   E.DATE_OF_SERVICE 
+            //                                              FROM     ENCOUNTER E 
+            //                                              WHERE    E.ENCOUNTER_ID=:ENCOUNTER_ID ) 
+            //                                     ORDER BY E.DATE_OF_SERVICE DESC";
+
+
+            //                    var SQLQuery = iMySession.CreateSQLQuery(querySQL)
+            //                           .AddEntity("E", typeof(Encounter));
+
+            //                    SQLQuery.SetParameter("ENCOUNTER_ID", ulEncounterID);
+            //                    SQLQuery.SetParameter("HUMAN_ID", uHumanID);
+            //                    SQLQuery.SetParameter("PHYSICIAN_ID", uPhysicianID);
+
+            //                    var lstEncounter = SQLQuery.List<Encounter>();
+
+            //                    if (lstEncounter.Count == 0)
+            //                    {
+            //                        querySQL = @"SELECT E.* 
+            //                                     FROM   ENCOUNTER_ARC E 
+            //                                     WHERE  E.HUMAN_ID=:HUMAN_ID 
+            //                                     AND    E.ENCOUNTER_PROVIDER_ID=:PHYSICIAN_ID 
+            //                                     AND    E.DATE_OF_SERVICE <>'0001-01-01 00:00:00'
+            //                                     AND    E.ENCOUNTER_ID <> :ENCOUNTER_ID 
+            //                                     AND    E.IS_PHONE_ENCOUNTER <> 'Y'                                      
+            //                                     ORDER BY E.DATE_OF_SERVICE DESC";
+
+            //                        SQLQuery = iMySession.CreateSQLQuery(querySQL)
+            //                             .AddEntity("E", typeof(Encounter));
+
+            //                        SQLQuery.SetParameter("ENCOUNTER_ID", ulEncounterID);
+            //                        SQLQuery.SetParameter("HUMAN_ID", uHumanID);
+            //                        SQLQuery.SetParameter("PHYSICIAN_ID", uPhysicianID);
+
+            //                        lstEncounter = SQLQuery.List<Encounter>();
+            //                        isFromArchive = !(lstEncounter.Count == 0);
+            //                    }
+
+            //                    if (lstEncounter.Count == 0)
+            //                    {
+            //                        previousEncounterId = 0;
+            //                    }
+            //                    //else  // added to avoid the check for the current_process="Provider Process" for the previous encounter BugID:43191,41676 
+            //                    //{
+            //                    //    previousEncounterId = lstEncounter[0].Id;
+            //                    //    isPhysicianProcess = true;
+
+            //                    //    lstPreviousEncounter = lstEncounter.Where(a => a.Id == previousEncounterId)
+            //                    //                                       .ToList<Encounter>();
+            //                    //}
+            //                    // commented to avoid the check for the current_process="Provider Process" for the previous encounter BugID:43191,41676 
+            //                    else if (lstEncounter.Count == 1)
+            //                    {
+            //                        previousEncounterId = lstEncounter[0].Id;
+            //                        isPhysicianProcess = objWFObjectManager.IsPreviousEncounterPhysicianProcess(previousEncounterId, isFromArchive);
+
+            //                        lstPreviousEncounter = lstEncounter.Where(a => a.Id == previousEncounterId)
+            //                                                           .ToList<Encounter>();
+            //                        if (!isPhysicianProcess)
+            //                        {
+            //                            return lstPreviousEncounter;
+            //                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        for (int i = 0; i < lstEncounter.Count; i++)
+            //                        {
+            //                            isPhysicianProcess = objWFObjectManager.IsPreviousEncounterPhysicianProcess(lstEncounter[i].Id, isFromArchive);
+
+            //                            if (isPhysicianProcess)
+            //                            {
+            //                                previousEncounterId = lstEncounter[i].Id;
+            //                                lstPreviousEncounter = lstEncounter.Where(a => a.Id == previousEncounterId)
+            //                                                                   .ToList<Encounter>();
+            //                                break;
+            //                            }
+            //                        }
+            //                        if (!isPhysicianProcess)
+            //                        {
+            //                            lstPreviousEncounter = lstEncounter.Where(a => a.Id == lstEncounter[0].Id)
+            //                                                                   .ToList<Encounter>();
+            //                            return lstPreviousEncounter;
+            //                        }
+            //                    }
+            //                }
+            //                catch (Exception ex)
+            //                {
+            //                    previousEncounterId = 0;
+            //                }
+
+            //                iMySession.Close();
+            //            }
+            //            return lstPreviousEncounter;
+            //        }
+
+
+
+
+            public IList<Encounter> GetPreviousEncounterDetails(ulong ulEncounterID, ulong uHumanID,
+                                                        ulong uPhysicianID, out bool isPhysicianProcess, out bool isFromArchive)
+            {
+                IList<Encounter> lstPreviousEncounter = new List<Encounter>();
+                WFObjectManager objWFObjectManager = new WFObjectManager();
+
+                isPhysicianProcess = false;
+                isFromArchive = false;
+
+                if (uHumanID == 0)
+                {
+                    return lstPreviousEncounter;
+                }
+
+                ulong previousEncounterId = 0;
+
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    try
+                    {
+
+                        var querySQL = @"SELECT E.*
                                      FROM   ENCOUNTER E
                                      WHERE  E.HUMAN_ID=:HUMAN_ID
                                      AND    E.ENCOUNTER_PROVIDER_ID=:PHYSICIAN_ID
@@ -16535,7 +16488,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
 
 
 
-                    var queryarc = @"SELECT E.*
+                        var queryarc = @"SELECT E.*
                                      FROM   ENCOUNTER_ARC E 
                                      WHERE  E.HUMAN_ID=:HUMAN_ID
                                      AND    E.ENCOUNTER_PROVIDER_ID=:PHYSICIAN_ID
@@ -16544,920 +16497,920 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                                      AND    E.IS_PHONE_ENCOUNTER <> 'Y'
                                     AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'";
 
-                    var SQLQuery = iMySession.CreateSQLQuery(querySQL)
-                           .AddEntity("E", typeof(Encounter));
+                        var SQLQuery = iMySession.CreateSQLQuery(querySQL)
+                               .AddEntity("E", typeof(Encounter));
 
-                    SQLQuery.SetParameter("ENCOUNTER_ID", ulEncounterID);
-                    SQLQuery.SetParameter("HUMAN_ID", uHumanID);
-                    SQLQuery.SetParameter("PHYSICIAN_ID", uPhysicianID);
-
-
-                    var SQLQueryarc = iMySession.CreateSQLQuery(queryarc)
-                           .AddEntity("E", typeof(Encounter));
-
-                    SQLQueryarc.SetParameter("ENCOUNTER_ID", ulEncounterID);
-                    SQLQueryarc.SetParameter("HUMAN_ID", uHumanID);
-                    SQLQueryarc.SetParameter("PHYSICIAN_ID", uPhysicianID);
+                        SQLQuery.SetParameter("ENCOUNTER_ID", ulEncounterID);
+                        SQLQuery.SetParameter("HUMAN_ID", uHumanID);
+                        SQLQuery.SetParameter("PHYSICIAN_ID", uPhysicianID);
 
 
-                    IList<Encounter> lstEncounter = new List<Encounter>();
-                    IList<Encounter> lstEncounterarc = new List<Encounter>();
+                        var SQLQueryarc = iMySession.CreateSQLQuery(queryarc)
+                               .AddEntity("E", typeof(Encounter));
 
-                    lstEncounter = SQLQuery.List<Encounter>();
-                    lstEncounterarc = SQLQueryarc.List<Encounter>();
+                        SQLQueryarc.SetParameter("ENCOUNTER_ID", ulEncounterID);
+                        SQLQueryarc.SetParameter("HUMAN_ID", uHumanID);
+                        SQLQueryarc.SetParameter("PHYSICIAN_ID", uPhysicianID);
 
-                    if (lstEncounter.Count > 0)
-                    {
-                        for (int i = 0; i < lstEncounter.Count; i++)
+
+                        IList<Encounter> lstEncounter = new List<Encounter>();
+                        IList<Encounter> lstEncounterarc = new List<Encounter>();
+
+                        lstEncounter = SQLQuery.List<Encounter>();
+                        lstEncounterarc = SQLQueryarc.List<Encounter>();
+
+                        if (lstEncounter.Count > 0)
                         {
-                            lstEncounter[i].Notes = "ENCOUNTER";
+                            for (int i = 0; i < lstEncounter.Count; i++)
+                            {
+                                lstEncounter[i].Notes = "ENCOUNTER";
+                            }
                         }
-                    }
-                    if (lstEncounterarc.Count > 0)
-                    {
-                        for (int i = 0; i < lstEncounterarc.Count; i++)
+                        if (lstEncounterarc.Count > 0)
                         {
-                            lstEncounterarc[i].Notes = "ENCOUNTER_ARC";
+                            for (int i = 0; i < lstEncounterarc.Count; i++)
+                            {
+                                lstEncounterarc[i].Notes = "ENCOUNTER_ARC";
+                            }
                         }
+
+                        lstEncounter = lstEncounter.Concat(lstEncounterarc).ToList<Encounter>();
+                        lstEncounter = (from s in lstEncounter
+                                        orderby s.Date_of_Service descending
+                                        select s).Take(1).ToList<Encounter>();
+
+
+                        if (lstEncounter.Count == 0)
+                        {
+                            previousEncounterId = 0;
+                        }
+                        else
+                        {
+                            isPhysicianProcess = true;
+                            if (lstEncounter[0].Notes.ToUpper() == "ENCOUNTER")
+                            {
+                                isFromArchive = false;
+                            }
+                            if (lstEncounter[0].Notes.ToUpper() == "ENCOUNTER_ARC")
+                            {
+                                isFromArchive = true;
+                            }
+                            previousEncounterId = lstEncounter[0].Id;
+                            lstPreviousEncounter = lstEncounter;
+
+                        }
+
                     }
-
-                    lstEncounter = lstEncounter.Concat(lstEncounterarc).ToList<Encounter>();
-                    lstEncounter = (from s in lstEncounter
-                                    orderby s.Date_of_Service descending
-                                    select s).Take(1).ToList<Encounter>();
-
-
-                    if (lstEncounter.Count == 0)
+                    catch
                     {
                         previousEncounterId = 0;
                     }
-                    else
-                    {
-                        isPhysicianProcess = true;
-                        if (lstEncounter[0].Notes.ToUpper() == "ENCOUNTER")
-                        {
-                            isFromArchive = false;
-                        }
-                        if (lstEncounter[0].Notes.ToUpper() == "ENCOUNTER_ARC")
-                        {
-                            isFromArchive = true;
-                        }
-                        previousEncounterId = lstEncounter[0].Id;
-                        lstPreviousEncounter = lstEncounter;
 
-                    }
-
+                    iMySession.Close();
                 }
-                catch
-                {
-                    previousEncounterId = 0;
-                }
-
-                iMySession.Close();
+                return lstPreviousEncounter;
             }
-            return lstPreviousEncounter;
-        }
 
 
-        public FillAppointment GetAppointmentsByDatePhysicianFacility(DateTime DOS_Start, DateTime DOS_End, ulong[] PhyID, string[] FacName, string sView, out string time_taken, bool isFO_MASetup, bool IsAncillary)
-        {
-
-            FillAppointment FillApptList = new FillAppointment();
-            time_taken = "";
-            if ((DOS_Start.ToShortDateString() != DateTime.MinValue.ToShortDateString()) && DOS_End.ToShortDateString() != DateTime.MinValue.ToShortDateString())
+            public FillAppointment GetAppointmentsByDatePhysicianFacility(DateTime DOS_Start, DateTime DOS_End, ulong[] PhyID, string[] FacName, string sView, out string time_taken, bool isFO_MASetup, bool IsAncillary)
             {
-                try
+
+                FillAppointment FillApptList = new FillAppointment();
+                time_taken = "";
+                if ((DOS_Start.ToShortDateString() != DateTime.MinValue.ToShortDateString()) && DOS_End.ToShortDateString() != DateTime.MinValue.ToShortDateString())
                 {
-                    string tempDate = DOS_Start.AddDays(-2).ToString("yyyy-MM-dd");
-                }
-                catch (Exception e)
-                {
-                    throw (e);
-                }
-
-                ArrayList aryAppointmentList = null;
-                Encounter objAppointment;
-
-                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-                {
-                    IQuery query = null;
-                    //string sFacility = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"];
-                    //if (sFacility != null && sFacility.ToUpper() == FacName.FirstOrDefault().ToUpper())
-                    var facAncillary = from f in NHibernateSessionUtility.Instance.MyAncillaryFacilityList where f.Fac_Name == FacName.FirstOrDefault().ToUpper() select f;
-                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                    if (ilstFacAncillary.Count > 0)
-                        query = iMySession.GetNamedQuery("GetAppointmentsByDatePhysicianFacilityCMGLab");
-                    else
-                        query = iMySession.GetNamedQuery("GetAppointmentsByDatePhysicianFacility");
-
-                    if (sView == "SwitchToWeekView")
+                    try
                     {
-                        //query.SetString(0, DOS_Start.AddDays(((int)DayOfWeek.Sunday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
-                        //query.SetString(1, DOS_End.AddDays(((int)DayOfWeek.Saturday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
-                        query.SetString("fromdate", DOS_Start.AddDays(((int)DayOfWeek.Sunday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
-                        query.SetString("todate", DOS_End.AddDays(((int)DayOfWeek.Saturday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
+                        string tempDate = DOS_Start.AddDays(-2).ToString("yyyy-MM-dd");
                     }
-                    else if (sView == "SwitchToMonthView")
+                    catch (Exception e)
                     {
-                        DateTime StartOfMonth = new DateTime(DOS_Start.Year, DOS_Start.Month, 1, DOS_Start.Hour, DOS_Start.Minute, DOS_Start.Second);
-                        DateTime EndOfMonth = StartOfMonth.AddMonths(1).AddDays(-1);
-                        //query.SetString(0, StartOfMonth.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss"));
-                        //query.SetString(1, EndOfMonth.AddDays(7).ToString("yyyy-MM-dd HH:mm:ss"));
-                        query.SetString("fromdate", StartOfMonth.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss"));
-                        query.SetString("todate", EndOfMonth.AddDays(7).ToString("yyyy-MM-dd HH:mm:ss"));
+                        throw (e);
                     }
-                    else
-                    {
-                        //query.SetString(0, DOS_Start.ToString("yyyy-MM-dd HH:mm:ss"));
-                        //query.SetString(1, DOS_End.ToString("yyyy-MM-dd HH:mm:ss"));
-                        query.SetString("fromdate", DOS_Start.ToString("yyyy-MM-dd HH:mm:ss"));
-                        query.SetString("todate", DOS_End.ToString("yyyy-MM-dd HH:mm:ss"));
-                    }
-                    query.SetParameterList("PhyList", PhyID);
-                    query.SetParameterList("FacList", FacName);
 
-                    Stopwatch LoadApptsDBCall = new Stopwatch();
-                    LoadApptsDBCall.Start();
-                    aryAppointmentList = new ArrayList(query.List());
-                    LoadApptsDBCall.Stop();
-                    time_taken = "LoadAppts DB Call Time : " + LoadApptsDBCall.Elapsed.Seconds + "." + LoadApptsDBCall.Elapsed.Milliseconds + "s. ";
-                    OrdersManager OrderMngr = new OrdersManager();
-                    Orders objOrder = new Orders();
-                    IList<string> ilstOrder = new List<string>();
-                    string sPhyName = string.Empty;
-                    if (aryAppointmentList != null)
+                    ArrayList aryAppointmentList = null;
+                    Encounter objAppointment;
+
+                    using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                     {
-                        for (int i = 0; i < aryAppointmentList.Count; i++)
+                        IQuery query = null;
+                        //string sFacility = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"];
+                        //if (sFacility != null && sFacility.ToUpper() == FacName.FirstOrDefault().ToUpper())
+                        var facAncillary = from f in NHibernateSessionUtility.Instance.MyAncillaryFacilityList where f.Fac_Name == FacName.FirstOrDefault().ToUpper() select f;
+                        IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                        if (ilstFacAncillary.Count > 0)
+                            query = iMySession.GetNamedQuery("GetAppointmentsByDatePhysicianFacilityCMGLab");
+                        else
+                            query = iMySession.GetNamedQuery("GetAppointmentsByDatePhysicianFacility");
+
+                        if (sView == "SwitchToWeekView")
                         {
-                            object[] oj = (object[])aryAppointmentList[i];
-                            objAppointment = new Encounter();
-                            FillApptList.EncounterId.Add(Convert.ToUInt64(oj[0]));
-                            FillApptList.Appointment_Provider_ID.Add(Convert.ToInt32(oj[1]));
-                            FillApptList.Human_ID.Add(Convert.ToUInt64(oj[2]));
-                            FillApptList.Appointment_Date.Add(Convert.ToDateTime(oj[3]));
-                            FillApptList.Duration_Minutes.Add(Convert.ToInt32(oj[4]));
-                            FillApptList.ApptStatus.Add(oj[5].ToString());
-                            string sPatientName = Convert.ToString(oj[6]) + "," + Convert.ToString(oj[7]) + "  " + Convert.ToString(oj[8]) + "  " + Convert.ToString(oj[10]);
+                            //query.SetString(0, DOS_Start.AddDays(((int)DayOfWeek.Sunday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
+                            //query.SetString(1, DOS_End.AddDays(((int)DayOfWeek.Saturday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
+                            query.SetString("fromdate", DOS_Start.AddDays(((int)DayOfWeek.Sunday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
+                            query.SetString("todate", DOS_End.AddDays(((int)DayOfWeek.Saturday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+                        else if (sView == "SwitchToMonthView")
+                        {
+                            DateTime StartOfMonth = new DateTime(DOS_Start.Year, DOS_Start.Month, 1, DOS_Start.Hour, DOS_Start.Minute, DOS_Start.Second);
+                            DateTime EndOfMonth = StartOfMonth.AddMonths(1).AddDays(-1);
+                            //query.SetString(0, StartOfMonth.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss"));
+                            //query.SetString(1, EndOfMonth.AddDays(7).ToString("yyyy-MM-dd HH:mm:ss"));
+                            query.SetString("fromdate", StartOfMonth.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss"));
+                            query.SetString("todate", EndOfMonth.AddDays(7).ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+                        else
+                        {
+                            //query.SetString(0, DOS_Start.ToString("yyyy-MM-dd HH:mm:ss"));
+                            //query.SetString(1, DOS_End.ToString("yyyy-MM-dd HH:mm:ss"));
+                            query.SetString("fromdate", DOS_Start.ToString("yyyy-MM-dd HH:mm:ss"));
+                            query.SetString("todate", DOS_End.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+                        query.SetParameterList("PhyList", PhyID);
+                        query.SetParameterList("FacList", FacName);
 
-                            if (oj[11] == null)
-                                oj[11] = string.Empty;
-                            if (oj[12] == null)
-                                oj[12] = string.Empty;
-                            if (oj[13] == null)
-                                oj[13] = string.Empty;
-                            if (oj[14] == null)
-                                oj[14] = string.Empty;
-                            if (oj[15] == null)
-                                oj[15] = string.Empty;
-                            if (oj[16] == null)
-                                oj[16] = string.Empty;
-
-                            if (oj[17] != null)
-                                FillApptList.E_Super_Bill.Add(oj[17].ToString());
-                            else
-                                FillApptList.E_Super_Bill.Add(string.Empty);
-
-                            if (oj[18] != null)
-                                FillApptList.Birth_Date.Add(Convert.ToDateTime(oj[18].ToString()));
-                            if (oj[19] != null)
-                                FillApptList.Human_Type.Add(oj[19].ToString());
-                           // if (sFacility != null && sFacility.ToUpper() == FacName.FirstOrDefault().ToUpper())
-                            if (ilstFacAncillary.Count > 0)
-                                FillApptList.PhysicianName.Add(oj[12].ToString() + " - " + oj[13].ToString() + " " + oj[14].ToString());
-                            else
+                        Stopwatch LoadApptsDBCall = new Stopwatch();
+                        LoadApptsDBCall.Start();
+                        aryAppointmentList = new ArrayList(query.List());
+                        LoadApptsDBCall.Stop();
+                        time_taken = "LoadAppts DB Call Time : " + LoadApptsDBCall.Elapsed.Seconds + "." + LoadApptsDBCall.Elapsed.Milliseconds + "s. ";
+                        OrdersManager OrderMngr = new OrdersManager();
+                        Orders objOrder = new Orders();
+                        IList<string> ilstOrder = new List<string>();
+                        string sPhyName = string.Empty;
+                        if (aryAppointmentList != null)
+                        {
+                            for (int i = 0; i < aryAppointmentList.Count; i++)
                             {
-                                //Old Code
-                                //FillApptList.PhysicianName.Add(oj[11].ToString() + " " + oj[12].ToString() + " " + oj[13].ToString() + " " + oj[14].ToString());
-                                //Gitlab# 2485 - Physician Name Display Change
-                                sPhyName = string.Empty;
-                                if (oj[14].ToString() != String.Empty)
-                                    sPhyName += oj[14].ToString();
-                                if (oj[12].ToString() != String.Empty)
+                                object[] oj = (object[])aryAppointmentList[i];
+                                objAppointment = new Encounter();
+                                FillApptList.EncounterId.Add(Convert.ToUInt64(oj[0]));
+                                FillApptList.Appointment_Provider_ID.Add(Convert.ToInt32(oj[1]));
+                                FillApptList.Human_ID.Add(Convert.ToUInt64(oj[2]));
+                                FillApptList.Appointment_Date.Add(Convert.ToDateTime(oj[3]));
+                                FillApptList.Duration_Minutes.Add(Convert.ToInt32(oj[4]));
+                                FillApptList.ApptStatus.Add(oj[5].ToString());
+                                string sPatientName = Convert.ToString(oj[6]) + "," + Convert.ToString(oj[7]) + "  " + Convert.ToString(oj[8]) + "  " + Convert.ToString(oj[10]);
+
+                                if (oj[11] == null)
+                                    oj[11] = string.Empty;
+                                if (oj[12] == null)
+                                    oj[12] = string.Empty;
+                                if (oj[13] == null)
+                                    oj[13] = string.Empty;
+                                if (oj[14] == null)
+                                    oj[14] = string.Empty;
+                                if (oj[15] == null)
+                                    oj[15] = string.Empty;
+                                if (oj[16] == null)
+                                    oj[16] = string.Empty;
+
+                                if (oj[17] != null)
+                                    FillApptList.E_Super_Bill.Add(oj[17].ToString());
+                                else
+                                    FillApptList.E_Super_Bill.Add(string.Empty);
+
+                                if (oj[18] != null)
+                                    FillApptList.Birth_Date.Add(Convert.ToDateTime(oj[18].ToString()));
+                                if (oj[19] != null)
+                                    FillApptList.Human_Type.Add(oj[19].ToString());
+                                // if (sFacility != null && sFacility.ToUpper() == FacName.FirstOrDefault().ToUpper())
+                                if (ilstFacAncillary.Count > 0)
+                                    FillApptList.PhysicianName.Add(oj[12].ToString() + " - " + oj[13].ToString() + " " + oj[14].ToString());
+                                else
                                 {
-                                    if (sPhyName != String.Empty)
-                                        sPhyName += "," + oj[12].ToString();
-                                    else
-                                        sPhyName += oj[12].ToString();
+                                    //Old Code
+                                    //FillApptList.PhysicianName.Add(oj[11].ToString() + " " + oj[12].ToString() + " " + oj[13].ToString() + " " + oj[14].ToString());
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    sPhyName = string.Empty;
+                                    if (oj[14].ToString() != String.Empty)
+                                        sPhyName += oj[14].ToString();
+                                    if (oj[12].ToString() != String.Empty)
+                                    {
+                                        if (sPhyName != String.Empty)
+                                            sPhyName += "," + oj[12].ToString();
+                                        else
+                                            sPhyName += oj[12].ToString();
+                                    }
+                                    if (oj[13].ToString() != String.Empty)
+                                        sPhyName += " " + oj[13].ToString();
+                                    if (oj[15].ToString() != String.Empty)
+                                        sPhyName += "," + oj[15].ToString();
+                                    FillApptList.PhysicianName.Add(sPhyName);
                                 }
-                                if (oj[13].ToString() != String.Empty)
-                                    sPhyName += " " + oj[13].ToString();
-                                if (oj[15].ToString() != String.Empty)
-                                    sPhyName += "," + oj[15].ToString();
-                                FillApptList.PhysicianName.Add(sPhyName);
-                            }
-                                
 
-                            FillApptList.FacilityName.Add(oj[16].ToString());
-                            FillApptList.PatientName.Add(sPatientName);
-                            FillApptList.Is_Batch_Created.Add(oj[21].ToString());
-                            if (oj[22] != null)
-                            {
-                                if (oj[22] != "" && Convert.ToInt32(oj[22]) != 0)
+
+                                FillApptList.FacilityName.Add(oj[16].ToString());
+                                FillApptList.PatientName.Add(sPatientName);
+                                FillApptList.Is_Batch_Created.Add(oj[21].ToString());
+                                if (oj[22] != null)
                                 {
-                                    FillApptList.Outstanding_Orders.Add(OrderMngr.GetOrdersByOrderSubmitID(Convert.ToInt32(oj[22])));
+                                    if (oj[22] != "" && Convert.ToInt32(oj[22]) != 0)
+                                    {
+                                        FillApptList.Outstanding_Orders.Add(OrderMngr.GetOrdersByOrderSubmitID(Convert.ToInt32(oj[22])));
+                                    }
+                                    else
+                                    {
+                                        FillApptList.Outstanding_Orders.Add("");
+                                    }
                                 }
                                 else
                                 {
                                     FillApptList.Outstanding_Orders.Add("");
                                 }
-                            }
-                            else
-                            {
-                                FillApptList.Outstanding_Orders.Add("");
-                            }
-                            //if (oj[23] != null)
-                            //FillApptList.Payment_Paid.Add(oj[23].ToString());
-                            //if (oj[23] != null)
-                            //FillApptList.Payment_Paid.Add(oj[23].ToString());
-                            if (oj[23] != null)
-                            {
-                                if (oj[23].ToString().Replace(" ", "") == "()-")
+                                //if (oj[23] != null)
+                                //FillApptList.Payment_Paid.Add(oj[23].ToString());
+                                //if (oj[23] != null)
+                                //FillApptList.Payment_Paid.Add(oj[23].ToString());
+                                if (oj[23] != null)
                                 {
-                                    FillApptList.Perform_EV_Status.Add("");
+                                    if (oj[23].ToString().Replace(" ", "") == "()-")
+                                    {
+                                        FillApptList.Perform_EV_Status.Add("");
+                                    }
+                                    else
+                                    {
+                                        FillApptList.Perform_EV_Status.Add(oj[23].ToString());
+                                    }
                                 }
                                 else
+                                    FillApptList.Perform_EV_Status.Add("");
+
+                                if (oj[24] != null)
                                 {
-                                    FillApptList.Perform_EV_Status.Add(oj[23].ToString());
+
+
+                                    FillApptList.EVMode.Add(oj[24].ToString());
+                                }
+                                else
+                                    FillApptList.EVMode.Add("");
+
+
+                                if (oj[26] != null)
+                                    FillApptList.Payment_Paid.Add(oj[26].ToString());
+
+                                if (oj[25] != null)
+                                    FillApptList.TypeofVisit.Add(oj[25].ToString());
+
+                                if (oj[26] != null)
+                                    FillApptList.Is_ACO_Eligible.Add(oj[26].ToString());
+
+                                //FillApptList.Document_Type.Add(oj[22].ToString());
+
+                            }
+                        }
+
+                        if (isFO_MASetup && FillApptList.Human_ID.ToArray<ulong>().Count() > 0)
+                        {
+                            PatientInsuredPlanManager patMngr = new PatientInsuredPlanManager();
+                            IList<InsurancePlan> objIPList = new List<InsurancePlan>();
+                            IList<InsurancePlan> objIP = new List<InsurancePlan>();
+                            IList<PatientInsuredPlan> objPlanIns = new List<PatientInsuredPlan>();
+
+                            Stopwatch InsPlanDBCall = new Stopwatch();
+                            InsPlanDBCall.Start();
+                            //  objPlanIns = patMngr.GetPlanbyHumanID(FillApptList.Human_ID.ToArray<ulong>(), out objIPList);//remove1
+                            #region New Code
+                            ulong[] human_ID = FillApptList.Human_ID.ToArray<ulong>();
+                            ArrayList arryChkList = null;
+                            IQuery query1 = iMySession.GetNamedQuery("Get.InsurancePlanAndPatientPlanByID");
+                            query1.SetParameterList("HumanID", human_ID);
+                            arryChkList = new ArrayList(query1.List());
+
+                            if (arryChkList != null)
+                            {
+                                for (int i = 0; i < arryChkList.Count; i++)
+                                {
+                                    PatientInsuredPlan objPlan = new PatientInsuredPlan();
+                                    object[] oj = (object[])arryChkList[i];
+                                    objPlan.Insurance_Plan_ID = Convert.ToUInt64(oj[1].ToString());
+                                    objPlan.Human_ID = Convert.ToUInt64(oj[2].ToString());
+                                    objPlanIns.Add(objPlan);
+
+                                    InsurancePlan objInsPlan = new InsurancePlan();
+                                    objInsPlan.Id = Convert.ToUInt64(oj[1].ToString());
+                                    objInsPlan.Carrier_ID = Convert.ToInt32(oj[0].ToString());
+                                    objIPList.Add(objInsPlan);
                                 }
                             }
-                            else
-                                FillApptList.Perform_EV_Status.Add("");
+                            #endregion
+                            InsPlanDBCall.Stop();
+                            time_taken += "InsPlan DB Call Time : " + InsPlanDBCall.Elapsed.Seconds + "." + InsPlanDBCall.Elapsed.Milliseconds + "s. ";
 
-                            if (oj[24] != null)
+                            string[] sPlanid = { "21", "73", "90", "93", "115" };
+                            for (int l = 0; l < FillApptList.Human_ID.Count; l++)
                             {
-
-
-                                FillApptList.EVMode.Add(oj[24].ToString());
-                            }
-                            else
-                                FillApptList.EVMode.Add("");
-
-
-                            if (oj[26] != null)
-                                FillApptList.Payment_Paid.Add(oj[26].ToString());
-
-                            if (oj[25] != null)
-                                FillApptList.TypeofVisit.Add(oj[25].ToString());
-
-                            if (oj[26] != null)
-                                FillApptList.Is_ACO_Eligible.Add(oj[26].ToString());
-
-                            //FillApptList.Document_Type.Add(oj[22].ToString());
-
-                        }
-                    }
-
-                    if (isFO_MASetup && FillApptList.Human_ID.ToArray<ulong>().Count() > 0)
-                    {
-                        PatientInsuredPlanManager patMngr = new PatientInsuredPlanManager();
-                        IList<InsurancePlan> objIPList = new List<InsurancePlan>();
-                        IList<InsurancePlan> objIP = new List<InsurancePlan>();
-                        IList<PatientInsuredPlan> objPlanIns = new List<PatientInsuredPlan>();
-
-                        Stopwatch InsPlanDBCall = new Stopwatch();
-                        InsPlanDBCall.Start();
-                        //  objPlanIns = patMngr.GetPlanbyHumanID(FillApptList.Human_ID.ToArray<ulong>(), out objIPList);//remove1
-                        #region New Code
-                        ulong[] human_ID = FillApptList.Human_ID.ToArray<ulong>();
-                        ArrayList arryChkList = null;
-                        IQuery query1 = iMySession.GetNamedQuery("Get.InsurancePlanAndPatientPlanByID");
-                        query1.SetParameterList("HumanID", human_ID);
-                        arryChkList = new ArrayList(query1.List());
-
-                        if (arryChkList != null)
-                        {
-                            for (int i = 0; i < arryChkList.Count; i++)
-                            {
-                                PatientInsuredPlan objPlan = new PatientInsuredPlan();
-                                object[] oj = (object[])arryChkList[i];
-                                objPlan.Insurance_Plan_ID = Convert.ToUInt64(oj[1].ToString());
-                                objPlan.Human_ID = Convert.ToUInt64(oj[2].ToString());
-                                objPlanIns.Add(objPlan);
-
-                                InsurancePlan objInsPlan = new InsurancePlan();
-                                objInsPlan.Id = Convert.ToUInt64(oj[1].ToString());
-                                objInsPlan.Carrier_ID = Convert.ToInt32(oj[0].ToString());
-                                objIPList.Add(objInsPlan);
-                            }
-                        }
-                        #endregion
-                        InsPlanDBCall.Stop();
-                        time_taken += "InsPlan DB Call Time : " + InsPlanDBCall.Elapsed.Seconds + "." + InsPlanDBCall.Elapsed.Milliseconds + "s. ";
-
-                        string[] sPlanid = { "21", "73", "90", "93", "115" };
-                        for (int l = 0; l < FillApptList.Human_ID.Count; l++)
-                        {
-                            if (objPlanIns.Any(b => b.Human_ID.ToString() == FillApptList.Human_ID[l].ToString()) == true)
-                            {
-                                ulong ulplanID = objPlanIns.Where(d => d.Human_ID == FillApptList.Human_ID[l]).Select(e => e.Insurance_Plan_ID).ToList<ulong>()[0];
-                                objIP = objIPList.Where(item => item.Id == ulplanID).ToList<InsurancePlan>();
-                                if (objIP.Count > 0)
+                                if (objPlanIns.Any(b => b.Human_ID.ToString() == FillApptList.Human_ID[l].ToString()) == true)
                                 {
-                                    if (sPlanid.Any(f => f.ToString() == objIP[0].Carrier_ID.ToString()) == true)
-                                        FillApptList.Is_Medicare_Plan.Add("Y");
+                                    ulong ulplanID = objPlanIns.Where(d => d.Human_ID == FillApptList.Human_ID[l]).Select(e => e.Insurance_Plan_ID).ToList<ulong>()[0];
+                                    objIP = objIPList.Where(item => item.Id == ulplanID).ToList<InsurancePlan>();
+                                    if (objIP.Count > 0)
+                                    {
+                                        if (sPlanid.Any(f => f.ToString() == objIP[0].Carrier_ID.ToString()) == true)
+                                            FillApptList.Is_Medicare_Plan.Add("Y");
+                                        else
+                                            FillApptList.Is_Medicare_Plan.Add("N");
+                                    }
                                     else
                                         FillApptList.Is_Medicare_Plan.Add("N");
                                 }
                                 else
                                     FillApptList.Is_Medicare_Plan.Add("N");
                             }
-                            else
-                                FillApptList.Is_Medicare_Plan.Add("N");
                         }
-                    }
 
-                    BlockdaysManager blockMngr = new BlockdaysManager();
-                    Stopwatch BlockDaysDBCall = new Stopwatch();
-                    ArrayList aryBlockList = null;
-                    IList<Blockdays> blockList = new List<Blockdays>();
-                    BlockDaysDBCall.Start();
-                    // FillApptList.blockList = blockMngr.GetBlockDaysUsingPhyFacApptDt(PhyID, FacName, DOS_Start, DOS_End, sView);//remove2
-                    # region New Code
-                    if (sView == "SwitchToWeekView")
-                    {
-                        IQuery query1 = null;
-                        if (IsAncillary)
-                            query1 = iMySession.GetNamedQuery("Get.BlockDays.DateandTechByWeekandMonth");
-                        else
-                            query1 = iMySession.GetNamedQuery("Get.BlockDays.DateandPhyByWeekandMonth");
-                        query1.SetString(0, DOS_Start.AddDays(((int)DayOfWeek.Sunday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
-                        query1.SetString(1, DOS_End.AddDays(((int)DayOfWeek.Saturday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
-                        query1.SetParameterList("FacList", FacName);
-                        query1.SetParameterList("PhyList", PhyID);
-                        aryBlockList = new ArrayList(query1.List());
-                    }
-                    else if (sView == "SwitchToMonthView")
-                    {
-                        IQuery query1 = null;
-                        if (IsAncillary)
-                            query1 = iMySession.GetNamedQuery("Get.BlockDays.DateandTechByWeekandMonth");
-                        else
-                            query1 = iMySession.GetNamedQuery("Get.BlockDays.DateandPhyByWeekandMonth");
-                        DateTime StartOfMonth = new DateTime(DOS_Start.Year, DOS_Start.Month, 1, DOS_Start.Hour, DOS_Start.Minute, DOS_Start.Second);
-                        DateTime EndOfMonth = StartOfMonth.AddMonths(1).AddDays(-1);
-                        query1.SetString(0, StartOfMonth.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss"));
-                        query1.SetString(1, EndOfMonth.AddDays(7).ToString("yyyy-MM-dd HH:mm:ss"));
-                        query1.SetParameterList("FacList", FacName);
-                        query1.SetParameterList("PhyList", PhyID);
-                        aryBlockList = new ArrayList(query1.List());
-                    }
-                    else
-                    {
-                        IQuery query2 = null;
-                        if (IsAncillary)
-                            query2 = iMySession.GetNamedQuery("Get.BlockDays.DateandTech");
-                        else
-                            query2 = iMySession.GetNamedQuery("Get.BlockDays.DateandPhy");
-                        query2.SetString(0, DOS_Start.ToString("yyyy-MM-dd"));
-                        query2.SetParameterList("FacList", FacName);
-                        query2.SetParameterList("PhyList", PhyID);
-                        aryBlockList = new ArrayList(query2.List());
-                    }
-
-                    Blockdays block = null;
-                    if (aryBlockList != null)
-                    {
-                        for (int i = 0; i < aryBlockList.Count; i++)
+                        BlockdaysManager blockMngr = new BlockdaysManager();
+                        Stopwatch BlockDaysDBCall = new Stopwatch();
+                        ArrayList aryBlockList = null;
+                        IList<Blockdays> blockList = new List<Blockdays>();
+                        BlockDaysDBCall.Start();
+                        // FillApptList.blockList = blockMngr.GetBlockDaysUsingPhyFacApptDt(PhyID, FacName, DOS_Start, DOS_End, sView);//remove2
+                        #region New Code
+                        if (sView == "SwitchToWeekView")
                         {
-                            object[] oj = (object[])aryBlockList[i];
-                            block = new Blockdays();
-                            block.Id = Convert.ToUInt64(oj[0]);
+                            IQuery query1 = null;
                             if (IsAncillary)
-                                block.Machine_Technician_Library_ID = Convert.ToUInt64(oj[14]);
+                                query1 = iMySession.GetNamedQuery("Get.BlockDays.DateandTechByWeekandMonth");
                             else
-                                block.Physician_ID = Convert.ToUInt64(oj[1]);
-                            block.Facility_Name = oj[2].ToString();
-                            block.Block_Date = Convert.ToDateTime(oj[3]);
-                            block.From_Time = oj[4].ToString();
-                            block.To_Time = oj[5].ToString();
-                            block.From_Date_Choosen = Convert.ToDateTime(oj[6].ToString());
-                            block.To_Date_Choosen = Convert.ToDateTime(oj[7].ToString());
-                            block.Reason = oj[8].ToString();
-                            block.Day_Choosen = oj[9].ToString();
-                            block.Block_Type = oj[10].ToString();
-
-
-                            blockList.Add(block);
+                                query1 = iMySession.GetNamedQuery("Get.BlockDays.DateandPhyByWeekandMonth");
+                            query1.SetString(0, DOS_Start.AddDays(((int)DayOfWeek.Sunday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
+                            query1.SetString(1, DOS_End.AddDays(((int)DayOfWeek.Saturday) - ((int)DOS_Start.DayOfWeek)).ToString("yyyy-MM-dd HH:mm:ss"));
+                            query1.SetParameterList("FacList", FacName);
+                            query1.SetParameterList("PhyList", PhyID);
+                            aryBlockList = new ArrayList(query1.List());
                         }
-                    }
-                    FillApptList.blockList = blockList;
+                        else if (sView == "SwitchToMonthView")
+                        {
+                            IQuery query1 = null;
+                            if (IsAncillary)
+                                query1 = iMySession.GetNamedQuery("Get.BlockDays.DateandTechByWeekandMonth");
+                            else
+                                query1 = iMySession.GetNamedQuery("Get.BlockDays.DateandPhyByWeekandMonth");
+                            DateTime StartOfMonth = new DateTime(DOS_Start.Year, DOS_Start.Month, 1, DOS_Start.Hour, DOS_Start.Minute, DOS_Start.Second);
+                            DateTime EndOfMonth = StartOfMonth.AddMonths(1).AddDays(-1);
+                            query1.SetString(0, StartOfMonth.AddDays(-7).ToString("yyyy-MM-dd HH:mm:ss"));
+                            query1.SetString(1, EndOfMonth.AddDays(7).ToString("yyyy-MM-dd HH:mm:ss"));
+                            query1.SetParameterList("FacList", FacName);
+                            query1.SetParameterList("PhyList", PhyID);
+                            aryBlockList = new ArrayList(query1.List());
+                        }
+                        else
+                        {
+                            IQuery query2 = null;
+                            if (IsAncillary)
+                                query2 = iMySession.GetNamedQuery("Get.BlockDays.DateandTech");
+                            else
+                                query2 = iMySession.GetNamedQuery("Get.BlockDays.DateandPhy");
+                            query2.SetString(0, DOS_Start.ToString("yyyy-MM-dd"));
+                            query2.SetParameterList("FacList", FacName);
+                            query2.SetParameterList("PhyList", PhyID);
+                            aryBlockList = new ArrayList(query2.List());
+                        }
 
-                    #endregion
-                    BlockDaysDBCall.Stop();
-                    time_taken += "Block Days DB Call Time : " + BlockDaysDBCall.Elapsed.Seconds + "." + BlockDaysDBCall.Elapsed.Milliseconds + "s. ";
+                        Blockdays block = null;
+                        if (aryBlockList != null)
+                        {
+                            for (int i = 0; i < aryBlockList.Count; i++)
+                            {
+                                object[] oj = (object[])aryBlockList[i];
+                                block = new Blockdays();
+                                block.Id = Convert.ToUInt64(oj[0]);
+                                if (IsAncillary)
+                                    block.Machine_Technician_Library_ID = Convert.ToUInt64(oj[14]);
+                                else
+                                    block.Physician_ID = Convert.ToUInt64(oj[1]);
+                                block.Facility_Name = oj[2].ToString();
+                                block.Block_Date = Convert.ToDateTime(oj[3]);
+                                block.From_Time = oj[4].ToString();
+                                block.To_Time = oj[5].ToString();
+                                block.From_Date_Choosen = Convert.ToDateTime(oj[6].ToString());
+                                block.To_Date_Choosen = Convert.ToDateTime(oj[7].ToString());
+                                block.Reason = oj[8].ToString();
+                                block.Day_Choosen = oj[9].ToString();
+                                block.Block_Type = oj[10].ToString();
+
+
+                                blockList.Add(block);
+                            }
+                        }
+                        FillApptList.blockList = blockList;
+
+                        #endregion
+                        BlockDaysDBCall.Stop();
+                        time_taken += "Block Days DB Call Time : " + BlockDaysDBCall.Elapsed.Seconds + "." + BlockDaysDBCall.Elapsed.Milliseconds + "s. ";
+                        iMySession.Close();
+                    }
+                }
+                return FillApptList;
+            }
+
+            public ulong GetPreviousEncounterID(ulong uPhysicianID, ulong uHumanID, ulong uCurrentEncounterID)
+            {
+                ulong uPreviousEncounterID = 0;
+                IList<FileManagementIndex> list_image = new List<FileManagementIndex>();
+                int phy_id = Convert.ToInt32(uPhysicianID);
+                using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    try
+                    {
+                        uPreviousEncounterID = mySession.CreateCriteria(typeof(Encounter))
+                       .SetProjection(Projections.Max("Id"))
+                       .Add(Expression.Eq("Appointment_Provider_ID", phy_id))
+                       .Add(Expression.Between("Id", 0, (uCurrentEncounterID - 1))).Add(!Expression.Eq("Date_of_Service", DateTime.MinValue))
+                       .Add(Expression.Eq("Human_ID", uHumanID)).Add(!Expression.Eq("Id", uCurrentEncounterID)).List<ulong>()[0];
+                    }
+                    catch
+                    {
+                        uPreviousEncounterID = 0;
+                    }
+                }
+                return uPreviousEncounterID;
+            }
+
+            public Encounter GetEncounterByEncounterIDArchive(ulong EncounterID)
+            {
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                Encounter objencounter = new Encounter();
+                // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT enc.* FROM encounter enc where enc.encounter_id=" + EncounterID.ToString() +
+                        " union all SELECT arc.* FROM encounter_arc arc  where arc.encounter_id=" + EncounterID.ToString() + ";").AddEntity("e", typeof(Encounter));
+                    ilstEncounter = sqlquery.List<Encounter>();
+                    iMySession.Close();
+
+                    if (ilstEncounter.Count > 0)
+                    {
+                        objencounter = ilstEncounter[0];
+                    }
+                }
+                return objencounter;
+                // return crit.List<Encounter>();
+            }
+            //BugID:47782 START
+            public void GetEandMCount(ulong EncounterID, string UserRole, out bool isEandMCPTPresent, out bool isEandMICDPresent, out bool isEandMPriICDPresent)
+            {
+                EAndMCodingManager emMnger = new EAndMCodingManager();
+                EandMCodingICDManager emICDMngr = new EandMCodingICDManager();
+                int EMCPT_count = 0, EMICD_count = 0;
+
+                EMCPT_count = emMnger.GetEMCodeList(EncounterID).Count();
+                if (EMCPT_count > 0)
+                {
+                    isEandMCPTPresent = true;
+                }
+                else
+                    isEandMCPTPresent = false;
+                EMICD_count = emICDMngr.GetEMICDCount(EncounterID);
+                if (EMICD_count > 0)
+                {
+                    isEandMICDPresent = true;
+                }
+                else
+                    isEandMICDPresent = false;
+                isEandMPriICDPresent = emMnger.IsPrimaryFilled(EncounterID, UserRole);
+            }
+            //BugID:47782 END
+
+            public IList<ImmunizationHistory> GetEncounterListForBulkExportInImmunizationRegistry(int provider_id, string fromDate, string toDate)
+            {
+                IList<ImmunizationHistory> ilstImmunization = new List<ImmunizationHistory>();
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    // ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT e.* FROM encounter e where encounter_provider_id=" + provider_id + " and date_of_service >='" + fromDate + "' and date_of_service <='" + toDate + "' group by human_id;").AddEntity("e", typeof(Encounter));
+                    // ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT e.* FROM encounter e,immunization_history i where e.human_id=i.human_id and e.encounter_provider_id=" + provider_id + " and e.date_of_service >='" + fromDate + "' and e.date_of_service <='" + toDate + "'  group by e.human_id,e.encounter_id").AddEntity("e", typeof(Encounter));
+                    //ilstEncounter = sqlquery.List<Encounter>();
+                    ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT i.* FROM immunization_history i where i.physician_id=" + provider_id + " and date_format(STR_TO_DATE(i.administered_date, '%d-%M-%Y'),'%Y-%m-%d') >='" + fromDate + "' and date_format(STR_TO_DATE(i.administered_date, '%d-%M-%Y'),'%Y-%m-%d') <='" + toDate + "'").AddEntity("i", typeof(ImmunizationHistory));
+                    ilstImmunization = sqlquery.List<ImmunizationHistory>();
                     iMySession.Close();
                 }
+                return ilstImmunization;
+                // return sqlquery.List<Encounter>();
             }
-            return FillApptList;
-        }
-
-        public ulong GetPreviousEncounterID(ulong uPhysicianID, ulong uHumanID, ulong uCurrentEncounterID)
-        {
-            ulong uPreviousEncounterID = 0;
-            IList<FileManagementIndex> list_image = new List<FileManagementIndex>();
-            int phy_id = Convert.ToInt32(uPhysicianID);
-            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            //BugID:49297 
+            //BugID:49585
+            public ArrayList GetEncounterListByDOSRange(ulong humanId, string fromDate, string toDate)
             {
+                ArrayList EncIDs = new ArrayList();
+                fromDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
+                toDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
+                using (ISession imysession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    IQuery query = imysession.GetNamedQuery("Get.EncounterIDListByDOS");
+                    query.SetString(0, humanId.ToString());
+                    query.SetString(1, fromDate);
+                    query.SetString(2, toDate);
+                    query.SetString(3, humanId.ToString());
+                    query.SetString(4, fromDate);
+                    query.SetString(5, toDate);
+                    EncIDs = new ArrayList(query.List());
+                }
+                return EncIDs;
+            }
+
+            public ArrayList GetPatientListBulkAccess(string fromdate, string todate, string PhyId)
+            {
+                string Fromdate1 = fromdate;
+                string todate1 = todate;
+                string PhyId1 = PhyId;
+                ArrayList objPatientLstOutput = new ArrayList();
+
+                using (ISession imysession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    IQuery query = session.GetISession().GetNamedQuery("Get.Demographics.PatientDetailsBulkAccess");
+                    query.SetParameter(0, Fromdate1);
+                    query.SetParameter(1, todate1);
+                    query.SetParameter(2, PhyId1);
+                    objPatientLstOutput = new ArrayList(query.List());
+                }
+                return objPatientLstOutput;
+            }
+
+            public bool GetEligibleEncCaseReporting(out IList<string> EligibleEncList)
+            {
+                bool Is_Eligible = false;
+                EligibleEncList = new List<string>();
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    IQuery query = session.GetISession().GetNamedQuery("Get.CaseReporting.EligibleEncList");
+                    EligibleEncList = query.List<string>();
+                }
+                if (EligibleEncList.Count > 0)
+                {
+                    Is_Eligible = true;
+                }
+
+                return Is_Eligible;
+            }
+            //Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
+            public string TriggerSPforProvReviewStatusTracker(string mode, ulong encounter_id)
+            {
+                return string.Empty;
+
+                ArrayList objProvRevTracker = new ArrayList();
                 try
                 {
-                    uPreviousEncounterID = mySession.CreateCriteria(typeof(Encounter))
-                   .SetProjection(Projections.Max("Id"))
-                   .Add(Expression.Eq("Appointment_Provider_ID", phy_id))
-                   .Add(Expression.Between("Id", 0, (uCurrentEncounterID - 1))).Add(!Expression.Eq("Date_of_Service", DateTime.MinValue))
-                   .Add(Expression.Eq("Human_ID", uHumanID)).Add(!Expression.Eq("Id", uCurrentEncounterID)).List<ulong>()[0];
-                }
-                catch
-                {
-                    uPreviousEncounterID = 0;
-                }
-            }
-            return uPreviousEncounterID;
-        }
-
-        public Encounter GetEncounterByEncounterIDArchive(ulong EncounterID)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            Encounter objencounter = new Encounter();
-            // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT enc.* FROM encounter enc where enc.encounter_id=" + EncounterID.ToString() +
-                    " union all SELECT arc.* FROM encounter_arc arc  where arc.encounter_id=" + EncounterID.ToString() + ";").AddEntity("e", typeof(Encounter));
-                ilstEncounter = sqlquery.List<Encounter>();
-                iMySession.Close();
-
-                if (ilstEncounter.Count > 0)
-                {
-                    objencounter = ilstEncounter[0];
-                }
-            }
-            return objencounter;
-            // return crit.List<Encounter>();
-        }
-        //BugID:47782 START
-        public void GetEandMCount(ulong EncounterID, string UserRole, out bool isEandMCPTPresent, out bool isEandMICDPresent, out bool isEandMPriICDPresent)
-        {
-            EAndMCodingManager emMnger = new EAndMCodingManager();
-            EandMCodingICDManager emICDMngr = new EandMCodingICDManager();
-            int EMCPT_count = 0, EMICD_count = 0;
-
-            EMCPT_count = emMnger.GetEMCodeList(EncounterID).Count();
-            if (EMCPT_count > 0)
-            {
-                isEandMCPTPresent = true;
-            }
-            else
-                isEandMCPTPresent = false;
-            EMICD_count = emICDMngr.GetEMICDCount(EncounterID);
-            if (EMICD_count > 0)
-            {
-                isEandMICDPresent = true;
-            }
-            else
-                isEandMICDPresent = false;
-            isEandMPriICDPresent = emMnger.IsPrimaryFilled(EncounterID, UserRole);
-        }
-        //BugID:47782 END
-
-        public IList<ImmunizationHistory> GetEncounterListForBulkExportInImmunizationRegistry(int provider_id, string fromDate, string toDate)
-        {
-            IList<ImmunizationHistory> ilstImmunization = new List<ImmunizationHistory>();
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                // ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT e.* FROM encounter e where encounter_provider_id=" + provider_id + " and date_of_service >='" + fromDate + "' and date_of_service <='" + toDate + "' group by human_id;").AddEntity("e", typeof(Encounter));
-                // ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT e.* FROM encounter e,immunization_history i where e.human_id=i.human_id and e.encounter_provider_id=" + provider_id + " and e.date_of_service >='" + fromDate + "' and e.date_of_service <='" + toDate + "'  group by e.human_id,e.encounter_id").AddEntity("e", typeof(Encounter));
-                //ilstEncounter = sqlquery.List<Encounter>();
-                ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT i.* FROM immunization_history i where i.physician_id=" + provider_id + " and date_format(STR_TO_DATE(i.administered_date, '%d-%M-%Y'),'%Y-%m-%d') >='" + fromDate + "' and date_format(STR_TO_DATE(i.administered_date, '%d-%M-%Y'),'%Y-%m-%d') <='" + toDate + "'").AddEntity("i", typeof(ImmunizationHistory));
-                ilstImmunization = sqlquery.List<ImmunizationHistory>();
-                iMySession.Close();
-            }
-            return ilstImmunization;
-            // return sqlquery.List<Encounter>();
-        }
-        //BugID:49297 
-        //BugID:49585
-        public ArrayList GetEncounterListByDOSRange(ulong humanId, string fromDate, string toDate)
-        {
-            ArrayList EncIDs = new ArrayList();
-            fromDate = Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd");
-            toDate = Convert.ToDateTime(toDate).ToString("yyyy-MM-dd");
-            using (ISession imysession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                IQuery query = imysession.GetNamedQuery("Get.EncounterIDListByDOS");
-                query.SetString(0, humanId.ToString());
-                query.SetString(1, fromDate);
-                query.SetString(2, toDate);
-                query.SetString(3, humanId.ToString());
-                query.SetString(4, fromDate);
-                query.SetString(5, toDate);
-                EncIDs = new ArrayList(query.List());
-            }
-            return EncIDs;
-        }
-
-        public ArrayList GetPatientListBulkAccess(string fromdate, string todate, string PhyId)
-        {
-            string Fromdate1 = fromdate;
-            string todate1 = todate;
-            string PhyId1 = PhyId;
-            ArrayList objPatientLstOutput = new ArrayList();
-
-            using (ISession imysession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                IQuery query = session.GetISession().GetNamedQuery("Get.Demographics.PatientDetailsBulkAccess");
-                query.SetParameter(0, Fromdate1);
-                query.SetParameter(1, todate1);
-                query.SetParameter(2, PhyId1);
-                objPatientLstOutput = new ArrayList(query.List());
-            }
-            return objPatientLstOutput;
-        }
-
-        public bool GetEligibleEncCaseReporting(out IList<string> EligibleEncList)
-        {
-            bool Is_Eligible = false;
-            EligibleEncList = new List<string>();
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                IQuery query = session.GetISession().GetNamedQuery("Get.CaseReporting.EligibleEncList");
-                EligibleEncList = query.List<string>();
-            }
-            if (EligibleEncList.Count > 0)
-            {
-                Is_Eligible = true;
-            }
-
-            return Is_Eligible;
-        }
-        //Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
-        public string TriggerSPforProvReviewStatusTracker(string mode, ulong encounter_id)
-        {
-            return string.Empty;
-
-            ArrayList objProvRevTracker = new ArrayList();
-            try
-            {
-                using (ISession iSession = NHibernateSessionManager.Instance.CreateISession())
-                {
-                    IQuery iMyQuery = iSession.GetNamedQuery("SP.ReCalculate.ProviderReviewStatus");
-                    iMyQuery.SetParameter("input_mode", mode);
-                    iMyQuery.SetParameter("enc_id", encounter_id);
-                    objProvRevTracker = new ArrayList(iMyQuery.List());
-                    iSession.Close();
-                    return string.Empty;
-                }
-            }
-
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    return "ERROR~" + Convert.ToString(ex.InnerException.Message).Replace(Environment.NewLine, string.Empty);
-                }
-
-                return "ERROR~" + Convert.ToString(ex.Message).Replace(Environment.NewLine, string.Empty);
-            }
-        }
-
-        public IList<Encounter> GetOrderingPhysicianByOrderSubmitID(ulong iOrderSubmit)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT i.* FROM encounter i where i.order_submit_id=" + iOrderSubmit + "").AddEntity("i", typeof(Encounter));
-                ilstEncounter = sqlquery.List<Encounter>();
-                iMySession.Close();
-            }
-            return ilstEncounter;
-        }
-
-
-        public IList<Encounter> GetAppointmentForBulkEncounterTemplate(string ProviderId, DateTime DOS, string facilityName)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            ArrayList EncounterList = null;
-
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                IQuery query = iMySession.GetNamedQuery("GetAppointmentForBulkExport");
-                query.SetString(0, DOS.ToString("yyyy-MM-dd") + "%");
-                query.SetString(1, facilityName);
-                query.SetParameterList("ProviderId", ProviderId.Split(',').ToArray<string>());
-                EncounterList = new ArrayList(query.List());
-
-                Encounter ObjEnc = null;
-                if (EncounterList != null)
-                {
-                    for (int i = 0; i < EncounterList.Count; i++)
+                    using (ISession iSession = NHibernateSessionManager.Instance.CreateISession())
                     {
-                        ObjEnc = new Encounter();
-                        object[] obj = (object[])EncounterList[i];
-
-                        if (obj[0] != null) ObjEnc.Encounter_ID = Convert.ToUInt64(obj[0]);
-                        if (obj[1] != null) ObjEnc.Human_ID = Convert.ToUInt64(obj[1].ToString());
-                        if (obj[2] != null) ObjEnc.Encounter_Provider_ID = Convert.ToInt32(obj[2].ToString());
-                        if (obj[3] != null) ObjEnc.Appointment_Date = Convert.ToDateTime(obj[3].ToString());
-                        ilstEncounter.Add(ObjEnc);
+                        IQuery iMyQuery = iSession.GetNamedQuery("SP.ReCalculate.ProviderReviewStatus");
+                        iMyQuery.SetParameter("input_mode", mode);
+                        iMyQuery.SetParameter("enc_id", encounter_id);
+                        objProvRevTracker = new ArrayList(iMyQuery.List());
+                        iSession.Close();
+                        return string.Empty;
                     }
                 }
-                iMySession.Close();
-            }
-            return ilstEncounter;
-        }
-        //sFacility, sSelectedDate, sPhyName
-        public IList<Encounter> GetAppointmentForBulkEncounterTemplateFacility(string Facility, DateTime DOS, string sPhyName)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            ArrayList EncounterList = null;
 
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                IQuery query = iMySession.GetNamedQuery("GetAppointmentForBulkExportFacilty");
-                query.SetString(0, DOS.ToString("yyyy-MM-dd") + "%");
-                query.SetString(1, sPhyName);
-                query.SetParameterList("FacilityName", Facility.Split('|').ToArray<string>());
-                EncounterList = new ArrayList(query.List());
-
-                Encounter ObjEnc = null;
-                if (EncounterList != null)
+                catch (Exception ex)
                 {
-                    for (int i = 0; i < EncounterList.Count; i++)
+                    if (ex.InnerException != null)
                     {
-                        ObjEnc = new Encounter();
-                        object[] obj = (object[])EncounterList[i];
+                        return "ERROR~" + Convert.ToString(ex.InnerException.Message).Replace(Environment.NewLine, string.Empty);
+                    }
 
-                        if (obj[0] != null) ObjEnc.Encounter_ID = Convert.ToUInt64(obj[0]);
-                        if (obj[1] != null) ObjEnc.Human_ID = Convert.ToUInt64(obj[1].ToString());
-                        if (obj[2] != null) ObjEnc.Encounter_Provider_ID = Convert.ToInt32(obj[2].ToString());
-                        if (obj[3] != null) ObjEnc.Facility_Name = obj[3].ToString();
-                        if (obj[4] != null) ObjEnc.Appointment_Date = Convert.ToDateTime(obj[4].ToString());
-                        ilstEncounter.Add(ObjEnc);
+                    return "ERROR~" + Convert.ToString(ex.Message).Replace(Environment.NewLine, string.Empty);
+                }
+            }
+
+            public IList<Encounter> GetOrderingPhysicianByOrderSubmitID(ulong iOrderSubmit)
+            {
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT i.* FROM encounter i where i.order_submit_id=" + iOrderSubmit + "").AddEntity("i", typeof(Encounter));
+                    ilstEncounter = sqlquery.List<Encounter>();
+                    iMySession.Close();
+                }
+                return ilstEncounter;
+            }
+
+
+            public IList<Encounter> GetAppointmentForBulkEncounterTemplate(string ProviderId, DateTime DOS, string facilityName)
+            {
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                ArrayList EncounterList = null;
+
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    IQuery query = iMySession.GetNamedQuery("GetAppointmentForBulkExport");
+                    query.SetString(0, DOS.ToString("yyyy-MM-dd") + "%");
+                    query.SetString(1, facilityName);
+                    query.SetParameterList("ProviderId", ProviderId.Split(',').ToArray<string>());
+                    EncounterList = new ArrayList(query.List());
+
+                    Encounter ObjEnc = null;
+                    if (EncounterList != null)
+                    {
+                        for (int i = 0; i < EncounterList.Count; i++)
+                        {
+                            ObjEnc = new Encounter();
+                            object[] obj = (object[])EncounterList[i];
+
+                            if (obj[0] != null) ObjEnc.Encounter_ID = Convert.ToUInt64(obj[0]);
+                            if (obj[1] != null) ObjEnc.Human_ID = Convert.ToUInt64(obj[1].ToString());
+                            if (obj[2] != null) ObjEnc.Encounter_Provider_ID = Convert.ToInt32(obj[2].ToString());
+                            if (obj[3] != null) ObjEnc.Appointment_Date = Convert.ToDateTime(obj[3].ToString());
+                            ilstEncounter.Add(ObjEnc);
+                        }
+                    }
+                    iMySession.Close();
+                }
+                return ilstEncounter;
+            }
+            //sFacility, sSelectedDate, sPhyName
+            public IList<Encounter> GetAppointmentForBulkEncounterTemplateFacility(string Facility, DateTime DOS, string sPhyName)
+            {
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                ArrayList EncounterList = null;
+
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    IQuery query = iMySession.GetNamedQuery("GetAppointmentForBulkExportFacilty");
+                    query.SetString(0, DOS.ToString("yyyy-MM-dd") + "%");
+                    query.SetString(1, sPhyName);
+                    query.SetParameterList("FacilityName", Facility.Split('|').ToArray<string>());
+                    EncounterList = new ArrayList(query.List());
+
+                    Encounter ObjEnc = null;
+                    if (EncounterList != null)
+                    {
+                        for (int i = 0; i < EncounterList.Count; i++)
+                        {
+                            ObjEnc = new Encounter();
+                            object[] obj = (object[])EncounterList[i];
+
+                            if (obj[0] != null) ObjEnc.Encounter_ID = Convert.ToUInt64(obj[0]);
+                            if (obj[1] != null) ObjEnc.Human_ID = Convert.ToUInt64(obj[1].ToString());
+                            if (obj[2] != null) ObjEnc.Encounter_Provider_ID = Convert.ToInt32(obj[2].ToString());
+                            if (obj[3] != null) ObjEnc.Facility_Name = obj[3].ToString();
+                            if (obj[4] != null) ObjEnc.Appointment_Date = Convert.ToDateTime(obj[4].ToString());
+                            ilstEncounter.Add(ObjEnc);
+                        }
+                    }
+                    iMySession.Close();
+                }
+                return ilstEncounter;
+            }
+
+
+            public void UpdateDeleteDocumentation(Encounter EncRecord, string MacAddress, WFObject ehrwfobj, DateTime StartTime, string sOwner)
+            {
+                UpdateEncounterList(EncRecord, string.Empty);
+                WFObjectManager objWfObjectMngr = new WFObjectManager();
+                //objWfObjectMngr.DeleteDocumentation(ehrwfobj.Obj_System_Id, ehrwfobj.Obj_Type, sOwner, string.Empty);
+                objWfObjectMngr.MoveToNextProcess(ehrwfobj.Obj_System_Id, ehrwfobj.Obj_Type, 4, sOwner, StartTime, ehrwfobj.Current_Process, null, null);
+            }
+
+
+            public IList<Encounter> GetEncounterUsingHumanIDandFacility(ulong ulHumanID, string facility)
+            {
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+
+                    ICriteria crit = iMySession.CreateCriteria(typeof(Encounter)).Add(Expression.Eq("Human_ID", ulHumanID)).Add(Expression.Eq("Facility_Name", facility)).AddOrder(Order.Desc("Date_of_Service"));
+                    ilstEncounter = crit.List<Encounter>();
+                    iMySession.Close();
+                }
+                return ilstEncounter;
+                //return crit.List<Encounter>();
+            }
+
+
+            public int CalculateAge(DateTime birthDate)
+            {
+                // cache the current time
+                DateTime now = DateTime.Today; // today is fine, don't need the timestamp from now
+                                               // get the difference in years
+                int years = 0;
+                if (birthDate != null)
+                    years = now.Year - birthDate.Year;
+                // subtract another year if we're before the
+                // birth day in the current year
+                if (now.Month < birthDate.Month || (now.Month == birthDate.Month && now.Day < birthDate.Day))
+                    --years;
+
+                return years;
+            }
+
+
+            public IList<Encounter> GetPhoneEncounter(ulong ulHumanID)
+            {
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    ICriteria crit = iMySession.CreateCriteria(typeof(Encounter)).Add(Expression.Eq("Is_Phone_Encounter", "Y")).Add(Expression.Eq("Is_EandM_Submitted", "N")).AddOrder(Order.Desc("Id")).SetMaxResults(1);
+                    ilstEncounter = crit.List<Encounter>();
+                    iMySession.Close();
+                }
+                return ilstEncounter;
+            }
+
+            public DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, ulong ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLegalOrg)
+            {
+                DataTable dtEncounter = new DataTable();
+                ArrayList arylstEncounter = null;
+                ArrayList arylstColumnHeadings = null;
+
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    IQuery query2 = iMySession.GetNamedQuery("Fill.GetEncountersByRange.ColumnHeadings");
+                    arylstColumnHeadings = new ArrayList(query2.List());
+
+                    string sQuery = "SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
+        "cast(date_format(h.Birth_Date, '%d-%b-%Y') as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
+        "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
+    "ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
+     "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
+     "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition" +
+     "union all " +
+     "SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
+        "cast(date_format(h.Birth_Date, '%d-%b-%Y') as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
+        "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
+    "ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
+     "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
+     "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition";
+
+                    string sWhereCondition = "date(enc.Date_of_Service) between '" + dtFromDate.ToString("yyyy-MM-dd") + "' and '" + dtToDate.ToString("yyyy-MM-dd") + "' h.Legal_Org ='" + sLegalOrg + "'";
+
+                    if (ulHumanID != 0)
+                        sWhereCondition += "and h.Human_ID = " + ulHumanID.ToString() + " ";
+                    if (dtPatientDOB != DateTime.MinValue)
+                        sWhereCondition += "and h.Birth_Date = '" + dtPatientDOB.ToString("yyyy-MM-dd") + "' ";
+                    sWhereCondition += "having Carrier_ID =" + ulCarrierID + " ";
+                    if (sMemberID != string.Empty)
+                        sWhereCondition += "and member_id =" + sMemberID + " ";
+
+                    sQuery = sQuery.Replace(":WhereCondition", sWhereCondition);
+
+                    ISQLQuery sql = iMySession.CreateSQLQuery(sQuery);
+                    arylstEncounter = new ArrayList(sql.List());
+
+                    object[] objlst = (object[])arylstColumnHeadings[0];
+                    for (int iCount = 0; iCount < objlst.Length; iCount++)
+                    {
+                        dtEncounter.Columns.Add(objlst[iCount].ToString(), typeof(System.String));
+                    }
+
+                    for (int iCount = 0; iCount < arylstEncounter.Count; iCount++)
+                    {
+                        DataRow dr = dtEncounter.NewRow();
+
+                        object[] objColumnlst = (object[])arylstEncounter[iCount];
+
+                        for (int iMyCount = 0; iMyCount < objColumnlst.Length; iMyCount++)
+                        {
+                            dr[iMyCount] = objColumnlst[iMyCount].ToString();
+                        }
+                        dtEncounter.Rows.Add(dr);
+                    }
+                    iMySession.Close();
+                }
+
+                return dtEncounter;
+            }
+
+            public DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, ulong ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLastName, string sFirstName, string sPlanId, string sLegalOrg)
+            {
+                DataTable dtEncounter = new DataTable();
+                ArrayList arylstEncounter = null;
+                ArrayList arylstColumnHeadings = null;
+
+                using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                {
+                    IQuery query2 = iMySession.GetNamedQuery("Fill.GetEncountersByRange.ColumnHeadings");
+                    arylstColumnHeadings = new ArrayList(query2.List());
+
+                    //                string sQuery = "select * from (SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
+                    //    "cast(h.Birth_Date as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
+                    //    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
+                    //"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
+                    // "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
+                    // "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition" +
+                    // "union all " +
+                    // "SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
+                    //    "cast(h.Birth_Date as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
+                    //    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
+                    //"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
+                    // "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
+                    // "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition ) as d order by DOS";
+
+                    string sQuery = "select * from (SELECT concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,cast(h.Birth_Date as char(100)) as Patient_DOB, enc.Human_ID as Patient_Account_Number, ifnull(pat.policy_holder_id,'') as Member_ID,  cast(enc.Date_of_Service as char(100)) as DOS, " +
+        "concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
+        "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name, c.Carrier_Name as Payer, ifnull(ins.insurance_plan_name,'') as Plan_Name , enc.Visit_Type as Type_of_Visit, enc.Facility_Name,  " +
+    "enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
+     "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
+     "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) " +
+     "left join carrier c on (c.carrier_id=ins.carrier_id) where :WhereCondition" +
+     "union all " +
+     "SELECT concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,cast(h.Birth_Date as char(100)) as Patient_DOB, enc.Human_ID as Patient_Account_Number, ifnull(pat.policy_holder_id,'') as Member_ID, cast(enc.Date_of_Service as char(100)) as DOS,   " +
+        "concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
+        "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name,c.Carrier_Name as Payer, ifnull(ins.insurance_plan_name,'') as Plan_Name ,  enc.Visit_Type as Type_of_Visit, enc.Facility_Name,  " +
+    "enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
+     "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
+     "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) " +
+     "left join carrier c on (c.carrier_id=ins.carrier_id) where :WhereCondition ) as d order by Patient_Name,Patient_DOB,Patient_Account_Number,Member_ID,DOS,Provider_Name,Payer,Plan_Name,Facility_Name";
+
+                    string sWhereCondition = "date(enc.Date_of_Service) between '" + dtFromDate.ToString("yyyy-MM-dd") + "' and '" + dtToDate.ToString("yyyy-MM-dd") + "' and h.Legal_Org ='" + sLegalOrg + "' and pat.Insurance_Type='PRIMARY'";
+
+                    if (ulHumanID != 0)
+                        sWhereCondition += "and h.Human_ID = " + ulHumanID.ToString() + " ";
+                    if (sLastName != string.Empty)
+                        sWhereCondition += "and h.Last_Name ='" + sLastName + "'  ";
+                    if (sFirstName != string.Empty)
+                        sWhereCondition += "and h.First_Name ='" + sFirstName + "'  ";
+                    if (sPlanId != string.Empty)
+                        sWhereCondition += "and pat.insurance_plan_id in (" + sPlanId + ")  ";
+                    if (sMemberID != string.Empty)
+                        sWhereCondition += "and pat.policy_holder_id like '" + sMemberID + "%' ";
+                    if (dtPatientDOB != DateTime.MinValue)
+                        sWhereCondition += "and h.Birth_Date = '" + dtPatientDOB.ToString("yyyy-MM-dd") + "' ";
+                    sWhereCondition += "having Carrier_ID =" + ulCarrierID + " ";
+
+
+                    sQuery = sQuery.Replace(":WhereCondition", sWhereCondition);
+
+                    ISQLQuery sql = iMySession.CreateSQLQuery(sQuery);
+                    arylstEncounter = new ArrayList(sql.List());
+
+                    object[] objlst = (object[])arylstColumnHeadings[0];
+                    for (int iCount = 0; iCount < objlst.Length; iCount++)
+                    {
+                        dtEncounter.Columns.Add(objlst[iCount].ToString(), typeof(System.String));
+                    }
+
+                    for (int iCount = 0; iCount < arylstEncounter.Count; iCount++)
+                    {
+                        DataRow dr = dtEncounter.NewRow();
+
+                        object[] objColumnlst = (object[])arylstEncounter[iCount];
+
+                        for (int iMyCount = 0; iMyCount < objColumnlst.Length; iMyCount++)
+                        {
+                            dr[iMyCount] = objColumnlst[iMyCount].ToString();
+                        }
+                        dtEncounter.Rows.Add(dr);
+                    }
+
+                    iMySession.Close();
+                }
+
+                return dtEncounter;
+            }
+            public IList<string> GetEncounterListForIndexing(ulong ulHuman_ID, string sMonths)
+            {
+                ISession iMySessiondesc = NHibernateSessionManager.Instance.CreateISession();
+                ArrayList arrList;
+                IList<string> sDescList = new List<string>();
+                IQuery query = iMySessiondesc.GetNamedQuery("GetEncounterDetailsForIndexing");
+                query.SetString(0, ulHuman_ID.ToString());
+                query.SetString(1, sMonths);
+                query.SetString(2, ulHuman_ID.ToString());
+                query.SetString(3, sMonths);
+                arrList = new ArrayList(query.List());
+                foreach (object[] oj in arrList)
+                    sDescList.Add(oj[1].ToString() + " ~ " + oj[2].ToString() + "^" + oj[0].ToString());
+
+                return sDescList;
+            }
+            public void writeCopypreviousencounterblobtable(ulong encounterid, GenerateXml objxml, IList<Encounter> lst)
+            {
+                ISession MySession = Session.GetISession();
+                // ITransaction trans = null;
+
+
+                using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+                {
+                    if (lst.Count > 0)
+                    {
+                        WriteBlob(encounterid, objxml.itemDoc, MySession, null, lst, null, objxml, false);
+
+
+                        trans.Commit();
                     }
                 }
-                iMySession.Close();
+
+
             }
-            return ilstEncounter;
-        }
-
-
-        public void UpdateDeleteDocumentation(Encounter EncRecord, string MacAddress, WFObject ehrwfobj, DateTime StartTime, string sOwner)
-        {
-            UpdateEncounterList(EncRecord, string.Empty);
-            WFObjectManager objWfObjectMngr = new WFObjectManager();
-            //objWfObjectMngr.DeleteDocumentation(ehrwfobj.Obj_System_Id, ehrwfobj.Obj_Type, sOwner, string.Empty);
-            objWfObjectMngr.MoveToNextProcess(ehrwfobj.Obj_System_Id, ehrwfobj.Obj_Type, 4, sOwner, StartTime, ehrwfobj.Current_Process, null, null);
-        }
-
-
-        public IList<Encounter> GetEncounterUsingHumanIDandFacility(ulong ulHumanID, string facility)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            public void writeCopyprevioushumanblobtable(ulong humanid, IList<Encounter> lst, GenerateXml objhumanxml)
             {
-
-                ICriteria crit = iMySession.CreateCriteria(typeof(Encounter)).Add(Expression.Eq("Human_ID", ulHumanID)).Add(Expression.Eq("Facility_Name", facility)).AddOrder(Order.Desc("Date_of_Service"));
-                ilstEncounter = crit.List<Encounter>();
-                iMySession.Close();
-            }
-            return ilstEncounter;
-            //return crit.List<Encounter>();
-        }
+                ISession MySession = Session.GetISession();
+                // ITransaction trans = null;
 
 
-        public int CalculateAge(DateTime birthDate)
-        {
-            // cache the current time
-            DateTime now = DateTime.Today; // today is fine, don't need the timestamp from now
-            // get the difference in years
-            int years = 0;
-            if (birthDate != null)
-                years = now.Year - birthDate.Year;
-            // subtract another year if we're before the
-            // birth day in the current year
-            if (now.Month < birthDate.Month || (now.Month == birthDate.Month && now.Day < birthDate.Day))
-                --years;
-
-            return years;
-        }
-
-
-        public IList<Encounter> GetPhoneEncounter(ulong ulHumanID)
-        {
-            IList<Encounter> ilstEncounter = new List<Encounter>();
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                ICriteria crit = iMySession.CreateCriteria(typeof(Encounter)).Add(Expression.Eq("Is_Phone_Encounter", "Y")).Add(Expression.Eq("Is_EandM_Submitted", "N")).AddOrder(Order.Desc("Id")).SetMaxResults(1);
-                ilstEncounter = crit.List<Encounter>();
-                iMySession.Close();
-            }
-            return ilstEncounter;
-        }
-
-        public DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, ulong ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLegalOrg)
-        {
-            DataTable dtEncounter = new DataTable();
-            ArrayList arylstEncounter = null;
-            ArrayList arylstColumnHeadings = null;
-
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                IQuery query2 = iMySession.GetNamedQuery("Fill.GetEncountersByRange.ColumnHeadings");
-                arylstColumnHeadings = new ArrayList(query2.List());
-
-                string sQuery = "SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
-    "cast(date_format(h.Birth_Date, '%d-%b-%Y') as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
-    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
-"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
- "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
- "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition" +
- "union all " +
- "SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
-    "cast(date_format(h.Birth_Date, '%d-%b-%Y') as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
-    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
-"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
- "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
- "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition";
-
-                string sWhereCondition = "date(enc.Date_of_Service) between '" + dtFromDate.ToString("yyyy-MM-dd") + "' and '" + dtToDate.ToString("yyyy-MM-dd") + "' h.Legal_Org ='" + sLegalOrg + "'";
-
-                if (ulHumanID != 0)
-                    sWhereCondition += "and h.Human_ID = " + ulHumanID.ToString() + " ";
-                if (dtPatientDOB != DateTime.MinValue)
-                    sWhereCondition += "and h.Birth_Date = '" + dtPatientDOB.ToString("yyyy-MM-dd") + "' ";
-                sWhereCondition += "having Carrier_ID =" + ulCarrierID + " ";
-                if (sMemberID != string.Empty)
-                    sWhereCondition += "and member_id =" + sMemberID + " ";
-
-                sQuery = sQuery.Replace(":WhereCondition", sWhereCondition);
-
-                ISQLQuery sql = iMySession.CreateSQLQuery(sQuery);
-                arylstEncounter = new ArrayList(sql.List());
-
-                object[] objlst = (object[])arylstColumnHeadings[0];
-                for (int iCount = 0; iCount < objlst.Length; iCount++)
+                using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
                 {
-                    dtEncounter.Columns.Add(objlst[iCount].ToString(), typeof(System.String));
-                }
-
-                for (int iCount = 0; iCount < arylstEncounter.Count; iCount++)
-                {
-                    DataRow dr = dtEncounter.NewRow();
-
-                    object[] objColumnlst = (object[])arylstEncounter[iCount];
-
-                    for (int iMyCount = 0; iMyCount < objColumnlst.Length; iMyCount++)
-                    {
-                        dr[iMyCount] = objColumnlst[iMyCount].ToString();
-                    }
-                    dtEncounter.Rows.Add(dr);
-                }
-                iMySession.Close();
-            }
-
-            return dtEncounter;
-        }
-
-        public DataTable GetEncountersbyDOSRange(ulong ulHumanID, DateTime dtPatientDOB, string sMemberID, ulong ulCarrierID, DateTime dtFromDate, DateTime dtToDate, string sLastName, string sFirstName, string sPlanId, string sLegalOrg)
-        {
-            DataTable dtEncounter = new DataTable();
-            ArrayList arylstEncounter = null;
-            ArrayList arylstColumnHeadings = null;
-
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                IQuery query2 = iMySession.GetNamedQuery("Fill.GetEncountersByRange.ColumnHeadings");
-                arylstColumnHeadings = new ArrayList(query2.List());
-
-//                string sQuery = "select * from (SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
-//    "cast(h.Birth_Date as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
-//    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
-//"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
-// "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
-// "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition" +
-// "union all " +
-// "SELECT cast(enc.Date_of_Service as char(100)) as DOS, enc.Human_ID as Patient_Account_Number,concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,  " +
-//    "cast(h.Birth_Date as char(100)) as Patient_DOB,enc.Facility_Name,concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
-//    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name," +
-//"ifnull(pat.policy_holder_id,'') as Member_ID,ifnull(ins.insurance_plan_name,'') as Plan_Name ,enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
-// "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
-// "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) where :WhereCondition ) as d order by DOS";
-
-                string sQuery = "select * from (SELECT concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,cast(h.Birth_Date as char(100)) as Patient_DOB, enc.Human_ID as Patient_Account_Number, ifnull(pat.policy_holder_id,'') as Member_ID,  cast(enc.Date_of_Service as char(100)) as DOS, " +
-    "concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
-    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name, c.Carrier_Name as Payer, ifnull(ins.insurance_plan_name,'') as Plan_Name , enc.Visit_Type as Type_of_Visit, enc.Facility_Name,  " +
-"enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
- "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
- "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) " +
- "left join carrier c on (c.carrier_id=ins.carrier_id) where :WhereCondition" +
- "union all " +
- "SELECT concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,cast(h.Birth_Date as char(100)) as Patient_DOB, enc.Human_ID as Patient_Account_Number, ifnull(pat.policy_holder_id,'') as Member_ID, cast(enc.Date_of_Service as char(100)) as DOS,   " +
-    "concat(ifnull(p.Physician_Prefix,''),' ',ifnull(p.Physician_First_Name,''),' '," +
-    "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name,c.Carrier_Name as Payer, ifnull(ins.insurance_plan_name,'') as Plan_Name ,  enc.Visit_Type as Type_of_Visit, enc.Facility_Name,  " +
-"enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
- "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
- "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) " +
- "left join carrier c on (c.carrier_id=ins.carrier_id) where :WhereCondition ) as d order by Patient_Name,Patient_DOB,Patient_Account_Number,Member_ID,DOS,Provider_Name,Payer,Plan_Name,Facility_Name";
-
-                string sWhereCondition = "date(enc.Date_of_Service) between '" + dtFromDate.ToString("yyyy-MM-dd") + "' and '" + dtToDate.ToString("yyyy-MM-dd") + "' and h.Legal_Org ='" + sLegalOrg + "' and pat.Insurance_Type='PRIMARY'";
-
-                if (ulHumanID != 0)
-                    sWhereCondition += "and h.Human_ID = " + ulHumanID.ToString() + " ";
-                if (sLastName != string.Empty)
-                    sWhereCondition += "and h.Last_Name ='" + sLastName + "'  ";
-                if (sFirstName != string.Empty)
-                    sWhereCondition += "and h.First_Name ='" + sFirstName + "'  ";
-                if (sPlanId != string.Empty)
-                    sWhereCondition += "and pat.insurance_plan_id in (" + sPlanId + ")  ";
-                if (sMemberID != string.Empty)
-                    sWhereCondition += "and pat.policy_holder_id like '" + sMemberID + "%' ";
-                if (dtPatientDOB != DateTime.MinValue)
-                    sWhereCondition += "and h.Birth_Date = '" + dtPatientDOB.ToString("yyyy-MM-dd") + "' ";
-                sWhereCondition += "having Carrier_ID =" + ulCarrierID + " ";
 
 
-                sQuery = sQuery.Replace(":WhereCondition", sWhereCondition);
 
-                ISQLQuery sql = iMySession.CreateSQLQuery(sQuery);
-                arylstEncounter = new ArrayList(sql.List());
-
-                object[] objlst = (object[])arylstColumnHeadings[0];
-                for (int iCount = 0; iCount < objlst.Length; iCount++)
-                {
-                    dtEncounter.Columns.Add(objlst[iCount].ToString(), typeof(System.String));
-                }
-
-                for (int iCount = 0; iCount < arylstEncounter.Count; iCount++)
-                {
-                    DataRow dr = dtEncounter.NewRow();
-
-                    object[] objColumnlst = (object[])arylstEncounter[iCount];
-
-                    for (int iMyCount = 0; iMyCount < objColumnlst.Length; iMyCount++)
-                    {
-                        dr[iMyCount] = objColumnlst[iMyCount].ToString();
-                    }
-                    dtEncounter.Rows.Add(dr);
-                }
-
-                iMySession.Close();
-            }
-
-            return dtEncounter;
-        }
-        public IList<string> GetEncounterListForIndexing(ulong ulHuman_ID, string sMonths)
-        {
-            ISession iMySessiondesc = NHibernateSessionManager.Instance.CreateISession();
-            ArrayList arrList;
-            IList<string> sDescList = new List<string>();
-            IQuery query = iMySessiondesc.GetNamedQuery("GetEncounterDetailsForIndexing");
-            query.SetString(0, ulHuman_ID.ToString());
-            query.SetString(1, sMonths);
-            query.SetString(2, ulHuman_ID.ToString());
-            query.SetString(3, sMonths);
-            arrList = new ArrayList(query.List());
-            foreach (object[] oj in arrList)
-                sDescList.Add( oj[1].ToString() + " ~ " + oj[2].ToString() + "^" + oj[0].ToString());
-
-            return sDescList;
-        }
-        public void writeCopypreviousencounterblobtable(ulong encounterid, GenerateXml objxml, IList<Encounter> lst)
-        {
-            ISession MySession = Session.GetISession();
-            // ITransaction trans = null;
-
-
-            using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
-            {
-                if (lst.Count > 0)
-                {
-                    WriteBlob(encounterid, objxml.itemDoc, MySession, null, lst, null, objxml, false);
-
-
+                    WriteBlob(humanid, objhumanxml.itemDoc, MySession, null, lst, null, objhumanxml, false);
                     trans.Commit();
+
                 }
-            }
 
-
-        }
-        public void writeCopyprevioushumanblobtable(ulong humanid, IList<Encounter> lst, GenerateXml objhumanxml)
-        {
-            ISession MySession = Session.GetISession();
-            // ITransaction trans = null;
-
-
-            using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
-            {
-
-
-
-                WriteBlob(humanid, objhumanxml.itemDoc, MySession, null, lst, null, objhumanxml, false);
-                trans.Commit();
 
             }
 
 
         }
-
-
     }
-}
