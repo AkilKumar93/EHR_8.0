@@ -901,8 +901,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                 #endregion
                                 #region "Code Modified by balaji.TJ 2023-01-06"
-                                WriteBlob(HumanId, XMLObj.itemDoc, MySession, SavePastMedicalList, UpdatePastMedicalList, DeletePastMedicalList, XMLObj, false);
-                                #endregion
+                                if (SavePastMedicalList.Count > 0 || UpdatePastMedicalList.Count > 0 || DeletePastMedicalList.Count > 0)
+                                {
+                                    WriteBlob(HumanId, XMLObj.itemDoc, MySession, SavePastMedicalList, UpdatePastMedicalList, DeletePastMedicalList, XMLObj, false);
+                                }
+                                else
+                                {
+                                    PastMedicalHistoryMasterManager objPFSHMaster = new PastMedicalHistoryMasterManager();
+                                    objPFSHMaster.WriteBlob(HumanId, XMLObj.itemDoc, MySession, SaveListMaster, UpdateListMaster, DeleteListMaster, XMLObj, false);
+
+                                }
+                                    #endregion
 
 
                             }

@@ -481,7 +481,7 @@ namespace Acurus.Capella.UI
                         // ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('1011190');", true);
 
                         issuccess = false;
-                        XmlText.Close();
+                        //XmlText.Close();
                         // UtilityManager.GenerateXML(ClientSession.EncounterId.ToString(), "Encounter");
                         // goto ln;
                         return issuccess;
