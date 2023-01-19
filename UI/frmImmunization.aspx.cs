@@ -141,11 +141,14 @@ namespace Acurus.Capella.UI
             IList<Immunization> ImmunizationTabList = new List<Immunization>();
             IList<Immunization> ImmunizationMenuList = new List<Immunization>();
             IList<ImmunizationHistory> ImmHislst = new List<ImmunizationHistory>();
+            IList<ImmunizationHistory> ImmHislstage = new List<ImmunizationHistory>();
             ImmunizationDTO ImmunizationDTO = new ImmunizationDTO();
+            Human objHuman = new Human();
 
             IList<string> ilstImmunizationTag = new List<string>();
             ilstImmunizationTag.Add("ImmunizationList");
             ilstImmunizationTag.Add("ImmunizationHistoryList");
+            ilstImmunizationTag.Add("HumanList");
 
             IList<object> ilstImmnBlobList = new List<object>();
             ilstImmnBlobList = UtilityManager.ReadBlob(HumanID, ilstImmunizationTag);
@@ -173,16 +176,8 @@ namespace Acurus.Capella.UI
 
                 }
 
-                if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
-                {
-                    age = Convert.ToInt32(UtilityManager.CalculateAge(Convert.ToDateTime(ClientSession.PatientPaneList[0].Birth_Date)));
 
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
-                }
-
+               
                 if (ilstImmnBlobList[1] != null)
                 {
                     for (int iCount = 0; iCount < ((IList<object>)ilstImmnBlobList[1]).Count; iCount++)
@@ -190,6 +185,25 @@ namespace Acurus.Capella.UI
                         ImmHislst.Add((ImmunizationHistory)((IList<object>)ilstImmnBlobList[1])[iCount]);
                     }
                 }
+
+                if (ilstImmnBlobList[2] != null)
+                {
+                    for (int iCount = 0; iCount < ((IList<object>)ilstImmnBlobList[2]).Count; iCount++)
+                    {
+                        objHuman = ((Human)((IList<object>)ilstImmnBlobList[2])[iCount]);
+                    }
+                }
+
+                if (objHuman != null && objHuman.Id > 0)
+                {
+                    age = Convert.ToInt32(UtilityManager.CalculateAge(Convert.ToDateTime(objHuman.Birth_Date)));
+
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Age Tag Missing", "DisplayErrorMessage('000039');", true);//Throw error when Age is missing
+                }
+
 
             }
 
