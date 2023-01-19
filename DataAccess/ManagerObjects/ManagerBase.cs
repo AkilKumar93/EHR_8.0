@@ -2389,6 +2389,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public void WriteBlob(ulong EntityID, XmlDocument xmlDoc, ISession MySession, IList<T> saveList, IList<T> updateList, IList<T> deleteList, GenerateXml objGenerateXml, Boolean bIsEncounterXMLCreate)
         {
+            if (EntityID == 0)
+            {
+                return;
+            }
+
             string sXMLType = "";
             string tagname = "";
             if (saveList != null && saveList.Count > 0)
