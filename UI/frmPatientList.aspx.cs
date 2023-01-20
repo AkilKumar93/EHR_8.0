@@ -54,11 +54,49 @@ namespace Acurus.Capella.UI
 
 
 
-        dtFromDOS.Text = "01" + "-" + ListofMonth[DateTime.Now.AddMonths(-2).Month] + "-" + DateTime.Now.Year.ToString();
-        if (DateTime.Now.Day < 10)
-            dtToDOS.Text = "0" + DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString();
-        else
-            dtToDOS.Text = DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString(); CreateEmptyGrid();
+                if (DateTime.Now.Month.ToString() == "1")
+                {
+                    dtFromDOS.Text = "01" + "-" + ListofMonth[DateTime.Now.AddMonths(-2).Month] + "-" + DateTime.Now.AddYears(-1).Year.ToString();
+                }
+                else if (DateTime.Now.Month.ToString() == "2")
+                {
+                    dtFromDOS.Text = "01" + "-" + "JAN" + "-" + DateTime.Now.Year.ToString();
+                }
+                else
+                {
+                    dtFromDOS.Text = "01" + "-" + ListofMonth[DateTime.Now.AddMonths(-2).Month] + "-" + DateTime.Now.Year.ToString();
+                }
+                
+                //if (DateTime.Now.Day < 10)
+                //    dtToDOS.Text = "0" + DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString();
+                //else
+                //    dtToDOS.Text = DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString(); CreateEmptyGrid();
+
+
+                if (DateTime.Now.Day < 10)
+                {
+                    if (DateTime.Now.Month.ToString() == "1")
+                    {
+                        dtToDOS.Text = "0" + DateTime.Now.Day.ToString() + "-" + "JAN" + "-" + DateTime.Now.Year.ToString();
+                    }
+                    else
+                    {
+                        dtToDOS.Text = "0" + DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString();
+                    }
+                }
+                else
+                {
+                    if (DateTime.Now.Month.ToString() == "1")
+                    {
+                        dtToDOS.Text = DateTime.Now.Day.ToString() + "-" + "JAN" + "-" + DateTime.Now.Year.ToString();
+                        CreateEmptyGrid();
+                    }
+                    else
+                    {
+                        dtToDOS.Text = DateTime.Now.Day.ToString() + "-" + ListofMonth[DateTime.Now.AddMonths(-1).Month] + "-" + DateTime.Now.Year.ToString(); CreateEmptyGrid();
+                    }
+
+                }
                 lblNoofResults.Text = "No record(s) found.";
 
                 ListItem lst = new ListItem();
