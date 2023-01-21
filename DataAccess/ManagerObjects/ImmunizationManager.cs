@@ -1561,7 +1561,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             try
                             {
                                // if (XMLObj.strXmlFilePath != null && XMLObj.strXmlFilePath != "")
-                                    if (XMLObj.itemDoc.InnerXml != null && XMLObj.itemDoc.InnerXml != "")
+                                    if (XMLObj!=null)
                                     {
                                    // XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
                                     int trycount = 0;
@@ -1569,7 +1569,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     try
                                     {
                                         //XMLObj.itemDoc.Save(XMLObj.strXmlFilePath);
-                                        WriteBlob(immunHist.Human_ID, XMLObj.itemDoc, MySession, null, null, immulist, XMLObj, false);
+                                        WriteBlob(immulist[0].Human_ID, XMLObj.itemDoc, MySession, null, null, immulist, XMLObj, false);
                                     }
                                     catch (Exception xmlexcep)
                                     {
