@@ -554,6 +554,7 @@ function CloseImplantable() {
         $find("btnAdd").click();
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         $(top.window.document).find("#btnCloseImplantable").click();
+        EnableSaveImplantableDiagnosticOrder('false');
         return false;
         //$("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
         //                       "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
