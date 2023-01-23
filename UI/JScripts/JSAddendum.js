@@ -129,12 +129,12 @@ function OnbtnSaveAndCloseClick(sender, eventArgs) {
         }
     }
     showTime(sender, eventArgs);
-    if (v1 == 0)
-        sender.set_autoPostBack(true);
-    else {
-        v1 == 0;
-        __doPostBack('btnMoveToProviderReview');
-    }
+//  if (v1 == 0)
+       sender.set_autoPostBack(true);
+    //else {
+    //    v1 == 0;
+    //    __doPostBack('btnMoveToProviderReview');
+    //}
 }
 var v = 0;
 function OnbtnSaveAndClose(sender, eventArgs) {

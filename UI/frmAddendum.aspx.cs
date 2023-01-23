@@ -556,7 +556,7 @@ namespace Acurus.Capella.UI
                 }
                 else if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) || ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_Physician))
                 {
-                    if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) && objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() != "ADDENDUM_CORRECTION")
+                    if (ClientSession.UserRole.ToUpper() == GetEnumDescription(UserType.eUserType_PhysicanAssistant) && objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() != "" && objFillEncounterandWFObject.AddendumWFRecord.Current_Process.ToUpper() != "ADDENDUM_CORRECTION")
                     {
                         ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "isReview();", true);
                         return;
