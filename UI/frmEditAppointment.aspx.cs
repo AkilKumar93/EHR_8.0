@@ -3309,7 +3309,7 @@ namespace Acurus.Capella.UI
 
                             if (hdnEncounter_Physician_id.Value != "" && hdnEncounter_Physician_id.Value != "0")//vasanth
                             {
-                                tabReferringProvAndPCP.SelectedIndex = 1;
+                               //tabReferringProvAndPCP.SelectedIndex = 1;
                                 //lblReferringName.Text = "PCP. Provider";
                                 //lblReferingFacility.Text = "PCP. Facility";
                                 //lblReferingAddress.Text = "PCP. Address";
