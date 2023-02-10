@@ -1623,8 +1623,10 @@ namespace Acurus.Capella.UI.WebServices
                     {
                         for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[0]).Count; iCount++)
                         {
-                            lstimm.Add((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
-
+                            if (Convert.ToUInt64(((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]).Encounter_Id) == ClientSession.EncounterId)
+                            {
+                                lstimm.Add((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
+                            }
 
                         }
                         ImmDTO.Immunization = lstimm.Where(a => !CPT_ImmDelcode.Contains(a.Procedure_Code)).ToList<Immunization>();
@@ -1634,8 +1636,10 @@ namespace Acurus.Capella.UI.WebServices
                     {
                         for (int iCount = 0; iCount < ((IList<object>)ilstEandMBlobFinal[1]).Count; iCount++)
                         {
-                            lstimmhis.Add((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
-
+                            if (Convert.ToUInt64(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]).Encounter_ID) == ClientSession.EncounterId)
+                            {
+                                lstimmhis.Add((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
+                            }
 
                         }
                         //if (CPT_ImmDelcode.IndexOf(ImmunizationHistory.Procedure_Code.Trim()) != -1)
