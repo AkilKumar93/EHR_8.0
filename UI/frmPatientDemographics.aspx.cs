@@ -343,13 +343,20 @@ namespace Acurus.Capella.UI
 
                 if (ddlPatientRelation.SelectedItem.Text.ToUpper() == "SELF")
                 {
-                    Human_Token lstPatientResult = new Human_Token();
-                    Human_TokenManager objPatientResult = new Human_TokenManager();
-                    lstPatientResult = objPatientResult.GetHumanTokenbyhumanid(ulPatientID);
-                    if(lstPatientResult!=null)
+                    //Human_Token lstPatientResult = new Human_Token();
+                    //Human_TokenManager objPatientResult = new Human_TokenManager();
+                    //lstPatientResult = objPatientResult.GetHumanTokenbyhumanid(ulPatientID);
+                    string Dob = "";
+                    if (dtpPatientDOB.Text != "")
                     {
-                        HiddenPatientName.Value = lstPatientResult.Result + "&" + ulPatientID.ToString();
-                        TextBox2.Text = lstPatientResult.Result;
+                        Dob = Convert.ToDateTime(dtpPatientDOB.Text).ToString("dd-MMM-yyyy");
+                    }
+
+                    string lstPatientResult = txtPatientlastname.Text + ", " + txtPatientfirstname.Text + " |" + "DOB: " + Dob + "|" + ddlPatientsex.Text + " | ACC#: " + ulPatientID.ToString() + " | PATIENT TYPE: REGULAR";
+                    if (lstPatientResult != null)
+                    {
+                        HiddenPatientName.Value = lstPatientResult + "&" + ulPatientID.ToString();
+                        TextBox2.Text = lstPatientResult;
                         TextBox2.Enabled = false;
                         TextBox2.CssClass = "nonEditabletxtbox";
                         TextBox2.Attributes.Add("data-human-id", ulPatientID.ToString());
@@ -853,7 +860,86 @@ namespace Acurus.Capella.UI
             };
            return JsonConvert.SerializeObject(result);
         }
+        [System.Web.Script.Services.ScriptMethod()]
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static string SavePlanData(object[] name, string Human_id)
+        {
+            IList<PatientInsuredPlan> savelist = new List<PatientInsuredPlan>();
+            IList<PatientInsuredPlan> updatelist = new List<PatientInsuredPlan>();
+            IList<PatientInsuredPlan> Getlist = new List<PatientInsuredPlan>();
+            IList<PatientInsuredPlan> Templistlist = new List<PatientInsuredPlan>();
+            Eligibility_VerficationManager EligibilityMngr = new Eligibility_VerficationManager();
+            PatientInsuredPlanManager objmanager = new PatientInsuredPlanManager();
+            Getlist = objmanager.getInsurancePoliciesByHumanId(Convert.ToUInt64(Human_id));
+            IList<Eligibility_Verification> EligList = new List<Eligibility_Verification>();
 
+            foreach (object[] oj in name)
+            {
+                PatientInsuredPlan obj = new PatientInsuredPlan();
+                Templistlist = (from m in Getlist where m.Id == Convert.ToUInt64(oj[11]) select m).ToList<PatientInsuredPlan>();
+                if (Templistlist.Count > 0)
+                {
+                    Templistlist[0].Insurance_Type = oj[0].ToString();
+                    Templistlist[0].Policy_Holder_ID = oj[2].ToString();
+                    Templistlist[0].Relationship = oj[3].ToString();
+                    Templistlist[0].Effective_Start_Date = Convert.ToDateTime(oj[6].ToString());
+
+                    Templistlist[0].Termination_Date = Convert.ToDateTime(oj[7].ToString());
+                    if (oj[8].ToString().ToUpper() == "ACTIVE")
+
+                        Templistlist[0].Active = "Yes";
+                    else
+                        Templistlist[0].Active = "No";
+
+                    Templistlist[0].Sort_Order = Convert.ToInt32(oj[9].ToString());
+                    Templistlist[0].Insurance_Plan_ID = Convert.ToUInt64(oj[10].ToString());
+                    Templistlist[0].Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
+                    Templistlist[0].Modified_By = ClientSession.UserName;
+                    Templistlist[0].Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    updatelist.Add(Templistlist[0]);
+                    EligList = EligibilityMngr.GetEligDetailsUsingHumanandPolicyHolderID(Convert.ToUInt64(Human_id), oj[2].ToString());
+
+                    if (EligList != null && EligList.Count > 0)
+                    {
+
+                        EligList[0].Insurance_Plan_ID = Convert.ToUInt64(oj[10].ToString());
+
+                        EligibilityMngr.UpdateEligibilityVerificationInformatnion(EligList[0], string.Empty);
+                        EligList = EligibilityMngr.GetEligDetailsUsingHumanandPolicyHolderIDandInsPlanID(Convert.ToUInt64(Human_id), oj[2].ToString(), Convert.ToUInt64(oj[10].ToString()));
+                    }
+
+                }
+                else
+                {
+
+                    obj.Insurance_Type = oj[0].ToString();
+                    obj.Policy_Holder_ID = oj[2].ToString();
+                    obj.Relationship = oj[3].ToString();
+                    obj.Effective_Start_Date = Convert.ToDateTime(oj[6].ToString());
+
+                    obj.Termination_Date = Convert.ToDateTime(oj[7].ToString());
+                    if (oj[8].ToString().ToUpper() == "ACTIVE")
+
+                        obj.Active = "Yes";
+                    else
+                        obj.Active = "No";
+
+                    obj.Sort_Order = Convert.ToInt32(oj[9].ToString());
+                    obj.Insurance_Plan_ID = Convert.ToUInt64(oj[10].ToString());
+                    obj.Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
+                    obj.Created_By = ClientSession.UserName;
+                    obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    savelist.Add(obj);
+                }
+
+
+
+            }
+            objmanager.BatchAddUpdatePatInsured(savelist, updatelist, String.Empty);
+
+
+            return "Success";
+        }
         protected void btnSave_Click(object sender, EventArgs e)
         {
             string YesNoMessage = hdnYesNoMessage.Value;
@@ -1448,6 +1534,8 @@ namespace Acurus.Capella.UI
             string Raf_Cal_Parameters = string.Empty;
             if (objHumanDTO.HumanDetails != null)
                 Raf_Cal_Parameters = objHumanDTO.HumanDetails.Id + "^" + objHumanDTO.HumanDetails.Birth_Date + "^" + objHumanDTO.HumanDetails.Sex;
+
+            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "saveplan", "saveplanDetails();", true);
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Stoploadcursor", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
@@ -1824,14 +1912,14 @@ namespace Acurus.Capella.UI
             {
                 List = from h in iStaticlookuplist orderby h.Sort_Order select h;
             }
-            //if (List != null)
-            //{
-            //    foreach (var i in List)
-            //    {
-            //        cboHumanType.Items.Add(i.Value);
-            //    }
-            //    cboHumanType.SelectedIndex = 0;
-            //}
+            if (List != null)
+            {
+                foreach (var i in List)
+                {
+                    cboHumanType.Items.Add(i.Value);
+                }
+                cboHumanType.SelectedIndex = 0;
+            }
             ddlDeclaredBankruptcy.Items.Clear();
             ilstStatiLookUpList = objStaticLookUpMngr.getStaticLookupByFieldName("DECLAREDBANKRUPTCY", "Sort_Order");
             if (ilstStatiLookUpList != null && ilstStatiLookUpList.Count > 0) //code added by balaji.tj
@@ -2433,14 +2521,14 @@ namespace Acurus.Capella.UI
                 //    }
 
                 //}
-                //for (int i = 0; i < cboHumanType.Items.Count; i++)
-                //{
-                //    if (Convert.ToString(cboHumanType.Items[i].Value).ToUpper() == objHumanDTO.HumanDetails.Human_Type.ToUpper())
-                //    {
-                //        cboHumanType.SelectedIndex = i;
-                //        break;
-                //    }
-                //}
+                for (int i = 0; i < cboHumanType.Items.Count; i++)
+                {
+                    if (Convert.ToString(cboHumanType.Items[i].Value).ToUpper() == objHumanDTO.HumanDetails.Human_Type.ToUpper())
+                    {
+                        cboHumanType.SelectedIndex = i;
+                        break;
+                    }
+                }
 
                 for (int i = 0; i < ddlDeclaredBankruptcy.Items.Count; i++)
                 {
@@ -2976,7 +3064,7 @@ namespace Acurus.Capella.UI
                 objHuman.Date_Of_Death = Convert.ToDateTime("1/1/0001");
                 objHuman.Reason_For_Death = string.Empty;
             }
-           // objHuman.Human_Type = cboHumanType.Text;
+            objHuman.Human_Type = cboHumanType.Text;
             objHuman.Mothers_Maiden_Name = txtMothersMaidenName.Text;
             objHuman.Immunization_Registry_Status = ddlImmunizationRegStatus.SelectedItem.Text;
             objHuman.Publicity_Code = ddlPublicityCode.SelectedItem.Text;

@@ -1050,15 +1050,6 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.TextBox txtGuarantorFirstName;
 
         /// <summary>
-        /// lblGuarantorMiddleName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGuarantorMiddleName;
-
-        /// <summary>
         /// txtGuarantorMiddleName control.
         /// </summary>
         /// <remarks>
@@ -1527,15 +1518,6 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.Label lblNoofPolicies;
 
         /// <summary>
-        /// pnlDemoStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlDemoStatus;
-
-        /// <summary>
         /// txtNoofPolicies control.
         /// </summary>
         /// <remarks>
@@ -1617,13 +1599,22 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.DropDownList ddlReferredToCollection;
 
         /// <summary>
-        /// Panel1 control.
+        /// lblHumanType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel1;
+        protected global::System.Web.UI.WebControls.Label lblHumanType;
+
+        /// <summary>
+        /// cboHumanType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList cboHumanType;
 
         /// <summary>
         /// lblDeclaredBankruptcy control.
@@ -1777,6 +1768,24 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnaddins;
+
+        /// <summary>
+        /// txtStartdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadMaskedTextBox txtStartdate;
+
+        /// <summary>
+        /// txtEnddate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadMaskedTextBox txtEnddate;
 
         /// <summary>
         /// rdstatusactive control.

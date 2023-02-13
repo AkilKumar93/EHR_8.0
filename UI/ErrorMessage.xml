@@ -690,7 +690,8 @@
 	<Message number="410029" Type="OK" Text="Please select the Facility" />
 	<Message number="410030" Type="OK" Text="Please enter the specify other" />
 	<Message number="410031" Type="OK" Text="Please enter the policy holder id" />
-
+    <Message number="410032" Type="OKCANCEL" Text="Are you sure you want to clear all the fields?" />
+	
 	<Message number="410101" Type="OK" Text="Past Date cannot be earlier to Start Date" />
 	<Message number="410102" Type="OK" Text="Past Date cannot be the End Date" />
 	<Message number="410103" Type="OK" Text="Please select a Patient" />

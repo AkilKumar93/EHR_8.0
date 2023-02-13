@@ -262,7 +262,30 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //    ObjXml.itemDoc.Save(ObjXml.strXmlFilePath);
             }
         }
+        public void BatchAddUpdatePatInsured(IList<PatientInsuredPlan> patinsuredPlan, IList<PatientInsuredPlan> updatepatinsuredPlan, string MACAddress)
+        {
+            IList<PatientInsuredPlan> Patinslistadd = null;
+            //GenerateXml ObjXml = new GenerateXml();
+            //ISession MySession = Session.GetISession();
+            //bool bPhysicianPatient = true;
+            if (patinsuredPlan.Count > 0)
+            {
+                SaveUpdateDelete_DBAndXML_WithTransaction(ref patinsuredPlan, ref updatepatinsuredPlan, null, MACAddress, true, false, patinsuredPlan[0].Human_ID, string.Empty);
+                //int Result = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Patinslistadd, ref patinsuredPlan, null, MySession, "", true, false, patinsuredPlan[0].Human_ID, string.Empty, ref ObjXml);
+                //bPhysicianPatient = ObjXml.CheckDataConsistency(patinsuredPlan.Cast<object>().ToList(), true, "");
+                //if (bPhysicianPatient)
+                //    ObjXml.itemDoc.Save(ObjXml.strXmlFilePath);
+            }
 
+           else  if (updatepatinsuredPlan.Count > 0)
+            {
+                SaveUpdateDelete_DBAndXML_WithTransaction(ref patinsuredPlan, ref updatepatinsuredPlan, null, MACAddress, true, false, updatepatinsuredPlan[0].Human_ID, string.Empty);
+                //int Result = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Patinslistadd, ref patinsuredPlan, null, MySession, "", true, false, patinsuredPlan[0].Human_ID, string.Empty, ref ObjXml);
+                //bPhysicianPatient = ObjXml.CheckDataConsistency(patinsuredPlan.Cast<object>().ToList(), true, "");
+                //if (bPhysicianPatient)
+                //    ObjXml.itemDoc.Save(ObjXml.strXmlFilePath);
+            }
+        }
         //Added by srividhya on 09-Nov-2013
         public IList<PatientInsuredPlan> GetActiveInsurancePoliciesByHumanId(ulong ulHumanID)
         {

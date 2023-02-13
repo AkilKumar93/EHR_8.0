@@ -1190,8 +1190,8 @@
                                         <td class="style185">&nbsp;
                                         </td>
                                         <td class="style212">
-                                            <asp:Label ID="lblGuarantorMiddleName" runat="server" Text="Middle Name" Width="80px"
-                                                EnableViewState="false" CssClass="spanstyle"></asp:Label>
+                                            <%--<asp:Label ID="lblGuarantorMiddleName" runat="server" Text="Middle Name" Width="80px"
+                                                EnableViewState="false" CssClass="spanstyle"></asp:Label>--%>
                                         </td>
                                         <td class="style194">
                                             <asp:TextBox ID="txtGuarantorMiddleName" onchange="AutoSave();" onkeypress="return AllowAlphabet(event)"
@@ -1479,22 +1479,16 @@
                                 </td>
                                 <td class="auto-style7">
                                     <asp:TextBox ID="dtpAccCreationDate" runat="server" CssClass="nonEditabletxtbox" 
-                                         ReadOnly="True" Width="182px"></asp:TextBox>
+                                         ReadOnly="True" Width="150px"></asp:TextBox>
                                 </td>
-                                <td class="auto-style8">&nbsp;
-                                </td>
+                               
                                 <td class="auto-style8">
                                     <asp:Label ID="lblNoofPolicies" runat="server" Text="# of Ins Policies" CssClass="spanstyle" EnableViewState="false"></asp:Label>
                                 </td>
-                                <td colspan="5" class="auto-style9">
-                                    <asp:Panel runat="server" ID="pnlDemoStatus">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <asp:TextBox ID="txtNoofPolicies" runat="server" CssClass="nonEditabletxtbox"
-                                                         ReadOnly="True" Width="60px"></asp:TextBox>
+                                <td class="auto-style9">
+                                   <asp:TextBox ID="txtNoofPolicies" runat="server" CssClass="nonEditabletxtbox" ReadOnly="True" Width="85px"></asp:TextBox>
                                                 </td>
-                                                <td class="style318">
+                                                <td class="auto-style11">
                                                     <asp:Label ID="lblPatientSignature" runat="server" CssClass="spanstyle" Text="Sign on File" EnableViewState="false"></asp:Label>
                                                 </td>
                                                 <td>
@@ -1506,13 +1500,10 @@
                                                     <asp:Label ID="lblDemoStatus" runat="server" CssClass="spanstyle" Text="Demo Status"></asp:Label>
                                                 </td>
                                                 <td>
-                                                    <asp:DropDownList ID="ddlDemoStatus" runat="server" onchange="AutoSave();" Width="219px" CssClass="Editabletxtbox">
+                                                    <asp:DropDownList ID="ddlDemoStatus" runat="server" onchange="AutoSave();" Width="160px" CssClass="Editabletxtbox">
                                                     </asp:DropDownList>
                                                 </td>
-                                            </tr>
-                                        </table>
-                                    </asp:Panel>
-                                </td>
+                                            
                                 <td class="auto-style10">
                                     <asp:Label ID="lblAccountStatus" runat="server" CssClass="spanstyle" Text="Acc. Status" EnableViewState="false"></asp:Label>
                                 </td>
@@ -1529,23 +1520,23 @@
                                     <asp:DropDownList ID="ddlReferredToCollection" runat="server" onchange="AutoSave();" Width="80px" CssClass="Editabletxtbox">
                                     </asp:DropDownList>
                                 </td>
-                                <td class="style241">&nbsp;
-                                </td>
-                                <td colspan="5">
-                                    <asp:Panel ID="Panel1" runat="server">
-                                        <table style="width: 100%;">
-                                            <tr>
+                                
+                                     <td class="style270">
+                                                <asp:Label ID="lblHumanType" CssClass="spanstyle" runat="server" EnableViewState="false" Text="Patient Type"></asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="cboHumanType" runat="server" onchange="AutoSave();" Width="95px" CssClass="Editabletxtbox">
+                                                </asp:DropDownList>
+                                            </td>
+                                
                                                 <td class="auto-style11">
                                                     <asp:Label ID="lblDeclaredBankruptcy" CssClass="spanstyle" runat="server" EnableViewState="false" Text="Declared Bankruptcy"></asp:Label>
                                                 </td>
                                                 <td class="style279">
-                                                    <asp:DropDownList ID="ddlDeclaredBankruptcy" runat="server" onchange="AutoSave();" CssClass="Editabletxtbox">
+                                                    <asp:DropDownList ID="ddlDeclaredBankruptcy" runat="server" onchange="AutoSave();" CssClass="Editabletxtbox" style="width:60px;">
                                                     </asp:DropDownList>
                                                 </td>
-                                                <td class="style280">
-                                                    &nbsp;</td>
-                                                <td class="style277">
-                                                    &nbsp;</td>
+                                               
                                                 <td class="style277">
                                                     <asp:Label ID="lblPatientStatementFormat" CssClass="spanstyle" runat="server" Text="Pat. Stmt" EnableViewState="false"></asp:Label>
                                                 </td>
@@ -1553,12 +1544,8 @@
                                                     <asp:TextBox ID="txtPatientStatementFormat" runat="server" MaxLength="50" onkeypress="AutoSave();" CssClass="Editabletxtbox"
                                                         onchange="AutoSave();" Width="155px" EnableViewState="false"></asp:TextBox>
                                                 </td>
-                                            </tr>
-                                        </table>
-                                    </asp:Panel>
-                                </td>
-                                <td class="style241">&nbsp;
-                                </td>
+                                            
+                               
                                 <td class="style170">
                                     <asp:Label ID="lblDefaultFacility" CssClass="spanstyle" runat="server" Text="Def. Fac" EnableViewState="false"></asp:Label>
                                 </td>
@@ -1571,24 +1558,26 @@
                             <tr>
                         <td class="style4" colspan="7" valign="bottom" style="margin: 0px; padding: 0px">
                             <asp:Panel ID="pnlPatientInsuranceList" runat="server" GroupingText="Patient Insurance List" Height="260px"
-                                Width="175%" Font-Bold="True" CssClass="LabelStyleBold">
+                                Width="163%" Font-Bold="True" CssClass="LabelStyleBold">
                               <table>
                                   <tr>
-                                    <td style="width: 22%;">
+                                    <td style="width: 25%;">
                                         <span  class="MandLabelstyle">Priority </span>
-                                        <asp:RadioButton ID="rdbPRI" Checked="false" Text="PRI" runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
-                                        <asp:RadioButton ID="rdbSEC" Checked="false" Text="SEC" runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
-                                        <asp:RadioButton ID="rdbTER" Checked="false" Text="TER" runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
+                                        <asp:RadioButton ID="rdbPRI" Checked="false" Text="Pri." runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
+                                        <asp:RadioButton ID="rdbSEC" Checked="false" Text="Sec." runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
+                                        <asp:RadioButton ID="rdbTER" Checked="false" Text="Ter." runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" />
                                         
                                     </td>
-                                      <td style="width: 46%; text-align: right;">
-                                        <span  class="MandLabelstyle">Plan </span>
+                                      <td style="width: 40%; text-align: left;">
+                                        <span  class="MandLabelstyle">Plan &nbsp;&nbsp;</span>
                                        <asp:TextBox ID="txtplanSearch" CssClass="spanstyle" runat="server" Width="72%" ></asp:TextBox>
                                        <img id="imgClearplanText" src="Resources/Delete-Blue.png" runat="server" alt="X" title="Click to clear the text field." style="width:10px;margin-top:-5px;"/>
                                        </td>
-                                            <td style="width: 35%;text-align: right;">
-                                        <span  class="spanstyle">Specify Other </span>
-                                       <asp:TextBox ID="TextBox3" CssClass="spanstyle" runat="server" Width="55%" ></asp:TextBox>
+                                      <td>
+                                          </td>
+                                            <td style="width: 35%;text-align: left;">
+                                        <span  class="spanstyle">Specify Other &nbsp;</span>
+                                       <asp:TextBox ID="TextBox3" CssClass="spanstyle" runat="server" Width="70%" ></asp:TextBox>
                                        </td>                          
                                    </tr>
                                   </table>
@@ -1616,10 +1605,33 @@
                                   <tr>
                                     <td style="width: 25%;">
                                           <span  class="spanstyle">Eff. Start Date &nbsp;</span>
-                                         <input type="text" class="DateInput" id="txtStartdate" placeholder="dd-MMM-yyyy" style="width: 55%;"  />                                </td>
+                                         <span style="width: 148px;">
+                                         <telerik:RadMaskedTextBox ID="txtStartdate" runat="server" Mask="##-Lll-####" Width="148px" onchange="Copy('PatientStartDate'); " onkeyup="Copy('StartDate');" >
+                                                    <ClientEvents OnValueChanged="QPCDateValidation" />
+                                                    <InvalidStyle Resize="None" />
+                                                    <FocusedStyle Resize="None" BackColor="White" />
+                                                    <EmptyMessageStyle Resize="None" />
+                                                    <HoveredStyle Resize="None" BackColor="White" />
+                                                    <DisabledStyle Resize="None" />
+                                                    <EnabledStyle Resize="None" BackColor="White" />
+                                                    <ReadOnlyStyle Resize="None" />
+                                                </telerik:RadMaskedTextBox></span>
+                                    </td>
                                    <td style="width: 20%; text-align: left; ">
                                         <span  class="spanstyle">Eff. End Date </span>
-                                       <input type="text" class="DateInput" id="txtEnddate" placeholder="dd-MMM-yyyy" style="width: 55%;"  />                             </td>
+                                         
+                                       <telerik:RadMaskedTextBox ID="txtEnddate" runat="server" Mask="##-Lll-####" Width="148px" onchange="Copy('PatientEndDate'); " onkeyup="Copy('EndDate');" >
+                                                    <ClientEvents OnValueChanged="QPCDateValidation" />
+                                                    <InvalidStyle Resize="None" />
+                                                    <FocusedStyle Resize="None" BackColor="White" />
+                                                    <EmptyMessageStyle Resize="None" />
+                                                    <HoveredStyle Resize="None" BackColor="White" />
+                                                    <DisabledStyle Resize="None" />
+                                                    <EnabledStyle Resize="None" BackColor="White" />
+                                                    <ReadOnlyStyle Resize="None" />
+                                                </telerik:RadMaskedTextBox>
+                                             
+                                   </td>
                                       <td>
                                        <span  class="spanstyle">Status </span>
                                         <asp:RadioButton ID="rdstatusactive" Checked="true" Text="Active" runat="server" GroupName="Status" CssClass="Editabletxtbox" />
@@ -1646,7 +1658,7 @@
                                 <div style="width: 100%;height:120px;overflow:scroll;">
                                    <table id="tblpolicyinfo" class="table table-bordered Gridbodystyle" >
                         <thead class="Gridheaderstyle">
-                            <tr>
+                            <tr style="position:sticky;top:0;">
                                 <th class="Gridheaderstyle" style="width: 5%; text-align: center">Edit</th>
                                 <th class="Gridheaderstyle" style="width: 10%; text-align: center">Priority</th>
                                 <th class="Gridheaderstyle" style="width: 10%; text-align: center">Plan Name</th>
@@ -1655,7 +1667,7 @@
                                 <th class="Gridheaderstyle" style="width: 15%; text-align: center">Insured Name</th>
                                 <th class="Gridheaderstyle" style="width: 10%; text-align: center">Specify Other</th>
                                 <th class="Gridheaderstyle" style="width: 7%; text-align: center">Eff.Start Date</th>
-                                <th class="Gridheaderstyle" style="width: 7%; text-align: center">Eff.Stop Date</th>
+                                <th class="Gridheaderstyle" style="width: 7%; text-align: center">Eff.End Date</th>
                                 <th class="Gridheaderstyle" style="width: 5%; text-align: center">Status</th>
                             </tr>
                         </thead>
@@ -1911,7 +1923,7 @@
                                 Text="Button" style="display: none" />
             <asp:PlaceHolder ID="PlaceHolder1" runat="server">
                 
-              <script src=" <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
+               <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
             <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
             <link href="CSS/jquery-ui.css" rel="stylesheet" />
               <script src="JScripts/bootstrap.min.js" type="text/javascript"></script>
