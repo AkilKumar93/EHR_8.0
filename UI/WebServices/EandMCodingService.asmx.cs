@@ -1643,12 +1643,17 @@ namespace Acurus.Capella.UI.WebServices
                                 lstimmhis.Add((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
                             }
 
+                            if (CPT_ImmDelcode.IndexOf(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]).Procedure_Code.Trim()) != -1)
+                            {
+                                ImmDTO.ImmunizationHistoryList.Add(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]));
+                            }
+
                         }
                         //if (CPT_ImmDelcode.IndexOf(ImmunizationHistory.Procedure_Code.Trim()) != -1)
                         //{
                         //    ImmDTO.ImmunizationHistoryList.Add(ImmunizationHistory);
                         //}
-                        ImmDTO.ImmunizationHistoryList = lstimmhis.Where(a => !CPT_ImmDelcode.Contains(a.Procedure_Code)).ToList<ImmunizationHistory>();
+                        //ImmDTO.ImmunizationHistoryList = lstimmhis.Where(a => !CPT_ImmDelcode.Contains(a.Procedure_Code)).ToList<ImmunizationHistory>();
 
                     }
                 }
