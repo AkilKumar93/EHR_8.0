@@ -36,6 +36,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _PCP_Name = string.Empty;
         private string _PCP_NPI = string.Empty;
         private double _Deductible_Met_So_Far = 0;
+        private string _Other_Insurance_Comments = string.Empty;
         #endregion
 
         #region Constructors
@@ -77,6 +78,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_PCP_Name);
             sb.Append(_PCP_NPI);
             sb.Append(_Deductible_Met_So_Far);
+            sb.Append(_Other_Insurance_Comments);
             return sb.ToString().GetHashCode();
         }
 
@@ -313,6 +315,16 @@ namespace Acurus.Capella.Core.DomainObjects
             set
             {
                 _Deductible_Met_So_Far = value;
+            }
+        }
+        [DataMember]
+        public virtual string Other_Insurance_Comments
+        {
+            get { return _Other_Insurance_Comments; }
+            set
+            {
+
+                _Other_Insurance_Comments = value;
             }
         }
         #endregion

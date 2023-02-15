@@ -403,7 +403,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             IList<InsurancePlan> lstMatchingPlan = new List<InsurancePlan>();
 
-            string sQuery = "select Insurance_Plan_ID,Insurance_Plan_Name from insurance_plan where Insurance_Plan_Name like '"+ text_searched +"%'";
+            string sQuery = "select Insurance_Plan_ID,Insurance_Plan_Name from insurance_plan where Insurance_Plan_Name like '"+ text_searched + "%' and Active<>'N'";
 
             ISQLQuery query = iMySession.CreateSQLQuery(sQuery);
             ArrayList arrPatients = new ArrayList(query.List());

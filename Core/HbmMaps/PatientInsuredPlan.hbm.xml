@@ -30,5 +30,6 @@
     <property name="PCP_Name" column="PCP_Name" />
     <property name="PCP_NPI" column="PCP_NPI" />
     <property name="Deductible_Met_So_Far" column="Deductible_Met_So_Far" />
+	<property name="Other_Insurance_Comments" column="Other_Insurance_Comments" />
   </class>
 </hibernate-mapping>

@@ -510,6 +510,7 @@ namespace Acurus.Capella.UI
                     dt.Columns.Add("Insurance_Type", typeof(string));
                     dt.Columns.Add("Patient_Name", typeof(string));
                     dt.Columns.Add("Relationship", typeof(string));
+                    dt.Columns.Add("Relationship_Number", typeof(int));
                     dt.Columns.Add("Active", typeof(string));
                     dt.Columns.Add("Effective_Start_Date", typeof(string));
                     dt.Columns.Add("Termination_Date", typeof(string));
@@ -522,6 +523,8 @@ namespace Acurus.Capella.UI
                     dt.Columns.Add("CarrierID", typeof(string));
                     dt.Columns.Add("PlanType", typeof(string));
                     dt.Columns.Add("Sortorder", typeof(int));
+                    dt.Columns.Add("Specify_Other", typeof(string));
+                    dt.Columns.Add("Insured_Details", typeof(string));
                     foreach (PatientInsuredPlan obj in PatInsOrderedList)//objHumanList.PatientInsuredBag)
                     {
 
@@ -558,6 +561,7 @@ namespace Acurus.Capella.UI
                             dr["Insurance_Type"] = obj.Insurance_Type;
                             dr["Patient_Name"] = "";
                             dr["Relationship"] = obj.Relationship;
+                            dr["Relationship_Number"] = obj.Relationship_No;
                             dr["Active"] = obj.Active;
                             if (obj.Effective_Start_Date != DateTime.MinValue)
                                 dr["Effective_Start_Date"] = obj.Effective_Start_Date.ToString("dd-MMM-yyyy");
@@ -565,12 +569,17 @@ namespace Acurus.Capella.UI
                                 dr["Termination_Date"] = obj.Termination_Date.ToString("dd-MMM-yyyy");
                             if (InsuredHumanList != null)
                             {
+
+                               // document.getElementById("ctl00_C5POBody_TextBox2").value = result.PatientName + "|DOB: " + result.PatientDOB + "|" + result.PatientGender + "| ACC#:" + result.Human_id + "| PATIENT TYPE:" + result.HumanType;
+
                                 dr["Insured_Name"] = InsuredHumanList.Last_Name + " " + InsuredHumanList.First_Name;
                                 dr["Insured_DOB"] = InsuredHumanList.Birth_Date.ToString("dd-MMM-yyyy");
                                 dr["Insured_Sex"] = InsuredHumanList.Sex;
+                                dr["Insured_Details"] = InsuredHumanList.Last_Name + " " + InsuredHumanList.First_Name + "|DOB: " + Convert.ToDateTime(InsuredHumanList.Birth_Date).ToString("dd-MMM-yyyyy") + "|" + InsuredHumanList.Sex + "| ACC#:" + InsuredHumanList.Id + "| PATIENT TYPE:" + InsuredHumanList.Human_Type;
                             }
                             dr["Insured_Human_ID"] = obj.Insured_Human_ID;
                             dr["Id"] = obj.Id;
+                            dr["Specify_Other"] = obj.Other_Insurance_Comments;
 
 
 
@@ -631,7 +640,7 @@ namespace Acurus.Capella.UI
                     if (sResult.StartsWith("Fail") == true)
                     {
 
-                        errormsg = "Policy Holder ID is Invalid!&#xA;Format Example: " + sResult.Split('|')[1];
+                        errormsg = "Policy Holder ID is Invalid!&#xA;Format Example:$@" + sResult.Split('|')[1];
                         
                     }
                 }
@@ -882,9 +891,10 @@ namespace Acurus.Capella.UI
                     Templistlist[0].Insurance_Type = oj[0].ToString();
                     Templistlist[0].Policy_Holder_ID = oj[2].ToString();
                     Templistlist[0].Relationship = oj[3].ToString();
-                    Templistlist[0].Effective_Start_Date = Convert.ToDateTime(oj[6].ToString());
-
-                    Templistlist[0].Termination_Date = Convert.ToDateTime(oj[7].ToString());
+                    if (oj[6].ToString().Trim() != String.Empty)
+                        Templistlist[0].Effective_Start_Date = Convert.ToDateTime(oj[6].ToString());
+                    if (oj[7].ToString().Trim() != String.Empty)
+                        Templistlist[0].Termination_Date = Convert.ToDateTime(oj[7].ToString());
                     if (oj[8].ToString().ToUpper() == "ACTIVE")
 
                         Templistlist[0].Active = "Yes";
@@ -896,6 +906,9 @@ namespace Acurus.Capella.UI
                     Templistlist[0].Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
                     Templistlist[0].Modified_By = ClientSession.UserName;
                     Templistlist[0].Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    Templistlist[0].Other_Insurance_Comments = oj[5].ToString();
+                    Templistlist[0].Relationship_No = Convert.ToInt32(oj[14].ToString());
+                    Templistlist[0].Assignment = "Yes";
                     updatelist.Add(Templistlist[0]);
                     EligList = EligibilityMngr.GetEligDetailsUsingHumanandPolicyHolderID(Convert.ToUInt64(Human_id), oj[2].ToString());
 
@@ -911,13 +924,14 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-
+                    obj.Human_ID = Convert.ToUInt64(Human_id);
                     obj.Insurance_Type = oj[0].ToString();
                     obj.Policy_Holder_ID = oj[2].ToString();
                     obj.Relationship = oj[3].ToString();
-                    obj.Effective_Start_Date = Convert.ToDateTime(oj[6].ToString());
-
-                    obj.Termination_Date = Convert.ToDateTime(oj[7].ToString());
+                    if (oj[6].ToString().Trim() != String.Empty)
+                        obj.Effective_Start_Date = Convert.ToDateTime(oj[6].ToString());
+                    if (oj[7].ToString().Trim() != String.Empty)
+                        obj.Termination_Date = Convert.ToDateTime(oj[7].ToString());
                     if (oj[8].ToString().ToUpper() == "ACTIVE")
 
                         obj.Active = "Yes";
@@ -929,6 +943,9 @@ namespace Acurus.Capella.UI
                     obj.Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
                     obj.Created_By = ClientSession.UserName;
                     obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    obj.Other_Insurance_Comments = oj[5].ToString();
+                    obj.Relationship_No = Convert.ToInt32(oj[14].ToString());
+                    obj.Assignment = "Yes";
                     savelist.Add(obj);
                 }
 
@@ -1577,7 +1594,7 @@ namespace Acurus.Capella.UI
                 for (int i = 0; i < iStaticlookuplist.Count; i++)
                 {
                     ddlPatientRelation.Items.Add(iStaticlookuplist[i].Value);
-                    ddlPatientRelation.Items[i].Value = iStaticlookuplist[i].Value;
+                    ddlPatientRelation.Items[i].Value = iStaticlookuplist[i].Description;
                 }
             }
             //Added By Priyangha For MesageDescription

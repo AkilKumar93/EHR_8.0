@@ -361,13 +361,13 @@ function Copy(data) {
             AutoSave();
         }
 
-        if (data == "StartDate") { var textData = document.getElementById(GetClientId("txtStartdate")).value;  }
+        if (data == "StartDate") { var textData = document.getElementById(GetClientId("txtStartdate")).value; }
         if (data == "PatientStartDate") {
             $find(GetClientId("dtpGuarantorDOB")).set_value($find(GetClientId("txtStartdate")).get_value());
             AutoSave();
         }
 
-        if (data == "EndDate") { var textData = document.getElementById(GetClientId("txtEnddate")).value;}
+        if (data == "EndDate") { var textData = document.getElementById(GetClientId("txtEnddate")).value; }
         if (data == "PatientEndDate") {
             $find(GetClientId("dtpGuarantorDOB")).set_value($find(GetClientId("txtEnddate")).get_value());
             AutoSave();
@@ -877,6 +877,8 @@ function PatientInformationValidation() {
     }
     document.getElementById(GetClientId("hdnSexualOrientationSpecify")).value = document.getElementById(GetClientId("TxtSexualOrientationSpecify")).value;
     document.getElementById(GetClientId("hdnGenderIdentity")).value = document.getElementById(GetClientId("TxtGenderIdentity")).value;
+
+    setplanDetailssession();
 }
 
 function DOBValidation(dateToValidate) {
@@ -1691,7 +1693,7 @@ function QPCDateValidation(sender, args) {
             return false;
         }
         validatedate($find(GetClientId(sender.get_id().split('_')[2]))._value, sender.get_id().split('_')[2]);
-        
+
     }
     $(document.getElementById(GetClientId(sender._clientID))).datepicker({
         dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, yearRange: "-120:+0",
@@ -1720,7 +1722,7 @@ function parseMyDate(s) {
 
 var uPatientId = "";
 $(document).ready(function () {
-   
+
     document.getElementById('ctl00_C5POBody_TextBox3').style.backgroundColor = "#BFDBFF";
     document.getElementById('imginsuredText').style.visibility = "hidden";
     document.getElementById('ctl00_C5POBody_TextBox3').disabled = true;
@@ -1747,7 +1749,7 @@ $(document).ready(function () {
         }
     });
     $(document.getElementById(GetClientId("txtStartdate"))).click(function () {
-       // $(document.getElementById(GetClientId("txtStartdate"))).focus();
+        // $(document.getElementById(GetClientId("txtStartdate"))).focus();
     });
 
     $(document.getElementById(GetClientId("txtEnddate"))).datepicker({
@@ -1758,19 +1760,19 @@ $(document).ready(function () {
         }
     });
     $(document.getElementById(GetClientId("txtEnddate"))).click(function () {
-       // $(document.getElementById(GetClientId("txtEnddate"))).focus();
+        // $(document.getElementById(GetClientId("txtEnddate"))).focus();
     });
 
     $("[id*=pbDropdown]").addClass('displaynonestyle');
     uPatientId = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1];
     loadgrid();
-  //  scrolify($('#tblpolicyinfo'), 50);
+    //  scrolify($('#tblpolicyinfo'), 50);
 
 });
 
 function loadgrid() {
 
-   
+
     $.ajax({
 
         type: "POST",
@@ -1782,6 +1784,7 @@ function loadgrid() {
             var objdata = $.parseJSON(data.d);
             var j = 0;
             if (objdata.length > 0) {
+                var index = 0;
 
                 for (var i = 0; i < objdata.length; i++) {
                     j = parseInt(j) + parseInt("1");
@@ -1804,26 +1807,52 @@ function loadgrid() {
                     else {
                         var Effective_Start_Date = objdata[i].Effective_Start_Date;
                     }
-                    if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus.toUpperCase() == "ACTIVE") {
+                   
                         var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                        newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><tr>";
-                    }
-                    else if (!document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus.toUpperCase() != "ACTIVE") {
-                        var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                        newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><tr>";
-                    }
+                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><tr>";
+                    
 
                 }
+
+                DisplayActiveInsurance();
+                sortTable();
+
             }
-            
+
 
         }
 
     });
 }
 
+function DisplayActiveInsurance() {
+
+    if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked) {
+        for (var k = 0; k < $('#tbodupolicyinfo  tr').length; k++) {
+
+            if ($('#tbodupolicyinfo tr')[k].childNodes[9].innerText.toUpperCase() != "ACTIVE") {
+                $('#tbodupolicyinfo tr')[k].style.display = "none";
+            }
+
+            else {
+                $('#tbodupolicyinfo tr')[k].style.display = "";
+            }
+        }
 
 
+    }
+
+   else  {
+        for (var k = 0; k < $('#tbodupolicyinfo  tr').length; k++) {
+
+         
+                $('#tbodupolicyinfo tr')[k].style.display = "";
+            
+        }
+
+
+    }
+}
 function chkShowAllChange() {
     Facility = document.getElementById(GetClientId("hdnFacilityName")).value;
 
@@ -1962,8 +1991,8 @@ function setRadWindowProperties(childWindow, height, width) {
     childWindow.center();
 
 }
-function saveplanDetails() {
 
+function setplanDetailssession() {
     var data = [];
 
     $('#tbodupolicyinfo').find('tr').each(function (rowIndex, r) {
@@ -1975,11 +2004,17 @@ function saveplanDetails() {
         });
         data.push(cols);
     });
+    localStorage.setItem("PlanDetails", JSON.stringify(data));
+
+}
+function saveplanDetails() {
+
+
     $.ajax({
         type: "POST",
         url: "./frmPatientDemographics.aspx/SavePlanData",
         data: JSON.stringify({
-            name: data,
+            name: JSON.parse(localStorage.getItem("PlanDetails")),
             Human_id: document.getElementById(GetClientId("txtAccountNo")).value
 
         }),
@@ -1987,13 +2022,22 @@ function saveplanDetails() {
         dataType: "json",
         async: true,
         success: function (data) {
+           // $('#tbodupolicyinfo tr').remove();
+            document.getElementById("ctl00_C5POBody_TextBox2").value = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[0];
+            document.getElementById('ctl00_C5POBody_TextBox2').attributes['data-human-id'].value = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1];
+            document.getElementById('ctl00_C5POBody_TextBox2').disabled = true;
+            document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#BFDBFF"
+            document.getElementById('imginsuredText').display = "none";
+            document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
+            document.getElementById('imginsuredText').style.visibility = "hidden";
+            //loadgrid();
         },
         failure: function (data) {
             alert(data.d);
         }
     });
 }
-
+var editinsurancetype = '';
 function btnaddinsured(e) {
     var PriChecked = document.getElementById("ctl00_C5POBody_rdbPRI").checked;
     var SecChecked = document.getElementById("ctl00_C5POBody_rdbSEC").checked;
@@ -2005,15 +2049,15 @@ function btnaddinsured(e) {
         var PlanVal = 0;
     }
     var planname = document.getElementById("ctl00_C5POBody_txtplanSearch").value;
-   
+
     var insurehumanid = document.getElementById("ctl00_C5POBody_TextBox2").attributes['data-human-id'].value;
-    
+
     var insurename = document.getElementById("ctl00_C5POBody_TextBox2").value.split('|')[0];
     var PolicyVal = document.getElementById("ctl00_C5POBody_TextBox1").value;
     var SpecificVal = document.getElementById("ctl00_C5POBody_TextBox3").value;
     var EffStartDate = document.getElementById("ctl00_C5POBody_txtStartdate").value;
     var EffEndDate = document.getElementById("ctl00_C5POBody_txtEnddate").value;
-    var SelectInsured = document.getElementById("ctl00_C5POBody_TextBox2").value;
+    var InsuredFullname = document.getElementById("ctl00_C5POBody_TextBox2").value;
     var RelationVal = document.getElementById("ctl00_C5POBody_ddlPatientRelation");
     var insuranceType = '';
     if (document.getElementById("ctl00_C5POBody_rdbPRI").checked)
@@ -2023,6 +2067,10 @@ function btnaddinsured(e) {
 
     else if (document.getElementById("ctl00_C5POBody_rdbTER").checked)
         insuranceType = "TERTIARY";
+    //else {
+    //    insuranceType = editinsurancetype;
+    //}
+
     var status = "";
     if (document.getElementById("ctl00_C5POBody_rdstatusactive").checked)
         status = "Active";
@@ -2032,57 +2080,63 @@ function btnaddinsured(e) {
 
 
     var patientname = document.getElementById(GetClientId("txtPatientlastname")).value + "," + document.getElementById(GetClientId("txtPatientfirstname")).value
-
-    if (PriChecked == false && SecChecked == false && TerChecked == false) {
-        DisplayErrorMessage('410006');
-        return false;
+    if (document.getElementById("btnadd").value == 'Add') {
+        if (PriChecked == false && SecChecked == false && TerChecked == false) {
+            DisplayErrorMessage('410006');
+            return false;
+        }
+        
     }
-    else if (PlanVal == "0") {
+   
+    if (PlanVal == "0") {
         DisplayErrorMessage('380028');
         return false;
     }
-    else if (PlanVal == "Other") {
+    if (PlanVal == "Other") {
         if (SpecificVal == "") {
             DisplayErrorMessage('410030');
             return false;
         }
 
     }
-    else if (PolicyVal == "") {
+    if (PolicyVal == "") {
         DisplayErrorMessage('410031');
         return false;
     }
-    else if (RelationVal.options[RelationVal.selectedIndex].text == "") {
+    if (RelationVal.options[RelationVal.selectedIndex].text == "") {
         DisplayErrorMessage('380051');
         return false;
     }
-    else if (SelectInsured == "") {
+    if (insurehumanid == "0" ) {
         DisplayErrorMessage('420043');
         return false;
     }
-   
-    else if (EffStartDate == "" && EffEndDate != "") {
+
+    if (EffStartDate == "" && EffEndDate != "") {
         DisplayErrorMessage('380016');
         return false;
     }
 
-    else if (Date.parse(EffStartDate) > Date.parse(EffEndDate)) {
-         DisplayErrorMessage('380005');
+    if (Date.parse(EffStartDate) > Date.parse(EffEndDate)) {
+        DisplayErrorMessage('380005');
         return false;
     }
-    
 
-    else if (document.getElementById("ctl00_C5POBody_txtStartdate").value.length != 0) {
+
+    if (document.getElementById("ctl00_C5POBody_txtStartdate").value.length != 0) {
         if (document.getElementById("ctl00_C5POBody_txtStartdate").value != "__-___-____") {
             if (DateValidattion("ctl00_C5POBody_txtStartdate") == false) {
                 DisplayErrorMessage('350010');
                 return false;
             }
         }
+        else {
+            EffStartDate = "";
+        }
     }
 
 
-    else if (document.getElementById("ctl00_C5POBody_txtEnddate").value.length != 0) {
+    if (document.getElementById("ctl00_C5POBody_txtEnddate").value.length != 0) {
         if (document.getElementById("ctl00_C5POBody_txtEnddate").value != "__-___-____") {
             if (DateValidattion("ctl00_C5POBody_txtEnddate") == false) {
 
@@ -2090,179 +2144,200 @@ function btnaddinsured(e) {
                 return false;
             }
         }
+        else {
+            EffEndDate = "";
+        }
+    }
+    if (document.getElementById("ctl00_C5POBody_txtplanSearch").value == "PAYER NOT FOUND" && document.getElementById("ctl00_C5POBody_TextBox3").value == "")
+    {
+        DisplayErrorMessage('410030');
+        return false;
     }
 
-    
 
-    
-        var id = "0";
-        
-        $.ajax({
-            type: "POST",
-            url: "./frmPatientDemographics.aspx/SetInsuranceType",
-            data: JSON.stringify({
-                "humanid": human_id,
-                "insuranceType": insuranceType,
-                "id": id,
-                "policyholderid": PolicyVal,
-                "active": "Yes",
-                "PatientName": patientname,
-                "insurehumanid": insurehumanid,
-                "insid": PlanVal,
-                "Effective_Start_Date": EffStartDate,
-                "Termination_Date": EffEndDate,
-                "relationship": RelationVal.options[RelationVal.selectedIndex].text
 
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                var objdata = $.parseJSON(data.d);
 
-                //if ($('#tblpolicyinfo tbody tr').length == 1) {
-                //    $('#tblpolicyinfo tbody tr').remove();
-                //}
-                //else {
-                var sortordernew = 0;
-                var sortorderexists = 0;
-                if (objdata.ValidationError != undefined && objdata.ValidationError == "Success") {
+    var id = "0";
 
-                    if (objdata.Sortorderlookup != undefined && objdata.Sortorderlookup.length > 0) {
-                        for (var j = 0; j < objdata.Sortorderlookup.length; j++) {
-                            if (objdata.Sortorderlookup[j].Value == insuranceType) {
-                                sortordernew = objdata.Sortorderlookup[j].Sort_Order;
-                                break;
-                            }
-                        }
-                        for (var j = 0; j < objdata.Sortorderlookup.length; j++) {
-                            if (objdata.Sortorderlookup[j].Value == "OLD " + insuranceType) {
-                                sortorderexists = objdata.Sortorderlookup[j].Sort_Order;
-                                break;
-                            }
-                        }
+    $.ajax({
+        type: "POST",
+        url: "./frmPatientDemographics.aspx/SetInsuranceType",
+        data: JSON.stringify({
+            "humanid": human_id,
+            "insuranceType": insuranceType,
+            "id": id,
+            "policyholderid": PolicyVal,
+            "active": "Yes",
+            "PatientName": patientname,
+            "insurehumanid": insurehumanid,
+            "insid": PlanVal,
+            "Effective_Start_Date": EffStartDate,
+            "Termination_Date": EffEndDate,
+            "relationship": RelationVal.options[RelationVal.selectedIndex].text
 
-                    }
-                    if (e.value.toUpperCase() == "ADD") {
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+            var objdata = $.parseJSON(data.d);
 
-                        var maxvalue = 0; 
-                        if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && status.toUpperCase() == "ACTIVE") {
-                            for (var j = 0; j < $('#tbodupolicyinfo  tr').length; j++) {
+            //if ($('#tblpolicyinfo tbody tr').length == 1) {
+            //    $('#tblpolicyinfo tbody tr').remove();
+            //}
+            //else {
+            var sortordernew = 0;
+            var sortorderexists = 0;
+            if (objdata.ValidationError != undefined && objdata.ValidationError == "Success") {
 
-                                if (parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText) > parseInt(maxvalue))
-
-                                    maxvalue = parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText);
-
-                                if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType) {
-
-                                    $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = "OLD " + $('#tbodupolicyinfo tr')[j].childNodes[1].innerText
-                                    $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortorderexists;
-
-                                }
-                            }
-                            //}
-
-                            var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 15 %;text-align: center'>" + insurename + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><tr>";
-                            btnclearinsured();
-                        }
-                        else {
-                            btnclearinsured();
+                if (objdata.Sortorderlookup != undefined && objdata.Sortorderlookup.length > 0) {
+                    for (var j = 0; j < objdata.Sortorderlookup.length; j++) {
+                        if (objdata.Sortorderlookup[j].Value == insuranceType) {
+                            sortordernew = objdata.Sortorderlookup[j].Sort_Order;
+                            break;
                         }
                     }
-                    else {
+                    for (var j = 0; j < objdata.Sortorderlookup.length; j++) {
+                        if (objdata.Sortorderlookup[j].Value == "OLD " + insuranceType) {
+                            sortorderexists = objdata.Sortorderlookup[j].Sort_Order;
+                            break;
+                        }
+                    }
 
+                }
+                var tablelength = $('#tbodupolicyinfo  tr').length;
+                if (e.value.toUpperCase() == "ADD") {
 
-                        for (var j = 0; j < $('#tbodupolicyinfo  tr').length; j++) {
-                            //if ($('#tblpolicyinfo tr')[j].childNodes[11].innerText != "0") {
+                    var maxvalue = 0;
+                    if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && status.toUpperCase() == "ACTIVE") {
+                        for (var j = 0; j < tablelength; j++) {
 
-                            //    $('#tblpolicyinfo tr')[j].remove();
-                            //}
+                            if (parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText) > parseInt(maxvalue))
 
+                                maxvalue = parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText);
 
-
-                            if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType && $('#tbodupolicyinfo tr')[j].childNodes[14].innerText != document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
+                            if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType) {
 
                                 $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = "OLD " + $('#tbodupolicyinfo tr')[j].childNodes[1].innerText
                                 $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortorderexists;
 
                             }
+                        }
+                        //}
 
-                            if ($('#tbodupolicyinfo tr')[j].childNodes[14].innerText == document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
-
-                                $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = insuranceType;
-                                $('#tbodupolicyinfo tr')[j].childNodes[2].innerText = planname;
-                                $('#tbodupolicyinfo tr')[j].childNodes[3].innerText = PolicyVal;
-                                $('#tbodupolicyinfo tr')[j].childNodes[4].innerText = RelationVal.options[RelationVal.selectedIndex].text;
-                                $('#tbodupolicyinfo tr')[j].childNodes[5].innerText = insurename;
-                                $('#tbodupolicyinfo tr')[j].childNodes[6].innerText = SpecificVal;
-
-                                $('#tbodupolicyinfo tr')[j].childNodes[7].innerText = EffStartDate;
-                                $('#tbodupolicyinfo tr')[j].childNodes[8].innerText = EffEndDate;
-                                $('#tbodupolicyinfo tr')[j].childNodes[9].innerText = status;
-                                $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortordernew;
-                                $('#tbodupolicyinfo tr')[j].childNodes[11].innerText = PlanVal;
-                                $('#tbodupolicyinfo tr')[j].childNodes[13].innerText = insurehumanid;
-                                btnclearinsured();
+                        var newRow = document.getElementById('tbodupolicyinfo').insertRow();
+                        newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 15 %;text-align: center'>" + insurename + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><td style='display:none'>" + RelationVal.options[RelationVal.selectedIndex].value + "</td><td style='display:none'>" + InsuredFullname + "</td><tr>";
+                        btnclearinsured(false);
+                    }
+                    else {
+                        btnclearinsured(false);
+                    }
+                    sortTable();
+                }
+                else {
 
 
+                    for (var j = 0; j < tablelength; j++) {
+                        //if ($('#tblpolicyinfo tr')[j].childNodes[11].innerText != "0") {
 
-                            }
+                        //    $('#tblpolicyinfo tr')[j].remove();
+                        //}
+
+
+
+                        if ($('#tbodupolicyinfo tr')[j].childNodes[1].innerText == insuranceType && $('#tbodupolicyinfo tr')[j].childNodes[14].innerText != document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
+
+                            $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = "OLD " + $('#tbodupolicyinfo tr')[j].childNodes[1].innerText
+                            $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortorderexists;
 
                         }
+
+                        if ($('#tbodupolicyinfo tr')[j].childNodes[14].innerText == document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value) {
+                            if (insuranceType!="")
+                            $('#tbodupolicyinfo tr')[j].childNodes[1].innerText = insuranceType;
+                            $('#tbodupolicyinfo tr')[j].childNodes[2].innerText = planname;
+                            $('#tbodupolicyinfo tr')[j].childNodes[3].innerText = PolicyVal;
+                            $('#tbodupolicyinfo tr')[j].childNodes[4].innerText = RelationVal.options[RelationVal.selectedIndex].text;
+                            $('#tbodupolicyinfo tr')[j].childNodes[5].innerText = insurename;
+                            $('#tbodupolicyinfo tr')[j].childNodes[6].innerText = SpecificVal;
+
+                            $('#tbodupolicyinfo tr')[j].childNodes[7].innerText = EffStartDate;
+                            $('#tbodupolicyinfo tr')[j].childNodes[8].innerText = EffEndDate;
+                            $('#tbodupolicyinfo tr')[j].childNodes[9].innerText = status;
+                            if(parseInt(sortordernew)!=0)
+                            $('#tbodupolicyinfo tr')[j].childNodes[10].innerText = sortordernew;
+                            $('#tbodupolicyinfo tr')[j].childNodes[11].innerText = PlanVal;
+                            $('#tbodupolicyinfo tr')[j].childNodes[13].innerText = insurehumanid;
+                            $('#tbodupolicyinfo tr')[j].childNodes[15].innerText = RelationVal.options[RelationVal.selectedIndex].value;
+                            $('#tbodupolicyinfo tr')[j].childNodes[16].innerText = InsuredFullname
+                            btnclearinsured(false);
+
+
+
+                        }
+
                     }
+                    DisplayActiveInsurance();
+                    sortTable();
                 }
-
-                else if (objdata.ValidationError != undefined) {
-                    alert(objdata.ValidationError);
-                }
-                //if (objdata.length > 0) {
-                //    for (var i = 0; i < objdata.length; i++) {
-                //        var vStatus = objdata[i].Active;
-                //        if (vStatus == "Yes") {
-                //            var vFinalStatus = "Active";
-                //        }
-                //        else {
-                //            var vFinalStatus = "Inactive";
-                //        }
-                //        if (objdata[i].Termination_Date == null || objdata[i].Termination_Date != undefined) {
-                //            var Termination_Date = "";
-                //        }
-                //        else {
-                //            var Termination_Date = objdata[i].Termination_Date;
-                //        }
-                //        if (objdata[i].Effective_Start_Date == null || objdata[i].Effective_Start_Date != undefined) {
-                //            var Effective_Start_Date = "";
-                //        }
-                //        else {
-                //            var Effective_Start_Date = objdata[i].Effective_Start_Date;
-                //        }
-                //        if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus == "Active") {
-                //            var newRow = document.getElementById('tblpolicyinfo').insertRow();
-                //            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><tr>";
-                //        }
-                //        else if (!document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus != "Active") {
-                //            var newRow = document.getElementById('tblpolicyinfo').insertRow();
-                //            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><tr>";
-                //        }
-                //    }
-                //}
-                //else {
-                //    var newRow = document.getElementById('tblpolicyinfo').insertRow();
-                //    newRow.innerHTML = "<tr>No Data Found</tr>";
-                //}
-
-
-            },
-            failure: function (data) {
-                alert(data.d);
             }
-        });
-    }
+
+            else if (objdata.ValidationError != undefined) {
+                if (objdata.ValidationError.indexOf("Policy Holder ID is Invalid") > -1) {
+                    var errmsgnumber = objdata.ValidationError.slice(objdata.ValidationError.indexOf('$@') + 2, objdata.ValidationError.length);
+                    
+                    DisplayErrorMessage('380057', '', errmsgnumber);
+                }
+               
+                //alert(objdata.ValidationError);
+            }
+            //if (objdata.length > 0) {
+            //    for (var i = 0; i < objdata.length; i++) {
+            //        var vStatus = objdata[i].Active;
+            //        if (vStatus == "Yes") {
+            //            var vFinalStatus = "Active";
+            //        }
+            //        else {
+            //            var vFinalStatus = "Inactive";
+            //        }
+            //        if (objdata[i].Termination_Date == null || objdata[i].Termination_Date != undefined) {
+            //            var Termination_Date = "";
+            //        }
+            //        else {
+            //            var Termination_Date = objdata[i].Termination_Date;
+            //        }
+            //        if (objdata[i].Effective_Start_Date == null || objdata[i].Effective_Start_Date != undefined) {
+            //            var Effective_Start_Date = "";
+            //        }
+            //        else {
+            //            var Effective_Start_Date = objdata[i].Effective_Start_Date;
+            //        }
+            //        if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus == "Active") {
+            //            var newRow = document.getElementById('tblpolicyinfo').insertRow();
+            //            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><tr>";
+            //        }
+            //        else if (!document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && vFinalStatus != "Active") {
+            //            var newRow = document.getElementById('tblpolicyinfo').insertRow();
+            //            newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><tr>";
+            //        }
+            //    }
+            //}
+            //else {
+            //    var newRow = document.getElementById('tblpolicyinfo').insertRow();
+            //    newRow.innerHTML = "<tr>No Data Found</tr>";
+            //}
+
+
+        },
+        failure: function (data) {
+            alert(data.d);
+        }
+    });
+}
 
 function Edit(e) {
 
-
+   // editinsurancetype = e.parentElement.parentElement.childNodes[1].innerText;
     if (e.parentElement.parentElement.childNodes[1].innerText == "PRIMARY")
         document.getElementById("ctl00_C5POBody_rdbPRI").checked = true;
     else if (e.parentElement.parentElement.childNodes[1].innerText == "SECONDARY")
@@ -2281,13 +2356,56 @@ function Edit(e) {
     document.getElementById('ctl00_C5POBody_txtplanSearch').style.backgroundColor = "#BFDBFF";
     document.getElementById('ctl00_C5POBody_txtplanSearch').disabled = true;
     document.getElementById("ctl00_C5POBody_TextBox2").attributes['data-human-id'].value = e.parentElement.parentElement.childNodes[13].innerText
-    document.getElementById("ctl00_C5POBody_TextBox2").value = e.parentElement.parentElement.childNodes[5].innerText;
+    document.getElementById("ctl00_C5POBody_TextBox2").value = e.parentElement.parentElement.childNodes[16].innerText;
     document.getElementById("ctl00_C5POBody_TextBox1").value = e.parentElement.parentElement.childNodes[3].innerText;
     document.getElementById("ctl00_C5POBody_TextBox3").value = e.parentElement.parentElement.childNodes[6].innerText;
-    document.getElementById("ctl00_C5POBody_txtStartdate").value = e.parentElement.parentElement.childNodes[7].innerText;
-    document.getElementById("ctl00_C5POBody_txtEnddate").value = e.parentElement.parentElement.childNodes[8].innerText;
-    var RelationVal = document.getElementById("ctl00_C5POBody_ddlPatientRelation");
-    RelationVal.options[RelationVal.selectedIndex].text = e.parentElement.parentElement.childNodes[4].innerText;
+    if (e.parentElement.parentElement.childNodes[7].innerText != "") {
+        document.getElementById("ctl00_C5POBody_txtStartdate").value = e.parentElement.parentElement.childNodes[7].innerText;
+    }
+    else {
+        document.getElementById("ctl00_C5POBody_txtStartdate").value = "__-___-____";
+    }
+    if (e.parentElement.parentElement.childNodes[8].innerText != "") {
+        document.getElementById("ctl00_C5POBody_txtEnddate").value = e.parentElement.parentElement.childNodes[8].innerText;
+    }
+    else {
+        document.getElementById("ctl00_C5POBody_txtEnddate").value = "__-___-____";
+    }
+
+    //var RelationVal = document.getElementById("ctl00_C5POBody_ddlPatientRelation");
+    //RelationVal.options[RelationVal.selectedIndex].text = e.parentElement.parentElement.childNodes[4].innerText;
+    var dd = document.getElementById("ctl00_C5POBody_ddlPatientRelation");
+    for (var i = 0; i < dd.options.length; i++) {
+        if (dd.options[i].text == e.parentElement.parentElement.childNodes[4].innerText ) {
+            dd.selectedIndex = i;
+            break;
+        }
+    }
+
+    if (e.parentElement.parentElement.childNodes[4].innerText == "SELF") {
+          document.getElementById('ctl00_C5POBody_TextBox2').disabled = true;
+        document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#BFDBFF"
+        document.getElementById('imginsuredText').display = "none";
+        document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
+        document.getElementById('imginsuredText').style.visibility = "hidden";
+        $('#lblSelectInsured').removeClass('MandLabelstyle');
+        $('#lblSelectInsured').addClass('spanstyle')
+    }
+    else {
+      
+      
+        document.getElementById('ctl00_C5POBody_TextBox2').disabled = true;
+        document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#BFDBFF"
+        document.getElementById('imginsuredText').display = "block";
+        document.getElementById('ctl00_C5POBody_btnaddins').disabled = false;
+      
+        document.getElementById('imginsuredText').style.visibility = "visible";
+
+        $('#lblSelectInsured').removeClass('spanstyle');
+        $('#lblSelectInsured').addClass('MandLabelstyle')
+
+
+    }
     document.getElementById("ctl00_C5POBody_hdnpatinsuredid").value = e.parentElement.parentElement.childNodes[14].innerText;
     document.getElementById("ctl00_C5POBody_Hdnsortorder").value = e.parentElement.parentElement.childNodes[10].innerText;
     var status = e.parentElement.parentElement.childNodes[9].innerText;
@@ -2298,7 +2416,7 @@ function Edit(e) {
         document.getElementById("ctl00_C5POBody_rdstatusinactive").checked = true;
 
 
-
+    DisplayActiveInsurance();
 
     $('#btnadd').val("Update");
 
@@ -2306,8 +2424,15 @@ function Edit(e) {
 
 
 }
-function btnclearinsured() {
-    if (DisplayErrorMessage('410032') == true) {
+function btnclearinsured(btnclearAll) {
+    if (btnclearAll == true) {
+        var clearall = window.confirm('Are you sure you want to clear all the fields?');
+        if (clearall == false) {
+            return false;
+        }
+        
+    }
+    
         document.getElementById("ctl00_C5POBody_ddlPatientRelation").selectedIndex = 0;
         document.getElementById("ctl00_C5POBody_TextBox2").value = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[0];
         document.getElementById("ctl00_C5POBody_TextBox2").setAttribute("data-human-id", document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1]);
@@ -2321,8 +2446,8 @@ function btnclearinsured() {
         document.getElementById('ctl00_C5POBody_txtplanSearch').setAttribute("data-plan-id", "0");
         document.getElementById('ctl00_C5POBody_txtplanSearch').disabled = false;
         document.getElementById("ctl00_C5POBody_TextBox1").value = "";
-        document.getElementById("ctl00_C5POBody_txtStartdate").value = "";
-        document.getElementById("ctl00_C5POBody_txtEnddate").value = "";
+        document.getElementById("ctl00_C5POBody_txtStartdate").value = "__-___-____";
+        document.getElementById("ctl00_C5POBody_txtEnddate").value = "__-___-____";
         document.getElementById("ctl00_C5POBody_TextBox3").value = "";
         document.getElementById('ctl00_C5POBody_TextBox2').disabled = true;
         document.getElementById('ctl00_C5POBody_TextBox2').style.backgroundColor = "#BFDBFF"
@@ -2330,14 +2455,50 @@ function btnclearinsured() {
         document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
         $('#btnadd').val("Add");
         $('#btnclear').val("Clear All");
-    }
-    else {
-        return false;
-    }
+
+    
+
+
+  
+
+
 
 }
 
-
+function sortTable() {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("tbodupolicyinfo");
+    switching = true;
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 0; i < (rows.length - 1); i++) {
+            //start by saying there should be no switching:
+            shouldSwitch = false;
+            /*Get the two elements you want to compare,
+            one from current row and one from the next:*/
+            x = rows[i].getElementsByTagName("TD")[10];
+            y = rows[i + 1].getElementsByTagName("TD")[10];
+            //check if the two rows should switch place:
+            if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+                //if so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+        }
+        if (shouldSwitch) {
+            /*If a switch has been marked, make the switch
+            and mark that a switch has been done:*/
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+}
 function PatientRelationchange() {
     var RelationVal = document.getElementById("ctl00_C5POBody_ddlPatientRelation");
 
@@ -2349,7 +2510,8 @@ function PatientRelationchange() {
         document.getElementById('imginsuredText').display = "none";
         document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
         document.getElementById('imginsuredText').style.visibility = "hidden";
-
+        $('#lblSelectInsured').removeClass('MandLabelstyle');
+        $('#lblSelectInsured').addClass('spanstyle')
     }
     else {
         $('#ctl00_C5POBody_TextBox2').val('');
@@ -2360,6 +2522,10 @@ function PatientRelationchange() {
         document.getElementById('ctl00_C5POBody_btnaddins').disabled = false;
         $('#ctl00_C5POBody_TextBox2').removeClass('nonEditabletxtbox');
         document.getElementById('imginsuredText').style.visibility = "visible";
+
+        $('#lblSelectInsured').removeClass('spanstyle');
+        $('#lblSelectInsured').addClass('MandLabelstyle')
+
 
     }
 }
@@ -2399,7 +2565,7 @@ function Filter(array, terms) {
 
 function PatientSelected(event, ui) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-
+    
     var txtPatientSearch = document.getElementById("ctl00_C5POBody_TextBox2");
 
     var WSData = {
@@ -2457,14 +2623,24 @@ $("#ctl00_C5POBody_imgClearplanText").on("click", function () {
     document.getElementById('ctl00_C5POBody_txtplanSearch').attributes['data-plan-id'].value = "0";
     document.getElementById('ctl00_C5POBody_txtplanSearch').disabled = false;
 
+
+    document.getElementById('ctl00_C5POBody_TextBox3').value = "";
+    document.getElementById('ctl00_C5POBody_TextBox3').disabled = true;
+    document.getElementById('ctl00_C5POBody_TextBox3').style.backgroundColor = "#BFDBFF"
+    $('#lblSpecifyOther').removeClass('MandLabelstyle');
+    $('#lblSpecifyOther').addClass('spanstyle');
+
+
 });
 function PlanSelected(event, ui) {
+    
     var txtPatientSearch = document.getElementById("ctl00_C5POBody_txtplanSearch");
     txtPatientSearch.value = ui.item.label;
+   
     if (ui.item.label.toUpperCase() == "NO MATCHES FOUND.") {
         txtPatientSearch.value = "";
     }
-    else{
+    else {
         if (txtPatientSearch.value.toUpperCase() == "PAYER NOT FOUND") {
             document.getElementById('ctl00_C5POBody_TextBox3').style.backgroundColor = "#FFFFFF";
             document.getElementById('ctl00_C5POBody_TextBox3').disabled = false;
@@ -2474,16 +2650,25 @@ function PlanSelected(event, ui) {
             document.getElementById('ctl00_C5POBody_TextBox3').disabled = true;
 
         }
-       
-       
-        
+
+
+
         txtPatientSearch.attributes['data-plan-id'].value = ui.item.value;
         txtPatientSearch.style.backgroundColor = "#BFDBFF";
         txtPatientSearch.disabled = true;
-    }  
-  
-   
-   
+    }
+
+    if (ui.item.label.toUpperCase() == "PAYER NOT FOUND") {
+        $('#lblSpecifyOther').removeClass('spanstyle');
+        $('#lblSpecifyOther').addClass('MandLabelstyle');
+    }
+    else
+    {
+        $('#lblSpecifyOther').removeClass('MandLabelstyle');
+        $('#lblSpecifyOther').addClass('spanstyle');
+    }
+
+
 
     return false;
 }
@@ -2577,7 +2762,7 @@ if ($("#ctl00_C5POBody_TextBox2").length) {
                         var human_type = item.label.slice(item.label.indexOf("PATIENT TYPE"), item.label.length);
                         var human_tocken = item.label.split('|')[0] + "|" + item.label.split('|')[1] + "|" + item.label.split('|')[2] + "|" + item.label.split('|')[3] + "|" + human_type;
                         return {
-                            label: human_tocken, 
+                            label: human_tocken,
                             val: JSON.stringify(item.value),
                             value: item.value.HumanId
                         }
@@ -2761,7 +2946,7 @@ $("#ctl00_C5POBody_txtplanSearch").autocomplete({
     open: function () {
         // $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtPatientSearch').width());
         $('.ui-autocomplete.ui-menu.ui-widget').width("290px");
-        $('.ui-autocomplete.ui-menu.ui-widget').css("left", "30%");
+        $('.ui-autocomplete.ui-menu.ui-widget').css("left", "334px");
         $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
         $('#ctl00_C5POBody_txtplanSearch').focus();
     },
