@@ -356,10 +356,10 @@ namespace Acurus.Capella.UI
                     if (lstPatientResult != null)
                     {
                         HiddenPatientName.Value = lstPatientResult + "&" + ulPatientID.ToString();
-                        TextBox2.Text = lstPatientResult;
-                        TextBox2.Enabled = false;
-                        TextBox2.CssClass = "nonEditabletxtbox";
-                        TextBox2.Attributes.Add("data-human-id", ulPatientID.ToString());
+                        txtSelectinsured.Text = lstPatientResult;
+                        txtSelectinsured.Enabled = false;
+                        txtSelectinsured.CssClass = "nonEditabletxtbox";
+                        txtSelectinsured.Attributes.Add("data-human-id", ulPatientID.ToString());
                         imgClearplanText.Disabled = true;
                         btnaddins.Disabled = true;
 

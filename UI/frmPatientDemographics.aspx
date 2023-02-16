@@ -1573,14 +1573,14 @@
                                     </td>
                                       <td style="width: 40%; text-align: left;">
                                         <span  class="MandLabelstyle">Plan &nbsp;&nbsp;</span>
-                                       <asp:TextBox ID="txtplanSearch" CssClass="spanstyle" runat="server" Width="72%" onchange="AutoSave();" ></asp:TextBox>
+                                       <asp:TextBox ID="txtPlanSearch" CssClass="spanstyle" runat="server" Width="72%" onchange="AutoSave();" ></asp:TextBox>
                                        <img id="imgClearplanText" src="Resources/Delete-Blue.png" runat="server" alt="X" title="Click to clear the text field." style="width:10px;margin-top:-5px;"/>
                                        </td>
                                       <td>
                                           </td>
                                             <td style="width: 35%;text-align: left;">
                                         <span  class="spanstyle" id="lblSpecifyOther">Specify Other &nbsp;</span>
-                                       <asp:TextBox ID="TextBox3" CssClass="spanstyle" runat="server" Width="70%" onchange="AutoSave();" ></asp:TextBox>
+                                       <asp:TextBox ID="txtSpecify" CssClass="spanstyle" runat="server" Width="70%" onchange="AutoSave();" ></asp:TextBox>
                                        </td>                          
                                    </tr>
                                   </table>
@@ -1588,7 +1588,7 @@
                                   <tr>
                                        <td style="width: 25%;">
                                         <span  class="MandLabelstyle">Policy holder Id </span>
-                                       <asp:TextBox ID="TextBox1" CssClass="spanstyle" runat="server" Width="55%" MaxLength="25" onchange="AutoSave();" ></asp:TextBox>
+                                       <asp:TextBox ID="txtPolicyholderid" CssClass="spanstyle" runat="server" Width="55%" MaxLength="25" onchange="AutoSave();" ></asp:TextBox>
                                        </td>
                                     <td style="width: 25%;">
                                           <span  class="MandLabelstyle">Rel.to Patient </span>
@@ -1596,7 +1596,7 @@
                                     </td>
                                    <td style="width: 36%;text-align: left;">
                                         <span id="lblSelectInsured"  class="spanstyle">Select Insured </span>
-                                       <asp:TextBox ID="TextBox2" CssClass="spanstyle" runat="server" Width="68%" onchange="AutoSave();" ></asp:TextBox>
+                                       <asp:TextBox ID="txtSelectinsured" CssClass="spanstyle" runat="server" Width="68%" onchange="AutoSave();" ></asp:TextBox>
                                        <img id="imginsuredText" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="width:10px;margin-top:-5px;"/>
                                        </td>
                                    <td style="width: 15%;text-align: center;">
@@ -1637,13 +1637,13 @@
                                    </td>
                                       <td>
                                        <span  class="spanstyle">Status </span>
-                                        <asp:RadioButton ID="rdstatusactive" Checked="true" Text="Active" runat="server" GroupName="Status" CssClass="Editabletxtbox"  onchange="AutoSave();"/>
-                                        <asp:RadioButton ID="rdstatusinactive" Checked="false" Text="Inactive" runat="server" GroupName="Status"  CssClass="Editabletxtbox" onchange="AutoSave();" />
+                                        <asp:RadioButton ID="rdStatusactive" Checked="true" Text="Active" runat="server" GroupName="Status" CssClass="Editabletxtbox"  onchange="AutoSave();"/>
+                                        <asp:RadioButton ID="rdStatusinactive" Checked="false" Text="Inactive" runat="server" GroupName="Status"  CssClass="Editabletxtbox" onchange="AutoSave();" />
                                       
                                        </td>
                                    <td style="width: 15%;text-align: center;">
-                                         <input type="button" id="btnadd" onclick="btnaddinsured(this)" value="Add"   class="aspresizedgreenbutton" />
-                                         <input type="button" id="btnclear" onclick="btnclearinsured(true)" value="Clear All"   class="aspresizedredbutton" />
+                                         <input type="button" id="btnAdd" onclick="btnaddinsured(this)" value="Add"   class="aspresizedgreenbutton" />
+                                         <input type="button" id="btnClearAll" onclick="btnclearinsured(true)" value="Clear All"   class="aspresizedredbutton" />
                 
                                       </td>
                                     

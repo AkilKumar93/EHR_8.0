@@ -1707,13 +1707,13 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.RadioButton rdbTER;
 
         /// <summary>
-        /// txtplanSearch control.
+        /// txtPlanSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtplanSearch;
+        protected global::System.Web.UI.WebControls.TextBox txtPlanSearch;
 
         /// <summary>
         /// imgClearplanText control.
@@ -1725,22 +1725,22 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlImage imgClearplanText;
 
         /// <summary>
-        /// TextBox3 control.
+        /// txtSpecify control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txtSpecify;
 
         /// <summary>
-        /// TextBox1 control.
+        /// txtPolicyholderid  control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtPolicyholderid;
 
         /// <summary>
         /// ddlPatientRelation control.
@@ -1752,13 +1752,13 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.DropDownList ddlPatientRelation;
 
         /// <summary>
-        /// TextBox2 control.
+        /// txtSelectinsured control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.TextBox txtSelectinsured;
 
         /// <summary>
         /// btnaddins control.
@@ -1788,22 +1788,22 @@ namespace Acurus.Capella.UI
         protected global::Telerik.Web.UI.RadMaskedTextBox txtEnddate;
 
         /// <summary>
-        /// rdstatusactive control.
+        /// rdStatusactive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rdstatusactive;
+        protected global::System.Web.UI.WebControls.RadioButton rdStatusactive;
 
         /// <summary>
-        /// rdstatusinactive control.
+        /// rdStatusinactive control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rdstatusinactive;
+        protected global::System.Web.UI.WebControls.RadioButton rdStatusinactive;
 
         /// <summary>
         /// chkActiveStatus control.
