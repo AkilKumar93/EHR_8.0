@@ -905,13 +905,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 {
                                     WriteBlob(HumanId, XMLObj.itemDoc, MySession, SavePastMedicalList, UpdatePastMedicalList, DeletePastMedicalList, XMLObj, false);
                                 }
-                                else
+                                else if (SaveListMaster.Count > 0 || UpdateListMaster.Count > 0 || DeleteListMaster.Count > 0)
                                 {
                                     PastMedicalHistoryMasterManager objPFSHMaster = new PastMedicalHistoryMasterManager();
                                     objPFSHMaster.WriteBlob(HumanId, XMLObj.itemDoc, MySession, SaveListMaster, UpdateListMaster, DeleteListMaster, XMLObj, false);
 
                                 }
-                                    #endregion
+
+                                else if (SaveGeneralNotes.Count > 0 || UpdateGeneralNotes.Count > 0 )
+                                {
+
+                                    generalNotesManager.WriteBlob(HumanId, XMLObj.itemDoc, MySession, SaveGeneralNotes, UpdateGeneralNotes, null, XMLObj, false);
+
+                                }
+                                #endregion
 
 
                             }

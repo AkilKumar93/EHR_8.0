@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Acurus.Capella.Core.DomainObjects;
+﻿using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.Core.DTO;
-using System.Linq;
+using MySql.Data.MySqlClient;
 using NHibernate;
 using NHibernate.Criterion;
-using System.Threading;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
-using MySql.Data.MySqlClient;
+using System.Linq;
+using System.Threading;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -464,10 +464,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 {
                                     WriteBlob(Human_Id, XMLObj.itemDoc, MySession, SaveLst, UpdateLst, DeleteLst, XMLObj, false);
                                 }
-                                else
+                                else if (MasterinsertList.Count > 0 || MasterupdateList.Count > 0 || MasterdeleteList.Count > 0)
                                 {
                                     FamilyHistoryMasterManager objPFSHFamilyMaster = new FamilyHistoryMasterManager();
                                     objPFSHFamilyMaster.WriteBlob(Human_Id, XMLObj.itemDoc, MySession, MasterinsertList, MasterupdateList, MasterdeleteList, XMLObj, false);
+                                }
+                                else if (generalNotesListInsert.Count > 0 || generalNotesListUpdate.Count > 0 )
+                                {
+                                    GeneralNotesManager genMgr = new GeneralNotesManager();
+                                    genMgr.WriteBlob(Human_Id, XMLObj.itemDoc, MySession, generalNotesListInsert, generalNotesListUpdate, null, XMLObj, false);
                                 }
                                 #endregion
 

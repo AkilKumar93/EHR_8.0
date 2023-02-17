@@ -515,10 +515,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 {
                                     WriteBlob(HumanID, ObjXML.itemDoc, MySession, insertList, updateList, deleteList, ObjXML, false);
                                 }
-                                else
+                                else if(MasterinsertList.Count>0 || MasterupdateList.Count>0 || MasterdeleteList.Count>0)
                                 {
                                     SocialHistoryMasterManager objSocialMasterManager = new SocialHistoryMasterManager();
                                     objSocialMasterManager.WriteBlob(HumanID, ObjXML.itemDoc, MySession, MasterinsertList, MasterupdateList, MasterdeleteList, ObjXML, false);
+                                }
+                                else if (generalNotesListInsert.Count > 0 || generalNotesListUpdate.Count > 0)
+                                {
+                                   
+                                    generalNotesManager.WriteBlob(HumanID, ObjXML.itemDoc, MySession, generalNotesListInsert, generalNotesListUpdate, null, ObjXML, false);
                                 }
                                 #endregion
                             }
