@@ -398,7 +398,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     xmlModules[0].RemoveChild(ParentNodeList[0]);
                                 }
                             }
-                            WriteBlob(EncounterId, XMLObj.itemDoc, MySession, ListToInsertROS, ListToUpdateRos, ListToDeleteRos, XMLObj, false);
+                            if (ListToInsertROS.Count > 0 || ListToUpdateRos.Count > 0 || ListToUpdateRos.Count > 0)
+                            {
+                                WriteBlob(EncounterId, XMLObj.itemDoc, MySession, ListToInsertROS, ListToUpdateRos, ListToDeleteRos, XMLObj, false);
+                            } else if (generalNotesListInsert.Count>0 || generalNotesListUpdate.Count>0)
+                            {
+                                generalNotesManager.WriteBlob(EncounterId, XMLObj.itemDoc, MySession, generalNotesListInsert, generalNotesListUpdate, null, XMLObj, false);
+                            }
                             trans.Commit();
                         }
 

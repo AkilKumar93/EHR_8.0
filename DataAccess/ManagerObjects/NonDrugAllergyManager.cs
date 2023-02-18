@@ -555,8 +555,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 #region "Modified by Balaji.TJ - 2023-01-04"
                                 if (insertList != null || updateList != null || deleteList != null)
                                     WriteBlob(HumanID, XMLObj.itemDoc, MySession, insertList, updateList, deleteList, XMLObj, false);
-                                else if (ExisList != null)
+                                else if (ExisList != null && ExisList.Count>0)
                                     WriteBlob(HumanID, XMLObj.itemDoc, MySession, null, ExisList, null, XMLObj, false);
+                                else if(generalNotesListInsert.Count>0 || generalNotesListUpdate.Count>0)
+                                    generalNotesManager.WriteBlob(HumanID, XMLObj.itemDoc, MySession, generalNotesListInsert, generalNotesListUpdate, null, XMLObj, false);
                                 #endregion
                             }
                             catch (Exception xmlexcep)
