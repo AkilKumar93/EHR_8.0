@@ -12,6 +12,7 @@
 
 <asp:Content ID="Demographics" ContentPlaceHolderID="C5POBody" runat="server">
     <head>
+        
         <title>Patient Demographics</title>
         <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
         <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
@@ -468,6 +469,11 @@
                 <telerik:RadWindow ID="DemographicsModalWindow" runat="server" VisibleOnPageLoad="false"
                     Height="625px" IconUrl="Resources/16_16.ico" Width="1225px" DestroyOnClose="true">
                 </telerik:RadWindow>
+
+                <telerik:RadWindow ID="DemographicsAddInsured" runat="server" VisibleOnPageLoad="false"
+                    Height="625px" IconUrl="Resources/16_16.ico" Width="1225px" DestroyOnClose="true">
+                </telerik:RadWindow>
+
                 <telerik:RadWindow ID="DLCWindow" runat="server" VisibleOnPageLoad="false" Title="DLC"
                     Height="625px" IconUrl="Resources/16_16.ico" Width="1225px">
                 </telerik:RadWindow>
@@ -1565,7 +1571,8 @@
                               <table>
                                   <tr>
                                     <td style="width: 25%;">
-                                        <span  class="MandLabelstyle">Priority </span>
+                                        <span  class="MandLabelstyle">Priority &nbsp;&nbsp;</span>
+                                        <span  class="MandLabelstyle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                         <asp:RadioButton ID="rdbPRI" Checked="false" Text="Pri." runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" onchange="AutoSave();" />
                                         <asp:RadioButton ID="rdbSEC" Checked="false" Text="Sec." runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" onchange="AutoSave();" />
                                         <asp:RadioButton ID="rdbTER" Checked="false" Text="Ter." runat="server" GroupName="InsuranceType"  CssClass="Editabletxtbox" onchange="AutoSave();" />

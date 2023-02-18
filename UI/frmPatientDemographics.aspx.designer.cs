@@ -33,6 +33,15 @@ namespace Acurus.Capella.UI
         protected global::Telerik.Web.UI.RadWindow DemographicsModalWindow;
 
         /// <summary>
+        /// DemographicsAddInsured control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadWindow DemographicsAddInsured;
+
+        /// <summary>
         /// DLCWindow control.
         /// </summary>
         /// <remarks>
@@ -1734,7 +1743,7 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.TextBox txtSpecify;
 
         /// <summary>
-        /// txtPolicyholderid  control.
+        /// txtPolicyholderid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.

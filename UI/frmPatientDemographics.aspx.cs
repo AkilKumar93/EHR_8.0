@@ -355,8 +355,9 @@ namespace Acurus.Capella.UI
                     string lstPatientResult = txtPatientlastname.Text + ", " + txtPatientfirstname.Text + " |" + "DOB: " + Dob + "|" + ddlPatientsex.Text + " | ACC#: " + ulPatientID.ToString() + " | PATIENT TYPE: REGULAR";
                     if (lstPatientResult != null)
                     {
-                        HiddenPatientName.Value = lstPatientResult + "&" + ulPatientID.ToString();
-                        txtSelectinsured.Text = lstPatientResult;
+                        HiddenPatientName.Value = "" + "&" + ulPatientID.ToString(); //lstPatientResult + "&" + ulPatientID.ToString();
+                        // txtSelectinsured.Text = lstPatientResult;
+                        txtSelectinsured.Text = "";
                         txtSelectinsured.Enabled = false;
                         txtSelectinsured.CssClass = "nonEditabletxtbox";
                         txtSelectinsured.Attributes.Add("data-human-id", ulPatientID.ToString());
@@ -612,12 +613,12 @@ namespace Acurus.Capella.UI
             PatientInsuredPlanManager PatInsuredMngr = new PatientInsuredPlanManager();
             //insuranceCheck = true;
             //get the patient insurance details using human id from pat_insured table. number of policies for the human will be loaded                  in the list.
-            IList<PatientInsuredPlan> patientInsuredPlanList;
+            //IList<PatientInsuredPlan> patientInsuredPlanList;
             PatientInsuredPlan patInsured = new PatientInsuredPlan();
             string sOriginalInsType = "";
             HumanManager HumanMngr = new HumanManager();
             IList<PatientInsuredPlan> PatientinsuredList = new List<PatientInsuredPlan>();
-            patientInsuredPlanList = PatInsuredMngr.getInsurancePoliciesByHumanId((Convert.ToUInt64(humanid)));
+           // patientInsuredPlanList = PatInsuredMngr.getInsurancePoliciesByHumanId((Convert.ToUInt64(humanid)));
             PatientInsuredPlan objplan = new PatientInsuredPlan();
             string errormsg = "Success";
 
@@ -879,7 +880,10 @@ namespace Acurus.Capella.UI
             IList<PatientInsuredPlan> Templistlist = new List<PatientInsuredPlan>();
             Eligibility_VerficationManager EligibilityMngr = new Eligibility_VerficationManager();
             PatientInsuredPlanManager objmanager = new PatientInsuredPlanManager();
-            Getlist = objmanager.getInsurancePoliciesByHumanId(Convert.ToUInt64(Human_id));
+            if (Human_id != "")
+            {
+                Getlist = objmanager.getInsurancePoliciesByHumanId(Convert.ToUInt64(Human_id));
+            }
             IList<Eligibility_Verification> EligList = new List<Eligibility_Verification>();
 
             foreach (object[] oj in name)
@@ -903,7 +907,14 @@ namespace Acurus.Capella.UI
 
                     Templistlist[0].Sort_Order = Convert.ToInt32(oj[9].ToString());
                     Templistlist[0].Insurance_Plan_ID = Convert.ToUInt64(oj[10].ToString());
-                    Templistlist[0].Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
+                    if (Convert.ToUInt64(oj[12].ToString()) == 0)
+                    {
+                        Templistlist[0].Insured_Human_ID = Convert.ToUInt64(Human_id);
+                    }
+                    else
+                    {
+                        Templistlist[0].Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
+                    }
                     Templistlist[0].Modified_By = ClientSession.UserName;
                     Templistlist[0].Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
                     Templistlist[0].Other_Insurance_Comments = oj[5].ToString();
@@ -940,7 +951,14 @@ namespace Acurus.Capella.UI
 
                     obj.Sort_Order = Convert.ToInt32(oj[9].ToString());
                     obj.Insurance_Plan_ID = Convert.ToUInt64(oj[10].ToString());
-                    obj.Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
+                    if (Convert.ToUInt64(oj[12].ToString()) == 0)
+                    {
+                        obj.Insured_Human_ID = Convert.ToUInt64(Human_id);
+                    }
+                    else
+                    {
+                        obj.Insured_Human_ID = Convert.ToUInt64(oj[12].ToString());
+                    }
                     obj.Created_By = ClientSession.UserName;
                     obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                     obj.Other_Insurance_Comments = oj[5].ToString();

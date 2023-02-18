@@ -102,69 +102,69 @@ function ddlGenderIdentity_change() {
 }
 
 function CloseWindow() {
-    if (document.getElementById(GetClientId("btnViewUpdateInsurance")) != undefined && document.getElementById(GetClientId("btnViewUpdateInsurance")).disabled == false) {
-        if (document.getElementById(GetClientId("txtNoofPolicies")).value != "") {
-            if (parseInt(document.getElementById(GetClientId("txtNoofPolicies")).value) < 1) {
-                if (window.confirm("Insurance Policies not added. Do you want to add?")) {
-                    HumanId = document.getElementById(GetClientId("txtAccountNo")).value;
-                    ulpatientid = document.getElementById(GetClientId("hdnPatientID")).value
-                    objhumanid = document.getElementById(GetClientId("hdnPatientID")).value
-                    txtPatientlastname = document.getElementById(GetClientId("txtPatientlastname")).value
-                    txtPatientfirstname = document.getElementById(GetClientId("txtPatientfirstname")).value
-                    txtExternalAccNo = document.getElementById(GetClientId("txtExternalAccNo")).value
-                    if (parseInt(ulpatientid) == 0) {
-                        var obj = new Array();
-                        obj.push("HumanId=" + objhumanid);
-                        obj.push("InsuranceType=" + true);
-                        obj.push("LastName=" + txtPatientlastname);
-                        obj.push("FirstName=" + txtPatientfirstname);
-                        obj.push("ExAccountNo=" + txtExternalAccNo);
-                        obj.push("PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value);
-                        setTimeout(
-                            function () {
-                                var oWnd = GetRadWindow();
-                                var childWindow = oWnd.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + objhumanid + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value, "ctl00_DemographicsModalWindow");
-                                SetRadWindowProperties(childWindow, 850, 1140);
-                                childWindow.remove_close(OpenPatIns);
-                                childWindow.remove_close(AddGuarantorClick);
-                                childWindow.remove_close(ViewGaurantorClick);
-                                childWindow.add_close(OpenAddInsForNewPatient);
-                                childWindow.remove_close(SelectGaurantorClick);
-                                childWindow.remove_close(FindPatientClick);
-                                childWindow.remove_close(CloseWorksetClick);
-                            }, 0);
-                        return false;
-                    }
-                    else {
-                        var obj = new Array();
-                        obj.push("HumanId=" + HumanId);
-                        obj.push("InsuranceType=" + true);
-                        obj.push("LastName=" + txtPatientlastname);
-                        obj.push("FirstName=" + txtPatientfirstname);
-                        obj.push("ExAccountNo=" + txtExternalAccNo);
-                        obj.push("PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value);
-                        setTimeout(
-                            function () {
-                                var oWnd = GetRadWindow();
-                                var childWindow = oWnd.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + HumanId + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value, "ctl00_DemographicsModalWindow");
-                                SetRadWindowProperties(childWindow, 850, 1140);
-                                childWindow.remove_close(OpenPatIns);
-                                childWindow.remove_close(AddGuarantorClick);
-                                childWindow.remove_close(ViewGaurantorClick);
-                                childWindow.add_close(OpenAddInsForNewPatient);
-                                childWindow.remove_close(SelectGaurantorClick);
-                                childWindow.remove_close(FindPatientClick);
-                                childWindow.remove_close(CloseWorksetClick);
-                            }, 0);
-                        return false;
-                    }
-                    return false;
-                }
-                else {
-                }
-            }
-        }
-    }
+    //if (document.getElementById(GetClientId("btnViewUpdateInsurance")) != undefined && document.getElementById(GetClientId("btnViewUpdateInsurance")).disabled == false) {
+    //    if (document.getElementById(GetClientId("txtNoofPolicies")).value != "") {
+    //        if (parseInt(document.getElementById(GetClientId("txtNoofPolicies")).value) < 1) {
+    //            if (window.confirm("Insurance Policies not added. Do you want to add?")) {
+    //                HumanId = document.getElementById(GetClientId("txtAccountNo")).value;
+    //                ulpatientid = document.getElementById(GetClientId("hdnPatientID")).value
+    //                objhumanid = document.getElementById(GetClientId("hdnPatientID")).value
+    //                txtPatientlastname = document.getElementById(GetClientId("txtPatientlastname")).value
+    //                txtPatientfirstname = document.getElementById(GetClientId("txtPatientfirstname")).value
+    //                txtExternalAccNo = document.getElementById(GetClientId("txtExternalAccNo")).value
+    //                if (parseInt(ulpatientid) == 0) {
+    //                    var obj = new Array();
+    //                    obj.push("HumanId=" + objhumanid);
+    //                    obj.push("InsuranceType=" + true);
+    //                    obj.push("LastName=" + txtPatientlastname);
+    //                    obj.push("FirstName=" + txtPatientfirstname);
+    //                    obj.push("ExAccountNo=" + txtExternalAccNo);
+    //                    obj.push("PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value);
+    //                    setTimeout(
+    //                        function () {
+    //                            var oWnd = GetRadWindow();
+    //                            var childWindow = oWnd.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + objhumanid + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value, "ctl00_DemographicsModalWindow");
+    //                            SetRadWindowProperties(childWindow, 850, 1140);
+    //                            childWindow.remove_close(OpenPatIns);
+    //                            childWindow.remove_close(AddGuarantorClick);
+    //                            childWindow.remove_close(ViewGaurantorClick);
+    //                            childWindow.add_close(OpenAddInsForNewPatient);
+    //                            childWindow.remove_close(SelectGaurantorClick);
+    //                            childWindow.remove_close(FindPatientClick);
+    //                            childWindow.remove_close(CloseWorksetClick);
+    //                        }, 0);
+    //                    return false;
+    //                }
+    //                else {
+    //                    var obj = new Array();
+    //                    obj.push("HumanId=" + HumanId);
+    //                    obj.push("InsuranceType=" + true);
+    //                    obj.push("LastName=" + txtPatientlastname);
+    //                    obj.push("FirstName=" + txtPatientfirstname);
+    //                    obj.push("ExAccountNo=" + txtExternalAccNo);
+    //                    obj.push("PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value);
+    //                    setTimeout(
+    //                        function () {
+    //                            var oWnd = GetRadWindow();
+    //                            var childWindow = oWnd.BrowserWindow.radopen("frmAddInsurancePolicies.aspx?HumanId=" + HumanId + "&InsuranceType=" + true + "&LastName=" + txtPatientlastname + "&FirstName=" + txtPatientfirstname + "&ExAccountNo=" + txtExternalAccNo + "&PatientType=" + document.getElementById(GetClientId("hdnPatientType")).value, "ctl00_DemographicsModalWindow");
+    //                            SetRadWindowProperties(childWindow, 850, 1140);
+    //                            childWindow.remove_close(OpenPatIns);
+    //                            childWindow.remove_close(AddGuarantorClick);
+    //                            childWindow.remove_close(ViewGaurantorClick);
+    //                            childWindow.add_close(OpenAddInsForNewPatient);
+    //                            childWindow.remove_close(SelectGaurantorClick);
+    //                            childWindow.remove_close(FindPatientClick);
+    //                            childWindow.remove_close(CloseWorksetClick);
+    //                        }, 0);
+    //                    return false;
+    //                }
+    //                return false;
+    //            }
+    //            else {
+    //            }
+    //        }
+    //    }
+    //}
     if (document.getElementById(GetClientId("hdnSaveFlag")).value == "true" && document.getElementById(GetClientId("btnSave")).disabled == false) {
         if (document.getElementById(GetClientId("hdnMessageType")).value == "") {
             DisplayErrorMessage('420087');
@@ -494,7 +494,7 @@ function OpenFindPatient() {
     setTimeout(
         function () {
             var oWnd = GetRadWindow();
-            var childWindow = oWnd.BrowserWindow.radopen("frmFindPatient.aspx?ScreenName=Demographics", "ctl00_DemographicsModalWindow");
+            var childWindow = oWnd.BrowserWindow.radopen("frmFindPatient.aspx?ScreenName=Demographics", "ctl00_DemographicsAddInsured");
             SetRadWindowProperties(childWindow, 251, 1200);
             childWindow.add_close(FindPatientClick);
             childWindow.remove_close(OpenAddInsForNewPatient);
@@ -1722,7 +1722,7 @@ function parseMyDate(s) {
 
 var uPatientId = "";
 $(document).ready(function () {
-
+   
     document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF";
     document.getElementById('imginsuredText').style.visibility = "hidden";
     document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
@@ -1844,13 +1844,10 @@ function DisplayActiveInsurance() {
 
    else  {
         for (var k = 0; k < $('#tbodupolicyinfo  tr').length; k++) {
-
          
                 $('#tbodupolicyinfo tr')[k].style.display = "";
             
         }
-
-
     }
 }
 function chkShowAllChange() {
@@ -1945,7 +1942,7 @@ function OpenAddinsured() {
             var oWnd = GetRadWindow();
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
 
-            var childWindow = oWnd.BrowserWindow.radopen("frmPatientDemographics.aspx?HumanId=" + 0 + "&DisableFindPat=TRUE&Functionality=ADDPATIENT", "ModalWindow");
+            var childWindow = oWnd.BrowserWindow.radopen("frmPatientDemographics.aspx?HumanId=" + 0 + "&DisableFindPat=TRUE&Functionality=ADDPATIENT", "ctl00_DemographicsAddInsured");
             setRadWindowProperties(childWindow, 1230, 1130);
             childWindow.add_close(QuickPatientClickAddPatient);
 
@@ -2110,7 +2107,9 @@ function btnaddinsured(e) {
         DisplayErrorMessage('380051');
         return false;
     }
-    if (insurehumanid == "0" ) {
+
+
+    if (RelationVal.options[RelationVal.selectedIndex].text.toUpperCase() != "SELF" && insurehumanid == "0") {
         DisplayErrorMessage('420043');
         return false;
     }
@@ -2270,9 +2269,6 @@ function btnaddinsured(e) {
                             $('#tbodupolicyinfo tr')[j].childNodes[15].innerText = RelationVal.options[RelationVal.selectedIndex].value;
                             $('#tbodupolicyinfo tr')[j].childNodes[16].innerText = InsuredFullname
                             btnclearinsured(false);
-
-
-
                         }
 
                     }
@@ -2383,7 +2379,8 @@ function Edit(e) {
 
     if (e.parentElement.parentElement.childNodes[4].innerText == "SELF") {
         document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true;
-        document.getElementById('ctl00_C5POBody_txtSelectinsured').style.backgroundColor = "#BFDBFF"
+        document.getElementById('ctl00_C5POBody_txtSelectinsured').style.backgroundColor = "#BFDBFF";
+        document.getElementById('ctl00_C5POBody_txtSelectinsured').value="";
         document.getElementById('imginsuredText').display = "none";
         document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
         document.getElementById('imginsuredText').style.visibility = "hidden";
@@ -2391,10 +2388,9 @@ function Edit(e) {
         $('#lblSelectInsured').addClass('spanstyle')
     }
     else {
-      
-      
+
         document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true;
-        document.getElementById('ctl00_C5POBody_txtSelectinsured').style.backgroundColor = "#BFDBFF"
+        document.getElementById('ctl00_C5POBody_txtSelectinsured').style.backgroundColor = "#BFDBFF";  
         document.getElementById('imginsuredText').display = "block";
         document.getElementById('ctl00_C5POBody_btnaddins').disabled = false;
       
@@ -2428,10 +2424,8 @@ function btnclearinsured(btnclearAll) {
         var clearall = window.confirm('Are you sure you want to clear all the fields?');
         if (clearall == false) {
             return false;
-        }
-        
-    }
-    
+        }        
+    }    
         document.getElementById("ctl00_C5POBody_ddlPatientRelation").selectedIndex = 0;
         document.getElementById("ctl00_C5POBody_txtSelectinsured").value = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[0];
         document.getElementById("ctl00_C5POBody_txtSelectinsured").setAttribute("data-human-id", document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1]);
@@ -2450,18 +2444,16 @@ function btnclearinsured(btnclearAll) {
         document.getElementById("ctl00_C5POBody_txtSpecify").value = "";
         document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true;
         document.getElementById('ctl00_C5POBody_txtSelectinsured').style.backgroundColor = "#BFDBFF"
+        document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
+        document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF"
         document.getElementById('imginsuredText').display = "none";
-        document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
+    document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
+    $('#lblSelectInsured').removeClass('MandLabelstyle');
+    $('#lblSelectInsured').addClass('spanstyle');
+    $('#lblSpecifyOther').removeClass('MandLabelstyle');
+    $('#lblSpecifyOther').addClass('spanstyle');
         $('#btnAdd').val("Add");
-        $('#btnClearAll').val("Clear All");
-
-    
-
-
-  
-
-
-
+    $('#btnClearAll').val("Clear All");
 }
 
 function sortTable() {

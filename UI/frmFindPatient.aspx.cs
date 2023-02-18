@@ -205,11 +205,32 @@ namespace Acurus.Capella.UI
                    
                     if (lstResult.Count() == 0)
                     {
+                        string sPlanvalue = System.Configuration.ConfigurationManager.AppSettings["OtherPlanName"].ToString();
+                        lstHumans = objPlanManager.GetPlanFromTokens(sPlanvalue);
+
+                        var lstResultNoMatch = (from Hum in lstHumans
+                                         select new
+                                         {
+                                             label = Hum.Ins_Plan_Name.ToUpper(),
+                                             value = new
+                                             {
+                                                 PlanId = Hum.Id.ToString()
+                                             }
+                                         });
+
+
+                        HttpContext.Current.Session.Add("PreviousPlanKeywordCriteria", CurrentKeywordCriteria);
+                        HttpContext.Current.Session.Add("PreviousPlanList", JsonConvert.SerializeObject(lstResult));
                         var lstFinalResult = new
                         {
-                            Result = "No matches found.",
-                            
+                            Matching_Result = lstResultNoMatch,
+
                         };
+                        //var lstFinalResult = new
+                        //{
+                        //    Result = "No matches found.",
+
+                        //};
                         return JsonConvert.SerializeObject(lstFinalResult);
                     }
                     else
