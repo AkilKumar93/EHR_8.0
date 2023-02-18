@@ -4356,12 +4356,32 @@ namespace Acurus.Capella.UI
                         // CreateXMLByBackupProcess("Human", Application, XML_ID.ToString());
                         string status = CreateXMLByBatchProcess("Human", XML_ID.ToString());
                         if (status == string.Empty)
-
-                            sResult = "Success";
-
+                        {
+                            try
+                            {
+                                string sXMLHumanDoc = string.Empty;
+                                HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                                IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+                                ilstHumanBlob = HumanBlobMngr.GetHumanBlob(XML_ID);
+                                XmlDocument xmlHumanDoc = new XmlDocument();
+                                if (ilstHumanBlob.Count > 0)
+                                {
+                                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                                    if (sXMLHumanDoc.Substring(0, 1) != "<")
+                                        sXMLHumanDoc = sXMLHumanDoc.Substring(1, sXMLHumanDoc.Length - 1);
+                                    xmlHumanDoc.LoadXml(sXMLHumanDoc);
+                                    sResult = "Success";
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                sResult = "Failure";
+                            }
+                        }
                         else
+                        {
                             sResult = status;
-
+                        }
                         string sConnectionString = string.Empty;
                         sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
                         var builder = new MySqlConnectionStringBuilder(sConnectionString);
@@ -4427,10 +4447,30 @@ namespace Acurus.Capella.UI
                                 // CreateXMLByBackupProcess(sXML, Application, XML_ID.ToString());
                                 string status = CreateXMLByBatchProcess(sXML, XML_ID.ToString());
                                 if (status == string.Empty)
-                                    sResult = "Success";
-                                else
-                                    sResult = status;
-
+                                {
+                                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                                    IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(XML_ID);
+                                    if (ilstEncounterBlob.Count > 0)
+                                    {
+                                        string sXMLContent = string.Empty;
+                                        XmlDocument xmlDoc = new XmlDocument();
+                                        try
+                                        {
+                                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                                            if (sXMLContent.Substring(0, 1) != "<")
+                                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                                            xmlDoc.LoadXml(sXMLContent);
+                                            sResult = "Success";
+                                        }
+                                        catch
+                                        {
+                                            sResult = "Failure";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sResult = status;
+                                    }
                                 string sConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["con"].ConnectionString;
                                 var builder = new MySqlConnectionStringBuilder(sConnectionString);
 
