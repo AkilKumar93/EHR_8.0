@@ -1742,7 +1742,7 @@ $(document).ready(function () {
     });
 
     $(document.getElementById(GetClientId("txtStartdate"))).datepicker({
-        dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, yearRange: "-120:+0",
+        dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, yearRange: "-120:+100",
         onSelect: function (selected, evnt) {
             $telerik.findMaskedTextBox(GetClientId("txtStartdate")).set_value(selected);
             AutoSave();
@@ -1753,7 +1753,7 @@ $(document).ready(function () {
     });
 
     $(document.getElementById(GetClientId("txtEnddate"))).datepicker({
-        dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, yearRange: "-120:+0",
+        dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, yearRange: "-120:+100",
         onSelect: function (selected, evnt) {
             $telerik.findMaskedTextBox(GetClientId("txtEnddate")).set_value(selected);
             AutoSave();
@@ -2207,7 +2207,7 @@ function btnaddinsured(e) {
                 if (e.value.toUpperCase() == "ADD") {
 
                     var maxvalue = 0;
-                    if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && status.toUpperCase() == "ACTIVE") {
+                   // if (document.getElementById('ctl00_C5POBody_chkActiveStatus').checked && status.toUpperCase() == "ACTIVE") {
                         for (var j = 0; j < tablelength; j++) {
 
                             if (parseInt($('#tbodupolicyinfo tr')[j].childNodes[14].innerText) > parseInt(maxvalue))
@@ -2221,15 +2221,16 @@ function btnaddinsured(e) {
 
                             }
                         }
-                        //}
+                       // }
 
                         var newRow = document.getElementById('tbodupolicyinfo').insertRow();
                         newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 15 %;text-align: center'>" + insurename + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><td style='display:none'>" + RelationVal.options[RelationVal.selectedIndex].value + "</td><td style='display:none'>" + InsuredFullname + "</td><tr>";
                         btnclearinsured(false);
-                    }
-                    else {
-                        btnclearinsured(false);
-                    }
+                    //}
+                    //else {
+                    //   // btnclearinsured(false);
+                    //}
+                    DisplayActiveInsurance();
                     sortTable();
                 }
                 else {
@@ -2422,11 +2423,19 @@ function Edit(e) {
 }
 function btnclearinsured(btnclearAll) {
     if (btnclearAll == true) {
-        var clearall = window.confirm('Are you sure you want to clear all the fields?');
-        if (clearall == false) {
-            return false;
-        }        
-    }    
+        var clearall;
+        if (document.getElementById("btnClearAll").value == "Clear All") {
+             clearall = window.confirm('Are you sure you want to clear all the fields?');
+        }
+        else {
+            clearall = window.confirm('Would you like to Cancel without saving?');
+        }
+            if (clearall == false) {
+                return false;
+            }
+        
+    }
+    
         document.getElementById("ctl00_C5POBody_ddlPatientRelation").selectedIndex = 0;
         document.getElementById("ctl00_C5POBody_txtSelectinsured").value = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[0];
         document.getElementById("ctl00_C5POBody_txtSelectinsured").setAttribute("data-human-id", document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1]);
