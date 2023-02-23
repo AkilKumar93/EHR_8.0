@@ -1658,6 +1658,7 @@ function GranularityImageButton(sender, args) {
 function YesNoCancel() {
     DisplayErrorMessage('420020');
     document.getElementById(GetClientId("hdnMessageType")).value = "";
+    saveplanDetails();
     GetRadWindow().close();
 }
 function WaitCursor() {

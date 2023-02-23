@@ -1614,7 +1614,7 @@
                                     <td style="width: 25%;">
                                           <span  class="spanstyle">Eff. Start Date&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                          <span style="width: 146px;">
-                                         <telerik:RadMaskedTextBox ID="txtStartdate" runat="server" Mask="##-Lll-####" Width="146px" onchange="AutoSave(); "  >
+                                         <telerik:RadMaskedTextBox ID="txtStartdate" runat="server" Mask="##-Lll-####" Width="145px" onchange="AutoSave(); "  >
                                                     <ClientEvents OnValueChanged="PatientDemographicsDateVlidation" />
                                                     <InvalidStyle Resize="None" />
                                                     <FocusedStyle Resize="None" BackColor="White" />
