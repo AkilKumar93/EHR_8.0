@@ -1723,7 +1723,12 @@ function parseMyDate(s) {
 
 var uPatientId = "";
 $(document).ready(function () {
-   
+
+    if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
+        document.getElementById('btnAdd').disabled = true;
+        document.getElementById('btnClearAll').disabled = true;
+    }
+
     document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF";
     document.getElementById('imginsuredText').style.visibility = "hidden";
     document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
@@ -1811,9 +1816,15 @@ function loadgrid() {
                     else {
                         var Effective_Start_Date = objdata[i].Effective_Start_Date;
                     }
-                   
+                    var vsrc;
+                    if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
+                        vsrc = "Resources/editdisabled.png";
+                    }
+                    else {
+                        vsrc = "Resources/edit.gif";
+                         }
                         var newRow = document.getElementById('tbodupolicyinfo').insertRow();
-                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><tr>";
+                    newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src="+vsrc+" onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + objdata[i].Insurance_Type + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Plan_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Policy_Holder_ID + "</td><td style='width: 5 %;text-align: center'>" + objdata[i].Relationship + "</td ><td style='width: 15 %;text-align: center'>" + objdata[i].Insured_Name + "</td><td style='width: 10 %;text-align: center'>" + objdata[i].Specify_Other + "</td><td style='width: 7 %;text-align: center'> " + Effective_Start_Date + "</td><td style='width: 7 %;text-align: center'>" + Termination_Date + "</td><td style='width: 7 %;text-align: center'>" + vFinalStatus + "</td><td style='display:none'>" + objdata[i].Sortorder + "</td><td style='display:none'>" + objdata[i].Plan_ID + "</td><td style='display:none'>" + objdata[i].Id + "</td><td style='display:none'>" + objdata[i].Insured_Human_ID + "</td><td style='display:none'>" + parseInt(j) + "</td><td style='display:none'>" + objdata[i].Relationship_Number + "</td><td style='display:none'>" + objdata[i].Insured_Details + "</td><td style='display:none'>" + objdata[i].CarrierID + "</td><tr>";
                     document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
 
                 }
@@ -2344,6 +2355,10 @@ function btnaddinsured(e) {
 
 function Edit(e) {
 
+    if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
+        return false;
+    }
+
    // editinsurancetype = e.parentElement.parentElement.childNodes[1].innerText;
     if (e.parentElement.parentElement.childNodes[1].innerText == "PRIMARY")
         document.getElementById("ctl00_C5POBody_rdbPRI").checked = true;
@@ -2655,7 +2670,7 @@ $("#ctl00_C5POBody_imgClearplanText").on("click", function () {
 function PlanSelected(event, ui) {
     
     var txtPatientSearch = document.getElementById("ctl00_C5POBody_txtPlanSearch");
-    txtPatientSearch.value = ui.item.label;
+    txtPatientSearch.value = ui.item.label.split("|")[0];
    
     if (ui.item.label.toUpperCase() == "NO MATCHES FOUND.") {
         txtPatientSearch.value = "";
@@ -2974,9 +2989,11 @@ $("#ctl00_C5POBody_txtPlanSearch").autocomplete({
     open: function () {
         // $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtPatientSearch').width());
         $('.ui-autocomplete.ui-menu.ui-widget').width("290px");
-        $('.ui-autocomplete.ui-menu.ui-widget').css("left", "334px");
+        $('.ui-autocomplete.ui-menu.ui-widget').css("left", "338px");
         $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
         $('#ctl00_C5POBody_txtPlanSearch').focus();
+
+       
     },
     focus: function () { return false; }
 }).on("paste", function (e) {
@@ -2991,12 +3008,33 @@ $("#ctl00_C5POBody_txtPlanSearch").autocomplete({
 
 
 }).on("click", function (e) {
-    //$('#txtPatientSearchQuick').val('');
-    //$("#txtPatientSearchQuick").attr({ "data-human-id": "0", "data-human-details": "" });
+   // $('#txtPlanSearch').val('');
+    //$("#txtPlanSearch").attr({ "data-human-id": "0", "data-human-details": "" });
 }).on("focus", function (e) {
-    //$('#txtPatientSearchQuick').val('');
-    //$("#txtPatientSearchQuick").attr({ "data-human-id": "0", "data-human-details": "" });
+    //$('#txtPlanSearch').val('');
+    //$("#txtPlanSearch").attr({ "data-human-id": "0", "data-human-details": "" });
 })
+$("#ctl00_C5POBody_txtPlanSearch").data("ui-autocomplete")._renderItem = function (ul, item) {
+    
+    if (item.label != "No matches found.") {
+        
+        var list_item = $("<li>")
+            .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+            .append(item.label)
+            .appendTo(ul);
+       
+        return list_item;
+    }
+    else
+        return $("<li>")
+            .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+            .addClass("disabled")
+            .append(item.label)
+            .appendTo(ul).on("click", function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            });
+};
 
 
 function DateValidattion(dateToValidate) {

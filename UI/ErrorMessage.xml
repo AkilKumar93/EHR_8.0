@@ -600,7 +600,7 @@
 	<Message number="380025" Type="OK" Text="Please select the Purpose of Visit"></Message>
 	<Message number="380026" Type="OK" Text="Please select the Duration"></Message>
 	<Message number="380027" Type="OK" Text="Medical Record # already exists."></Message>
-	<Message number="380028" Type="OK" Text="Please select the Plan Name" />
+	<Message number="380028" Type="OK" Text="Please choose a valid insurance plan option" />
 	<Message number="380029" Type="OK" Text="Please enter External Account #." />
 	<Message number="380030" Type="OK" Text="External Account # already exists."  />
 	<Message number="380031" Type="OK" Text="Invalid Cell Phone Number." />
@@ -822,7 +822,7 @@
 	<Message number="420040" Type="OKCANCEL" Text="There are unsaved changes.&#xD;Click &apos;OK&apos; to go back &amp; save the changes or&#xD;Click &apos;Cancel&apos; to proceed without saving." />
 	<Message number="420041" Type="OK" Text="Enter Effective Start date of policy " />
 	<Message number="420042" Type="OK" Text="Select Plan and then Enter Policy Holder Id" />
-	<Message number="420043" Type="OK" Text="Please select the Insured" />
+	<Message number="420043" Type="OK" Text="Please choose a valid Insured" />
 	<Message number="420044" Type="OK" Text="Medical Record # already exists." />
 	<Message number="420045" Type="OK" Text="Please enter External Account #." />
 	<Message number="420046" Type="OK" Text="External Account # already exists." />

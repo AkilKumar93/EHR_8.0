@@ -22,6 +22,7 @@ using Telerik.Web.UI;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Xml;
+using DocumentFormat.OpenXml.Drawing;
 
 
 namespace Acurus.Capella.UI
@@ -195,12 +196,12 @@ namespace Acurus.Capella.UI
                     var lstResult = (from Hum in lstHumans
                                      select new
                                      {
-                                         label = Hum.Ins_Plan_Name.ToUpper(),
+                                         label = Hum.Payer_Addrress1 == "" ? Hum.Ins_Plan_Name.ToUpper(): Hum.Ins_Plan_Name.ToUpper() + " | " + Hum.Payer_Addrress1.ToUpper(),
                                          value = new
                                          {
                                              PlanId = Hum.Id.ToString() + "|" + Hum.Carrier_ID.ToString()
                                          }
-                                     }) ;
+                                     }); ;
 
                    
                     if (lstResult.Count() == 0)
