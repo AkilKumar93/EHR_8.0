@@ -215,7 +215,7 @@ namespace Acurus.Capella.UI
                                              label = Hum.Ins_Plan_Name.ToUpper(),
                                              value = new
                                              {
-                                                 PlanId = Hum.Id.ToString()
+                                                 PlanId = Hum.Id.ToString() + "|" + Hum.Carrier_ID.ToString()
                                              }
                                          });
 
