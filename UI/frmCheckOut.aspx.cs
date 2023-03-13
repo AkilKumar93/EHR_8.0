@@ -82,7 +82,9 @@ namespace Acurus.Capella.UI
             EncRecord = checkOutDtoLoadList.DocumentList.EncounterObj;
             // humanRecord = checkOutDtoLoadList.objhuman;//For bug_id 37280 
             OrdersManager objOrderMngr = new OrdersManager();
-            humanRecord = objOrderMngr.GetHumanByIdForCheckout(ClientSession.HumanId);
+            //GitLab #3811
+            //humanRecord = objOrderMngr.GetHumanByIdForCheckout(ClientSession.HumanId);
+            humanRecord = objOrderMngr.GetHumanByIdForCheckout(ClientSession.HumanId, ClientSession.EncounterId);
 
             HiddenhumanDetails.Value = humanRecord.Human_ID.ToString() + "~" + humanRecord.Last_Name + "," + humanRecord.First_Name + "~" + humanRecord.Birth_Date + "~" +
                "" + "~" + humanRecord.Home_Phone_No + "~" + humanRecord.cell_phone_no + "~" + EncRecord.Encounter_Provider_ID.ToString();

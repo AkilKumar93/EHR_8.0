@@ -86,7 +86,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<string> GetOrdersForPrint(string orderid);
         IList<Orders> GetOrdersByOrderSubmitID(List<int> OrderSubmitID);
         FillHumanDTO PatientInsuredBag(ulong HumanId);
-        FillHumanDTO GetHumanByIdForCheckout(ulong HumanId);
+        FillHumanDTO GetHumanByIdForCheckout(ulong HumanId, ulong ulEncounterID);
         IList<Orders> GetOrdersByOrderID(ulong[] uOrderID);
         IList<string> GetOrderByHuman(ulong ulHumanID, string sFacility, ulong ulLabID);
         string GetFaxOrders(string ordersubmitid);
@@ -7230,7 +7230,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return sOrders;
         }
 
-        public FillHumanDTO GetHumanByIdForCheckout(ulong HumanId)
+        public FillHumanDTO GetHumanByIdForCheckout(ulong HumanId, ulong ulEncounterID)
         {
             FillHumanDTO objFillHuman = new FillHumanDTO();
 
@@ -7342,8 +7342,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
 
             ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            IQuery query1 = iMySession.GetNamedQuery("Get.Checkout.PatientPane");
+            //GitLab #3811
+            //IQuery query1 = iMySession.GetNamedQuery("Get.Checkout.PatientPane");
+            //query1.SetString(0, HumanId.ToString());
+
+            IQuery query1 = iMySession.GetNamedQuery("Get.Checkout.PatientPaneWithEncounter");
             query1.SetString(0, HumanId.ToString());
+            query1.SetString(1, ulEncounterID.ToString());
+
 
             ArrayList PatientList = null;
             PatientList = new ArrayList(query1.List());
