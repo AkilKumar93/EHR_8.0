@@ -14,7 +14,7 @@ using System.DirectoryServices;
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
 
-
+     
     public partial interface ILoginManager : IManagerBase<User, uint>
     {
         IList<User> CheckUser(string UserName, string Password, out bool Base64Password);
