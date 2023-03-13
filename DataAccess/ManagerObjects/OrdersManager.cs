@@ -25,12 +25,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         ulong InsertToOrders(IList<Orders> saveList, IList<OrdersSubmit> objOrderSubmit, IList<OrdersAssessment> ordAssList, IList<string> sOrderingProcedure, ulong EncounterID, string orderType, string MACAddress, IList<OrdersRequiredForms> ilistOrdersRequiredForms, ref string sSelectedOrder, string sLocalTime);
         Stream GetOrdersUsingEncounterID(ulong EncounterID, string orderType, bool LoadQuestionSets);
         Stream LoadOrders(ulong EncounterID, ulong PhysicianID, ulong HumanID, string orderType, string procedureType, DateTime todaysDate, bool LoadQuestionSets);
+        Stream LoadOrdersByOrdersSubmitedId(ulong OrderSubmitId, ulong EncounterID, ulong PhysicianID, ulong HumanID, string orderType, string procedureType, DateTime todaysDate, bool LoadQuestionSet);
         Stream DeleteOrders(IList<OrderLabDetailsDTO> obj, IList<OrdersAssessment> ordAssList, ulong EncounterID, string orderType, string MACAddress, IList<string> PlanLst);
         ulong UpdateOrders(IList<Orders> saveList, IList<Orders> updtList, IList<Orders> delList, IList<OrdersAssessment> savOrdAssListForExistingCPT, IList<OrdersAssessment> delOrdAssListForExistingCPT, IList<OrdersAssessment> savOrdAssListForNewCPT, IList<OrdersQuestionSetAfp> afpList, IList<OrdersQuestionSetBloodLead> bloodLeadList, IList<OrdersQuestionSetCytology> cytologyList, TreatmentPlan UpdatePlan, IList<string> PlanDel, IList<string> SelectedProcedures, IList<string> PlanReplace, ulong EncounterID, string orderType, string MACAddress, IList<OrdersQuestionSetAOE> AOESaveList, IList<OrdersSubmit> SavOrderSubmit, IList<OrdersSubmit> UpdOrderSubmit, IList<OrdersSubmit> DelOrderSubmit, IList<OrdersRequiredForms> SaveListOrdersRequiredForms, IList<OrdersRequiredForms> UpdateListOrdersRequiredForms, IList<OrdersRequiredForms> DeleteListOrdersRequiredForms, string sLocalTime);//, Dictionary<string, IList<OrdersQuestionSetAOE>> AOESaveList)
         IList<OrdersAssessment> GetOrdersAssessmentDetails(IList<ulong> OrderIDList);
         IList<OrderLabDetailsDTO> LoadOrdersForCollectSpecimen(ulong OrderSubmitID, string orderType, out IList<OrdersAssessment> OrderAssList);
         IList<OrderLabDetailsDTO> GetOrdersUsingOrderID(IList<ulong> OrderIDList);
         Stream GetOrdersUsingHumanID(ulong HumanID, DateTime createdDate, string OrderType, ulong Physician_Id, bool LoadQuestionSets);
+        Stream GetOrdersUsingEncounterIDByOrderSubmitID(ulong OrderSubmitId, ulong EncounterID, string orderType, bool LoadQuestionSet);
+        Stream GetOrdersUsingHumanIDByOrderSubmitID(ulong OrderSubmitId, ulong HumanID, DateTime createdDate, string OrderType, ulong PhysicianId, bool LoadQuestionSet);
         IList<Orders> GetOrdersBySubmitID(IList<ulong> order_Submit_Id_List);
         IList<FillOrdersManagementDTO> SearchOrder(string order_type, string order_status, string FacilityName, int orderInDays, DateTime fromDate, DateTime toDate, ulong humanID, ulong physicianID, ulong labId, ulong labLocationId, int pageNumber, int maxResults);
         void SubmitLabImageOrders(ulong ulMyEncounterID, ulong ulMyHumanID, ulong ulMyPhysicianID, string UserName, string MACAddress, DateTime currentDateTime, string orderType, string wfObjType, string medAsstName);
@@ -86,7 +89,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<string> GetOrdersForPrint(string orderid);
         IList<Orders> GetOrdersByOrderSubmitID(List<int> OrderSubmitID);
         FillHumanDTO PatientInsuredBag(ulong HumanId);
-        FillHumanDTO GetHumanByIdForCheckout(ulong HumanId, ulong ulEncounterID);
+        FillHumanDTO GetHumanByIdForCheckout(ulong HumanId);
         IList<Orders> GetOrdersByOrderID(ulong[] uOrderID);
         IList<string> GetOrderByHuman(ulong ulHumanID, string sFacility, ulong ulLabID);
         string GetFaxOrders(string ordersubmitid);
@@ -3303,6 +3306,367 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return stream;
         }
 
+
+        public Stream GetOrdersUsingEncounterIDByOrderSubmitID(ulong OrderSubmitId,ulong EncounterID, string orderType, bool LoadQuestionSet)
+        {
+            var stream = new MemoryStream();
+            var serializer = new NetDataContractSerializer();
+            //OrderDetailsDTO objOrderDetDTO = new OrderDetailsDTO();
+            OrdersDTO objOrdersDTO = new OrdersDTO();
+            IList<OrderLabDetailsDTO> ordLabList = new List<OrderLabDetailsDTO>();
+            OrderLabDetailsDTO ordLabObj = new OrderLabDetailsDTO();
+            Orders objOrd = new Orders();
+            IList<OrdersAssessment> ordAssList = new List<OrdersAssessment>();
+            OrdersAssessment objOrdAss = new OrdersAssessment();
+            IList<ulong> ulList = new List<ulong>();
+            IList<ulong> ulSpecimenIDList = new List<ulong>();
+            IList<Orders> iOrderList = new List<Orders>();
+            //ArrayList orderList = null;
+            ulong Order_id = 0;
+            ulong Order_submit_id = 0;
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                //IQuery query2 = iMySession.GetNamedQuery("Fill.Orders.GetOrdersUsingEncounterIDAndType");
+                //query2.SetString(0, EncounterID.ToString());
+                //query2.SetString(1, orderType);
+                //orderList = new ArrayList(query2.List());
+                //ISQLQuery query2 = iMySession.CreateSQLQuery("SELECT O.*,OS.*,L.*,LL.*,W.* FROM orders O LEFT JOIN orders_submit OS ON O.Order_Submit_ID=OS.Order_Submit_ID LEFT JOIN lab L ON (OS.Lab_ID=L.Lab_ID) LEFT JOIN lab_location LL ON (OS.Lab_Location_ID=LL.Lab_Location_ID) LEFT JOIN wf_object W ON (O.Order_Submit_ID=W.Obj_System_ID and OS.Order_Type=W.Obj_Type) WHERE O.Encounter_ID='" + EncounterID.ToString() + "'  AND OS.Order_Type='" + orderType + "' ORDER BY CAST(O.Modified_Date_And_Time AS CHAR(100)) DESC").AddEntity("O", typeof(Orders)).AddEntity("OS", typeof(OrdersSubmit)).AddEntity("L", typeof(Lab)).AddEntity("LL", typeof(LabLocation)).AddEntity("W", typeof(WFObject));
+                ISQLQuery query2 = iMySession.CreateSQLQuery("SELECT {O.*},{OS.*},{L.*},{LL.*},{W.*} FROM orders O LEFT JOIN orders_submit OS ON O.Order_Submit_ID=OS.Order_Submit_ID LEFT JOIN lab L ON (OS.Lab_ID=L.Lab_ID) LEFT JOIN lab_location LL ON (OS.Lab_Location_ID=LL.Lab_Location_ID) LEFT JOIN wf_object W ON (O.Order_Submit_ID=W.Obj_System_ID and OS.Order_Type=W.Obj_Type) WHERE O.Order_Submit_ID='" + OrderSubmitId + "' AND O.Encounter_ID='" + EncounterID.ToString() + "'  AND OS.Order_Type='" + orderType + "' ORDER BY if(O.Modified_Date_And_Time<>'0001-01-01 00:00:00',CAST(O.Modified_Date_And_Time AS CHAR(100)),CAST(O.Created_date_and_time AS CHAR(100)))  DESC").AddEntity("O", typeof(Orders)).AddEntity("OS", typeof(OrdersSubmit)).AddEntity("L", typeof(Lab)).AddEntity("LL", typeof(LabLocation)).AddEntity("W", typeof(WFObject));
+                ArrayList aryorderList = new ArrayList(query2.List());
+
+                //IList<object[]> orderList = query2.List<object[]>();
+                IList<ulong> AddedOrderIds = new List<ulong>();
+                if (aryorderList != null)  //if (orderList != null)
+                {
+                    foreach (IList<Object> obj in aryorderList)   //foreach (object[] obj in orderList)
+                    {
+                        //Add new
+                        if (obj.Count() > 0)
+                        {
+                            ordLabObj = new OrderLabDetailsDTO();
+                            Orders objOrder = new Orders();
+                            OrdersSubmit objOrdersSubmit = new OrdersSubmit();
+
+                            if (obj[0] != null)
+                            {
+                                ordLabObj.ObjOrder = (Orders)obj[0];
+                                AddedOrderIds.Add(ordLabObj.ObjOrder.Order_Submit_ID);
+                                Order_id = ordLabObj.ObjOrder.Id;
+                                Order_submit_id = ordLabObj.ObjOrder.Order_Submit_ID;
+                            }
+                            if (obj[1] != null)
+                            {
+                                ordLabObj.OrdersSubmit = (OrdersSubmit)obj[1];
+                            }
+                            if (LoadQuestionSet)
+                            {
+                                if (ordLabObj.ObjOrder.Order_Submit_ID == OrderSubmitId)
+                                {
+
+
+                                    //ICriteria critAfp = iMySession.CreateCriteria(typeof(OrdersQuestionSetAfp)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                                    //if (critAfp.List<OrdersQuestionSetAfp>().Count > 0)
+                                    //{
+                                    //    ordLabObj.objAFP = critAfp.List<OrdersQuestionSetAfp>()[0];
+                                    //}
+                                    //ICriteria critbloodLead = iMySession.CreateCriteria(typeof(OrdersQuestionSetBloodLead)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                                    //if (critbloodLead.List<OrdersQuestionSetBloodLead>().Count > 0)
+                                    //{
+                                    //    ordLabObj.objBloodLead = critbloodLead.List<OrdersQuestionSetBloodLead>()[0];
+                                    //}
+                                    //ICriteria critCyto = iMySession.CreateCriteria(typeof(OrdersQuestionSetCytology)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                                    //if (critCyto.List<OrdersQuestionSetCytology>().Count > 0)
+                                    //{
+                                    //    ordLabObj.objCytology = critCyto.List<OrdersQuestionSetCytology>()[0];
+                                    //}
+                                    //ICriteria critAOE = iMySession.CreateCriteria(typeof(OrdersQuestionSetAOE)).Add(Expression.Eq("Orders_ID", ordLabObj.ObjOrder.Id));
+                                    //if (critAOE.List<OrdersQuestionSetAOE>().Count > 0)
+                                    //{
+                                    //    ordLabObj.OrderAOEList = critAOE.List<OrdersQuestionSetAOE>();
+                                    //}
+                                }
+                                ordLabObj.OrdersSubmit = null;
+                                ordLabObj.ObjOrder = null;
+                            }
+                            else
+                            {
+                                if (obj[4] != null)
+                                {
+                                    ordLabObj.ObjOrder.Internal_Property_Current_Process = ((WFObject)obj[4]).Current_Process;
+                                    if (ordLabObj.ObjOrder.Internal_Property_Current_Process.StartsWith("DELETED_"))
+                                        continue;
+                                }
+                                if (obj[2] != null)
+                                {
+                                    if (((Lab)obj[2]).Lab_Name != null)
+                                        ordLabObj.LabName = ((Lab)obj[2]).Lab_Name;
+                                }
+                                if (obj[3] != null)
+                                {
+                                    if (((LabLocation)obj[3]).Location_Name != null)
+                                        ordLabObj.LabLocName = ((LabLocation)obj[3]).Location_Name;
+                                }
+
+                                ordLabObj.procedureCodeDesc = ordLabObj.ObjOrder.Lab_Procedure + "-" + ordLabObj.ObjOrder.Lab_Procedure_Description;
+                                //ulList.Add(ordLabObj.ObjOrder.Id);
+                                ulList.Add(ordLabObj.ObjOrder.Order_Submit_ID);
+
+                                ICriteria critOrdersRequiredForms = iMySession.CreateCriteria(typeof(OrdersRequiredForms)).Add(Expression.Eq("Order_Id", ordLabObj.ObjOrder.Id));
+                                if (critOrdersRequiredForms.List<OrdersRequiredForms>().Count > 0)
+                                {
+                                    ordLabObj.ilstOrdersRequiredForms = critOrdersRequiredForms.List<OrdersRequiredForms>();
+                                }
+                                if (ordLabObj.OrdersSubmit.Lab_ID == 1)
+                                {
+                                    ICriteria questionsSetType = iMySession.CreateCriteria(typeof(OrderCodeLibrary)).Add(Expression.Eq("Order_Code", ordLabObj.ObjOrder.Lab_Procedure)).Add(Expression.Eq("Lab_ID", ordLabObj.OrdersSubmit.Lab_ID));
+                                    if (questionsSetType.List<OrderCodeLibrary>().Count > 0)
+                                    {
+                                        ordLabObj.lstQuestionSetNames.Add(questionsSetType.List<OrderCodeLibrary>()[0].Order_Code_Question_Set_Segment);
+                                    }
+                                }
+
+                            }
+                            ordLabList.Add(ordLabObj);
+                        }
+                    }
+
+                }
+                //End
+                //        ordLabObj = new OrderLabDetailsDTO();
+                //        Orders objOrder = new Orders();
+                //        OrdersSubmit objOrdersSubmit = new OrdersSubmit();
+                //        //Specimen objSpecimen = new Specimen();
+                //        Order_id = Convert.ToUInt64(obj[0]);
+                //        Order_submit_id = Convert.ToUInt64(obj[1]);
+
+
+                //        ICriteria critOrd = iMySession.CreateCriteria(typeof(Orders)).Add(Expression.Eq("Id", Order_id));
+                //        if (critOrd.List<Orders>().Count > 0)
+                //        {
+                //            ordLabObj.ObjOrder = critOrd.List<Orders>()[0];
+
+                //            AddedOrderIds.Add(ordLabObj.ObjOrder.Order_Submit_ID);
+                //        }
+
+                //        ICriteria critOrdSub = iMySession.CreateCriteria(typeof(OrdersSubmit)).Add(Expression.Eq("Id", ordLabObj.ObjOrder.Order_Submit_ID));
+                //        if (critOrdSub.List<OrdersSubmit>().Count > 0)
+                //        {
+                //            ordLabObj.OrdersSubmit = critOrdSub.List<OrdersSubmit>()[0];
+                //        }
+                //        if (LoadQuestionSet)
+                //        {
+                //            if (ordLabObj.ObjOrder.Order_Submit_ID == OrderSubmitId)
+                //            {
+
+
+                //                ICriteria critAfp = iMySession.CreateCriteria(typeof(OrdersQuestionSetAfp)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                //                if (critAfp.List<OrdersQuestionSetAfp>().Count > 0)
+                //                {
+                //                    ordLabObj.objAFP = critAfp.List<OrdersQuestionSetAfp>()[0];
+                //                }
+                //                ICriteria critbloodLead = iMySession.CreateCriteria(typeof(OrdersQuestionSetBloodLead)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                //                if (critbloodLead.List<OrdersQuestionSetBloodLead>().Count > 0)
+                //                {
+                //                    ordLabObj.objBloodLead = critbloodLead.List<OrdersQuestionSetBloodLead>()[0];
+                //                }
+                //                ICriteria critCyto = iMySession.CreateCriteria(typeof(OrdersQuestionSetCytology)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                //                if (critCyto.List<OrdersQuestionSetCytology>().Count > 0)
+                //                {
+                //                    ordLabObj.objCytology = critCyto.List<OrdersQuestionSetCytology>()[0];
+                //                }
+                //                ICriteria critAOE = iMySession.CreateCriteria(typeof(OrdersQuestionSetAOE)).Add(Expression.Eq("Orders_ID", ordLabObj.ObjOrder.Id));
+                //                if (critAOE.List<OrdersQuestionSetAOE>().Count > 0)
+                //                {
+                //                    ordLabObj.OrderAOEList = critAOE.List<OrdersQuestionSetAOE>();
+                //                }
+                //            }
+                //            ordLabObj.OrdersSubmit = null;
+                //            ordLabObj.ObjOrder = null;
+                //        }
+                //        else
+                //        {
+                //            ICriteria critWfobj = iMySession.CreateCriteria(typeof(WFObject)).Add(Expression.Eq("Obj_Type", ordLabObj.OrdersSubmit.Order_Type)).Add(Expression.Eq("Obj_System_Id", ordLabObj.OrdersSubmit.Id));
+                //            if (critWfobj.List<WFObject>().Count > 0)
+                //            {
+                //                ordLabObj.ObjOrder.Internal_Property_Current_Process = critWfobj.List<WFObject>()[0].Current_Process;
+                //                if (ordLabObj.ObjOrder.Internal_Property_Current_Process.StartsWith("DELETED_"))
+                //                    continue;
+                //            }
+                //            //New
+                //            XmlTextReader XmlTextLab = new XmlTextReader(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\LabList.xml"));
+                //            XDocument xmlLab = XDocument.Load(XmlTextLab);
+
+                //            //IEnumerable<XElement> xmlFac = xmlLab.Element("LabList")
+                //            //                                .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == ClientSession.FacilityName);
+                //            ////.OrderBy(s => (string)s.Attribute("City"));
+                //            //if (xmlFac != null && xmlFac.Count() > 0)
+                //            //{
+                //            //    LookUpPerRequest.Add("FacilityCity", xmlFac.Attributes("City").First().Value.ToString());
+                //            //}
+                //            IEnumerable<XElement> xml = xmlLab.Element("LabList")
+                //                .Elements("Lab").Where(aa => aa.Attribute("id").Value.ToString() == ordLabObj.OrdersSubmit.Lab_ID.ToString());
+                //            if (xml != null && xml.Count() > 0)
+                //            {
+                //               string sval= xml.Attributes("name").First().Value.ToString();
+                //            }
+                //            XmlTextLab.Close();
+                //            //end
+
+                //            ICriteria critLab = iMySession.CreateCriteria(typeof(Lab)).Add(Expression.Eq("Id", ordLabObj.OrdersSubmit.Lab_ID));
+                //            if (critLab.List<Lab>().Count > 0)
+                //            {
+                //                ordLabObj.LabName = critLab.List<Lab>()[0].Lab_Name;
+                //            }
+                //            ICriteria critLabLoc = iMySession.CreateCriteria(typeof(LabLocation)).Add(Expression.Eq("Id", ordLabObj.OrdersSubmit.Lab_Location_ID));
+                //            if (critLabLoc.List<LabLocation>().Count > 0)
+                //            {
+                //                ordLabObj.LabLocName = critLabLoc.List<LabLocation>()[0].Location_Name;
+                //            }
+                //            //ICriteria critSpe = session.GetISession().CreateCriteria(typeof(Specimen)).Add(Expression.Eq("Id", ordLabObj.OrdersSubmit.Specimen_ID));
+                //            //if (critSpe.List<Specimen>().Count > 0)
+                //            //{
+                //            //    ordLabObj.objSpecimen = critSpe.List<Specimen>()[0];
+                //            //}
+                //            ordLabObj.procedureCodeDesc = ordLabObj.ObjOrder.Lab_Procedure + "-" + ordLabObj.ObjOrder.Lab_Procedure_Description;
+                //            ulList.Add(ordLabObj.ObjOrder.Id);
+
+                //            ICriteria critOrdersRequiredForms = iMySession.CreateCriteria(typeof(OrdersRequiredForms)).Add(Expression.Eq("Order_Id", ordLabObj.ObjOrder.Id));
+                //            if (critOrdersRequiredForms.List<OrdersRequiredForms>().Count > 0)
+                //            {
+                //                ordLabObj.ilstOrdersRequiredForms = critOrdersRequiredForms.List<OrdersRequiredForms>();
+                //            }
+                //            if (ordLabObj.OrdersSubmit.Lab_ID == 1)
+                //            {
+                //                ICriteria questionsSetType = iMySession.CreateCriteria(typeof(OrderCodeLibrary)).Add(Expression.Eq("Order_Code", ordLabObj.ObjOrder.Lab_Procedure)).Add(Expression.Eq("Lab_ID", ordLabObj.OrdersSubmit.Lab_ID));
+                //                if (questionsSetType.List<OrderCodeLibrary>().Count > 0)
+                //                {
+                //                    ordLabObj.lstQuestionSetNames.Add(questionsSetType.List<OrderCodeLibrary>()[0].Order_Code_Question_Set_Segment);
+                //                }
+                //            }
+
+                //            //ulSpecimenIDList.Add(ordLabObj.OrdersSubmit.Specimen_ID);
+                //        }
+
+                //        //ordLabObj.objSpecimen = objSpecimen;
+
+
+                //        ordLabList.Add(ordLabObj);
+
+                //    }
+                //}
+
+                //AddedOrderIds = AddedOrderIds.Distinct().ToList<ulong>();
+                //ISQLQuery queryId = iMySession.CreateSQLQuery("SELECT OS.*,W.* FROM orders_submit OS , wf_object W  WHERE W.obj_system_id=OS.Order_Submit_Id and W.Current_Process!=\"DELETED_ORDER\" And W.Obj_Type=\"DIAGNOSTIC ORDER\" AND OS.Is_Paper_Order='N' AND OS.Encounter_ID=" + EncounterID + ";").AddEntity("OS", typeof(OrdersSubmit)).AddEntity("W", typeof(WFObject));
+                //IList<object[]> tempObjectArray = queryId.List<object[]>();
+                //IList<OrdersSubmit> templist = new List<OrdersSubmit>();
+                //foreach (object[] obj in tempObjectArray)
+                //{
+                //    OrdersSubmit tempOrdersSubmit = new OrdersSubmit();
+                //    tempOrdersSubmit = (OrdersSubmit)obj[0];
+                //    tempOrdersSubmit.Culture_Location = ((WFObject)obj[1]).Current_Process;
+                //    templist.Add(tempOrdersSubmit);
+
+                //}
+                AddedOrderIds = AddedOrderIds.Distinct().ToList<ulong>();
+                IList<OrdersSubmit> templist = new List<OrdersSubmit>();
+
+                if (aryorderList != null)  //if (orderList != null)
+                {
+                    foreach (IList<Object> obj in aryorderList)   //foreach (object[] obj in orderList)
+                    {
+                        WFObject objwf = new WFObject();
+                        OrdersSubmit objos = new OrdersSubmit();
+                        if (obj.Count() > 0)
+                        {
+                            if (obj[4] != null)
+                            {
+                                objwf = (WFObject)obj[4];
+                            }
+                            if (obj[1] != null)
+                            {
+                                objos = (OrdersSubmit)obj[1];
+                            }
+                            if (objwf.Obj_System_Id == objos.Id && objwf.Current_Process != "DELETED_ORDER" && objwf.Obj_Type == "DIAGNOSTIC ORDER" && objos.Is_Paper_Order == "N" && objos.Encounter_ID == EncounterID)
+                            {
+                                OrdersSubmit tempOrdersSubmit = new OrdersSubmit();
+                                tempOrdersSubmit = (OrdersSubmit)obj[1];
+                                tempOrdersSubmit.Culture_Location = ((WFObject)obj[4]).Current_Process;
+                                templist.Add(tempOrdersSubmit);
+                            }
+
+                        }
+                    }
+                }
+
+                objOrdersDTO.ilstOrdersSubmitForPartialOrders = templist;
+                objOrdersDTO.ilstOrdersSubmitForPartialOrders = objOrdersDTO.ilstOrdersSubmitForPartialOrders.Where(a => !AddedOrderIds.Contains(a.Id)).ToList<OrdersSubmit>();
+
+
+                objOrdersDTO.ilstOrderLabDetailsDTO = ordLabList;
+                aryorderList.Clear(); //orderList.Clear();
+                if (ulList.Count > 0 && !LoadQuestionSet)
+                {
+                    objOrdersDTO.OrderAssList = GetOrdersAssessmentDetails(ulList);
+                }
+
+
+
+
+
+
+                //ICriteria criteria = session.GetISession().CreateCriteria(typeof(OrdersSubmit)).Add(Expression.Eq("Encounter_ID", EncounterID));
+                //if (criteria.List<OrdersSubmit>().Count > 0)
+                //{
+                //    objOrderDetDTO.OrderSubmitList = criteria.List<OrdersSubmit>();
+                //}
+                //ICriteria criteriaOrdAss = session.GetISession().CreateCriteria(typeof(OrdersAssessment)).Add(Expression.Eq("Encounter_ID", EncounterID));
+                //if (criteriaOrdAss.List<OrdersAssessment>().Count > 0)
+                //{
+                //    objOrderDetDTO.OrderAssList = criteriaOrdAss.List<OrdersAssessment>();
+                //}
+                //<**>
+                //if (ulSpecimenIDList.Count > 0)
+                //{
+                //    ICriteria criteriaSpecimen = session.GetISession().CreateCriteria(typeof(Specimen)).Add(Expression.In("Id", ulSpecimenIDList.ToArray<ulong>()));
+                //    if (criteriaSpecimen.List<Specimen>().Count > 0)
+                //    {
+                //        objOrderDetDTO.SpecimenList = criteriaSpecimen.List<Specimen>();
+                //    }
+                //}
+                //ICriteria subCrit = session.GetISession().CreateCriteria(typeof(OrdersInternalSubmit)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Order_Type", "INTERNAL " + orderType));
+                //if (subCrit.List<OrdersInternalSubmit>().Count > 0)
+                //{
+                //    objOrderDetDTO.objInternalSubmit = subCrit.List<OrdersInternalSubmit>()[0];
+                //}
+                //else
+                //{
+                //    objOrderDetDTO.objInternalSubmit = null;
+                //}
+                //}
+                # region In-house view
+
+                //MOHAN
+                IList<ulong> lstsubmit_id = objOrdersDTO.ilstOrderLabDetailsDTO.Where(q => q.OrdersSubmit != null).Select(A => A.OrdersSubmit.Id).Distinct().ToList<ulong>();
+                for (int k = 0; k < lstsubmit_id.Count; k++)
+                {
+                    ICriteria critMgnt = iMySession.CreateCriteria(typeof(FileManagementIndex)).Add(Expression.Eq("Order_ID", lstsubmit_id[k]));
+                    if (critMgnt.List<FileManagementIndex>().Count > 0)
+
+                        foreach (var obj in objOrdersDTO.ilstOrderLabDetailsDTO.Where(Z => Z.OrdersSubmit.Id == lstsubmit_id[k]))
+                        {
+                            objOrdersDTO.ilstOrderLabDetailsDTO[objOrdersDTO.ilstOrderLabDetailsDTO.IndexOf(obj)].OrdersSubmit.Internal_Property_File_Path = "TRUE";
+                        }
+                }
+
+                #endregion
+
+                serializer.WriteObject(stream, objOrdersDTO);
+                stream.Seek(0L, SeekOrigin.Begin);
+                iMySession.Close();
+            }
+            return stream;
+        }
+
         public Stream GetOrdersUsingEncounterIDForCMG(ulong CMGEncounterID)
         {
             var stream = new MemoryStream();
@@ -3563,6 +3927,125 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             else
             {
                 object objStream = (object)serializer.ReadObject(GetOrdersUsingHumanID(HumanID, todaysDate, orderType, PhysicianID, LoadQuestionSet));
+                objDTO = (OrdersDTO)objStream;
+            }
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                if (!LoadQuestionSet)
+                {
+                    ProblemListManager probMgr = new ProblemListManager();
+                    objDTO.MedAdvProblemList = probMgr.GetProblemList(HumanID);
+
+                    ICriteria criteria1 = iMySession.CreateCriteria(typeof(Assessment)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Assessment_Type", "Selected"));
+                    objDTO.AssessmentList = criteria1.List<Assessment>();
+
+
+                    ICriteria crit = iMySession.CreateCriteria(typeof(PatientResults)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Results_Type", "Vitals"))
+                        .SetProjection(Projections.Max("Vitals_Group_ID"));
+                    ulong vitalsId = 0;
+                    if (crit.List<object>().Count > 0)
+                    {
+                        vitalsId = Convert.ToUInt64(crit.List<object>()[0]);
+                    }
+                    IList<string> VitalName = new List<string>();
+                    VitalName.Add("Height");
+                    VitalName.Add("Weight");
+                    //ICriteria criteriaVital = session.GetISession().CreateCriteria(typeof(PatientResults)).Add(Expression.Eq("Vital_Group_ID", vitalsId)).Add(Expression.In("Loinc_Observation", VitalName.ToArray<string>())).Add(Expression.Eq("Results_Type", "Vitals"));
+                    //objDTO.VitalsList = criteriaVital.List<PatientResults>();
+
+                    objDTO.objHuman = GetHumanById(HumanID);
+                }
+
+                //ICriteria criteriaHuman = session.GetISession().CreateCriteria(typeof(Human)).Add(Expression.Eq("Id", HumanID));
+                //if (criteriaHuman.List<Human>().Count > 0)
+                //{
+                //    objDTO.objHuman = criteriaHuman.List<Human>()[0];
+                //}
+
+                //ICriteria phy = session.GetISession().CreateCriteria(typeof(PhysicianLibrary)).Add(Expression.Eq("Id", PhysicianID));
+                //.SetProjection(Projections.ProjectionList()
+                //.Add(Projections.Property("PhyPrefix"))
+                //.Add(Projections.Property("PhyFirstName"))
+                //.Add(Projections.Property("PhyMiddleName"))
+                //.Add(Projections.Property("PhyLastName"))
+                //.Add(Projections.Property("PhySuffix"))
+                //.Add(Projections.Property("PhyNPI")))
+                //.Add(Expression.Eq("Id", PhysicianID)).SetResultTransformer(NHibernate.Transform.Transformers.AliasToBean(typeof(PhysicianLibrary)));
+                //if (phy.List<PhysicianLibrary>().Count > 0)
+                //{
+                //    objDTO.objPhysician = phy.List<PhysicianLibrary>()[0];
+                //}
+                //if (objDTO.objHuman != null && objDTO.objHuman.PatientInsuredBag != null && objDTO.objHuman.PatientInsuredBag.Count > 0)
+                //{
+                //    ArrayList orderList = null;
+                //    IList<ulong> idList = (from pat in objDTO.objHuman.PatientInsuredBag select pat.Insurance_Plan_ID).ToList<ulong>();
+                //    string strLabType = orderType.Split(' ')[0];
+                //    IQuery query2 = session.GetISession().GetNamedQuery("Get.Orders.GetLabIDBasedOnInsPlan");
+                //    query2.SetString(0, strLabType);
+                //    query2.SetParameterList("InsList", idList.ToArray<ulong>());
+                //    orderList = new ArrayList(query2.List());
+                //    foreach (object o in orderList)
+                //    {
+                //        if (o != null)
+                //        {
+                //            objDTO.LabIDListBasedOnInsID.Add(Convert.ToUInt64(o));
+                //        }
+                //    }
+                //    if (objDTO.LabIDListBasedOnInsID != null && objDTO.LabIDListBasedOnInsID.Count > 0)
+                //    {
+                //        ICriteria criteriaPro = session.GetISession().CreateCriteria(typeof(PhysicianProcedure))
+                //            .Add(Expression.Eq("Physician_ID", PhysicianID)).Add(Expression.Eq("Procedure_Type", procedureType))
+                //            .Add(Expression.Eq("Lab_ID", objDTO.LabIDListBasedOnInsID[0]))
+                //            .AddOrder(Order.Asc("Physician_Procedure_Code"));
+                //        objDTO.ProcedureList = criteriaPro.List<PhysicianProcedure>();
+                //    }
+                //}
+                //objfrmOrdersList.objOrderDTO.ilstOrderLabDetailsDTO
+
+                //# region In-house view
+                //            if (!LoadQuestionSet)
+                //            {
+                //                IList<ulong> lstsubmit_id = objDTO.ilstOrderLabDetailsDTO.Where(q => q.OrdersSubmit != null).Select(A => A.OrdersSubmit.Id).Distinct().ToList<ulong>();
+                //                for (int k = 0; k < lstsubmit_id.Count; k++)
+                //                {
+                //                    ICriteria critMgnt = session.GetISession().CreateCriteria(typeof(FileManagementIndex)).Add(Expression.Eq("Order_ID", lstsubmit_id[k]));
+                //                    if (critMgnt.List<FileManagementIndex>().Count > 0)
+
+                //                        foreach (var obj in objDTO.ilstOrderLabDetailsDTO.Where(Z => Z.OrdersSubmit.Id == lstsubmit_id[k]))
+                //                        {
+                //                            objDTO.ilstOrderLabDetailsDTO[objDTO.ilstOrderLabDetailsDTO.IndexOf(obj)].OrdersSubmit.File_Path = "TRUE";
+                //                        }
+                //                }
+                //            }
+                //#endregion
+                serializer.WriteObject(stream, objDTO);
+                stream.Seek(0L, SeekOrigin.Begin);
+                iMySession.Close();
+            }
+            return stream;
+
+        }
+
+        public Stream LoadOrdersByOrdersSubmitedId(ulong OrderSubmitId, ulong EncounterID, ulong PhysicianID, ulong HumanID, string orderType, string procedureType, DateTime todaysDate, bool LoadQuestionSet)
+        {
+            var stream = new MemoryStream();
+            var serializer = new NetDataContractSerializer();
+            OrdersDTO objDTO = new OrdersDTO();
+            IList<ulong> ulList = new List<ulong>();
+            IList<string> IcDCodes = new List<string>();
+            if (LoadQuestionSet)
+            {
+                OrderSubmitId = Convert.ToUInt32(procedureType);
+            }
+            if (EncounterID != 0)
+            {
+                object objStream = (object)serializer.ReadObject(GetOrdersUsingEncounterIDByOrderSubmitID(OrderSubmitId,EncounterID, orderType, LoadQuestionSet));
+                objDTO = (OrdersDTO)objStream;
+
+            }
+            else
+            {
+                object objStream = (object)serializer.ReadObject(GetOrdersUsingHumanIDByOrderSubmitID(OrderSubmitId,HumanID, todaysDate, orderType, PhysicianID, LoadQuestionSet));
                 objDTO = (OrdersDTO)objStream;
             }
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
@@ -4263,7 +4746,275 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return stream;
         }
 
+        public Stream GetOrdersUsingHumanIDByOrderSubmitID(ulong OrderSubmitId,ulong HumanID, DateTime createdDate, string OrderType, ulong PhysicianId, bool LoadQuestionSet)
+        {
+            var stream = new MemoryStream();
+            var serializer = new NetDataContractSerializer();
+            OrdersDTO objOrdersDTO = new OrdersDTO();
 
+            //OrderDetailsDTO objOrderDetDTO = new OrderDetailsDTO();
+            IList<OrderLabDetailsDTO> ordLabList = new List<OrderLabDetailsDTO>();
+            OrderLabDetailsDTO ordLabObj = new OrderLabDetailsDTO();
+            Orders objOrd = new Orders();
+            IList<OrdersAssessment> ordAssList = new List<OrdersAssessment>();
+            OrdersAssessment objOrdAss = new OrdersAssessment();
+            IList<ulong> ulList = new List<ulong>();
+            IList<ulong> ulSpecimenIDList = new List<ulong>();
+            IList<Orders> iOrderList = new List<Orders>();
+            ArrayList orderList = null;
+            string split = createdDate.ToString("yyyy-MM-dd");
+            ulong Order_id = 0;
+            ulong Order_submit_id = 0;
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                IQuery query2 = iMySession.GetNamedQuery("Fill.Orders.GetOrdersUsingHumanIDByOrderSubmitID");
+                query2.SetString(0, OrderSubmitId.ToString());
+                query2.SetString(1, HumanID.ToString());
+                query2.SetString(2, "%%");
+                query2.SetString(3, OrderType);
+                query2.SetString(4, "0");
+                query2.SetString(5, PhysicianId.ToString());
+                orderList = new ArrayList(query2.List());
+
+                IList<ulong> AddedOderSubmitID = new List<ulong>();
+
+
+                //objOrderDetDTO.OrderCount = Convert.ToInt16(orderList.Count); //commented by prabu 23/01/2012
+                if (orderList != null)
+                {
+                    foreach (object[] obj in orderList)
+                    {
+                        ordLabObj = new OrderLabDetailsDTO();
+                        OrdersSubmit objOrdersSubmit = new OrdersSubmit();
+                        //Specimen objSpecimen = new Specimen();
+                        Orders objOrder = new Orders();
+                        Order_id = Convert.ToUInt64(obj[0]);
+                        Order_submit_id = Convert.ToUInt64(obj[1]);
+
+
+                        //objOrder.Id = Convert.ToUInt64(obj[0]);
+                        //objOrder.Encounter_ID = Convert.ToUInt64(obj[1]);
+                        //objOrder.Human_ID = Convert.ToUInt64(obj[2]);
+                        //objOrder.Physician_ID = Convert.ToUInt64(obj[3]);
+                        //objOrdersSubmit.Lab_Location_ID = Convert.ToUInt64(obj[4]);
+                        //objOrdersSubmit.Lab_ID = Convert.ToUInt64(obj[5]);
+                        //objOrder.Lab_Procedure = obj[6].ToString();
+                        //objOrdersSubmit.Authorization_Required = obj[7].ToString();
+                        //objOrdersSubmit.Test_Date = Convert.ToString(obj[8]);
+                        //objOrdersSubmit.Order_Notes = obj[9].ToString();
+                        //objOrdersSubmit.Specimen_In_House = obj[10].ToString();
+                        //objSpecimen.Stat = obj[11].ToString();
+                        //objSpecimen.Fasting = obj[12].ToString();
+                        //objOrdersSubmit.Created_Date_And_Time = Convert.ToDateTime(obj[13]);
+                        //objOrder.Created_By = obj[14].ToString();
+                        //objOrder.Created_Date_And_Time = Convert.ToDateTime(obj[15]);
+                        //objOrder.Modified_By = obj[16].ToString();
+                        //objOrder.Modified_Date_And_Time = Convert.ToDateTime(obj[17]);
+                        //objOrder.Version = Convert.ToInt16(obj[18]);
+                        //objOrder.Lab_Procedure_Description = obj[19].ToString();
+                        //objOrdersSubmit.Order_Type = obj[20].ToString();
+                        //objOrdersSubmit.Specimen_ID = Convert.ToUInt64(obj[21]);
+                        //objOrdersSubmit.Facility_Name = obj[22].ToString();
+                        //objOrdersSubmit.Height = obj[23].ToString();
+                        //objOrdersSubmit.Weight = obj[24].ToString();
+                        //objOrder.Order_Code_Type = obj[25].ToString();
+                        //objOrdersSubmit.Bill_Type = obj[26].ToString();
+                        //objOrdersSubmit.Is_ABN_Signed = obj[27].ToString();
+                        //objSpecimen.Specimen_Type = obj[28].ToString();
+                        //objSpecimen.Culture_Location = obj[29].ToString();
+                        ////objOrder.Is_In_House = obj[30].ToString();
+                        ////objOrder.Orders_Internal_Submit_ID = Convert.ToUInt64(obj[31]);
+                        ////objOrder.TestDate_In_Months = Convert.ToInt16(obj[32]);
+                        ////objOrder.TestDate_In_Weeks = Convert.ToInt16(obj[33]);
+                        ////objOrder.TestDate_In_Days = Convert.ToInt16(obj[34]);
+                        ////objOrder.Patient_Instructions = obj[35].ToString();
+                        //objOrdersSubmit.Move_To_MA = obj[30].ToString();
+                        //objOrdersSubmit.Temperature = obj[35].ToString();
+                        //objOrder.Order_Submit_ID = Convert.ToUInt64(obj[36]);
+                        //objOrdersSubmit.Version = Convert.ToInt32(obj[37]);
+                        //ordLabObj.ObjOrder = objOrder;
+                        //if (obj[31] != null)
+                        //{
+                        //    ordLabObj.LabName = obj[31].ToString();
+                        //}
+                        //if (obj[32] != null)
+                        //{
+                        //    ordLabObj.LabLocName = obj[32].ToString();
+                        //}
+                        //if (obj[33] != null)
+                        //{
+                        //    objOrder.Current_Process = obj[33].ToString();
+                        //}
+                        //objSpecimen.Specimen_Collection_Date_And_Time = Convert.ToDateTime(obj[34]);
+                        ordLabObj.procedureCodeDesc = obj[6].ToString() + "-" + obj[19].ToString();
+
+                        ICriteria critOrd = iMySession.CreateCriteria(typeof(Orders)).Add(Expression.Eq("Id", Order_id));
+                        if (critOrd.List<Orders>().Count > 0)
+                        {
+                            ordLabObj.ObjOrder = critOrd.List<Orders>()[0];
+                            AddedOderSubmitID.Add(ordLabObj.ObjOrder.Order_Submit_ID);
+                        }
+
+
+                        ICriteria critOrdSub = iMySession.CreateCriteria(typeof(OrdersSubmit)).Add(Expression.Eq("Id", ordLabObj.ObjOrder.Order_Submit_ID));
+                        if (critOrdSub.List<OrdersSubmit>().Count > 0)
+                        {
+                            if (critOrdSub.List<OrdersSubmit>()[0].Order_Code_Type.Trim() != string.Empty)
+                                ordLabObj.OrdersSubmit = critOrdSub.List<OrdersSubmit>()[0];
+                            else
+                                continue;
+                        }
+
+                        if (LoadQuestionSet)
+                        {
+                            if (OrderSubmitId == ordLabObj.ObjOrder.Id)
+                            {
+                                //ICriteria critAfp = iMySession.CreateCriteria(typeof(OrdersQuestionSetAfp)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                                //if (critAfp.List<OrdersQuestionSetAfp>().Count > 0)
+                                //{
+                                //    ordLabObj.objAFP = critAfp.List<OrdersQuestionSetAfp>()[0];
+                                //}
+                                //ICriteria critbloodLead = iMySession.CreateCriteria(typeof(OrdersQuestionSetBloodLead)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                                //if (critbloodLead.List<OrdersQuestionSetBloodLead>().Count > 0)
+                                //{
+                                //    ordLabObj.objBloodLead = critbloodLead.List<OrdersQuestionSetBloodLead>()[0];
+                                //}
+                                //ICriteria critCyto = iMySession.CreateCriteria(typeof(OrdersQuestionSetCytology)).Add(Expression.Eq("Order_ID", ordLabObj.ObjOrder.Id));
+                                //if (critCyto.List<OrdersQuestionSetCytology>().Count > 0)
+                                //{
+                                //    ordLabObj.objCytology = critCyto.List<OrdersQuestionSetCytology>()[0];
+                                //}
+                                //ICriteria critAOE = iMySession.CreateCriteria(typeof(OrdersQuestionSetAOE)).Add(Expression.Eq("Orders_ID", ordLabObj.ObjOrder.Id));
+                                //if (critAOE.List<OrdersQuestionSetAOE>().Count > 0)
+                                //{
+                                //    ordLabObj.OrderAOEList = critAOE.List<OrdersQuestionSetAOE>();
+                                //}
+                            }
+                            ordLabObj.OrdersSubmit = null;
+                            ordLabObj.ObjOrder = null;
+                        }
+                        else
+                        {
+                            //ICriteria critSpe = session.GetISession().CreateCriteria(typeof(Specimen)).Add(Expression.Eq("Id", ordLabObj.OrdersSubmit.Specimen_ID));
+                            //if (critSpe.List<Specimen>().Count > 0)
+                            //{
+                            //    ordLabObj.objSpecimen = critSpe.List<Specimen>()[0];
+                            //}
+                            ICriteria critWfobj = iMySession.CreateCriteria(typeof(WFObject)).Add(Expression.Eq("Obj_Type", ordLabObj.OrdersSubmit.Order_Type)).Add(Expression.Eq("Obj_System_Id", ordLabObj.OrdersSubmit.Id));
+                            if (critWfobj.List<WFObject>().Count > 0)
+                            {
+                                ordLabObj.ObjOrder.Internal_Property_Current_Process = critWfobj.List<WFObject>()[0].Current_Process;
+                                if (ordLabObj.ObjOrder.Internal_Property_Current_Process.StartsWith("DELETED_"))
+                                    continue;
+                            }
+                            ICriteria critLab = iMySession.CreateCriteria(typeof(Lab)).Add(Expression.Eq("Id", ordLabObj.OrdersSubmit.Lab_ID));
+                            if (critLab.List<Lab>().Count > 0)
+                            {
+                                ordLabObj.LabName = critLab.List<Lab>()[0].Lab_Name;
+                            }
+                            ICriteria critLabLoc = iMySession.CreateCriteria(typeof(LabLocation)).Add(Expression.Eq("Id", ordLabObj.OrdersSubmit.Lab_Location_ID));
+                            if (critLabLoc.List<LabLocation>().Count > 0)
+                            {
+                                ordLabObj.LabLocName = critLabLoc.List<LabLocation>()[0].Location_Name;
+                            }
+                            ordLabObj.procedureCodeDesc = ordLabObj.ObjOrder.Lab_Procedure + "-" + ordLabObj.ObjOrder.Lab_Procedure_Description;
+                            //ulSpecimenIDList.Add(ordLabObj.OrdersSubmit.Specimen_ID);
+                            //ulList.Add(ordLabObj.ObjOrder.Id);
+                            ulList.Add(ordLabObj.ObjOrder.Order_Submit_ID);
+
+                            ICriteria critOrdersRequiredForms = iMySession.CreateCriteria(typeof(OrdersRequiredForms)).Add(Expression.Eq("Order_Id", ordLabObj.ObjOrder.Id));//Order_ID Change to Order_Id By ThiyagarajanM
+                            if (critOrdersRequiredForms.List<OrdersRequiredForms>().Count > 0)
+                            {
+                                ordLabObj.ilstOrdersRequiredForms = critOrdersRequiredForms.List<OrdersRequiredForms>();
+                            }
+
+
+                        }
+
+
+
+                        ordLabList.Add(ordLabObj);
+
+                    }
+                }
+                AddedOderSubmitID = AddedOderSubmitID.Distinct().ToList<ulong>();
+                ISQLQuery queryId = iMySession.CreateSQLQuery("SELECT OS.*,W.* FROM orders_submit OS , wf_object W  WHERE W.obj_system_id=OS.Order_Submit_Id and  OS.Encounter_ID=0 and W.Current_Process!=\"DELETED_ORDER\" And W.Obj_Type=\"DIAGNOSTIC ORDER\" AND OS.Is_Paper_Order='N' AND OS.Order_Submit_Id="+ OrderSubmitId.ToString() + " AND OS.Human_Id=" + HumanID.ToString() + " and OS.Physician_ID=" + PhysicianId.ToString() + " and OS.Order_Type='" + OrderType + "';").AddEntity("OS", typeof(OrdersSubmit)).AddEntity("W", typeof(WFObject));
+                IList<object[]> tempObjectArray = queryId.List<object[]>();
+                IList<OrdersSubmit> templist = new List<OrdersSubmit>();
+                foreach (object[] obj in tempObjectArray)
+                {
+                    OrdersSubmit tempOrdersSubmit = new OrdersSubmit();
+                    tempOrdersSubmit = (OrdersSubmit)obj[0];
+                    tempOrdersSubmit.Culture_Location = ((WFObject)obj[1]).Current_Process;
+                    templist.Add(tempOrdersSubmit);
+
+                }
+                objOrdersDTO.ilstOrdersSubmitForPartialOrders = templist;
+                objOrdersDTO.ilstOrdersSubmitForPartialOrders = objOrdersDTO.ilstOrdersSubmitForPartialOrders.Where(a => !AddedOderSubmitID.Contains(a.Id)).ToList<OrdersSubmit>();
+
+                objOrdersDTO.ilstOrderLabDetailsDTO = ordLabList;
+                orderList.Clear();
+                if (ulList.Count > 0 && !LoadQuestionSet)
+                {
+                    objOrdersDTO.OrderAssList = GetOrdersAssessmentDetails(ulList);
+                    // objOrderDetDTO.OrderPblmList = GetOrdersProblemListDetails(ulList);
+                }
+
+                //ICriteria criteria = session.GetISession().CreateCriteria(typeof(OrdersSubmit)).Add(Expression.Eq("Encounter_ID", EncounterID));
+                //if (criteria.List<OrdersSubmit>().Count > 0)
+                //{
+                //    objOrderDetDTO.OrderSubmitList = criteria.List<OrdersSubmit>();
+                //}
+                //ICriteria criteriaOrdAss = session.GetISession().CreateCriteria(typeof(OrdersAssessment)).Add(Expression.Eq("Encounter_ID", EncounterID));
+                //if (criteriaOrdAss.List<OrdersAssessment>().Count > 0)
+                //{
+                //    objOrderDetDTO.OrderAssList = criteriaOrdAss.List<OrdersAssessment>();
+                //}
+
+                //if (ulSpecimenIDList.Count > 0)
+                //{
+                //    ICriteria criteriaSpecimen = session.GetISession().CreateCriteria(typeof(Specimen)).Add(Expression.In("Id", ulSpecimenIDList.ToArray<ulong>()));
+                //    if (criteriaSpecimen.List<Specimen>().Count > 0)
+                //    {
+                //        objOrderDetDTO.SpecimenList = criteriaSpecimen.List<Specimen>();
+                //    }
+                //}
+                //ICriteria subCrit = session.GetISession().CreateCriteria(typeof(OrdersInternalSubmit)).Add(Expression.Eq("Encounter_ID", EncounterID)).Add(Expression.Eq("Order_Type", "INTERNAL " + orderType));
+                //if (subCrit.List<OrdersInternalSubmit>().Count > 0)
+                //{
+                //    objOrderDetDTO.objInternalSubmit = subCrit.List<OrdersInternalSubmit>()[0];
+                //}
+                //else
+                //{
+                //    objOrderDetDTO.objInternalSubmit = null;
+                //}
+                //}
+
+
+                # region In-house view
+
+                //MOHAN
+                IList<ulong> lstsubmit_id = objOrdersDTO.ilstOrderLabDetailsDTO.Where(q => q.OrdersSubmit != null).Select(A => A.OrdersSubmit.Id).Distinct().ToList<ulong>();
+                for (int k = 0; k < lstsubmit_id.Count; k++)
+                {
+                    ICriteria critMgnt = iMySession.CreateCriteria(typeof(FileManagementIndex)).Add(Expression.Eq("Order_ID", lstsubmit_id[k]));
+                    if (critMgnt.List<FileManagementIndex>().Count > 0)
+
+                        foreach (var obj in objOrdersDTO.ilstOrderLabDetailsDTO.Where(Z => Z.OrdersSubmit.Id == lstsubmit_id[k]))
+                        {
+                            objOrdersDTO.ilstOrderLabDetailsDTO[objOrdersDTO.ilstOrderLabDetailsDTO.IndexOf(obj)].OrdersSubmit.Internal_Property_File_Path = "TRUE";
+                        }
+                }
+
+                #endregion
+
+
+                serializer.WriteObject(stream, objOrdersDTO);
+                stream.Seek(0L, SeekOrigin.Begin);
+                iMySession.Close();
+            }
+            return stream;
+        }
         #endregion
         public bool SubmitOrdersWithOutEncounter(ulong myHumanId, ulong myEncounterId, string objType, string MACAddress, string UserName, DateTime currentDate, string MedAsstUserName, IList<string> OrdersType, string sFacilityName)
         {
@@ -7230,7 +7981,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return sOrders;
         }
 
-        public FillHumanDTO GetHumanByIdForCheckout(ulong HumanId, ulong ulEncounterID)
+        public FillHumanDTO GetHumanByIdForCheckout(ulong HumanId)
         {
             FillHumanDTO objFillHuman = new FillHumanDTO();
 
@@ -7342,14 +8093,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
 
             ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
-            //GitLab #3811
-            //IQuery query1 = iMySession.GetNamedQuery("Get.Checkout.PatientPane");
-            //query1.SetString(0, HumanId.ToString());
-
-            IQuery query1 = iMySession.GetNamedQuery("Get.Checkout.PatientPaneWithEncounter");
+            IQuery query1 = iMySession.GetNamedQuery("Get.Checkout.PatientPane");
             query1.SetString(0, HumanId.ToString());
-            query1.SetString(1, ulEncounterID.ToString());
-
 
             ArrayList PatientList = null;
             PatientList = new ArrayList(query1.List());

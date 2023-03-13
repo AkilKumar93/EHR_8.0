@@ -1618,11 +1618,13 @@ namespace Acurus.Capella.UI
 
         protected void grdReport_ItemCommand(object sender, GridCommandEventArgs e)
         {
+            
             hdnSelectedItem.Value = string.Empty;
 
             // ulong ID = Convert.ToUInt64(grdReport.MasterTableView.Items[Convert.ToInt32(e.CommandArgument)].Cells[8].Text);
             if (e.Item.ItemIndex != -1)
             {
+                
                 GridDataItem GridSelectItem = (GridDataItem)e.Item;
                 //Srividhya - 19-dec-2014 - bugid:28811 & 28806==start
                 ClientSession.HumanId = Convert.ToUInt32(GridSelectItem["PatientAcc"].Text);
@@ -1704,7 +1706,7 @@ namespace Acurus.Capella.UI
                             }
                             else
                             {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7090013');", true);
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", "DisplayErrorMessage('7090013');", true);
                                 return;
                             }
                         }
@@ -1730,7 +1732,7 @@ namespace Acurus.Capella.UI
                 }
                 else if (GridSelectItem["Procedure/Rx/Reasonforreferral"].Text.ToString().Contains("Paper Order"))
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7090014');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", "DisplayErrorMessage('7090014');", true);
                     return;
                 }
                 else
@@ -1866,11 +1868,12 @@ namespace Acurus.Capella.UI
                         OrdersDTO objOrderDTO = null;
                         object objDTO;
                         var serializer = new NetDataContractSerializer();
-                        objDTO = (object)serializer.ReadObject(objOrdersManager.LoadOrders(Convert.ToUInt64(GridSelectItem["EncounterID"].Text), Convert.ToUInt32(GridSelectItem["PhysicianID"].Text), Convert.ToUInt32(GridSelectItem["PatientAcc"].Text), "DIAGNOSTIC ORDER", string.Empty, UtilityManager.ConvertToUniversal(DateTime.Now), false));
+                        ulong order_submit_id = Convert.ToUInt64(GridSelectItem["Control"].Text.ToString().Replace("ACUR", "").Trim());
+                        objDTO = (object)serializer.ReadObject(objOrdersManager.LoadOrdersByOrdersSubmitedId(order_submit_id,Convert.ToUInt64(GridSelectItem["EncounterID"].Text), Convert.ToUInt32(GridSelectItem["PhysicianID"].Text), Convert.ToUInt32(GridSelectItem["PatientAcc"].Text), "DIAGNOSTIC ORDER", string.Empty, UtilityManager.ConvertToUniversal(DateTime.Now), false));
                         objOrderDTO = (OrdersDTO)objDTO;
                         FillHumanDTO objFillHumnaDTO = new FillHumanDTO();
                         //FileLocation = print.CallPrintLabAndImageOrders(path, Convert.ToUInt64(GridSelectItem["EncounterID"].Text), objOrderDTO, objOrderDTO.objHuman);
-                        ulong order_submit_id = Convert.ToUInt64(GridSelectItem["Control"].Text.ToString().Replace("ACUR", "").Trim());
+                        
                         PhysicianManager objPhysicianManager = new PhysicianManager();
                         PhysicianLibrary objPhysician = new PhysicianLibrary();
                         if (GridSelectItem["PhysicianID"].Text != "0")
@@ -1929,7 +1932,7 @@ namespace Acurus.Capella.UI
                 GridDataItem GridSelectItem = (GridDataItem)e.Item;
                 if (GridSelectItem["IndexOrderID"].Text == string.Empty || (Convert.ToInt32(GridSelectItem["IndexOrderID"].Text) == 0 && GridSelectItem["IsElectronicSignature"].Text == "False"))
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7090010');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", "DisplayErrorMessage('7090010');", true);
                     Session.Add("ResultExist", null);
                     return;
                 }

@@ -676,7 +676,7 @@
                                         <asp:Panel ID="pnlReport" runat="server" GroupingText="Search Results" CssClass="Panel LabelStyleBold">
                                             <telerik:RadGrid ID="grdReport" runat="server" Height="235px" AutoGenerateColumns="False"
                                                 CellSpacing="0"  GridLines="None" OnNeedDataSource="grdReport_NeedDataSource"
-                                                OnItemCommand="grdReport_ItemCommand" CssClass="Gridbodystyle">
+                                                OnItemCommand="grdReport_ItemCommand"  onclick="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}" CssClass="Gridbodystyle">
                                                 <ClientSettings EnablePostBackOnRowClick="True">
                                                     <ClientEvents OnRowClick="grdReport_OnRowClick"/>
                                                     <Scrolling AllowScroll="True" UseStaticHeaders="True" />

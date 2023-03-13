@@ -82,7 +82,7 @@ function ExamPhotos(Submit_Id, CurrentProcess) {
 }
 
 function ViewResults(Human_ID, order_submit_id, enc_id, Physician_ID, lab_id) {
-
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     var vhdnCurrentProcess = "";
     if (document.getElementById("hdnCurrentProcess") != null) {
         vhdnCurrentProcess = document.getElementById("hdnCurrentProcess").value;
@@ -199,6 +199,7 @@ function CheckedChange() {
     }
 }
 function OpenPDFImage() {
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     var obj = new Array();
     obj.push("SI=" + document.getElementById('hdnSelectedItem').value);
     obj.push("Location=" + "DYNAMIC");
