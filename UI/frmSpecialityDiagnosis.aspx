@@ -1,5 +1,5 @@
 ﻿<%@ Page  Async="true" Language="C#" AutoEventWireup="true" CodeBehind="frmSpecialityDiagnosis.aspx.cs"
-    Inherits="Acurus.Capella.UI.frmSpecialityDiagnosis" %>
+    Inherits="Acurus.Capella.UI.frmSpecialityDiagnosis" EnableEventValidation="false"%>
 
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
