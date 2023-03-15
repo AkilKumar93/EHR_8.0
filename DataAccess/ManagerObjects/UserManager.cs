@@ -116,12 +116,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     ScnTabManager objScnTabmngr = new ScnTabManager();
                     objLoginDTO.UserPermissionDTO = objScnTabmngr.GetUserPermisssions(UserName, bIsScnTabLoad);
+                    using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+                    {
+                        ISQLQuery query1 = iMySession.CreateSQLQuery("select distinct Default_Server from user where status='A' and default_server<>''");
+                        objLoginDTO.DefaultServerCount = query1.List().Count;
+                    }
 
-                    //  objLoginDTO.UserSession = userSessionMngr.GetCurrentSessionByUserName(UserName);
-                    // objLoginDTO.UserSession = userSessionMngr.GetUserSessionFromXml(UserName);
-                    //LastModifiedLocalLookupManager lastmodifiedManager = new LastModifiedLocalLookupManager();
-                    //objLoginDTO.lstLookUp = lastmodifiedManager.GetModifiedDates();
-                }
+                        //  objLoginDTO.UserSession = userSessionMngr.GetCurrentSessionByUserName(UserName);
+                        // objLoginDTO.UserSession = userSessionMngr.GetUserSessionFromXml(UserName);
+                        //LastModifiedLocalLookupManager lastmodifiedManager = new LastModifiedLocalLookupManager();
+                        //objLoginDTO.lstLookUp = lastmodifiedManager.GetModifiedDates();
+                    }
                 UserSessionManager userSessionMngr = new UserSessionManager();
                 using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                 {

@@ -19,6 +19,7 @@ namespace Acurus.Capella.Core.DTO
         IList<UserSession> usersession;
         UserPermissionDTO objuserpermissionDTO;
         string sCarrier = string.Empty;
+        int iDefaultServerCount = 0;
         //IList<LastModifiedLocalLookup> lstlookup;
 
         [DataMember]
@@ -44,6 +45,13 @@ namespace Acurus.Capella.Core.DTO
         {
             get { return sCarrier; }
             set { sCarrier = value; }
+        }
+
+        [DataMember]
+        public int DefaultServerCount
+        {
+            get { return iDefaultServerCount; }
+            set { iDefaultServerCount = value; }
         }
         //[DataMember]
         //public IList<LastModifiedLocalLookup> lstLookUp
