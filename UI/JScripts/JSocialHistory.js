@@ -109,17 +109,21 @@ function disable(ctrlId, ctrlName) {
     document.getElementById(ctrlId).checked = true;
     var crltxt = ctrlId.replace(ctrlName, "DLC") + "_txtDLC";
     var ctrlcbo = ctrlId.replace(ctrlName, "cbo")
-    var combo = $find(ctrlcbo);
+   // var combo = $find(ctrlcbo);
+    var combo = document.getElementById(ctrlcbo);
     if (ctrlName == "chkYes" && ctrlId != "chkYesSexuallyActive") {
-        combo.enable();
+        //combo.enable();
+        combo.disabled = false;
     }
     else {
-        combo.disable();
-        combo.clearSelection();
+        //combo.disable();
+        
+        $("select#" + ctrlcbo).prop('selectedIndex', 0);
+        combo.disabled = true;
     }
 
     if (ctrlId == "chkNoTobaccoUseandExposure" || ctrlId == "chkYesTobaccoUseandExposure") {
-        combo.enable();        
+        combo.disabled = false;  
         
     }
     defaultselectionTobacca(ctrlId);
@@ -128,15 +132,35 @@ function disable(ctrlId, ctrlName) {
 function defaultselectionTobacca(ctrlId) {
     if(ctrlId == "chkYesTobaccoUseandExposure")
     {
-        var cmbbx = $find("cboTobaccoUseandExposure");
-        var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-230060001-Light cigarette smoker");
-        cItem.select();
+        //var cmbbx = $find("cboTobaccoUseandExposure");
+        var cmbbx = document.getElementById("cboTobaccoUseandExposure");
+        var indexyes = -1;
+        //var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-230060001-Light cigarette smoker");
+        for (var i = 0; i < cmbbx.options.length; i++)
+        {
+            
+            if (cmbbx.options[i].value == "TobaccoUseandExposure-230060001-Light cigarette smoker") {
+                $("select#cboTobaccoUseandExposure").prop('selectedIndex', i);
+                }
+            
+        }
+        //cItem.select();
+        
     }
     else if(ctrlId == "chkNoTobaccoUseandExposure")
     {
-        var cmbbx = $find("cboTobaccoUseandExposure");
-        var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-160618006-Current non-smoker");
-        cItem.select();
+        //var cmbbx = $find("cboTobaccoUseandExposure");
+        var cmbbx = document.getElementById("cboTobaccoUseandExposure");
+        var index = -1;
+        //var cItem = cmbbx.findItemByValue("TobaccoUseandExposure-160618006-Current non-smoker");
+        //cItem.select();
+        for (var i = 0; i < cmbbx.options.length; i++) {
+            
+            if (cmbbx.options[i].value == "TobaccoUseandExposure-160618006-Current non-smoker") {
+                $("select#cboTobaccoUseandExposure").prop('selectedIndex', i);
+                }
+            
+        }
     }
 }
 function enable(testId, chkName) {
@@ -144,9 +168,22 @@ function enable(testId, chkName) {
     document.getElementById(testId).checked = false;
     var crltxt = testId.replace(chkName, "DLC") + "_txtDLC";
     var ctrlcbo = testId.replace(chkName, "cbo")
-    var combo = $find(ctrlcbo);
-    combo.disable();
-    combo.clearSelection();
+    //var combo = $find(ctrlcbo);
+    var combo = document.getElementById(ctrlcbo);
+    //combo.disable();
+    if (combo.id == 'cboTobaccoUseandExposure' && combo.item(0).text != "")
+    {
+        var option = document.createElement("option");
+        option.text = "";
+        option.value = "";
+        option.setAttribute("option","Yes");
+        combo.add(option, combo[0]);
+    }
+    combo.disabled = true;
+    $("select#" + ctrlcbo).prop('selectedIndex', 0);
+   
+    //combo.clearSelection();
+    
     var TFamilyDiseaseControlD = testId.replace(chkName, "DLC") + "_listDLC";
     document.getElementById(TFamilyDiseaseControlD).style.display = "none";
     var listcontrolSocialHistory = document.getElementById(testId.replace(chkName, "DLC") + "_pbDropdown");
@@ -187,6 +224,9 @@ function btnClearAll_Clicked(sender, args) {
 
 function OnClientSelectedIndex(sender, eventArgs) {
     EnableSave();
+    
+    //var item = eventArgs.get_item();
+    //sender.set_text(item.get_text());
 }
 function btnSave_Clicked(sender, args) {
     if (document.getElementById("DLC_txtDLC")!=null && document.getElementById("DLC_txtDLC")!=undefined && document.getElementById("DLC_txtDLC").value != "" && document.getElementById("DLC_txtDLC").value.length > 32767) {
@@ -287,45 +327,75 @@ function EnablePFSH(val) {
 }
 
 function LoadcboTobacco(sender, args) {
-    var cboTobacco = $telerik.findComboBox('cboTobaccoUseandExposure');
+   // var cboTobacco = $telerik.findComboBox('cboTobaccoUseandExposure');
+    var cboTobacco = document.getElementById("cboTobaccoUseandExposure");
     if (cboTobacco != null) {
         var chkValue = "None";
         if (document.getElementById('chkYesTobaccoUseandExposure') != null && document.getElementById('chkYesTobaccoUseandExposure').checked == true)
             chkValue = true;
         else if (document.getElementById('chkNoTobaccoUseandExposure') != null && document.getElementById('chkNoTobaccoUseandExposure').checked == true)
             chkValue = false;
-        if (cboTobacco.get_attributes()._data.CheckedValue.toLowerCase() == "true" || cboTobacco.get_attributes()._data.CheckedValue.toLowerCase() == "false")
-            chkValue = JSON.parse(cboTobacco.get_attributes()._data.CheckedValue.toLowerCase());
-        var cboItems = cboTobacco.get_items();
-        cboTobacco.trackChanges();
-
-        for (i = 0; i < cboItems._array.length; i++) {
-            var item = cboItems.getItem(i);
-            if (chkValue == "None" && (item.get_attributes()._data.Option == "Yes" || item.get_attributes()._data.Option == "No"))
-                item.hide();
-            else {
-                if (item.get_attributes()._data.Option == "Yes" && chkValue == true) {
-                    item.show();
-                }
-                else if (item.get_attributes()._data.Option == "No" && chkValue == false) {
-                    item.show();
-                }
-                else if (item.get_attributes()._data.Option == "Yes" || item.get_attributes()._data.Option == "No")
-                    item.hide();
-                else if (item.get_attributes()._data.Option == undefined)
-                    item.show();
-            }
+        //if (cboTobacco.get_attributes()._data.CheckedValue.toLowerCase() == "true" || cboTobacco.get_attributes()._data.CheckedValue.toLowerCase() == "false")
+        //    chkValue = JSON.parse(cboTobacco.get_attributes()._data.CheckedValue.toLowerCase());
+        if (cboTobacco.attributes.checkedvalue.value.toLowerCase() == "true" || cboTobacco.attributes.checkedvalue.value.toLowerCase() == "false")
+            chkValue = JSON.parse(cboTobacco.attributes.checkedvalue.value.toLowerCase());
+        //var cboItems = cboTobacco.get_items();
+        //cboTobacco.trackChanges();
+        var cboItems = cboTobacco.options;
+        if (cboItems.item(0).value != "" && chkValue == "None" && (document.getElementById('chkYesTobaccoUseandExposure').checked == false || document.getElementById('chkNoTobaccoUseandExposure').checked == false)) {
+            var option = document.createElement("option");
+            option.text = "";
+            option.value = "";
+            option.setAttribute("option", "Yes");
+            cboItems.add(option, cboItems[0]);
+            $("select#" + cboTobacco.id).prop('selectedIndex', 0);
         }
-        cboTobacco.commitChanges();
+        for (i = 0; i < cboItems.length; i++) {
+            var item = cboItems.item(i);
+            //if (chkValue == "None" && (item.get_attributes()._data.Option == "Yes" || item.get_attributes()._data.Option == "No"))
+            if (chkValue == "None" && (item.attributes[1].value == "Yes" || item.attributes[1].value == "No")) {
+                ////item.hide();
+                item.style.display = "none";
+            }
+            else {
+                //if (item.get_attributes()._data.Option == "Yes" && chkValue == true) {
+                if (item.attributes[1].value == "Yes" && chkValue == true) {
+                    //item.show();
+                    item.style.display = "block";
+                }
+                //else if (item.get_attributes()._data.Option == "No" && chkValue == false) {
+                else if (item.attributes[1].value == "No" && chkValue == false) {
+                    //item.show();
+                    item.style.display = "block";
+                }
+                //else if (item.get_attributes()._data.Option == "Yes" || item.get_attributes()._data.Option == "No")
+                else if (item.attributes[1].value == "Yes" || item.attributes[1].value == "No")
+                    //item.hide();
+                    item.style.display = "none";
+                //else if (item.get_attributes()._data.Option == undefined)
+                else if (item.attributes[1].value == undefined)
+                    //item.show();
+                    item.style.display = "block";
+            }
+           
+        }
+        //cboTobacco.commitChanges();
     }
 }
 
 function LoadTobaccoList() {
-    var cboTobacco = $telerik.findComboBox('cboTobaccoUseandExposure');
+    //var cboTobacco = $telerik.findComboBox('cboTobaccoUseandExposure');
+    var cboTobacco = document.getElementById("cboTobaccoUseandExposure");
+    if (cboTobacco.item(0).value == "")
+    {
+        $("#" + cboTobacco.id+" option[value='']").remove(); 
+    }
+    
     if (cboTobacco != null) {
-        cboTobacco.clearSelection();
-        var cboItems = cboTobacco.get_items();
-        cboTobacco.trackChanges();
+       // cboTobacco.clearSelection();
+        //var cboItems = cboTobacco.get_items();
+        var cboItems = cboTobacco.options;
+       // cboTobacco.trackChanges();
         var hidden = 'No', shown = 'Yes';
         if ((event.target.checked && event.target.id.indexOf("chkNo") > -1) || (event.target.checked && event.target.id.indexOf("chkAllNo") > -1)) {
             hidden = 'Yes';
@@ -338,20 +408,30 @@ function LoadTobaccoList() {
         else {
             hidden = "Both";
         }
-        for (var i = 0; i < cboItems._array.length; i++) {
-            var item = cboItems.getItem(i);
+        for (var i = 0; i < cboItems.length; i++) {
+            
+            //var item = cboItems.getItem(i);
+            var item = cboItems.item(i);
+            
             if (hidden == "Both")
-                item.hide();
+                //$(item).hide();
+                item.style.display = "none";
             else {
-                if (item.get_attributes()._data.Option == hidden) {
-                    item.set_visible(false);
+                //if (item.get_attributes()._data.Option == hidden) {
+                if (item.attributes[1].value == hidden) {
+                    //item.set_visible(false);
+                    item.style.display = "none";
                 }
-                else if (item.get_attributes()._data.Option == shown) {
-                    item.set_visible(true);
+                //else if (item.get_attributes()._data.Option == shown) {
+                else if (item.attributes[1].value == shown) {
+                    //item.set_visible(true);
+                    item.style.display = "block";
                 }
             }
         }
-        cboTobacco.commitChanges();
+       
+
+        //cboTobacco.commitChanges();
         if (event.target.id.indexOf("chkNo") > -1 || event.target.id.indexOf("chkYes") > -1)
             enableField(event.target.id);
     }
