@@ -251,7 +251,7 @@ namespace Acurus.Capella.UI
                 btnSave.Enabled = false;
                 btnClearAll.Enabled = false;
             }
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();LoadSocialHistory();}", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();LoadSocialHistory();LoadcboTobacco();}", true);
         }
 
         SocialHistoryDTO GetSocialHistory()
@@ -928,33 +928,51 @@ namespace Acurus.Capella.UI
             }
             tc.Controls.Add(chkBoxNo);
             tr1.Cells.Add(tc);
-
+            
             tc = new TableCell();
-            RadComboBox options = new RadComboBox();
+            var options = new HtmlSelect();
+            //RadComboBox options = new RadComboBox();
+            //options.ID = "cbo" + HistoryInfo.Replace(" ", "");
+            //options.AutoPostBack = false;
+            //options.AllowCustomText = false;
+            //options.Attributes.Add("onkeypress", "EnableSave();");
+            //options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
+            //options.CssClass = "Editabletxtbox";
+
             options.ID = "cbo" + HistoryInfo.Replace(" ", "");
-            options.AutoPostBack = false;
-            options.AllowCustomText = false;
-            options.Attributes.Add("onkeypress", "EnableSave();");
-            options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
-            options.CssClass = "Editabletxtbox";
+            //options.AutoPostBack = false;
+            //options.AllowCustomText = false;
+            options.Attributes.Add("onchange", "OnClientSelectedIndex();");
+            // options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
+            //options.Attributes.Add("onSelectedIndexChanged", "OnClientSelectedIndex();");
+            options.Attributes.Add("class", "Editabletxtbox");
             if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
             {
                 if (chkBoxYes.Checked == true)
-                    options.Enabled = true;
+                    //options.Enabled = true;
+                    options.Disabled = false;
                 else
-                    options.Enabled = false;
+                    //options.Enabled = false;
+                    options.Disabled = true;
             }
             else
             {
                 if (chkBoxYes.Checked || chkBoxNo.Checked)
-                    options.Enabled = true;
+                    // options.Enabled = true;
+                    options.Disabled = false;
                 else
-                    options.Enabled = false;
-                options.Height = Unit.Pixel(320);
+                    //options.Enabled = false;
+                    options.Disabled = true;
+                //options.Attributes.Add("Style", "Height:320px;");
+                //options.Height = Unit.Pixel(320);
             }
 
-            options.Width = 320;
-            options.BackColor = Color.White;
+           // options.Width = 320;
+            //options.BackColor = Color.White;
+
+            //options.Attributes.Add("Style", "");
+            options.Attributes.Add("Style", "BackColor:White;Width:320px;");
+
             tc.Controls.Add(options);
             tr1.Cells.Add(tc);
 
@@ -1004,28 +1022,76 @@ namespace Acurus.Capella.UI
                 userCtrl.txtDLC.Text = pastMedicalList.Description;
                 if (IsPostBack)
                 {
-                    if (chkYes == "on" || chkNo == "on")
+                    if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
                     {
-                        //userCtrl.Enable = true;
-                        options.Enabled = true;
+                        if (chkYes == "on")
+                            //options.Enabled = true;
+                            options.Disabled = false;
+                        else
+                            //options.Enabled = false;
+                            options.Disabled = true;
                     }
                     else
                     {
-                        options.Enabled = false;
+                        if (chkYes == "on" || chkNo == "on")
+                            // options.Enabled = true;
+                            options.Disabled = false;
+                        else
+                            //options.Enabled = false;
+                            options.Disabled = true;
+                        //options.Attributes.Add("Style", "Height:320px;");
+                        //options.Height = Unit.Pixel(320);
                     }
+                    //if (chkYes == "on" || chkNo == "on")
+                    //{
+                    //    ////userCtrl.Enable = true;
+                    //    //options.Enabled = true;
+                    //    //options.Attributes.Add("Enabled", "true");
+                        
+                    //}
+                    //else
+                    //{
+                    //    //options.Enabled = false;
+                    //    //options.Attributes.Add("Enabled", "false");
+                    //    options.Disabled = true;
+                    //}
                 }
             }
             else
             {
-                if (chkYes == "on" || chkNo == "on")
+                if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
                 {
-                    //userCtrl.Enable = true;
-                    options.Enabled = true;
+                    if (chkYes == "on")
+                        //options.Enabled = true;
+                        options.Disabled = false;
+                    else
+                        //options.Enabled = false;
+                        options.Disabled = true;
                 }
                 else
                 {
-                    options.Enabled = false;
+                    if (chkYes == "on" || chkNo == "on")
+                        // options.Enabled = true;
+                        options.Disabled = false;
+                    else
+                        //options.Enabled = false;
+                        options.Disabled = true;
+                    //options.Attributes.Add("Style", "Height:320px;");
+                    //options.Height = Unit.Pixel(320);
                 }
+                //if (chkYes == "on" || chkNo == "on")
+                //{
+                //    //userCtrl.Enable = true;
+                //    //options.Enabled = true;
+                //    //options.Attributes.Add("Enabled", "true");
+                //    options.Disabled = false;
+                //}
+                //else
+                //{
+                //    //options.Enabled = false;
+                //    //options.Attributes.Add("Enabled", "false");
+                //    options.Disabled= true;
+                //}
             }
             if (!IsPostBack || options.Items.Count == 0)
                 LoadOptionForCombo(HistoryInfo);
@@ -1043,22 +1109,28 @@ namespace Acurus.Capella.UI
                 else
                     LoadTobacco(null, HistoryInfo);
             }
-
+            
             if (pastMedicalList != null && pastMedicalList.Is_Present == "Y" && !(HistoryInfo.ToUpper().Contains("TOBACCO")))
             {
                 if (options.Items.Count > 0)
-                    options.SelectedIndex = options.Items.IndexOf(options.Items.FindItemByText(pastMedicalList.Value));
-                options.Enabled = true;
+                    //options.SelectedIndex = options.Items.IndexOf(options.Items.FindItemByText(pastMedicalList.Value));
+                    options.SelectedIndex = options.Items.IndexOf(options.Items.FindByText(pastMedicalList.Value));
+                //options.Enabled = true;
+                //options.Attributes.Add("Enabled", "true");
+                //options.Disabled= false;
             }
             else if (pastMedicalList != null && (pastMedicalList.Is_Present == "N" || pastMedicalList.Is_Present == "Y"))
             {
                 if (options.Items.Count > 0)
-                    options.SelectedIndex = options.Items.IndexOf(options.Items.FindItemByText(pastMedicalList.Value));
+                    //options.SelectedIndex = options.Items.IndexOf(options.Items.FindItemByText(pastMedicalList.Value));
+                    options.SelectedIndex = options.Items.IndexOf(options.Items.FindByText(pastMedicalList.Value));
             }
+            
             if (ClientSession.UserRole.Trim() == "Coder" || ClientSession.UserPermission == "R" || ClientSession.UserCurrentProcess == "CHECK_OUT" || (ClientSession.UserCurrentProcess.Trim() == string.Empty && ClientSession.UserCurrentOwner.Trim() == string.Empty))
             {
                 userCtrl.Enable = false;
-                options.Enabled = false;
+                //options.Enabled = false;
+                options.Disabled = true;
                 chkBoxYes.Enabled = false;
                 chkBoxNo.Enabled = false;
             }
@@ -1106,21 +1178,37 @@ namespace Acurus.Capella.UI
             //else if (fieldName.Contains("Other"))
             //    istaticLookup = new List<String> { };
 
-            RadComboBox cmbBox = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + fieldName.Replace(" ", ""));
+            //RadComboBox cmbBox = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + fieldName.Replace(" ", ""));
+            HtmlSelect cmbBox = (HtmlSelect)divSocialHistoryControls.FindControl("cbo" + fieldName.Replace(" ", ""));
             cmbBox.Items.Clear();
+
+            //if (valueslist != null && valueslist.Count > 0)
+            //{
+            //    cmbBox.Items.Add(new RadComboBoxItem());
+            //    for (int j = 0; j < valueslist.Count; j++)
+            //    {
+            //        RadComboBoxItem tempItem = new RadComboBoxItem();
+            //        tempItem.Text = valueslist[j].Value;
+            //        if (valueslist[j].Description != "")
+            //            tempItem.Value = fieldName + "-" + valueslist[j].Description;
+            //        else
+            //            tempItem.Value = fieldName + j;
+            //        cmbBox.Items.Add(tempItem);
+            //    }
+            //}
 
             if (valueslist != null && valueslist.Count > 0)
             {
-                cmbBox.Items.Add(new RadComboBoxItem());
+                cmbBox.Items.Add(new ListItem("",""));
+
                 for (int j = 0; j < valueslist.Count; j++)
                 {
-                    RadComboBoxItem tempItem = new RadComboBoxItem();
-                    tempItem.Text = valueslist[j].Value;
+                    //var tempItem = new RadComboBoxItem();
+                    //tempItem.Text = valueslist[j].Value;
                     if (valueslist[j].Description != "")
-                        tempItem.Value = fieldName + "-" + valueslist[j].Description;
+                        cmbBox.Items.Add(new ListItem(valueslist[j].Value, fieldName + "-" + valueslist[j].Description));
                     else
-                        tempItem.Value = fieldName + j;
-                    cmbBox.Items.Add(tempItem);
+                        cmbBox.Items.Add(new ListItem(valueslist[j].Value, fieldName + j));
                 }
             }
 
@@ -1221,8 +1309,11 @@ namespace Acurus.Capella.UI
                 if (chk.ID.Contains("chkYes") && chk.Checked == true)
                 {
                     SocialHistoryObject.Is_Present = "Y";
-                    SocialHistoryObject.Value = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Text : string.Empty;
-                    string recodes = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[0] : string.Empty;
+                    //SocialHistoryObject.Value = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Text : string.Empty;
+                    //string recodes = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[0] : string.Empty;
+                    SocialHistoryObject.Value = ((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items[((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedIndex].Text : string.Empty;
+                    string recodes = ((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items[((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedIndex].Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[0] : string.Empty;
+
                     if (recodes != "" && recodes.Split('-').Count() > 1)
                         SocialHistoryObject.Recodes = recodes.Split('-')[1];
                     SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo
@@ -1231,8 +1322,11 @@ namespace Acurus.Capella.UI
                 else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true)
                 {
                     SocialHistoryObject.Is_Present = "N";
-                    SocialHistoryObject.Value = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Text : string.Empty;
-                    string recodes = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[0] : string.Empty;
+                    //SocialHistoryObject.Value = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Text : string.Empty;
+                    //string recodes = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[0] : string.Empty;
+                    SocialHistoryObject.Value = ((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items[((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedIndex].Text : string.Empty;
+                    string recodes = ((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items[((HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedIndex].Value.Split(new string[] { "$#%" }, StringSplitOptions.None)[0] : string.Empty;
+
                     if (recodes != "" && recodes.Split('-').Count() > 1)
                         SocialHistoryObject.Recodes = recodes.Split('-')[1];
                     SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo
@@ -1651,90 +1745,108 @@ namespace Acurus.Capella.UI
                 {
                     CheckBox checkYesBox = (CheckBox)divSocialHistoryControls.FindControl("chkYes" + item.Key.Replace(" ", ""));
                     CheckBox checkNoBox = (CheckBox)divSocialHistoryControls.FindControl("chkNo" + item.Key.Replace(" ", ""));
-                    RadComboBox cboOption = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""));
+                    //RadComboBox cboOption = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""));
+                    HtmlSelect cboOption = (HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""));
                     //RadComboBox cboReasonOption = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", "") + "ReasonNotPerformed");//added by Shilpa-reason_not_performed cbo
                     TextBox description = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", ""))).txtDLC;
                     CustomDLCNew userCtrl = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", "")));
-                    var rootMaster = new List<SocialHistoryMaster>();
-                    if (lstSocialHistoryMaster != null)
-                    {
-                        rootMaster = (from pastList in lstSocialHistoryMaster
-                                      where pastList.Social_Info == item.Key
-                                      select pastList).ToList<SocialHistoryMaster>();
-                    }
-                    if (checkYesBox != null && checkNoBox != null && cboOption != null && description != null && userCtrl != null)
-                    {
-                        if (rootMaster.Count() > 0)
-                        {
-                            SocialHistoryMaster ProblemHistoryObject = rootMaster.ToList<SocialHistoryMaster>()[0];
-                            if (ProblemHistoryObject.Is_Present == "Y")
-                            {
-                                checkYesBox.Checked = true;
-                                checkNoBox.Checked = false;
-                                cboOption.Enabled = true;
-                                for (int i = 0; i < cboOption.Items.Count; i++)
-                                {
-                                    if (cboOption.Items[i].Text == ProblemHistoryObject.Value)
-                                        cboOption.SelectedIndex = i;
-                                }
-                                description.Text = ProblemHistoryObject.Description;
-                                description.Enabled = true;
-                            }
-                            else if (ProblemHistoryObject.Is_Present == "N")
-                            {
-                                checkYesBox.Checked = false;
-                                checkNoBox.Checked = true;
-                                if (item.Key == "Tobacco Use and Exposure")
-                                {
-                                    for (int i = 0; i < cboOption.Items.Count; i++)
-                                    {
-                                        if (cboOption.Items[i].Text == ProblemHistoryObject.Value)
-                                            cboOption.SelectedIndex = i;
-                                    }
-                                    cboOption.Enabled = true;
-                                }
-                                else
-                                {
-                                    cboOption.ClearSelection();
-                                    cboOption.SelectedIndex = 0;
-                                    cboOption.Enabled = false;
-                                }
+                    #region Commented By Deepak 
+                    //var rootMaster = new List<SocialHistoryMaster>();
+                    //if (lstSocialHistoryMaster != null)
+                    //{
+                    //    rootMaster = (from pastList in lstSocialHistoryMaster
+                    //                  where pastList.Social_Info == item.Key
+                    //                  select pastList).ToList<SocialHistoryMaster>();
+                    //}
+                    //if (checkYesBox != null && checkNoBox != null && cboOption != null && description != null && userCtrl != null)
+                    //{
+                    //    if (rootMaster.Count() > 0)
+                    //    {
+                    //        SocialHistoryMaster ProblemHistoryObject = rootMaster.ToList<SocialHistoryMaster>()[0];
+                    //        if (ProblemHistoryObject.Is_Present == "Y")
+                    //        {
+                    //            checkYesBox.Checked = true;
+                    //            checkNoBox.Checked = false;
+                    //            cboOption.Disabled = false;
 
-                                description.Text = ProblemHistoryObject.Description;
-                                description.Enabled = true;
-                            }
-                            else if (ProblemHistoryObject.Is_Present.Trim() == "")//added by Shilpa-reason_not_performed cbo
-                            {
-                                checkYesBox.Checked = false;
-                                checkNoBox.Checked = false;
-                                description.Text = ProblemHistoryObject.Description;
-                                //description.Enabled = false;
-                                cboOption.ClearSelection();
-                                cboOption.SelectedIndex = 0;
-                                cboOption.Enabled = false;
-                                //if (ProblemHistoryObject.Snomed_Reason_Not_Performed.Trim() != "")
-                                //{
-                                //for (int i = 0; i < cboReasonOption.Items.Count; i++)
-                                //{
-                                //    if (cboReasonOption.Items[i].Text == ProblemHistoryObject.Reason_Not_Performed)
-                                //        cboReasonOption.SelectedIndex = i;
-                                //}
-                                //cboReasonOption.Enabled = true;
-                                //}
-                            }
-                        }
-                        else
-                        {
-                            checkYesBox.Checked = false;
-                            checkNoBox.Checked = false;
-                            cboOption.ClearSelection();
-                            description.Text = string.Empty;
-                            //description.Enabled = false;
-                            userCtrl.Enable = false;
-                            cboOption.Enabled = false;
-                            //cboReasonOption.Enabled = true;
-                        }
+                    //            for (int i = 0; i < cboOption.Items.Count; i++)
+                    //            {
+                    //                if (cboOption.Items[i].Text == ProblemHistoryObject.Value)
+                    //                    cboOption.SelectedIndex = i;
+                    //            }
+                    //            description.Text = ProblemHistoryObject.Description;
+                    //            description.Enabled = true;
+                    //        }
+                    //        else if (ProblemHistoryObject.Is_Present == "N")
+                    //        {
+                    //            checkYesBox.Checked = false;
+                    //            checkNoBox.Checked = true;
+                    //            if (item.Key == "Tobacco Use and Exposure")
+                    //            {
+                    //                for (int i = 0; i < cboOption.Items.Count; i++)
+                    //                {
+                    //                    if (cboOption.Items[i].Text == ProblemHistoryObject.Value)
+                    //                        cboOption.SelectedIndex = i;
+                    //                }
+                    //                cboOption.Disabled = false;
+                    //            }
+                    //            else
+                    //            {
+                    //                //cboOption.ClearSelection();
+                    //                ClearSelection(cboOption);
+                    //               // cboOption.SelectedIndex = 0;
+                    //                cboOption.Disabled = true;
+                    //            }
+
+                    //            description.Text = ProblemHistoryObject.Description;
+                    //            description.Enabled = true;
+                    //        }
+                    //        else if (ProblemHistoryObject.Is_Present.Trim() == "")//added by Shilpa-reason_not_performed cbo
+                    //        {
+                    //            checkYesBox.Checked = false;
+                    //            checkNoBox.Checked = false;
+                    //            description.Text = ProblemHistoryObject.Description;
+                    //            //description.Enabled = false;
+                    //            //cboOption.ClearSelection();
+                    //            ClearSelection(cboOption);
+                    //            //cboOption.SelectedIndex = 0;
+                    //            cboOption.Disabled = true;
+                    //            //if (ProblemHistoryObject.Snomed_Reason_Not_Performed.Trim() != "")
+                    //            //{
+                    //            //for (int i = 0; i < cboReasonOption.Items.Count; i++)
+                    //            //{
+                    //            //    if (cboReasonOption.Items[i].Text == ProblemHistoryObject.Reason_Not_Performed)
+                    //            //        cboReasonOption.SelectedIndex = i;
+                    //            //}
+                    //            //cboReasonOption.Enabled = true;
+                    //            //}
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        checkYesBox.Checked = false;
+                    //        checkNoBox.Checked = false;
+                    //        ClearSelection(cboOption);
+                    //        description.Text = string.Empty;
+                    //        //description.Enabled = false;
+                    //        userCtrl.Enable = false;
+                    //        cboOption.Disabled = true;
+                    //        //cboReasonOption.Enabled = true;
+                    //    }
+                    //}
+                    #endregion
+                    if (item.Key.Replace(" ", "") == "TobaccoUseandExposure")
+                    {
+                        cboOption.Items.Insert(0, new ListItem("", ""));
+                        cboOption.Items[0].Attributes.Add("Option", "Yes");
                     }
+                    cboOption.SelectedIndex = 0;
+                    cboOption.Disabled = true;
+                    checkYesBox.Checked = false;
+                    checkNoBox.Checked = false;
+                    description.Text = string.Empty;
+                    userCtrl.Enable = true;
+
                 }
             }
             else
@@ -1755,98 +1867,122 @@ namespace Acurus.Capella.UI
                 {
                     CheckBox checkYesBox = (CheckBox)divSocialHistoryControls.FindControl("chkYes" + item.Key.Replace(" ", ""));
                     CheckBox checkNoBox = (CheckBox)divSocialHistoryControls.FindControl("chkNo" + item.Key.Replace(" ", ""));
-                    RadComboBox cboOption = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""));
-                    //RadComboBox cboReasonOption = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", "") + "ReasonNotPerformed");//added by Shilpa-reason_not_performed cbo
+                    //RadComboBox cboOption = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""));
+                    HtmlSelect cboOption = (HtmlSelect)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""));
                     TextBox description = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", ""))).txtDLC;
                     CustomDLCNew userCtrl = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", "")));
-                    var root = new List<SocialHistory>();
-                    if (SocialHistoryDetails != null)
-                    {
-                        root = (from pastList in SocialHistoryDetails
-                                where pastList.Social_Info == item.Key
-                                select pastList).ToList<SocialHistory>();
-                    }
-                    if (checkYesBox != null && checkNoBox != null && cboOption != null && description != null && userCtrl != null)
-                    {
-                        if (root.Count() > 0)
-                        {
-                            SocialHistory ProblemHistoryObject = root.ToList<SocialHistory>()[0];
-                            if (ProblemHistoryObject.Is_Present == "Y")
-                            {
-                                checkYesBox.Checked = true;
-                                checkNoBox.Checked = false;
-                                cboOption.Enabled = true;
-                                for (int i = 0; i < cboOption.Items.Count; i++)
-                                {
-                                    if (cboOption.Items[i].Text == ProblemHistoryObject.Value)
-                                        cboOption.SelectedIndex = i;
-                                }
-                                description.Text = ProblemHistoryObject.Description;
-                                description.Enabled = true;
-                            }
-                            else if (ProblemHistoryObject.Is_Present == "N")
-                            {
-                                checkYesBox.Checked = false;
-                                checkNoBox.Checked = true;
-                                if (item.Key == "Tobacco Use and Exposure")
-                                {
-                                    for (int i = 0; i < cboOption.Items.Count; i++)
-                                    {
-                                        if (cboOption.Items[i].Text == ProblemHistoryObject.Value)
-                                            cboOption.SelectedIndex = i;
-                                    }
-                                    cboOption.Enabled = true;
-                                }
-                                else
-                                {
-                                    cboOption.ClearSelection();
-                                    cboOption.SelectedIndex = 0;
-                                    cboOption.Enabled = false;
-                                }
 
-                                description.Text = ProblemHistoryObject.Description;
-                                description.Enabled = true;
-                            }
-                            else if (ProblemHistoryObject.Is_Present.Trim() == "")//added by Shilpa-reason_not_performed cbo
-                            {
-                                checkYesBox.Checked = false;
-                                checkNoBox.Checked = false;
-                                description.Text = ProblemHistoryObject.Description;
-                                //description.Enabled = false;
-                                cboOption.ClearSelection();
-                                cboOption.SelectedIndex = 0;
-                                cboOption.Enabled = false;
-                                //if (ProblemHistoryObject.Snomed_Reason_Not_Performed.Trim() != "")
-                                //{
-                                //for (int i = 0; i < cboReasonOption.Items.Count; i++)
-                                //{
-                                //    if (cboReasonOption.Items[i].Text == ProblemHistoryObject.Reason_Not_Performed)
-                                //        cboReasonOption.SelectedIndex = i;
-                                //}
-                                //cboReasonOption.Enabled = true;
-                                //}
-                            }
-                        }
-                        else
-                        {
-                            checkYesBox.Checked = false;
-                            checkNoBox.Checked = false;
-                            cboOption.ClearSelection();
-                            description.Text = string.Empty;
-                            //description.Enabled = false;
-                            //userCtrl.Enable = false;
-                            userCtrl.Enable = true;
-                            cboOption.Enabled = false;
-                            //cboReasonOption.Enabled = true;
-                        }
+                    if (item.Key.Replace(" ", "") == "TobaccoUseandExposure")
+                    {
+                        cboOption.Items.Insert(0, new ListItem("", ""));
+                        cboOption.Items[0].Attributes.Add("Option", "Yes");
                     }
+                    cboOption.SelectedIndex = 0;
+                    cboOption.Disabled = true;
+                    checkYesBox.Checked = false;
+                    checkNoBox.Checked=false;
+                    description.Text = string.Empty;
+                    userCtrl.Enable = true;
+                    #region tempcomment by deepak
+
+                    ////RadComboBox cboReasonOption = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", "") + "ReasonNotPerformed");//added by Shilpa-reason_not_performed cbo
+                    //TextBox description = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", ""))).txtDLC;
+                    //CustomDLCNew userCtrl = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", "")));
+                    //var root = new List<SocialHistory>();
+                    //if (SocialHistoryDetails != null)
+                    //{
+                    //    root = (from pastList in SocialHistoryDetails
+                    //            where pastList.Social_Info == item.Key
+                    //            select pastList).ToList<SocialHistory>();
+                    //}
+                    //if (checkYesBox != null && checkNoBox != null && cboOption != null && description != null && userCtrl != null)
+                    //{
+                    //    if (root.Count() > 0)
+                    //    {
+                    //        SocialHistory ProblemHistoryObject = root.ToList<SocialHistory>()[0];
+                    //        if (ProblemHistoryObject.Is_Present == "Y")
+                    //        {
+                    //            checkYesBox.Checked = true;
+                    //            checkNoBox.Checked = false;
+                    //            //cboOption.Enabled = true;
+                    //            cboOption.Disabled = false;
+                    //            for (int i = 0; i < cboOption.Items.Count; i++)
+                    //            {
+                    //                if (cboOption.Items[i].Text == ProblemHistoryObject.Value)
+                    //                    cboOption.SelectedIndex = i;
+                    //            }
+                    //            description.Text = ProblemHistoryObject.Description;
+                    //            description.Enabled = true;
+                    //        }
+                    //        else if (ProblemHistoryObject.Is_Present == "N")
+                    //        {
+                    //            checkYesBox.Checked = false;
+                    //            checkNoBox.Checked = true;
+                    //            if (item.Key == "Tobacco Use and Exposure")
+                    //            {
+                    //                for (int i = 0; i < cboOption.Items.Count; i++)
+                    //                {
+                    //                    if (cboOption.Items[i].Text == ProblemHistoryObject.Value)
+                    //                        cboOption.SelectedIndex = i;
+                    //                }
+                    //                //cboOption.Enabled = true;
+                    //                cboOption.Disabled = false;
+                    //            }
+                    //            else
+                    //            {
+                    //                //cboOption.ClearSelection();
+                    //                ClearSelection(cboOption);
+                    //                //cboOption.Enabled = false;
+                    //                cboOption.Disabled = true;
+                    //            }
+
+                    //            description.Text = ProblemHistoryObject.Description;
+                    //            description.Enabled = true;
+                    //        }
+                    //        else if (ProblemHistoryObject.Is_Present.Trim() == "")//added by Shilpa-reason_not_performed cbo
+                    //        {
+                    //            checkYesBox.Checked = false;
+                    //            checkNoBox.Checked = false;
+                    //            description.Text = ProblemHistoryObject.Description;
+                    //            //description.Enabled = false;
+                    //            //cboOption.ClearSelection();
+                    //            ClearSelection(cboOption);
+                    //            cboOption.SelectedIndex = 0;
+                    //            //cboOption.Enabled = false;
+                    //            cboOption.Disabled = true;
+                    //            //if (ProblemHistoryObject.Snomed_Reason_Not_Performed.Trim() != "")
+                    //            //{
+                    //            //for (int i = 0; i < cboReasonOption.Items.Count; i++)
+                    //            //{
+                    //            //    if (cboReasonOption.Items[i].Text == ProblemHistoryObject.Reason_Not_Performed)
+                    //            //        cboReasonOption.SelectedIndex = i;
+                    //            //}
+                    //            //cboReasonOption.Enabled = true;
+                    //            //}
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        checkYesBox.Checked = false;
+                    //        checkNoBox.Checked = false;
+                    //        //cboOption.ClearSelection();
+                    //        ClearSelection(cboOption);
+                    //        description.Text = string.Empty;
+                    //        //description.Enabled = false;
+                    //        //userCtrl.Enable = false;
+                    //        userCtrl.Enable = true;
+                    //        //cboOption.Enabled = false;
+                    //        cboOption.Disabled = true;
+                    //        //cboReasonOption.Enabled = true;
+                    //    }
+                    //}
                 }
             }
             if (generalNotesObject != null)
                 DLC.txtDLC.Text = generalNotesObject.Notes;
             else
                 DLC.txtDLC.Text = string.Empty;
-
+            #endregion
         }
 
         public bool Validation()
@@ -1956,26 +2092,43 @@ namespace Acurus.Capella.UI
 "Ex-smoker|8517006|No|Current non-smoker",
 "Tolerant non-smoker|87739003|No|Current non-smoker"});
 
-            RadComboBox cmbBox = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + fieldName.Replace(" ", ""));
+            // RadComboBox cmbBox = (RadComboBox)divSocialHistoryControls.FindControl("cbo" + fieldName.Replace(" ", ""));
+            HtmlSelect cmbBox = (HtmlSelect)divSocialHistoryControls.FindControl("cbo" + fieldName.Replace(" ", ""));
             cmbBox.Items.Clear();
-            cmbBox.OnClientLoad = "LoadcboTobacco";
+            //cmbBox.OnClientLoad = "LoadcboTobacco";
+            //cmbBox.Attributes.Add("onclick", "LoadcboTobacco()");
             if (bValue != null)
                 cmbBox.Attributes.Add("CheckedValue", bValue.ToString());
             else
                 cmbBox.Attributes.Add("CheckedValue", "None");
             if (istaticLookup != null)
             {
-                cmbBox.Items.Add(new RadComboBoxItem());
+                //cmbBox.Items.Add(new RadComboBoxItem());
+                //for (int j = 0; j < istaticLookup.Count; j++)
+                //{
+                //    RadComboBoxItem tempItem = new RadComboBoxItem();
+                //    string[] Tobacco = istaticLookup[j].Split('|');
+                //    tempItem.Text = Tobacco[0];
+                //    tempItem.Value = fieldName.Replace(" ", "") + "-" + Tobacco[1] + "-" + Tobacco[3];
+                //    tempItem.Attributes.Add("Option", Tobacco[2]);
+                //    cmbBox.Items.Add(tempItem);
+                //}
                 for (int j = 0; j < istaticLookup.Count; j++)
                 {
-                    RadComboBoxItem tempItem = new RadComboBoxItem();
                     string[] Tobacco = istaticLookup[j].Split('|');
-                    tempItem.Text = Tobacco[0];
-                    tempItem.Value = fieldName.Replace(" ", "") + "-" + Tobacco[1] + "-" + Tobacco[3];
-                    tempItem.Attributes.Add("Option", Tobacco[2]);
-                    cmbBox.Items.Add(tempItem);
+                    cmbBox.Items.Add(new ListItem(Tobacco[0], fieldName.Replace(" ", "") + "-" + Tobacco[1] + "-" + Tobacco[3]));
+                    cmbBox.Items[j].Attributes.Add("Option", Tobacco[2]);
+
                 }
             }
+        }
+
+        public void ClearSelection(HtmlSelect Iteams)
+        {
+            //for (int iCount=0;iCount< Iteams.Size;iCount++)
+            //{
+                Iteams.SelectedIndex=0;
+            //}
         }
     }
 }
