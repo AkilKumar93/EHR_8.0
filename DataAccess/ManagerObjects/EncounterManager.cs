@@ -8238,8 +8238,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         WFObject TempWF = new WFObject();
                         TempWF = objWfManager.GetByObjectSystemId(GroupId, "INTERNAL ORDER");
-                        objWfManager.MoveToNextProcess(TempWF.Obj_System_Id, TempWF.Obj_Type, 2, EncRecord.Assigned_Med_Asst_User_Name, currentDateTime, MACAddress, null, null);
-                    }
+                        if (EncRecord != null)
+                        {
+                            objWfManager.MoveToNextProcess(TempWF.Obj_System_Id, TempWF.Obj_Type, 2, EncRecord.Assigned_Med_Asst_User_Name, currentDateTime, MACAddress, null, null);
+                        }
+                        }
                 }
             }
             #endregion
@@ -8268,7 +8271,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         WFObject TempWF = new WFObject();
                         TempWF = objWfManager.GetByObjectSystemId(immunsubmitId, "IMMUNIZATION ORDER");
                         // objWfManager.MoveToNextProcess(TempWF.Obj_System_Id, TempWF.Obj_Type, 2, EncRecord.Assigned_Med_Asst_User_Name, currentDateTime, MACAddress, null, null);//For bug ID 48532
-                        objWfManager.MoveToNextProcess(TempWF.Obj_System_Id, TempWF.Obj_Type, 5, EncRecord.Assigned_Med_Asst_User_Name, currentDateTime, MACAddress, null, null);
+                        if (EncRecord != null)
+                        {
+                            objWfManager.MoveToNextProcess(TempWF.Obj_System_Id, TempWF.Obj_Type, 5, EncRecord.Assigned_Med_Asst_User_Name, currentDateTime, MACAddress, null, null);
+                        }
                     }
                 }
             }
@@ -8295,31 +8301,34 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             #endregion
 
             #region Submit Prescription
-            if (EncRecord.Is_Prescription_To_Be_Moved != null && EncRecord.Is_Prescription_To_Be_Moved == "Y")
+            if (EncRecord != null)
             {
-                ulong ulMyPrescriptionId = 0;
-                PrescriptionManager objPrescMngr = new PrescriptionManager();
-                Prescription prescRecord = new Prescription();
-                prescRecord.Encounter_ID = Convert.ToInt32(ulMyEncounterID);
-                prescRecord.Created_By = UserName;
-                prescRecord.Created_Date_And_Time = currentDateTime;
-                prescRecord.Facility_Name = FacilityName;
-                prescRecord.Human_ID = Convert.ToInt32(ulMyHumanID);
-                prescRecord.Modified_By = string.Empty;
-                prescRecord.Modified_Date_And_Time = DateTime.MinValue;
-                prescRecord.Physician_ID = Convert.ToInt32(ulMyPhysicianID);
-                prescRecord.Prescription_Date = currentDateTime;
-                prescRecord.Version = 0;
-                IList<Prescription> prescription = new List<Prescription>();
-                prescription.Add(prescRecord);
-                WFObject WFObj = new WFObject();
-                WFObj.Obj_Type = "E-PRESCRIBE";
-                WFObj.Current_Arrival_Time = currentDateTime;
-                WFObj.Current_Owner = EncRecord.Assigned_Med_Asst_User_Name;
-                WFObj.Fac_Name = FacilityName;
-                WFObj.Current_Process = "START";
-                ulMyPrescriptionId = objPrescMngr.SavePrescription(prescription.ToArray<Prescription>(), null, null, MACAddress, WFObj);
+                if (EncRecord.Is_Prescription_To_Be_Moved != null && EncRecord.Is_Prescription_To_Be_Moved == "Y")
+                {
+                    ulong ulMyPrescriptionId = 0;
+                    PrescriptionManager objPrescMngr = new PrescriptionManager();
+                    Prescription prescRecord = new Prescription();
+                    prescRecord.Encounter_ID = Convert.ToInt32(ulMyEncounterID);
+                    prescRecord.Created_By = UserName;
+                    prescRecord.Created_Date_And_Time = currentDateTime;
+                    prescRecord.Facility_Name = FacilityName;
+                    prescRecord.Human_ID = Convert.ToInt32(ulMyHumanID);
+                    prescRecord.Modified_By = string.Empty;
+                    prescRecord.Modified_Date_And_Time = DateTime.MinValue;
+                    prescRecord.Physician_ID = Convert.ToInt32(ulMyPhysicianID);
+                    prescRecord.Prescription_Date = currentDateTime;
+                    prescRecord.Version = 0;
+                    IList<Prescription> prescription = new List<Prescription>();
+                    prescription.Add(prescRecord);
+                    WFObject WFObj = new WFObject();
+                    WFObj.Obj_Type = "E-PRESCRIBE";
+                    WFObj.Current_Arrival_Time = currentDateTime;
+                    WFObj.Current_Owner = EncRecord.Assigned_Med_Asst_User_Name;
+                    WFObj.Fac_Name = FacilityName;
+                    WFObj.Current_Process = "START";
+                    ulMyPrescriptionId = objPrescMngr.SavePrescription(prescription.ToArray<Prescription>(), null, null, MACAddress, WFObj);
 
+                }
             }
             #endregion
 
@@ -8347,7 +8356,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 if (ReferralorderSubmitList != null && ReferralorderSubmitList.Count > 0)
                 {
-                    ulong referralsubmitId = (ulong)objReferralMngr.SubmitReferralOrder(ReferralorderSubmitList, FacilityName, EncRecord.Assigned_Med_Asst_User_Name, MACAddress);
+                    if (EncRecord != null)
+                    {
+                        ulong referralsubmitId = (ulong)objReferralMngr.SubmitReferralOrder(ReferralorderSubmitList, FacilityName, EncRecord.Assigned_Med_Asst_User_Name, MACAddress);
+                    }
                 }
 
                 ReferralDTO = objReferralMngr.FillReferralOrder(ulMyHumanID, ulMyPhysicianID, ulMyEncounterID);
@@ -8367,7 +8379,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 if (ReferralorderSubmitListWithNoMA != null && ReferralorderSubmitListWithNoMA.Count > 0)
                 {
-                    ulong referralsubmitId = (ulong)objReferralMngr.SubmitReferralOrder(ReferralorderSubmitListWithNoMA, FacilityName, EncRecord.Assigned_Med_Asst_User_Name, MACAddress);
+                    if (EncRecord != null)
+                    {
+                        ulong referralsubmitId = (ulong)objReferralMngr.SubmitReferralOrder(ReferralorderSubmitListWithNoMA, FacilityName, EncRecord.Assigned_Med_Asst_User_Name, MACAddress);
+                    }
                 }
             }
             #endregion

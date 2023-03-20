@@ -8773,11 +8773,14 @@ namespace Acurus.Capella.UI
 
             for (int i = 0; i < ddlPayerName.Items.Count; i++)
             {
-                if (ddlPayerName.Items[i].Value == grdExistingPolicies.SelectedRow.Cells[11].Text)
+                if (grdExistingPolicies.SelectedRow != null && grdExistingPolicies.SelectedRow.Cells[11] != null)
                 {
-                    ddlPayerName.SelectedIndex = i;
-                    ddlPayerName_SelectedIndexChanged(sender, e);
-                    break;
+                    if (ddlPayerName.Items[i].Value == grdExistingPolicies.SelectedRow.Cells[11].Text)
+                    {
+                        ddlPayerName.SelectedIndex = i;
+                        ddlPayerName_SelectedIndexChanged(sender, e);
+                        break;
+                    }
                 }
             }
 

@@ -1051,7 +1051,10 @@ namespace Acurus.Capella.UI
             if (Date.Length == 3)
             {
                 cdtAdministeredDate.AssignDate(Date[2], Date[1], Date[0]);
-                cdtAdministeredDate.cboMonth.SelectedIndex = cdtAdministeredDate.cboMonth.Items.FindItemByText(Date[1]).Index;
+                if (cdtAdministeredDate.cboMonth.Items.FindItemByText(Date[1]) != null)
+                {
+                    cdtAdministeredDate.cboMonth.SelectedIndex = cdtAdministeredDate.cboMonth.Items.FindItemByText(Date[1]).Index;
+                }
                 cdtAdministeredDate.cboYear.SelectedIndex = cdtAdministeredDate.cboYear.Items.FindItemByText(Date[2]).Index;
                 if (Date[0].StartsWith("0"))
                 {
@@ -1064,12 +1067,14 @@ namespace Acurus.Capella.UI
 
                 cdtAdministeredDate.AssignDate(Date[1], Date[0], null);
                 cdtAdministeredDate.cboYear.SelectedIndex = cdtAdministeredDate.cboYear.Items.FindItemByText(Date[1]).Index;
-                cdtAdministeredDate.cboMonth.SelectedIndex = cdtAdministeredDate.cboMonth.Items.FindItemByText(Date[0]).Index;
+                if (cdtAdministeredDate.cboMonth.Items.FindItemByText(Date[0]) != null)
+                {
+                    cdtAdministeredDate.cboMonth.SelectedIndex = cdtAdministeredDate.cboMonth.Items.FindItemByText(Date[0]).Index;
+                }
                 cdtAdministeredDate.cboDate.SelectedIndex = cdtAdministeredDate.cboMonth.Items.FindItemByText("").Index;
             }
             else if (Date.Length == 1 && Date[0] != "")
             {
-
                 cdtAdministeredDate.AssignDate(Date[0], null, null);
                 cdtAdministeredDate.cboYear.SelectedIndex = cdtAdministeredDate.cboYear.Items.FindItemByText(Date[0]).Index;
                 cdtAdministeredDate.cboMonth.SelectedIndex = cdtAdministeredDate.cboMonth.Items.FindItemByText("").Index;

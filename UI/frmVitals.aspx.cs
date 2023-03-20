@@ -4688,8 +4688,20 @@ namespace Acurus.Capella.UI
 
                 }
             }
+            if (objVitalDTO == null && objVitalDTO.VitalsList == null)
+            {
+                if (saveList != null && saveList.Count > 0 && saveList[0].Encounter_ID == 0)
+                {
+                    objVitalDTO = vitalmngr.GetPastVitalDetailsByPatient(saveList[0].Human_ID, 1, 20, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID);
+                }
+                else if (saveList != null && saveList.Count > 0)
+                {
+                    objVitalDTO = vitalmngr.GetPastVitalDetailsByEncounterID(saveList[0].Encounter_ID, ClientSession.PhysicianId, Convert.ToInt16(humanAgeInMonths.ToString().Split('.')[0]), humanSex, "'BMI-AGE','HC-AGE'", ScreenID, saveList[0].Human_ID);
+                }
+            }
+            if (objVitalDTO == null && objVitalDTO.VitalsList == null)
+                vitalList = objVitalDTO.VitalsList;
 
-            vitalList = objVitalDTO.VitalsList;
             DataSet dsGetVitals = new DataSet();
             string Loinc_observation = string.Empty;
             // if (Session["Loinc_observation"] != null)
@@ -6222,7 +6234,7 @@ namespace Acurus.Capella.UI
                                     vitalsObj.Local_Time = UtilityManager.ConvertToLocal(VitalTakenDate).ToString("yyyy-MM-dd hh:mm:ss tt");
                                     if (vitalsObj.Value == string.Empty)
                                     {
-                                        if (((cb != null && Request.Form[cb.ID + "$txtDLC"].Trim() == string.Empty) || (cb == null)))// && ((reasonnotPerformed != null && Request.Form[reasonnotPerformed.ID].Trim() == string.Empty) || (reasonnotPerformed == null)))
+                                        if (((cb != null && cb.ID!=null && Request.Form[cb.ID + "$txtDLC"] !=null && Request.Form[cb.ID + "$txtDLC"].Trim() == string.Empty) || (cb == null)))// && ((reasonnotPerformed != null && Request.Form[reasonnotPerformed.ID].Trim() == string.Empty) || (reasonnotPerformed == null)))
                                         {
                                             continue;
                                         }

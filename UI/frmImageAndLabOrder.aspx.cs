@@ -2897,7 +2897,7 @@ namespace Acurus.Capella.UI
             }
             tempCpts = tempCpts.Distinct().ToList();
             ulong insuranceId = 0;
-            if (objFillHumnaDTO.PatientInsuredBag != null && objFillHumnaDTO.PatientInsuredBag.Count > 0)
+            if (objFillHumnaDTO != null && objFillHumnaDTO.PatientInsuredBag != null && objFillHumnaDTO.PatientInsuredBag.Count > 0)
             {
                 if (objFillHumnaDTO.PatientInsuredBag != null)
                 {

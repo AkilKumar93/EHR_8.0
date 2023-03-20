@@ -243,8 +243,10 @@ namespace Acurus.Capella.UI
             //*************************************************************HL7
             string sResult = string.Empty;
             HL7Generator hl7Gen = new HL7Generator();
-            sResult = hl7Gen.CreateImmunizationRegistryNIST(hn, PhysicianList[0], WellnessNotes, sPrintPathName);
-
+            if (PhysicianList != null && PhysicianList.Count>0)
+            {
+                sResult = hl7Gen.CreateImmunizationRegistryNIST(hn, PhysicianList[0], WellnessNotes, sPrintPathName);
+            }
 
             StreamWriter sr = new StreamWriter(sPrintPathName);
             sr.Write(sResult);

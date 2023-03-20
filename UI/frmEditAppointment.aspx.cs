@@ -859,11 +859,11 @@ namespace Acurus.Capella.UI
 
 
                 //end here
-                if (EncRecord != null && (EncRecord.Referring_Physician != string.Empty && EncRecord.PCP_Physician == string.Empty) || (EncRecord.Referring_Physician == string.Empty && EncRecord.PCP_Physician == string.Empty) && ulMyEncID != 0)
+                if (EncRecord != null && EncRecord.Referring_Physician != null && (EncRecord.Referring_Physician != string.Empty && EncRecord.PCP_Physician == string.Empty) || (EncRecord.Referring_Physician == string.Empty && EncRecord.PCP_Physician == string.Empty) && ulMyEncID != 0)
                 {
                     tabReferringProvAndPCP.SelectedIndex = 0;
                     //if (ddlPhysicianName.SelectedItem.Text == EncRecord.Referring_Physician)
-                    if (EncRecord.Referring_Physician.Trim() != string.Empty && EncRecord.Referring_Physician.Contains(ddlPhysicianName.SelectedItem.Text))
+                    if (EncRecord.Referring_Physician!= null && EncRecord.Referring_Physician.Trim() != string.Empty && EncRecord.Referring_Physician.Contains(ddlPhysicianName.SelectedItem.Text))
                     {
                         chkSelfReferred.Checked = false;
                         // btnFindPhysician.Enabled = false;

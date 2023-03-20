@@ -120,6 +120,12 @@ namespace Acurus.Capella.UI
                                  "Exception Message: " + ex.InnerException.Message + "<br/>" + "<br/>" +
                                  "Stack trace      : " + ex.InnerException.StackTrace + "<br/>" + "<br/>";
                 }
+                else
+                {
+                    sMessage += "Exception type   : " + ex.GetType() + "<br/>" + "<br/>" +
+                                "Exception Message: " + ex.Message + "<br/>" + "<br/>" +
+                                "Stack trace      : " + ex.StackTrace + "<br/>" + "<br/>";
+                }
                 btnLogin.Visible = true;
                 statserrorlogmessage = sMessage;
             }
