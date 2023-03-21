@@ -141,7 +141,7 @@ namespace Acurus.Capella.UI
             get
             {
                 //return HttpContext.Current != null ? (HttpContext.Current.Session[userName] != null ? Convert.ToString(HttpContext.Current.Session[userName]) : string.Empty) : string.Empty;
-                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userName] != null ? Convert.ToString(HttpContext.Current.Session[userName]) : string.Empty) : string.Empty) : string.Empty;
+                return HttpContext.Current != null ? (HttpContext.Current.Session != null ? (HttpContext.Current.Session[userName] != null ? Convert.ToString(HttpContext.Current.Session[userName]) : string.Empty) : string.Empty) : string.Empty;  
             }
 
             set

@@ -66,7 +66,7 @@ namespace Acurus.Capella.UI
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-            {
+            { 
                 // Create safe error messages.
                 string generalErrorMsg = "A problem has occurred on this web site. Please try again. If this error continues, please contact support.";
                 //string httpErrorMsg = "An HTTP error occurred. Page Not found. Please try again.";
