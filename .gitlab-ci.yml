@@ -79,7 +79,7 @@ Deploy Test Job 10.0.0.11:
   #- echo "Backup CMG..Completed.."
 
   - echo "Backup WC..Start.."      
-  - xcopy /y /s "F:\Acurus_Web\capella_hca_project\capella_wc\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
+  #- xcopy /y /s "F:\Acurus_Web\capella_hca_project\capella_wc\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\WC"
   - echo "Backup WC..Completed.."
 
   #- echo "Backup CQM..Start.."      
@@ -95,7 +95,8 @@ Deploy Test Job 10.0.0.11:
   - echo "Backup CMG blobimp..Completed.."
 
   - echo "Backup CMG mt..Start.."
-  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\Capella_cmg_training\"
   - echo "Backup CMG mt..Completed.."
 
   #- echo "Deployee CMG..Start.."
