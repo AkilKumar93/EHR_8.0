@@ -4429,6 +4429,13 @@ namespace Acurus.Capella.UI
                                 //string sExtension = Path.GetExtension(currentFile.FileName).ToLower();
                                 if (sFileExtension.Contains(Path.GetExtension(currentFile.FileName).ToLower()))
                                 {
+                                    //Gitlab #3943 - File Name Length Issue
+                                    if (currentFile.FileName.Length + Path.GetExtension(currentFile.FileName).Length > 180 )
+                                    {
+                                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile();DisplayErrorMessage('114022');", true);
+                                        return;
+                                    }
+
                                     if (currentFile.ContentLength > 0)
                                     {
                                         lstDocuments.Add(Path.GetFileName(currentFile.FileName));
