@@ -1,5 +1,5 @@
 ﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="frmEditAppointment.aspx.cs"
-    Inherits="Acurus.Capella.UI.frmEditAppointment" %>
+    Inherits="Acurus.Capella.UI.frmEditAppointment"  %>
 
 <%@ Register Src="~/UserControls/CustomDLCNew.ascx" TagName="DLC" TagPrefix="DLC" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
