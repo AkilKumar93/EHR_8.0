@@ -1514,7 +1514,7 @@ namespace Acurus.Capella.UI
             catch (Exception exp)
             {
                 //logger.Debug("Conversion of Duration from ddlDuration.Text='" + ddlDuration.Text + "' to UInt threw an error.", exp);
-                throw (exp);
+               // throw (exp);
             }
             try
             {
