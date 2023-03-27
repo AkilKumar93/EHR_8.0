@@ -737,10 +737,12 @@ namespace Acurus.Capella.UI
                 }
                 catch
                 {
-                    dtpVisitDate.MinDate = Convert.ToDateTime(hdnLocalTime.Value);
-                    dtpVisitDate.SelectedDate = Convert.ToDateTime(hdnLocalTime.Value);
-                    dtpVisGiven.SelectedDate = Convert.ToDateTime(hdnLocalTime.Value);
-                    dtpDateOnVis.SelectedDate = Convert.ToDateTime(hdnLocalTime.Value);
+                    dtpVisitDate.MinDate = DateTime.MinValue;
+                    dtpVisGiven.MinDate = DateTime.MinValue;
+                    dtpDateOnVis.MinDate = DateTime.MinValue;
+                    dtpVisitDate.SelectedDate = DateTime.Now;
+                    dtpVisGiven.SelectedDate = DateTime.Now;
+                    dtpDateOnVis.SelectedDate = DateTime.Now;
                 }
             }
             cboLocation.ClearSelection();
@@ -797,37 +799,67 @@ namespace Acurus.Capella.UI
                     //dtpGivenDate.MinDate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.Date;
                     //dtpExpiryDate.MinDate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.Date;
                     //dtpVisitDate.MinDate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.Date;
-                    dtpGivenDate.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;//Administered Date always set to Encounter DOS and is ReadOnly.
+                    dtpGivenDate.SelectedDate = null;
                     dtpGivenDate.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                    if (UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date >= DateTime.Now)
+                    {
+                        dtpGivenDate.MaxDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                    }
+                    else
+                    {
+                        dtpGivenDate.MaxDate = DateTime.Now;
+                    }
+                    dtpGivenDate.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;//Administered Date always set to Encounter DOS and is ReadOnly.
+
+
                     dtpExpiryDate.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
-                    dtpVisitDate.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+
 
                     //for git Id 1433
+                    dtpVisGiven.SelectedDate = null;
+                   dtpVisGiven.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                    if (UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date >= DateTime.Now)
+                    {
+                        dtpVisGiven.MaxDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                    }
+                    else
+                    {
+                        dtpVisGiven.MaxDate = DateTime.Now;
+                    }
                     dtpVisGiven.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;//Administered Date always set to Encounter DOS and is ReadOnly.
-                    dtpVisGiven.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
-                    dtpVisGiven.MaxDate = DateTime.Now;
 
+                    dtpVisitDate.SelectedDate = null;
+                    dtpVisitDate.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;                   
+                    if (UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date >= DateTime.Now)
+                    {
+                        dtpVisitDate.MaxDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                    }
+                    else
+                    {
+                        dtpVisitDate.MaxDate = DateTime.Now;
+                    }
                     dtpVisitDate.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
-                    dtpVisitDate.MaxDate = DateTime.Now;
+                    
 
-                    dtpGivenDate.MaxDate = DateTime.Now;
+                    
                 }
                 else
                 {
                     dtpGivenDate.SelectedDate = DateTime.Now;
                     dtpGivenDate.MinDate = DateTime.MinValue;
-                    dtpExpiryDate.MinDate = DateTime.MinValue;
-                    dtpVisitDate.MinDate = DateTime.MinValue;
-
-                    //for git Id 1433
                     dtpGivenDate.MaxDate = DateTime.Now;
 
-                    dtpVisitDate.SelectedDate = DateTime.Now;
-                    dtpVisitDate.MaxDate = DateTime.Now;
+                    dtpExpiryDate.MinDate = DateTime.MinValue;
+                    //for git Id 1433
 
+                    dtpVisitDate.MinDate = DateTime.MinValue;
+                    dtpVisitDate.MaxDate = DateTime.Now;
+                    dtpVisitDate.SelectedDate = DateTime.Now;
+                    
                     dtpVisGiven.MinDate = DateTime.MinValue;
-                    dtpVisGiven.SelectedDate = DateTime.Now;
                     dtpVisGiven.MaxDate = DateTime.Now;
+                    dtpVisGiven.SelectedDate = DateTime.Now;
+                    
                 }
             }
             chkRefusedAdministration(chkRefused.Checked);
@@ -1075,7 +1107,6 @@ namespace Acurus.Capella.UI
             chkVisgiven.Enabled = false;
             if (!IsPostBack)
             {
-
                 RadWindow2.VisibleOnPageLoad = false;
                 RadWindow2.Visible = false;
 
@@ -1326,26 +1357,43 @@ namespace Acurus.Capella.UI
                         //dtpExpiryDate.MinDate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.Date;
                         //dtpVisitDate.MinDate = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.Date;
                         //hdnDOS.Value = ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service.ToString("MM/dd/yyyy");
-                        dtpGivenDate.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;//Administered Date always set to Encounter DOS and is ReadOnly.
+                        
                         dtpGivenDate.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
-
-
-                        dtpExpiryDate.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
-
-                        dtpVisitDate.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                        if (UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date >= DateTime.Now)
+                        {
+                            dtpGivenDate.MaxDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                        }
+                        else
+                        {
+                            dtpGivenDate.MaxDate = DateTime.Now;
+                        }                        
+                        dtpGivenDate.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;//Administered Date always set to Encounter DOS and is ReadOnly.
+                                                                  
                         dtpVisitDate.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
-                        dtpVisitDate.MaxDate = DateTime.Now;
-
-                        hdnDOS.Value = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).ToString("MM/dd/yyyy");
-
+                        if (UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date >= DateTime.Now)
+                        {
+                            dtpVisitDate.MaxDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                        }
+                        else
+                        {
+                            dtpVisitDate.MaxDate = DateTime.Now;
+                        }
+                        dtpVisitDate.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                       
                         //for git Id 1433
-                        dtpVisGiven.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;//Administered Date always set to Encounter DOS and is ReadOnly.
+                        
                         dtpVisGiven.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
-                        dtpVisGiven.MaxDate = DateTime.Now;
-
-
-
-                        dtpGivenDate.MaxDate = DateTime.Now;
+                        if(UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date>= DateTime.Now)
+                        {
+                            dtpVisGiven.MaxDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
+                        }
+                        else
+                        {
+                            dtpVisGiven.MaxDate = DateTime.Now;
+                        }
+                         dtpVisGiven.SelectedDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;//Administered Date always set to Encounter DOS and is ReadOnly.
+                        hdnDOS.Value = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).ToString("MM/dd/yyyy");
+                        dtpExpiryDate.MinDate = UtilityManager.ConvertToLocal(ClientSession.FillEncounterandWFObject.EncRecord.Date_of_Service).Date;
                     }
                     else
                     {
