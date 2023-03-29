@@ -45,6 +45,8 @@ build Job:
     - EHR-Capella5.0\
 
 Deploy Test Job 10.0.0.4 :
+  tags:
+    - azure test4 tag
   rules:
     - if: '$SERVER_TESTING_4 =="10.0.0.4"'
   environment:
@@ -75,6 +77,8 @@ Deploy Test Job 10.0.0.4 :
 
  
 Deploy Test Job 10.0.0.11:
+  tags:
+    - azure-test11
   rules:
     - if: '$SERVER_TESTING_11 =="10.0.0.11"'
   environment:
