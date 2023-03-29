@@ -1,5 +1,5 @@
 <%@ Page  Async="true" Language="C#" AutoEventWireup="true" CodeBehind="frmAppointments.aspx.cs" 
-    MasterPageFile="~/C5PO.Master" Inherits="Acurus.Capella.UI.frmAppointments" EnableEventValidation="false" Trace="true"%>
+    MasterPageFile="~/C5PO.Master" Inherits="Acurus.Capella.UI.frmAppointments" EnableEventValidation="false" %>
 
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
