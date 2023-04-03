@@ -729,7 +729,7 @@ namespace Acurus.Capella.UI
                 //string sFacilityAncillary = ConfigurationManager.AppSettings["AncillaryLab"].Trim().ToUpper();
                 IList<string> lstordersCMG = new List<string>();
                 //var IscheckCMGAncillary = lstorderstemp.Where(aa => aa.Order_Code_Type.ToUpper().Trim() == ConfigurationManager.AppSettings["AncillaryLab"].Trim().ToUpper()).ToList();
-                var lab = from l in ApplicationObject.facilityLibraryList where l.Fac_Name==ClientSession.FacilityName select l;
+                var lab = from l in ApplicationObject.facilityLibraryList where l.Fac_Name == ClientSession.FacilityName select l;
                 IList<FacilityLibrary> facLabList = lab.ToList<FacilityLibrary>();
                 var IscheckCMGAncillary = lstorderstemp.Where(aa => facLabList.Any(bb => bb.Short_Name.ToUpper() == aa.Order_Code_Type.ToString().ToUpper())).ToList();
 
@@ -768,13 +768,13 @@ namespace Acurus.Capella.UI
                     svalue = svalues.Where(aa => !lstordersCMG.Any(oo => oo.ToString() == aa.ToString().Trim())).ToList();
                 }
 
-                if (facLabList.Count>0 && facLabList[0].Is_Ancillary=="Y")
+                if (facLabList.Count > 0 && facLabList[0].Is_Ancillary == "Y")
                 {
                     //if (svalue.Count > 0 && lstordersCMG.Count>0)
                     //{
                     //    lstorders = lstorderstemp.Where(item => !svalue.Any(i => i.ToString().Trim() == item.Order_Submit_ID.ToString())).ToList<Orders>();
                     //}
-                        lstorders = lstorderstemp.Where(item => lstordersCMG.Any(cmglst => cmglst.ToString() == item.Order_Submit_ID.ToString())).ToList();
+                    lstorders = lstorderstemp.Where(item => lstordersCMG.Any(cmglst => cmglst.ToString() == item.Order_Submit_ID.ToString())).ToList();
                 }
                 else
                 {
@@ -838,10 +838,10 @@ namespace Acurus.Capella.UI
                     {
                         var facilityAncillary = from f in ApplicationObject.facilityLibraryList where f.Is_Ancillary == "Y" select f;
                         IList<FacilityLibrary> ilstAncillaryFac = facilityAncillary.ToList<FacilityLibrary>();
-                        
+
                         foreach (ulong submittedorders in temp)
                         {
-                            
+
                             orderItems = new ListItem();
                             //string OrderText = "";
                             StringBuilder OrderText = new StringBuilder();
@@ -850,20 +850,20 @@ namespace Acurus.Capella.UI
                             {
                                 bIsSkip = false;
                                 var AncLab = (from l in ilstAncillaryFac where l.Short_Name.ToUpper() == item.Order_Code_Type.ToUpper() select l).ToList();
-                                if (AncLab.Count>0)
+                                if (AncLab.Count > 0)
                                 {
-                                    if(item.Encounter_ID == 0)
+                                    if (item.Encounter_ID == 0)
                                     {
                                         bIsSkip = true;
                                         continue;
                                     }
-                                    else 
+                                    else
                                     {
                                         EncounterManager encMngr = new EncounterManager();
-                                        IList<Encounter> encList = encMngr.GetEncounterByEncounterID(item.Encounter_ID); 
-                                        if (encList.Count>0)
+                                        IList<Encounter> encList = encMngr.GetEncounterByEncounterID(item.Encounter_ID);
+                                        if (encList.Count > 0)
                                         {
-                                            if (encList[0].Order_Submit_ID ==0)
+                                            if (encList[0].Order_Submit_ID == 0)
                                             {
                                                 bIsSkip = true;
                                                 continue;
@@ -1189,7 +1189,7 @@ namespace Acurus.Capella.UI
                 txtSelectedPages.Disabled = true;
                 rdbAll.Checked = true;
                 btnMoveToNextProcess.Disabled = false;
-                
+
                 if (index_lst != null && index_lst.Count > 0)
                 {
                     LoadGridView(index_lst);
@@ -2378,10 +2378,10 @@ namespace Acurus.Capella.UI
                             if (phyItems.Attribute("suffix").Value != String.Empty)
                                 phyName += "," + phyItems.Attribute("suffix").Value;
 
-                                liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
-                                liDropdown.Attributes.Add("default", "true");
-                                liComboItems.Add(liDropdown);
-                            
+                            liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
+                            liDropdown.Attributes.Add("default", "true");
+                            liComboItems.Add(liDropdown);
+
                         }
 
                     }
@@ -2456,14 +2456,14 @@ namespace Acurus.Capella.UI
                                 if (phyItems.Attribute("suffix").Value != String.Empty)
                                     phyName += "," + phyItems.Attribute("suffix").Value;
 
-                                
-                                    liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
-                                    if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.Attribute("ID").Value)
-                                        liDropdown.Attributes.Add("default", "true");
-                                    else
-                                        liDropdown.Attributes.Add("default", "false");
-                                    liDropdown.Attributes.CssStyle.Add("display", "none");
-                                    liComboItems.Add(liDropdown);
+
+                                liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
+                                if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.Attribute("ID").Value)
+                                    liDropdown.Attributes.Add("default", "true");
+                                else
+                                    liDropdown.Attributes.Add("default", "false");
+                                liDropdown.Attributes.CssStyle.Add("display", "none");
+                                liComboItems.Add(liDropdown);
                             }
                         }
                     }
@@ -2496,7 +2496,7 @@ namespace Acurus.Capella.UI
                     //{
                     var vfacAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
                     IList<FacilityLibrary> lstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
-                    if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() &&lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                    if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
                     {
                         foreach (XElement phyItems in elements.Elements())
                         {
@@ -2565,11 +2565,11 @@ namespace Acurus.Capella.UI
                                 phyName += "," + phyItems.Attribute("suffix").Value;
 
 
-                           
-                                liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
-                                liDropdown.Attributes.Add("default", "true");
-                                liComboItems.Add(liDropdown);
-                            
+
+                            liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
+                            liDropdown.Attributes.Add("default", "true");
+                            liComboItems.Add(liDropdown);
+
                         }
 
                     }
@@ -2646,15 +2646,15 @@ namespace Acurus.Capella.UI
                                     phyName += " " + phyItems.Attribute("middlename").Value;
                                 if (phyItems.Attribute("suffix").Value != String.Empty)
                                     phyName += "," + phyItems.Attribute("suffix").Value;
-                               
-                                    liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
-                                    if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.Attribute("ID").Value)
-                                        liDropdown.Attributes.Add("default", "true");
-                                    else
-                                        liDropdown.Attributes.Add("default", "false");
-                                    liDropdown.Attributes.CssStyle.Add("display", "none");
-                                    liComboItems.Add(liDropdown);
-                                
+
+                                liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
+                                if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.Attribute("ID").Value)
+                                    liDropdown.Attributes.Add("default", "true");
+                                else
+                                    liDropdown.Attributes.Add("default", "false");
+                                liDropdown.Attributes.CssStyle.Add("display", "none");
+                                liComboItems.Add(liDropdown);
+
                             }
                         }
                     }
@@ -3518,7 +3518,7 @@ namespace Acurus.Capella.UI
 
             if (objectToLoad_data != null)
             {
-                IList<scan_index> objectToLoad = objectToLoad_data.Select(a => { if (a.Modified_Date_And_Time == DateTime.MinValue)a.Modified_Date_And_Time = a.Created_Date_And_Time; else { a.Modified_Date_And_Time = a.Modified_Date_And_Time; } return a; }).OrderByDescending(a => a.Modified_Date_And_Time).ToList<scan_index>();
+                IList<scan_index> objectToLoad = objectToLoad_data.Select(a => { if (a.Modified_Date_And_Time == DateTime.MinValue) a.Modified_Date_And_Time = a.Created_Date_And_Time; else { a.Modified_Date_And_Time = a.Modified_Date_And_Time; } return a; }).OrderByDescending(a => a.Modified_Date_And_Time).ToList<scan_index>();
 
                 grdIndexing.DataSource = null;
                 grdIndexing.DataBind();
@@ -3857,7 +3857,7 @@ namespace Acurus.Capella.UI
                     //string sFacilityAncillary = ConfigurationManager.AppSettings["AncillaryLab"].Trim().ToUpper();
                     IList<string> lstordersCMG = new List<string>();
                     //var IscheckCMGAncillary = lstorderstemp.Where(aa => aa.Order_Code_Type.ToUpper().Trim() == ConfigurationManager.AppSettings["AncillaryLab"].ToUpper().Trim()).ToList();
-                    var lab = from l in ApplicationObject.facilityLibraryList where l.Fac_Name==ClientSession.FacilityName select l;
+                    var lab = from l in ApplicationObject.facilityLibraryList where l.Fac_Name == ClientSession.FacilityName select l;
                     IList<FacilityLibrary> facLabList = lab.ToList<FacilityLibrary>();
                     var IscheckCMGAncillary = lstorderstemp.Where(aa => facLabList.Any(bb => bb.Short_Name.ToUpper() == aa.Order_Code_Type.ToString().ToUpper())).ToList();
 
@@ -3894,7 +3894,7 @@ namespace Acurus.Capella.UI
                         var svalues = (from o in ilstOrdersubmit select o.Split('|')[0].Trim()).ToList();
                         svalue = svalues.Where(aa => !lstordersCMG.Any(oo => oo.ToString() == aa.ToString().Trim())).ToList();
                     }
-                   // lstorders = lstorderstemp.Where(item => !svalue.Any(i => i.ToString().Trim() == item.Order_Submit_ID.ToString())).ToList<Orders>();
+                    // lstorders = lstorderstemp.Where(item => !svalue.Any(i => i.ToString().Trim() == item.Order_Submit_ID.ToString())).ToList<Orders>();
 
                     if (facLabList.Count > 0 && facLabList[0].Is_Ancillary == "Y")
                     {
@@ -4111,8 +4111,8 @@ namespace Acurus.Capella.UI
                     //string sPaperOrder = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Lab_Procedure.ToString();
 
                     StringBuilder OrderedPhysician = new StringBuilder();
-                    if(lstorders != null && lstorders.Count>0)
-                    OrderedPhysician.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Physician_ID.ToString());
+                    if (lstorders != null && lstorders.Count > 0)
+                        OrderedPhysician.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Physician_ID.ToString());
 
                     StringBuilder OrderedLab = new StringBuilder();
                     if (lstorders != null && lstorders.Count > 0)
@@ -4138,7 +4138,7 @@ namespace Acurus.Capella.UI
                     selectedValue.Append(OrderedPhysician + "|" + OrderedLab + "|" + OrderedID);
                     DateTime orderedDatetime = DateTime.MinValue;
                     if (lstorders != null && lstorders.Count > 0)
-                         orderedDatetime = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_Spec_Collection_Date;
+                        orderedDatetime = lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_Spec_Collection_Date;
                     //string ConvertedorderedDatetime = string.Empty;
                     StringBuilder ConvertedorderedDatetime = new StringBuilder();
 
@@ -4430,9 +4430,12 @@ namespace Acurus.Capella.UI
                                 if (sFileExtension.Contains(Path.GetExtension(currentFile.FileName).ToLower()))
                                 {
                                     //Gitlab #3943 - File Name Length Issue
-                                    if (currentFile.FileName.Length + Path.GetExtension(currentFile.FileName).Length > 180 )
+                                    int iFile_Length = (ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\" + sFacilityName + "\\Scanned_Images\\" + DateTime.Now.ToString("yyyyMMdd") + "\\Local_Indexing_File" + "/").Length + Path.GetExtension(currentFile.FileName).Length;
+                                   
+                                    if ((ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\" + sFacilityName + "\\Scanned_Images\\" + DateTime.Now.ToString("yyyyMMdd") + "\\Local_Indexing_File" + "/" + Path.GetFileName(currentFile.FileName)).Length >= 260)
                                     {
-                                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile();DisplayErrorMessage('114022');", true);
+                                        int iAllowed_File_Length =  259 - iFile_Length;
+                                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile();DisplayErrorMessage('114022','','"+iAllowed_File_Length+"');", true);
                                         return;
                                     }
 
@@ -4560,10 +4563,10 @@ namespace Acurus.Capella.UI
             string humanDetails = "";
             IList<string> ilstIndexTagList = new List<string>();
             ilstIndexTagList.Add("HumanList");
-            
+
             IList<object> ilstIndexBlobFinal = new List<object>();
             ilstIndexBlobFinal = UtilityManager.ReadBlob(Convert.ToUInt64(shumanId), ilstIndexTagList);
-             
+
             if (ilstIndexBlobFinal != null && ilstIndexBlobFinal.Count > 0)
             {
                 if (ilstIndexBlobFinal[0] != null)
@@ -4576,7 +4579,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-               
+
             // string FileName = "Human" + "_" + shumanId + ".xml";
             //string strXmlFilePath = Path.Combine(ConfigurationManager.AppSettings["XMLPath"], "Human_" + shumanId + ".xml");
             //try

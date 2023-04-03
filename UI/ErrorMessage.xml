@@ -1713,7 +1713,7 @@
 	<Message number="114019" Type="OK" Text="Entered page number exceeds the total no of pages."></Message>
 	<Message number="114020" Type="ToolStrip" Text="File moved successfully."></Message>
 	<Message number="114021" Type="ToolStrip" Text="Deleted Successfully " />
-	<Message number="114022" Type="OK" Text="File name length is exceeded to 180 characters. Please rename the file." />
+	<Message number="114022" Type="OK" Text="File Path and File Name with Extension should not exceed 260 characters. The selected file name exceeds {0} characters. Please rename the file." />
 
 	<Message number="115001" Type="OK" Text="The entered page doesn't exists!"></Message>
 	<Message number="115002" Type="OK" Text="Document date cannot be future date."></Message>
