@@ -283,7 +283,7 @@ button.close {
             </Windows>
         </telerik:RadWindowManager>
         <div style="height: 100%; width: 100%;">
-            <telerik:RadAjaxPanel ID="pnlRefresh" runat="server" Width="100%">
+            <telerik:RadAjaxPanel ID="pnlRefresh" runat="server" Width="100%" EnableViewState="false">
                 <table style="width: 100%">
                     <tr>
                         <td style="width: 15%">
@@ -759,7 +759,7 @@ button.close {
             </div>--%>
             </telerik:RadAjaxPanel>
         </div>
-        <asp:ToolkitScriptManager ID="toolkitScriptMngr" runat="server">
+        <asp:ToolkitScriptManager ID="toolkitScriptMngr" runat="server" EnableViewState="false">
             <Scripts>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
                 <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js"></asp:ScriptReference>
