@@ -876,13 +876,13 @@
                                     <asp:DropDownList ID="ddlPreferredLanguage" onchange="showTip(this);" runat="server" CssClass="Editabletxtbox"
                                         onmouseover="OnMouseHover(this);" Width="115%">
                                          </asp:DropDownList>
-                                   </td>                                            
-                                            <td id="tdReqTranslator" style="width: 75%; text-align: right; display: block">
-                                                <asp:CheckBox ID="chkReqTranslator" runat="server" AutoPostBack="True" onclick="AutoSave();"
-                                                    CssClass="spanstyle" />
-                                                <asp:Label ID="Translator" runat="server" Text="Req.</br>Translator" CssClass="spanstyle" EnableViewState="false"></asp:Label>
-                                            </td>
-                                        </tr>
+                                   </td>
+                                       <td style="width:28%; text-align:right;">
+                                     <asp:CheckBox ID="chkReqTranslator" runat="server"  onclick="AutoSave();"
+                                                 CssClass="spanstyle" />
+                                     <asp:Label ID="Translator" runat="server" Text="Req.</br>Translator" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                        </td>
+                                      </tr>
                                         </table>
                                                                                         
                                            </tr>

@@ -1284,15 +1284,12 @@ function dtpPatientDOB_OnDateSelected(sender, args) {
 function showTip(ddl) {
 
     document.getElementById(GetClientId(ddl.id)).title = document.getElementById(GetClientId(ddl.id)).options[document.getElementById(GetClientId(ddl.id)).selectedIndex].text;
-    if (document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Patient Refuses to answer" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Declined to specify" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Preferred Language not indicated") {
+    if (document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Patient Refuses to answer" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Declined to specify" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Preferred Language not indicated") {
         document.getElementById("ctl00_C5POBody_chkReqTranslator").checked = false;
-        document.getElementById("tdReqTranslator").style.display = "none";
-        document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").style.width = "120px";
+        document.getElementById("ctl00_C5POBody_chkReqTranslator").disabled = true;
         }
     else {
-        document.getElementById("ctl00_C5POBody_chkReqTranslator").checked = false;
-        document.getElementById("tdReqTranslator").style.display = "block";
-        document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").style.width = "115px";
+        document.getElementById("ctl00_C5POBody_chkReqTranslator").disabled = false;
         }
     AutoSave();
 }
@@ -1753,11 +1750,10 @@ $(document).ready(function () {
         document.getElementById('btnAdd').disabled = true;
         document.getElementById('btnClearAll').disabled = true;
     }
-    if (document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Patient Refuses to answer" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Declined to specify" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Preferred Language not indicated") {
+    if (document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Patient Refuses to answer" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Declined to specify" || document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").value == "Preferred Language not indicated") {
         document.getElementById("ctl00_C5POBody_chkReqTranslator").checked = false;
-        document.getElementById("tdReqTranslator").style.display = "none";
-        document.getElementById("ctl00_C5POBody_ddlPreferredLanguage").style.width = "120px";
-    }
+        document.getElementById("ctl00_C5POBody_chkReqTranslator").disabled = true;
+       }
     document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF";
     document.getElementById('imginsuredText').style.visibility = "hidden";
     document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;

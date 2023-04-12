@@ -535,7 +535,7 @@ namespace Acurus.Capella.UI
                     FindPhysican physician_dto = new FindPhysican();
                     PhysicianManager objPhysicianManager = new PhysicianManager();
                     physician_dto = objPhysicianManager.FindPhysicianID(vPhyId);
-                    int icount = 0;
+                    
                     foreach (PatientInsuredPlan obj in PatInsOrderedList)//objHumanList.PatientInsuredBag)
                     {
                        IList<Human> humanInsList = HumanMngr.GetPatientDetailsUsingPatientInformattion(obj.Insured_Human_ID);
@@ -585,29 +585,27 @@ namespace Acurus.Capella.UI
                             dr["Specify_Other"] = obj.Other_Insurance_Comments;
                             dr["PCP_Name"] = obj.PCP_Name;
                             dr["PCP_ID"] = obj.PCP_ID;
-                            
-                         
 
-                            if (physician_dto.PhyList.Count > 0 && obj.PCP_ID!=0)
+                            var Phy = from p in physician_dto.PhyList where p.PhyId == obj.PCP_ID select p;
+                            IList<PhysicianFacilityDTO> ilstCurrentPhyFacDTO = Phy.ToList<PhysicianFacilityDTO>();
+
+                            if (ilstCurrentPhyFacDTO.Count>0)
                             {
-
-                                string sPcpGridName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName;
-
-
-                                string sPcpTextboxName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName + "(" + physician_dto.PhyList[icount].PhySuffix + ")" + " | " +
-                                                              "NPI:" + physician_dto.PhyList[icount].PhyNPI + " | " +
-                                                              physician_dto.PhyList[icount].PhySpecialtyCode + " | " +
-                                                              "FACILITY:" + physician_dto.PhyList[icount].PhyFacility + " | " +
-                                                              "ADDR: " + physician_dto.PhyList[icount].PhyAddrs + ", " +
-                                                              physician_dto.PhyList[icount].PhyCity + "," +
-                                                              physician_dto.PhyList[icount].PhyState + " " +
-                                                              physician_dto.PhyList[icount].PhyZip + " | " +
-                                                              ((physician_dto.PhyList[icount].PhyPhone.Trim()) != "" ? "PH:" + physician_dto.PhyList[icount].PhyPhone + " | " : "") +
-                                                              (physician_dto.PhyList[icount].PhyFax.Trim() != "" ? "FAX:" + physician_dto.PhyList[icount].PhyFax : "");
+                                string sPcpGridName = ilstCurrentPhyFacDTO[0].PhyPrefix + " " + ilstCurrentPhyFacDTO[0].PhyFirstName + " " + ilstCurrentPhyFacDTO[0].PhyMiddleName + " " + ilstCurrentPhyFacDTO[0].PhyLastName;
+                                string sPcpTextboxName = ilstCurrentPhyFacDTO[0].PhyPrefix + " " + ilstCurrentPhyFacDTO[0].PhyFirstName + " " + ilstCurrentPhyFacDTO[0].PhyMiddleName + " " + ilstCurrentPhyFacDTO[0].PhyLastName + "(" + ilstCurrentPhyFacDTO[0].PhySuffix + ")" + " | " +
+                                                              "NPI:" + ilstCurrentPhyFacDTO[0].PhyNPI + " | " +
+                                                              ilstCurrentPhyFacDTO[0].PhySpecialtyCode + " | " +
+                                                              "FACILITY:" + ilstCurrentPhyFacDTO[0].PhyFacility + " | " +
+                                                              "ADDR: " + ilstCurrentPhyFacDTO[0].PhyAddrs + ", " +
+                                                              ilstCurrentPhyFacDTO[0].PhyCity + "," +
+                                                              ilstCurrentPhyFacDTO[0].PhyState + " " +
+                                                              ilstCurrentPhyFacDTO[0].PhyZip + " | " +
+                                                              ((ilstCurrentPhyFacDTO[0].PhyPhone.Trim()) != "" ? "PH:" + ilstCurrentPhyFacDTO[0].PhyPhone + " | " : "") +
+                                                              (ilstCurrentPhyFacDTO[0].PhyFax.Trim() != "" ? "FAX:" + ilstCurrentPhyFacDTO[0].PhyFax : "");
                                 dr["PCP_Grid_Name"] = sPcpGridName;
                                 dr["PCP_Textbox_Name"] = sPcpTextboxName;
-                                dr["PCP_NPI"] = physician_dto.PhyList[icount].PhyNPI;
-                                icount++;
+                                dr["PCP_NPI"] = ilstCurrentPhyFacDTO[0].PhyNPI;
+                           
                             }
                             else
                             {
@@ -615,6 +613,41 @@ namespace Acurus.Capella.UI
                                 dr["PCP_Textbox_Name"] = "";
                                 dr["PCP_NPI"] = "";
                             }
+
+
+                            for (int icount = 0; icount<=physician_dto.PhyList.Count; icount++)
+                            {
+                                if (obj.PCP_ID!=0 && obj.PCP_ID == physician_dto.PhyList[icount].PhyId)
+                                {
+
+                                    string sPcpGridName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName;
+
+
+                                    string sPcpTextboxName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName + "(" + physician_dto.PhyList[icount].PhySuffix + ")" + " | " +
+                                                                  "NPI:" + physician_dto.PhyList[icount].PhyNPI + " | " +
+                                                                  physician_dto.PhyList[icount].PhySpecialtyCode + " | " +
+                                                                  "FACILITY:" + physician_dto.PhyList[icount].PhyFacility + " | " +
+                                                                  "ADDR: " + physician_dto.PhyList[icount].PhyAddrs + ", " +
+                                                                  physician_dto.PhyList[icount].PhyCity + "," +
+                                                                  physician_dto.PhyList[icount].PhyState + " " +
+                                                                  physician_dto.PhyList[icount].PhyZip + " | " +
+                                                                  ((physician_dto.PhyList[icount].PhyPhone.Trim()) != "" ? "PH:" + physician_dto.PhyList[icount].PhyPhone + " | " : "") +
+                                                                  (physician_dto.PhyList[icount].PhyFax.Trim() != "" ? "FAX:" + physician_dto.PhyList[icount].PhyFax : "");
+                                    dr["PCP_Grid_Name"] = sPcpGridName;
+                                    dr["PCP_Textbox_Name"] = sPcpTextboxName;
+                                    dr["PCP_NPI"] = physician_dto.PhyList[icount].PhyNPI;
+                                    break;
+                                }
+                                else
+                                {
+                                    dr["PCP_Grid_Name"] = "";
+                                    dr["PCP_Textbox_Name"] = "";
+                                    dr["PCP_NPI"] = "";
+                                }
+                               
+                            }
+                        
+                        
                            
                             dt.Rows.Add(dr);
 
