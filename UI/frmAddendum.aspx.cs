@@ -255,7 +255,9 @@ namespace Acurus.Capella.UI
                             iIter = iIter + 1;
                         }
                         else
-                            if (ClientSession.UserRole != null && ClientSession.UserRole == "Medical Assistant")
+                        //GitLab - #4127
+                        //if (ClientSession.UserRole != null && ClientSession.UserRole == "Medical Assistant")
+                            if (ClientSession.UserRole != null && (ClientSession.UserRole == "Medical Assistant" || ClientSession.UserRole == "Office Manager"))
                             {
                             //string sPhyName = phyUserList.PhyList[i].PhyPrefix + " " + phyUserList.PhyList[i].PhyFirstName + " " + phyUserList.PhyList[i].PhyMiddleName + " " + phyUserList.PhyList[i].PhyLastName + " " + phyUserList.PhyList[i].PhySuffix;
                             //cboShowAllPhysicians.Items.Add(new RadComboBoxItem(phyUserList.UserList[i].user_name.ToString() + " - " + sPhyName));
@@ -382,7 +384,9 @@ namespace Acurus.Capella.UI
                             j++;
                         }
                         else
-                            if (ClientSession.UserRole!=null && ClientSession.UserRole == "Medical Assistant")
+                            //GitLab - #4127
+                            //if (ClientSession.UserRole != null && ClientSession.UserRole == "Medical Assistant" )
+                            if (ClientSession.UserRole!=null && (ClientSession.UserRole == "Medical Assistant" || ClientSession.UserRole == "Office Manager"))
                             {
                             //Old Code
                             //cboShowAllPhysicians.Items.Add(new RadComboBoxItem(phyUserList.UserList[i].user_name.ToString() + " - " + sPhyName));
