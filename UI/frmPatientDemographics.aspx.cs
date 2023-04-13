@@ -615,37 +615,37 @@ namespace Acurus.Capella.UI
                             }
 
 
-                            for (int icount = 0; icount<=physician_dto.PhyList.Count; icount++)
-                            {
-                                if (obj.PCP_ID!=0 && obj.PCP_ID == physician_dto.PhyList[icount].PhyId)
-                                {
+                            //for (int icount = 0; icount<=physician_dto.PhyList.Count; icount++)
+                            //{
+                            //    if (obj.PCP_ID!=0 && obj.PCP_ID == physician_dto.PhyList[icount].PhyId)
+                            //    {
 
-                                    string sPcpGridName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName;
+                            //        string sPcpGridName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName;
 
 
-                                    string sPcpTextboxName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName + "(" + physician_dto.PhyList[icount].PhySuffix + ")" + " | " +
-                                                                  "NPI:" + physician_dto.PhyList[icount].PhyNPI + " | " +
-                                                                  physician_dto.PhyList[icount].PhySpecialtyCode + " | " +
-                                                                  "FACILITY:" + physician_dto.PhyList[icount].PhyFacility + " | " +
-                                                                  "ADDR: " + physician_dto.PhyList[icount].PhyAddrs + ", " +
-                                                                  physician_dto.PhyList[icount].PhyCity + "," +
-                                                                  physician_dto.PhyList[icount].PhyState + " " +
-                                                                  physician_dto.PhyList[icount].PhyZip + " | " +
-                                                                  ((physician_dto.PhyList[icount].PhyPhone.Trim()) != "" ? "PH:" + physician_dto.PhyList[icount].PhyPhone + " | " : "") +
-                                                                  (physician_dto.PhyList[icount].PhyFax.Trim() != "" ? "FAX:" + physician_dto.PhyList[icount].PhyFax : "");
-                                    dr["PCP_Grid_Name"] = sPcpGridName;
-                                    dr["PCP_Textbox_Name"] = sPcpTextboxName;
-                                    dr["PCP_NPI"] = physician_dto.PhyList[icount].PhyNPI;
-                                    break;
-                                }
-                                else
-                                {
-                                    dr["PCP_Grid_Name"] = "";
-                                    dr["PCP_Textbox_Name"] = "";
-                                    dr["PCP_NPI"] = "";
-                                }
+                            //        string sPcpTextboxName = physician_dto.PhyList[icount].PhyPrefix + " " + physician_dto.PhyList[icount].PhyFirstName + " " + physician_dto.PhyList[icount].PhyMiddleName + " " + physician_dto.PhyList[icount].PhyLastName + "(" + physician_dto.PhyList[icount].PhySuffix + ")" + " | " +
+                            //                                      "NPI:" + physician_dto.PhyList[icount].PhyNPI + " | " +
+                            //                                      physician_dto.PhyList[icount].PhySpecialtyCode + " | " +
+                            //                                      "FACILITY:" + physician_dto.PhyList[icount].PhyFacility + " | " +
+                            //                                      "ADDR: " + physician_dto.PhyList[icount].PhyAddrs + ", " +
+                            //                                      physician_dto.PhyList[icount].PhyCity + "," +
+                            //                                      physician_dto.PhyList[icount].PhyState + " " +
+                            //                                      physician_dto.PhyList[icount].PhyZip + " | " +
+                            //                                      ((physician_dto.PhyList[icount].PhyPhone.Trim()) != "" ? "PH:" + physician_dto.PhyList[icount].PhyPhone + " | " : "") +
+                            //                                      (physician_dto.PhyList[icount].PhyFax.Trim() != "" ? "FAX:" + physician_dto.PhyList[icount].PhyFax : "");
+                            //        dr["PCP_Grid_Name"] = sPcpGridName;
+                            //        dr["PCP_Textbox_Name"] = sPcpTextboxName;
+                            //        dr["PCP_NPI"] = physician_dto.PhyList[icount].PhyNPI;
+                            //        break;
+                            //    }
+                            //    else
+                            //    {
+                            //        dr["PCP_Grid_Name"] = "";
+                            //        dr["PCP_Textbox_Name"] = "";
+                            //        dr["PCP_NPI"] = "";
+                            //    }
                                
-                            }
+                            //}
                         
                         
                            
