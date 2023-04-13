@@ -258,13 +258,7 @@
                 opacity: .5;
             }
 
-        /*button.close {
-            -webkit-appearance: none;
-            padding: 0;
-            cursor: pointer;
-            background: transparent;
-            border: 0;
-        }*/
+        
     </style>
 
     
