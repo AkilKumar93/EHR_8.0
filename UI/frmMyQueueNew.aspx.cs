@@ -1059,7 +1059,7 @@ namespace Acurus.Capella.UI
 
             var addendumGeneralQ = from p in addendumGeneralQList where p.Current_Owner == "UNKNOWN" select p;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadAddendum : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(addendumGeneralQ.ToList<MyQ>());
+            return JsonConvert.SerializeObject(addendumGeneralQ.ToList<MyQ>()); 
         }
         [WebMethod(EnableSession = true)]
         public static string LoadEncounterTabClick(string sShowall)
