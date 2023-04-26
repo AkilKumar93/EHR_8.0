@@ -6,6 +6,7 @@ using System.Net;
 using System.Collections;
 using System.IO;
 using System.Net;
+using System.Threading;
 
 namespace Acurus.Capella.UI
 {
@@ -15,7 +16,7 @@ namespace Acurus.Capella.UI
         string uri = string.Empty;
         FtpWebRequest reqFTP;
         FtpWebResponse responseFTP;
-
+        
         public string UploadToImageServer(string HumanID, string serverIP, string UserName, string Password, string SelectedFilePath, string File_Name_Convention)
         {
             #region "Ftp Operations"
@@ -86,7 +87,7 @@ namespace Acurus.Capella.UI
             if (!HumanID.ToString().ToUpper().Contains("EFAX"))
                 uri = serverIP + HumanID + "/";
             else
-                uri = serverIP + HumanID ;
+                uri = serverIP + HumanID;
 
             if (File_Name_Convention != string.Empty)
             {
@@ -96,6 +97,9 @@ namespace Acurus.Capella.UI
             {
                 uri = ((uri + fileInf.Name));
             }
+            //Jira #CAP-39
+            int iTrycount = 1;
+       TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -109,10 +113,26 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            catch(Exception ex) {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess,cs Line No - 113 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath +" - Selected Path - "+ SelectedFilePath+" - URI - "+ uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
-                           
-                result = false; }
+            catch (Exception ex)
+            {
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess,cs Line No - 113 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - Selected Path - " + SelectedFilePath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+
+                    result = false;
+                }
+
+
+
+            }
 
 
             if (result)
@@ -136,6 +156,9 @@ namespace Acurus.Capella.UI
             string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
             string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
             string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+            //Jira #CAP-39
+            int iTrycount = 1;
+       TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -152,7 +175,18 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FTpImageProcess.cs Line No - 155 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FTpImageProcess.cs Line No - 155 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - URI - " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                }
             }
             return true;
         }
@@ -177,6 +211,9 @@ namespace Acurus.Capella.UI
             {
                 uri = serverIP + "/" + FileName;
             }
+            //Jira #CAP-39
+            int iTrycount = 1;
+           TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -198,7 +235,21 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            catch { isFileCopyFailed = false; result = false; }
+            catch(Exception ex)
+            {
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    isFileCopyFailed = false; result = false;
+                }
+            }
 
 
 
@@ -218,7 +269,7 @@ namespace Acurus.Capella.UI
 
 
 
-
+            int iTrycount = 1;
             if (HumanID != "0")
             {
                 uri = serverIP + HumanID + "/" + FileName;
@@ -228,12 +279,15 @@ namespace Acurus.Capella.UI
                 uri = serverIP + "/" + FileName;
             }
 
-            //try
-            //{
-            //    System.IO.File.Copy(uri.Replace(ftpIP, UNCPath), (Path.Combine(localPath, FileName)), true);
-            //}
-            // catch
-            // {
+        //try
+        //{
+        //    System.IO.File.Copy(uri.Replace(ftpIP, UNCPath), (Path.Combine(localPath, FileName)), true);
+        //}
+        // catch
+        // {
+
+        //Jira #CAP-39
+        TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -248,10 +302,20 @@ namespace Acurus.Capella.UI
                     // }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess.cs Line No - 250 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " -Source URI - " + uri.Replace(ftpIP, UNCPath)+" - Destination Path - " +(Path.Combine(localPath, FileName)), DateTime.Now, "0", "frmimageviewer");
-                           
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess.cs Line No - 250 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " -Source URI - " + uri.Replace(ftpIP, UNCPath) + " - Destination Path - " + (Path.Combine(localPath, FileName)), DateTime.Now, "0", "frmimageviewer");
+                }
             }
 
 
@@ -273,7 +337,7 @@ namespace Acurus.Capella.UI
             bool result = false;
 
 
-
+            int iTrycount = 1;
 
 
             if (HumanID != "0")
@@ -285,24 +349,43 @@ namespace Acurus.Capella.UI
                 uri = serverIP + "/" + FileName;
             }
 
-            //try
-            //{
-            //    System.IO.File.Copy(uri.Replace(ftpIP, UNCPath), (Path.Combine(localPath, FileName)), true);
-            //}
-            // catch
-            // {
-            using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
-            {
-                if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
-                {
-                    {
-                        System.IO.File.Copy(uri.Replace(ftpIP, UNCPath), (Path.Combine(localPath, FileName)), true);
-                        result = true;
-                    }
-                }
-                // }
-            }
+        //try
+        //{
+        //    System.IO.File.Copy(uri.Replace(ftpIP, UNCPath), (Path.Combine(localPath, FileName)), true);
+        //}
+        // catch
+        // {
 
+        //Jira #CAP-39
+        TryAgain:
+            try
+            {
+                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+                {
+                    if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+                    {
+                        {
+                            System.IO.File.Copy(uri.Replace(ftpIP, UNCPath), (Path.Combine(localPath, FileName)), true);
+                            result = true;
+                        }
+                    }
+                    // }
+                }
+            }
+            catch(Exception ex)
+            {
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                }
+            }
 
 
 
@@ -314,6 +397,10 @@ namespace Acurus.Capella.UI
         {
             bool result = true;
             uri = serverIP + HumanID + "/" + FileName;
+
+            //Jira #CAP-39
+            int iTrycount = 1;
+           TryAgain:
             try
             {
                 reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(uri));
@@ -324,9 +411,20 @@ namespace Acurus.Capella.UI
                 responseFTP = (FtpWebResponse)reqFTP.GetResponse();
 
             }
-            catch 
+            catch(Exception ex)
             {
-                result = false;
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    result = false;
+                }
             }
 
             return result;
@@ -343,6 +441,9 @@ namespace Acurus.Capella.UI
             string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
             string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
             string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+            //Jira #CAP-39
+            int iTrycount = 1;
+       TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -362,7 +463,20 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            catch { }
+            catch(Exception ex)
+            {
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                }
+            }
 
             return fileList;
         }
@@ -480,7 +594,7 @@ namespace Acurus.Capella.UI
                 arrFiles.Add(DrTarget.GetFiles());
                 status = true;
             }
-            catch 
+            catch
             {
                 //if (Ex is FileNotFoundException | Ex is DirectoryNotFoundException | Ex is UnauthorizedAccessException)
                 {
@@ -512,8 +626,10 @@ namespace Acurus.Capella.UI
             string password = System.Configuration.ConfigurationSettings.AppSettings["PasswordAD"];
             string domain = System.Configuration.ConfigurationSettings.AppSettings["DomainAD"];
             bool result = false;
-
+            //Jira #CAP-39
+            int iTrycount = 1;
             uri = ftpIP + HumanID + "/";
+           TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -536,8 +652,19 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess.cs Line No - 539 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath +" - SelectedPath -" + SelectedFilePath+ "- URI -"+uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
-                result = false;
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FtpImageProcess.cs Line No - 539 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + " - SelectedPath -" + SelectedFilePath + "- URI -" + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                }
+                    result = false;
             }
             if (result)
             {
@@ -561,6 +688,9 @@ namespace Acurus.Capella.UI
             {
                 uri = ftpIP + HumanID + "/" + sourceFileName;
             }
+            //Jira #CAP-39
+            int iTrycount = 1;
+           TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -574,9 +704,20 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                result = false;
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                }
+                    result = false;
             }
             return result;
         }
@@ -591,6 +732,9 @@ namespace Acurus.Capella.UI
             string userName = System.Configuration.ConfigurationSettings.AppSettings["userNameAD"];
             string password = System.Configuration.ConfigurationSettings.AppSettings["PasswordAD"];
             string domain = System.Configuration.ConfigurationSettings.AppSettings["DomainAD"];
+            //Jira #CAP-39
+            int iTrycount = 1;
+          TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -605,7 +749,20 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            catch { }
+            catch(Exception ex)
+            {
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                }
+            }
             return true;
         }
         public bool CreateDirectoryFAX(string UNCAuthPath, string UNCPath, string ftpIP, string userName, string password, string domain, string sDestinationFtpPath)
@@ -617,6 +774,10 @@ namespace Acurus.Capella.UI
             //string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
             //string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
             uri = UNCPath + "/" + sDestinationFtpPath + "/";
+            
+            //Jira #CAP-39
+            int iTrycount = 1;
+       TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -631,7 +792,20 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            catch { }
+            catch(Exception ex )
+            {
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                }
+            }
             return true;
         }
 
@@ -661,6 +835,9 @@ namespace Acurus.Capella.UI
             {
                 uri = ((uri + fileInf.Name));
             }
+            //Jira #CAP-39
+            int iTrycount = 1;
+           TryAgain:
             try
             {
                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -674,7 +851,21 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            catch { result = false; }
+            catch(Exception ex)
+            {
+                //Jira #CAP-39
+                if (iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    result = false;
+                }
+            }
 
 
             if (result)
@@ -712,23 +903,41 @@ namespace Acurus.Capella.UI
             //    uri = serverIP + "/" + FileName;
             //}
 
-           
-            using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+            //Jira #CAP-39
+            int iTrycount = 1;
+       TryAgain:
+            try
             {
-                if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+                using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
                 {
+                    if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
                     {
-                        System.IO.File.Copy(SourcePath, DestinationPath, true);
-                        result = true;
+                        {
+                            System.IO.File.Copy(SourcePath, DestinationPath, true);
+                            result = true;
+                        }
                     }
                 }
             }
 
-
-
+            catch(Exception ex)
+            {
+                //Jira #CAP-39
+                if ( iTrycount <= 3)
+                {
+                    iTrycount++;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else
+                {
+                        UtilityManager.RetryExecptionLog(ex, iTrycount);
+                    }
+            }
 
             return result;
 
         }
+
     }
 }

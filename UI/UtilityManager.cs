@@ -5713,6 +5713,35 @@ namespace Acurus.Capella.UI
            
             return sPatientStrip;
         }
+        //Jira #CAP-64,#CAP-67,#CAP-39 
+        public static void RetryExecptionLog(Exception ex, int iTrycount)
+        {
+            string sMsg = string.Empty;
+            string sExStackTrace = string.Empty;
+            string insertQuery = string.Empty;
+            string version = "";
+            if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+                version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+            string[] server = version.Split('|');
+            string serverno = "";
+            if (server.Length > 1)
+                serverno = server[1].Trim();
+            if (ex.InnerException != null && ex.InnerException.Message != null)
+                sMsg = ex.InnerException.Message;
+            else
+                sMsg = ex.Message;
+
+            if (ex != null && ex.StackTrace != null)
+                sExStackTrace = ex.StackTrace;
+
+            insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + iTrycount + " ', '" + serverno + "','" + DateTime.Now + "','" + ClientSession.UserName + "','" + ClientSession.EncounterId + "','" + ClientSession.HumanId + "','" + ClientSession.PhysicianId + "','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+
+            if (insertQuery != string.Empty)
+            {
+                int iReturn = DBConnector.WriteData(insertQuery);
+            }
+        }
 
 
     }

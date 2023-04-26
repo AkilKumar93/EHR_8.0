@@ -6,6 +6,7 @@ using Acurus.Capella.Core.DTO;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using Acurus.Capella.UI;
 using Acurus.Capella.UI.Extensions;
+using AjaxControlToolkit.HTMLEditor.ToolbarButton;
 using iTextSharp.text.pdf;
 using Newtonsoft.Json;
 using System;
@@ -31,6 +32,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 //using Telerik.Web;
 //using Telerik.Web.UI;
 //using Telerik.Web.UI.Upload;
@@ -2191,6 +2193,9 @@ namespace Acurus.Capella.UI
         {
             if (bmp != null && location != null)
             {
+                //Jira #CAP-39
+                int iTryCount = 1;
+            TryAgain:
                 try
                 {
                     ImageCodecInfo codecInfo = getCodecForstring(type);
@@ -2255,13 +2260,24 @@ namespace Acurus.Capella.UI
                 }
                 catch (System.Exception ee)
                 {
-                    if (ee.Message != null)
+                    //Jira #CAP-39
+                    if (iTryCount <= 3)
                     {
-                        throw new Exception(ee.Message + "  Error in saving as multipage ");
+                        iTryCount = iTryCount + 1;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
                     }
                     else
                     {
-                        throw new Exception(" Error in saving as multipage ");
+                        UtilityManager.RetryExecptionLog(ee, iTryCount);
+                        if (ee.Message != null)
+                        {
+                            throw new Exception(ee.Message + "  Error in saving as multipage ");
+                        }
+                        else
+                        {
+                            throw new Exception(" Error in saving as multipage ");
+                        }
                     }
                 }
             }
@@ -2965,100 +2981,120 @@ namespace Acurus.Capella.UI
 
             btnMoveToNextProcess.Disabled = true;
             #region "Scanned File Trashing"
-            if (Session["IndexList"] != null)
+            //Jira #CAP-39
+            int iTryCount = 1;
+        TryAgain:
+            try
             {
-                IList<scan_index> deleteIndexList = (IList<scan_index>)Session["IndexList"];
-                //string temp_name = string.Empty;
-                StringBuilder temp_name = new StringBuilder();
-                if (Session["ImagePath"] != null)
-                    temp_name.Append((string)Session["ImagePath"]);
-                //Remove the indexed images from human_id folder
-                if (deleteIndexList.Count > 0)
+                if (Session["IndexList"] != null)
                 {
-                    bigImagePDF.Attributes.Add("src", "");
-
-                    for (int j = 0; j < deleteIndexList.Count; j++)
+                    IList<scan_index> deleteIndexList = (IList<scan_index>)Session["IndexList"];
+                    //string temp_name = string.Empty;
+                    StringBuilder temp_name = new StringBuilder();
+                    if (Session["ImagePath"] != null)
+                        temp_name.Append((string)Session["ImagePath"]);
+                    //Remove the indexed images from human_id folder
+                    if (deleteIndexList.Count > 0)
                     {
+                        bigImagePDF.Attributes.Add("src", "");
 
-                        DirectoryInfo childDir = new DirectoryInfo(new FileInfo(deleteIndexList[j].Indexed_File_Path).DirectoryName);
-                        if (childDir.GetFiles().Count() > 0 && childDir.GetFiles().Length == 0)
+                        for (int j = 0; j < deleteIndexList.Count; j++)
+                        {
+
+                            DirectoryInfo childDir = new DirectoryInfo(new FileInfo(deleteIndexList[j].Indexed_File_Path).DirectoryName);
+                            if (childDir.GetFiles().Count() > 0 && childDir.GetFiles().Length == 0)
+                            {
+                                try
+                                {
+                                    Directory.Delete(childDir.FullName, true);
+                                }
+                                catch (Exception ex)
+                                {
+                                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 2430 - DeletePath - " + childDir.FullName + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
+                                }
+                            }
+                            else
+                            {
+                                if (File.Exists(deleteIndexList[j].Indexed_File_Path) == true)
+                                {
+                                    try
+                                    {
+                                        File.Delete(deleteIndexList[j].Indexed_File_Path);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 2443 - DeletePath - " + deleteIndexList[j].Indexed_File_Path + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
+                                    }
+                                }
+                            }
+                        }
+
+                        try
+                        {
+                            if (temp_name.Length != 0)
+                                File.Delete(temp_name.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 2456 - DeletePathTemp - " + temp_name.ToString() + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
+                        }
+                    }
+                }
+                if (Session["BrowseLoadList"] != null && ((IList<Scan>)HttpContext.Current.Session["BrowseLoadList"]).Count > 0 && (string)Session["FileName"] != null)
+                {
+                    file_name = new StringBuilder();
+                    file_name.Append((string)Session["FileName"]);
+                    IList<Scan> lstTemp = ((IList<Scan>)HttpContext.Current.Session["BrowseLoadList"]).Where(a => a.Scanned_File_Name == file_name.ToString()).ToList<Scan>();
+                    if (lstTemp != null && lstTemp.Count > 0)
+                    {
+                        foreach (Scan item in lstTemp)
                         {
                             try
                             {
-                                Directory.Delete(childDir.FullName, true);
-                            }
-                            catch (Exception ex)
-                            {
-                                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 2430 - DeletePath - " + childDir.FullName + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
-                            }
-                        }
-                        else
-                        {
-                            if (File.Exists(deleteIndexList[j].Indexed_File_Path) == true)
-                            {
-                                try
+                                if (File.Exists(item.Scanned_File_Path) == true)
                                 {
-                                    File.Delete(deleteIndexList[j].Indexed_File_Path);
-                                }
-                                catch (Exception ex)
-                                {
-                                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 2443 - DeletePath - " + deleteIndexList[j].Indexed_File_Path + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
+                                    File.Delete(item.Scanned_File_Path);
                                 }
                             }
-                        }
-                    }
-
-                    try
-                    {
-                        if (temp_name.Length != 0)
-                            File.Delete(temp_name.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 2456 - DeletePathTemp - " + temp_name.ToString() + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
-                    }
-                }
-            }
-            if (Session["BrowseLoadList"] != null && ((IList<Scan>)HttpContext.Current.Session["BrowseLoadList"]).Count > 0 && (string)Session["FileName"] != null)
-            {
-                file_name = new StringBuilder();
-                file_name.Append((string)Session["FileName"]);
-                IList<Scan> lstTemp = ((IList<Scan>)HttpContext.Current.Session["BrowseLoadList"]).Where(a => a.Scanned_File_Name == file_name.ToString()).ToList<Scan>();
-                if (lstTemp != null && lstTemp.Count > 0)
-                {
-                    foreach (Scan item in lstTemp)
-                    {
-                        try
-                        {
-                            if (File.Exists(item.Scanned_File_Path) == true)
+                            catch
                             {
-                                File.Delete(item.Scanned_File_Path);
-                            }
-                        }
-                        catch
-                        {
-                            if (File.Exists(item.Scanned_File_Path) == true)
-                            {
-                                DirectoryInfo dirt = new DirectoryInfo(ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\Waiting_For_Delete");
-                                try
+                                if (File.Exists(item.Scanned_File_Path) == true)
                                 {
-                                    if (!dirt.Exists)
+                                    DirectoryInfo dirt = new DirectoryInfo(ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\Waiting_For_Delete");
+                                    try
                                     {
-                                        dirt.Create();
+                                        if (!dirt.Exists)
+                                        {
+                                            dirt.Create();
+                                        }
+                                        File.Move(item.Scanned_File_Path, ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\Waiting_For_Delete\\" + Path.GetFileName(item.Scanned_File_Path));
                                     }
-                                    File.Move(item.Scanned_File_Path, ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\Waiting_For_Delete\\" + Path.GetFileName(item.Scanned_File_Path));
-                                }
-                                catch (Exception ex)
-                                {
-                                    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 2486 - MovePathSource - " + item.Scanned_File_Path + " - Destination - " + ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\Waiting_For_Delete" + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
+                                    catch (Exception ex)
+                                    {
+                                        UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "frmIndexing Line No - 2486 - MovePathSource - " + item.Scanned_File_Path + " - Destination - " + ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\Waiting_For_Delete" + " - " + ex.Message, DateTime.Now, "0", "frmimageviewer");
+                                    }
                                 }
                             }
                         }
-                    }
 
+                    }
                 }
             }
-
+            catch(Exception ex)
+            {
+                //Jira #CAP-39
+                if (iTryCount <= 3)
+                {
+                    iTryCount = iTryCount + 1;
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else 
+                {
+                    UtilityManager.RetryExecptionLog(ex, iTryCount);
+                    throw ex;
+                }
+            }
 
 
             #endregion
@@ -3466,7 +3502,24 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    System.IO.File.Copy(sourceFile.ToString(), filePath.ToString(), true);
+                    int iTryCount = 1;
+                TryAgain:
+                    try
+                    {
+                        System.IO.File.Copy(sourceFile.ToString(), filePath.ToString(), true);
+                    }
+                    catch (Exception ex)
+                    {
+                        //Jira #CAP-39
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Console.WriteLine(ex.Message);
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else { UtilityManager.RetryExecptionLog(ex, iTryCount); throw (ex); }
+                    }
                 }
 
                 if (Session["ScanId"] != null)
@@ -4320,6 +4373,9 @@ namespace Acurus.Capella.UI
             PdfCopy ObjPdfCopyProvider = null;
             PdfImportedPage ObjImportedPage = null;
             iTextSharp.text.Document sourceDocument = null;
+            //Jira #CAP-39
+            int iTryCount = 1;
+        TryAgain:
             try
             {
                 if (iPageNumber != null && iPageNumber.Count > 0)
@@ -4340,7 +4396,16 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Jira #CAP-39
+                if (iTryCount <= 3)
+                {
+                    iTryCount = iTryCount + 1;
+                    Console.WriteLine(ex.Message);
+                    Thread.Sleep(1500);
+                    goto TryAgain;
+                }
+                else { UtilityManager.RetryExecptionLog(ex, iTryCount); }
+               
             }
         }
         #endregion
@@ -4364,6 +4429,7 @@ namespace Acurus.Capella.UI
             Session.Remove("IndexList");
             grdIndexing.DataSource = new string[] { };
             grdIndexing.DataBind();
+
             try
             {
                 if (ClientSession.FacilityName != null && ClientSession.FacilityName != "" && ddSelectedFacility != null && ddSelectedFacility.Items.FindByValue(ClientSession.FacilityName.ToString().Trim()) != null && ddSelectedFacility.SelectedItem.Text != string.Empty)
@@ -4382,6 +4448,10 @@ namespace Acurus.Capella.UI
                     //Session["BrowseFileNames"] = null;
                     //if (Request.QueryString["Screen"] != null && Request.QueryString["Screen"] == "PatientPortalOnlineDoumnets")//For patient portal
                     //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Clearall", "clickClearAll();", true);
+                    
+                    //Jira #CAP-39
+                    int iTryCount = 1;
+                TryAgain:
                     try
                     {
 
@@ -4419,7 +4489,8 @@ namespace Acurus.Capella.UI
                         //{
                         //    lstDocuments = ((IList<string>)HttpContext.Current.Session["BrowseFileNames"]).Distinct().ToList();
                         //}
-
+                        
+                    
                         if (uploadedFiles.Count > 0)
                         {
                             for (int fileCount = 0; fileCount < uploadedFiles.Count; fileCount++)
@@ -4535,8 +4606,19 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        Console.Write(ex);
-                        throw (ex);
+                        //Jira #CAP-39
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            Console.Write(ex);
+                            throw (ex);
+                        }
                     }
                 }
                 rdbAll.Checked = true;

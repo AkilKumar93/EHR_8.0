@@ -579,6 +579,9 @@ namespace Acurus.Capella.UI
                     string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                     string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                     string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                    //Jira #CAP-67 
+                    int iTryCount = 1;
+                TryAgain:
                     try
                     {
                         using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -627,7 +630,19 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        throw (ex);
+                        //Jira #CAP-67 
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            throw (ex);
+                        }
                     }
 
 
@@ -1047,6 +1062,9 @@ namespace Acurus.Capella.UI
                             string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                             string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                             string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                            //Jira #CAP-67 
+                            int iTryCount = 1;
+                        TryAgain:
                             try
                             {
                                 using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -1098,7 +1116,18 @@ namespace Acurus.Capella.UI
                             }
                             catch (Exception ex)
                             {
-                                throw (ex);
+                                //Jira #CAP-67 
+                                if (iTryCount <= 3)
+                                {
+                                    iTryCount = iTryCount + 1;
+                                    Thread.Sleep(1500);
+                                    goto TryAgain;
+                                }
+                                else
+                                {
+                                    UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                    throw (ex);
+                                }
                             }
                             _imgBig.Src = "";
                             bigImgPDF.Style.Add("display", "block");
@@ -1164,6 +1193,9 @@ namespace Acurus.Capella.UI
                 string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                 string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                 string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                //Jira #CAP-67 
+                int iTryCount = 1;
+            TryAgain:
                 try
                 {
                     using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -1207,7 +1239,18 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    throw (ex);
+                    //Jira #CAP-67 
+                    if (iTryCount <= 3)
+                    {
+                        iTryCount = iTryCount + 1;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTryCount);
+                        throw (ex);
+                    }
                 }
 
 
@@ -1263,6 +1306,9 @@ namespace Acurus.Capella.UI
                 string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                 string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                 string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                //Jira #CAP-67 
+                int iTryCount = 1;
+            TryAgain:
                 try
                 {
                     using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -1306,7 +1352,18 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    throw (ex);
+                    //Jira #CAP-67 
+                    if (iTryCount <= 3)
+                    {
+                        iTryCount = iTryCount + 1;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTryCount);
+                        throw (ex);
+                    }
                 }
 
 
@@ -1718,6 +1775,9 @@ namespace Acurus.Capella.UI
                         string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                         string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                         string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                        //Jira #CAP-67 
+                        int iTryCount = 1;
+                    TryAgain:
                         try
                         {
                             using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -1734,8 +1794,19 @@ namespace Acurus.Capella.UI
                         }
                         catch (Exception ex)
                         {
-                            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FrmImagviewer Line No - 1490 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + "-URI " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
-                            throw (ex);
+                            //Jira #CAP-67 
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "FrmImagviewer Line No - 1490 - " + ex.Message + " - Username is " + userName + " -  Password " + password + " - UNCAuthPath " + UNCAuthPath + " - UNCPAth" + UNCPath + "-URI " + uri.Replace(ftpIP, UNCPath), DateTime.Now, "0", "frmimageviewer");
+                                throw (ex);
+                            }
                         }
 
                         bigImgPDF.Attributes.Add("src", FilePath);
@@ -1992,6 +2063,9 @@ namespace Acurus.Capella.UI
                     string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                     string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                     string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                    //Jira #CAP-67 
+                    int iTryCount = 1;
+                TryAgain:
                     try
                     {
                         using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -2039,7 +2113,18 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        throw (ex);
+                        //Jira #CAP-67 
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            throw (ex);
+                        }
                     }
 
                     _imgBig.Src = "";
@@ -2162,6 +2247,9 @@ namespace Acurus.Capella.UI
                     string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                     string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                     string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                    //Jira #CAP-67 
+                    int iTryCount = 1;
+                TryAgain:
                     try
                     {
                         using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -2210,7 +2298,18 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        throw (ex);
+                        //Jira #CAP-67 
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            throw (ex);
+                        }
                     }
                     _imgBig.Src = "";
                     bigImgPDF.Style.Add("display", "block");
