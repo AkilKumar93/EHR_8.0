@@ -1627,10 +1627,16 @@ namespace Acurus.Capella.UI.WebServices
                             if (Convert.ToUInt64(((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]).Encounter_Id) == ClientSession.EncounterId)
                             {
                                 lstimm.Add((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
-                            }
 
+                                //Jira #CAP-107
+                                if (CPT_ImmDelcode.IndexOf(((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]).Procedure_Code.Trim()) != -1)
+                                {
+                                    ImmDTO.Immunization.Add((Immunization)((IList<object>)ilstEandMBlobFinal[0])[iCount]);
+                                }
+                            }
                         }
-                        ImmDTO.Immunization = lstimm.Where(a => !CPT_ImmDelcode.Contains(a.Procedure_Code)).ToList<Immunization>();
+                        //Jira #CAP-107
+                        //ImmDTO.Immunization = lstimm.Where(a => !CPT_ImmDelcode.Contains(a.Procedure_Code)).ToList<Immunization>();
 
                     }
                     if (ilstEandMBlobFinal[1] != null)
@@ -1641,11 +1647,12 @@ namespace Acurus.Capella.UI.WebServices
                             if (Convert.ToUInt64(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]).Encounter_ID) == ClientSession.EncounterId)
                             {
                                 lstimmhis.Add((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]);
-                            }
 
-                            if (CPT_ImmDelcode.IndexOf(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]).Procedure_Code.Trim()) != -1)
-                            {
-                                ImmDTO.ImmunizationHistoryList.Add(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]));
+
+                                if (CPT_ImmDelcode.IndexOf(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]).Procedure_Code.Trim()) != -1)
+                                {
+                                    ImmDTO.ImmunizationHistoryList.Add(((ImmunizationHistory)((IList<object>)ilstEandMBlobFinal[1])[iCount]));
+                                }
                             }
 
                         }

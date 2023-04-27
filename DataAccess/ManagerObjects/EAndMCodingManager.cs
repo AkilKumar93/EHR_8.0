@@ -2774,6 +2774,38 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             string FileNames;
             string strXmlFilePaths;
 
+            //Jira #CAP-107
+            //New code - start
+            IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
+            IList<TreatmentPlan> delTplanlst = new List<TreatmentPlan>();
+
+            if (ImmDelList != null && ImmDelList.Count > 0)
+            {
+                ulong Enc_ID = ImmDelList[0].Encounter_Id;
+               
+                //BugID:46789
+                #region TPlanGET
+                //string FileName = "Encounter" + "_" + Enc_ID + ".xml";
+                //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                IList<string> ilstGeneralPlanTagList = new List<string>();
+                ilstGeneralPlanTagList.Add("TreatmentPlanList");
+
+
+                IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+                ilstGeneralPlanBlobFinal = ReadBlob(Enc_ID, ilstGeneralPlanTagList);
+                if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
+                {
+                    if (ilstGeneralPlanBlobFinal[0] != null)
+                    {
+                        for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                        {
+                            objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
+                        }
+                    }
+                }
+            }
+        //New code - End
+
         TryAgain1:
             int iResult = 0;
 
@@ -3107,28 +3139,34 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         if (ImmDelList != null && ImmDelList.Count > 0)
                         {
                             ulong Enc_ID = ImmDelList[0].Encounter_Id;
-                            IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
-                            IList<TreatmentPlan> delTplanlst = new List<TreatmentPlan>();
-                            //BugID:46789
-                            #region TPlanGET
-                            //string FileName = "Encounter" + "_" + Enc_ID + ".xml";
-                            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-                            IList<string> ilstGeneralPlanTagList = new List<string>();
-                            ilstGeneralPlanTagList.Add("TreatmentPlanList");
+                            //Jira #CAP-107
+
+                            //Old-Code - Start
+
+                            //IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
+                            //IList<TreatmentPlan> delTplanlst = new List<TreatmentPlan>();
+                            ////BugID:46789
+                            //#region TPlanGET
+                            ////string FileName = "Encounter" + "_" + Enc_ID + ".xml";
+                            ////string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                            //IList<string> ilstGeneralPlanTagList = new List<string>();
+                            //ilstGeneralPlanTagList.Add("TreatmentPlanList");
 
 
-                            IList<object> ilstGeneralPlanBlobFinal = new List<object>();
-                            ilstGeneralPlanBlobFinal = ReadBlob(Enc_ID, ilstGeneralPlanTagList);
-                            if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
-                            {
-                                if (ilstGeneralPlanBlobFinal[0] != null)
-                                {
-                                    for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
-                                    {
-                                        objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
-                                    }
-                                }
-                            }
+                            //IList<object> ilstGeneralPlanBlobFinal = new List<object>();
+                            //ilstGeneralPlanBlobFinal = ReadBlob(Enc_ID, ilstGeneralPlanTagList);
+                            //if (ilstGeneralPlanBlobFinal != null && ilstGeneralPlanBlobFinal.Count > 0)
+                            //{
+                            //    if (ilstGeneralPlanBlobFinal[0] != null)
+                            //    {
+                            //        for (int iCount = 0; iCount < ((IList<object>)ilstGeneralPlanBlobFinal[0]).Count; iCount++)
+                            //        {
+                            //            objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstGeneralPlanBlobFinal[0])[iCount]);
+                            //        }
+                            //    }
+                            //}
+                            //Old - Code - Start
+
                             //  XmlTextReader XmlText = null;
                             //try
                             //{
@@ -3231,6 +3269,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 trans.Rollback();
                                 throw new Exception("Exception is occured. Transaction failed");
                             }
+
                             //BugID:46789
                             if (delTplanlst != null && delTplanlst.Count > 0)
                             {
