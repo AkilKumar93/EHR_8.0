@@ -251,6 +251,9 @@ namespace Acurus.Capella.UI
                         string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                         string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                         string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                        //Jira #CAP-64
+                        int iTryCount = 1;
+                    TryAgain:
                         try
                         {
                             using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -298,7 +301,18 @@ namespace Acurus.Capella.UI
                         }
                         catch (Exception ex)
                         {
-                            throw (ex);
+                            //Jira #CAP-64
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                throw (ex);
+                            }
                         }
 
 
@@ -474,55 +488,70 @@ namespace Acurus.Capella.UI
                         string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                         string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                         string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
-                        try
+
+                    //Jira #CAP-64
+                    int iTryCount = 1;
+                TryAgain:
+                    try
+                    {
+                        using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
                         {
-                            using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
+                            if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
                             {
-                                if (unc.NetUseWithCredentials(UNCAuthPath, userName, domain, password))
+
+                                DirectoryInfo DirWaitFolder = new DirectoryInfo(Server.MapPath("~/atala-capture-download/" + Session.SessionID + "//ExamPDF"));
+                                if (!DirWaitFolder.Exists)
+                                    Directory.CreateDirectory(DirWaitFolder.FullName);
+
+                                if (File.Exists(fileGroups[0]) == true)
                                 {
-
-                                    DirectoryInfo DirWaitFolder = new DirectoryInfo(Server.MapPath("~/atala-capture-download/" + Session.SessionID + "//ExamPDF"));
-                                    if (!DirWaitFolder.Exists)
-                                        Directory.CreateDirectory(DirWaitFolder.FullName);
-
-                                    if (File.Exists(fileGroups[0]) == true)
+                                    if (File.Exists(DirWaitFolder.FullName + "\\" + Path.GetFileName(fileGroups[0])) == true)
                                     {
-                                        if (File.Exists(DirWaitFolder.FullName + "\\" + Path.GetFileName(fileGroups[0])) == true)
-                                        {
-                                            File.Delete(DirWaitFolder.FullName + "\\" + Path.GetFileName(fileGroups[0]));
-                                        }
-                                        File.Copy(fileGroups[0], DirWaitFolder.FullName + "\\" + Path.GetFileName(fileGroups[0]), true);
+                                        File.Delete(DirWaitFolder.FullName + "\\" + Path.GetFileName(fileGroups[0]));
                                     }
-                                    Thread.Sleep(5000);
-                                    Uri CurrentURL = new Uri(Request.Url.ToString());
-                                    string sProjectName = string.Empty;
-                                    string sImgPath = string.Empty;
-                                    for (int i = 0; i < CurrentURL.Segments.Length - 1; i++)
-                                    {
-                                        if (CurrentURL.Segments[i] != "/" && CurrentURL.Segments[i] != "//" && CurrentURL.Segments[i].StartsWith("frm") != true && sProjectName == string.Empty)
-                                        {
-                                            sProjectName = CurrentURL.Segments[i];
-                                        }
-                                    }
-                                    if (sProjectName != string.Empty)
-                                    {
-                                        sImgPath = CurrentURL.Scheme + Uri.SchemeDelimiter + Request.Url.Authority + "//" + sProjectName + "//atala-capture-download//" + Session.SessionID + "//ExamPDF//" + Path.GetFileName(fileGroups[0]); ;
-                                    }
-                                    else
-                                    {
-                                        sImgPath = CurrentURL.Scheme + Uri.SchemeDelimiter + Request.Url.Authority + "//atala-capture-download//" + Session.SessionID + "//ExamPDF//" + Path.GetFileName(fileGroups[0]); ;
-                                    }
-
-                                  
-                                    bigImgPDF.Attributes.Add("src", sImgPath);
-                                  
+                                    File.Copy(fileGroups[0], DirWaitFolder.FullName + "\\" + Path.GetFileName(fileGroups[0]), true);
                                 }
+                                Thread.Sleep(5000);
+                                Uri CurrentURL = new Uri(Request.Url.ToString());
+                                string sProjectName = string.Empty;
+                                string sImgPath = string.Empty;
+                                for (int i = 0; i < CurrentURL.Segments.Length - 1; i++)
+                                {
+                                    if (CurrentURL.Segments[i] != "/" && CurrentURL.Segments[i] != "//" && CurrentURL.Segments[i].StartsWith("frm") != true && sProjectName == string.Empty)
+                                    {
+                                        sProjectName = CurrentURL.Segments[i];
+                                    }
+                                }
+                                if (sProjectName != string.Empty)
+                                {
+                                    sImgPath = CurrentURL.Scheme + Uri.SchemeDelimiter + Request.Url.Authority + "//" + sProjectName + "//atala-capture-download//" + Session.SessionID + "//ExamPDF//" + Path.GetFileName(fileGroups[0]); ;
+                                }
+                                else
+                                {
+                                    sImgPath = CurrentURL.Scheme + Uri.SchemeDelimiter + Request.Url.Authority + "//atala-capture-download//" + Session.SessionID + "//ExamPDF//" + Path.GetFileName(fileGroups[0]); ;
+                                }
+
+
+                                bigImgPDF.Attributes.Add("src", sImgPath);
+
                             }
                         }
-                        catch (Exception ex)
+                    }
+                    catch (Exception ex)
+                    {
+                        //Jira #CAP-64
+                        if (iTryCount <= 3)
                         {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
                             throw (ex);
                         }
+                    }
 
                         divrotate.Style.Add("display", "none");
                       
@@ -557,6 +586,9 @@ namespace Acurus.Capella.UI
                 string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                 string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                 string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                //Jira #CAP-64
+                int iTryCount = 1;
+            TryAgain:
                 try
                 {
                     using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -607,7 +639,18 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    throw (ex);
+                    //Jira #CAP-64
+                    if (iTryCount <= 3)
+                    {
+                        iTryCount = iTryCount + 1;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTryCount);
+                        throw (ex);
+                    }
                 }
              
                 divrotate.Style.Add("display", "none");
@@ -692,6 +735,9 @@ namespace Acurus.Capella.UI
                 string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                 string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                 string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                //Jira #CAP-64
+                int iTryCount = 1;
+            TryAgain:
                 try
                 {
                     using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -743,7 +789,18 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    throw (ex);
+                    //Jira #CAP-64
+                    if (iTryCount <= 3)
+                    {
+                        iTryCount = iTryCount + 1;
+                        Thread.Sleep(1500);
+                        goto TryAgain;
+                    }
+                    else
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTryCount);
+                        throw (ex);
+                    }
                 }
 
 
@@ -1600,6 +1657,9 @@ namespace Acurus.Capella.UI
                         string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                         string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                         string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                        //Jira #CAP-64
+                        int iTryCount = 1;
+                    TryAgain:
                         try
                         {
                             using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -1647,7 +1707,18 @@ namespace Acurus.Capella.UI
                         }
                         catch (Exception ex)
                         {
-                            throw (ex);
+                            //Jira #CAP-64
+                            if (iTryCount <= 3)
+                            {
+                                iTryCount = iTryCount + 1;
+                                Thread.Sleep(1500);
+                                goto TryAgain;
+                            }
+                            else
+                            {
+                                UtilityManager.RetryExecptionLog(ex, iTryCount);
+                                throw (ex);
+                            }
                         }
 
 
@@ -1824,6 +1895,9 @@ namespace Acurus.Capella.UI
                     string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
                     string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
                     string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                    //Jira #CAP-64
+                    int iTryCount = 1;
+                TryAgain:
                     try
                     {
                         using (UNCAccessWithCredentials unc = new UNCAccessWithCredentials())
@@ -1871,7 +1945,18 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        throw (ex);
+                        //Jira #CAP-64
+                        if (iTryCount <= 3)
+                        {
+                            iTryCount = iTryCount + 1;
+                            Thread.Sleep(1500);
+                            goto TryAgain;
+                        }
+                        else
+                        {
+                            UtilityManager.RetryExecptionLog(ex, iTryCount);
+                            throw (ex);
+                        }
                     }
 
                     divrotatecomp.Style.Add("display", "none");
