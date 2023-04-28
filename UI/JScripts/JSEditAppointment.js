@@ -243,7 +243,7 @@ $(document).ready(function () {
                         break;
                     }
                 }
-                if (document.getElementById("txtProviderSearch").value != "") {
+                if (document.getElementById("txtProviderSearch").value != "" && document.getElementById("hdnrenprovidersearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
                     document.getElementById("txtProviderSearch").disabled = true;
                 }
                 else {
@@ -251,13 +251,14 @@ $(document).ready(function () {
                         document.getElementById("txtProviderSearch").disabled = true;
                     else
                         document.getElementById("txtProviderSearch").disabled = false;//have to change
+                    document.getElementById("txtProviderSearch").value = "";
                 }
             }
             
         }
     }
     else {
-        if (document.getElementById("hdnpcpprovidersearch") != null) {
+        if (document.getElementById("hdnpcpprovidersearch") != null && document.getElementById("hdnrenprovidersearch").value != "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
             document.getElementById("txtProviderSearch").value = document.getElementById("hdnpcpprovidersearch").value;
             if (document.getElementById("hdnpcpprovidersearch").value != "") {
                 document.getElementById("txtProviderSearch").disabled = true;
@@ -274,26 +275,37 @@ function ProviderSelected(event, ui) {
     var ProviderDetails = JSON.parse(ui.item.val);
     var txtProviderSearch = document.getElementById("txtProviderSearch");
 
+    var vLableVal = JSON.parse(ui.item.val).sPhyshortName + "(" + JSON.parse(ui.item.val).sPhySuffix + ")" + " | " +
+        "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
+        "FACILITY:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
+        "ADDR: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
+        JSON.parse(ui.item.val).sPhyCity + "," +
+        JSON.parse(ui.item.val).sPhyState + " " +
+        JSON.parse(ui.item.val).sPhyZip + " | " +
+        "PH:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
+        "FAX:" + JSON.parse(ui.item.val).sPhyFax
+
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
     txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
-    txtProviderSearch.value = ui.item.label;
+    txtProviderSearch.value = vLableVal;
     var provider = "";
 
-    provider = JSON.parse(ui.item.val).ulPhyId + "|" +
-        JSON.parse(ui.item.val).sPhyName + "|" +
-        JSON.parse(ui.item.val).sPhyNPI + "|" +
-        JSON.parse(ui.item.val).sPhySpecialty + "|"+
-         JSON.parse(ui.item.val).sPhyFacility + "|" +
-        JSON.parse(ui.item.val).sPhyAddress + "|" +
-        JSON.parse(ui.item.val).sPhyFax + "|" +
-        JSON.parse(ui.item.val).sPhyPhone
+    provider = JSON.parse(ui.item.val).sPhyName + "|  NPI: " +
+        JSON.parse(ui.item.val).sPhyNPI + "| Facility: " +
+        JSON.parse(ui.item.val).sPhyFacility + "|  Address:" +
+        JSON.parse(ui.item.val).sPhyAddress + ", " + JSON.parse(ui.item.val).sPhyCity + "," + JSON.parse(ui.item.val).sPhyState + " "
+        + JSON.parse(ui.item.val).sPhyZip + "| Phone No:" +
+        JSON.parse(ui.item.val).sPhyPhone + "| Fax No:" +
+        JSON.parse(ui.item.val).sPhyFax
+        
 
-
+    if (provider == "| NPI: | Facility: | Address:| Phone No:| Fax No:") {
+        provider = "";
+    }
 
     if (JSON.parse(ui.item.val).ulPhyId != "" && document.getElementById("chkSelfReferred") == null) {
         document.getElementById("hdnpcpprovider").value = provider;//Result.sPhyName + "|" + Result.sPhyAddress + "|" + Result.sPhyPhone + "|" + Result.sPhyFax + "|" + Result.sPhyNPI.replace("&nbsp;", "") + "|" + Result.sPhyFacility.replace("&nbsp;", "");
         document.getElementById("hdnpcpprovidersearch").value = ui.item.label;
-
     }
     else if (JSON.parse(ui.item.val).ulPhyId != "" && document.getElementById("chkSelfReferred") != null) {
         document.getElementById("hdnrenprovider").value = provider;// Result.sPhyName + "|" + Result.sPhyAddress + "|" + Result.sPhyPhone + "|" + Result.sPhyFax + "|" + Result.sPhyNPI.replace("&nbsp;", "") + "|" + Result.sPhyFacility.replace("&nbsp;", "");
@@ -820,7 +832,8 @@ function OpenPatientDemographics() {
                 //var Result = args.get_argument();
                 //document.getElementById("btnHumanDetailUpdate").click();
                 setPAtientDetails(humanId);
-                document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
+                PcpPrimaryDefault(humanId);
+              //  document.getElementById("txtProviderSearch").value = document.getElementById("hdnrenprovidersearch").value;
               
             });
         }, 0);
@@ -847,6 +860,25 @@ function setPAtientDetails(humanid) {
     });
 }
 
+function PcpPrimaryDefault(humanid) {
+    var EncounterId = document.getElementById("hdnEncounterID").value;
+    $.ajax({
+        type: "POST",
+        url: "frmEditAppointment.aspx/PcpPrimaryDefault",
+        data: JSON.stringify({
+            "humanid": humanid,
+            "EncounterId": EncounterId,
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: true,
+        success: function (data) {
+
+            var objdata = $.parseJSON(data.d);
+            document.getElementById("txtProviderSearch").value = objdata;
+        }
+    });
+}
 
 
 function OpenPatientTask() {
@@ -1367,7 +1399,7 @@ function EnableSaveButtononunload() {
 function tabReferringProvAndPCP_TabSelected(sender, args) {
     if (document.getElementById("chkSelfReferred") != null) {
 
-        $('#imgClearProviderText').css("top", "238px !important");
+        $('#imgClearProviderText').css("top", "224px !important");
         if (document.getElementById("chkSelfReferred").checked) {
         }
         else {

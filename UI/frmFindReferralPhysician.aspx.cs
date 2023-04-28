@@ -84,12 +84,16 @@ namespace Acurus.Capella.UI
                                          {
                                              ulPhyId = Phy.PhyId,
                                              sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName+ " " + Phy.PhyLastName + " " + Phy.PhySuffix,
+                                             sPhySuffix = Phy.PhySuffix,
                                              sPhyshortName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyLastName,
                                              sPhyNPI = Phy.PhyNPI,
                                              sPhySpecialty = Phy.PhySpecialtyCode,
                                              sPhyFacility = Phy.PhyFacility,
                                              ulPhySplID = Phy.PhySpecialtyID,
                                              sPhyAddress = Phy.PhyAddrs,
+                                             sPhyCity = Phy.PhyCity,
+                                             sPhyState = Phy.PhyState,
+                                             sPhyZip = Phy.PhyZip,
                                              sPhyFax = Phy.PhyFax,
                                              sPhyPhone = Phy.PhyPhone
                                             

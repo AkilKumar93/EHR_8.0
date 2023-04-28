@@ -203,7 +203,7 @@ namespace Acurus.Capella.UI
 
                 if (ulMyEncID != 0)
                 {
-
+                    imgClearProviderText.Style.Add("top", "224px !important");
                     //logger.Debug("Screen is in Edit Appoinment Mode as Encounter_ID is" + ulMyEncID.ToString());
                     if (ClientSession.UserName != null)
                         this.Page.Title = "Edit Appointment" + "-" + ClientSession.UserName;
@@ -438,7 +438,9 @@ namespace Acurus.Capella.UI
                         chkSelfReferred.Enabled = false;
                         chkShowAllPhysicians.Enabled = false;
                         imgClearProviderText.Attributes.Remove("onclick");
-                        imgClearProviderText.Disabled = true;
+                        //Jira #CAP-69 - labels are missing
+                        //imgClearProviderText.Disabled = true;
+                        imgClearProviderText.Disabled = false;
                     }
                 }
                 else
@@ -618,21 +620,34 @@ namespace Acurus.Capella.UI
                                 //  txtProviderNPI.Text = objPhyLib.PhyNPI;
 
 
+                                //Jira #CAP-69 - labels are missing
+                                txtProviderSearch.Text = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                                    "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                                    "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
+                                
+                                //hdnrenprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                                //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
 
-                                txtProviderSearch.Text = " |" + sPhyName + "| NPI: " + objPhyLib.PhyNPI +
-                                    "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 + "| Fax No:" + objPhyLib.PhyFax +
-                                    "| Phone No:" + objPhyLib.PhyTelephone;
+                                //hdnpcpprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                                //    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
 
-                                hdnrenprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
+                                //hdnrenprovidersearch.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
+                                 // + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
 
-                                hdnpcpprovider.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                    + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;
+                                hdnrenprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                                    "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                                    "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
+
+                                hdnpcpprovider.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI +
+                                    "| Facility: " + "" + "| Address:" + objPhyLib.PhyAddress1 +
+                                    "| Phone No:" + objPhyLib.PhyTelephone + "| Fax No:" + objPhyLib.PhyFax ;
+
                                 txtProviderSearch.Enabled = false;
+                                hdnrenprovidersearch.Value = sPhyName + "| NPI: " + objPhyLib.PhyNPI + "|Facility: " + "" + "|Address:" + objPhyLib.PhyAddress1 + "| " +
+                                    " Phone No:" + objPhyLib.PhyTelephone + "| Fax No:"
+                                   + objPhyLib.PhyFax ;
 
-
-                                hdnrenprovidersearch.Value = " |" + sPhyName + "|" + objPhyLib.PhyNPI + "|" + "" + "|" + "" + "|" + objPhyLib.PhyAddress1 + "|"
-                                   + objPhyLib.PhyFax + "|" + objPhyLib.PhyTelephone;// HdnRefPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
+                                // HdnRefPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
                                 // HdnPcpPhy.Value = sPhyName + "|" + objPhyLib.PhyAddress1 + "|" + objPhyLib.PhyTelephone + "|" + objPhyLib.PhyFax + "|" + objPhyLib.PhyNPI + "|" + objPhyLib.PhyNotes;
 
                                 if (ddlPhysicianName.Items.Count > 0)//added for bug id=38345 
@@ -907,17 +922,26 @@ namespace Acurus.Capella.UI
                     if (EncRecord.Referring_Physician != "")
                     {
                         txtProviderSearch.Enabled = false;
-                        txtProviderSearch.Text = " |" + EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address + "| Fax No:" + EncRecord.Referring_Fax_No +
-                                  "| Phone No:" + EncRecord.Referring_Phone_No;
+                        txtProviderSearch.Text = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No ;
 
-                        hdnrenprovider.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
-                            "|" + EncRecord.Referring_Address + "|"
-                            + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
+                        //Jira #CAP-69 - labels are missing
+                        //hdnrenprovider.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
+                        //    "|" + EncRecord.Referring_Address + "|"
+                        //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
 
-                        hdnrenprovidersearch.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
-                            "|" + EncRecord.Referring_Address + "|"
-                            + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
+                        //hdnrenprovidersearch.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
+                        //    "|" + EncRecord.Referring_Address + "|"
+                        //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
+
+                        hdnrenprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No ;
+
+                        hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No ;
                     }
 
                 }
@@ -949,17 +973,28 @@ namespace Acurus.Capella.UI
                     //msktxtReferingPhoneNo.ReadOnly = true;
                     if (EncRecord.PCP_Physician != "")
                     {
-                        txtProviderSearch.Text = " |" + EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
-                                  "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address + "| Fax No:" + EncRecord.PCP_Fax_No +
-                                  "| Phone No:" + EncRecord.PCP_Phone_No;
+                        txtProviderSearch.Text = EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
+                                  "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address +
+                                  "| Phone No:" + EncRecord.PCP_Phone_No + "| Fax No:" + EncRecord.PCP_Fax_No ;
 
-                        hdnpcpprovider.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
-                            "|" + EncRecord.PCP_Address + "|"
-                            + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
+                        //Jira #CAP-69 - labels are missing
+                        //hdnpcpprovider.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
+                        //    "|" + EncRecord.PCP_Address + "|"
+                        //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
 
-                        hdnpcpprovidersearch.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
-                            "|" + EncRecord.PCP_Address + "|"
-                            + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
+                        //hdnpcpprovidersearch.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
+                        //    "|" + EncRecord.PCP_Address + "|"
+                        //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
+
+
+                        hdnpcpprovider.Value = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No ;
+
+                        hdnpcpprovidersearch.Value =  EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                  "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                  "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No ;
+
 
                         txtProviderSearch.Enabled = false;
                     }
@@ -992,16 +1027,23 @@ namespace Acurus.Capella.UI
                     //msktxtReferingFaxNo.ReadOnly = true;
                     if (EncRecord.Referring_Physician != "")
                     {
-                        txtProviderSearch.Text = " |" + EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
-                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address + "| Fax No:" + EncRecord.Referring_Fax_No +
-                                   "| Phone No:" + EncRecord.Referring_Phone_No;
+                        txtProviderSearch.Text = EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                   "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No ;
+                        //Jira #CAP-69 - labels are missing
+                        //hdnrenprovider.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
+                        //    "|" + EncRecord.Referring_Address + "|"
+                        //    + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
+                        //hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
+                        // "|" + EncRecord.Referring_Address + "|"
+                        // + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
 
-                        hdnrenprovider.Value = " |" + EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
-                            "|" + EncRecord.Referring_Address + "|"
-                            + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
-                        hdnrenprovidersearch.Value = EncRecord.Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility +
-                         "|" + EncRecord.Referring_Address + "|"
-                         + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
+                        hdnrenprovider.Value =  EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                   "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No ;
+                        hdnrenprovidersearch.Value =  EncRecord.Referring_Physician + "| NPI: " + EncRecord.Referring_Provider_NPI +
+                                   "| Facility: " + EncRecord.Referring_Facility + "| Address:" + EncRecord.Referring_Address +
+                                   "| Phone No:" + EncRecord.Referring_Phone_No + "| Fax No:" + EncRecord.Referring_Fax_No ;
 
                         txtProviderSearch.Enabled = false;
                     }
@@ -1123,7 +1165,7 @@ namespace Acurus.Capella.UI
                     HdnRefPhy.Value = EncRecord.Referring_Physician + "|" + EncRecord.Referring_Address + "|" + EncRecord.Referring_Phone_No + "|" + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Provider_NPI + "|" + EncRecord.Referring_Facility;
                     HdnPcpPhy.Value = EncRecord.PCP_Physician + "|" + EncRecord.PCP_Address + "|" + EncRecord.PCP_Phone_No + "|" + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Provider_NPI + "|" + EncRecord.PCP_Facility;
                 }
-
+                pcpDefaultDemographics();
                 /*added BugId : 59356*/
 
             }
@@ -1136,6 +1178,7 @@ namespace Acurus.Capella.UI
                 // Commented by valli need to check
                 if (tabReferringProvAndPCP.SelectedIndex == 0)
                 {
+                    imgClearProviderText.Style.Add("top", "234px !important");
                     //if (sAncillary != string.Empty && sAncillary != cboFacility.SelectedItem.Text.Trim())
                     //{
                     var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
@@ -1156,11 +1199,19 @@ namespace Acurus.Capella.UI
                 }
                 else if (tabReferringProvAndPCP.SelectedIndex == 1)
                 {
+                    imgClearProviderText.Style.Add("top", "224px !important");
                     if (EncRecord != null && EncRecord.PCP_Physician != null && EncRecord.PCP_Physician != "")
                     {
-                        hdnpcpprovidersearch.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
-                            "|" + EncRecord.PCP_Address + "|"
-                            + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
+                        //Jira #CAP-69 - labels are missing
+                        //hdnpcpprovidersearch.Value = " |" + EncRecord.PCP_Physician + "|" + EncRecord.PCP_Provider_NPI + "|" + "" + "|" + EncRecord.PCP_Facility +
+                        //    "|" + EncRecord.PCP_Address + "|"
+                        //    + EncRecord.PCP_Fax_No + "|" + EncRecord.PCP_Phone_No;
+
+
+                        hdnpcpprovidersearch.Value = EncRecord.PCP_Physician + "| NPI: " + EncRecord.PCP_Provider_NPI +
+                                 "| Facility: " + EncRecord.PCP_Facility + "| Address:" + EncRecord.PCP_Address + "| Fax No:" + EncRecord.PCP_Fax_No +
+                                 "| Phone No:" + EncRecord.PCP_Phone_No;
+
                     }
                     // if (HdnPcpPhy.Value != null && HdnPcpPhy.Value.Trim() != "")
                     // {
@@ -1264,6 +1315,8 @@ namespace Acurus.Capella.UI
             {
                 txtProviderSearch.Enabled = false;
             }
+            //Jira #CAP-69 - labels are missing
+            
             OverAllPageLoad.Stop();
             time_taken += "OverAllPageLoad : " + OverAllPageLoad.Elapsed.Seconds + "." + OverAllPageLoad.Elapsed.Milliseconds + "s; ";
             hdnTimeTaken.Value = time_taken;
@@ -1663,14 +1716,22 @@ namespace Acurus.Capella.UI
                     //  EncRecord.Referring_Phone_No = msktxtReferingPhoneNo.TextWithLiterals;
                     // EncRecord.Referring_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //  EncRecord.Referring_Provider_NPI = txtProviderNPI.Text.Trim();
-                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value != "")
+                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value != "" && hdnpcpprovider.Value!="|||||")
                     {
-                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[3].ToString();
+                        //EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        //EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].ToString();
+
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                     else
                     {
@@ -1683,15 +1744,18 @@ namespace Acurus.Capella.UI
                     }
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
-                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            
+                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
+
+
                         }
                         else
                         {
@@ -1720,14 +1784,25 @@ namespace Acurus.Capella.UI
 
                     // Commented by valli
 
-                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value != "")
+                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value != "" && hdnpcpprovider.Value != "|||||")
                     {
-                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        //Jira #CAP-69 - labels are missing
+                        //EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[3].ToString();
+                        //EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        //EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].ToString();
+
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
+
+
                     }
                     else
                     {
@@ -1740,15 +1815,23 @@ namespace Acurus.Capella.UI
                     }
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
-                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            //Jira #CAP-69 - labels are missing
+                            //EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
+                            //EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
+                            //EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
+                            //EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
+                            //EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
+                            //EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+
+                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                         }
                         else
                         {
@@ -2065,23 +2148,33 @@ namespace Acurus.Capella.UI
                     //NewEnc.Referring_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //NewEnc.Referring_Provider_NPI = txtProviderNPI.Text.Trim();
 
-                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null)
+                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null && hdnpcpprovider.Value != "|||||")
                     {
-                        NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
+
+
                     }
-                    if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                    if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                     {
-                        NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
-                        NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                        NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                        NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                        NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                        NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                        NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                        NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                 }
                 else if (tabReferringProvAndPCP.SelectedIndex == 1)
@@ -2092,23 +2185,31 @@ namespace Acurus.Capella.UI
                     //NewEnc.PCP_Phone_No = msktxtReferingPhoneNo.TextWithLiterals;
                     //NewEnc.PCP_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //NewEnc.PCP_Provider_NPI = txtProviderNPI.Text.Trim();
-                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null)
+                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null && hdnpcpprovider.Value != "|||||")
                     {
-                        NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
-                    if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                    if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                     {
-                        NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
-                        NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                        NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                        NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                        NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                        NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                        NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                        NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                 }
 
@@ -2368,26 +2469,34 @@ namespace Acurus.Capella.UI
                     //EncRecord.Referring_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //EncRecord.Referring_Provider_NPI = txtProviderNPI.Text.Trim();
 
-                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null)
+                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null && hdnpcpprovider.Value != "|||||")
                     {
-                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
-                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                         }
                     }
                     else
@@ -2409,26 +2518,34 @@ namespace Acurus.Capella.UI
                     //EncRecord.PCP_Phone_No = msktxtReferingPhoneNo.TextWithLiterals;
                     //EncRecord.PCP_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //EncRecord.PCP_Provider_NPI = txtProviderNPI.Text.Trim();
-                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null)
+                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null && hdnpcpprovider.Value != "|||||")
                     {
-                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].ToString();
                     }
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
-                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                         }
                     }
                     else
@@ -3086,7 +3203,7 @@ namespace Acurus.Capella.UI
 
             if (hdnpcpprovidersearch.Value != "" && tabReferringProvAndPCP.SelectedIndex == 1)
 
-                txtProviderSearch.Text = hdnpcpprovidersearch.Value;
+                txtProviderSearch.Text = hdnpcpprovidersearch.Value; 
 
             if (ddlPhysicianName.SelectedValue != null)
                 ClientSession.PhysicianId = Convert.ToUInt64(ddlPhysicianName.SelectedValue);
@@ -3468,8 +3585,8 @@ namespace Acurus.Capella.UI
                         " | Ord. Phone #: " + str[4].ToString() +
                         " | Ord. Fax #: " + str[5].ToString();
 
-                    hdnrenprovider.Value = " |" + str[0].ToString() + "|" + str[1].ToString() + "|" + "" + "|" + str[2].ToString() + "|" + str[3].ToString() + "|"
-                              + str[5].ToString() + "|" + str[4].ToString();
+                    hdnrenprovider.Value = str[0].ToString() + "| NPI: " + str[1].ToString() + "| Facility: " + str[2].ToString() + "| Address:" + str[3].ToString() + "| Phone No:"
+                              + str[5].ToString() + "| Fax No:" + str[4].ToString();
 
                     hdnrenprovidersearch.Value = "Ord. Provider: " + str[0].ToString() + " | Provider NPI: " + str[1].ToString() +
                     " | Ord. Facility: " + str[2].ToString() +
@@ -3602,7 +3719,7 @@ namespace Acurus.Capella.UI
                         if (sPhyName.Trim() != "")
                         {
                             hdnrenprovider.Value = objPhysicianLibrary.Id + "|" + sPhyName + "|" + objPhysicianLibrary.PhyNPI + "|" + "" + "|" + cboFacility.SelectedItem.Text + "|" +
-                               facilityadd + "|" + objPhysicianLibrary.PhyFax + "|" + objPhysicianLibrary.PhyTelephone;
+                               facilityadd + "|" + objPhysicianLibrary.PhyTelephone + "|" + objPhysicianLibrary.PhyFax ;
                             hdnrenprovidersearch.Value = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
                                  objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
                                                                    "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
@@ -3637,7 +3754,7 @@ namespace Acurus.Capella.UI
         {
             if (hdnrenprovidersearch.Value != "" && tabReferringProvAndPCP.SelectedIndex == 0)
 
-                txtProviderSearch.Text = hdnrenprovidersearch.Value;
+                txtProviderSearch.Text = hdnrenprovidersearch.Value; 
 
             if (hdnpcpprovidersearch.Value != "" && tabReferringProvAndPCP.SelectedIndex == 1)
 
@@ -3820,6 +3937,7 @@ namespace Acurus.Capella.UI
                 {
                     btnOrder.Enabled = false;
                 }
+                imgClearProviderText.Style.Add("top", "246px !important");
                 lblOrder.ForeColor = Color.Red;
                 lblOrder.Text = lblOrder.Text.Replace("*", "");
                 lblOrder.Text += "*";
@@ -3962,6 +4080,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
+                imgClearProviderText.Style.Add("top", "234px !important");
                 cboOrder.Items.Clear();
                 cboOrder.Enabled = false;
                 btnOrder.Enabled = false;
@@ -4217,7 +4336,7 @@ namespace Acurus.Capella.UI
             if (tabReferringProvAndPCP.SelectedIndex == 0)
             {
 
-                imgClearProviderText.Style.Add("top", "238px !important");
+                imgClearProviderText.Style.Add("top", "234px !important");
 
                 chkSelfReferred.Visible = true;
                 if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
@@ -4267,8 +4386,9 @@ namespace Acurus.Capella.UI
                 if (hdnEncounterID.Value != string.Empty)
                 {
                     if (hdnEncounterID.Value != "0")
-                    {
+                    {                      
                         Encntlist = EncMngr.GetEncounterByEncounterID(Convert.ToUInt32(hdnEncounterID.Value));
+
                         if (Encntlist.Count > 0)
                         {
                             if (Encntlist[0].Referring_Physician != string.Empty)
@@ -4293,7 +4413,7 @@ namespace Acurus.Capella.UI
                                 //    }
 
 
-                                txtProviderSearch.Text = " |" + Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Fax No:" + Encntlist[0].Referring_Fax_No + "| Phone No:" + Encntlist[0].Referring_Phone_No;
+                                txtProviderSearch.Text = Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Phone No:" + Encntlist[0].Referring_Phone_No + "| Fax No:" + Encntlist[0].Referring_Fax_No ;
                                 //hdnrenprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + EncRecord.Referring_Provider_NPI + "|" + "" + "|" + EncRecord.Referring_Facility + "|" + EncRecord.Referring_Address + "|" + EncRecord.Referring_Fax_No + "|" + EncRecord.Referring_Phone_No;
 
                             }
@@ -4302,16 +4422,13 @@ namespace Acurus.Capella.UI
                                 txtProviderSearch.Text = "";
                             }
                         }
-                        else
-                        {
-                            txtProviderSearch.Text = "";
-                        }
+                       
                     }
                     else
                     {
                         txtProviderSearch.Text = "";
                     }
-                    if (hdnrenprovidersearch.Value != null && hdnrenprovidersearch.Value != "" && hdnrenprovidersearch.Value != string.Empty)//Added by Vasanth 04-01-2016
+                    if (hdnrenprovidersearch.Value != null && hdnrenprovidersearch.Value != "" && hdnrenprovidersearch.Value != string.Empty && hdnrenprovidersearch.Value != "| NPI: | Facility: | Address:| Phone No:| Fax No:")//Added by Vasanth 04-01-2016
                     {
                         //txtReferringProvider.Text = HdnRefPhy.Value.Split('|')[0].ToString();
                         //txtReferingAddress.Text = HdnRefPhy.Value.Split('|')[1].ToString();
@@ -4319,7 +4436,7 @@ namespace Acurus.Capella.UI
                         //msktxtReferingFaxNo.Text = HdnRefPhy.Value.Split('|')[3].ToString();
                         //txtProviderNPI.Text = HdnRefPhy.Value.Split('|')[4].ToString();
                         //txtReferringFacility.Text = HdnRefPhy.Value.Split('|')[5].ToString();
-                        txtProviderSearch.Text = hdnrenprovidersearch.Value;
+                        txtProviderSearch.Text = hdnrenprovidersearch.Value; 
                     }
                     if (ddlPhysicianName.Items.Count > 0)
                     {
@@ -4333,13 +4450,16 @@ namespace Acurus.Capella.UI
                         chkSelfReferred.Checked = false;
                 }
                 if (Encntlist.Count > 0)
-                    hdnrenprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + Encntlist[0].Referring_Provider_NPI + "|" + "" + "|" + Encntlist[0].Referring_Facility + "|" + Encntlist[0].Referring_Address + "|" + Encntlist[0].Referring_Fax_No + "|" + Encntlist[0].Referring_Phone_No;
+                    hdnrenprovider.Value = Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "|  Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Phone No:" + Encntlist[0].Referring_Phone_No + "| Fax No:" + Encntlist[0].Referring_Fax_No ;
 
             }
             else if (tabReferringProvAndPCP.SelectedIndex == 1)
             {
-                imgClearProviderText.Style.Add("top", "215px !important");
+                imgClearProviderText.Style.Add("top", "224px !important");
                 chkSelfReferred.Visible = false;
+                //Jira #CAP-69 - labels are missing
+                pcpDefaultDemographics();
+
                 //lblReferringName.Text = "PCP. Provider";
                 //lblReferingFacility.Text = "PCP. Facility";
                 //lblReferingAddress.Text = "PCP. Address";
@@ -4364,6 +4484,38 @@ namespace Acurus.Capella.UI
                 // msktxtReferingPhoneNo.ReadOnly = false;
                 //msktxtReferingFaxNo.ReadOnly = false;
                 //btnFindPhysician.Enabled = true;
+
+                //if (hdnEncounter_Physician_id.Value != "" && hdnEncounter_Physician_id.Value!=null)//vasanth for default value for pcp and refer
+                //{
+                //    if (hdnEncounterID.Value == "0")
+                //    {
+
+                //        PhysicianManager phyMngr = new PhysicianManager();
+                //        IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
+                //        if (phylist != null && phylist.Count > 0)
+                //        {
+                //            PhysicianLibrary objPhyLib = phylist[0];
+
+                //            if (objPhyLib != null)
+                //            {
+                //                string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyMiddleName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
+                //                //  txtReferringFacility.Text = objPhyLib.PCP_Facility;
+                //                txtReferringProvider.Text = sPhyName;
+                //                txtReferingAddress.Text = objPhyLib.PhyAddress1;
+                //                msktxtReferingPhoneNo.Text = objPhyLib.PhyTelephone;
+                //                msktxtReferingFaxNo.Text = objPhyLib.PhyFax;
+                //                txtProviderNPI.Text = objPhyLib.PhyNPI;
+
+                //            }
+                //        }
+                //}
+
+                //}
+        }
+        }
+         //Jira #CAP-69 - labels are missing
+         public void pcpDefaultDemographics()
+            {
                 if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
                 {
                     if (hdnEncounterID.Value != "0")
@@ -4392,32 +4544,75 @@ namespace Acurus.Capella.UI
 
                                 //txtProviderSearch.Text = " |" + Encntlist[0].Referring_Physician + "| NPI: " + Encntlist[0].Referring_Provider_NPI + "| Facility: " + Encntlist[0].Referring_Facility + "| Address:" + Encntlist[0].Referring_Address + "| Fax No:" + Encntlist[0].Referring_Fax_No + "| Phone No:" + Encntlist[0].Referring_Phone_No;
                                 //  hdnpcpprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + Encntlist[0].Referring_Provider_NPI + "|" + "" + "|" + Encntlist[0].Referring_Facility + "|" + Encntlist[0].Referring_Address + "|" + Encntlist[0].Referring_Fax_No + "|" + Encntlist[0].Referring_Phone_No; ; ;
-                                txtProviderSearch.Text = " |" + Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
-                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address + "| Fax No:" + Encntlist[0].PCP_Fax_No +
-                                 "| Phone No:" + Encntlist[0].PCP_Phone_No;
+                                txtProviderSearch.Text = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
+                                //Jira #CAP-69 - labels are missing
+                                //hdnpcpprovider.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
+                                //    "|" + Encntlist[0].PCP_Address + "|"
+                                //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
 
-                                hdnpcpprovider.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
-                                    "|" + Encntlist[0].PCP_Address + "|"
-                                    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
+                                //hdnpcpprovidersearch.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
+                                //    "|" + Encntlist[0].PCP_Address + "|"
+                                //    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
 
-                                hdnpcpprovidersearch.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
-                                    "|" + Encntlist[0].PCP_Address + "|"
-                                    + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
+                                hdnpcpprovider.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
+
+                                hdnpcpprovidersearch.Value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                                 "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                                 "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
                             }
                             else
                             {
                                 txtProviderSearch.Text = "";
                             }
                         }
+                    }
+                    else
+                    {
+                        FindPhysican InsuredList = new FindPhysican();
+                        PatientInsuredPlanManager objPhysicianManager = new PatientInsuredPlanManager();
+                        InsuredList = objPhysicianManager.FindPhysicianByInsureList(Convert.ToUInt64(Request["Human_id"]));
+
+                        if (InsuredList.PhyList.Count > 0)
+                        {
+                            txtProviderSearch.Text = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                             "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                             "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                             "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                             InsuredList.PhyList[0].PhyCity + "," +
+                                                             InsuredList.PhyList[0].PhyState + " " +
+                                                             InsuredList.PhyList[0].PhyZip + " | " +
+                                                             ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                                                             (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+                            hdnpcpprovider.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                          InsuredList.PhyList[0].PhyCity + "," +
+                                                          InsuredList.PhyList[0].PhyState + " " +
+                                                          InsuredList.PhyList[0].PhyZip + " | " +
+                                                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                                                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+
+                            hdnpcpprovidersearch.Value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                          "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                          "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                          "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                          InsuredList.PhyList[0].PhyCity + "," +
+                                                          InsuredList.PhyList[0].PhyState + " " +
+                                                          InsuredList.PhyList[0].PhyZip + " | " +
+                                                          ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                                                          (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+                        }
                         else
                         {
                             txtProviderSearch.Text = "";
                         }
                     }
-                    else
-                    {
-                        txtProviderSearch.Text = "";
-                    }
+
                     if (hdnpcpprovidersearch.Value != null && hdnpcpprovidersearch.Value.Trim() != "")//Added by Vasanth
                     {
                         //txtReferringProvider.Text = HdnPcpPhy.Value.Split('|')[0].ToString();
@@ -4431,15 +4626,8 @@ namespace Acurus.Capella.UI
                     }
 
                 }
-
-                if (Encntlist.Count > 0)
-                    hdnpcpprovider.Value = " |" + Encntlist[0].PCP_Physician + "|" + Encntlist[0].PCP_Provider_NPI + "|" + "" + "|" + Encntlist[0].PCP_Facility +
-                                  "|" + Encntlist[0].PCP_Address + "|"
-                                  + Encntlist[0].PCP_Fax_No + "|" + Encntlist[0].PCP_Phone_No;
-                //hdnpcpprovider.Value = " |" + Encntlist[0].Referring_Physician + "|" + Encntlist[0].Referring_Provider_NPI + "|" + "" + "|" + Encntlist[0].Referring_Facility + "|" + Encntlist[0].Referring_Address + "|" + Encntlist[0].Referring_Fax_No + "|" + Encntlist[0].Referring_Phone_No; 
-
-
-            }
+                
+            
             if (txtProviderSearch.Text != "")
             {
                 txtProviderSearch.Enabled = false;
@@ -4448,33 +4636,8 @@ namespace Acurus.Capella.UI
             {
                 txtProviderSearch.Enabled = true;
             }
-            //if (hdnEncounter_Physician_id.Value != "" && hdnEncounter_Physician_id.Value!=null)//vasanth for default value for pcp and refer
-            //{
-            //    if (hdnEncounterID.Value == "0")
-            //    {
-
-            //        PhysicianManager phyMngr = new PhysicianManager();
-            //        IList<PhysicianLibrary> phylist = phyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(hdnEncounter_Physician_id.Value));
-            //        if (phylist != null && phylist.Count > 0)
-            //        {
-            //            PhysicianLibrary objPhyLib = phylist[0];
-
-            //            if (objPhyLib != null)
-            //            {
-            //                string sPhyName = objPhyLib.PhyPrefix + " " + objPhyLib.PhyFirstName + " " + objPhyLib.PhyMiddleName + " " + objPhyLib.PhyLastName + " " + objPhyLib.PhySuffix;
-            //                //  txtReferringFacility.Text = objPhyLib.PCP_Facility;
-            //                txtReferringProvider.Text = sPhyName;
-            //                txtReferingAddress.Text = objPhyLib.PhyAddress1;
-            //                msktxtReferingPhoneNo.Text = objPhyLib.PhyTelephone;
-            //                msktxtReferingFaxNo.Text = objPhyLib.PhyFax;
-            //                txtProviderNPI.Text = objPhyLib.PhyNPI;
-
-            //            }
-            //        }
-            //}
-
-            //}
-        }
+        
+}
 
         #region Empty Events. Some cause error when removed. Clean up when Time permits
 
@@ -5249,15 +5412,23 @@ namespace Acurus.Capella.UI
                     //EncRecord.Referring_Provider_NPI = txtProviderNPI.Text.Trim();
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();
-                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            //Jira #CAP-69 - labels are missing
+                            //EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();
+                            //EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
+                            //EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
+                            //EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
+                            //EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
+                            //EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+
+                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                         }
                         else
                         {
@@ -5280,14 +5451,22 @@ namespace Acurus.Capella.UI
                         EncRecord.Referring_Fax_No = "";
                         EncRecord.Referring_Provider_NPI = "";
                     }
-                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value.Trim() != "")
+                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value.Trim() != "" && hdnpcpprovider.Value != "|||||")
                     {
-                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                     else
                     {
@@ -5308,14 +5487,22 @@ namespace Acurus.Capella.UI
                     //EncRecord.PCP_Phone_No = msktxtReferingPhoneNo.TextWithLiterals.Trim();
                     //EncRecord.PCP_Fax_No = msktxtReferingFaxNo.TextWithLiterals.Trim();
                     //EncRecord.PCP_Provider_NPI = txtProviderNPI.Text.Trim();
-                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value.Trim() != "")
+                    if (hdnpcpprovider.Value != null && hdnpcpprovider.Value.Trim() != "" && hdnpcpprovider.Value != "|||||")
                     {
-                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                     else
                     {
@@ -5328,15 +5515,23 @@ namespace Acurus.Capella.UI
                     }
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
-                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            //Jira #CAP-69 - labels are missing
+                            //EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
+                            //EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
+                            //EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
+                            //EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
+                            //EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
+                            //EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+
+                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                         }
                         else
                         {
@@ -5670,26 +5865,44 @@ namespace Acurus.Capella.UI
                     // Commented by valli Need to check
 
 
-                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null)
+                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null && hdnpcpprovider.Value != "|||||")
                     {
-                        NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].ToString();
+                        NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
+
                     }
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             NewEnc.Is_Self_Referred = "N";
-                            NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
+                            //Jira #CAP-69 - labels are missing
+                            //NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
+                            //NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
+                            //NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
+                            //NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
+                            //NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
+                            //NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+
+
+                            NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
                             NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[4].Split(':')[1].ToString();
+                            NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].Split(':')[1].Trim().ToString();
+                            NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
                         }
                     }
                     else
@@ -5716,26 +5929,42 @@ namespace Acurus.Capella.UI
                     //NewEnc.PCP_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //NewEnc.PCP_Provider_NPI = txtProviderNPI.Text.Trim();
 
-                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null)
+                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null && hdnpcpprovider.Value != "|||||")
                     {
-                        NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        NewEnc.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        NewEnc.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].ToString();
+                        NewEnc.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        NewEnc.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].ToString();
+                        NewEnc.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             NewEnc.Is_Self_Referred = "N";
-                            NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
+                            //Jira #CAP-69 - labels are missing
+                            //NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
+                            //NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
+                            //NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
+                            //NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
+                            //NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
+                            //NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+
+                            NewEnc.Referring_Facility = hdnrenprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString();
                             NewEnc.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            NewEnc.Referring_Address = hdnrenprovider.Value.Split('|')[4].Split(':')[1].ToString();
+                            NewEnc.Referring_Phone_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                            NewEnc.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].Split(':')[1].Trim().ToString();
+                            NewEnc.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
                         }
                     }
                     else
@@ -6021,15 +6250,24 @@ namespace Acurus.Capella.UI
                 {
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != "")
+                        if (hdnrenprovider.Value != "" && hdnrenprovider.Value!= "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();
-                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            //Jira #CAP-69 - labels are missing
+                            //EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();
+                            //EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
+                            //EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
+                            //EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
+                            //EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
+                            //EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+
+                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString().ToString();
+                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString().ToString();
+                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString().ToString();
+                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString().ToString();
+                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString().ToString();
+
                         }
                     }
                     else
@@ -6050,7 +6288,7 @@ namespace Acurus.Capella.UI
                     //EncRecord.Referring_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //EncRecord.Referring_Provider_NPI = txtProviderNPI.Text.Trim();
 
-                    if (HdnPcpPhy != null && HdnPcpPhy.Value != string.Empty)
+                    if (HdnPcpPhy != null && HdnPcpPhy.Value != string.Empty && HdnPcpPhy.Value != "|||||")
                     {
                         EncRecord.PCP_Facility = HdnPcpPhy.Value.Split('|')[5].ToString();//vasanth for Saving Both ref And Pcp
                         EncRecord.PCP_Physician = HdnPcpPhy.Value.Split('|')[0].ToString();
@@ -6058,6 +6296,17 @@ namespace Acurus.Capella.UI
                         EncRecord.PCP_Phone_No = HdnPcpPhy.Value.Split('|')[2].ToString();
                         EncRecord.PCP_Fax_No = HdnPcpPhy.Value.Split('|')[3].ToString();
                         EncRecord.PCP_Provider_NPI = HdnPcpPhy.Value.Split('|')[4].ToString();
+
+                    }
+                    //Jira #CAP-69 - labels are missing
+                    else if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null && hdnpcpprovider.Value != "|||||")
+                    {
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                 }
 
@@ -6069,26 +6318,34 @@ namespace Acurus.Capella.UI
                     //EncRecord.PCP_Phone_No = msktxtReferingPhoneNo.TextWithLiterals;
                     //EncRecord.PCP_Fax_No = msktxtReferingFaxNo.TextWithLiterals;
                     //EncRecord.PCP_Provider_NPI = txtProviderNPI.Text.Trim();
-                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null)
+                    if (hdnpcpprovider.Value != "" && hdnpcpprovider.Value != null && hdnpcpprovider.Value != "|||||")
                     {
-                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
-                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
-                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
-                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
-                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
-                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+                        //Jira #CAP-69 - labels are missing
+                        //EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[4].ToString();
+                        //EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[1].ToString();
+                        //EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[5].ToString();
+                        //EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[7].ToString();
+                        //EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[6].ToString();
+                        //EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[2].ToString();
+
+                        EncRecord.PCP_Facility = hdnpcpprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Physician = hdnpcpprovider.Value.Split('|')[0].ToString();
+                        EncRecord.PCP_Address = hdnpcpprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Phone_No = hdnpcpprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Fax_No = hdnpcpprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString();
+                        EncRecord.PCP_Provider_NPI = hdnpcpprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString();
                     }
                     if (!chkSelfReferred.Checked)
                     {
-                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "")
+                        if (hdnrenprovider.Value != null && hdnrenprovider.Value.Trim() != "" && hdnrenprovider.Value != "|||||")
                         {
                             EncRecord.Is_Self_Referred = "N";
-                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[4].ToString();//vasanth for Saving Both ref And Pcp
-                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[1].ToString();
-                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[5].ToString();
-                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[7].ToString();
-                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[6].ToString();
-                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[2].ToString();
+                            EncRecord.Referring_Facility = hdnrenprovider.Value.Split('|')[2].Split(':')[1].Trim().ToString().ToString();
+                            EncRecord.Referring_Physician = hdnrenprovider.Value.Split('|')[0].ToString();
+                            EncRecord.Referring_Address = hdnrenprovider.Value.Split('|')[3].Split(':')[1].Trim().ToString().ToString();
+                            EncRecord.Referring_Phone_No = hdnrenprovider.Value.Split('|')[4].Split(':')[1].Trim().ToString().ToString();
+                            EncRecord.Referring_Fax_No = hdnrenprovider.Value.Split('|')[5].Split(':')[1].Trim().ToString().ToString();
+                            EncRecord.Referring_Provider_NPI = hdnrenprovider.Value.Split('|')[1].Split(':')[1].Trim().ToString().ToString();
                         }
                     }
                     else
@@ -7007,6 +7264,52 @@ namespace Acurus.Capella.UI
 
 
             return JsonConvert.SerializeObject(PatientStrip);
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static string PcpPrimaryDefault(string humanid, string EncounterId)
+        {
+            string value = string.Empty;
+            EncounterManager EncMngr = new EncounterManager();
+            IList<Encounter> Encntlist = new List<Encounter>();
+
+            FindPhysican InsuredList = new FindPhysican();
+            PatientInsuredPlanManager objPhysicianManager = new PatientInsuredPlanManager();
+            InsuredList = objPhysicianManager.FindPhysicianByInsureList(Convert.ToUInt64(humanid));
+
+            Encntlist = EncMngr.GetEncounterByEncounterID(Convert.ToUInt32(EncounterId));
+            if (Encntlist.Count > 0)
+            {
+                if (Encntlist[0].PCP_Physician != string.Empty)
+                {
+
+                     value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                     "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
+                     "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
+
+                }
+            }
+
+            else if (InsuredList.PhyList.Count > 0)
+            {
+                 value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                                                 "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
+                                                 "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
+                                                 "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
+                                                 InsuredList.PhyList[0].PhyCity + "," +
+                                                 InsuredList.PhyList[0].PhyState + " " +
+                                                 InsuredList.PhyList[0].PhyZip + " | " +
+                                                 ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
+                                                 (InsuredList.PhyList[0].PhyFax.Trim() != "" ? " Fax No:" + InsuredList.PhyList[0].PhyFax : "");
+
+
+            }
+            else
+            {
+                 value = "";
+
+            }
+            return JsonConvert.SerializeObject(value);
         }
 
         #endregion
