@@ -555,7 +555,9 @@ namespace Acurus.Capella.UI
                                 objInsurancePlan = insList[0];
                             if (objInsurancePlan != null)
                             {
-                                dr["Plan_Name"] = objInsurancePlan.Ins_Plan_Name;
+                                //Jira #CAP-146 - Able to add duplicate insurance
+                                //dr["Plan_Name"] = objInsurancePlan.Ins_Plan_Name;
+                                dr["Plan_Name"] = objInsurancePlan.Ins_Plan_Name.ToUpper();
                                 Carrier objcarrierName = CarrierMngr.GetCarrierUsingId(Convert.ToUInt64(objInsurancePlan.Carrier_ID));
                                 if (objcarrierName != null)
                                     dr["Carrier_Name"] = objcarrierName.Carrier_Name;

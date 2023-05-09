@@ -2242,13 +2242,17 @@ function btnaddinsured(e) {
 
         if (vRowID != $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[11].innerText) {
             if (RelationVal.options[RelationVal.selectedIndex].text == "SELF") {
-                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text) {
+                //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria && Jira #CAP-146 - Able to add duplicate insurance
+                //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text) {
+                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase()) {
                     DisplayErrorMessage('350014');
                     return false;
                 }
             }
             else {
-                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText == insurename.trim()) {
+                //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria  && Jira #CAP-146 - Able to add duplicate insurance
+                //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText == insurename.trim()) {
+            if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() &&  $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText.toUpperCase() == insurename.trim().toUpperCase()) {
                     DisplayErrorMessage('350014');
                     return false;
                 }
