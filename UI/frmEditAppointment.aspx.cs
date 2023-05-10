@@ -1302,6 +1302,8 @@ namespace Acurus.Capella.UI
                     pnlAppointmentDetails.Enabled = false;
                     pnlReferringDetails.Enabled = false;
                     pnlVisit.Enabled= false;
+                    txtProviderSearch.Enabled = false;
+                    imgClearProviderText.Visible = false;
 
                     btnPatientDemographics.Enabled = false;
                     btnPatientTask.Enabled = false;
@@ -4587,6 +4589,7 @@ namespace Acurus.Capella.UI
                 pnlReferringDetails.Enabled = false;
                 pnlVisit.Enabled = false;
                 txtProviderSearch.Enabled = false;
+                imgClearProviderText.Visible = false;
 
                 btnPatientDemographics.Enabled = false;
                 btnPatientTask.Enabled = false;
