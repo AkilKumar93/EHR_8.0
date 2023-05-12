@@ -2243,7 +2243,7 @@ function btnaddinsured(e) {
             if (RelationVal.options[RelationVal.selectedIndex].text == "SELF") {
                 //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria && Jira #CAP-146 - Able to add duplicate insurance
                 //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text) {
-                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase()) {
+                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
                     DisplayErrorMessage('350014');
                     return false;
                 }
