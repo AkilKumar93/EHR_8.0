@@ -355,7 +355,7 @@
         }
          div.a{
             white-space:nowrap;
-            max-width: 1136px;
+            max-width: 1499px;
             overflow: hidden ;
             text-overflow:ellipsis;
             display:block;
@@ -415,11 +415,11 @@
 
                             <div style="height: 25px; margin-top: -5px; margin-bottom: 3px;width: 118%;" class="a">
                                 <table id="tblPatientStrip" style="width: 100%; height: 25px; margin-top: 1px; cellpadding: 0px; cellspacing: 0px;">
-                                    <tr style="margin: 0px; padding: 0px; height: 25px">
+                                    <tr style="margin: 0px; padding: 0px; height: 35px">
                                         <td style="width: 100%; margin-left: 40px; margin-top: 0px; margin-bottom: 0px;">
 
                                             <fieldset id="lblPatientStrip" runat="server" onmouseover="showTip(this)" text="Root RadPanelItem1" onclientclicked="lblPatientStrip_ItemClicked" name="lblPatientStrip" data-tooltp="PatientStrip_tooltp" maxlength="60"
-                                                class="pnlBarGroup " style="max-width: 1136%; height: 24%; background-color: #FFFFF1; background-image: none; vertical-align: middle; padding-top: 0.3%; margin-top: -1.5%; position: relative; padding-left: 0%; border: 0px !important">
+                                                class="pnlBarGroup " style="max-width: 1499%; height: 24%; background-color: #FFFFF1; background-image: none; vertical-align: middle; padding-top: 0.3%; margin-top: -1.5%; position: relative; padding-left: 0%; border: 0px !important">
                                             </fieldset>
                                         </td>
                                     </tr>
