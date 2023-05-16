@@ -1613,7 +1613,7 @@
                                        </td>
                                     <td style="width: 25%;">
                                           <span  class="MandLabelstyle">Rel.to Patient</span><span class="manredforstar">*</span> 
-                                       <asp:DropDownList ID="ddlPatientRelation" onchange="PatientRelationchange();Autosave();" runat="server" style="width:146px"></asp:DropDownList>
+                                       <asp:DropDownList ID="ddlPatientRelation" onchange="PatientRelationchange();AutoSave();" runat="server" style="width:146px"></asp:DropDownList>
                                     </td>
                                    <td style="width: 36%;text-align: left;">
                                         <span id="lblSelectInsured"  class="spanstyle">Select Insured</span>
@@ -1782,15 +1782,18 @@
                             </td>
                             <td>
                                 <asp:DropDownList ID="ddlDataSharingPreference" runat="server" Height="22px" Width="180px" CssClass="Editabletxtbox"
-                                    onchange="();">
+                                    onchange="SaveEnable();">
                                 </asp:DropDownList>
                             </td>
                             <td class="style308">
                                 <asp:Label ID="lblBirthIndicator" runat="server" Text="Is Patient a Single Child? " CssClass="spanstyle"></asp:Label>
                             </td>
                             <td>
-                                <asp:DropDownList ID="ddlBirthIndicator" runat="server" Height="22px" Width="187px" CssClass="Editabletxtbox"
+                                <%--<asp:DropDownList ID="ddlBirthIndicator" runat="server" Height="22px" Width="187px" CssClass="Editabletxtbox"
                                     onchange="ddlBirthIndicator_Change(this);">
+                                </asp:DropDownList>--%>
+                                <asp:DropDownList ID="ddlBirthIndicator" runat="server" Height="22px" Width="187px" CssClass="Editabletxtbox"
+                                    onchange="SaveEnable();">
                                 </asp:DropDownList>
                             </td>
                             <td>

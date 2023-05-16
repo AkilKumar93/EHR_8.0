@@ -168,10 +168,6 @@ function handleError(evt) {
 
 
     }
-    else {
-        ScriptErrorLogEntry(evt.type, evt.lineno, evt.colno, evt.filename, evt.error.stack);
-        alert("error: " + evt.type + " from element: " + (evt.srcElement || evt.target));
-    }
     return true;
 }
 

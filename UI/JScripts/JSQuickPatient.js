@@ -499,8 +499,9 @@ function AutoSave(ctrl) {
     if (document.getElementById("hdnScreenMode").value != "COLLECT COPAY") {
         if (ctrl != undefined && ctrl.readOnly != true) {
             document.getElementById("hdnBSave").value = true;
-
-            document.getElementById("btnSave").disabled = false;
+            //Jira #CAP-193
+            if (document.getElementById("btnSave") != null && document.getElementById("btnSave") != undefined)
+                document.getElementById("btnSave").disabled = false;
         }
     }
 }
