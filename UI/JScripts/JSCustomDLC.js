@@ -360,7 +360,7 @@ function licstboxclick(e) {
     var sMail = document.getElementById(lstCtrl.replace('_listDLC', '_txtDLC')).attributes.getNamedItem("dlcvalue").value;
     var index = document.getElementById(ID).selectedIndex;
     //Jira #CAP-193
-    if (document.getElementById(ID) != null && document.getElementById(ID) != undefined && document.getElementById(ID).options.length > 0 && document.getElementById(ID).options[index].innerHTML.trim() == "Click here to Add or Update Keywords") {
+    if (ID != null && ID != undefined && document.getElementById(ID) != null && document.getElementById(ID) != undefined && document.getElementById(ID).options.length > 0 && document.getElementById(ID).options[index] != null && document.getElementById(ID).options[index] != undefined && document.getElementById(ID).options[index].innerHTML.trim() == "Click here to Add or Update Keywords") {
         var keyword = document.getElementById(ID).options[index].value;
         OpenPopup(keyword);
     }
