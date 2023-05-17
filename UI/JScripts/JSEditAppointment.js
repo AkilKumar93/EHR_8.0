@@ -173,6 +173,7 @@ $(document).ready(function () {
                      var WindowName = $find('MessageWindow');
                     
                      return false;
+                   //Jira #Cap#193 - Screen Throwing error message
                  }).on("mouseover", function (e) {
                      e.preventDefault();
                      return false;
@@ -203,6 +204,7 @@ $(document).ready(function () {
                      var result = openModal("frmPhysicianLibray.aspx", 330, 750, obj, "RadWindow1");
                      var WindowName = $find('MessageWindow');                    
                      return false;
+                 //Jira #Cap#193 - Screen Throwing error message
                  }).on("mouseover", function (e) {
                         e.preventDefault();
                         return false;
