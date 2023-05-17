@@ -173,7 +173,10 @@ $(document).ready(function () {
                      var WindowName = $find('MessageWindow');
                     
                      return false;
-                 });;
+                 }).on("mouseover", function (e) {
+                     e.preventDefault();
+                     return false;
+                 });;;;
                 return $("<li>")
                  .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
                  .append(item.label)
@@ -198,10 +201,12 @@ $(document).ready(function () {
                      localStorage.removeItem("IsEFax");
                      localStorage.setItem("IsEnableGrid", "false");
                      var result = openModal("frmPhysicianLibray.aspx", 330, 750, obj, "RadWindow1");
-                     var WindowName = $find('MessageWindow');
-                    
+                     var WindowName = $find('MessageWindow');                    
                      return false;
-                 });;;
+                 }).on("mouseover", function (e) {
+                        e.preventDefault();
+                        return false;
+                    });;;
                 return $("<li>")
                  .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
                  .addClass("disabled")
