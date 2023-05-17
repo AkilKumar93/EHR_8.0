@@ -132,6 +132,7 @@ function handleError(evt) {
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
                 top.window.document.getElementById('divLoading').style.display = "none";
+            ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
         }
         else if (evt.message.indexOf("Uncaught Sys.WebForms.PageRequestManagerServerErrorException: Sys.WebForms.PageRequestManagerServerErrorException") > -1) {
             if (top.window.document.getElementById('ctl00_Loading') != null)
@@ -151,6 +152,15 @@ function handleError(evt) {
         }
         //Jira #CAP-191
         else if (evt.error.stack.indexOf("Telerik.Web.UI.WebResource.axd") > -1) {
+            if (top.window.document.getElementById('ctl00_Loading') != null)
+                top.window.document.getElementById('ctl00_Loading').style.display = "none";
+            if (top.window.document.getElementById('divLoading') != null)
+                top.window.document.getElementById('divLoading').style.display = "none";
+            //ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt.error.stack, false);
+        }
+        //Jira #CAP-206
+        else if (evt.message.indexOf("Failed to execute 'focus'"))
+        {
             if (top.window.document.getElementById('ctl00_Loading') != null)
                 top.window.document.getElementById('ctl00_Loading').style.display = "none";
             if (top.window.document.getElementById('divLoading') != null)
