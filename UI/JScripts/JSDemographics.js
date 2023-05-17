@@ -2499,6 +2499,16 @@ function Edit(e) {
         document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
         document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
     }
+    //jira - #Cap200 - PCP of the Previous edit is populated
+    else {
+        document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = "";
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-gridname'].value = "";
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-details'].value = "";
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').attributes['data-phy-npi'].value = "";
+        document.getElementById("ctl00_C5POBody_txtProviderSearch").value = "";
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = false;
+        document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#FFFFFF";
+    }
     if (e.parentElement.parentElement.childNodes[8].innerText != "") {
         document.getElementById("ctl00_C5POBody_txtStartdate").value = e.parentElement.parentElement.childNodes[8].innerText;
     }
