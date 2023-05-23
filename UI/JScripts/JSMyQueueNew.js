@@ -318,6 +318,12 @@ $(document).ready(function () {
                         dataType: "json",
                         async: true,
                         success: function (data) {
+                            //jira #cap190 - Workflow issue - Current process PROVIDER_PROCESS current owner MA
+                            if (data.d == 'UNKNOWN') {
+                                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                                DisplayErrorMessage('140007');
+                                return false;
+                            }
                             sessionStorage.setItem("EnablePFSHMenu", "true");
                             localStorage.setItem("CodingException", encounterID);
                             sessionStorage.setItem("EncId_PatSummaryBar", encounterID);

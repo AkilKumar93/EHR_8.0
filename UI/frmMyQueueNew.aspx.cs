@@ -1265,6 +1265,16 @@ namespace Acurus.Capella.UI
             DateTime apptDt = Convert.ToDateTime(data[9].ToString());
             string sLocal_Time = UtilityManager.ConvertToLocal(Convert.ToDateTime(localTime)).ToString("yyyy-MM-dd hh:mm:ss tt");
 
+            //jira #cap190 - Workflow issue - check for current owner
+            WFObjectManager objWfMngr = new WFObjectManager();
+            WFObject objDocWfObject = new WFObject();
+            objDocWfObject = objWfMngr.GetByObjectSystemId(ClientSession.EncounterId, "DOCUMENTATION");
+            if(objDocWfObject!=null && objDocWfObject.Current_Owner.ToUpper()!= "UNKNOWN")
+            {
+                return "UNKNOWN";
+            }   
+
+
             if (ClientSession.UserCurrentProcess == "SCRIBE_PROCESS" || ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")//to update DOS when Technician/MA processes the encounter for the first time -- CMG Ancilliary
             {
 

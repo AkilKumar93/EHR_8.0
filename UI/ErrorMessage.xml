@@ -275,6 +275,8 @@
 	<Message number="140004" Type="OK" Text="Selected encounter cannot be moved from General Queue."></Message>
 	<Message number="140005" Type="OK" Text="No Encounter is found for the selected patient."></Message>
 	<Message number="140006" Type="OK" Text="Please select a File."></Message>
+	<Message number="140007" Type="OK" Text="You are making changes to an encounter that has already been updated. Please refresh this page to view latest updates."></Message>
+	
 
 
 	<Message number="140007" Type="OK" Text="Appointment cannot be fixed for a deceased patient"></Message>

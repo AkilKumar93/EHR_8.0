@@ -1,5 +1,6 @@
 ﻿var AssignedTo = "";
 var vRowID = "";
+let bOldCheck = false;
 
 function OpenGuarantor() {
     if (document.getElementById(GetClientId('txtAccountNo')).value.length != 0) {
@@ -2151,8 +2152,14 @@ function btnaddinsured(e) {
     //}
 
     var status = "";
-    if (document.getElementById("ctl00_C5POBody_rdStatusactive").checked)
+    //Jira #Cap-255 - old Primary is changed as Primary, Status change active
+    //if (document.getElementById("ctl00_C5POBody_rdStatusactive").checked )
+    if (document.getElementById("ctl00_C5POBody_rdStatusactive").checked ||
+        (bOldCheck == true && (document.getElementById("ctl00_C5POBody_rdbPRI").checked == true
+            || document.getElementById("ctl00_C5POBody_rdbSEC").checked == true
+            || document.getElementById("ctl00_C5POBody_rdbTER").checked == true))) {
         status = "Active";
+    }
     else if (document.getElementById("ctl00_C5POBody_rdStatusinactive").checked)
         status = "Inactive";
     var human_id = document.getElementById(GetClientId("txtAccountNo")).value;
@@ -2237,7 +2244,7 @@ function btnaddinsured(e) {
     if (document.getElementById("btnAdd").value == 'Add') {
         vRowID = "";
     }
-    for (var k =0; k < $('#tbodupolicyinfo  tr').length; k++) {
+    for (var k = 0; k < $('#tbodupolicyinfo  tr').length; k++) {
 
         if (vRowID != $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[11].innerText) {
             if (RelationVal.options[RelationVal.selectedIndex].text == "SELF") {
@@ -2251,15 +2258,15 @@ function btnaddinsured(e) {
             else {
                 //Jira #CAP-141 - Remove Relationship to Patient from the Matching criteria  && Jira #CAP-146 - Able to add duplicate insurance
                 //if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText == planname.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText == PolicyVal.trim() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[4].innerText == RelationVal.options[RelationVal.selectedIndex].text && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[5].innerText == insurename.trim()) {
-                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() &&  $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
+                if ($('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[2].innerText.toUpperCase() == planname.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[3].innerText.toUpperCase() == PolicyVal.trim().toUpperCase() && $('#tbodupolicyinfo tr')[k].getElementsByTagName('td')[14].innerText.trim() == insurehumanid.trim()) {
                     DisplayErrorMessage('350014');
                     return false;
                 }
             }
         }
-       
-    }    
-    
+
+    }
+
     var id = "0";
 
     $.ajax({
@@ -2451,8 +2458,13 @@ function btnaddinsured(e) {
 
 function Edit(e) {
 
+    bOldCheck = false;
     if (document.getElementById('ctl00_C5POBody_rdbPRI').disabled == true) {
         return false;
+    }
+    //Jira #Cap-255 - old Primary is changed as Primary, Status change active
+    if (e.parentElement.parentElement.childNodes[1].innerText.includes("OLD")) {
+        bOldCheck = true;
     }
 
     // editinsurancetype = e.parentElement.parentElement.childNodes[1].innerText;
