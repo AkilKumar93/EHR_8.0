@@ -734,7 +734,20 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
         </telerik:RadWindowManager>
 
         <div id="main" style="position: relative">
-
+            <div id="divInternetLoader" style="display: none;">
+                <div style="border: none; z-index: 100010; position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden; padding: 0; margin: 0; background-color: #000; opacity: 0.7;">
+                    <div style="display:flex ; justify-content:center ; align-items:center ; height:100vh ">
+                        <div style="margin:0; padding:0;font-family: sans-serif;color: #bfdbff;text-align: center;font-size: 150%;font-family: 'Helvetica Neue';">
+                            <h1 style="font-weight: normal;margin: 0 auto; font-size: 100px; text-shadow: 0 2px 2px #000;">⚠</h1>
+                            <h4 style="font-weight: normal; margin:0px 10px ; ">Internet connection is not detected. Try the following.</h4>
+                            <div style="margin-bottom:10px;font-size:17px;">
+                            1. Checking the network cables, modem, and router <br />
+                            2. Reconnecting to Wi-Fi
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <asp:Panel ID="pnlScroll" runat="server" Font-Size="Small" Font-Names="Microsoft Sans Serif"
                 Width="100%" Style="position: static">
 
@@ -2144,5 +2157,15 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
             <script src="JScripts/bootstrap.min3.3.7.js" type="text/javascript"></script>
         </asp:PlaceHolder>
     </form>
+    <script>
+        //CAP-29 - Internet check event.
+        window.addEventListener("offline", (event) => {
+            $("#divInternetLoader").css("display", "block");
+        });
+
+        window.addEventListener("online", (event) => {
+            $("#divInternetLoader").css("display", "none");
+        });
+    </script>
 </body>
 </html>
