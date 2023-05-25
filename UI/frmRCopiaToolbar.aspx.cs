@@ -283,7 +283,7 @@ namespace Acurus.Capella.UI
         }
 
 
-       
+
 
         public static string ExtractBetween(string text, string start, string end)
         {
@@ -300,7 +300,7 @@ namespace Acurus.Capella.UI
         }
 
 
-        
+
         [WebMethod(EnableSession = true)]
         public static string[] LoadPatientSummaryBar(string EncID, string Enc_DOS)
         {
@@ -1606,7 +1606,7 @@ namespace Acurus.Capella.UI
 
             if (VitalsList.Count > 0)
             {
-                IList<PatientResults> lstVitalResults = VitalsList.Where(x => x.Loinc_Observation == FieldName && x.Value != "").ToList<PatientResults>(); 
+                IList<PatientResults> lstVitalResults = VitalsList.Where(x => x.Loinc_Observation == FieldName && x.Value != "").ToList<PatientResults>();
                 IList<PatientResults> lstResults = lstVitalResults.OrderBy(x => x.Captured_date_and_time).ToList<PatientResults>();
                 if (lstResults != null && lstResults.Count > 0)
                 {
@@ -1786,7 +1786,7 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
-            string sProjectType = ClientSession.LegalOrg; 
+            string sProjectType = ClientSession.LegalOrg;
             //System.Configuration.ConfigurationManager.AppSettings["ProjectType"].ToString();
             //string sBIRTReportUrl = System.Configuration.ConfigurationManager.AppSettings["BIRTReportUrl"].ToString() + "CAPELLA_" + sProjectType;
 
@@ -2168,11 +2168,18 @@ namespace Acurus.Capella.UI
             if (server.Length > 1)
                 serverno = server[1].Trim();
 
+            //CAP-29 - It will validating blank string or data.
+            //string message =
+            //"MESSAGE: " + ErrorMessage + System.Environment.NewLine +
+            // "SOURCE: " + ErrorUrl + System.Environment.NewLine +
+            //"LINE NUMBER: " + ErrorLineNo + System.Environment.NewLine +
+            //"COLUMN NUMBER: " + ErrorColumnNo + System.Environment.NewLine;
             string message =
             "MESSAGE: " + ErrorMessage + System.Environment.NewLine +
-            "SOURCE: " + ErrorUrl + System.Environment.NewLine +
-            "LINE NUMBER: " + ErrorLineNo + System.Environment.NewLine +
-            "COLUMN NUMBER: " + ErrorColumnNo + System.Environment.NewLine;
+            (!string.IsNullOrWhiteSpace(ErrorUrl) ? "SOURCE: " + ErrorUrl + System.Environment.NewLine : "") +
+            (!string.IsNullOrWhiteSpace(ErrorLineNo) ? "LINE NUMBER: " + ErrorLineNo + System.Environment.NewLine : "") +
+            (!string.IsNullOrWhiteSpace(ErrorColumnNo) ? "COLUMN NUMBER: " + ErrorColumnNo + System.Environment.NewLine : "");
+
             string insertQuery = "insert into  stats_apperrorlog values(0,'" + message.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + "', '" + serverno + "','" + DateTime.Now + "','" + ClientSession.UserName + "','" + ClientSession.EncounterId + "','" + ClientSession.HumanId + "','" + ClientSession.PhysicianId + "','" + ErrorStack.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
             int iReturn = DBConnector.WriteData(insertQuery);
 
