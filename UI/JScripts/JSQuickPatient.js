@@ -1137,11 +1137,14 @@ function PhNoValid(sphno) {
 function ValidateEffStartDate(EffDate, TermDate) {
     //var splitEffDatedate = $find(EffDate)._text;
     //var splitTermDate = $find(TermDate)._text;
+    // CAT-286 - Prevanting undefind error for splitEffDatedate and splitTermDate.
+    var splitEffDatedate = '';
     if ($find(EffDate) != null) {
-        var splitEffDatedate = $find(EffDate)._text;
+        splitEffDatedate = $find(EffDate)._text ?? "";
     }
+    var splitTermDate = '';
     if ($find(TermDate) != null) {
-        var splitTermDate = $find(TermDate)._text;
+        splitTermDate = $find(TermDate)._text ?? "";
     }
     var EffDatedate = new Date();
     var TermDate = new Date();
