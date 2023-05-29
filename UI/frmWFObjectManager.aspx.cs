@@ -1319,7 +1319,9 @@ namespace Acurus.Capella.UI
                                                 {
                                                     if (checkkShowAllOwner.Checked == false)
                                                     {
-                                                        if (NonPhysician != null && NonPhysician.Count > 0 && NonPhysician.Contains(UserElement.Attribute("person_name").Value.ToString()) == true)
+                                                        //CAP -195 - no users are listed when show all is in unchecked state
+                                                        //if (NonPhysician != null && NonPhysician.Count > 0 && NonPhysician.Contains(UserElement.Attribute("person_name").Value.ToString()) == true)
+                                                        if (NonPhysician != null && NonPhysician.Count > 0 && NonPhysician.Contains(UserElement.Attribute("User_Name").Value.ToString()) == true)
                                                         {
                                                             hashUserList.Add(UserElement.Attribute("person_name").Value, UserElement.Attribute("User_Name").Value);
                                                         }
