@@ -880,7 +880,7 @@ namespace Acurus.Capella.UI
                     }
                 }
                 //Jira #CAP-168
-                if (ddlPhysicianName.Items.Count == 0 || ddlPhysicianName.Text == "" || ddlPhysicianName.Text == string.Empty || ddlPhysicianName.Text == null)
+                if (ddlPhysicianName.Items.Count == 0 || ddlPhysicianName.SelectedItem.Text == "" || ddlPhysicianName.SelectedItem.Text == string.Empty || ddlPhysicianName.SelectedItem.Text == null)
                 {
                     string sPhyName = string.Empty;
                     IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
