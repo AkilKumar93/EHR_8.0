@@ -29,6 +29,8 @@ using System.Threading;
 using System.Diagnostics;
 using Acurus.Capella.DataAccess;
 using DocumentFormat.OpenXml.Drawing.Charts;
+using System.Xml.Xsl;
+using System.Xml.XPath;
 
 namespace Acurus.Capella.UI
 {
@@ -36,7 +38,7 @@ namespace Acurus.Capella.UI
     {
         public static ulong ulMyFindPatientID;
         public const ulong CASH_CARRIER_ID = 41;
-
+        public static XslCompiledTransform objXSLTransform = new XslCompiledTransform();
         //BugID:53765
         //*Commented for UtilityManager CleanUp*
         /*public static ulong ulAppointmentID;
@@ -218,8 +220,8 @@ namespace Acurus.Capella.UI
                     else
                     {
                         using (
-                            
-                            
+
+
                             StreamWriter outputFile = new StreamWriter(Path.Combine(ConfigurationManager.AppSettings["UsageLogPath"], "UsageLog_" + HttpContext.Current.Session.SessionID + ".txt"), true))
                         {
 
@@ -743,12 +745,12 @@ namespace Acurus.Capella.UI
             }
 
             IList<string> ilstPatientSummaryBarTagHumanList = new List<string>();
-                ilstPatientSummaryBarTagHumanList.Add("ProblemListList");
-                ilstPatientSummaryBarTagHumanList.Add("PatientResultsList");
-                ilstPatientSummaryBarTagHumanList.Add("Rcopia_MedicationList");
-                ilstPatientSummaryBarTagHumanList.Add("Rcopia_AllergyList");
+            ilstPatientSummaryBarTagHumanList.Add("ProblemListList");
+            ilstPatientSummaryBarTagHumanList.Add("PatientResultsList");
+            ilstPatientSummaryBarTagHumanList.Add("Rcopia_MedicationList");
+            ilstPatientSummaryBarTagHumanList.Add("Rcopia_AllergyList");
             ilstPatientSummaryBarTagHumanList.Add("NonDrugAllergyList");
-            ln:
+        ln:
             try
             {
                 IList<object> ilstHumanBlobFinal = new List<object>();
@@ -2877,16 +2879,16 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception xmlexcep)
                 {
-                        trycount++;
-                        if (trycount <= 3)
-                        {
-                            Thread.Sleep(1000);
-                            goto tryagain;
-                        }
-                        else
-                        {
-                            throw new Exception(xmlexcep.Message);
-                        }
+                    trycount++;
+                    if (trycount <= 3)
+                    {
+                        Thread.Sleep(1000);
+                        goto tryagain;
+                    }
+                    else
+                    {
+                        throw new Exception(xmlexcep.Message);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2951,16 +2953,16 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception xmlexcep)
                 {
-                        trycount++;
-                        if (trycount <= 3)
-                        {
-                            Thread.Sleep(1000);
-                            goto tryagain;
-                        }
-                        else
-                        {
-                            throw new Exception(xmlexcep.Message);
-                        }
+                    trycount++;
+                    if (trycount <= 3)
+                    {
+                        Thread.Sleep(1000);
+                        goto tryagain;
+                    }
+                    else
+                    {
+                        throw new Exception(xmlexcep.Message);
+                    }
                 }
             }
             catch (Exception ex)
@@ -3089,7 +3091,7 @@ namespace Acurus.Capella.UI
 
             IList<StaticLookup> iFieldLookupList = new List<StaticLookup>();
             IList<string> ilstItem = sEnteredItem.Split(',').Select(i => i.TrimStart().ToString()).ToList<string>();
-                
+
 
             string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
             if (File.Exists(strXmlFilePath) == true)
@@ -4276,14 +4278,14 @@ namespace Acurus.Capella.UI
                         proc.WaitForExit();
                         status = bStart + " Third Block - Sub 4 " + System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileFor" + sXmlType].ToString();
                     }
-                //status = "Third Block - Sub 1";
-                //proc.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileFor" + sXmlType].ToString();
-                //status = "Third Block - Sub 2";
-                //proc.Start();
-                //status = "Third Block - Sub 3";
-                //proc.WaitForExit();
-                //status = "Third Block - Sub 4";
-                //retry:
+                    //status = "Third Block - Sub 1";
+                    //proc.StartInfo.FileName = System.Configuration.ConfigurationManager.AppSettings["XmlBatchFileFor" + sXmlType].ToString();
+                    //status = "Third Block - Sub 2";
+                    //proc.Start();
+                    //status = "Third Block - Sub 3";
+                    //proc.WaitForExit();
+                    //status = "Third Block - Sub 4";
+                    //retry:
                     //try
                     //{
                     //    System.IO.File.Copy(sSourceFile, sDestFile, true);
@@ -4326,7 +4328,7 @@ namespace Acurus.Capella.UI
         }
         public static string GenerateXML(string sXMLID, string sXMLType)
         {
-          
+
             string sResult = string.Empty;
 
 
@@ -4488,7 +4490,7 @@ namespace Acurus.Capella.UI
                                                 sQuery = "delete from list_encounter where encounter_id=" + XML_ID.ToString() + ";";
                                             else
                                                 if (sTableName == "ENCOUNTER_ARCHIVE")
-                                                    sQuery = "delete from list_encounter_arc where encounter_id=" + XML_ID.ToString() + ";";
+                                                sQuery = "delete from list_encounter_arc where encounter_id=" + XML_ID.ToString() + ";";
                                             using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
                                             {
                                                 cmdInsert.CommandText = sQuery;
@@ -4557,7 +4559,7 @@ namespace Acurus.Capella.UI
                             sQuery = "insert into list_encounter values(" + EncID.ToString() + ", current_timestamp());";
                         else
                             if (sTable.ToUpper() == "ENCOUNTER_ARCHIVE")
-                                sQuery = "insert into list_encounter_arc values(" + EncID.ToString() + ", current_timestamp());";
+                            sQuery = "insert into list_encounter_arc values(" + EncID.ToString() + ", current_timestamp());";
                         using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
                         {
                             cmdInsert.CommandText = sQuery;
@@ -4603,7 +4605,7 @@ namespace Acurus.Capella.UI
                             sQuery = "select * from   list_encounter ;";
                         else
                             if (sTable == "ENCOUNTER_ARCHIVE")
-                                sQuery = "select *  from list_encounter_arc;";
+                            sQuery = "select *  from list_encounter_arc;";
                         using (MySqlCommand cmdCheck = new MySqlCommand(sQuery, DBConnection))
                         {
                             cmdCheck.CommandText = sQuery;
@@ -5149,7 +5151,7 @@ namespace Acurus.Capella.UI
 
         public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName, string sMyXMLType = "")
         {
-            
+
 
             string sXMLType = "";
 
@@ -5181,11 +5183,12 @@ namespace Acurus.Capella.UI
                     IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
                     if (ilstHumanBlob.Count > 0)
                     {
-                        try { 
-                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                        if (sXMLContent.Substring(0, 1) != "<")
-                            sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                        xmlDoc.LoadXml(sXMLContent);
+                        try
+                        {
+                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                            if (sXMLContent.Substring(0, 1) != "<")
+                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                            xmlDoc.LoadXml(sXMLContent);
                         }
                         catch
                         {
@@ -5274,7 +5277,7 @@ namespace Acurus.Capella.UI
                                                         {
                                                             ulong ulongValue = 0;
                                                             bool isNumber = ulong.TryParse(nodevalue.Value, out ulongValue);
-                                                            if (isNumber==true)
+                                                            if (isNumber == true)
                                                             {
                                                                 property.SetValue(objEntity, Convert.ToUInt64(nodevalue.Value), null);
                                                             }
@@ -5703,7 +5706,7 @@ namespace Acurus.Capella.UI
                 "  year(s)    |   " + sPatientSex + "   |   Acc #:" + humanID +
                 "   |   " + "Med Rec #:" + objFillHuman.Medical_Record_Number + "   |   " +
                 "Home Phone #:" + objFillHuman.Home_Phone_No + "  |  Cell Phone #:" + objFillHuman.Cell_Phone_Number + "   |   Patient Type:" + objFillHuman.Human_Type + "   |   ";
-            } 
+            }
             else
             {
                 sPatientStrip = " " + "   |" + "|" + "|" + "|" + "|";
@@ -5711,14 +5714,14 @@ namespace Acurus.Capella.UI
 
             if (objFillHuman.Is_Translator_Required != null && objFillHuman.Is_Translator_Required.ToUpper() == "Y")
             {
-                sPatientStrip += objFillHuman.Preferred_Language+" req." + "   |   ";
+                sPatientStrip += objFillHuman.Preferred_Language + " req." + "   |   ";
             }
 
             if (sAcoEligiblePatient != null && sAcoEligiblePatient != string.Empty && sAcoEligiblePatient != "N")
             {
                 sPatientStrip += sAcoEligiblePatient + "   |   ";
             }
-           
+
             return sPatientStrip;
         }
         //Jira #CAP-64,#CAP-67,#CAP-39 
@@ -5754,13 +5757,79 @@ namespace Acurus.Capella.UI
         public static string ReplaceSpecialCharaters(string sXMLContent)
         {
 
-            sXMLContent=sXMLContent.Replace("&#x00;", " ").Replace("&#x01;", " ").Replace("&#x02;", " ").Replace("&#x03;", " ").Replace("&#x04;", " ").Replace("&#x05;", " ")
+            sXMLContent = sXMLContent.Replace("&#x00;", " ").Replace("&#x01;", " ").Replace("&#x02;", " ").Replace("&#x03;", " ").Replace("&#x04;", " ").Replace("&#x05;", " ")
                 .Replace("&#x06;", " ").Replace("&#x07;", " ").Replace("&#x08;", " ").Replace("&#x0B;", " ").Replace("&#x0C;", " ").Replace("&#x0E;", " ")
                 .Replace("&#x0F;", " ").Replace("&#x10;", " ").Replace("&#x11;", " ").Replace("&#x12;", " ").Replace("&#x13;", " ").Replace("&#x14;", " ")
                 .Replace("&#x15;", " ").Replace("&#x16;", " ").Replace("&#x17;", " ").Replace("&#x18;", " ").Replace("&#x19;", " ").Replace("&#x1A;", " ")
                 .Replace("&#x1B;", " ").Replace("&#x1C;", " ").Replace("&#x1D;", " ").Replace("&#x1E;", " ").Replace("&#x1F;", " ").Replace("&#x7F;", " ");
             return sXMLContent;
 
+        }
+        //Jira #CAP-344
+        public static string PrintSummaryUsingXSLT(string strTransformSource, XmlReader xmlr)
+        {
+            objXSLTransform = new XslCompiledTransform();
+            StringBuilder htmlOutput = new StringBuilder();
+            TextWriter htmlWriter = new StringWriter(htmlOutput);
+            XsltSettings settingsxsl = new XsltSettings(true, false);
+            objXSLTransform.Load(strTransformSource, settingsxsl, new XmlUrlResolver());
+            objXSLTransform.Transform(xmlr, null, htmlWriter);
+
+            return htmlWriter.ToString();
+        }
+        //Jira #CAP-344
+        public static void PrintPDFUsingXSLT(string sXMLEncounterDoc, string sXMLHumanDoc, string xsltFile, string outputDocument, string sGroup_ID_Log)
+        {
+            objXSLTransform = new XslCompiledTransform();
+            DataSet ds;
+            XmlDataDocument xmlDoc;
+            XslCompiledTransform xslTran;
+            XmlElement root;
+            XPathNavigator nav;
+            XmlTextWriter writer;
+            XsltSettings settings = new XsltSettings(true, false);
+
+            ds = new DataSet();
+            //ds.ReadXml(xmlDataFile);
+            //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+            StringBuilder sb = new StringBuilder();
+            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+            if (sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
+            {
+                string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+
+                sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            }
+            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+
+            xmlDoc = new XmlDataDocument(ds);
+            // xslTran.Load(xsltFile);
+            if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
+            {
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+
+            }
+            objXSLTransform.Load(xsltFile, settings, new XmlUrlResolver());
+            if (sGroup_ID_Log != null && sGroup_ID_Log != string.Empty)
+            {
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            }
+            root = xmlDoc.DocumentElement;
+
+
+            nav = root.CreateNavigator();
+            if (File.Exists(outputDocument))
+            {
+                File.Delete(outputDocument);
+            }
+            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            objXSLTransform.Transform(nav, writer);
+            writer.Close();
+            writer = null;
+            nav = null;
+            root = null;
+            xmlDoc = null;
+            ds = null;
         }
 
 

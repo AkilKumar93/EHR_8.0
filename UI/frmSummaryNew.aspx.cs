@@ -837,17 +837,20 @@ namespace Acurus.Capella.UI
                 string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
                 sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-                StringBuilder htmlOutput = new StringBuilder();
-                TextWriter htmlWriter = new StringWriter(htmlOutput);
-               
-                XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
-              
-                XslCompiledTransform objXSLTransform = new XslCompiledTransform();
-                XsltSettings settingsxsl = new XsltSettings(true, false);
-                objXSLTransform.Load(strTransformSource, settingsxsl, new XmlUrlResolver());
+                //Jira #CAP-344 - OldCode
+                //StringBuilder htmlOutput = new StringBuilder();
+                //TextWriter htmlWriter = new StringWriter(htmlOutput);
 
-                objXSLTransform.Transform(xmlr, null, htmlWriter);
-                ltlDownloadFrame.Text = htmlWriter.ToString();
+                XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
+
+                //XslCompiledTransform objXSLTransform = new XslCompiledTransform();
+                //XsltSettings settingsxsl = new XsltSettings(true, false);
+                //objXSLTransform.Load(strTransformSource, settingsxsl, new XmlUrlResolver());
+
+                //objXSLTransform.Transform(xmlr, null, htmlWriter);
+                //ltlDownloadFrame.Text = htmlWriter.ToString();
+               
+                ltlDownloadFrame.Text = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
 
                 //
                 string Encounter_signedDate = "";
@@ -1255,49 +1258,54 @@ namespace Acurus.Capella.UI
             //}
             ////
             #endregion
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
-            ds = new DataSet();
-            //ds.ReadXml(xmlDataFile);
-            // ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-            StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+            //Jira #CAP-344 - OldCode
+            //DataSet ds;
+            //XmlDataDocument xmlDoc;
+            //XslCompiledTransform xslTran;
+            //XmlElement root;
+            //XPathNavigator nav;
+            //XmlTextWriter writer;
+            //XsltSettings settings = new XsltSettings(true, false);
+            //ds = new DataSet();
+            ////ds.ReadXml(xmlDataFile);
+            //// ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
-            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
-            xmlDoc = new XmlDataDocument(ds);
-            xslTran = new XslCompiledTransform();
-            using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                // xslTran.Load(xsltFile);
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-                xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
 
-            }
-            root = xmlDoc.DocumentElement;
-            nav = root.CreateNavigator();
-            if (File.Exists(outputDocument))
-            {
-                File.Delete(outputDocument);
-            }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            xslTran.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
-            xslTran = null;
+            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+            //xmlDoc = new XmlDataDocument(ds);
+            //xslTran = new XslCompiledTransform();
+            //using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    // xslTran.Load(xsltFile);
+            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //    xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+
+            //}
+            //root = xmlDoc.DocumentElement;
+            //nav = root.CreateNavigator();
+            //if (File.Exists(outputDocument))
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            //xslTran.Transform(nav, writer);
+            //writer.Close();
+            //writer = null;
+            //nav = null;
+            //root = null;
+            //xmlDoc = null;
+            //ds = null;
+            //xslTran = null;
+
+            //Jira #CAP-344 - NewCode
+            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -1880,49 +1888,53 @@ margin:0in 0in 0in 9in;
             //}
             ////
             #endregion
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
-            ds = new DataSet();
-            //ds.ReadXml(xmlDataFile);
-            //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+            //Jira #CAP-344 - OldCode
+            //DataSet ds;
+            //XmlDataDocument xmlDoc;
+            //XslCompiledTransform xslTran;
+            //XmlElement root;
+            //XPathNavigator nav;
+            //XmlTextWriter writer;
+            //XsltSettings settings = new XsltSettings(true, false);
+            //ds = new DataSet();
+            ////ds.ReadXml(xmlDataFile);
+            ////ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
-            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
-            xmlDoc = new XmlDataDocument(ds);
-            xslTran = new XslCompiledTransform();
-            using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                // xslTran.Load(xsltFile);
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-                xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+            //xmlDoc = new XmlDataDocument(ds);
+            //xslTran = new XslCompiledTransform();
+            //using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    // xslTran.Load(xsltFile);
+            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //    xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
 
-            }
-            root = xmlDoc.DocumentElement;
-            nav = root.CreateNavigator();
-            if (File.Exists(outputDocument))
-            {
-                File.Delete(outputDocument);
-            }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            xslTran.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
-            xslTran = null;
+            //}
+            //root = xmlDoc.DocumentElement;
+            //nav = root.CreateNavigator();
+            //if (File.Exists(outputDocument))
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            //xslTran.Transform(nav, writer);
+            //writer.Close();
+            //writer = null;
+            //nav = null;
+            //root = null;
+            //xmlDoc = null;
+            //ds = null;
+            //xslTran = null;
+
+            //Jira #CAP-344 - NewCode
+            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -2846,49 +2858,54 @@ margin:0in 0in 0in 9in;
             //}
             ////
             #endregion
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
-            ds = new DataSet();
-            //ds.ReadXml(xmlDataFile);
-            // ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-            StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+            //Jira #CAP-344 - OldCode
+            //DataSet ds;
+            //XmlDataDocument xmlDoc;
+            //XslCompiledTransform xslTran;
+            //XmlElement root;
+            //XPathNavigator nav;
+            //XmlTextWriter writer;
+            //XsltSettings settings = new XsltSettings(true, false);
+            //ds = new DataSet();
+            ////ds.ReadXml(xmlDataFile);
+            //// ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
-            xmlDoc = new XmlDataDocument(ds);
-            xslTran = new XslCompiledTransform();
-            using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                // xslTran.Load(xsltFile);
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-                xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
-            }
-            root = xmlDoc.DocumentElement;
-            nav = root.CreateNavigator();
-            if (File.Exists(outputDocument))
-            {
-                File.Delete(outputDocument);
-            }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            xslTran.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
-            xslTran = null;
+            //xmlDoc = new XmlDataDocument(ds);
+            //xslTran = new XslCompiledTransform();
+            //using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    // xslTran.Load(xsltFile);
+            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //    xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            //    UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+
+            //}
+            //root = xmlDoc.DocumentElement;
+            //nav = root.CreateNavigator();
+            //if (File.Exists(outputDocument))
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            //xslTran.Transform(nav, writer);
+            //writer.Close();
+            //writer = null;
+            //nav = null;
+            //root = null;
+            //xmlDoc = null;
+            //ds = null;
+            //xslTran = null;
+
+            //Jira #CAP-344 - NewCode
+            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
             string Encounter_signedDate = "";
@@ -3889,48 +3906,52 @@ margin:0in 0in 0in 9in;
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
 
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
+            //Jira #CAP-344 - OldCode
+            //DataSet ds;
+            //XmlDataDocument xmlDoc;
+            //XslCompiledTransform xslTran;
+            //XmlElement root;
+            //XPathNavigator nav;
+            //XmlTextWriter writer;
+            //XsltSettings settings = new XsltSettings(true, false);
 
-            ds = new DataSet();
-            //ds.ReadXml(xmlDataFile);
-            // ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-            StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+            //ds = new DataSet();
+            ////ds.ReadXml(xmlDataFile);
+            //// ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
-            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
-            xmlDoc = new XmlDataDocument(ds);
-            xslTran = new XslCompiledTransform();
-            // xslTran.Load(xsltFile);
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Document XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-            xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Document XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //xmlDoc = new XmlDataDocument(ds);
+            //xslTran = new XslCompiledTransform();
+            //// xslTran.Load(xsltFile);
+            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Document XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Document XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
 
-            root = xmlDoc.DocumentElement;
+            //root = xmlDoc.DocumentElement;
 
 
-            nav = root.CreateNavigator();
-            if (File.Exists(outputDocument))
-            {
-                File.Delete(outputDocument);
-            }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            xslTran.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
+            //nav = root.CreateNavigator();
+            //if (File.Exists(outputDocument))
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            //xslTran.Transform(nav, writer);
+            //writer.Close();
+            //writer = null;
+            //nav = null;
+            //root = null;
+            //xmlDoc = null;
+            //ds = null;
+
+            //Jira #CAP-344 - NewCode
+            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             string htmlString = System.IO.File.ReadAllText(outputDocument);
 
@@ -4533,49 +4554,52 @@ margin:0in 0in 0in 9in;
             NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
+            //Jira #CAP-344 - OldCode
+            //DataSet ds;
+            //XmlDataDocument xmlDoc;
+            //XslCompiledTransform xslTran;
+            //XmlElement root;
+            //XPathNavigator nav;
+            //XmlTextWriter writer;
+            //XsltSettings settings = new XsltSettings(true, false);
 
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
+            //ds = new DataSet();
+            ////ds.ReadXml(xmlDataFile);
+            ////ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            ds = new DataSet();
-            //ds.ReadXml(xmlDataFile);
-            //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-            StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
-            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
-            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+            //xmlDoc = new XmlDataDocument(ds);
+            //xslTran = new XslCompiledTransform();
+            //// xslTran.Load(xsltFile);
+            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
 
-            xmlDoc = new XmlDataDocument(ds);
-            xslTran = new XslCompiledTransform();
-            // xslTran.Load(xsltFile);
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-            xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-
-            root = xmlDoc.DocumentElement;
+            //root = xmlDoc.DocumentElement;
 
 
-            nav = root.CreateNavigator();
-            if (File.Exists(outputDocument))
-            {
-                File.Delete(outputDocument);
-            }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            xslTran.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
+            //nav = root.CreateNavigator();
+            //if (File.Exists(outputDocument))
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            //xslTran.Transform(nav, writer);
+            //writer.Close();
+            //writer = null;
+            //nav = null;
+            //root = null;
+            //xmlDoc = null;
+            //ds = null;
+
+            //Jira #CAP-344 - NewCode
+            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             //  string htmlString = System.IO.File.ReadAllText(outputDocument);
 
@@ -5292,49 +5316,51 @@ margin:0in 0in 0in 9in;
             NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
+            //Jira #CAP-344 - OldCode
+            //DataSet ds;
+            //XmlDataDocument xmlDoc;
+            //XslCompiledTransform xslTran;
+            //XmlElement root;
+            //XPathNavigator nav;
+            //XmlTextWriter writer;
+            //XsltSettings settings = new XsltSettings(true, false);
 
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
+            //ds = new DataSet();
+            ////ds.ReadXml(xmlDataFile);
+            ////ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            ds = new DataSet();
-            //ds.ReadXml(xmlDataFile);
-            //ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-            StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
-            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
-            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+            //xmlDoc = new XmlDataDocument(ds);
+            //xslTran = new XslCompiledTransform();
+            //// xslTran.Load(xsltFile);
+            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
 
-            xmlDoc = new XmlDataDocument(ds);
-            xslTran = new XslCompiledTransform();
-            // xslTran.Load(xsltFile);
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-            xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-
-            root = xmlDoc.DocumentElement;
+            //root = xmlDoc.DocumentElement;
 
 
-            nav = root.CreateNavigator();
-            if (File.Exists(outputDocument))
-            {
-                File.Delete(outputDocument);
-            }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            xslTran.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
+            //nav = root.CreateNavigator();
+            //if (File.Exists(outputDocument))
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            //xslTran.Transform(nav, writer);
+            //writer.Close();
+            //writer = null;
+            //nav = null;
+            //root = null;
+            //xmlDoc = null;
+            //ds = null;
+            //Jira #CAP-344 - NewCode
+            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             //  string htmlString = System.IO.File.ReadAllText(outputDocument);
 

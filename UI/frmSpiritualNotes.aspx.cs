@@ -31,16 +31,16 @@ namespace Acurus.Capella.UI
             string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Spiritual_Notes.xsl");
             string WordOutputName = ClientSession.FacilityName.Replace(",", "") + "_Spiritual_Notes_" + ClientSession.HumanId + "_" + DateTime.Now.ToString("yyyyMMdd hhmmsstt") +".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
+            //Jira #CAP-344 - OldCode
+            //DataSet ds;
+            //XmlDataDocument xmlDoc;
+            //XslCompiledTransform xslTran;
+            //XmlElement root;
+            //XPathNavigator nav;
+            //XmlTextWriter writer;
+            //XsltSettings settings = new XsltSettings(true, false);
 
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
-
-            ds = new DataSet();
+            //ds = new DataSet();
             IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
             EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
             string sXMLEncounterDoc = "";
@@ -51,28 +51,32 @@ namespace Acurus.Capella.UI
                 if (sXMLEncounterDoc.Substring(0, 1) != "<")
                     sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
             }
-            TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
-            //XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
-            ds.ReadXml(EncXMLContent);
+            //Jira #CAP-344 - OldCode
+            //TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
+            ////XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
+            //ds.ReadXml(EncXMLContent);
 
-            xmlDoc = new XmlDataDocument(ds);
-            xslTran = new XslCompiledTransform();
-            xslTran.Load(xsltFile);
-            xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-            root = xmlDoc.DocumentElement;
-            nav = root.CreateNavigator();
-            if (File.Exists(outputDocument))
-            {
-                File.Delete(outputDocument);
-            }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            xslTran.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
+            //xmlDoc = new XmlDataDocument(ds);
+            //xslTran = new XslCompiledTransform();
+            //xslTran.Load(xsltFile);
+            //xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            //root = xmlDoc.DocumentElement;
+            //nav = root.CreateNavigator();
+            //if (File.Exists(outputDocument))
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            //xslTran.Transform(nav, writer);
+            //writer.Close();
+            //writer = null;
+            //nav = null;
+            //root = null;
+            //xmlDoc = null;
+            //ds = null;
+
+            //Jira #CAP-344 - NewCode
+            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, String.Empty, xsltFile, outputDocument, string.Empty);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             string htmlString = System.IO.File.ReadAllText(outputDocument);
             string Patient_Name = "";

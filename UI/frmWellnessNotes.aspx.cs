@@ -366,45 +366,46 @@ namespace Acurus.Capella.UI
                 //Jira #CAP-115
                 sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
             }
+            //Jira #CAP-344 - OldCode
+            //DataSet ds;
+            //XmlDataDocument xmlDoc;
+            //XslCompiledTransform xslTran;
+            //XmlElement root;
+            //XPathNavigator nav;
+            //XmlTextWriter writer;
+            //XsltSettings settings = new XsltSettings(true, false);
+            //ds = new DataSet();
+            ////ds.ReadXml(xmlDataFile);
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
 
-            DataSet ds;
-            XmlDataDocument xmlDoc;
-            XslCompiledTransform xslTran;
-            XmlElement root;
-            XPathNavigator nav;
-            XmlTextWriter writer;
-            XsltSettings settings = new XsltSettings(true, false);
-            ds = new DataSet();
-            //ds.ReadXml(xmlDataFile);
-            StringBuilder sb = new StringBuilder();
-            sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
 
-            string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
 
-            sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
-
-            xmlDoc = new XmlDataDocument(ds);
-            xslTran = new XslCompiledTransform();
-            using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-            }
-            root = xmlDoc.DocumentElement;
-            nav = root.CreateNavigator();
-            if (File.Exists(outputDocument))
-            {
-                File.Delete(outputDocument);
-            }
-            writer = new XmlTextWriter(outputDocument, System.Text.Encoding.Default);
-            xslTran.Transform(nav, writer);
-            writer.Close();
-            writer = null;
-            nav = null;
-            root = null;
-            xmlDoc = null;
-            ds = null;
-
+            //xmlDoc = new XmlDataDocument(ds);
+            //xslTran = new XslCompiledTransform();
+            //using (var stream = File.Open(xsltFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            //}
+            //root = xmlDoc.DocumentElement;
+            //nav = root.CreateNavigator();
+            //if (File.Exists(outputDocument))
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.Default);
+            //xslTran.Transform(nav, writer);
+            //writer.Close();
+            //writer = null;
+            //nav = null;
+            //root = null;
+            //xmlDoc = null;
+            //ds = null;
+            //Jira #CAP-344 - NewCode
+            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, string.Empty);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
 
