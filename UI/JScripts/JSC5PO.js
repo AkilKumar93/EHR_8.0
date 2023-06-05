@@ -1,5 +1,6 @@
 ﻿window.top.setInterval(function () {
-    if ($(top.window.document).find("#CheckAlert") != undefined)
+    //CAP 312 cannot read properties of undefined (reading style) SOURCE
+    if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert") != null && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null)
         $(top.window.document).find("#CheckAlert")[0].style.display = "none";
 }, 5000);
 
@@ -1851,7 +1852,8 @@ function OnClientClickedSubMenu(data) {
         else {
             var result = openModal("frmPatientCommunication.aspx?IsMYQ=N", 810, 1050, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
+            //CAP-302 - handle null value
+            WindowName?.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
         }
         return false;
     }
