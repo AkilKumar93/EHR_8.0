@@ -456,27 +456,45 @@ function MyQclick() {
         if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Encounters") > -1 && $('#RefreshMyQ').is(":visible")) {
             var Showall = '';
             $("#chkShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-            var apptdt = $(currRow)[0].children[1].innerText.trim();
+            var apptdt = $(currRow)[0]?.children[1]?.innerText.trim();
             //var Curprocess = $(currRow)[0].children[7].innerText.trim();
             var Curprocess = '';
-            var human_id = $(currRow)[0].children[2].innerText.trim();
+            var human_id = $(currRow)[0]?.children[2]?.innerText.trim();
             var PhyID = '';
             var date = '';
             var encounter_id = '';
             var objtype = '';
-            if ($(currRow)[0].children[6].innerText.trim() == 'TECHNICIAN_PROCESS') {
-                Curprocess = $(currRow)[0].children[6].innerText.trim()
-                PhyID = $(currRow)[0].children[11].innerText.trim();
-                date = $(currRow)[0].children[13].innerText.trim();
-                encounter_id = $(currRow)[0].children[10].innerText.trim();
-                objtype = $(currRow)[0].children[12].innerText.trim();
+            //CAP 314  Uncaught Type Error: Cannot read properties of undefined (reading inner Text)    
+            if ($(currRow)[0]?.children[6]?.innerText.trim() == 'TECHNICIAN_PROCESS' && $(currRow)[0]?.children[6]?.innerText.trim() != undefined && $(currRow)[0]?.children[6]?.innerText.trim() != null) {
+                Curprocess = $(currRow)[0]?.children[6]?.innerText.trim()
+                PhyID = $(currRow)[0]?.children[11]?.innerText.trim();
+                date = $(currRow)[0]?.children[13]?.innerText.trim();
+                encounter_id = $(currRow)[0]?.children[10]?.innerText.trim();
+                objtype = $(currRow)[0]?.children[12]?.innerText.trim();
             }
             else {
-                Curprocess = $(currRow)[0].children[7].innerText.trim();
-                PhyID = $(currRow)[0].children[14].innerText.trim();
-                date = $(currRow)[0].children[16].innerText.trim();
-                encounter_id = $(currRow)[0].children[13].innerText.trim();
-                objtype = $(currRow)[0].children[15].innerText.trim();
+                Curprocess = $(currRow)[0]?.children[7]?.innerText.trim();
+                PhyID = $(currRow)[0]?.children[14]?.innerText.trim();
+                date = $(currRow)[0]?.children[16]?.innerText.trim();
+                encounter_id = $(currRow)[0]?.children[13]?.innerText.trim();
+                objtype = $(currRow)[0]?.children[15]?.innerText.trim();
+            }
+
+            //CAP-314 alert message if any parameter missing
+            if (Curprocess == undefined || Curprocess == null || Curprocess == '') {
+                alert("Curprocess is undefined. Please relogin and try again.");
+            }
+            else if (PhyID == undefined || PhyID == null || PhyID == '') {
+                alert("PhyID is undefined. Please relogin and try again.");
+            }
+            else if (date == undefined || date == null || date == '') {
+                alert("Date is undefined. Please relogin and try again.");
+            }
+            else if (encounter_id == undefined || encounter_id == null || encounter_id == '') {
+                alert("Encounter_ID is undefined. Please relogin and try again.");
+            }
+            else if (objtype == undefined || objtype == null || objtype == '') {
+                alert("ObjType is undefined. Please relogin and try again.");
             }
 
             var now = new Date();
