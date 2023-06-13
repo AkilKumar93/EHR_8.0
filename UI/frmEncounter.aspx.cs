@@ -2762,14 +2762,28 @@ namespace Acurus.Capella.UI
                     {
                         cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(hdnindex.Value));                        
                         hdnindex.Value = cboPhysicianName.SelectedValue;
-                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
-                      
+                        if (hdnindex.Value != "0")
+                        {
+                            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        }
+                        else
+                        {
+                            hdnLocalPhy.Value = string.Empty;
+                        }
+
                     }
                     else
                     {
                         cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(ViewState["DefaultPhysicianID"].ToString()));
                         hdnindex.Value = cboPhysicianName.SelectedValue;
-                        hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();                        
+                        if (hdnindex.Value != "0")
+                        {
+                            hdnLocalPhy.Value = cboPhysicianName.SelectedValue + '~' + hashUser[cboPhysicianName.SelectedValue].ToString();
+                        }
+                        else
+                        {
+                            hdnLocalPhy.Value = string.Empty;
+                        }
                     }
                 }
                 else
