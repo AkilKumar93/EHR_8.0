@@ -2155,12 +2155,18 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
         </asp:PlaceHolder>
     </form>
     <script>
+        //CAP-393 - It will store IP address.
         var ipAddress = "";
-        $(document).ready(function () {
-            $.getJSON('https://api.ipify.org?format=json', function (data) {
-                ipAddress = data.ip;
+        function getIpAddress() {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "https://api.ipify.org?format=json",
+                success: function (data) {
+                    ipAddress = data.ip;
+                }
             });
-        });
+        }
 
         //CAP-29 - Internet check event.
         function formatAMPM(date) {
@@ -2188,6 +2194,7 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
             $("#divInternetLoader").css("display", "none");
             sessionStorage.setItem('StartLoading', 'true');
             StartLoadFromPatChart();
+            getIpAddress();
 
             var onlineTime = formatAMPM(new Date());
             var ErrorLogData = {
