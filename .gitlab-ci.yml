@@ -26,7 +26,7 @@ before_script:
  
 build Job 4:
   tags:
-    - azure test4 tag
+    - Azure_test_4
   rules:
     - if: '$SERVER_TESTING_4 =="10.0.0.4"'
   stage: Solution build 4
@@ -127,7 +127,7 @@ build Production Job 10:
 
 Deploy Test Job 10.0.0.4 :
   tags:
-    - azure test4 tag
+    - Azure_test_4
   rules:
     - if: '$SERVER_TESTING_4 =="10.0.0.4"'
   environment:
