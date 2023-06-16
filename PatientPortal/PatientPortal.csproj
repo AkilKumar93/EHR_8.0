@@ -139,9 +139,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343.xml" />
-    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622.xml" />
-    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158.xml" />
     <Content Include="bin\Acurus.Capella.Core.dll" />
     <Content Include="bin\Acurus.Capella.Core.pdb" />
     <Content Include="bin\Acurus.Capella.DataAccess.dll" />
@@ -240,6 +237,9 @@
     <Content Include="JScripts\Lazyload.js" />
     <Content Include="JScripts\metro.js" />
     <Content Include="JScripts\tooltip.min.js" />
+    <Content Include="obj\Debug\Acurus.Capella.PatientPortal.dll" />
+    <Content Include="obj\Debug\Acurus.Capella.PatientPortal.pdb" />
+    <Content Include="obj\Debug\PatientPortal.csproj.FileListAbsolute.txt" />
     <Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <Content Include="Resources\16_16.ico" />
     <Content Include="Resources\articleicon.png" />
@@ -603,6 +603,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HL7Generator.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="PDFGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\PatientPortalServiceReference\Reference.cs">
@@ -690,18 +691,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
-    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041012_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
-    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904_N_OG_AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
+    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\PatientPortal.csproj.AssemblyReference.cache" />
+    <Content Include="obj\Debug\PatientPortal.csproj.CopyComplete" />
+    <Content Include="obj\Debug\PatientPortal.csproj.CoreCompileInputs.cache" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Service References\PatientPortalServiceReference\PatientPortalWebService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\" />
+    <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
