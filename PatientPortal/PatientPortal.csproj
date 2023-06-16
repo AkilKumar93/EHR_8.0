@@ -690,13 +690,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
     <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
     <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041012_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
+    <Content Include="atala-capture-download\mz5zm3drzbgplxqlsrd4bzdp\MAILINBOX\CheckAAA_Acurus__1904_N_OG_AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Service References\PatientPortalServiceReference\PatientPortalWebService.wsdl" />
   </ItemGroup>
