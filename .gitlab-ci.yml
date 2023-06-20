@@ -149,11 +149,11 @@ Deploy Test Job 10.0.0.4 :
   #- echo "Deployee CMG BLOBIMP..Completed.."
 
   - echo "Backup CMG MT..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+  - xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
   - echo "Backup CMG MT..Completed.."
 
   - echo "Deployee CMG MT..Start.."
-  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
   - echo "Deployee CMG MT..Completed.."
 
  
