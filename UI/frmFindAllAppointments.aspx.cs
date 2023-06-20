@@ -177,7 +177,7 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + ex, null);
+                logFile.Info(DateTime.UtcNow.ToString() + ex.Message, null);
             }
 }
         bool IsDigitsOnly(string str)
@@ -239,7 +239,7 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + ex, null);
+                logFile.Info(DateTime.UtcNow.ToString() + ex.Message, null);
             }
         }
 
@@ -396,7 +396,7 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "-  RefreshPageButtons - "+ex, null);
+                logFile.Info(DateTime.UtcNow.ToString() + "-  RefreshPageButtons - "+ex.Message, null);
             }
         }
         public void FillResult(IList<FillWillingonCancel> MyApptList)
@@ -565,7 +565,7 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + ex, null);
+                logFile.Info(DateTime.UtcNow.ToString() + ex.Message, null);
             }
         }
         protected void PageChangeEventHandler(object sender, CommandEventArgs e)

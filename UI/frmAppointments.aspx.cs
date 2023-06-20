@@ -634,7 +634,7 @@ namespace Acurus.Capella.UI
                }
             catch (Exception ex)
             {
-                logFile.Info(DateTime.UtcNow.ToString() +ex, null);
+                logFile.Info(DateTime.UtcNow.ToString() +ex.Message, null);
             }
             logFile.Info(DateTime.UtcNow.ToString() + "- Page Load - End", null);
         }
@@ -683,7 +683,7 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "cboFacilityName_SelectedIndexChanged"+ex, null);
+                logFile.Info(DateTime.UtcNow.ToString() + "cboFacilityName_SelectedIndexChanged"+ex.Message, null);
             }
             #endregion
 
@@ -3461,7 +3461,7 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -"+ex, null);
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillAllAppointmentsForDate -"+ex.Message, null);
             }
             #endregion
             #endregion
@@ -4307,7 +4307,7 @@ namespace Acurus.Capella.UI
             }
             catch(Exception ex)
             {
-                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp -"+ex, null);
+                logFile.Info(DateTime.UtcNow.ToString() + "-FillCheckListBoxForFOSetUp -"+ex.Message, null);
             }
         }
         #endregion
