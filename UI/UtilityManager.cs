@@ -31,7 +31,6 @@ using Acurus.Capella.DataAccess;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Xml.Xsl;
 using System.Xml.XPath;
-using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Acurus.Capella.UI
 {
