@@ -1186,7 +1186,7 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
         }
         else {
             //inserLog(leaf[0].id.split('^')[1], "0", "Opening Encounter from Leftside PatientChart");
-            $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + leaf[0].id.split('^')[1];
+            $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + leaf[0].id.split('^')[1]+"&TabMode=true";
             document.getElementById(GetClientId("hdnEncounterId")).value = leaf[0].id.split('^')[1];
             sessionStorage.setItem("EncId_PatSummaryBar", leaf[0].id.split('^')[1]);
             sessionStorage.setItem("Enc_DOS", leaf[0].innerText.split(' - ')[0]);
@@ -1246,7 +1246,7 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
     }
     else if (leaf[0].id.split('^')[0] == "Phone Encounter") {
         var sScreenName = "PatientChart";
-        $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?PhoneEncounter=True&EncounterId=" + leaf[0].id.split('^')[2];
+        $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?PhoneEncounter=True&EncounterId=" + leaf[0].id.split('^')[2] + "&TabMode=true";
         localStorage.setItem("SummaryTab", "false");
     }
     else if (leaf[0].id.split('^')[3] == "Exam") {

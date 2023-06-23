@@ -1357,7 +1357,7 @@ function OpenModal(data) {
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
 
             StartLoadingImage();
-            $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF";
+            $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF&TabMode=true";
             $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Progress Notes";
 
 

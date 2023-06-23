@@ -19,7 +19,8 @@ function SummaryHumanIDAlert(sMessage) {
     }
     //GitLab #3933  
     if (document.getElementById('summarydiv')?.innerText != undefined) {
-        document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
+        //document.getElementById('summarydiv').innerText = sMessage + " is not found. Please contact support team to regenerate the XML.";
+        document.getElementById('summarydiv').innerText = sMessage;
     }
 }
 
@@ -95,10 +96,10 @@ $(document).ready(function () {
      {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
      var $target = $('#xslFrame');
 
-     if (localStorage.getItem("SummaryTab") == "true") {
-         document.getElementById('btnServiceProcedureCode').style.display = "none";
-         document.getElementById('btnServiceProcedureCode').removeAttribute("class");
-     }
+    if (localStorage.getItem("SummaryTab") == "true") {
+        document.getElementById('btnServiceProcedureCode').style.display = "none";
+        document.getElementById('btnServiceProcedureCode').removeAttribute("class");
+    }
     $("#txtSearch").on('input', function (e) {
 
         $("#xslFrame").unhighlight();

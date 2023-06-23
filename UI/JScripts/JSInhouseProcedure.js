@@ -458,7 +458,11 @@ function ImplantableScreenOpen(isUDI) {
     $(top.window.document).find("#TabModalTitleImplantable")[0].textContent = "Manage Implantable Device";
     $(top.window.document).find("#TabFrameImplantable")[0].style.height = "95%";
     $(top.window.document).find(".modal-body")[8].style.height = "80%";
-    $(top.window.document).find("#TabFrameImplantable")[0].contentDocument.location.href = "frmImplantableDevice.aspx?ProcedureCode=" + Prodecure + "&Notes=" + ProNotes + "&Issaveorupdate=" + saveupdate + "&UpdateKeyValue=" + Updatekey + "&EncounterID=" + EncId;
+    var ScreenMode = '';
+    if (document.URL.split('&')[3].indexOf('ScreenMode') > -1) {
+        ScreenMode = document.URL.split('&')[3].split('=')[1];
+    }
+    $(top.window.document).find("#TabFrameImplantable")[0].contentDocument.location.href = "frmImplantableDevice.aspx?ProcedureCode=" + Prodecure + "&Notes=" + ProNotes + "&Issaveorupdate=" + saveupdate + "&UpdateKeyValue=" + Updatekey + "&EncounterID=" + EncId + "&ScreenMode=" + ScreenMode;
 
     document.getElementById("hdngroupkey").value = "";
     document.getElementById("IsSaveOrUpdate").value = "";

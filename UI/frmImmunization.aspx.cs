@@ -2528,7 +2528,8 @@ namespace Acurus.Capella.UI
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "Order_SaveUnsuccessful();DisplayErrorMessage('290007');", true);
                 }
             }
-            if (EncounterID != 0)
+            //if (EncounterID != 0)
+            if (EncounterID != 0 && Request["ScreenMode"] != null && Request["ScreenMode"].ToString() != "Menu")
             {
                 if (ClientSession.FillEncounterandWFObject != null)
                 {
@@ -2817,7 +2818,8 @@ namespace Acurus.Capella.UI
             }
             ViewState["Immunization"] = objImmunizationFill;
             ImmunListBasedOnEncID = objImmunizationFill.Immunization;
-            if (objImmunization.Encounter_Id != 0)
+            //if (objImmunization.Encounter_Id != 0)
+            if (objImmunization.Encounter_Id != 0 && Request["Screen"] != null && Request["Screen"].ToString() != "Menu")
             {
                 if (ClientSession.FillEncounterandWFObject != null)
                 {
