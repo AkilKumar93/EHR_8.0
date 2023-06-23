@@ -86,7 +86,7 @@ namespace Acurus.Capella.UI
             }
             //Jira CAP-379
             UtilityManager utilitymngr = new UtilityManager();
-            Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), Encounter_Id, ilstEncounterBlob, out sXMLHumanDoc);
+            Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), Convert.ToUInt64(ClientSession.EncounterId), ilstEncounterBlob,"true", out sXMLHumanDoc);
 
             if (bAlert == true)
             {

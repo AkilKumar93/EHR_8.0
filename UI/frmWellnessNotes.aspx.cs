@@ -171,6 +171,7 @@ namespace Acurus.Capella.UI
                 {
                     DownloadNotes(xsltFile, NotesName, sNotesName);
                 }
+                
             }
 
         }
@@ -221,12 +222,11 @@ namespace Acurus.Capella.UI
                         //HumanBlobManager HumanBlobMngr = new HumanBlobManager();
                         //IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(ClientSession.HumanId);
                         UtilityManager utilitymngr = new UtilityManager();
-                        Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), ulMyEncounterID, ilstEncounterBlob, out sXMLHumanDoc);
+                        Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), ulMyEncounterID, ilstEncounterBlob,"true", out sXMLHumanDoc);
 
                         if (bAlert == true)
                         {
-                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('1011194'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                            return string.Empty;
+                            throw new Exception("Locked Human xml is not present. Please contact support.");
                         }
                         //if (ilstHumanBlob.Count > 0)
                         if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
@@ -399,7 +399,7 @@ namespace Acurus.Capella.UI
             }
             //Jira CAP-379
             UtilityManager utilitymngr = new UtilityManager();
-            Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), Convert.ToUInt64(ClientSession.EncounterId), ilstEncounterBlob, out sXMLHumanDoc);
+            Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(ClientSession.HumanId), Convert.ToUInt64(ClientSession.EncounterId), ilstEncounterBlob, "true", out sXMLHumanDoc);
 
             if (bAlert == true)
             {

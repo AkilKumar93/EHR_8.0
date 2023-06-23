@@ -1657,7 +1657,7 @@ namespace Acurus.Capella.UI
                 lstSocHisMaster = UpdateListMaster.Where(p => p.Is_Deleted == "N").ToList();
             }
             Session["SocialHistoryMaster"] = lstSocHisMaster;
-            if (ClientSession.EncounterId != 0)
+            if (ClientSession.EncounterId != 0 && UIManager.PFSH_OpeingFrom != "Menu")
             {
                 if (ClientSession.FillEncounterandWFObject != null)
                 {

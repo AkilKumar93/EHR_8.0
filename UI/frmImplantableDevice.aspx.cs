@@ -305,7 +305,8 @@ namespace Acurus.Capella.UI
             }
             btnAdd.Enabled = false;
             btnFind.Enabled = false;
-            if (ClientSession.EncounterId != 0)
+            //if (ClientSession.EncounterId != 0)
+            if (ClientSession.EncounterId != 0 && Request["ScreenMode"] != null && Request["ScreenMode"] != "Menu")
             {
                 if (ClientSession.FillEncounterandWFObject != null)
                 {

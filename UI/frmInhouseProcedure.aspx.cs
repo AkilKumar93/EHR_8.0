@@ -246,7 +246,8 @@ namespace Acurus.Capella.UI
                 btnAdd.Enabled = false;
                 chklstOtherProcedures.Enabled = true;
                 btnManageFrequentlyUsed.Enabled = true;
-                if (ClientSession.EncounterId != 0)
+                //if (ClientSession.EncounterId != 0)
+                if (ClientSession.EncounterId != 0 && Request["ScreenMode"] != null && Request["ScreenMode"].ToString() != "Menu")
                 {
                     if (ClientSession.FillEncounterandWFObject != null)
                     {
@@ -595,7 +596,8 @@ namespace Acurus.Capella.UI
             ViewState["Procedure"] = objOtherProDTO;
             if (lstUpdate.Count > 0)
             {
-                if (lstUpdate[0].Encounter_ID != 0)
+                //if (lstUpdate[0].Encounter_ID != 0)
+                if (lstUpdate[0].Encounter_ID != 0 && Request["ScreenMode"]!= null && Request["ScreenMode"].ToString() != "Menu")
                 {
                     if (ClientSession.FillEncounterandWFObject != null)
                     {

@@ -96,10 +96,10 @@ $(document).ready(function () {
      {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
      var $target = $('#xslFrame');
 
-     if (localStorage.getItem("SummaryTab") == "true") {
-         document.getElementById('btnServiceProcedureCode').style.display = "none";
-         document.getElementById('btnServiceProcedureCode').removeAttribute("class");
-     }
+    if (localStorage.getItem("SummaryTab") == "true") {
+        document.getElementById('btnServiceProcedureCode').style.display = "none";
+        document.getElementById('btnServiceProcedureCode').removeAttribute("class");
+    }
     $("#txtSearch").on('input', function (e) {
 
         $("#xslFrame").unhighlight();

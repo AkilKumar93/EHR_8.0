@@ -43,6 +43,7 @@ namespace Acurus.Capella.UI
         string sXMLEncounterDoc = string.Empty;
         HumanBlobManager HumanBlobMngr = new HumanBlobManager();
         EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+        string sTabMode = "false";
         protected void Page_Load(object sender, EventArgs e)
         {
             Loadsummary();
@@ -51,6 +52,10 @@ namespace Acurus.Capella.UI
 
         public void Loadsummary()
         {
+            if (Request.QueryString["TabMode"] != null && Request.QueryString["TabMode"].ToString() != string.Empty)
+            {
+                sTabMode = Request.QueryString["TabMode"].ToString();
+            }
             Stopwatch objTimer = new Stopwatch();
             objTimer.Start();
             string transformtime = "";
@@ -135,7 +140,6 @@ namespace Acurus.Capella.UI
                 //btnword.Visible = false;
                 txtSearch.Visible = false;
                 btnServiceProcedureCode.Visible = false;
-
                 IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
                 ActivityLogManager ActivitylogMngr = new ActivityLogManager();
                 ActivityLog activity = new ActivityLog();
@@ -581,7 +585,7 @@ namespace Acurus.Capella.UI
             {
                 //Jira CAP-379
                 UtilityManager utilitymngr = new UtilityManager();
-                Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(HumanID), Encounter_Id, ilstEncounterBlob, out sXMLHumanDoc);
+                Boolean bAlert = utilitymngr.LoadBlobHumanXML(Convert.ToUInt64(HumanID), Encounter_Id, ilstEncounterBlob, sTabMode, out sXMLHumanDoc);
 
                 if (bAlert == true)
                 {

@@ -5846,21 +5846,35 @@ namespace Acurus.Capella.UI
             }
         }
 
-        public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob, out string sXMLHumanDoc)
+        public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob,string sTabMode, out string sXMLHumanDoc)
         {
             Boolean bAlert = false;
             sXMLHumanDoc = string.Empty;
-            WFObjectManager wfObjMngr = new WFObjectManager();
-            WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
-            if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE")
+            if (sTabMode == "true")
             {
-                if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
+                WFObjectManager wfObjMngr = new WFObjectManager();
+                WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
+
+                if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE")
                 {
-                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                    if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
+                    {
+                        sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                    }
+                    else
+                    {
+                        bAlert = true;
+                    }
                 }
                 else
                 {
-                    bAlert = true;
+                    IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+                    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                    ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ulHumanID));
+                    if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
+                    {
+                        sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                    }
                 }
             }
             else
@@ -5872,6 +5886,7 @@ namespace Acurus.Capella.UI
                 {
                     sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                 }
+
             }
             return bAlert;
         }
