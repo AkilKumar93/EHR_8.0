@@ -31,6 +31,7 @@ using Acurus.Capella.DataAccess;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Xml.Xsl;
 using System.Xml.XPath;
+using System.Security.RightsManagement;
 
 namespace Acurus.Capella.UI
 {
@@ -3263,7 +3264,8 @@ namespace Acurus.Capella.UI
             return sSnomedCode;
         }
 
-        class FileErrorList
+        
+         class FileErrorList
         {
             public string FileName { get; set; }
             public int TotalErrorCount { get; set; }
@@ -5842,6 +5844,36 @@ namespace Acurus.Capella.UI
                 xmlDoc = null;
                 ds = null;
             }
+        }
+
+        public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob, out string sXMLHumanDoc)
+        {
+            Boolean bAlert = false;
+            sXMLHumanDoc = string.Empty;
+            WFObjectManager wfObjMngr = new WFObjectManager();
+            WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
+            if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE")
+            {
+                if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)
+                {
+                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                }
+                else
+                {
+                    bAlert = true;
+                }
+            }
+            else
+            {
+                IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+                HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ulHumanID));
+                if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
+                {
+                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                }
+            }
+            return bAlert;
         }
     }
 }
