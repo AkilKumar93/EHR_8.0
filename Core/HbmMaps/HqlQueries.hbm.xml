@@ -13774,6 +13774,12 @@ and w.Current_Process<>'CANCELLED' and h.Human_ID is not NULL) as main left join
     w_arc.Obj_System_ID = ? and w_arc.Obj_Type=?;]]>
 
 	</sql-query>
+	<sql-query name="Get.Enc.Details.wfobjArchive.Tables">
+
+		<![CDATA[SELECT  w_arc.WF_Object_Id, w_arc.Obj_System_Id, w_arc.Obj_Type, w_arc.Obj_Sub_Type, w_arc.Facility_Name, w_arc.Current_Process, cast(w_arc.Current_Arrival_Time as CHAR(100)), w_arc.Current_Owner, w_arc.Priority, w_arc.Parent_Obj_Type, w_arc.Parent_Obj_System_Id, w_arc.Process_Allocation, w_arc.Version, w_arc.Doc_Type, w_arc.Doc_Sub_Type,w_arc.Is_Default_MyQ_LineItem  FROM wf_object_arc w_arc where 
+    w_arc.Obj_System_ID = ? and w_arc.Obj_Type=?;]]>
+
+	</sql-query>
 	<!--<sql-query name="GetAppointmentsByDatePhysicianFacility">
 
     <![CDATA[select main2.*,if(count(main2.encounter_id) = 2,"Y","N") as Document_Type from
