@@ -2162,14 +2162,14 @@ filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
 
         //CAP-393 - It will store IP address.
         function getIpAddress() {
-            $.ajax({
-                type: "GET",
-                async: false,
-                url: "https://api.ipify.org?format=json",
-                success: function (data) {
-                    ipAddress = data.ip;
-                }
-            });
+            //$.ajax({
+            //    type: "GET",
+            //    async: false,
+            //    url: "https://api.ipify.org?format=json",
+            //    success: function (data) {
+            //        ipAddress = data.ip;
+            //    }
+            //});
         }
 
         //CAP-29 - Internet check event.
