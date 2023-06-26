@@ -93,7 +93,18 @@ function OpenEfax(sFaxSubject, sRefProvider)
 }
 $(document).ready(function () {
     document.title = "Summary";
-     {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //Jira CAP-485
+    if (document.getElementById("btnCancelPhoneEnc") != null && document.getElementById("btnCancelPhoneEnc") != undefined) {
+        let url = document.URL.split('?')[1].split("&").indexOf("PhoneEncounter=True");
+        if (url <= -1) {
+            document.getElementById("btnCancelPhoneEnc").style.visibility = "hidden";
+        }
+        else {
+            document.getElementById("btnCancelPhoneEnc").style.visibility = "visible";
+        }
+    }
+    
      var $target = $('#xslFrame');
 
     if (localStorage.getItem("SummaryTab") == "true") {

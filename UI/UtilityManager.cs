@@ -5855,6 +5855,11 @@ namespace Acurus.Capella.UI
                 WFObjectManager wfObjMngr = new WFObjectManager();
                 WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
 
+                if (DocumentationWfObject != null && DocumentationWfObject.Current_Process == string.Empty)
+                {
+                    DocumentationWfObject = wfObjMngr.GetWfObjArchiveByObjectSystemId(ulEncounterID, "DOCUMENTATION");
+                }
+
                 if (DocumentationWfObject.Current_Process == "DOCUMENT_COMPLETE")
                 {
                     if (ilstEncounterBlob != null && ilstEncounterBlob.Count > 0 && ilstEncounterBlob[0].Human_XML != null)

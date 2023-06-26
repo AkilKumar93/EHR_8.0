@@ -70,6 +70,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void UpdateAbnormalFlag(ulong ulObjSystemID, string ObjType, string sAbnormal);
         WFObject GetByObjectSystemIdAnfObjType(ulong ObjectSystemId, string ObjectType);
         void GetWfObjDetails(string UserName, ulong encounter_id, out string Obj_Type, out string Curr_Process, out bool Owner_Enc_Mismatch);//Added for CarePointe
+
+        WFObject GetWfObjArchiveByObjectSystemId(ulong ObjectSystemId, string ObjectType);
     }
     public partial class WFObjectManager : ManagerBase<WFObject, ulong>, IWFObjectManager
     {
@@ -4119,6 +4121,50 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 Curr_Process = "";
                 Owner_Enc_Mismatch = true;
             }
+        }
+
+
+        public WFObject GetWfObjArchiveByObjectSystemId(ulong ObjectSystemId, string ObjectType)
+        {
+            WFObject ResultWFObj = new WFObject();
+
+            ArrayList MyList = new ArrayList();
+
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                IQuery query1 = iMySession.GetNamedQuery("Get.Enc.Details.wfobjArchive.Tables");
+                query1.SetString(0, ObjectSystemId.ToString());
+                query1.SetString(1, ObjectType);
+
+                MyList.AddRange(query1.List());
+
+                if (MyList != null)
+                {
+                    for (int i = 0; i < MyList.Count; i++)
+                    {
+                        object[] oj = (object[])MyList[i];
+                        ResultWFObj.Id = Convert.ToUInt32(oj[0]);
+                        ResultWFObj.Obj_System_Id = Convert.ToUInt32(oj[1]);
+                        ResultWFObj.Obj_Type = oj[2].ToString();
+                        ResultWFObj.Obj_Sub_Type = oj[3].ToString();
+                        ResultWFObj.Fac_Name = oj[4].ToString();
+                        ResultWFObj.Current_Process = oj[5].ToString();
+                        ResultWFObj.Current_Arrival_Time = Convert.ToDateTime(oj[6]);
+                        ResultWFObj.Current_Owner = oj[7].ToString();
+                        ResultWFObj.Priority = oj[8].ToString();
+                        ResultWFObj.Parent_Obj_Type = oj[9].ToString();
+                        ResultWFObj.Parent_Obj_System_Id = Convert.ToUInt32(oj[10]);
+                        ResultWFObj.Process_Allocation = oj[11].ToString();
+                        ResultWFObj.Version = Convert.ToInt32(oj[12]);
+                        ResultWFObj.Doc_Type = oj[13].ToString();
+                        ResultWFObj.Doc_Sub_Type = oj[14].ToString();
+                        ResultWFObj.Is_Default_MyQ_LineItem = Convert.ToInt32(oj[15]);
+                    }
+
+                }
+                iMySession.Close();
+            }
+            return ResultWFObj;
         }
         #endregion
     }

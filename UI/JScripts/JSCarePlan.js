@@ -1327,10 +1327,12 @@ function FillCarePlanTable(objdata, MasterID) {
                                 $(lbl[0].parentNode.nextElementSibling.nextElementSibling.nextElementSibling).find('textarea')[0].disabled = "true"
                         }
 
-                        else if ((objdata[i].Care_Name_Value.toUpperCase().indexOf("BREAST") > -1)) {
-                            lbl[0].parentNode.nextElementSibling.children[0].disabled = "true";
-                            $(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]).datepicker('disable');
-                        }
+                        //Jira CAP-447
+                        //else if ((objdata[i].Care_Name_Value.toUpperCase().indexOf("BREAST") > -1)) {
+                        //    lbl[0].parentNode.nextElementSibling.children[0].disabled = "true";
+                        //    lbl[0].parentNode.nextElementSibling.children[0].style.backgroundColor = "rgba(191, 219, 255,1)";
+                        //    $(lbl[0].parentNode.nextElementSibling.nextElementSibling.children[0]).datepicker('disable');
+                        //}
                         if (objdata[i].Status == "") {
                             lbl[0].parentNode.nextElementSibling.children[0].selectedIndex = 0;
                         }
