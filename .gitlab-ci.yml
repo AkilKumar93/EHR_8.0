@@ -77,7 +77,7 @@ build Job 11:
 
 build Production Job 6:
   tags:
-    - azure prod 6 tag
+    - Azure_prod_6
   rules:
     - if: '$SERVER_PRODUCTION_6 =="10.1.0.6"'
   stage: Solution build production 6
@@ -102,7 +102,7 @@ build Production Job 6:
 
 build Production Job 10:
   tags:
-    - Azure prod 10 tag
+    - Azure_prod_10
   rules:
     - if: '$SERVER_PRODUCTION_10 =="10.1.0.10"'
   stage: Solution build Production 10
@@ -222,7 +222,7 @@ Deploy Test Job 10.0.0.11:
 
 Deploy PRODUCTION Job 10.1.0.6 :
   tags:
-    - azure prod 6 tag
+    - Azure_prod_6
   rules:
     - if: '$SERVER_PRODUCTION_6 =="10.1.0.6"'
   environment:
@@ -236,13 +236,13 @@ Deploy PRODUCTION Job 10.1.0.6 :
   - echo "Backup CMG..Completed.."
   
   - echo "Deployee CMG..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
   #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\Deployee\builds\Capella_publish_test\"
   - echo "Deployee CMG..Completed.."
 
 Deploy PRODUCTION Job 10.1.0.10 :
   tags:
-    - Azure prod 10 tag
+    - Azure_prod_10
   rules:
     - if: '$SERVER_PRODUCTION_10 =="10.1.0.10"'
   environment:
@@ -256,7 +256,7 @@ Deploy PRODUCTION Job 10.1.0.10 :
   - echo "Backup CMG..Completed.."
   
   - echo "Deployee CMG..Start.."  
-  - xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+  #- xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
   - echo "Deployee CMG..Completed.."
 
   #- echo "Backup Wish..Start.."
