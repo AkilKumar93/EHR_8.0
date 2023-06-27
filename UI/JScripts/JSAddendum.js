@@ -46,7 +46,8 @@ function showTime(sender, args) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
 }
 function refreshChart(encID) {
-    $(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + encID;
+    //$(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + encID;
+    $(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + encID +"&TabMode=true";
 }
 
 function OpenException() {

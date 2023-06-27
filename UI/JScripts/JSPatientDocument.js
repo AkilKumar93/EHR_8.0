@@ -121,7 +121,8 @@ $("#btnPrint").click(function () {
                 }
                 if (progress) {
                     var sPath = ""
-                    sPath = "frmSummaryNew.aspx?Menu=PDF";
+                    //sPath = "frmSummaryNew.aspx?Menu=PDF";
+                    sPath = "frmSummaryNew.aspx?Menu=PDF"+"&TabMode=true";
                     //BugID:42305
                     $(top.window.document).find("#PlanModal").modal({ backdrop: "static", keyboard: false }, 'show');
                     $(top.window.document).find('#ProcessiFrame')[0].contentDocument.location.href = sPath;

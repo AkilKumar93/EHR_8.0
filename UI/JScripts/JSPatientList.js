@@ -141,7 +141,7 @@ function ValidateDate(sender, args) {
 function ViewSummary(Human_ID, enc_id) {
     // var EncounterID = e.parentNode.parentNode.cells[9].innerText; //document.getElementById(GetClientId("hdnEncID")).value;
     var obj = new Array();
-    var result = openModal("frmSummaryNew.aspx?" + "&HumanID=" + Human_ID + "&EncounterID=" + enc_id + "&IsPatientList=Y", 600, 1020, obj, "PatListModalWindow");
+    var result = openModal("frmSummaryNew.aspx?" + "&HumanID=" + Human_ID + "&EncounterID=" + enc_id + "&IsPatientList=Y" +"&TabMode=true", 600, 1020, obj, "PatListModalWindow");
     var result = $find('PatListModalWindow');
 }
 

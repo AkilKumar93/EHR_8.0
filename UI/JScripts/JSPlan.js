@@ -1102,7 +1102,8 @@ function openProgress_Plan(screen, human_id, EncId, summary) {
         if (human_id != null && human_id != "" && human_id != "0") {
             if (EncId != null && EncId != "" && EncId != "0") {
                 var sPath = ""
-                sPath = "frmSummaryNew.aspx?Menu=PDF";
+               // sPath = "frmSummaryNew.aspx?Menu=PDF";
+                sPath = "frmSummaryNew.aspx?Menu=PDF" + "&TabMode=true";
                 //BugID:42305
                 $(top.window.document).find('#ProcessFrame1')[0].contentDocument.location.href = sPath;
                 $(top.window.document).find('#ProcessModal1').modal('hide');
@@ -1128,7 +1129,8 @@ function openProgress_Plan(screen, human_id, EncId, summary) {
         if (human_id != null && human_id != "" && human_id != "0") {
             if (EncId != null && EncId != "" && EncId != "0") {
                 var sPath = ""
-                sPath = "frmSummaryNew.aspx?Menu=PDF";
+                //sPath = "frmSummaryNew.aspx?Menu=PDF";
+                sPath = "frmSummaryNew.aspx?Menu=PDF" + "&TabMode=true";
                 //BugID:42305
                 $(top.window.document).find('#ProcessFrame1')[0].contentDocument.location.href = sPath;
                 $(top.window.document).find('#ProcessModal1').modal('hide');
@@ -1161,7 +1163,8 @@ function openProgress_Plan(screen, human_id, EncId, summary) {
             if (EncId != null && EncId != "" && EncId != "0") {
                 $('#PlanModal').modal('hide');
                 var sPath = ""
-                sPath = "frmSummaryNew.aspx?Menu=PDF";
+                //sPath = "frmSummaryNew.aspx?Menu=PDF";
+                sPath = "frmSummaryNew.aspx?Menu=PDF" + "&TabMode=true";
                 //BugID:42305
                 $(top.window.document).find('#ProcessFrame1')[0].contentDocument.location.href = sPath;
                 $(top.window.document).find('#ProcessModal1').modal('hide');
@@ -1174,7 +1177,8 @@ function openProgress_Plan(screen, human_id, EncId, summary) {
         if (human_id != null && human_id != "" && human_id != "0") {
             if (EncId != null && EncId != "" && EncId != "0") {
                 var sPath = ""
-                sPath = "frmSummaryNew.aspx?Menu=PDF";
+                //sPath = "frmSummaryNew.aspx?Menu=PDF";
+                sPath = "frmSummaryNew.aspx?Menu=PDF" + "&TabMode=true";
                 //BugID:42305
                 $(top.window.document).find('#ProcessFrame1')[0].contentDocument.location.href = sPath;
                 $(top.window.document).find('#ProcessModal1').modal('hide');
@@ -1758,7 +1762,8 @@ function openProgress_PrintDocument(screen, FaxSubject) {
             if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
                 setTimeout(
    function () {
-       var objConsult = openModalProgress("frmSummaryNew.aspx?Menu=True", 700, 750, obj, "RadwindowPDF");
+       //var objConsult = openModalProgress("frmSummaryNew.aspx?Menu=True", 700, 750, obj, "RadwindowPDF");
+       var objConsult = openModalProgress("frmSummaryNew.aspx?Menu=True&TabMode=true", 700, 750, obj, "RadwindowPDF");
        var win = $find("RadwindowPDF");
        win.hide();
 

@@ -342,7 +342,8 @@ namespace Acurus.Capella.UI
                 PatListModalWindow.VisibleStatusbar = false;
                 PatListModalWindow.OnClientBeforeClose = "CloseResultPage";
                 PatListModalWindow.OnClientClose = "RefreshCloseResultPage";
-                PatListModalWindow.NavigateUrl = "frmSummaryNew.aspx?IsPatientList=Y" + "&EncounterID=" + ClientSession.EncounterId.ToString() + "&HumanID=" + ClientSession.HumanId.ToString();
+                //PatListModalWindow.NavigateUrl = "frmSummaryNew.aspx?IsPatientList=Y" + "&EncounterID=" + ClientSession.EncounterId.ToString() + "&HumanID=" + ClientSession.HumanId.ToString();
+                PatListModalWindow.NavigateUrl = "frmSummaryNew.aspx?IsPatientList=Y" + "&EncounterID=" + ClientSession.EncounterId.ToString() + "&HumanID=" + ClientSession.HumanId.ToString()+"&TabMode=true";
 
             }
         }

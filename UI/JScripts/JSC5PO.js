@@ -1340,7 +1340,8 @@ function OpenModal(data) {
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
 
             StartLoadingImage();
-            $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF";
+            //$(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF";
+            $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF&TabMode=true";
             $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Progress Notes";
 
 
@@ -1374,7 +1375,8 @@ function OpenModal(data) {
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
 
             StartLoadingImage();
-            $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=FAX";
+            //$(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=FAX";
+            $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=FAX&TabMode=true";
             $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Progress Notes";
 
 
@@ -3238,7 +3240,7 @@ function redirectToCCEprescription() {
     }
     if (openingFrom == "Menu") {//Form open patient chart
         if (enc_id != null) {
-            $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + enc_id;
+            $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + enc_id + "&TabMode=true";
         }
         //Blank the patientcart and remove selected encounter color in tree view
         //$('#ctl00_C5POBody_EncounterContainer')[0].src = "";

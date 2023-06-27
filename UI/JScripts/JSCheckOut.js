@@ -111,7 +111,7 @@
            if(document.getElementById(GetClientId("hdnEncounterId"))!=null && document.getElementById(GetClientId("hdnEncounterId")).value!="" && document.getElementById(GetClientId("hdnEncounterId")).value!="0")
            {
                if ($('#ProcessiFrameNotesCheckout').length > 0)
-                   $('#ProcessiFrameNotesCheckout')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF";
+                   $('#ProcessiFrameNotesCheckout')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF&TabMode=true";
                if ($("#ModalTtleNotes").length > 0)
                    $("#ModalTtleNotes")[0].textContent = "Progress Notes";
                
@@ -127,7 +127,7 @@
            {
                var oBrowserWnd = GetRadWindow().BrowserWindow;
                if ($("#ProcessiFrameNotesCheckout").length > 0)
-                   $('#ProcessiFrameNotesCheckout')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF";
+                   $('#ProcessiFrameNotesCheckout')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=PDF"+"&TabMode=true";
                if ($("#ModalTtleNotes").length > 0)
                    $("#ModalTtleNotes")[0].textContent = "Progress Notes";
               

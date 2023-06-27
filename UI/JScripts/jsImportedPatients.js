@@ -289,8 +289,8 @@ function opensummary(e) {
             obj.push("EncounterId=" + objdata);
           
             obj.push("IsImported=" + "Y");
-
-            var url="frmSummaryNew.aspx?EncounterId=" + objdata + "&IsImported=" + 'Y';
+            //var url = "frmSummaryNew.aspx?EncounterId=" + objdata + "&IsImported=" + 'Y';
+            var url = "frmSummaryNew.aspx?EncounterId=" + objdata + "&IsImported=" + 'Y' +"&TabMode=true";
                            
             Openimportedsummary(url);
 

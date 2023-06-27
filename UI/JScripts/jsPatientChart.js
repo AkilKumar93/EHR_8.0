@@ -270,7 +270,8 @@ $(document).ready(function () {
         $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
     });
     if (document.getElementById(GetClientId('hdnOwnerEncMismatch')).value.toUpperCase() == "TRUE") {
-        $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById(GetClientId('hdnOwnerEncMismatchEncID')).value;
+        //$('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById(GetClientId('hdnOwnerEncMismatchEncID')).value;
+        $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById(GetClientId('hdnOwnerEncMismatchEncID')).value + "&TabMode=true";
         DisplayErrorMessage('5001');
     }
 });

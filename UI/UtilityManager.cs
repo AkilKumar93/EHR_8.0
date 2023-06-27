@@ -5850,8 +5850,8 @@ namespace Acurus.Capella.UI
         {
             Boolean bAlert = false;
             sXMLHumanDoc = string.Empty;
-            if (sTabMode == "true")
-            {
+            //if (sTabMode == "true")
+            //{
                 WFObjectManager wfObjMngr = new WFObjectManager();
                 WFObject DocumentationWfObject = wfObjMngr.GetByObjectSystemId(ulEncounterID, "DOCUMENTATION");
 
@@ -5881,18 +5881,18 @@ namespace Acurus.Capella.UI
                         sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                     }
                 }
-            }
-            else
-            {
-                IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
-                HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ulHumanID));
-                if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
-                {
-                    sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                }
+            //}
+            //else
+            //{
+            //    IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
+            //    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+            //    ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(ulHumanID));
+            //    if (ilstHumanBlob != null && ilstHumanBlob.Count > 0 && ilstHumanBlob[0].Human_XML != null)
+            //    {
+            //        sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+            //    }
 
-            }
+            //}
             return bAlert;
         }
     }
