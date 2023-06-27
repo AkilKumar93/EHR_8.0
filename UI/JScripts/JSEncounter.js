@@ -21,7 +21,9 @@ $(document).ready(function () {
     if ($('#hdnTab')[0].value != null && $('#hdnTab')[0].value != "") {
         if ($('#hdnTab')[0].value == 'tbSummary') {
             //$('#myTabs li:eq(12) a').tab('show');
-            $(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById('hdnEncounterIDSummary').value;
+            //Jira #CAP-492
+            //$(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById('hdnEncounterIDSummary').value
+            $(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].src = "frmSummaryNew.aspx?EncounterId=" + document.getElementById('hdnEncounterIDSummary').value + "&TabMode=true";;
         }
         else if ($('#hdnTab')[0].value == 'tbPlan') {
             $('#myTabs li:eq(10) a').tab('show');

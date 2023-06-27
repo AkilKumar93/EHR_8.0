@@ -589,7 +589,7 @@ namespace Acurus.Capella.UI
 
                 if (bAlert == true)
                 {
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Locked Human xml is not present. Please contact support.');", true);
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Human xml is not preserved for the encounter. Please contact support.');", true);
                     return;
                 }
                 //IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
@@ -606,7 +606,7 @@ namespace Acurus.Capella.UI
                     xmlHumanDoc.LoadXml(sXMLHumanDoc);
                 }
                 else {
-                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Locked Human xml is not present. Please contact support.');", true);
+                    ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Human xml is not preserved for the encounter. Please contact support.');", true);
                     return;
                 }
             }

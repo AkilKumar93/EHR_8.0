@@ -226,7 +226,7 @@ namespace Acurus.Capella.UI
 
                         if (bAlert == true)
                         {
-                            throw new Exception("Locked Human xml is not present. Please contact support.");
+                            throw new Exception("Human xml is not preserved for the encounter. Please contact support.");
                         }
                         //if (ilstHumanBlob.Count > 0)
                         if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
@@ -403,7 +403,7 @@ namespace Acurus.Capella.UI
 
             if (bAlert == true)
             {
-                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Locked Human xml is not present. Please contact support.');", true);
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Human xml is not preserved for the encounter. Please contact support.');", true);
                 return;
             }
             if (sXMLHumanDoc != null && sXMLHumanDoc != "" && sXMLHumanDoc != string.Empty)
@@ -415,7 +415,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Locked Human xml is not present. Please contact support.');", true);
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryHumanIDAlert('Human xml is not preserved for the encounter. Please contact support.');", true);
                 return;
             }
 
