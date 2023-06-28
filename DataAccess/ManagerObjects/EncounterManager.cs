@@ -8798,6 +8798,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     objBillingWfObj = objWfMngr.GetByObjectSystemId(objDocWfObject.Obj_System_Id, "BILLING");
                                     if (objBillingWfObj.Current_Process == "BATCHING_WAIT")
                                         objWfMngr.MoveToNextProcess(objBillingWfObj.Obj_System_Id, objBillingWfObj.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
+
+                                    //Jira CAP-340
+                                    EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                                    objEncblobmngr.LockEncounter(ulMyEncounterID, ulMyHumanID, UserName, currentDate);
                                 }
 
                             }
@@ -16158,6 +16162,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             objWfMngr.MoveToNextProcess(objBillingWfObj.Obj_System_Id, objBillingWfObj.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
 
                         EncMngr.UpdateEncounterList(EncRecord, string.Empty);
+
+                        WFObject objDocWfObject = objWfMngr.GetByObjectSystemId(iWfObject[0].Obj_System_Id, "DOCUMENTATION");
+                        if (objDocWfObject.Current_Process == "DOCUMENT_COMPLETE")
+                        {
+                            //Jira CAP-340
+                            EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
+                            objEncblobmngr.LockEncounter(ulMyEncounterID, ulMyHumanID, UserName, currentDate);
+                        }
                     }
                 }
 
