@@ -3354,5 +3354,7 @@ window.addEventListener("online", (event) => {
             }
         });
     }
+    //Jira CAP-501
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
 });
