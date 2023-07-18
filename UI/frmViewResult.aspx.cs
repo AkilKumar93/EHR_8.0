@@ -2839,6 +2839,8 @@ namespace Acurus.Capella.UI
                     objResultMaster.Created_By = ClientSession.UserName;
                     objResultMaster.Order_ID = Convert.ToUInt32(Session["Order_Id"]);  //Request["OrderSubmitId"]);
                     objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    //jira cap-498
+                    objResultMaster.Matching_Patient_Id = Convert.ToUInt32(Request["HumanId"]);
                 }
             }
             else if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
@@ -2888,6 +2890,11 @@ namespace Acurus.Capella.UI
                             objResultMaster.Order_ID = Convert.ToUInt32(tvViewIndex.SelectedNode.Attributes["OrderSubmitId"]); //Convert.ToUInt32(Request["OrderSubmitId"]);
                         objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                         objResultMaster.Matching_Patient_Id = Convert.ToUInt64(objResultMaster.PID_External_Patient_ID);
+                        ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+                    }
+                    //jira cap-498
+                    else
+                    {
                         ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
                     }
                     if (hdnSubDocumentType.Value != string.Empty && sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(hdnSubDocumentType.Value.ToString()))) // && sNote.Contains("Test Reviewed: ") == true)
@@ -3037,6 +3044,11 @@ namespace Acurus.Capella.UI
                             objResultMaster.Order_ID = Convert.ToUInt32(tvViewIndex.SelectedNode.Attributes["OrderSubmitId"]);
                         objResultMaster.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
                         objResultMaster.Matching_Patient_Id = Convert.ToUInt64(objResultMaster.PID_External_Patient_ID);
+                        ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+                    }
+                    //jira cap-498
+                    else
+                    {
                         ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
                     }
                     objResultMaster.MA_Notes = (txtMedNoteshistory.Text.Trim() != string.Empty ? txtMedNoteshistory.Text + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + txtMedicalAssistantNotes.Text;

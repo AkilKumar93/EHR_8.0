@@ -2750,7 +2750,8 @@ namespace Acurus.Capella.UI
             {
                 //ulong iIndex = 0;
                // if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
-                if(hdnindex.Value!="0")
+               //Jir Cap - 575 && 523
+                if(hdnindex.Value!= "0" && hdnindex.Value != "")
                 {
                     if (cboPhysicianName.Items.FindByValue(hdnindex.Value) != null)
                     {

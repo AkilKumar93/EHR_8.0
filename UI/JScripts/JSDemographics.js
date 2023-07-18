@@ -1757,6 +1757,8 @@ $(document).ready(function () {
         document.getElementById("ctl00_C5POBody_chkReqTranslator").disabled = true;
     }
     document.getElementById('ctl00_C5POBody_txtSpecify').style.backgroundColor = "#BFDBFF";
+    //Jira Cap-634
+    document.getElementById('ctl00_C5POBody_txtSelectinsured').disabled = true; 
     document.getElementById('imginsuredText').style.visibility = "hidden";
     document.getElementById('ctl00_C5POBody_txtSpecify').disabled = true;
     document.getElementById('ctl00_C5POBody_txtPlanSearch').setAttribute("data-plan-id", "0");
