@@ -129,12 +129,15 @@ function OnbtnSaveAndCloseClick(sender, eventArgs) {
             return;
         }
     }
+    
     showTime(sender, eventArgs);
 //  if (v1 == 0)
-       sender.set_autoPostBack(true);
+//Jira Cap - 600
+   // sender.set_autoPostBack(true);
     //else {
     //    v1 == 0;
-    //    __doPostBack('btnMoveToProviderReview');
+    //Jira Cap - 600
+        __doPostBack('btnMoveToProviderReview');
     //}
 }
 var v = 0;
