@@ -1854,6 +1854,10 @@ function LabOrder_SavedSuccessfully() {
    
     DisplayErrorMessage('230150');
     RefreshNotification('Orders');
+    //jira cap-544
+    document.getElementById('lblCenterName').className = "spanstyle";
+    document.getElementById("lblCenterName").innerHTML = "Center Name";
+
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null || window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         top.window.document.getElementById('ctl00_C5POBody_hdnIsSaveEnable').value = "false";
     localStorage.setItem("bSave", "true");
