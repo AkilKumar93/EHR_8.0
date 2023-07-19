@@ -232,7 +232,7 @@ function GetParameterValues(param) {
 }
 function SaveClick(sender) {
     StartLoadFromPatChart();
-    if ($("#ddlAssignedTo option:selected").text() == "") {
+    if ($("#ddlAssignedTo option:selected").text() == "" && sender.defaultValue != "Task Completed") {
         DisplayErrorMessage('390009');
         localStorage.setItem("bSaveSuccess", "");
         StopLoadFromPatChart();
@@ -244,7 +244,7 @@ function SaveClick(sender) {
         StopLoadFromPatChart();
         return false;
     }
-    else if ($("#DLC_txtDLC").val() == "") {
+    else if ($("#DLC_txtDLC").val() == "" && sender.defaultValue != "Task Completed") {
         alert("Please enter Message Notes");
         localStorage.setItem("bSaveSuccess", "");
         StopLoadFromPatChart();
@@ -287,7 +287,7 @@ function SaveClick(sender) {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                if (sender.defaultValue == "Save and Completed" || sender.defaultValue == "Save and Send") {
+                if (sender.defaultValue == "Task Completed" || sender.defaultValue == "Send") {
                     if (Result != undefined) {
                         if (false == Result.closed) {
 
@@ -664,10 +664,10 @@ $(document).ready(function () {
         document.getElementById("btnSaveMenu").disabled = true;
     if (document.getElementById("btnSaveMyQ") != null)
         document.getElementById("btnSaveMyQ").disabled = true;
-    if (document.getElementById("btnSaveSendMyQ") != null)
-        document.getElementById("btnSaveSendMyQ").disabled = true;
-    if (document.getElementById("btnSaveCompletedMyQ") != null)
-        document.getElementById("btnSaveCompletedMyQ").disabled = true;
+    //if (document.getElementById("btnSaveSendMyQ") != null)
+    //    document.getElementById("btnSaveSendMyQ").disabled = true;
+    //if (document.getElementById("btnSaveCompletedMyQ") != null)
+    //    document.getElementById("btnSaveCompletedMyQ").disabled = true;
     var messageId = "";
     var parentscr = "";
     if (GetParameterValues('MessageID') != undefined)
@@ -817,7 +817,7 @@ $(document).ready(function () {
                         vddlAssignedTo.options.add(opt);
                     }
                     $('#ddlAssignedTo option').each(function () {
-                        if (AssignedTo.indexOf(this.text) > -1) {
+                        if (AssignedTo.indexOf(this.value) > -1) {
                             option = this;
                             option.selected = true;
                         }
@@ -1475,13 +1475,12 @@ function EnableAll() {
         document.getElementById("btnSaveMenu").disabled = false;
     if (document.getElementById("btnSaveMyQ") != null)
         document.getElementById("btnSaveMyQ").disabled = false;
-    if (document.getElementById("btnSaveSendMyQ") != null && AssignedTo != "" && $("#ddlAssignedTo option:selected").text() != AssignedTo)
-        document.getElementById("btnSaveSendMyQ").disabled = false;
-
-    else
-        document.getElementById("btnSaveSendMyQ").disabled = true;
-    if (document.getElementById("btnSaveCompletedMyQ") != null)
-        document.getElementById("btnSaveCompletedMyQ").disabled = false;
+    //if (document.getElementById("btnSaveSendMyQ") != null && AssignedTo != "" && $("#ddlAssignedTo option:selected").text() != AssignedTo)
+    //    document.getElementById("btnSaveSendMyQ").disabled = false;
+    //else
+    //    document.getElementById("btnSaveSendMyQ").disabled = true;
+    //if (document.getElementById("btnSaveCompletedMyQ") != null)
+    //    document.getElementById("btnSaveCompletedMyQ").disabled = false;
     localStorage.setItem("bSave", "false");
 }
 function CancelMenu() {

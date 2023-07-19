@@ -51,7 +51,7 @@ namespace Acurus.Capella.UI
                 ulHumanID = ClientSession.HumanId;
             }
             txtAccount.Text = ulHumanID.ToString();
-            ln:
+        ln:
             try
             {
                 string sdivPatientstrip = UtilityManager.FillPatientStrip(ulHumanID);
@@ -400,14 +400,18 @@ namespace Acurus.Capella.UI
             {
                 MessageDetails = objPatNotesMngr.GetPatientNotesByMsgID(Convert.ToUInt32(MessageID));
                 IList<string> patientlst = new List<string>();
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName,ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg);
+                if (MessageDetails.Count > 0 && !patientlst.Any(a=>a.Contains(MessageDetails[0].Assigned_To)))
+                {
+                    patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL", ClientSession.LegalOrg);
+                }
                 var result = new { DropDown = ilstStaticLookUp, Message = MessageDetails, Facility = MessageDetails[0].Facility_Name, AssignedTo = patientlst };
                 return JsonConvert.SerializeObject(result);
             }
             else
             {
                 IList<string> patientlst = new List<string>();
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName,ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg);
                 var Result = new { DropDown = ilstStaticLookUp, Message = MessageDetails, Facility = ClientSession.FacilityName, AssignedTo = patientlst };
                 return JsonConvert.SerializeObject(Result);
             }
@@ -425,11 +429,11 @@ namespace Acurus.Capella.UI
             IList<string> patientlst = new List<string>();
             PatientNotesManager objPatNotesMngr = new PatientNotesManager();
             if (chkshowall == "false" && facility == "")
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName,ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg);
             else if (chkshowall == "false" && facility != "")
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(facility,ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(facility, ClientSession.LegalOrg);
             else
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL",ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL", ClientSession.LegalOrg);
             var Result = new { AssignedTo = patientlst };
             return JsonConvert.SerializeObject(Result);
         }
@@ -609,7 +613,7 @@ namespace Acurus.Capella.UI
             string sodaPassword = sPassword;
 
 
-             string sDBConnection = "&odaURL=" + sodaURL + "&odaUser=" + sodaUser + "&odaPassword=" + sodaPassword;
+            string sDBConnection = "&odaURL=" + sodaURL + "&odaUser=" + sodaUser + "&odaPassword=" + sodaPassword;
 
             //  IList<PatientPane> PatientPaneList = ClientSession.PatientPaneList.Where(a => a.Encounter_ID == ClientSession.EncounterId).ToList<PatientPane>();
             // string strDemographics = PatientPaneList[0].Last_Name + ", " + PatientPaneList[0].First_Name + " " + PatientPaneList[0].MI + " " + PatientPaneList[0].Suffix + " | " + Convert.ToDateTime(PatientPaneList[0].Birth_Date).ToString("dd-MMM-yyyy") + " | " + PatientPaneList[0].Sex + " | Acc #:" + PatientPaneList[0].Human_Id + " | " + PatientPaneList[0].Patient_Type + " | " + strDos + " | " + strProvider;
@@ -646,7 +650,10 @@ namespace Acurus.Capella.UI
                 objPatNotes.Message_Description = MessageType;
                 objPatNotes.Caller_Name = CallerName;
                 objPatNotes.Message_Orign = MessageOrigin;
-                objPatNotes.Assigned_To = AssignedTo;
+                if (!string.IsNullOrWhiteSpace(AssignedTo))
+                {
+                    objPatNotes.Assigned_To = AssignedTo;
+                }
                 objPatNotes.Facility_Name = FacilityName;
                 if (MessageDate != null && MessageDate != "")
                     objPatNotes.Message_Date_And_Time = UtilityManager.ConvertToUniversal(Convert.ToDateTime(MessageDate));
@@ -666,19 +673,19 @@ namespace Acurus.Capella.UI
                 string MessageDetails = HistoryNotes + "\n@" + ClientSession.UserName + "(" + Convert.ToDateTime(datetime).ToString("dd-MMM-yyyy hh:mm:ss tt") + "): " + DLC; //objPatNotesMngr.GetMessageDetails(string.Empty, string.Empty, AccNo);
                 return JsonConvert.SerializeObject(MessageDetails);
             }
-            else if (Button == "Save and Send")
+            else if (Button == "Send")
             {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Save and Send - UpdatePatientMessage : Start", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Send - UpdatePatientMessage : Start", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 objPatNotesMngr.UpdatePatientMessage(objPatNotes, string.Empty, 1, AssignedTo, UtilityManager.ConvertToUniversal(), null);
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Save and Send - UpdatePatientMessage : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Send - UpdatePatientMessage : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 return "";
             }
-            else if (Button == "Save and Completed")
+            else if (Button == "Task Completed")
             {
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Save and Completed - UpdatePatientMessage : Start", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Task Completed - UpdatePatientMessage : Start", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 objPatNotesMngr.UpdatePatientMessage(objPatNotes, "TASK", 1, "UNKNOWN", UtilityManager.ConvertToUniversal(), null);
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Save and Completed - UpdatePatientMessage : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick ManagerCall Task Completed - UpdatePatientMessage : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "SaveMyQClick : End", DateTime.Now, sGroup_ID_Log, "frmPatientCommunication");
                 return "";
             }

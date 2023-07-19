@@ -2,6 +2,9 @@
 
 $(document).ready(function () {
     localStorage.removeItem("MyShowAll");
+    localStorage.removeItem("MyOpenTask");
+    localStorage.removeItem("MyTask14");
+    localStorage.removeItem("MyShowAllMyTask");
     localStorage.removeItem("ShowallGeneralqueue");
     var version = document.getElementById('hdnVersion').value;
     var ProjectName = document.getElementById('hdnProjectName').value;
@@ -514,6 +517,9 @@ function AlertUser() {
 
 function EHRLanding(FileName) {
     localStorage.removeItem("MyShowAll");
+    localStorage.removeItem("MyOpenTask");
+    localStorage.removeItem("MyTask14");
+    localStorage.removeItem("MyShowAllMyTask");
     localStorage.removeItem("ShowallGeneralqueue");
     var version = document.getElementById('hdnVersion').value;
     var ProjectName = document.getElementById('hdnProjectName').value;
