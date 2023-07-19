@@ -180,6 +180,8 @@ namespace Acurus.Capella.UI
             //ClientSession.UserName = "RPRADHAN";
             //ClientSession.FacilityName = "1904 N OG AVE";
             //btnOrderSubmit.Enabled = false;
+                      
+
             string ClientSideObjects = string.Empty;
             ClientSideObjects += "var UserRole='" + ClientSession.UserRole + "';";
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "PageObjects", ClientSideObjects, true);
@@ -1255,7 +1257,8 @@ namespace Acurus.Capella.UI
                 //lblLocation.Attributes.Add("style","color:red;");
                 lblCenterName.InnerText += "*";
                 lblCenterName.InnerHtml = lblCenterName.InnerText;
-                lblCenterName.InnerHtml = lblCenterName.InnerHtml.Replace("*", "<span class='manredforstar'>*</span>");
+                //Jira Cap- 544
+                //lblCenterName.InnerHtml = lblCenterName.InnerHtml.Replace("*", "<span class='manredforstar'>*</span>");
                 lblCenterName.Attributes["Class"] = "";
                 lblCenterName.Attributes["Class"] = "MandLabelstyle";
                 txtCenterName.Attributes["Class"] = "";
