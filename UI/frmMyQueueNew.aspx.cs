@@ -128,7 +128,7 @@ namespace Acurus.Capella.UI
             //}
             var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
             IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-           
+
             //if (ClientSession.FacilityName == sAncillary.Trim())
             if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
             {
@@ -180,9 +180,9 @@ namespace Acurus.Capella.UI
                 //{
                 //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
                 //}
-                 var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
-            IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-           
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
+                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+
 
                 string[] ProcessType = new string[2];
                 ProcessType[0] = "ASSIGNED";
@@ -324,7 +324,7 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(TaskQ.ToList<MyQ>());
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadMyTask(string sShowall)
+        public static string LoadMyTask(string sShowall, string sOpenTask = "")
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -346,7 +346,16 @@ namespace Acurus.Capella.UI
             IList<MyQ> MyTask;
             WFObjectManager wfMngr = new WFObjectManager();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask GetListObjects DB call : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            MyTask = wfMngr.GetListObjects("ALL", ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);//ClientSession.DefaultNoofDays);
+
+            if (sOpenTask == "Checked")
+            {
+                MyTask = wfMngr.GetListObjectsOpenTaskCreatedByMe("ALL", ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);
+            }
+            else
+            {
+                MyTask = wfMngr.GetListObjects("ALL", ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);//ClientSession.DefaultNoofDays);
+            }
+
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask GetListObjects DB call : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             return JsonConvert.SerializeObject(MyTask.ToList<MyQ>());
@@ -653,7 +662,7 @@ namespace Acurus.Capella.UI
             IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
             //if (data[2].Trim().ToUpper() != "CMG LAB AND ANCILLARY")
             //if (data[2].Trim().ToUpper() != sAncillary)
-           // if (ClientSession.FacilityName.Trim().ToUpper() != sAncillary)
+            // if (ClientSession.FacilityName.Trim().ToUpper() != sAncillary)
             if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
             {
                 ClientSession.PhysicianId = Convert.ToUInt64(data[3]);
@@ -704,33 +713,33 @@ namespace Acurus.Capella.UI
                     {
 
 
-                    //XmlDocument itemDoc = new XmlDocument();
-                    //XmlText = new XmlTextReader(strXmlFilePath);
-                    //itemDoc.Load(XmlText);
-                    //XmlText.Close();
-                  
+                        //XmlDocument itemDoc = new XmlDocument();
+                        //XmlText = new XmlTextReader(strXmlFilePath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
+
                         HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                            IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
-                            if (ilstHumanBlob.Count > 0)
-                            {
-                                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
+                        if (ilstHumanBlob.Count > 0)
+                        {
+                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                             if (sXMLContent.Substring(0, 1) != "<")
                                 sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                             xmlDoc.LoadXml(sXMLContent);
-                            }
-                            else
-                            {
-                                throw new Exception("Human XML is not found");
-                            }
-                        
-
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            //sXmlText.Close();
-                            UtilityManager.GenerateXML(data[0], "Human");
-                            goto loop;
+                            throw new Exception("Human XML is not found");
                         }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        //sXmlText.Close();
+                        UtilityManager.GenerateXML(data[0], "Human");
+                        goto loop;
+                    }
                 //}
 
 
@@ -754,10 +763,10 @@ namespace Acurus.Capella.UI
 
                         EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                         IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(data[1]));
-                   
+
                         if (ilstEncounterBlob.Count > 0)
                         {
-                        
+
                             try
                             {
                                 sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
@@ -785,7 +794,7 @@ namespace Acurus.Capella.UI
                     }
                     //}
 
-              
+
                     EncMngr.UpdateDateOfService(Convert.ToUInt64(data[1]), dt, string.Empty, sLocal_Time);
                 }
             }
@@ -1059,7 +1068,7 @@ namespace Acurus.Capella.UI
 
             var addendumGeneralQ = from p in addendumGeneralQList where p.Current_Owner == "UNKNOWN" select p;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadAddendum : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(addendumGeneralQ.ToList<MyQ>()); 
+            return JsonConvert.SerializeObject(addendumGeneralQ.ToList<MyQ>());
         }
         [WebMethod(EnableSession = true)]
         public static string LoadEncounterTabClick(string sShowall)
@@ -1269,10 +1278,10 @@ namespace Acurus.Capella.UI
             WFObjectManager objWfMngr = new WFObjectManager();
             WFObject objDocWfObject = new WFObject();
             objDocWfObject = objWfMngr.GetByObjectSystemId(ClientSession.EncounterId, "DOCUMENTATION");
-            if(objDocWfObject!=null && objDocWfObject.Current_Owner.ToUpper()!= "UNKNOWN")
+            if (objDocWfObject != null && objDocWfObject.Current_Owner.ToUpper() != "UNKNOWN")
             {
                 return "UNKNOWN";
-            }   
+            }
 
 
             if (ClientSession.UserCurrentProcess == "SCRIBE_PROCESS" || ClientSession.UserCurrentProcess == "MA_PROCESS" || ClientSession.UserCurrentProcess == "TECHNICIAN_PROCESS")//to update DOS when Technician/MA processes the encounter for the first time -- CMG Ancilliary
@@ -1310,38 +1319,38 @@ namespace Acurus.Capella.UI
             //{
             ln:
                 try
+                {
+
+
+                    //XmlDocument itemDoc = new XmlDocument();
+                    //XmlText = new XmlTextReader(strXmlFilePath);
+                    //itemDoc.Load(XmlText);
+                    //XmlText.Close();
+
+                    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                    IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
+                    if (ilstHumanBlob.Count > 0)
                     {
-
-
-                        //XmlDocument itemDoc = new XmlDocument();
-                        //XmlText = new XmlTextReader(strXmlFilePath);
-                        //itemDoc.Load(XmlText);
-                        //XmlText.Close();
-
-                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                        IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(Convert.ToUInt64(data[0]));
-                        if (ilstHumanBlob.Count > 0)
-                        {
-                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                        sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                         if (sXMLContent.Substring(0, 1) != "<")
                             sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                         xmlDoc.LoadXml(sXMLContent);
-                        }
-                        else
-                        {
-                            throw new Exception("Human XML is not found");
-                        }
-
                     }
-                    catch (Exception ex)
+                    else
                     {
-                       // XmlText.Close();
-                        UtilityManager.GenerateXML(data[0], "Human");
-                        goto ln;
+                        throw new Exception("Human XML is not found");
                     }
+
+                }
+                catch (Exception ex)
+                {
+                    // XmlText.Close();
+                    UtilityManager.GenerateXML(data[0], "Human");
+                    goto ln;
+                }
                 //}
 
-            
+
                 if (ClientSession.UserCurrentProcess == "MA_PROCESS")
                     EncMngr.UpdateEncounterforMyQueue(Convert.ToUInt64(data[1]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime), dt, ClientSession.CurrentObjectType, ExamRoom, string.Empty, sLocal_Time);
                 else

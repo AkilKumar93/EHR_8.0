@@ -352,7 +352,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                             else
                             {
-                               // if (sAncillary.ToUpper() != FacName)//Bug ID:33975
+                                // if (sAncillary.ToUpper() != FacName)//Bug ID:33975
                                 var facAncillary = from f in NHibernateSessionUtility.Instance.MyAncillaryFacilityList where f.Fac_Name == FacName select f;
                                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                                 if (ilstFacAncillary.Count == 0)
@@ -385,7 +385,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         //StaticLookupManager objStaticLookupMgr = new StaticLookupManager();
                         //IList<StaticLookup> stFieldLook = objStaticLookupMgr.getStaticLookupByFieldName("CMG LAB NAME");
                         //  IList<StaticLookup> stFieldLookFacilityName = objStaticLookupMgr.getStaticLookupByFieldName("CMG FACILITY NAME");
-                       // if (FacName.ToString().ToUpper().Trim() == sAncillary.ToString().ToUpper().Trim())//Bug ID:33975
+                        // if (FacName.ToString().ToUpper().Trim() == sAncillary.ToString().ToUpper().Trim())//Bug ID:33975
                         var vfacAncillary = from f in NHibernateSessionUtility.Instance.MyAncillaryFacilityList where f.Fac_Name == FacName select f;
                         IList<FacilityLibrary> lstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
                         if (lstFacAncillary.Count > 0)
@@ -1227,22 +1227,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                     }
                     else if (oj.Count() > 17)
+                    {
+                        if (oj[15] != null && oj[15].ToString() != "")
                         {
-                            if (oj[15] != null && oj[15].ToString() != "")
-                            {
-                                myq.Ordering_Physician = oj[15].ToString();
-                            }
-                            else if (oj[16] != null && oj[16].ToString() != "")
-                            {
-                                myq.Ordering_Physician = oj[16].ToString();
-                            }
-
-                            if (oj[17] != null && oj[17].ToString() != "")
-                            {
-                                myq.Test_Details = oj[17].ToString();
-                            }
+                            myq.Ordering_Physician = oj[15].ToString();
                         }
-                   
+                        else if (oj[16] != null && oj[16].ToString() != "")
+                        {
+                            myq.Ordering_Physician = oj[16].ToString();
+                        }
+
+                        if (oj[17] != null && oj[17].ToString() != "")
+                        {
+                            myq.Test_Details = oj[17].ToString();
+                        }
+                    }
+
                 }
 
                 else if (ObjType.Contains("TASK"))
@@ -1321,7 +1321,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (oj[25] != null && oj[25] != "")
                         myq.Test_Date = Convert.ToDateTime(oj[25]);
                     if (oj[26] != null && oj[26] != "")
-                    myq.Is_Narrative = Convert.ToString(oj[26]);
+                        myq.Is_Narrative = Convert.ToString(oj[26]);
 
 
                 }
@@ -1532,7 +1532,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 //Added By Srividhya For ACO on 2-Sep-2014
 
-                 //Muthusamy for fill the results object MyOrders Queue - 17-12-2014
+                //Muthusamy for fill the results object MyOrders Queue - 17-12-2014
                 else if (ObjType.Contains("DIAGNOSTIC_RESULT"))
                 {
                     if (oj[0] != null)
@@ -1701,42 +1701,42 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         //if (objStaticLookupMgr.getStaticLookupByFieldName("CMG FACILITY NAME")[0].Value.Trim().ToUpper() != FacName)
                         var facAncillary = from f in NHibernateSessionUtility.Instance.MyAncillaryFacilityList where f.Fac_Name == FacName select f;
-                                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                                if (ilstFacAncillary.Count == 0)
-                                {
-                                    //if (sAncillary.Trim().ToUpper() != FacName)//Bug ID:33975
-                                    //{
-                                    if (lstQueue.Count > 0)
-                                    {
-                                        var resultSet = (from ob in lstQueue where ob.Current_Owner.ToUpper() == "UNKNOWN" && ob.Fac_Name.ToUpper() == FacName.ToUpper() select ob).ToList<Queue_List>();
-                                        myq.Diag_Order_Count = resultSet.Count;
-                                    }
-                                    /* Commented For Bug ID: 33976
-                                    query1 = Mysession.GetNamedQuery("CountFillMyOrderObjectDetails.WithFacility.ShowAllFalse");
-                                    query1.SetString(2, FacName);
-                                    query1.SetString(0, UserName);
-                                    query1.SetString(1, "UNKNOWN");
-                                    query1.SetParameterList("ObjList", myObjType);
-                                    FavoriteList = new ArrayList(query1.List());
-                                    myq.Diag_Order_Count = Convert.ToInt16(FavoriteList[0]);
-                                     */
-                                }
-                                else
-                                {
-                                    if (lstQueue.Count > 0)
-                                    {
-                                        var resultSet = (from ob in lstQueue where ob.Current_Owner.ToUpper() == "UNKNOWN" select ob).ToList<Queue_List>();
-                                        myq.Diag_Order_Count = resultSet.Count;
-                                    }
-                                    /* Commented For Bug ID: 33976
-                                   query1 = Mysession.GetNamedQuery("CountFillMyOrderObjectDetails.WithFacility.ShowAllFalse.CMG");
-                                   query1.SetString(0, UserName);
-                                   query1.SetString(1, "UNKNOWN");
-                                   query1.SetParameterList("ObjList", myObjType);
-                                   FavoriteList = new ArrayList(query1.List());
-                                   myq.Diag_Order_Count = Convert.ToInt16(FavoriteList[0]);
-                                   */
-                                }
+                        IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                        if (ilstFacAncillary.Count == 0)
+                        {
+                            //if (sAncillary.Trim().ToUpper() != FacName)//Bug ID:33975
+                            //{
+                            if (lstQueue.Count > 0)
+                            {
+                                var resultSet = (from ob in lstQueue where ob.Current_Owner.ToUpper() == "UNKNOWN" && ob.Fac_Name.ToUpper() == FacName.ToUpper() select ob).ToList<Queue_List>();
+                                myq.Diag_Order_Count = resultSet.Count;
+                            }
+                            /* Commented For Bug ID: 33976
+                            query1 = Mysession.GetNamedQuery("CountFillMyOrderObjectDetails.WithFacility.ShowAllFalse");
+                            query1.SetString(2, FacName);
+                            query1.SetString(0, UserName);
+                            query1.SetString(1, "UNKNOWN");
+                            query1.SetParameterList("ObjList", myObjType);
+                            FavoriteList = new ArrayList(query1.List());
+                            myq.Diag_Order_Count = Convert.ToInt16(FavoriteList[0]);
+                             */
+                        }
+                        else
+                        {
+                            if (lstQueue.Count > 0)
+                            {
+                                var resultSet = (from ob in lstQueue where ob.Current_Owner.ToUpper() == "UNKNOWN" select ob).ToList<Queue_List>();
+                                myq.Diag_Order_Count = resultSet.Count;
+                            }
+                            /* Commented For Bug ID: 33976
+                           query1 = Mysession.GetNamedQuery("CountFillMyOrderObjectDetails.WithFacility.ShowAllFalse.CMG");
+                           query1.SetString(0, UserName);
+                           query1.SetString(1, "UNKNOWN");
+                           query1.SetParameterList("ObjList", myObjType);
+                           FavoriteList = new ArrayList(query1.List());
+                           myq.Diag_Order_Count = Convert.ToInt16(FavoriteList[0]);
+                           */
+                        }
                         //commented for bugId: 34087 
                         //IList<StaticLookup> stFieldLook = objStaticLookupMgr.getStaticLookupByFieldName("CMG LAB NAME");
                         //string stFieldLook = "CMG Anc.-1866 #101";
@@ -2664,6 +2664,62 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return resultmyqList;
         }
+
+        public IList<MyQ> FillObjectsOpenTaskCreatedByMe(string FacNae, string[] ObjType, string ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string FacilityName)
+        {
+            IQuery query1 = null;
+            MyQ myq = new MyQ();
+            using (ISession Mysession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                try
+                {
+                    if (bShowAll)
+                    {
+                        query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacilityCreatedby");
+                    }
+                    else
+                    {
+                        query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility.ShowAllFalseCreatedby");
+                    }
+
+                    query1.SetString(0, UserName);
+                    query1.SetParameterList("ObjList", ObjType);
+                    var FavoriteList = new ArrayList(query1.List());
+                    FillDTO(FavoriteList, ObjType);
+                }
+                catch (Exception ex)
+                {
+                    String sException = string.Empty;
+                    if (ex.StackTrace != null)
+                        sException = ex.StackTrace.ToString();
+                    if (ex.Message != null)
+                        sException += Environment.NewLine + ex.Message.ToString();
+                    if (ex.InnerException != null && ex.InnerException.Message != null)
+                        sException += Environment.NewLine + ex.InnerException.Message.ToString();
+                    System.IO.StreamWriter sw = null;
+                    try
+                    {
+                        string path = "C:/Exception_Logs/Exception_Log_File.txt";
+                        sw = System.IO.File.AppendText(path);
+                        string logLine = System.String.Format(
+                            "{0:G}: {1}.", System.DateTime.Now, sException);
+                        sw.WriteLine(logLine);
+                    }
+                    finally
+                    {
+                        sw.Close();
+                    }
+
+                    throw new Exception(sException);
+                }
+                finally
+                {
+                    Mysession.Close();
+                }
+            }
+            return resultmyqList;
+        }
+
         public IList<MyQ> FillObjects(string FacName, string[] ObjType, string ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string FacilityName)
         {
 
@@ -2697,8 +2753,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                                 if (ilstFacAncillary.Count > 0)
                                 {
-                                //if (sAncillary.ToUpper() == FacilityName.ToUpper())
-                                //{
+                                    //if (sAncillary.ToUpper() == FacilityName.ToUpper())
+                                    //{
 
                                     query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithoutFacility.WithAllAppointments.Ancillary");
 
@@ -2726,8 +2782,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                                 if (ilstFacAncillary.Count > 0)
                                 {
-                                //if (sAncillary.ToUpper() == FacilityName.ToUpper())
-                                //{
+                                    //if (sAncillary.ToUpper() == FacilityName.ToUpper())
+                                    //{
                                     query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithoutFacility.WithoutAllAppointments.Ancillary");
                                 }
                                 if (ProcessType == "UNASSIGNED")
@@ -2814,7 +2870,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         }
                                     }
                                 }
-                                
+
                                 //if (Carrier == "0")
                                 //{
                                 //    query1 = Mysession.GetNamedQuery("FillMyEncounterObjectDetails.WithFacility.WithAllAppointments");
@@ -2947,19 +3003,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                             if (FacName == "ALL")
                             {
-                                queryTask = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacilityCreatedby");
-                                queryTask.SetString(0, UserName);
-                                queryTask.SetParameterList("ObjList", ObjType);
-                                FavoriteListTask = new ArrayList(queryTask.List());
                                 query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility");
                                 query1.SetString(0, UserName);
-                            }
-                            else
-                            {
-                                query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithFacility");
-                                query1.SetString(0, UserName);
-                                query1.SetString(1, "UNKNOWN");
-                                query1.SetString(2, FacName);
                             }
                         }
                         else
@@ -2967,10 +3012,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (FacName == "ALL")
                             {
 
-                                queryTask = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility.ShowAllFalseCreatedby");
-                                queryTask.SetString(0, UserName);
-                                queryTask.SetParameterList("ObjList", ObjType);
-                                FavoriteListTask = new ArrayList(queryTask.List());
+                                //queryTask = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility.ShowAllFalseCreatedby");
+                                //queryTask.SetString(0, UserName);
+                                //queryTask.SetParameterList("ObjList", ObjType);
+                                //FavoriteListTask = new ArrayList(queryTask.List());
                                 query1 = Mysession.GetNamedQuery("FillMyTaskObjectDetails.WithoutFacility.ShowAllFalse");
                                 query1.SetString(0, UserName);
                                 // query1.SetInt32(2, DefaultNoofDays);
@@ -2995,31 +3040,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         //}
                         query1.SetParameterList("ObjList", ObjType);
                         FavoriteList = new ArrayList(query1.List());
-                        ArrayList FavoriteListFinaltask = new ArrayList();
-                        if (FavoriteListTask != null && FavoriteListTask.Count > 0)
-                        {
-                            Boolean bIsNoMatch = false;
+                        //ArrayList FavoriteListFinaltask = new ArrayList();
+                        //if (FavoriteListTask != null && FavoriteListTask.Count > 0)
+                        //{
+                        //    Boolean bIsNoMatch = false;
 
-                            foreach (object[] val in FavoriteListTask)
-                            {
-                                foreach (object[] val1 in FavoriteList)
-                                {
-                                    if (val[0].ToString() != (val1[0].ToString()))
-                                    {
-                                        bIsNoMatch = true;
-                                    }
-                                    else
-                                    {
-                                        bIsNoMatch = false;
-                                        break;
-                                    }
-                                }
+                        //    foreach (object[] val in FavoriteListTask)
+                        //    {
+                        //        foreach (object[] val1 in FavoriteList)
+                        //        {
+                        //            if (val[0].ToString() != (val1[0].ToString()))
+                        //            {
+                        //                bIsNoMatch = true;
+                        //            }
+                        //            else
+                        //            {
+                        //                bIsNoMatch = false;
+                        //                break;
+                        //            }
+                        //        }
 
-                                if (bIsNoMatch == true || FavoriteList.Count == 0)
-                                    FavoriteListFinaltask.Add(val);
-                            }
-                        }
-                        FavoriteList.AddRange(FavoriteListFinaltask);
+                        //        if (bIsNoMatch == true || FavoriteList.Count == 0)
+                        //            FavoriteListFinaltask.Add(val);
+                        //    }
+                        //}
+                        //FavoriteList.AddRange(FavoriteListFinaltask);
                         FillDTO(FavoriteList, ObjType);
                     }
                     else if (ObjType.Contains("ADDENDUM"))
@@ -3151,8 +3196,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                                 if (ilstFacAncillary.Count == 0)
                                 {
-                                //if (sAncillary.Trim().ToUpper() != FacName)//Bug ID:33975
-                                //{
+                                    //if (sAncillary.Trim().ToUpper() != FacName)//Bug ID:33975
+                                    //{
                                     query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithFacility");
                                     query1.SetString(0, UserName);
                                     query1.SetString(1, "UNKNOWN");
@@ -3183,8 +3228,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                                 if (ilstFacAncillary.Count == 0)
                                 {
-                                //if (sAncillary.ToUpper() != FacName)//Bug ID:33975
-                                //{
+                                    //if (sAncillary.ToUpper() != FacName)//Bug ID:33975
+                                    //{
                                     query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithFacility.ShowAllFalse");
                                     query1.SetString(0, UserName);
                                     query1.SetString(1, "UNKNOWN");
@@ -3309,8 +3354,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                                 if (ilstFacAncillary.Count == 0)
                                 {
-                                //if (sAncillary.Trim().ToUpper() != FacName)//Bug ID:33975
-                                //{
+                                    //if (sAncillary.Trim().ToUpper() != FacName)//Bug ID:33975
+                                    //{
                                     query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithFacility");
                                     query1.SetString(0, UserName);
                                     query1.SetString(1, "UNKNOWN");
@@ -3341,8 +3386,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                                 if (ilstFacAncillary.Count == 0)
                                 {
-                                //if (sAncillary.ToUpper() != FacName)//Bug ID:33975
-                                //{
+                                    //if (sAncillary.ToUpper() != FacName)//Bug ID:33975
+                                    //{
                                     query1 = Mysession.GetNamedQuery("FillMyOrderObjectDetails.WithFacility.ShowAllFalse");
                                     query1.SetString(0, UserName);
                                     query1.SetString(1, "UNKNOWN");

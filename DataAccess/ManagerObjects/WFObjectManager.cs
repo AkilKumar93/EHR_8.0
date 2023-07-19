@@ -2274,6 +2274,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return myqList;
         }
 
+        public IList<MyQ> GetListObjectsOpenTaskCreatedByMe(string FacName, string[] ObjType, string[] ProcessType, string UserName, Boolean bShowAll, int DefaultNoofDays, string FacilityName)
+        {
+            IList<MyQ> myqList = new List<MyQ>();
+
+            ObjectManager wfMngr = new ObjectManager();
+            myqList = wfMngr.FillObjectsOpenTaskCreatedByMe(FacName, ObjType, ProcessType[0], UserName, bShowAll, DefaultNoofDays, FacilityName);
+
+            return myqList;
+        }
+
         public IList<MyQ> GetListofObjectsByProcess(string FacName, string CurrentProcess)
         {
             //Needs to be done
