@@ -979,7 +979,7 @@ namespace Acurus.Capella.DataAccess
                 }
                 else if (CmdElementText.ToUpper() == "UPDATE_ALLERGY" && ilstAllergy.Count > 0)
                 {
-                   
+
                     Rcopia_AllergyManager rcopiaAllegryMngr = new Rcopia_AllergyManager();
                     rcopiaAllegryMngr.InsertOrUpdateAllergy(ilstAllergy.ToArray<Rcopia_Allergy>(), sUserName, sMacAddress, dtClientDate);
                 }
@@ -990,7 +990,7 @@ namespace Acurus.Capella.DataAccess
                 }
                 else if (CmdElementText.ToUpper() == "UPDATE_PRESCRIPTION" && ilstRcopiaPrescription.Count > 0)
                 {
-                   
+
                     //Get Formulary Information only if a prescription is created
                     RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
                     RCopiaGenerateXML rcopiaXML = new RCopiaGenerateXML();
@@ -998,7 +998,7 @@ namespace Acurus.Capella.DataAccess
                     string sOutputXML = string.Empty;
                     string sHuman_ID = string.Empty;
                     sHuman_ID = ilstRcopiaPrescription[0].Human_ID.ToString();
-                    sInputXML = rcopiaXML.CreateUpdatePatientXMLforSinglePatient(sHuman_ID,sLegalOrg);
+                    sInputXML = rcopiaXML.CreateUpdatePatientXMLforSinglePatient(sHuman_ID, sLegalOrg);
                     string sUploadAddress = rcopiaSessionMngr.UploadAddress;
 
                     int uInsuranceID = 0;
@@ -1042,13 +1042,116 @@ namespace Acurus.Capella.DataAccess
             }
             #endregion
         }
+        public class EventXMLResponseModel
+        {
+            public IList<string> ilstPatientIds { get; set; }
+            public DateTime dtLastUpdateDate { get; set; }
+        }
+        public EventXMLResponseModel ReadEventXMLResponse(string XMLResponse, string sLegalOrg)
+        {       
+            if (XMLResponse == null)
+            {
+                return null;
+            }
+            if (XMLResponse == string.Empty)
+            {
+                return null;
+            }
+            CmdElementText = string.Empty;
+            #region Responsexml
+            XmlDocument XMLDoc = new XmlDocument();
+            XMLDoc.LoadXml(XMLResponse);
+            XmlNodeList xmlReqNode = XMLDoc.GetElementsByTagName("Command");
+            CmdElementText = ((XmlElement)xmlReqNode[0]).InnerText;
+            XmlNodeList nodeList = XMLDoc.GetElementsByTagName("Response");
 
+            IList<string> ilstPatientId = new List<string>();
+            DateTime dtUpdateDate = DateTime.MinValue;
+
+            //XmlNodeList externalIdNodes = XMLDoc.SelectNodes("//ExternalId");
+            //List<string> externalIdValues = new List<string>();
+            //foreach (XmlNode externalIdNode in externalIdNodes)
+            //{
+            //    string externalId = externalIdNode.InnerText;
+            //    ilstPatientId.Add(externalId);
+            //}
+
+            if (CmdElementText != string.Empty)
+            {
+                foreach (XmlElement Element in nodeList)
+                {
+                    for (int i = 0; i < Element.ChildNodes.Count; i++)
+                    {
+                        XmlElement xmlLastUpdateTime = (XmlElement)Element.ChildNodes[i];
+                        if (Element.ChildNodes[i].Name == "EventList")
+                        {
+                            XmlNodeList nodeList3 = Element.GetElementsByTagName(Element.ChildNodes[i].Name);
+
+
+                            for (int k = 0; k < nodeList3[0].ChildNodes.Count; k++)
+                            {
+
+                                XmlElement xmlLastUpdateTimes = (XmlElement)nodeList3[0].ChildNodes[k];
+                                if (nodeList3[0].ChildNodes[k].Name == "Event")
+                                {
+                                    XmlNodeList nodeListEvent = Element.GetElementsByTagName(nodeList3[0].ChildNodes[k].Name);
+                                    for (int j = 0; j < nodeListEvent[0].ChildNodes.Count; j++)
+                                    {
+                                        XmlElement xmlLastUpdateTimesCC = (XmlElement)nodeListEvent[0].ChildNodes[j];
+                                        if (nodeListEvent[0].ChildNodes[j].Name == "PatientList")
+                                        {
+                                            XmlNodeList nodeListPatientList = Element.GetElementsByTagName(nodeListEvent[0].ChildNodes[j].Name);
+                                            for (int p = 0; p < nodeListPatientList[0].ChildNodes.Count; p++)
+                                            {
+                                                XmlElement xmlLastUpdatePatientList = (XmlElement)nodeListPatientList[0].ChildNodes[p];
+                                                if (nodeListPatientList[0].ChildNodes[p].Name == "Patient")
+                                                {
+                                                    XmlNodeList nodeListPatientListData = Element.GetElementsByTagName(nodeListPatientList[0].ChildNodes[p].Name);
+                                                    for (int l = 0; l < nodeListPatientListData[0].ChildNodes.Count; l++)
+                                                    {
+                                                        XmlElement xmlLastUpdatePatientListEX = (XmlElement)nodeListPatientListData[0].ChildNodes[l];
+                                                        if (nodeListPatientListData[0].ChildNodes[l].Name == "ExternalId")
+                                                        {
+                                                            XmlNodeList nodeListPatientListExternal = Element.GetElementsByTagName(nodeListPatientListData[0].ChildNodes[l].Name);
+                                                            foreach (XmlElement externalIdElement in nodeListPatientListExternal)
+                                                            {
+                                                                string externalId = externalIdElement.InnerText;
+                                                                if (!ilstPatientId.Any(x => x == (externalId??string.Empty)))
+                                                                {
+                                                                    ilstPatientId.Add(externalId);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (Element.ChildNodes[i].Name == "LastUpdateDate")
+                        {
+                            dtUpdateDate = Convert.ToDateTime(Element.ChildNodes[i].InnerText.ToString());
+
+                        }
+                    }
+                }
+            }
+            var model = new EventXMLResponseModel
+            {
+                ilstPatientIds = ilstPatientId,
+                dtLastUpdateDate = dtUpdateDate
+            };
+            return model;
+            #endregion
+        }
 
         public void InsertintoProperties(XmlElement Element, string sElementText)
         {
             switch (sElementText)
             {
-                # region SwitchCase
+                #region SwitchCase
 
                 case "ExternalID":
                     if (CmdElementText.ToUpper() == "UPDATE_PATIENT" && Element.ParentNode.Name == "Patient" && Element.InnerText != string.Empty)
@@ -1057,7 +1160,7 @@ namespace Acurus.Capella.DataAccess
                             //Latha - Branch_52_production_for_Rcopia - Start - 4 Jul 2011
                             objPatient.Id = Convert.ToUInt64(Element.InnerText);
                         }
-                        catch 
+                        catch
                         {
                             Element.InnerText = Regex.Replace(Element.InnerText, "[^0-9]", "");// Element.InnerText.Replace("test", "");
                             objPatient.Id = Convert.ToUInt64(Element.InnerText);
@@ -1071,7 +1174,7 @@ namespace Acurus.Capella.DataAccess
 
                                 ObjMedication.Human_ID = Convert.ToUInt64(Element.InnerText);
                             }
-                            catch 
+                            catch
                             {
                                 Element.InnerText = Regex.Replace(Element.InnerText, "[^0-9]", "");// Element.InnerText.Replace("test", "");
                                 ObjMedication.Human_ID = Convert.ToUInt64(Element.InnerText);
@@ -1103,7 +1206,7 @@ namespace Acurus.Capella.DataAccess
 
                                 objAllergy.Human_ID = Convert.ToUInt64(Element.InnerText);
                             }
-                            catch 
+                            catch
                             {
                                 Element.InnerText = Regex.Replace(Element.InnerText, "[^0-9]", "");// Element.InnerText.Replace("test", "");
                                 objAllergy.Human_ID = Convert.ToUInt64(Element.InnerText);
@@ -1135,7 +1238,7 @@ namespace Acurus.Capella.DataAccess
 
                                 objProbList.Human_ID = Convert.ToUInt64(Element.InnerText);
                             }
-                            catch 
+                            catch
                             {
                                 Element.InnerText = Regex.Replace(Element.InnerText, "[^0-9]", "");// Element.InnerText.Replace("test", "");
                                 objProbList.Human_ID = Convert.ToUInt64(Element.InnerText);
@@ -1149,7 +1252,7 @@ namespace Acurus.Capella.DataAccess
 
                                 objProbList.Id = Convert.ToUInt64(Element.InnerText);
                             }
-                            catch 
+                            catch
                             {
                                 Element.InnerText = Regex.Replace(Element.InnerText, "[^0-9]", "");// Element.InnerText.Replace("test", "");
                                 objProbList.Id = Convert.ToUInt64(Element.InnerText);
@@ -1165,7 +1268,7 @@ namespace Acurus.Capella.DataAccess
                                 //Latha - Branch_52_production_for_Rcopia - Start - 4 Jul 2011
                                 objPrescription.Human_ID = Convert.ToUInt64(Element.InnerText);
                             }
-                            catch 
+                            catch
                             {
                                 Element.InnerText = Regex.Replace(Element.InnerText, "[^0-9]", "");// Element.InnerText.Replace("test", "");
                                 objPrescription.Human_ID = Convert.ToUInt64(Element.InnerText);
@@ -1658,7 +1761,7 @@ namespace Acurus.Capella.DataAccess
                     break;
 
 
-                #endregion
+                    #endregion
             }
         }
 

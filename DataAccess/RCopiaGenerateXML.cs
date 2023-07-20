@@ -1172,6 +1172,39 @@ namespace Acurus.Capella.DataAccess
         //}
 
         //Rcopia Patient Level Download - Commented
+
+
+        // new add method 
+        public string CreateGetRcopiaEventXML(DateTime dtRCopia_Allergy_Last_Updated_Date_and_Time, string sLegalOrg)
+        {
+            
+            FillRequiredInfo("get_rcopia_event", sLegalOrg);
+            Rcopia_Update_InfoManager rcopiaUpdatemngr = new Rcopia_Update_InfoManager();
+            //string ilstRcopUpdateInfoDate = rcopiaUpdatemngr.GetRcopiaUpdateInfoCommandName("update_allergy");
+            //if (ilstRcopUpdateInfoDate != "")
+            //    xmlWriter.WriteElementString("LastUpdateDate", ilstRcopUpdateInfoDate.Replace("-", "/"));
+            if (dtRCopia_Allergy_Last_Updated_Date_and_Time != DateTime.MinValue)
+                xmlWriter.WriteElementString("LastUpdateDate", dtRCopia_Allergy_Last_Updated_Date_and_Time.ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+            else
+                xmlWriter.WriteElementString("LastUpdateDate", DateTime.Now.AddDays(-1).ToString("MM/dd/yyyy HH:mm:ss").Replace("-", "/"));
+            xmlWriter.WriteElementString("IncludePatientList", "y");
+            xmlWriter.WriteElementString("MaximumLastUpdateDate", string.Empty);
+            xmlWriter.WriteStartElement("Patient");
+            xmlWriter.WriteElementString("RcopiaID", string.Empty);
+            xmlWriter.WriteElementString("ExternalID", string.Empty);
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndDocument();
+            xmlWriter.Flush();
+            Byte[] buffer = new Byte[ms.Length];
+            buffer = ms.ToArray();
+            string xmlOutput = System.Text.Encoding.UTF8.GetString(buffer);
+
+            return xmlOutput;
+        }
+        // new method end
+
         public string CreateUpdateAllergyXML(ulong ulHumanID, DateTime dtRCopia_Allergy_Last_Updated_Date_and_Time, string sLegalOrg)
         {
             if (ulHumanID == 0)

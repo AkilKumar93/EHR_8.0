@@ -4227,7 +4227,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             Human MatchingHuman = new Human();
 
             ICriteria crit = iMySession.CreateCriteria(typeof(Human)).Add(Expression.Eq("Id", HumanID));
-            MatchingHuman = crit.List<Human>()[0];
+            //CAP-267: Check whether human Id exists in db or not
+            IList<Human> lstHuman = crit.List<Human>();
+            MatchingHuman = lstHuman.Count > 0 ? lstHuman[0] : MatchingHuman;
             iMySession.Close();
 
             return MatchingHuman;
