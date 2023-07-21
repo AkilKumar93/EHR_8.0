@@ -195,7 +195,9 @@ function SurgicalSave(sender, args) {
         PFSH_SaveUnsuccessful();
     }
     else {
-        sender.set_autoPostBack(true);
+        //CAP-536 PFSH - Surgical History screen loading for long time
+        __doPostBack('btnAdd', "true");
+        //sender.set_autoPostBack(true);
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
         $find("lstSurgeryName").clearSelection();
         $('#lstSurgeryName').find('li').addClass('ChangeLabel')
