@@ -506,7 +506,7 @@
         }
         //BugID:51562 
         if (prvTab.match("tbEandM") != null) {
-            if ($(top.window.document).find(".in").find(".close") != undefined && $(top.window.document).find(".in").find(".close").length > 1)
+            if ($(top.window.document)?.find(".in")?.find(".close") != undefined && $(top.window.document)?.find(".in")?.find(".close")?.length > 1)
                 $(top.window.document).find(".in").find(".close")[0].click();
         }
 
@@ -529,12 +529,12 @@
         }
         PrevTab = $(event.relatedTarget);  // previous tab  
         if (PrevTab[0].innerText == "SERV./PROC. CODES") {
-            if ($(top.window.document).find(".in").find(".close") != undefined && $(top.window.document).find(".in").find(".close").length > 1 && ($(top.window.document).find("#tbFavCPTsContainer input[type=checkbox]:checked").length > 0 || $(top.window.document).find("#tbFavICDsContainer input[type=checkbox]:checked").length > 0)) {
+            if ($(top.window.document)?.find(".in")?.find(".close") != undefined && $(top.window.document)?.find(".in")?.find(".close")?.length > 1 && ($(top.window.document)?.find("#tbFavCPTsContainer input[type=checkbox]:checked")?.length > 0 || $(top.window.document)?.find("#tbFavICDsContainer input[type=checkbox]:checked")?.length > 0)) {
                 if (event != undefined)
                     event_bkup = event;
                 if (DisplayErrorMessage('530020') == true) {
                     //CAP-625: Handle Click event                    
-                    if ($(top.window.document).find(".in").find(".close")[0] != null && $(top.window.document).find(".in").find(".close")[0] != undefined) {
+                    if ($(top.window.document)?.find(".in")?.find(".close")[0] != null && $(top.window.document)?.find(".in")?.find(".close")[0] != undefined) {
                         $(top.window.document).find(".in").find(".close")[0].click();
                     }
                 }
@@ -574,7 +574,7 @@
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
 
-                    if ($('.clsIframe').contents()[0].all.namedItem('btnAdd') != null && $('.clsIframe').contents()[0].all.namedItem('btnAdd') != undefined) {
+                    if ($('.clsIframe')?.contents()[0]?.all?.namedItem('btnAdd') != null && $('.clsIframe')?.contents()[0]?.all?.namedItem('btnAdd') != undefined) {
                         $('.clsIframe').contents()[0].all.namedItem('btnAdd').click();
                     }
 
@@ -600,266 +600,266 @@
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     if (subtab == "General") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('General').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('General').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('General')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('General')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('General').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "TB Risk Assessment") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('TBRiskAssessment').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('TBRiskAssessment').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('TBRiskAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('TBRiskAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('TBRiskAssessment').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Diabetic Foot Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('DiabeticFootScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('DiabeticFootScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('DiabeticFootScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('DiabeticFootScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('DiabeticFootScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Sleep Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('SleepScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('SleepScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('SleepScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('SleepScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('SleepScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Sleep") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('Sleep').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('Sleep').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('Sleep')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('Sleep')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('Sleep').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Pulmonary") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('Pulmonary').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('Pulmonary').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('Pulmonary')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('Pulmonary')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('Pulmonary').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Epworth Sleep Score") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('EpworthSleepScore').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('EpworthSleepScore').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('EpworthSleepScore')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('EpworthSleepScore')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('EpworthSleepScore').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Pulmonary/Sleep Exam") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('PulmonarySleepExam').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('PulmonarySleepExam').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('PulmonarySleepExam')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('PulmonarySleepExam')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('PulmonarySleepExam').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Dermatology Questionnaire") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('DermatologyQuestionnaire').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('DermatologyQuestionnaire').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('DermatologyQuestionnaire')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('DermatologyQuestionnaire')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('DermatologyQuestionnaire').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Asthma Control Test") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('AsthmaControlTest').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('AsthmaControlTest').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('AsthmaControlTest')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('AsthmaControlTest')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('AsthmaControlTest').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "PHQ-9 Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('PHQ-9Screening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('PHQ-9Screening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('PHQ-9Screening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('PHQ-9Screening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('PHQ-9Screening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Depression Test") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('DepressionTest').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('DepressionTest').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('DepressionTest')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('DepressionTest')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('DepressionTest').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Neck Disability Index") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('NeckDisabilityIndex').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('NeckDisabilityIndex').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('NeckDisabilityIndex')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('NeckDisabilityIndex')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('NeckDisabilityIndex').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Oswestry Disability Index") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('OswestryDisabilityIndex').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('OswestryDisabilityIndex').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('OswestryDisabilityIndex')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('OswestryDisabilityIndex')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('OswestryDisabilityIndex').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Development") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('Development').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('Development').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('Development')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('Development')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('Development').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
 
                     else if (subtab == "Chronic Cough Scale") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('ChronicCoughScale').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('ChronicCoughScale').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('ChronicCoughScale')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('ChronicCoughScale')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('ChronicCoughScale').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Gynecological") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('Gynecological').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('Gynecological').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('Gynecological')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('Gynecological')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('Gynecological').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Pediatric Sleep Questionnaire") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('PediatricSleepQuestionnaire').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('PediatricSleepQuestionnaire').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('PediatricSleepQuestionnaire')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('PediatricSleepQuestionnaire')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('PediatricSleepQuestionnaire').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Sleep Short") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('SleepShort').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('SleepShort').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('SleepShort')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('SleepShort')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('SleepShort').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Sleep Tendency Scale") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('SleepTendencyScale').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('SleepTendencyScale').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('SleepTendencyScale')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('SleepTendencyScale')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('SleepTendencyScale').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Functional Assessment") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('FunctionalAssessment').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('FunctionalAssessment').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('FunctionalAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('FunctionalAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('FunctionalAssessment').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Karnofsky") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('Karnofsky').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('Karnofsky').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('Karnofsky')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('Karnofsky')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('Karnofsky').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Mini Mental") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('MiniMental').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('MiniMental').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('MiniMental')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('MiniMental')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('MiniMental').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Nutritional Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('NutritionalScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('NutritionalScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('NutritionalScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('NutritionalScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('NutritionalScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Safety Guidelines") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('SafetyGuidelines').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('SafetyGuidelines').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('SafetyGuidelines')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('SafetyGuidelines')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('SafetyGuidelines').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Support Needs") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('SupportNeeds').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('SupportNeeds').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('SupportNeeds')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('SupportNeeds')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('SupportNeeds').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Pain Assessment") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('PainAssessment').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('PainAssessment').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('PainAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('PainAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('PainAssessment').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "CAT Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('CATScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('CATScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('CATScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('CATScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('CATScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "COPD Breathe Well Program") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('COPDBreatheWellProgram').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('COPDBreatheWellProgram').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('COPDBreatheWellProgram')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('COPDBreatheWellProgram')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('COPDBreatheWellProgram').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Fall Risk Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('FallRiskScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('FallRiskScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('FallRiskScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('FallRiskScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('FallRiskScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Cognitive Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('CognitiveScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('CognitiveScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('CognitiveScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('CognitiveScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('CognitiveScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Pain Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('PainScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('PainScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('PainScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('PainScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('PainScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "PHQ-9 Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('PHQ-9Screening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('PHQ-9Screening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('PHQ-9Screening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('PHQ-9Screening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('PHQ-9Screening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Home Safety") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('HomeSafety').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('HomeSafety').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('HomeSafety')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('HomeSafety')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('HomeSafety').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Katz Index Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('KatzIndexScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('KatzIndexScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('KatzIndexScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('KatzIndexScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('KatzIndexScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "ADL Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('ADLScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('ADLScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('ADLScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('ADLScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('ADLScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Get Up and Go") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('GetUpandGo').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('GetUpandGo').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('GetUpandGo')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('GetUpandGo')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('GetUpandGo').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Lawton Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('LawtonScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('LawtonScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('LawtonScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('LawtonScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('LawtonScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Anxiety Screening") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('AnxietyScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('AnxietyScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('AnxietyScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('AnxietyScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('AnxietyScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Spine Intake") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('SpineIntake').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('SpineIntake').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('SpineIntake')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('SpineIntake')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('SpineIntake').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Monofilament Foot Exam") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('MonofilamentFootExam').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('MonofilamentFootExam').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('MonofilamentFootExam')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('MonofilamentFootExam')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('MonofilamentFootExam').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Cervical Spine") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('CervicalSpine').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('CervicalSpine').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('CervicalSpine')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('CervicalSpine')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('CervicalSpine').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Lumbar Spine") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('LumbarSpine').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('LumbarSpine').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('LumbarSpine')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('LumbarSpine')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('LumbarSpine').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Urinalysis") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('Urinalysis').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('Urinalysis').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('Urinalysis')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('Urinalysis')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('Urinalysis').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Staying Healthy Assessment") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('StayingHealthyAssessment').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('StayingHealthyAssessment').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('StayingHealthyAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('StayingHealthyAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('StayingHealthyAssessment').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "AUA BPH Symptom") {
-                        if ($('.clsIframe').contents()[1].all.namedItem('AUABPHSymptom').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[1].all.namedItem('AUABPHSymptom').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[1]?.all?.namedItem('AUABPHSymptom')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[1]?.all?.namedItem('AUABPHSymptom')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[1].all.namedItem('AUABPHSymptom').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
@@ -888,50 +888,50 @@
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     if (subtab == "Past Medical History") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('pastmedHis').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[2].all.namedItem('pastmedHis').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('pastmedHis')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('pastmedHis')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('pastmedHis').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Surg./Proc.") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('surgproc').children[0].contentDocument.all.namedItem('btnAdd') != null && $('.clsIframe').contents()[2].all.namedItem('surgproc').children[0].contentDocument.all.namedItem('btnAdd') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('surgproc')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('surgproc')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('surgproc').children[0].contentDocument.all.namedItem('btnAdd').click();
                         }
 
                     }
                     else if (subtab == "Hospitalization History") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('hospHis').children[0].contentDocument.all.namedItem('btnAdd') != null && $('.clsIframe').contents()[2].all.namedItem('hospHis').children[0].contentDocument.all.namedItem('btnAdd') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('hospHis')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('hospHis')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('hospHis').children[0].contentDocument.all.namedItem('btnAdd').click();
                         }
 
                     }
                     else if (subtab == "Family History") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('famHis').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[2].all.namedItem('famHis').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('famHis')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('famHis')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('famHis').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Social History") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('socialHistory').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[2].all.namedItem('socialHistory').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('socialHistory')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('socialHistory')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('socialHistory').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Non Drug Allergy") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('NdDugAllergy').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[2].all.namedItem('NdDugAllergy').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('NdDugAllergy')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('NdDugAllergy')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('NdDugAllergy').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Immunization History") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('immHis').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[2].all.namedItem('immHis').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('immHis')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('immHis')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('immHis').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "AD") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('ad').children[0].contentDocument.all.namedItem('btnPFSHAutoSave') != null && $('.clsIframe').contents()[2].all.namedItem('ad').children[0].contentDocument.all.namedItem('btnPFSHAutoSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('ad')?.children[0]?.contentDocument?.all?.namedItem('btnPFSHAutoSave') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('ad')?.children[0]?.contentDocument?.all?.namedItem('btnPFSHAutoSave') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('ad').children[0].contentDocument.all.namedItem('btnPFSHAutoSave').click();
                         }
                     }
                     else if (subtab == "Rx History") {
-                        if ($('.clsIframe').contents()[2].all.namedItem('RxH').children[0].contentDocument.all.namedItem('btnAdd') != null && $('.clsIframe').contents()[2].all.namedItem('RxH').children[0].contentDocument.all.namedItem('btnAdd') != undefined) {
+                        if ($('.clsIframe')?.contents()[2]?.all?.namedItem('RxH')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != null && $('.clsIframe')?.contents()[2]?.all?.namedItem('RxH')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != undefined) {
                             $('.clsIframe').contents()[2].all.namedItem('RxH').children[0].contentDocument.all.namedItem('btnAdd').click();
                         }
                     }
@@ -951,7 +951,7 @@
                     paneID = $(event.target).attr('href');
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
-                    if ($('.clsIframe').contents()[3].all.namedItem('btnSave') != null && $('.clsIframe').contents()[3].all.namedItem('btnSave') != undefined) {
+                    if ($('.clsIframe')?.contents()[3]?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[3]?.all?.namedItem('btnSave') != undefined) {
                         $('.clsIframe').contents()[3].all.namedItem('btnSave').click();
                     }
                 }
@@ -960,7 +960,7 @@
                     paneID = $(event.target).attr('href');
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
-                    if ($('.clsIframe').contents()[4].all.namedItem('btnSaveVitals') != null && $('.clsIframe').contents()[4].all.namedItem('btnSaveVitals') != undefined) {
+                    if ($('.clsIframe')?.contents()[4]?.all?.namedItem('btnSaveVitals') != null && $('.clsIframe')?.contents()[4]?.all?.namedItem('btnSaveVitals') != undefined) {
                         $('.clsIframe').contents()[4].all.namedItem('btnSaveVitals').click();
                     }
 
@@ -974,23 +974,23 @@
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     if (subtab == "General With Specialty") {
-                        if ($('.clsIframe').contents()[5].all.namedItem('generalwithspeciality').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[5].all.namedItem('generalwithspeciality').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[5]?.all?.namedItem('generalwithspeciality')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[5]?.all?.namedItem('generalwithspeciality')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[5].all.namedItem('generalwithspeciality').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Focused") {
-                        if ($('.clsIframe').contents()[5].all.namedItem('Focused').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[5].all.namedItem('Focused').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[5]?.all?.namedItem('Focused')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[5]?.all?.namedItem('Focused')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[5].all.namedItem('Focused').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
                     }
                     else if (subtab == "Upload & View Photos") {
-                        if ($('.clsIframe').contents()[5].all.namedItem('UploadViewPhotos').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[5].all.namedItem('UploadViewPhotos').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[5]?.all?.namedItem('UploadViewPhotos')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[5]?.all?.namedItem('UploadViewPhotos')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[5].all.namedItem('UploadViewPhotos').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Body Image") {
-                        if ($('.clsIframe').contents()[5].all.namedItem('BodyImage').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[5].all.namedItem('BodyImage').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[5]?.all?.namedItem('BodyImage')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[5]?.all?.namedItem('BodyImage')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[5].all.namedItem('BodyImage').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
 
@@ -1014,17 +1014,17 @@
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     if (subtab == "Mini Mental Status Exam") {
-                        if ($('.clsIframe').contents()[6].all.namedItem('MiniMentalStatusExam').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[6].all.namedItem('MiniMentalStatusExam').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[6]?.all?.namedItem('MiniMentalStatusExam')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[6]?.all?.namedItem('MiniMentalStatusExam')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[6].all.namedItem('MiniMentalStatusExam').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Depression Screening") {
-                        if ($('.clsIframe').contents()[6].all.namedItem('DepressionScreening').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[6].all.namedItem('DepressionScreening').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[6]?.all?.namedItem('DepressionScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[6]?.all?.namedItem('DepressionScreening')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[6].all.namedItem('DepressionScreening').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Spiritual Care Assessment") {
-                        if ($('.clsIframe').contents()[6].all.namedItem('SpiritualCareAssessment').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[6].all.namedItem('SpiritualCareAssessment').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[6]?.all?.namedItem('SpiritualCareAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[6]?.all?.namedItem('SpiritualCareAssessment')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[6].all.namedItem('SpiritualCareAssessment').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
@@ -1046,8 +1046,8 @@
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     //CAP 304 Cannot read properties of null (reading click) SOURCE: 
-                    if ($('.clsIframe').contents()[7].all.namedItem('btnSave') != null && $('.clsIframe').contents()[7].all.namedItem('btnSave') != undefined) {
-                        $('.clsIframe').contents()[7]?.all?.namedItem('btnSave')?.click();
+                    if ($('.clsIframe')?.contents()[7]?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[7]?.all?.namedItem('btnSave') != undefined) {
+                        $('.clsIframe').contents()[7].all.namedItem('btnSave').click();
                     }
 
                     //if (localStorage.getItem("bSave") == "true") {
@@ -1070,31 +1070,31 @@
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     //CAP 305 Uncaught TypeError: Cannot read properties of null (reading click) SOURCE: 
                     if (subtab == "Diagnostic Order") {
-                        if ($('.clsIframe').contents()[8].all.namedItem('DiagnosticOrder').children[0].contentDocument.all.namedItem('btnOrderSubmit') != null && $('.clsIframe').contents()[8].all.namedItem('DiagnosticOrder').children[0].contentDocument.all.namedItem('btnOrderSubmit') != undefined) {
-                            $('.clsIframe').contents()[8]?.all?.namedItem('DiagnosticOrder').children[0]?.contentDocument.all?.namedItem('btnOrderSubmit')?.click();
+                        if ($('.clsIframe')?.contents()[8]?.all?.namedItem('DiagnosticOrder')?.children[0]?.contentDocument?.all?.namedItem('btnOrderSubmit') != null && $('.clsIframe')?.contents()[8]?.all?.namedItem('DiagnosticOrder')?.children[0]?.contentDocument?.all?.namedItem('btnOrderSubmit') != undefined) {
+                            $('.clsIframe').contents()[8].all.namedItem('DiagnosticOrder').children[0]?.contentDocument.all.namedItem('btnOrderSubmit').click();
                         }
 
                     }
                     else if (subtab == "Referral Order") {
-                        if ($('.clsIframe').contents()[8].all.namedItem('ReferralOrder').children[0].contentDocument.all.namedItem('btnAddRefOrder') != null && $('.clsIframe').contents()[8].all.namedItem('ReferralOrder').children[0].contentDocument.all.namedItem('btnAddRefOrder') != undefined) {
+                        if ($('.clsIframe')?.contents()[8]?.all?.namedItem('ReferralOrder')?.children[0]?.contentDocument?.all?.namedItem('btnAddRefOrder') != null && $('.clsIframe')?.contents()[8]?.all?.namedItem('ReferralOrder')?.children[0]?.contentDocument?.all?.namedItem('btnAddRefOrder') != undefined) {
                             $('.clsIframe').contents()[8].all.namedItem('ReferralOrder').children[0].contentDocument.all.namedItem('btnAddRefOrder').click();
                         }
 
                     }
                     else if (subtab == "Immunization/Injection") {
-                        if ($('.clsIframe').contents()[8].all.namedItem('Immunization').children[0].contentDocument.all.namedItem('btnAdd') != null && $('.clsIframe').contents()[8].all.namedItem('Immunization').children[0].contentDocument.all.namedItem('btnAdd') != undefined) {
+                        if ($('.clsIframe')?.contents()[8]?.all.namedItem('Immunization')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != null && $('.clsIframe')?.contents()[8]?.all?.namedItem('Immunization')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != undefined) {
                             $('.clsIframe').contents()[8].all.namedItem('Immunization').children[0].contentDocument.all.namedItem('btnAdd').click();
                         }
 
                     }
                     else if (subtab == "Procedures") {
-                        if ($('.clsIframe').contents()[8].all.namedItem('InHouseProcedure').children[0].contentDocument.all.namedItem('btnAdd') != null && $('.clsIframe').contents()[8].all.namedItem('InHouseProcedure').children[0].contentDocument.all.namedItem('btnAdd') != undefined) {
+                        if ($('.clsIframe')?.contents()[8]?.all.namedItem('InHouseProcedure')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != null && $('.clsIframe')?.contents()[8]?.all?.namedItem('InHouseProcedure')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != undefined) {
                             $('.clsIframe').contents()[8].all.namedItem('InHouseProcedure').children[0].contentDocument.all.namedItem('btnAdd').click();
                         }
 
                     }
                     else if (subtab == "DME Order") {
-                        if ($('.clsIframe').contents()[8].all.namedItem('DMEOrder').children[0].contentDocument.all.namedItem('btnAdd') != null && $('.clsIframe').contents()[8].all.namedItem('DMEOrder').children[0].contentDocument.all.namedItem('btnAdd') != undefined) {
+                        if ($('.clsIframe')?.contents()[8]?.all?.namedItem('DMEOrder')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != null && $('.clsIframe')?.contents()[8]?.all?.namedItem('DMEOrder')?.children[0]?.contentDocument?.all?.namedItem('btnAdd') != undefined) {
                             $('.clsIframe').contents()[8].all.namedItem('DMEOrder').children[0].contentDocument.all.namedItem('btnAdd').click();
                         }
 
@@ -1140,7 +1140,7 @@
                         });
                     }
                     //CAP-625: Handle Click event
-                    if ($('.clsIframe').contents()[9].all.namedItem('btnsave') != null && $('.clsIframe').contents()[9].all.namedItem('btnsave') != undefined) {
+                    if ($('.clsIframe')?.contents()[9]?.all?.namedItem('btnsave') != null && $('.clsIframe')?.contents()[9]?.all?.namedItem('btnsave') != undefined) {
                         $('.clsIframe').contents()[9].all.namedItem('btnsave').click();
                     }
 
@@ -1162,7 +1162,7 @@
                     var prvTab = PrevTab.attr('href');
                     if (prvTab.match("#tbEandM") != null) {
                         //CAP-625: Handle Click event         
-                        if ($(top.window.document).find(".in").find(".close") != null && $(top.window.document).find(".in").find(".close") != undefined && $(top.window.document).find(".in").find(".close").length > 1) {
+                        if ($(top.window.document)?.find(".in")?.find(".close") != null && $(top.window.document)?.find(".in")?.find(".close") != undefined && $(top.window.document)?.find(".in")?.find(".close")?.length > 1) {
                             $(top.window.document).find(".in").find(".close")[0].click();
                         }
                         //if ($(top.window.document).find(".in").find(".close") != null && $(top.window.document).find(".in").find(".close") != undefined && $(top.window.document).find(".in").find(".close").length > 1)
@@ -1172,7 +1172,7 @@
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     //CAP-625: Handle Click event
-                    if ($('.clsIframe').contents()[11].all.namedItem('btnSave') != null && $('.clsIframe').contents()[11].all.namedItem('btnSave') != undefined) {
+                    if ($('.clsIframe')?.contents()[11]?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[11]?.all?.namedItem('btnSave') != undefined) {
                         $('.clsIframe').contents()[11].all.namedItem('btnSave').click();
                     }
                     //if ($('.clsIframe').contents()[11].all.namedItem('btnSave') != null && $('.clsIframe').contents()[11].all.namedItem('btnSave') != undefined)
@@ -1198,19 +1198,19 @@
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     if (subtab == "General Plan") {
                         //CAP-625: Handle Click event
-                        if ($('.clsIframe').contents()[10].all.namedItem('generalplan').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[10].all.namedItem('generalplan').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[10]?.all?.namedItem('generalplan')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[10]?.all?.namedItem('generalplan')?.children[0]?.contentDocument.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[10].all.namedItem('generalplan').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Individualized CarePlan") {
                         //CAP-625: Handle Click event
-                        if ($('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[10]?.all?.namedItem('IndividualCarePlan')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[10]?.all?.namedItem('IndividualCarePlan')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[10].all.namedItem('IndividualCarePlan').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
                     else if (subtab == "Preventive Screen Plan") {
                         //CAP-625: Handle Click event
-                        if ($('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave') != null && $('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave') != undefined) {
+                        if ($('.clsIframe')?.contents()[10]?.all?.namedItem('PreventiveScreen')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[10]?.all?.namedItem('PreventiveScreen')?.children[0]?.contentDocument?.all?.namedItem('btnSave') != undefined) {
                             $('.clsIframe').contents()[10].all.namedItem('PreventiveScreen').children[0].contentDocument.all.namedItem('btnSave').click();
                         }
                     }
@@ -1229,7 +1229,7 @@
                 }
                 else if (PrevTab[0].innerText == "SUMMARY") {
                     //CAP-625: Handle Click event
-                    if ($('.clsIframe').contents()[12].all.namedItem('btnSave') != null && $('.clsIframe').contents()[12].all.namedItem('btnSave') != undefined) {
+                    if ($('.clsIframe')?.contents()[12]?.all?.namedItem('btnSave') != null && $('.clsIframe')?.contents()[12]?.all?.namedItem('btnSave') != undefined) {
                         $('.clsIframe').contents()[12].all.namedItem('btnSave').click();
                     }
                     paneID = $(event.target).attr('href');
