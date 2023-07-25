@@ -988,7 +988,7 @@ namespace Acurus.Capella.UI.RCopia
                     rcopiaUpdateInfo.Value = sResponseXML;
                     rcopiaUpdateInfo.Last_Updated_Date_Time = DateTime.Now;
                     TemprcopiaUpdateList.Add(rcopiaUpdateInfo);
-                    rcopiaProxy.InsertinToRcopia_Update_info("get_url", DateTime.Now, sResponseXML, string.Empty);
+                    rcopiaProxy.InsertinToRcopia_Update_info("get_url", DateTime.Now, sResponseXML, string.Empty, sLegalOrg);
                 }
                 else
                 {
