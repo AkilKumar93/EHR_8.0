@@ -2207,12 +2207,10 @@ namespace Acurus.Capella.UI
                 string[] addresses = ipAddress.Split(',');
                 if (addresses.Length != 0)
                 {
-                    var returnstr = JsonConvert.SerializeObject(addresses[0]);
-                    return returnstr;
+                    return addresses[0];
                 }
             }
-            var returnList = JsonConvert.SerializeObject(context.Request.ServerVariables["REMOTE_ADDR"].ToString());
-            return returnList;
+            return context.Request.ServerVariables["REMOTE_ADDR"];
         }
     }
 }
