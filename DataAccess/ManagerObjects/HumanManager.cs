@@ -5424,11 +5424,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //MySession.Close();
                 throw new Exception(ex1.Message);
             }
-            //if (HumanId != 0)
-            //{
-            //    RCopiaTransactionManager objRcopiaMngr = new RCopiaTransactionManager();
-            //    objRcopiaMngr.SendPatientToRCopia(HumanId, string.Empty);
-            //}
+            if (HumanId != 0)
+            {
+                RCopiaTransactionManager objRcopiaMngr = new RCopiaTransactionManager();
+                //CAP-676: Uncomment SendPatientToRCopia method
+                objRcopiaMngr.SendPatientToRCopia(HumanId, string.Empty, objHuman.Legal_Org);
+            }
             return HumanListAdd[0];
 
 
@@ -5736,11 +5737,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //MySession.Close();
                 throw new Exception(ex1.Message);
             }
-            //if (HumanId != 0)
-            //{
-            //    RCopiaTransactionManager objRcopiaMngr = new RCopiaTransactionManager();
-            //    objRcopiaMngr.SendPatientToRCopia(HumanId, string.Empty);
-            //}
+            if (HumanId != 0)
+            {
+                RCopiaTransactionManager objRcopiaMngr = new RCopiaTransactionManager();
+                //CAP-676: Uncomment SendPatientToRCopia method
+                objRcopiaMngr.SendPatientToRCopia(HumanId, string.Empty, objHuman.Legal_Org);
+            }
             return HumanUpdateList[0];
 
 
