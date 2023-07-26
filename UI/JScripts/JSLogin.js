@@ -129,7 +129,7 @@ function LoadSystemMessagesKnowledgeCenterdetails() {
 
 }
 
-async function CheckMandatory(txtbx) {
+ function CheckMandatory(txtbx) {
     localStorage.setItem('PhysicianCPT', '');
     localStorage.setItem('PhysicianICD', '');
     document.getElementById('txtPassword').focus();
@@ -175,7 +175,7 @@ async function CheckMandatory(txtbx) {
         document.getElementById('hdnFacltyName').value = document.getElementById('ddlFacility').value;
         setTimeZone();
         ShowLoading();
-        await getIpAddress();
+        getIpAddress();
         return true;
     }
 
@@ -184,7 +184,6 @@ async function CheckMandatory(txtbx) {
 function getIpAddress() {
     $.ajax({
         type: "POST",
-        async: true,
         url: "frmRCopiaToolbar.aspx/GetIPAddress",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
