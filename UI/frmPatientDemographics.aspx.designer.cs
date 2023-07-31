@@ -150,6 +150,24 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.TextBox txtExternalAccNo;
 
         /// <summary>
+        /// lblDynamicsNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDynamicsNumber;
+
+        /// <summary>
+        /// txtDynamicsNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDynamicsNumber;
+
+        /// <summary>
         /// Label7 control.
         /// </summary>
         /// <remarks>

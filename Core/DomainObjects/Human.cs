@@ -169,6 +169,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Legal_Org = string.Empty;
         private ulong _Primary_Carrier_ID = 0;
         private string _sIsTranslatorRequired = "N";
+        private string _Dynamics_Number = string.Empty;
         #endregion
 
         #region HashCode Value
@@ -1308,6 +1309,12 @@ namespace Acurus.Capella.Core.DomainObjects
             set { _sIsTranslatorRequired = value; }
         }
 
+        [DataMember]
+        public virtual string Dynamics_Number
+        {
+            get { return _Dynamics_Number; }
+            set { _Dynamics_Number = value; }
+        }
         #endregion
 
     }

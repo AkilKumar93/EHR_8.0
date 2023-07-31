@@ -1151,6 +1151,7 @@ namespace Acurus.Capella.UI
                     objHuman.Created_Date_And_Time = Convert.ToDateTime(hdnLocalTime.Value);
                 objHuman.Created_By = ClientSession.UserName;
                 objHuman.Birth_Date = Convert.ToDateTime(dtpPatientDOB.Text);
+                objHuman.Dynamics_Number = txtDynamicsNumber.Text;
                 if (chkGuarantorIsPatient.Checked == false)
                 {
                     if (dtpGuarantorDOB.Text == "")
@@ -1483,6 +1484,7 @@ namespace Acurus.Capella.UI
                 {
                     sAccountExtNo = txtExternalAccNo.Text;
                 }
+                objHuman.Dynamics_Number = txtDynamicsNumber.Text;
                 HumanDTO CheckHuman = new HumanDTO();
                 if (txtMedicalRecordno.Text.ToUpper() != objHuman.Medical_Record_Number.ToUpper() && txtExternalAccNo.Text.ToUpper() != objHuman.Patient_Account_External.ToUpper())
                     CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, txtMedicalRecordno.Text, sAccountExtNo);
@@ -2483,6 +2485,7 @@ namespace Acurus.Capella.UI
                     }
                 }
                 txtExternalAccNo.Text = objHumanDTO.HumanDetails.Patient_Account_External;
+                txtDynamicsNumber.Text = objHumanDTO.HumanDetails.Dynamics_Number;
                 for (int i = 0; i < ddlDefaultFacility.Items.Count; i++)
                 {
                     if (Convert.ToString(ddlDefaultFacility.Items[i].Text).ToUpper() == objHumanDTO.HumanDetails.Facility_Name.ToUpper())
