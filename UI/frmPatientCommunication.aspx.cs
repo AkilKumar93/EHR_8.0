@@ -369,6 +369,12 @@ namespace Acurus.Capella.UI
                     {
                         patientdetaildto.ilstPatientNotes[i].Modified_Date_And_Time = UtilityManager.ConvertToLocal(patientdetaildto.ilstPatientNotes[i].Modified_Date_And_Time);
                     }
+                    //CAP-692 - Convert in to UTC time to Local time.
+                    if (patientdetaildto.ilstPatientNotes[i].Message_Date_And_Time != null
+                        && patientdetaildto.ilstPatientNotes[i].Message_Date_And_Time.ToString() != "1/1/0001 12:00:00 AM")
+                    {
+                        patientdetaildto.ilstPatientNotes[i].Message_Date_And_Time = UtilityManager.ConvertToLocal(patientdetaildto.ilstPatientNotes[i].Message_Date_And_Time);
+                    }
                 }
             }
             return JsonConvert.SerializeObject(patientdetaildto);

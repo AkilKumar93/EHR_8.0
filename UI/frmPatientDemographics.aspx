@@ -536,7 +536,29 @@
                                         Width="93%" MaxLength="15" EnableViewState="false"></asp:TextBox>
                                 </td>
                                 <%--<td></td>--%>
-                                  
+
+                                <td style="width:11%">
+                                    <asp:Label ID="lblDynamicsNumber" runat="server" Text="Dynamics #" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                </td>
+                                 <td  style="width:11%">
+                                    <asp:TextBox ID="txtDynamicsNumber" onchange="AutoSave();" runat="server" OnKeyPress="change(this);" CssClass="Editabletxtbox"
+                                        autocomplete="off" EnableViewState="false" width="160px" MaxLength="15"></asp:TextBox>
+                                </td>
+                                <td style="width:11%"></td>
+                                
+                                <%--<td width="150">
+                                    <asp:Button ID="btnFindPatient" runat="server" OnClick="btnFindPatient_Click" CssClass="aspresizedbluebutton" OnClientClick="return OpenFindPatient();"
+                                        Text="Find Patient" />
+                                </td>--%>
+                               <%-- <td class="style274">&nbsp;
+                                </td>--%>
+
+                                
+                               
+                                
+                                
+                            </tr>
+                            <tr>
                                  <td style="width:11%">
                                     <asp:Label ID="Label7" runat="server" Text="Previous Name" CssClass="spanstyle" EnableViewState="false"></asp:Label>
                                 </td>
@@ -550,17 +572,6 @@
                                     <asp:Button ID="btnEditName" runat="server" OnClick="btnEditName_Click" Text="Edit Name" CssClass="aspresizedbluebutton"
                                         AccessKey="E" Style="margin-right: 1px; margin-bottom: 0px;" Width="80px" />
                                 </td>
-                                <%--<td width="150">
-                                    <asp:Button ID="btnFindPatient" runat="server" OnClick="btnFindPatient_Click" CssClass="aspresizedbluebutton" OnClientClick="return OpenFindPatient();"
-                                        Text="Find Patient" />
-                                </td>--%>
-                               <%-- <td class="style274">&nbsp;
-                                </td>--%>
-
-                                
-                               
-                                
-                                
                             </tr>
                             <tr style="width:100%" >
                                 <td style="width:11%">

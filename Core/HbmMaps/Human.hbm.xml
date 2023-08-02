@@ -160,6 +160,7 @@
     <property name="Legal_Org" column="Legal_Org" />
     <property name="Primary_Carrier_ID" column="Primary_Carrier_ID" />
 	<property name="Is_Translator_Required" column="Is_Translator_Required" />
+	  <property name="Dynamics_Number" column="Dynamics_Number" />
 
     <bag name="PatientInsuredBag" cascade="all" lazy="false" inverse="true" >
       <key column="Human_ID" />
