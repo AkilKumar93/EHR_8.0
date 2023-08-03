@@ -1860,7 +1860,7 @@ namespace Acurus.Capella.UI
             #region EnableNotificationAlert
             if (btnPhysiciancorrection.Value.ToUpper() == "MOVE TO CHECKOUT" && (ehrwfobj != null && ehrwfobj.Current_Process == "MA_PROCESS") && hdnChkOut.Value == "true")
                 enableNotifAlert = true;
-            else if (btnPhysiciancorrection.Value.ToUpper() != "MOVE TO CHECKOUT" && ehrwfobj != null && ((ehrwfobj.Current_Process == "PROVIDER_PROCESS" || ehrwfobj.Current_Process == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process == "PROVIDER_REVIEW_CORRECTION") || (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2")))
+            else if (btnPhysiciancorrection.Value.ToUpper() != "MOVE TO CHECKOUT" && ehrwfobj != null && ((ehrwfobj.Current_Process == "PROVIDER_PROCESS" || ehrwfobj.Current_Process == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process == "PROVIDER_REVIEW_CORRECTION") || (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2"|| ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING")))
                 enableNotifAlert = true;
             #endregion
 
