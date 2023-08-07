@@ -319,12 +319,15 @@ function PrintTreatmentNote() {
     StopLoadingImage();
 }
 function AkidoNoteClickSum(sAkidoURL) {
-
-    Result = openNonModal(sAkidoURL, 780, 1250, obj);
-
+    //Jira #CAP - 735
+    //Result = openNonModal(sAkidoURL, 780, 1250, obj);
+    //if (Result == null)
+    //    return false;
     $('#resultLoading').css("display", "none");
-    if (Result == null)
-        return false;
+    window.open(sAkidoURL, '_blank').focus();
+
+   
+    
 
     return false;
 }

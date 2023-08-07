@@ -32,6 +32,7 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Xml.Xsl;
 using System.Xml.XPath;
 using System.Security.RightsManagement;
+using System.Net;
 
 namespace Acurus.Capella.UI
 {
@@ -3735,36 +3736,36 @@ namespace Acurus.Capella.UI
         /**To maintain the user access log**/
         public static void WriteApplicationAccessInfo(string sUserName, string sFacilityName)
         {
-            try
-            {
-                string LoggedinDateandTime_PST = UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString();
-                string sIPAddress = GetIPAddress();
-                if (LoggedinDateandTime_PST != string.Empty)
-                {
-                    LoggedinDateandTime_PST = LoggedinDateandTime_PST.Replace(":", "_").Replace("/", "_").Replace(" ", "_");
-                }
-                string FileName = LoggedinDateandTime_PST + "$" + sUserName + "$" + sIPAddress + "$" + sFacilityName + ".txt";
-                if (System.Configuration.ConfigurationSettings.AppSettings["UserAccessFilePath"] != null && System.Configuration.ConfigurationSettings.AppSettings["UserAccessFilePath"].ToString() != string.Empty)
-                {
-                    string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["UserAccessFilePath"], FileName);
-                    if (!File.Exists(strXmlFilePath) == true)
-                    {
-                        try
-                        {
-                            File.CreateText(strXmlFilePath);
-                        }
-                        catch
-                        {
+            //try
+            //{
+            //    string LoggedinDateandTime_PST = UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString();
+            //    string sIPAddress = GetIPAddress();
+            //    if (LoggedinDateandTime_PST != string.Empty)
+            //    {
+            //        LoggedinDateandTime_PST = LoggedinDateandTime_PST.Replace(":", "_").Replace("/", "_").Replace(" ", "_");
+            //    }
+            //    string FileName = LoggedinDateandTime_PST + "$" + sUserName + "$" + sIPAddress + "$" + sFacilityName + ".txt";
+            //    if (System.Configuration.ConfigurationSettings.AppSettings["UserAccessFilePath"] != null && System.Configuration.ConfigurationSettings.AppSettings["UserAccessFilePath"].ToString() != string.Empty)
+            //    {
+            //        string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["UserAccessFilePath"], FileName);
+            //        if (!File.Exists(strXmlFilePath) == true)
+            //        {
+            //            try
+            //            {
+            //                File.CreateText(strXmlFilePath);
+            //            }
+            //            catch
+            //            {
 
-                        }
-                    }
-                }
+            //            }
+            //        }
+            //    }
 
-            }
-            catch
-            {
+            //}
+            //catch
+            //{
 
-            }
+            //}
         }
         public static string GetIPAddress()
         {
@@ -5895,6 +5896,41 @@ namespace Acurus.Capella.UI
 
             //}
             return bAlert;
+        }
+
+        public static Boolean IsAkidoEncounter()
+        {
+            Boolean bIsAkidoEncounter = false;
+
+            try
+            {
+                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()));
+                string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
+                var myWebRequest = WebRequest.Create(myUri);
+                var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                myHttpWebRequest.PreAuthenticate = true;
+                myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
+                myHttpWebRequest.Accept = "application/json";
+
+                var myWebResponse = myWebRequest.GetResponse();
+                var responseStream = myWebResponse.GetResponseStream();
+
+                var myStreamReader = new StreamReader(responseStream, Encoding.Default);
+                var json = myStreamReader.ReadToEnd();
+                responseStream.Close();
+                myWebResponse.Close();
+
+                if (json.ToString() != "[]")
+                {
+                    bIsAkidoEncounter = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return bIsAkidoEncounter;
         }
     }
 }

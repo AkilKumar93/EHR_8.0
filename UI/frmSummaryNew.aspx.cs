@@ -48,7 +48,10 @@ namespace Acurus.Capella.UI
         string sIsPhoneEncounter = "N";
         protected void Page_Load(object sender, EventArgs e)
         {
-            Loadsummary();
+            if (!IsPostBack)
+            {
+                Loadsummary();
+            }
         }
 
 
@@ -81,57 +84,76 @@ namespace Acurus.Capella.UI
                 // ClientSession.Selectedencounterid = Encounter_Id;
             }
 
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && Request["AkidoSummary"] == null)
+            //if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && Request["AkidoSummary"] == null)
+            //{
+            //    try
+            //    {
+            //        var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()));
+            //        string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
+            //        var myWebRequest = WebRequest.Create(myUri);
+            //        var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+            //        myHttpWebRequest.PreAuthenticate = true;
+            //        myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
+            //        myHttpWebRequest.Accept = "application/json";
+
+            //        var myWebResponse = myWebRequest.GetResponse();
+            //        var responseStream = myWebResponse.GetResponseStream();
+
+            //        var myStreamReader = new StreamReader(responseStream, Encoding.Default);
+            //        var json = myStreamReader.ReadToEnd();
+
+            //        if (json.ToString() != "[]")
+            //        {
+            //            xslFrame.Visible = false;
+            //            //AkidoFrame.Visible = true;
+            //            //iFrameAkidoSummary.Attributes.Add("src", System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", ClientSession.EncounterId.ToString()).Replace("[ClientName]", ClientSession.LegalOrg));
+
+            //            btntreatment.Visible = false;
+            //            btnwellness.Visible = false;
+            //            Button1.Visible = false;
+            //            btnPrint.Visible = false;
+            //            btnCancelPhoneEnc.Visible = false;
+            //            txtSearch.Visible = false;
+            //            dvsignphy.Visible = false;
+            //            dvsignreviewphy.Visible = false;
+
+            //            responseStream.Close();
+            //            myWebResponse.Close();
+
+            //            string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()).Replace("[ClientName]", ClientSession.LegalOrg.ToLower());
+
+            //            ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('" + sAkidoURL + "');", true);
+            //            return;
+            //        }
+
+            //        responseStream.Close();
+            //        myWebResponse.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.ToString());
+            //    }
+            //}
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter() == true)
             {
-                try
-                {
-                    var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()));
-                    string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
-                    var myWebRequest = WebRequest.Create(myUri);
-                    var myHttpWebRequest = (HttpWebRequest)myWebRequest;
-                    myHttpWebRequest.PreAuthenticate = true;
-                    myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
-                    myHttpWebRequest.Accept = "application/json";
+                xslFrame.Visible = false;
+                //AkidoFrame.Visible = true;
+                //iFrameAkidoSummary.Attributes.Add("src", System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", ClientSession.EncounterId.ToString()).Replace("[ClientName]", ClientSession.LegalOrg));
 
-                    var myWebResponse = myWebRequest.GetResponse();
-                    var responseStream = myWebResponse.GetResponseStream();
+                btntreatment.Visible = false;
+                btnwellness.Visible = false;
+                Button1.Visible = false;
+                btnPrint.Visible = false;
+                btnCancelPhoneEnc.Visible = false;
+                txtSearch.Visible = false;
+                dvsignphy.Visible = false;
+                dvsignreviewphy.Visible = false;
 
-                    var myStreamReader = new StreamReader(responseStream, Encoding.Default);
-                    var json = myStreamReader.ReadToEnd();
+                string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()).Replace("[ClientName]", ClientSession.LegalOrg.ToLower());
 
-                    if (json.ToString() != "[]")
-                    {
-                        xslFrame.Visible = false;
-                        //AkidoFrame.Visible = true;
-                        //iFrameAkidoSummary.Attributes.Add("src", System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", ClientSession.EncounterId.ToString()).Replace("[ClientName]", ClientSession.LegalOrg));
-
-                        btntreatment.Visible = false;
-                        btnwellness.Visible = false;
-                        Button1.Visible = false;
-                        btnPrint.Visible = false;
-                        btnCancelPhoneEnc.Visible = false;
-                        txtSearch.Visible = false;
-                        dvsignphy.Visible = false;
-                        dvsignreviewphy.Visible = false;
-
-                        responseStream.Close();
-                        myWebResponse.Close();
-
-                        string sAkidoURL = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()).Replace("[ClientName]", ClientSession.LegalOrg.ToLower());
-
-                        ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('" + sAkidoURL + "');", true);
-                        return;
-                    }
-
-                    responseStream.Close();
-                    myWebResponse.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
+                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('" + sAkidoURL + "');", true);
+                return;
             }
-
 
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
@@ -1616,6 +1638,15 @@ margin:0in 0in 0in 9in;
         }
         protected void btnPDF_Click(object sender, EventArgs e)
         {
+            //Jira #CAP-731 -start
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter() == true)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
+            //Jira #CAP-731 -end
+
+
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Progress Notes PDF : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
             Stopwatch objTimernew = new Stopwatch();
@@ -4314,6 +4345,13 @@ margin:0in 0in 0in 9in;
         }
         protected void btnPDFconsult_Click(object sender, EventArgs e)
         {
+            //Jira #CAP-731 -start
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter() == true)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
+            //Jira #CAP-731 -end
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
 

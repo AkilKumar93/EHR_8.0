@@ -114,7 +114,13 @@ namespace Acurus.Capella.UI
         }
         protected void btnWordwellness_Click(object sender, EventArgs e)
         {
-
+            //Jira #CAP-731 -start
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter() == true)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                return;
+            }
+            //Jira #CAP-731 -end
 
             string NotesName = "";
             // string xsltFile = HttpContext.Current.Server.MapPath("EHR_Progress_Notes.xsl");
