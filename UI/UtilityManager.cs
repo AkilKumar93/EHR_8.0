@@ -5898,13 +5898,13 @@ namespace Acurus.Capella.UI
             return bAlert;
         }
 
-        public static Boolean IsAkidoEncounter()
+        public static Boolean IsAkidoEncounter(string sEncounterID)
         {
             Boolean bIsAkidoEncounter = false;
 
             try
             {
-                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", Encounter_Id.ToString()));
+                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
                 string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
                 var myWebRequest = WebRequest.Create(myUri);
                 var myHttpWebRequest = (HttpWebRequest)myWebRequest;

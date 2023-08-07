@@ -134,7 +134,7 @@ namespace Acurus.Capella.UI
             //        Console.WriteLine(ex.ToString());
             //    }
             //}
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter() == true)
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(Encounter_Id.ToString()) == true)
             {
                 xslFrame.Visible = false;
                 //AkidoFrame.Visible = true;
@@ -1639,7 +1639,7 @@ margin:0in 0in 0in 9in;
         protected void btnPDF_Click(object sender, EventArgs e)
         {
             //Jira #CAP-731 -start
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter() == true)
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString()) == true)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
@@ -4346,7 +4346,7 @@ margin:0in 0in 0in 9in;
         protected void btnPDFconsult_Click(object sender, EventArgs e)
         {
             //Jira #CAP-731 -start
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter() == true)
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString()) == true)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;

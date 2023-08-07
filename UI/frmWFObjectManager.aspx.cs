@@ -1188,15 +1188,16 @@ namespace Acurus.Capella.UI
             //Jira #CAP-706-start
             else if (selectedItem["Current Process"].Text == "PROVIDER_PROCESS")
             {
-                //Jira #CAP-724 -start
-                if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && UtilityManager.IsAkidoEncounter() == false)
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011196'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                    return;
-                }
-                //Jira #CAP-724 -end
+                
                 if (grdAdminModule.SelectedItems[0].Cells[2].Text != string.Empty && selectedItem["Object Type"].Text != string.Empty)
                 {
+                    //Jira #CAP-724 -start
+                    if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString()) == false)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011196'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                        return;
+                    }
+                    //Jira #CAP-724 -end
                     WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), selectedItem["Object Type"].Text, "UNKNOWN", cboPreviousProcess.SelectedItem.Text, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
                 }
                 //WfObjectMngr.MoveToNextProcess(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text),"ENCOUNTER",1,"UNKNOWN",)

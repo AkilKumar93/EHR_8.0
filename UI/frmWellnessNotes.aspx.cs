@@ -115,7 +115,7 @@ namespace Acurus.Capella.UI
         protected void btnWordwellness_Click(object sender, EventArgs e)
         {
             //Jira #CAP-731 -start
-            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter() == true)
+            if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString()) == true)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "alert('The Notes can not be generated for this encounter, as this encounter is part of the Akido Note.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
