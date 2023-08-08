@@ -2857,6 +2857,8 @@ namespace Acurus.Capella.UI
             {
                 bIsWorkFlowButtonClicked = true;
 
+                Assembly currentAssembly = Assembly.GetExecutingAssembly();
+
                 if (ClientSession.HumanId != null)
                     RemoveWindowItem(ClientSession.HumanId);
                 Response.Write("<script> window.top.location.href=\" frmMyQueueNew.aspx\"; </script>");
