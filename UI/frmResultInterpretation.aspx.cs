@@ -87,7 +87,10 @@ namespace Acurus.Capella.UI
                                 item.Text = sTemplate[i].Split(';')[0];
                                 ddlTemplate.SelectedIndex = ddlTemplate.Items.IndexOf(item);
 
-                                string Notes = sTemplate[i].Split(';')[1].Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+                                // Cap - 747
+                                //string Notes = sTemplate[i].Split(';')[1].Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+                                string Notes = sTemplate[i].Split(';')[1].Replace("$|$", "&").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+
                                 txtSummary.Text = Notes.TrimStart('\n');
                                 break;
                             }
@@ -204,7 +207,10 @@ namespace Acurus.Capella.UI
                             item.Text = sTemplate[i].Split(';')[0];
                             ddlTemplate.SelectedIndex = ddlTemplate.Items.IndexOf(item);
 
-                            string Notes = sTemplate[i].Split(';')[1].Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+                            // Cap - 747
+                            //string Notes = sTemplate[i].Split(';')[1].Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+                            string Notes = sTemplate[i].Split(';')[1].Replace("$|$", "&").Replace("\\n", "\n").Replace("\\t", "\t").Replace("\\r", "\r").Replace("\"", "");
+
                             txtSummary.Text = Notes.TrimStart('\n');
                             break;
                         }
