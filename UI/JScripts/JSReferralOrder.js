@@ -384,7 +384,10 @@ function btnPlan_Clicked(sender, args) {
 
 function btnPrint_Clicked(sender, args) {
     if ($("#btnAddRefOrder") != null && $("#btnAddRefOrder") != undefined && document.getElementById('btnAddRefOrder').attributes["disabled"].value == "disabled")
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+        //CAP-636 - Handle exception
+        if (window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable?.value != undefined) {
+            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+        }
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
 }
 
