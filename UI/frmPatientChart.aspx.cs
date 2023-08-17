@@ -1709,7 +1709,9 @@ namespace Acurus.Capella.UI
             {
                 if (Sex.Substring(0, 1).ToUpper() == "U")
                 {
-                    sPatientSex = "UNK";
+                    //Cap - 596
+                    //sPatientSex = "UNK";
+                    sPatientSex = "UN";
                 }
                 else
                 {

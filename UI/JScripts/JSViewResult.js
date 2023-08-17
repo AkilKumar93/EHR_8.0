@@ -543,7 +543,10 @@ function OpenResultInterpretation() {
     else {
         //notes = document.getElementById("txtProvNoteshistory").value;
 
-        notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "");
+        // Cap - 747
+        //notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "")
+        notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "").replaceAll("&", "$|$");
+
     }
     //if (notes != '') {
     //    if (!notes.includes("Test Reviewed: ")) {

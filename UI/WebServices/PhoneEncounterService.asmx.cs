@@ -145,8 +145,10 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
                     {
-                        sPatientSex = "UNK";
-                    }
+                            //Cap - 596
+                            //sPatientSex = "UNK";
+                            sPatientSex = "UN";
+                        }
                     else
                     {
                         sPatientSex = objFillHuman.Sex.Substring(0, 1);
