@@ -110,7 +110,9 @@ namespace Acurus.Capella.UI
                                 {
                                     if (((Human)((IList<object>)ilstPatInsBlobFinal[0])[i]).Sex.Substring(0, 1).ToUpper() == "U")
                                     {
-                                        sPatientSex = "UNK";
+                                        //Cap - 596
+                                        // sPatientSex = "UNK";
+                                        sPatientSex = "UN";
                                     }
                                     else
                                     {
