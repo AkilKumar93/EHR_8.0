@@ -257,13 +257,13 @@ function btnClose_Clicked(sender, args) {
                     DisplayErrorMessage('7430009');
                     return false;
                 }
-                else if (document.getElementById("txtPassword").value == "") {
-                    document.getElementById("txtPassword").focus();
+                //CAP-713 - Add Electronically Signed
+                else if (document.getElementById("chkElectronicallySigned").checked == false) {
                     document.getElementById("hdnMessageType").value = "";
                     DisplayErrorMessage('7430004');
                     return false;
                 }
-                else if (document.getElementById("txtCallerName").value != "" && document.getElementById("txtPassword").value != "") {
+                else if (document.getElementById("txtCallerName").value != "" && document.getElementById("chkElectronicallySigned").checked == true) {
                     btnSave_Clicked(sender, args);
                     __doPostBack('btnSave', "true");
                     document.getElementById("hdnMessageType").value = "";
@@ -380,7 +380,9 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
         lstSelectedICD = new Array();
         var str = response.d;
         var result = JSON.parse(str);
-        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); } //change      
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); } //change
+        //CAP-713 - Add Electronically Signed
+        $('#lblElectronicallySigned').text("Electronically Signed by " + result.PersonName)
         CalldateMethod();
         document.getElementById("hdnFaciltyName").value = result.FacilityName;
         //document.getElementById("hdnProvID").value = result.ApptProvIDORLoginID;
@@ -470,8 +472,9 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             //document.getElementById("txtExtension").readOnly = true;
             // document.getElementById("cboCallSpokenTo").disabled = true;
             // document.getElementById("txtCallerName").disabled = true;
-            document.getElementById("lblPassword").visible = false;
-            document.getElementById("txtPassword").visible = false;
+            //CAP-713 - Add Electronically Signed
+            document.getElementById("lblElectronicallySigned").visible = false;
+            document.getElementById("chkElectronicallySigned").visible = false;
             document.getElementById("btnSave").visible = false;
             //document.getElementById("txtCallHrs").style.color = "#BFDBFF";
             //document.getElementById("txtCallHrs").style.borderColor = "Black";
@@ -2964,8 +2967,8 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 return;
             }
         }
-
-        if (document.getElementById("txtPassword").value != null && document.getElementById("txtPassword").value == '') {
+        //CAP-713 - Add Electronically Signed
+        if (document.getElementById("chkElectronicallySigned").checked == false) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             DisplayErrorMessage('7430004');
             bSaveCheck = true;
@@ -2983,7 +2986,7 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             method: 'POST',
             data: JSON.stringify({
                 arylstCPT: aryCPTList, arylstICD: aryICDList, arylstDelCPT: DeleteArray,
-                arylstDelICD: DeleteArrayICD, sPassword: document.getElementById('txtPassword').value, ulHumanID: HumanID,
+                arylstDelICD: DeleteArrayICD, ulHumanID: HumanID,
                 //sCallHrs: document.getElementById('txtCallHrs').value,
                 //sCallMins: document.getElementById('txtCallMins').value,
                 sCallMins: $('#cboCallDuration option:selected').val(),

@@ -18,6 +18,7 @@ using System.Web.Script.Serialization;
 using System.Web.Script.Services;
 using System.Threading;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Xml.Linq;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -350,7 +351,17 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
 
 
             //var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = string.Empty, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, HumanDetails = lstHuman, FacilityName = ClientSession.FacilityName, ApptProvIDORLoginID = sApptproviderID, Birth_Date = sBirth_Date, FacilityDOS = sFacilityDOS, StaticCallDuration = lstStaticCallDuration };
-            var result = new { ProcedureList = EandMCodingListCPT, ICDList = AssEandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = string.Empty, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, HumanDetails = lstHuman, FacilityName = ClientSession.FacilityName, Birth_Date = sBirth_Date, StaticCallDuration = lstStaticCallDuration, EncDOSPhyIDList = lstEncDOSPhyName, PatientDetails = sPatientstrip };
+            //CAP-713 - Get Person Name
+            string PersonName = string.Empty;
+            XDocument xmluser = XDocument.Load(Path.Combine(HttpContext.Current.Server.MapPath(".."), @"ConfigXML\User.xml"));
+            IEnumerable<XElement> xmluserid = xmluser.Element("UserList")
+                .Elements("User").Where(aa => aa.Attribute("User_Name").Value.ToString() == ClientSession.UserName);
+            if (xmluserid != null && xmluserid.Count() > 0)
+            {
+                if (xmluserid.Attributes("person_name") != null)
+                    PersonName = xmluserid.Attributes("person_name").First().Value.ToString();
+            }
+            var result = new { ProcedureList = EandMCodingListCPT, ICDList = AssEandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = string.Empty, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, HumanDetails = lstHuman, FacilityName = ClientSession.FacilityName, Birth_Date = sBirth_Date, StaticCallDuration = lstStaticCallDuration, EncDOSPhyIDList = lstEncDOSPhyName, PatientDetails = sPatientstrip, PersonName };
             return JsonConvert.SerializeObject(result);
 
         }
@@ -547,20 +558,16 @@ objFillHuman.Birth_Date.ToString("dd-MMM-yyyy") + " | " +
         #endregion
 
         [System.Web.Services.WebMethod(EnableSession = true)]
-        public string SavePhoneEncounterPlanEandMCoding(object[] arylstCPT, object[] arylstICD, object[] arylstDelCPT, object[] arylstDelICD, string sPassword, ulong ulHumanID, string sCallMins, string sCallerName, string sCallSpokenTo, string sCallDate, string sNotes, string sSubmitMode, string sPhyID, string sDOSPhyName)
+        public string SavePhoneEncounterPlanEandMCoding(object[] arylstCPT, object[] arylstICD, object[] arylstDelCPT, object[] arylstDelICD, ulong ulHumanID, string sCallMins, string sCallerName, string sCallSpokenTo, string sCallDate, string sNotes, string sSubmitMode, string sPhyID, string sDOSPhyName)
         {
-            string sResult = Save(arylstCPT, arylstICD, arylstDelCPT, arylstDelICD, sPassword, ulHumanID, sCallMins, sCallerName, sCallSpokenTo, sCallDate, sNotes, sSubmitMode, ClientSession.UserName, sPhyID, sDOSPhyName);
+            string sResult = Save(arylstCPT, arylstICD, arylstDelCPT, arylstDelICD, ulHumanID, sCallMins, sCallerName, sCallSpokenTo, sCallDate, sNotes, sSubmitMode, ClientSession.UserName, sPhyID, sDOSPhyName);
             return sResult;
         }
 
-        string Save(object[] arylstCPT, object[] arylstICD, object[] arylstDelCPT, object[] arylstDelICD, string sPassword, ulong ulHumanID, string sCallMins, string sCallerName, string sCallSpokenTo, string sCallDate, string sNotes, string sSubmitMode, string sPhyName, string sPhyID, string sDOSPhyName)
+        string Save(object[] arylstCPT, object[] arylstICD, object[] arylstDelCPT, object[] arylstDelICD, ulong ulHumanID, string sCallMins, string sCallerName, string sCallSpokenTo, string sCallDate, string sNotes, string sSubmitMode, string sPhyName, string sPhyID, string sDOSPhyName)
         {
             EAndMCodingManager objEandMManager = new EAndMCodingManager();
             UserManager userManger = new UserManager();
-            if (!(userManger.CheckIfValidPwd(ClientSession.UserName, UIManager.Encryptionbase64Encode(sPassword))))//BugID:54512
-            {
-                return "7430005";
-            }
 
             IList<Encounter> EncounterLst = new List<Encounter>();
             IList<TreatmentPlan> PlanLst = new List<TreatmentPlan>();

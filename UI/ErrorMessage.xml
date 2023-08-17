@@ -2171,7 +2171,7 @@
 	<Message number="7430000" Type="OK" Text="Please enter the Call Spoken To." />
 	<Message number="7430001" Type="OKCANCEL" Text="There are unsaved changes.&#xD;Click &apos;OK&apos; to go back &amp; save the changes or&#xD;Click &apos;Cancel&apos; to proceed without saving."></Message>
 	<Message number="7430002" Type="ToolStrip" Text="Saved Successfully." />
-	<Message number="7430004" Type="OK" Text="Please Enter the Password"></Message>
+	<Message number="7430004" Type="OK" Text="Please sign the Phone Encounter"></Message>
 	<Message number="7430005" Type="OK" Text="Please enter the Valid Password"></Message>
 	<Message number="7430006" Type="YesNoCancel" Text="There are unsaved changes.&#xD;Would you like to save them?"></Message>
 	<Message number="7430007" Type="OK" Text="Please enter duration between 0 to 59 minutes."></Message>
@@ -3000,4 +3000,5 @@
 	<Message number="1011195" Type="OK" Text="Coding Exception can not be performed for this encounter."></Message>
 	<Message number="1011196" Type="OK" Text="Encounter is not captured in Akido Chart, cannot update process."></Message>
 	<Message number="1011197" Type="OK" Text="The Notes can not be generated for this encounter, as this encounter is part of the Akido Note."></Message>
+	<Message number="1011198" Type="OK" Text="A new phone encounter can not be created while you have an encounter open."></Message>
 </ErrorMessage>
