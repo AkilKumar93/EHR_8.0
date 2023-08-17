@@ -2273,6 +2273,8 @@ namespace Acurus.Capella.UI
         }
         public void NewOrderClick()
         {
+            //CAP-667 - disable gbSpecimenDetails, gbBillingDetails and gbOrderDetails all child.
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "$('#gbSpecimenDetails').find('*').attr('disabled', false);$('#gbBillingDetails').find('*').attr('disabled', false);$('#gbOrderDetails').find('*').attr('disabled', false);", true);
             disableallcontrols(true);
             ClearAll(true);
         }
@@ -2473,7 +2475,8 @@ namespace Acurus.Capella.UI
                 IsEditable = objOrdersManager.IsEditable(subtempobj.Id, subtempobj.Order_Type);
                 if (!IsEditable)
                 {
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230139');", true);
+                    //CAP-667 - disable gbSpecimenDetails, gbBillingDetails and gbOrderDetails all child.
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('230139');$('#gbSpecimenDetails').find('*').attr('disabled', true);$('#gbBillingDetails').find('*').attr('disabled', true);$('#gbOrderDetails').find('*').attr('disabled', true);", true);
                     // ApplicationObject.erroHandler.DisplayErrorMessage("230139", OrderType.ToUpper(), this);
                     disableallcontrols(false);
                 }
@@ -3533,6 +3536,8 @@ namespace Acurus.Capella.UI
             CancelTextChanged();
             if (Request["ScreenMode"] == "MyQ" && ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT")
             {
+                //CAP-667 - disable gbSpecimenDetails, gbBillingDetails and gbOrderDetails all child.
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "$('#gbSpecimenDetails').find('*').attr('disabled', true);$('#gbBillingDetails').find('*').attr('disabled', true);$('#gbOrderDetails').find('*').attr('disabled', true);", true);
                 disableallcontrols(false);
                 //btnMoveToNextProcess.Enabled = false;
                 btnPlan.Disabled = true; //btnPlan.Enabled = false;

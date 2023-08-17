@@ -486,21 +486,43 @@ function MyQclick() {
                 objtype = $(currRow)[0]?.children[15]?.innerText.trim();
             }
 
+            //CAP-618 find all headers from the table.
+            var headerList = [];
+            $("#MyQTable thead tr th").each(function () {
+                headerList.push($(this).text());
+            });
+
             //CAP-314 alert message if any parameter missing
-            if (Curprocess == undefined || Curprocess == null || Curprocess == '') {
+            if (headerList?.includes('Test Details') == false && (Curprocess == undefined || Curprocess == null || Curprocess == '')) {
                 alert("Curprocess is undefined. Please relogin and try again.");
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
+            }
+            //CAP-618 alert message if has Test Details.
+            else if (headerList?.includes('Test Details') == true && (Curprocess == undefined || Curprocess == null || Curprocess == '')) {
+                alert("These encounters are accessible by Ancillary users only.");
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
             }
             else if (PhyID == undefined || PhyID == null || PhyID == '') {
                 alert("PhyID is undefined. Please relogin and try again.");
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
             }
             else if (date == undefined || date == null || date == '') {
                 alert("Date is undefined. Please relogin and try again.");
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
             }
             else if (encounter_id == undefined || encounter_id == null || encounter_id == '') {
                 alert("Encounter_ID is undefined. Please relogin and try again.");
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
             }
             else if (objtype == undefined || objtype == null || objtype == '') {
                 alert("ObjType is undefined. Please relogin and try again.");
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return false;
             }
 
             var now = new Date();

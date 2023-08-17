@@ -61,7 +61,13 @@ function OpenPhoneEncounter() {
     var obj = new Array();
     obj.push("openingfrom=" + "Menu");
     obj.push("MyHumanID=" + document.getElementById('ctl00_C5POBody_hdnHumanNo').value);
-    var result = openModal("HtmlPhoneEncounter.html", 800, 1200, obj, "PhoneEncounter");
+    //CAP-601 - validate encounter for phone encounter.
+    var page = document.getElementsByTagName('iframe')[0].src;
+    if (page?.indexOf("frmEncounter.aspx") > 0) {
+        DisplayErrorMessage('1011198');
+    } else {
+        var result = openModal("HtmlPhoneEncounter.html", 800, 1200, obj, "PhoneEncounter");
+    }
 }
 
 function trvPatientChart_NodeClicking(evt) {
