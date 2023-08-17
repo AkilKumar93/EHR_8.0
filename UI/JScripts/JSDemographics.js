@@ -1399,6 +1399,8 @@ function validatedate(inputText, ControlId) {
 }
 
 function AddMessageDemo() {
+    //CAP-726 - add loader
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     var dt = new Date();
     var now = new Date();
     var then = now.getDay() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear(); then += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
