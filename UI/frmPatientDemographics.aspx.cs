@@ -4684,12 +4684,14 @@ namespace Acurus.Capella.UI
             PatientNotes objpatientnotes = new PatientNotes();
             if ((txtNotes.txtDLC.Text == string.Empty))
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('7580009');", true);
+                //CAP-726 - add loader
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('7580009'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
             }
             if (ddlMessageDescription.SelectedIndex == 0)
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('7580008');", true);
+                //CAP-726 - add loader
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('7580008'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
 
             }
@@ -4735,11 +4737,12 @@ namespace Acurus.Capella.UI
                     objpatientnotes.Priority = "NORMAL";
                     patientlst.Add(objpatientnotes);
                     IList<PatientNotes> patientdetail = PatientNotesMngr.AddToPatientNotes(patientlst);
-                    divLoading.Style.Add("display", "none !important");
-                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('420082');", true);
                     btnAddMessage.Enabled = false;
                     ddlMessageDescription.SelectedIndex = -1;
                     txtNotes.txtDLC.Text = string.Empty;
+                    //CAP-726 - add loader
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('420082'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    divLoading.Style.Add("display", "none !important");
                 }
                 else
                 {
@@ -4767,6 +4770,8 @@ namespace Acurus.Capella.UI
                     objWf.Current_Arrival_Time = UtilityManager.ConvertToUniversal();
                     patientnotesmngr.SavePatientMessage(objpatientnotes, objWf, null);
                     HttpContext.Current.Session["IsPatientCommunicated"] = true;
+                    //CAP-726 - add loader
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "DisplayErrorMessage('420082'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 }
             }
 
