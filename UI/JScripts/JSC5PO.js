@@ -469,15 +469,21 @@ function OpenModal(data) {
             WindowName?.add_close(OnClientClosePhoneEncounter);
         }
         else {
-            obj.push("openingfrom=" + "Menu");
-            obj.push("MyHumanID=" + ID);
-            var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
-
-            var Window = GetRadWindow();
-            if (Window != undefined && Window != null)
-                Window.add_close(function ClosePhoneEnc(oWindow, args) {
-                    window.parent.location.href = "frmPatientChart.aspx";
-                });
+            //CAP-601 - validate encounter for phone encounter.
+            var page = document.getElementsByTagName('iframe')[0].src;
+            if (page?.indexOf("frmEncounter.aspx") > 0) {
+                DisplayErrorMessage('1011198');
+                StopLoadingImage();
+            } else {
+                obj.push("openingfrom=" + "Menu");
+                obj.push("MyHumanID=" + ID);
+                var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
+                var Window = GetRadWindow();
+                if (Window != undefined && Window != null)
+                    Window.add_close(function ClosePhoneEnc(oWindow, args) {
+                        window.parent.location.href = "frmPatientChart.aspx";
+                    });
+            }
         }
     }
 
@@ -1743,13 +1749,20 @@ function OnClientButtonClicked(sender, args) {
             WindowName.add_close(OnClientClosePhoneEncounter);
         }
         else {
-            obj.push("openingfrom=" + "Menu");
-            obj.push("MyHumanID=" + ID);
-            var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
-            var Window = $find('ctl00_ModalWindow');
-            Window.add_close(function ClosePhoneEnc(oWindow, args) {
-                window.location.href = "frmPatientChart.aspx"
-            });
+            //CAP-601 - validate encounter for phone encounter.
+            var page = document.getElementsByTagName('iframe')[0].src;
+            if (page?.indexOf("frmEncounter.aspx") > 0) {
+                DisplayErrorMessage('1011198');
+            } else {
+                var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
+                obj.push("openingfrom=" + "Menu");
+                obj.push("MyHumanID=" + ID);
+
+                var Window = $find('ctl00_ModalWindow');
+                Window.add_close(function ClosePhoneEnc(oWindow, args) {
+                    window.location.href = "frmPatientChart.aspx"
+                });
+            }
         }
         return false;
 
@@ -1846,15 +1859,21 @@ function OnClientClickedSubMenu(data) {
                 WindowName.add_close(OnClientClosePhoneEncounter);
             }
             else {
-                obj.push("openingfrom=" + "Menu");
-                obj.push("MyHumanID=" + ID);
-                var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
-
-                var Window = GetRadWindow();
-                if (Window != undefined && Window != null)
-                    Window.add_close(function ClosePhoneEnc(oWindow, args) {
-                        window.parent.location.href = "frmPatientChart.aspx";
-                    });
+                //CAP-601 - validate encounter for phone encounter.
+                var page = document.getElementsByTagName('iframe')[0].src;
+                if (page?.indexOf("frmEncounter.aspx") > 0) {
+                    DisplayErrorMessage('1011198');
+                    StopLoadingImage();
+                } else {
+                    var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
+                    obj.push("openingfrom=" + "Menu");
+                    obj.push("MyHumanID=" + ID);
+                    var Window = GetRadWindow();
+                    if (Window != undefined && Window != null)
+                        Window.add_close(function ClosePhoneEnc(oWindow, args) {
+                            window.parent.location.href = "frmPatientChart.aspx";
+                        });
+                }
             }
         }
         return false;
@@ -2469,9 +2488,15 @@ function OnClientClosePhoneEncounter(oWindow, args) {
                         window.parent.location.href = "frmPatientChart.aspx?HumanID=" + HumanId + "&ScreenName=PhoneEncounter" + "&openingfrom=Menu";
                     }
                     else {
-                        var result = openModal("HtmlPhoneEncounter.html?openingfrom=Menu&MyHumanID=" + HumanId + "&LoadPatientChart=False", 800, 1230, obj, "ctl00_ModalWindow");
-                        var WindowName = $find('ctl00_ModalWindow');
-                        WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
+                        //CAP-601 - validate encounter for phone encounter.
+                        var page = document.getElementsByTagName('iframe')[0].src;
+                        if (page?.indexOf("frmEncounter.aspx") > 0) {
+                            DisplayErrorMessage('1011198');
+                        } else {
+                            var result = openModal("HtmlPhoneEncounter.html?openingfrom=Menu&MyHumanID=" + HumanId + "&LoadPatientChart=False", 800, 1230, obj, "ctl00_ModalWindow");
+                            var WindowName = $find('ctl00_ModalWindow');
+                            WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
+                        }
                     }
 
                 }, 0);
