@@ -470,7 +470,8 @@ function OpenModal(data) {
         }
         else {
             //CAP-601 - validate encounter for phone encounter.
-            if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
+            var src = $('#ctl00_C5POBody_EncounterContainer').attr('src')
+            if (src?.indexOf("frmEncounter.aspx") >= 0) {
                 DisplayErrorMessage('1011198');
                 StopLoadingImage();
             } else {
@@ -1749,7 +1750,8 @@ function OnClientButtonClicked(sender, args) {
         }
         else {
             //CAP-601 - validate encounter for phone encounter.
-            if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
+            var src = $('#ctl00_C5POBody_EncounterContainer').attr('src')
+            if (src?.indexOf("frmEncounter.aspx") >= 0) {
                 DisplayErrorMessage('1011198');
             } else {
                 obj.push("openingfrom=" + "Menu");
@@ -1857,7 +1859,8 @@ function OnClientClickedSubMenu(data) {
             }
             else {
                 //CAP-601 - validate encounter for phone encounter.
-                if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
+                var src = $('#ctl00_C5POBody_EncounterContainer').attr('src')
+                if (src?.indexOf("frmEncounter.aspx") >= 0) {
                     DisplayErrorMessage('1011198');
                     StopLoadingImage();
                 } else {
@@ -2485,7 +2488,8 @@ function OnClientClosePhoneEncounter(oWindow, args) {
                     }
                     else {
                         //CAP-601 - validate encounter for phone encounter.
-                        if ($('#ctl00_C5POBody_EncounterContainer').length == 1) {
+                        var src = $('#ctl00_C5POBody_EncounterContainer').attr('src')
+                        if (src?.indexOf("frmEncounter.aspx") >= 0) {
                             DisplayErrorMessage('1011198');
                         } else {
                             var result = openModal("HtmlPhoneEncounter.html?openingfrom=Menu&MyHumanID=" + HumanId + "&LoadPatientChart=False", 800, 1230, obj, "ctl00_ModalWindow");
