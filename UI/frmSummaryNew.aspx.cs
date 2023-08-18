@@ -913,6 +913,9 @@ namespace Acurus.Capella.UI
                 string Encounter_Reviewed_signedDate = "";
                 string Encounter_Reviewed_Name = "";
                 string Encounter_Reviewed_Id = "";
+                string sIsPhoneEncounter = "";
+                string sCreatedBy = "";
+             
                 //XDocument xmlDocumentType = XDocument.Load(strXmlEncounterPath);
                 TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
                 XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
@@ -928,7 +931,8 @@ namespace Acurus.Capella.UI
                         Encounter_signedDate = UtilityManager.ConvertToLocal(dtPro).ToString("dd-MMM-yyyy hh:mm tt");
 
                         Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
-
+                        sIsPhoneEncounter= Encounter.Attribute("Is_Phone_Encounter").Value;
+                        sCreatedBy= Encounter.Attribute("Created_By").Value;
                     }
 
                     //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
@@ -973,8 +977,27 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
-                if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM")
+
+                //Jira #CAP-858
+                //if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM")
+                //    lblSignedPhysician.InnerText = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+
+                if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsPhoneEncounter != "Y")
+                {
                     lblSignedPhysician.InnerText = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                }
+                else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsPhoneEncounter == "Y")
+                {
+                    if (Encounter_Provider_Name != "")
+                    {
+                        lblSignedPhysician.InnerText = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                    }
+                    else
+                    {
+                        lblSignedPhysician.InnerText = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
+                    }
+                }
+                
 
                 string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
                 StaticLookupManager staticMngr = new StaticLookupManager();
