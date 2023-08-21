@@ -2037,6 +2037,9 @@ margin:0in 0in 0in 9in;
             string Encounter_Reviewed_signedDate = "";
             string Encounter_Reviewed_Name = "";
             string Encounter_Reviewed_Id = "";
+            string sIsphoneEncounter = "";
+            string sCreatedBy = "";
+
             TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
             XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
             foreach (XElement elements in xmlDocumentType.Descendants("EncounterList"))
@@ -2050,7 +2053,8 @@ margin:0in 0in 0in 9in;
                     Encounter_signedDate = UtilityManager.ConvertToLocal(dtPro).ToString("dd-MMM-yyyy hh:mm tt");
 
                     Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
-
+                    sIsphoneEncounter = Encounter.Attribute("Is_Phone_Encounter").Value;
+                    sCreatedBy = Encounter.Attribute("Created_By").Value;
                 }
 
                 //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
@@ -2134,7 +2138,26 @@ margin:0in 0in 0in 9in;
                 //htmlString = htmlString.Replace(headerstring, "");
                 htmlString = htmlString.Substring(index1 + 8, htmlString.Length - index1 - 8);
             }
-            string strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+
+
+            // string strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+
+            string strfooterProvider = "";
+            if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter != "Y")
+            {
+                strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+            }
+            else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && sIsphoneEncounter == "Y")
+            {
+                if (Encounter_Provider_Name != "")
+                {
+                    strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                }
+                else
+                {
+                    strfooterProvider = "Electronically Signed by " + sCreatedBy + " at " + Encounter_signedDate;
+                }
+            }
             //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
             //     " have reviewed the chart and agree with the management plan with the changes to the plan as indicated.";
 

@@ -5682,10 +5682,19 @@ namespace Acurus.Capella.UI
 
             if (objFillHuman != null && objFillHuman.Sex != string.Empty)
             {
-                if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
+                //Jira #CAP-857
+                //if (objFillHuman.Sex.Substring(0, 1).ToUpper() == "U")
+                //{
+                //    //Cap - 596
+                //    //sPatientSex = "UNK";
+                //    sPatientSex = "UN";
+                //}
+                if (objFillHuman.Sex.ToUpper() == "UNKNOWN")
                 {
-                    //Cap - 596
-                    //sPatientSex = "UNK";
+                    sPatientSex = "UNK";
+                }
+                else if (objFillHuman.Sex.ToUpper() == "UNDIFFERENTIATED")
+                {
                     sPatientSex = "UN";
                 }
                 else

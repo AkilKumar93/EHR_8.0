@@ -1707,10 +1707,19 @@ namespace Acurus.Capella.UI
             string sPatientSex = string.Empty;
             if (Sex != string.Empty) //For Bug Id 48937 
             {
-                if (Sex.Substring(0, 1).ToUpper() == "U")
+                //Jira #CAP-857
+                //if (Sex.Substring(0, 1).ToUpper() == "U")
+                //{
+                //    //Cap - 596
+                //    //sPatientSex = "UNK";
+                //    sPatientSex = "UN";
+                //}
+                if (Sex.ToUpper() == "UNKNOWN")
                 {
-                    //Cap - 596
-                    //sPatientSex = "UNK";
+                    sPatientSex = "UNK";
+                }
+                else if (Sex.ToUpper() == "UNDIFFERENTIATED")
+                {
                     sPatientSex = "UN";
                 }
                 else
