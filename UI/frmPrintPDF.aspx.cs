@@ -492,8 +492,9 @@ namespace Acurus.Capella.UI
                         {
                             sFacAddress = Request["FacAddress"].ToString();
                         }
-
-                        PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n","\r\n"));
+                        //Cap - 878
+                       // PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n", "\r\n"));
+                        PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n","\r\n"));
                     }
                 }
                 RadTabStrip2.Enabled = true;

@@ -1277,7 +1277,9 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
             async: true,
             success: function (data) {
                 var result = $.parseJSON(data.d);
-                $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmPrintPDF.aspx?InterpretationNotes=PatientChart&IntNotes=" + JSON.stringify(result.ResultReviewComments.replaceAll("<br/>", "")) + "&PhySigDate=" + JSON.stringify(result.SignedDate) + "&PhySigName=" + JSON.stringify(result.SignedPhyName) + "&FacAddress=" + encodeURIComponent(result.FacilityAddress);
+                //Cap - 878
+                //$('#ctl00_C5POBody_EncounterContainer')[0].src = "frmPrintPDF.aspx?InterpretationNotes=PatientChart&IntNotes=" + JSON.stringify(result.ResultReviewComments.replaceAll("<br/>", "") + "&PhySigDate=" + JSON.stringify(result.SignedDate) + "&PhySigName=" + JSON.stringify(result.SignedPhyName) + "&FacAddress=" + encodeURIComponent(result.FacilityAddress);
+                $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmPrintPDF.aspx?InterpretationNotes=PatientChart&IntNotes=" + JSON.stringify(result.ResultReviewComments.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|")) + "&PhySigDate=" + JSON.stringify(result.SignedDate) + "&PhySigName=" + JSON.stringify(result.SignedPhyName) + "&FacAddress=" + encodeURIComponent(result.FacilityAddress);
             },
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
