@@ -7,6 +7,15 @@ channel.postMessage('another-tab');
 // note that listener is added after posting the message
 
 channel.addEventListener('message', (msg) => {
+
+    var currentURL = window.location.href;
+
+    //var isAllowMultipleTabs = false;
+    if (currentURL.match(/[?&]allowmultipletab=([^&]+)/) != undefined && currentURL.match(/[?&]allowmultipletab=([^&]+)/) != null) {
+        //isAllowMultipleTabs = currentURL.match(/[?&]allowmultipletab=([^&]+)/)[1];
+        return;
+    }
+
     if (msg.data === 'another-tab' && isOriginal) {
         // message received from 2nd tab
         // reply to all new tabs that the website is already open

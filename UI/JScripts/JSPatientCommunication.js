@@ -19,6 +19,16 @@ function btnpatientChart_Click() {
 }
 function openNonModal(fromname, height, width, inputargument) {
     var Argument = "";
+
+    if (fromname != undefined && fromname != null) {
+        if (fromname.indexOf('?') > -1) {
+            fromname += "&allowmultipletab=true";
+        }
+        else {
+            fromname += "?allowmultipletab=true";
+        }
+    }
+
     var PageName = fromname;
     if (inputargument != undefined) {
         for (var i = 0; i < inputargument.length; i++) {
