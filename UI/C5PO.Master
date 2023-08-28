@@ -2102,6 +2102,7 @@
                         <iframe style="width: 100%; border: none; height: 210px;" id="TabResultInterpretationsFrame"></iframe>
                     </div>
                     <input type="text" id="txtResultInterpretationsInformation" value="" style="display: none;" />
+                    <input type="text" id="txtDeletedInterpretationsInformation" value="" style="display: none;" />
                 </div>
             </div>
         </div>

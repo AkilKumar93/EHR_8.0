@@ -10,7 +10,7 @@
             modal: true,
             title: "Capella -EHR",
             closeOnEscape: false,
-            open: function(event, ui) {
+            open: function (event, ui) {
                 $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             },
             position: {
@@ -54,6 +54,7 @@ function btnResetClick() {
 }
 
 $("#txtSummary").keypress(function (e) {
+    document.getElementById("btnSaveInt").disabled = false;
     if (e.key == ";")
         return false;
 });
@@ -63,8 +64,8 @@ function btnOkClick() {
     var summaryvalue = document.getElementById("txtSummary").value;
     var SelectedTemplate = document.getElementById("ddlTemplate").value;
     var Notes = '';
-    if (summaryvalue!='')
-        Notes="Test Reviewed: " + SelectedTemplate + ";\n" + summaryvalue;
+    if (summaryvalue != '')
+        Notes = "Test Reviewed: " + SelectedTemplate + ";\n" + summaryvalue;
     $(top.window.document).find("#txtResultInterpretationsInformation")[0].value = JSON.stringify(Notes);
     $(top.window.document).find("#btnResultInterpretations").click();
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -73,14 +74,12 @@ function btnOkClick() {
 
 
 function ddlTemplate_Onchange() {
-    if (document.getElementById('ddlTemplate').value =='')
-    {
+    if (document.getElementById('ddlTemplate').value == '') {
         document.getElementById("btnSaveInt").disabled = true;
         //document.getElementById("btnPrintInterpretation").disabled = true;
         document.getElementById("btnReset").disabled = true;
     }
-    else
-    {
+    else {
         document.getElementById("btnSaveInt").disabled = false;
         //document.getElementById("btnPrintInterpretation").disabled = false;
         document.getElementById("btnReset").disabled = false;
@@ -117,6 +116,35 @@ function GetRadWindow() {
     return oWindow;
 }
 
+//Cap - 686
+function DeleteClick() {
+    var ErrorMessage = window.confirm("Are you sure you want to delete?");
+    if (ErrorMessage == true) {
+        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function DeletedInterpretationNotes() {
+
+    var SelectedTemplate = document.getElementById("ddlTemplate").value;
+    var Notes = $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value;
+    if (Notes != '') {
+        Notes += "|$|" + "Test Reviewed: " + SelectedTemplate + "$$$" + Notes;
+    }
+    else {
+        Notes = "Test Reviewed: " + SelectedTemplate + "$$$" + Notes;
+    }
+
+    $(top.window.document).find("#txtResultInterpretationsInformation")[0].value = "DeleteProviderNotes";
+    $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value = JSON.stringify(Notes);
+    document.getElementById("btnSaveInt").disabled = true;
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+}
 
 
 
@@ -132,7 +160,7 @@ function GetRadWindow() {
 
 //function btnInterpretationClose_Clicked() {
 //    var ErrorMessage1 = window.confirm("Do you want to carry the changes?");
-    
+
 
 //        if (document.getElementById('btnSave').disabled == false) {
 //            //if (document.getElementById("hdnMessageType").value == "") {
@@ -152,6 +180,6 @@ function GetRadWindow() {
 //                //document.getElementById("hdnMessageType").value = "";
 //            }
 //        }
-       
-    
+
+
 //}

@@ -42,6 +42,7 @@ namespace Acurus.Capella.UI
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            btnDelete.Visible= false;
             if (!IsPostBack)
             {
                 if (Request["HumanText"] != null && Request["HumanText"] != "")
@@ -55,7 +56,14 @@ namespace Acurus.Capella.UI
                 {
                     txtFileInformation.Value = Request["FileText"].ToString();
                 }
-
+                //Cap - 686
+                if (Request["CurrentProcess"] != null)
+                {
+                    if (Request["CurrentProcess"].ToString() == "BILLING_WAIT")
+                    {
+                        btnDelete.Visible = false;
+                    }
+                }
                 txtSummary.Attributes.Add("onkeydown", "insertTab(this,event);");
                 txtSummary.Attributes.Add("onfocus", "focusTab(this,event);");
                 lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR " + Request["DocumentSubType"].ToString());
@@ -201,7 +209,8 @@ namespace Acurus.Capella.UI
                 {
                     for (i = 0; i < sTemplate.Length; i++)
                     {
-                        if (sTemplate[i].Trim() != string.Empty && sTemplate[i].Contains(';') && sTemplate[i].Contains(ddlTemplate.Items[ddlTemplate.SelectedIndex].Text))
+                        //if (sTemplate[i].Trim() != string.Empty && sTemplate[i].Contains(';') && sTemplate[i].Contains(ddlTemplate.Items[ddlTemplate.SelectedIndex].Text))
+                        if (sTemplate[i].Trim() != string.Empty && sTemplate[i].Contains(';') && sTemplate[i].Split(';')[0] == ddlTemplate.Items[ddlTemplate.SelectedIndex].Text)
                         {
                             ListItem item = new ListItem();
                             item.Text = sTemplate[i].Split(';')[0];
@@ -316,6 +325,119 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(result);
         }
 
+        //Cap - 686
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            ResultMasterManager masterProxy = new ResultMasterManager();
+            IList<ResultMaster> lstResultMaster = new List<ResultMaster>();
+            ResultMaster objResultMaster = new ResultMaster();
+            ResultMasterManager rsManager = new ResultMasterManager();
+            ulong ulFileManagementIndexID = 0;
+            ulong resMasID = 0;
+
+            if (Session["Order_Id"] != null && Session["Order_Id"] != string.Empty && Convert.ToUInt32(Session["Order_Id"]) != 0)
+            {
+                lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(Session["Order_Id"]));
+                if (lstResultMaster != null && lstResultMaster.Count > 0)
+                {
+                    if (lstResultMaster.Count == 1)
+                    {
+                        objResultMaster = lstResultMaster[0];
+                    }
+                }
+
+                else if (lstResultMaster.Count > 1)
+                {
+                    if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
+                    {
+                        objResultMaster = rsManager.GetById(resMasID);
+                    }
+                    else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID))
+                    {
+                        objResultMaster = rsManager.GetById(resMasID);
+                    }
+
+                }
+            }
+            else if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
+            {
+                objResultMaster = rsManager.GetById(resMasID);
+                if (objResultMaster != null && objResultMaster.Id != 0)
+                {
+                    objResultMaster.Modified_By = ClientSession.UserName;
+                    objResultMaster.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                }
+                else
+                {
+                    objResultMaster = new ResultMaster();
+                }
+            }
+            else if (Request["ResultMasterID"] != null && UInt64.TryParse(Request["ResultMasterID"], out resMasID) && resMasID != 0)
+            {
+                objResultMaster = rsManager.GetById(resMasID);
+                if (objResultMaster != null && objResultMaster.Id != 0)
+                {
+                    objResultMaster.Modified_By = ClientSession.UserName;
+                    objResultMaster.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DisplayErrorMessage('115057'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+                    return;
+                }
+            }
+
+            if (objResultMaster != null && objResultMaster.Id != 0)
+            {
+                objResultMaster.Modified_By = ClientSession.UserName;
+                objResultMaster.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                ulFileManagementIndexID = Convert.ToUInt64(Session["Key_id"]);
+
+                string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "<br/>" }, StringSplitOptions.None);
+                objResultMaster.Result_Review_Comments = string.Empty;
+                for (int i = 0; i < Result_Review_Comments.Length; i++)
+                {
+
+                    if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Trim().Contains("Test Reviewed"))
+                    {
+                        String sHeader_Test = Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                        string[] sHeader = sHeader_Test.Split(':');
+                        string sddlTemplate = ddlTemplate.SelectedValue;
+                        if (sHeader[2] != string.Empty && sHeader[2].Trim() != sddlTemplate.Trim())
+                        {
+                            if (objResultMaster.Result_Review_Comments == string.Empty)
+                            {
+                                objResultMaster.Result_Review_Comments = Result_Review_Comments[i];
+                            }
+                            else
+                            {
+                                objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments + "<br/>" + Result_Review_Comments[i];
+                            }
+
+
+                        }
+                    }
+
+                }
+                if (objResultMaster.Result_Review_Comments.EndsWith("<br/>") == true)
+                {
+                    objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Substring(0, objResultMaster.Result_Review_Comments.Length - 5);
+                }
+
+                objResultMaster = rsManager.SaveResultMasterItem(objResultMaster, ulFileManagementIndexID);
+
+                if (Templatesource != null && (Templatesource.ContainsKey(ddlTemplate.Items[ddlTemplate.SelectedIndex].Text.ToString())))
+                {
+                    txtSummary.Text = Templatesource[ddlTemplate.Items[ddlTemplate.SelectedIndex].Text];
+                }
+
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "DeletedInterpretationNotes();", true);
+
+            }
+
+
+
+        }
 
     }
 }
