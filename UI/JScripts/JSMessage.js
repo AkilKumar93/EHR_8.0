@@ -1,10 +1,11 @@
 ﻿  function closeWindow()
+  {
+      //CAP-782 Cannot read properties of null
+     if(document.getElementById("IsLoginOpen")?.value!="YES")
      {
-     if(document.getElementById("IsLoginOpen").value!="YES")
-     {
-	self.close();
-	}
-     }
+	    self.close();
+	 }
+  }
      function SetIntervalTime(time)
      {
       self.setInterval(function(){closeWindow()},time);
@@ -150,4 +151,8 @@ function openNonModal(fromname, height, width, inputargument) {
 
     if (result == undefined) { result = window.returnValue; }
     return result;
+}
+//Jira #CAP-889
+function btnMoveClientClick() {
+    RemoveItem(document.URL, "PrescriptionID");
 }

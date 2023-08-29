@@ -78,7 +78,8 @@ function SavedSuccessfully() {
         sessionStorage.setItem("EncCancel", "false");
 }
 function PurposeOfVisit() {
-    if (window.parent.document.getElementById('hdnPurposeOfVisit_SaveRejected').value == "false") {
+    //CAP-783 Cannot read properties of null
+    if (window?.parent?.document?.getElementById('hdnPurposeOfVisit_SaveRejected')?.value == "false") {
         $("#btnAdd")[0].disabled = false;
         localStorage.setItem("bSave", "false");
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";

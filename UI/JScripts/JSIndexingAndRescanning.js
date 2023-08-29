@@ -345,6 +345,9 @@ function btnMoveToNextProcess_Clicked() {
         }
     }
     document.getElementById("hdnIsEditgrid").value = "";
+
+//Jira #CAP-889
+    RemoveItem(document.URL, "ScanId");
 }
 function ClickMovetoNextProcess() {
     document.getElementById("IsClickDirectUpload").value = "No";
