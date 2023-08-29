@@ -359,6 +359,8 @@ function ClickMovetoma(sender, args) {
         StartLoadingImage();//BugID:41027 -- move to next result
         __doPostBack('btnMoveToMa', "true");
     }
+//Jira #CAP-889
+    RemoveItem(document.URL, "Orders");
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
 function ClickMovetonextProcess(sender, args) {
@@ -398,6 +400,8 @@ function ClickMovetonextProcess(sender, args) {
     //End For BUg Id 56084-4.9.18
     //BugID:41027 -- move to next result
 
+//Jira #CAP-889
+    RemoveItem(document.URL, "Orders");
 }
 
 function btnSave_ClientClicked(sender, args) {

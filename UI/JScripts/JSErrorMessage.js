@@ -2580,3 +2580,50 @@ function reloadPatientSummaryBarXmlRegenerate() {
 function navigateRestrictMultipleTabClick() {
     window.location.href = "https://cmg.capellaehr.com/documents/User_Manual/Window_feature_20230803.pdf";
 }
+
+//Jira #CAP-889
+function RemoveItem(URL, atrName) {
+    var idlist = "";
+    if (sessionStorage.getItem('MyQRemoveIdList') != undefined && sessionStorage.getItem('MyQRemoveIdList') != null) {
+        idlist = sessionStorage.getItem('MyQRemoveIdList');
+    }
+
+    var RemoveItems = "";
+    var sURLAtr = "";
+    var sTagAtr = "";
+    if (atrName == "Orders") {
+        if (URL.indexOf("ResultMasterID") > -1
+            && URL.substring(URL.indexOf("ResultMasterID"), URL.length).split("&")[0].split("=")[1] != ''
+            && URL.substring(URL.indexOf("ResultMasterID"), URL.length).split("&")[0].split("=")[1] > 0) {
+            sURLAtr = "ResultMasterID";
+            sTagAtr = "ResultMasterID";
+        }
+        else if (URL.indexOf("File_Ref_ID") > -1
+            && URL.substring(URL.indexOf("File_Ref_ID"), URL.length).split("&")[0].split("=")[1] != ''
+            && URL.substring(URL.indexOf("File_Ref_ID"), URL.length).split("&")[0].split("=")[1] > 0) {
+            sURLAtr = "File_Ref_ID";
+            sTagAtr = "File_Reference_No";
+        }
+        else if (URL.indexOf("OrderSubmitId") > -1
+            && URL.substring(URL.indexOf("OrderSubmitId"), URL.length).split("&")[0].split("=")[1] != ''
+            && URL.substring(URL.indexOf("OrderSubmitId"), URL.length).split("&")[0].split("=")[1] > 0) {
+            sURLAtr = "OrderSubmitId";
+            sTagAtr = "Order_Submit_ID";
+        }
+    }
+    else {
+        sURLAtr = atrName;
+        sTagAtr = atrName;
+    }
+
+    if (URL.indexOf(sURLAtr) > -1) {
+        if (idlist == "") {
+            RemoveItems = URL.substring(URL.indexOf(sURLAtr), URL.length).split("&")[0].split("=")[1] + "~" + sTagAtr;
+        }
+        else {
+            RemoveItems = idlist + "," + URL.substring(URL.indexOf(sURLAtr), URL.length).split("&")[0].split("=")[1] + "~" + sTagAtr;
+        }
+    }
+
+    sessionStorage.setItem('MyQRemoveIdList', RemoveItems);
+}

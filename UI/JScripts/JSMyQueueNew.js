@@ -819,7 +819,38 @@ function MyQclick() {
         return false;
 }
 function OnClientCloseWindow() {
-    chkShowAllClick();
+    //Jira #CAP-889
+    //chkShowAllClick();
+    var removeList = sessionStorage.getItem('MyQRemoveIdList');
+    var btnid = $('#divMyQTab .btncolorMyQ')[0].id;
+    if (removeList != "") {
+        var removearry = removeList.split(",");
+        for (let i = 0; i < removearry.length; i++) {
+            if (btnid.indexOf("Order") > -1) {
+                $('#MyQTable tr td#' + removearry[i].split("~")[1] + ':contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+            }
+            else if (btnid == "btnMyTask") {
+                $('#MyQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+            }
+            else if (btnid == "btnMyScan") {
+                $('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+            }
+            else if (btnid =='btnMyPres')
+            {
+                $('#MyQTable tr').find('td:eq(7):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+            }
+            else {
+                chkShowAllClick();
+            }
+
+        }
+
+        var numberofEncounters = $('#EncounterTable tbody')[1].children.length;
+        if (btnid != undefined && numberofEncounters != undefined) {
+            document.getElementById(btnid).innerText = document.getElementById(btnid).innerText.split("(")[0] + "(" + numberofEncounters + ")";
+        }
+    }
+
 }
 
 function GenQLoad() {
@@ -3027,6 +3058,8 @@ function RowClick() {
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             MyQclick();
         }
+//Jira #CAP-889
+        sessionStorage.setItem('MyQRemoveIdList', '');
     });
     $("#GeneralQTable tr").dblclick(function () {
         //CAP-346 - Prevent Undefined.
@@ -3040,6 +3073,8 @@ function RowClick() {
                 $('#Processenc').click();
             }
         }
+//Jira #CAP-889
+        sessionStorage.setItem('MyQRemoveIdList', '');
     });
     $("#GeneralQTable tr").click(function () {
 

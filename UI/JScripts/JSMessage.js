@@ -151,3 +151,7 @@ function openNonModal(fromname, height, width, inputargument) {
     if (result == undefined) { result = window.returnValue; }
     return result;
 }
+//Jira #CAP-889
+function btnMoveClientClick() {
+    RemoveItem(document.URL, "PrescriptionID");
+}
