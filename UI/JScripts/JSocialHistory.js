@@ -193,7 +193,8 @@ function enable(testId, chkName) {
         listcontrolSocialHistory.childNodes[0].nextSibling.className = "fa fa-plus margin2";
 }
 function EnableSave(id) {
-    $find('btnSave').set_enabled(true);
+    //CAP-780:Cannot read properties of null - jsSocialHistory
+    $find('btnSave')?.set_enabled(true);
     localStorage.setItem("bSave", "false");
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
