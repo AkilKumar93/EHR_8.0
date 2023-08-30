@@ -20,15 +20,6 @@ function btnpatientChart_Click() {
 function openNonModal(fromname, height, width, inputargument) {
     var Argument = "";
 
-    if (fromname != undefined && fromname != null) {
-        if (fromname.indexOf('?') > -1) {
-            fromname += "&allowmultipletab=true";
-        }
-        else {
-            fromname += "?allowmultipletab=true";
-        }
-    }
-
     var PageName = fromname;
     if (inputargument != undefined) {
         for (var i = 0; i < inputargument.length; i++) {
@@ -43,9 +34,17 @@ function openNonModal(fromname, height, width, inputargument) {
             PageName = PageName + "?";
         }
     }
+    //Jira #CAP-903
+    if (PageName != undefined && PageName != null) {
+        if (PageName.indexOf('?') > -1) {
+            PageName = PageName + Argument + "&allowmultipletab=true";
+        }
+        else {
+            PageName = PageName + "?allowmultipletab=true";
+        }
+    }
 
-
-    var windowop = window.open(PageName + Argument, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes,titlebar=no,toolbar=no");
+    var windowop = window.open(PageName, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes,titlebar=no,toolbar=no");
     if (windowop != null)
         windowop.moveTo(30, 150);
 
@@ -108,8 +107,7 @@ function btnePrescribe_Click() {
     obj.push("IsSentToRCopia=" + "Y");
     obj.push("LocalTime=" + document.getElementById(GetClientId('hdnLocalTime')).value);
     //Jira #CAP-903
-    //Result = openNonModal("frmRCopiaWebBrowser.aspx", 535, 860, obj, 'ctl00_ModalWindow');
-    Result = openModal("frmRCopiaWebBrowser.aspx", 535, 860, obj, 'ctl00_ModalWindow');
+    Result = openNonModal("frmRCopiaWebBrowser.aspx", 535, 860, obj, 'ctl00_ModalWindow');
     $('#resultLoading').css("display", "none");
     if (Result == null)
         return false;

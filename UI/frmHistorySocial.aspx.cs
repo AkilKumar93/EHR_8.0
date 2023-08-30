@@ -1139,7 +1139,13 @@ namespace Acurus.Capella.UI
         public void LoadOptionForCombo(string fieldName)
         {
             //fieldName = fieldName.Replace(" ", "");
-            IList<StaticLookup> objStaticLookupComboVAlues = (IList<StaticLookup>)Session["objStaticLookupComboValues"];
+            // Cap - 801
+            //IList<StaticLookup> objStaticLookupComboVAlues = (IList<StaticLookup>)Session["objStaticLookupComboValues"];
+            IList<StaticLookup> objStaticLookupComboVAlues = new List<StaticLookup>();
+            if (Session["objStaticLookupComboValues"] != null && (IList<StaticLookup>)Session["objStaticLookupComboValues"] != null)
+            {
+                objStaticLookupComboVAlues = (IList<StaticLookup>)Session["objStaticLookupComboValues"];
+            }
             var valueslist = (from m in objStaticLookupComboVAlues where m.Field_Name.Contains(fieldName.ToUpper()) select m).ToList<StaticLookup>();
 
             //IList<String> istaticLookup = null;

@@ -3003,16 +3003,7 @@ function HideLoadIcdon() {
 }
 
 function openNonModal(fromname, height, width, inputargument) {
-    var Argument = "";
-
-    if (fromname != undefined && fromname != null) {
-        if (fromname.indexOf('?') > -1) {
-            fromname += "&allowmultipletab=true";
-        }
-        else {
-            fromname += "?allowmultipletab=true";
-        }
-    }
+    var Argument = "";       
 
     var PageName = fromname;
     if (inputargument != undefined) {
@@ -3028,9 +3019,17 @@ function openNonModal(fromname, height, width, inputargument) {
             PageName = PageName + "?";
         }
     }
-
-    window.open("popup1.aspx", "mywindow", "location=1,status=1,scrollbars=1,width=400,height=400")
-    var result = window.open(PageName + Argument, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes");
+    //Jira #CAP-903
+    if (PageName != undefined && PageName != null) {
+        if (PageName.indexOf('?') > -1) {
+            PageName = PageName+Argument + "&allowmultipletab=true";
+        }
+        else {
+            PageName = PageName+ "?allowmultipletab=true";
+        }
+    }
+    //window.open("popup1.aspx", "mywindow", "location=1,status=1,scrollbars=1,width=400,height=400")
+    var result = window.open(PageName, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes");
     if (result == undefined) { result = window.returnValue; }
     return result;
 }

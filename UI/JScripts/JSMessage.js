@@ -120,15 +120,6 @@ function btnpatientChart_Click() {
 function openNonModal(fromname, height, width, inputargument) {
     var Argument = "";
 
-    if (fromname != undefined && fromname != null) {
-        if (fromname.indexOf('?') > -1) {
-            fromname += "&allowmultipletab=true";
-        }
-        else {
-            fromname += "?allowmultipletab=true";
-        }
-    }
-
     var PageName = fromname;
     if (inputargument != undefined) {
         for (var i = 0; i < inputargument.length; i++) {
@@ -143,9 +134,17 @@ function openNonModal(fromname, height, width, inputargument) {
             PageName = PageName + "?";
         }
     }
+    //Jira #CAP-903
+    if (PageName != undefined && PageName != null) {
+        if (PageName.indexOf('?') > -1) {
+            PageName = PageName + Argument + "&allowmultipletab=true";
+        }
+        else {
+            PageName = PageName + "?allowmultipletab=true";
+        }
+    }
 
-
-    var result = window.open(PageName + Argument, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes,titlebar=no,toolbar=no");
+    var result = window.open(PageName, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes,titlebar=no,toolbar=no");
     if (result != null)
         result.moveTo(30, 150);
 
