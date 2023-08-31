@@ -541,6 +541,7 @@
             <link href="CSS/ElementStyles.css" rel="stylesheet" type="text/css" />
 
             <%--<script src="JScripts/JSPatientPayment.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>--%>
+             <script type="text/javascript" src="JScripts/jquery.datetimepicker.js"></script>
 
             <script src="JScripts/JSQuickPatient.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 

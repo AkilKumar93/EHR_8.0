@@ -2409,7 +2409,7 @@ function ScriptErrorLogEntry(sErrorMessage, sErrorLineNo, sErrorColumnNo, sError
                     errormeg = errormeg.slice(1, -1);
                 }
                 $(window.top.document).find('#pErrorMsg').html("Error : " + errormeg);
-                $(window.top.document).find('#divErrorMessage').modal({ backdrop: 'static', keyboard: false }, 'show');
+                $(window.top.document).find('#divErrorMessage')?.modal({ backdrop: 'static', keyboard: false }, 'show');
                 $(window.top.document).find('#btnErrorOk').css("display", "none");
                 $(window.top.document).find('#btnErrorCancel').css("display", "none");
                 $(window.top.document).find('#btnErrorOkCancel').css("display", "");

@@ -1461,6 +1461,7 @@
             <link href="CSS/jquery-ui.css" rel="stylesheet" />
         <script src="JScripts/bootstrap.min.js"></script>
             <link href="CSS/ElementStyles.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="JScripts/jquery.datetimepicker.js"></script>
             
             <script src="JScripts/JSQuickPatient.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
            

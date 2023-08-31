@@ -137,8 +137,8 @@ function LoadSystemMessagesKnowledgeCenterdetails() {
     if ((document.getElementById('txtUserName').value.indexOf('!') != -1) || (document.getElementById('txtUserName').value.indexOf('{') != -1) || (document.getElementById('txtUserName').value.indexOf('}') != -1) || (document.getElementById('txtUserName').value.indexOf('\\') != -1) || (document.getElementById('txtUserName').value.indexOf('[') != -1) || (document.getElementById('txtUserName').value.indexOf(']') != -1) || (document.getElementById('txtUserName').value.indexOf('<') != -1) || (document.getElementById('txtUserName').value.indexOf('>') != -1) || (document.getElementById('txtUserName').value.indexOf('?') != -1) || (document.getElementById('txtUserName').value.indexOf(';') != -1) || (document.getElementById('txtUserName').value.indexOf(',') != -1) || (document.getElementById('txtUserName').value.indexOf('|') != -1) || (document.getElementById('txtUserName').value.indexOf(':') != -1) || (document.getElementById('txtUserName').value.indexOf('/') != -1)) {
         document.getElementById('hdnOkButton').value = "false";
         DisplayErrorMessage('000019');
-        document.getElementById('txtUserName').clear();
-        document.getElementById('txtPassword').clear();
+        document.getElementById('txtUserName').value = "";
+        document.getElementById('txtPassword').value = "";
         document.getElementById('txtUserName').focus();
         
         return false;
@@ -147,8 +147,8 @@ function LoadSystemMessagesKnowledgeCenterdetails() {
         document.getElementById('hdnOkButton').value = "false";
         DisplayErrorMessage('000019');
         //CAP-325 - remove $find and add document.getElementById
-        document.getElementById('txtPassword').clear();
-        document.getElementById('txtUserName').clear();
+        document.getElementById('txtPassword').value = "";
+        document.getElementById('txtUserName').value = "";
         document.getElementById('txtUserName').focus();
         return false;
     }

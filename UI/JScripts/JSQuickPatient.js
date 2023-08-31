@@ -2046,7 +2046,7 @@ $(document).ready(function () {
             $('#cboPatientSuffix').addClass('nonEditabletxtbox').removeClass('Editabletxtbox');
         }
     }
-    $(document.getElementById(GetClientId("dtpPatientDOB"))).datepicker({
+    $(document.getElementById(GetClientId("dtpPatientDOB")))?.datepicker({
         dateFormat: 'dd-M-yy', changeYear: true, changeMonth: true, maxDate: new Date(), yearRange: "-120:+0",
         onSelect: function (selected, evnt) {
             $telerik.findMaskedTextBox(GetClientId("dtpPatientDOB")).set_value(selected);

@@ -7,7 +7,8 @@
 }
 
 function enableDates() {
-    $("#dtpScannedDate").datetimepicker({
+    //CAP-803
+    $("#dtpScannedDate")?.datetimepicker({
         closeOnDateSelect: !0,
         timepicker: !1,
         format: "d-M-Y",
