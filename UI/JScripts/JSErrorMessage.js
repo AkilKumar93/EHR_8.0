@@ -2439,7 +2439,7 @@ function ScriptErrorLogEntry(sErrorMessage, sErrorLineNo, sErrorColumnNo, sError
 
 function ToolStripAlert(message) {
     //Jira #CAP-772 - check the undefind and null to the $(top.window.document).find("#CheckAlert")[0]
-    if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert")!=null $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null) {
+    if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert")!=null && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null) {
         $(top.window.document).find("#CheckAlert")[0].style.display = "block";
     }
     $(top.window.document).find("#innerMsgText")[0].innerText = message;
