@@ -318,7 +318,8 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        if (objSurgicalHistoryDTO.SurgicalList != null && objSurgicalHistoryDTO.SurgicalList.Count > 0)
+                        //CAP-790
+                        if (objSurgicalHistoryDTO?.SurgicalList != null && objSurgicalHistoryDTO.SurgicalList.Count > 0)
                         {
                             foreach (SurgicalHistory item in objSurgicalHistoryDTO.SurgicalList)
                             {

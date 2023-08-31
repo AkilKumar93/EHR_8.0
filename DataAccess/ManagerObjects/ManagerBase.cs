@@ -1991,7 +1991,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             catch (Exception ex1)
             {
-                throw new Exception(ex1.Message);
+                //CAP-790 - Object reference not set to an instance of an object.
+                if (string.IsNullOrEmpty(ex1?.Message))
+                    throw new Exception(ex1.Message);
             }
         }
 

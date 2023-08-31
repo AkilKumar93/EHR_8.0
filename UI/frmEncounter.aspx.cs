@@ -200,7 +200,9 @@ namespace Acurus.Capella.UI
 
                 node = iMySelectedNode;
                 ViewState["Node"] = node;
-                hdnTab.Value = string.Empty;
+                //CAP-790
+                if (hdnTab != null)
+                    hdnTab.Value = string.Empty;
 
 
                 //Encounter> ilstEncounter = EncRecord;// objEncounterManager.GetEncounterByEncounterID(ClientSession.EncounterId);
@@ -697,7 +699,9 @@ namespace Acurus.Capella.UI
                     btnMove.Visible = false;
                     btnMoveToMA.Visible = false;
                     btnCopyPreviousEncounter.Visible = false;
-                    hdnTab.Value = "tbSummary";
+                    //CAP-790
+                    if (hdnTab != null)
+                        hdnTab.Value = "tbSummary";
                     hdnEncounterIDSummary.Value = Convert.ToString(ClientSession.EncounterId);
                     // pageViewEncounter.ContentUrl = "frmSummary.aspx?HumanID=" + ClientSession.HumanId.ToString() + "&EncounterID=" + ClientSession.EncounterId.ToString() + "&PhyID=" + ClientSession.PhysicianId.ToString() + "&Date=" + hdnLocalTime.Value;
                     //pageViewEncounter.ContentUrl = "frmSummaryNew.aspx?";
@@ -926,7 +930,9 @@ namespace Acurus.Capella.UI
             {
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "WaitCursor", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "alert('Please review and save the changes in  Service Procedure Tab');", true);
-                hdnTab.Value = "tbEandM";
+                //CAP-790
+                if (hdnTab != null)
+                    hdnTab.Value = "tbEandM";
 
                 return;
             }
@@ -1860,7 +1866,7 @@ namespace Acurus.Capella.UI
             #region EnableNotificationAlert
             if (btnPhysiciancorrection.Value.ToUpper() == "MOVE TO CHECKOUT" && (ehrwfobj != null && ehrwfobj.Current_Process == "MA_PROCESS") && hdnChkOut.Value == "true")
                 enableNotifAlert = true;
-            else if (btnPhysiciancorrection.Value.ToUpper() != "MOVE TO CHECKOUT" && ehrwfobj != null && ((ehrwfobj.Current_Process == "PROVIDER_PROCESS" || ehrwfobj.Current_Process == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process == "PROVIDER_REVIEW_CORRECTION") || (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2"|| ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING")))
+            else if (btnPhysiciancorrection.Value.ToUpper() != "MOVE TO CHECKOUT" && ehrwfobj != null && ((ehrwfobj.Current_Process == "PROVIDER_PROCESS" || ehrwfobj.Current_Process == "CODER_REVIEW_CORRECTION" || ehrwfobj.Current_Process == "PROVIDER_REVIEW_CORRECTION") || (ehrwfobj.Current_Process == "REVIEW_CODING" || ehrwfobj.Current_Process == "REVIEW_CODING_2" || ehrwfobj.Current_Process == "AKIDO_REVIEW_CODING")))
                 enableNotifAlert = true;
             #endregion
 
@@ -2095,7 +2101,9 @@ namespace Acurus.Capella.UI
                         if (IsPrimaryFilled == false)
                         {
                             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('180031','','');", true);
-                            hdnTab.Value = "tbEandM";
+                            //CAP-790
+                            if (hdnTab != null)
+                                hdnTab.Value = "tbEandM";
                             //    tabStripEncounter.Tabs.FindTabByText("SERV./PROC. CODES").Selected = true;
                             //     pageViewServProcCodes.ContentUrl = "frmEandMcoding.aspx";
                             //     pageViewServProcCodes.Selected = true;
@@ -2104,7 +2112,9 @@ namespace Acurus.Capella.UI
                         if ((Convert.ToBoolean(objMoveVerifyDTO.IsGcodePresent) == true) && (Convert.ToBoolean(objMoveVerifyDTO.IsICDPresent) == false))
                         {
                             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('180045','','');", true);
-                            hdnTab.Value = "tbEandM";
+                            //CAP-790
+                            if (hdnTab != null)
+                                hdnTab.Value = "tbEandM";
                             // tabStripEncounter.Tabs.FindTabByText("SERV./PROC. CODES").Selected = true;
                             //  pageViewServProcCodes.ContentUrl = "frmEandMcoding.aspx";
                             //  pageViewServProcCodes.Selected = true;
@@ -2244,7 +2254,7 @@ namespace Acurus.Capella.UI
 
         }
         public void chkShowAllPhysicians_CheckedChanged(object sender, EventArgs e)
-        {           
+        {
             if (EncRecord != null && EncRecord.Facility_Name != "")
                 FillCboPhysician(EncRecord.Facility_Name);
             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "WaitCursorStop", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
@@ -2252,15 +2262,15 @@ namespace Acurus.Capella.UI
 
         public void FillCboPhysician(string sFacility_Name)
         {
-           
+
             cboPhysicianName.Items.Clear();
 
             #region OLD Code
             ///* Code Block to populate physician list */
             //// bool showAll = true;
-           // XDocument xmlDocumentType = null;
+            // XDocument xmlDocumentType = null;
             //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
-             //xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
             ////StaticLookup objStatics = null;
             //ListItem liDropdown = null;
             //IList<string> PhyASStIDlist = new List<string>();
@@ -2653,7 +2663,7 @@ namespace Acurus.Capella.UI
             Dictionary<string, string> hashUser = new Dictionary<string, string>();
             ListItem liDropdown = null;
             IList<ListItem> liComboItems = new List<ListItem>();
-           
+
             ulong uDefaultPhysicianID = 0;
 
             if (ClientSession.UserRole != null && ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
@@ -2717,7 +2727,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            
+
             IList<ListItem> sortlst = liComboItems.OrderBy(x => x.Text).ToList();
             cboPhysicianName.Items.AddRange(sortlst.ToArray());
             ListItem phyEmptyItem = new ListItem("", "0");
@@ -2728,9 +2738,9 @@ namespace Acurus.Capella.UI
             {
                 ViewState["IsRegenerateXML"] = false;
                 if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
-                {                   
+                {
                     ViewState["DefaultPhysicianID"] = uDefaultPhysicianID;
-                   
+
                     ListItem SelectedPhysician = (cboPhysicianName.Items.FindByValue(uDefaultPhysicianID.ToString()));
                     if (SelectedPhysician != null)
                     {
@@ -2744,8 +2754,8 @@ namespace Acurus.Capella.UI
                         {
                             hdnLocalPhy.Value = string.Empty;
                         }
-                        
-                        
+
+
                     }
 
                 }
@@ -2781,13 +2791,13 @@ namespace Acurus.Capella.UI
             else
             {
                 //ulong iIndex = 0;
-               // if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
-               //Jir Cap - 575 && 523
-                if(hdnindex.Value!= "0" && hdnindex.Value != "")
+                // if (ulong.TryParse(hdnindex.Value, out iIndex) && iIndex != 0)
+                //Jir Cap - 575 && 523
+                if (hdnindex.Value != "0" && hdnindex.Value != "")
                 {
                     if (cboPhysicianName.Items.FindByValue(hdnindex.Value) != null)
                     {
-                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(hdnindex.Value));                        
+                        cboPhysicianName.SelectedIndex = cboPhysicianName.Items.IndexOf(cboPhysicianName.Items.FindByValue(hdnindex.Value));
                         hdnindex.Value = cboPhysicianName.SelectedValue;
                         if (hdnindex.Value != "0")
                         {
@@ -2819,11 +2829,11 @@ namespace Acurus.Capella.UI
                 }
             }
             Session["EncounterProvID"] = cboPhysicianName.SelectedValue.ToString();
-            
+
             Session["PhysicianList"] = PhyUserList;
             Session["DefaultSelectedPhysician"] = cboPhysicianName.SelectedIndex;
 
-           
+
         }
         public void RemoveWindowItem(ulong patientID)
         {

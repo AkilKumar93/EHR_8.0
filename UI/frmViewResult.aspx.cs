@@ -1534,7 +1534,11 @@ namespace Acurus.Capella.UI
                 PageViewSpirometryResults.ContentUrl = string.Empty;
                 PageViewABIResults.ContentUrl = string.Empty;
                 PageViewMessageLog.ContentUrl = string.Empty;
-                PageViewScan.ContentUrl = "frmImageViewer.aspx?FilePath=" + TargetValue.ToString().Replace("#", "HASHSYMBOL") + "&Source=RESULT" + "&HumanId=" + Session["human_id"].ToString();
+                //CAP-790
+                if (Session["human_id"] != null)
+                {
+                    PageViewScan.ContentUrl = "frmImageViewer.aspx?FilePath=" + TargetValue.ToString().Replace("#", "HASHSYMBOL") + "&Source=RESULT" + "&HumanId=" + Session["human_id"].ToString();
+                }
                 PageViewScan.Selected = true;
                 if (OrderSubID != null && IDName != string.Empty)// IDName=="ResultMasterID")//added  for BugID:66433
                 {

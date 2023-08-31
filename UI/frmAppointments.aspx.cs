@@ -1075,17 +1075,22 @@ namespace Acurus.Capella.UI
         protected void btnShowToday_Click(object sender, EventArgs e)
         {
             //CAP-836
-            if (!string.IsNullOrEmpty(ClientSession.LocalDate))
+            try
             {
-                Calendar1.SelectedDate = Convert.ToDateTime(ClientSession.LocalDate);
-                schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
-                if (Calendar1.SelectedDate.ToString("dd-MMM-yyyy") != string.Empty)
+                if (!string.IsNullOrEmpty(ClientSession.LocalDate))
                 {
-                    hdnSelectedDate.Value = Calendar1.SelectedDate.ToString("dd-MMM-yyyy");
+                    Calendar1.SelectedDate = Convert.ToDateTime(ClientSession.LocalDate);
+
+                    schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
+                    if (Calendar1.SelectedDate.ToString("dd-MMM-yyyy") != string.Empty)
+                    {
+                        hdnSelectedDate.Value = Calendar1.SelectedDate.ToString("dd-MMM-yyyy");
+                    }
+                    Calendar1.FocusedDate = Convert.ToDateTime(ClientSession.LocalDate);
+                    FillAllAppointmentsForDate();
                 }
-                Calendar1.FocusedDate = Convert.ToDateTime(ClientSession.LocalDate);
-                FillAllAppointmentsForDate();
             }
+            catch { }
         }
 
         protected void schAppointmentScheduler_AppointmentContextMenuItemClicked(object sender, AppointmentContextMenuItemClickedEventArgs e)
@@ -2861,7 +2866,7 @@ namespace Acurus.Capella.UI
                 var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
                 ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
             }
-            
+
             #region New Code
 
             if (schAppointmentScheduler.SelectedView.ToString().Trim() == "WeekView")

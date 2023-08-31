@@ -1656,7 +1656,11 @@ namespace Acurus.Capella.UI
                     {
                         if (indexListOnSession != null && indexListOnSession.Count > 0)//BugID:54354
                         {
-                            var record = indexListOnSession.FirstOrDefault(a => a.Id == item.Id).Version++;
+                            //CAP-790
+                            if (indexListOnSession.FirstOrDefault(a => a.Id == item.Id) != null)
+                            {
+                                var record = indexListOnSession.FirstOrDefault(a => a.Id == item.Id).Version++;
+                            }
                         }
 
                     }
@@ -3080,7 +3084,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //Jira #CAP-39
                 if (iTryCount <= 3)
@@ -3089,7 +3093,7 @@ namespace Acurus.Capella.UI
                     Thread.Sleep(1500);
                     goto TryAgain;
                 }
-                else 
+                else
                 {
                     UtilityManager.RetryExecptionLog(ex, iTryCount);
                     throw ex;
@@ -4165,19 +4169,19 @@ namespace Acurus.Capella.UI
 
                     StringBuilder OrderedPhysician = new StringBuilder();
                     if (lstorders != null && lstorders.Count > 0)
-                        OrderedPhysician.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Physician_ID.ToString());
+                        OrderedPhysician.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id)?.Physician_ID.ToString() ?? "");
 
                     StringBuilder OrderedLab = new StringBuilder();
                     if (lstorders != null && lstorders.Count > 0)
-                        OrderedLab.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Internal_Property_LabID.ToString());
+                        OrderedLab.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id)?.Internal_Property_LabID.ToString() ?? "");
 
                     StringBuilder OrderedID = new StringBuilder();
                     if (lstorders != null && lstorders.Count > 0)
-                        OrderedID.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Order_Submit_ID.ToString());
+                        OrderedID.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id)?.Order_Submit_ID.ToString() ?? "");
 
                     StringBuilder sPaperOrder = new StringBuilder();
                     if (lstorders != null && lstorders.Count > 0)
-                        sPaperOrder.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id).Lab_Procedure.ToString());
+                        sPaperOrder.Append(lstorders.FirstOrDefault(a => a.Order_Submit_ID == order_submit_id)?.Lab_Procedure.ToString() ?? "");
 
                     if (OrderedPhysician.ToString() == "0")
                     {
@@ -4405,7 +4409,7 @@ namespace Acurus.Capella.UI
                     goto TryAgain;
                 }
                 else { UtilityManager.RetryExecptionLog(ex, iTryCount); }
-               
+
             }
         }
         #endregion
@@ -4448,7 +4452,7 @@ namespace Acurus.Capella.UI
                     //Session["BrowseFileNames"] = null;
                     //if (Request.QueryString["Screen"] != null && Request.QueryString["Screen"] == "PatientPortalOnlineDoumnets")//For patient portal
                     //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Clearall", "clickClearAll();", true);
-                    
+
                     //Jira #CAP-39
                     int iTryCount = 1;
                 TryAgain:
@@ -4489,8 +4493,8 @@ namespace Acurus.Capella.UI
                         //{
                         //    lstDocuments = ((IList<string>)HttpContext.Current.Session["BrowseFileNames"]).Distinct().ToList();
                         //}
-                        
-                    
+
+
                         if (uploadedFiles.Count > 0)
                         {
                             for (int fileCount = 0; fileCount < uploadedFiles.Count; fileCount++)
@@ -4502,11 +4506,11 @@ namespace Acurus.Capella.UI
                                 {
                                     //Gitlab #3943 - File Name Length Issue
                                     int iFile_Length = (ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\" + sFacilityName + "\\Scanned_Images\\" + DateTime.Now.ToString("yyyyMMdd") + "\\Local_Indexing_File" + "/").Length + Path.GetExtension(currentFile.FileName).Length;
-                                   
+
                                     if ((ConfigurationManager.AppSettings["ScanningPath_Local"] + "\\" + sFacilityName + "\\Scanned_Images\\" + DateTime.Now.ToString("yyyyMMdd") + "\\Local_Indexing_File" + "/" + Path.GetFileName(currentFile.FileName)).Length >= 260)
                                     {
-                                        int iAllowed_File_Length =  259 - iFile_Length;
-                                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile();DisplayErrorMessage('114022','','"+iAllowed_File_Length+"');", true);
+                                        int iAllowed_File_Length = 259 - iFile_Length;
+                                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile();DisplayErrorMessage('114022','','" + iAllowed_File_Length + "');", true);
                                         return;
                                     }
 

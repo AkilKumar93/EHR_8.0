@@ -4694,7 +4694,8 @@ namespace Acurus.Capella.UI
 
                 }
             }
-            if (objVitalDTO == null && objVitalDTO.VitalsList == null)
+            //CAP-790 - Object reference not set to an instance of an object.
+            if (objVitalDTO?.VitalsList == null)
             {
                 if (saveList != null && saveList.Count > 0 && saveList[0].Encounter_ID == 0)
                 {
