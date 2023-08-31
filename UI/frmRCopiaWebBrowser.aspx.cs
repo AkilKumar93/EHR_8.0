@@ -446,7 +446,9 @@ namespace Acurus.Capella.UI
                     string sGMT = Convert.ToDateTime(hdnLocalTime.Value).ToString("MMddyyHHmmss");
                     sUrl = sUrl + sGMT + "&skip_auth=n" + RCopiaAccount;
                     string sOutput = GetMD5Hash(sUrl);
-                    sOutput = sUrl.Replace(RCopiaAccount, "&MAC=" + sOutput.ToUpper());
+                    //CAP-819
+                    if (RCopiaAccount?.Length > 0)
+                        sOutput = sUrl.Replace(RCopiaAccount, "&MAC=" + sOutput.ToUpper());
 
                     radBrowser.Attributes.Add("src", rcopiaSessionMngr.RCopiaSessionAddress + sOutput);
                 }
@@ -461,7 +463,9 @@ namespace Acurus.Capella.UI
                     sUrl = sUrl + sGMT + RCopiaAccount;
 
                     string sOutput = GetMD5Hash(sUrl);
-                    sOutput = sUrl.Replace(RCopiaAccount, "&MAC=" + sOutput.ToUpper());
+                    //CAP-819
+                    if (RCopiaAccount?.Length > 0)
+                        sOutput = sUrl.Replace(RCopiaAccount, "&MAC=" + sOutput.ToUpper());
 
                     radBrowser.Attributes.Add("src", rcopiaSessionMngr.RCopiaSessionAddress + sOutput);
                 }
