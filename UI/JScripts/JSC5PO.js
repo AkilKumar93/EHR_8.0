@@ -1663,6 +1663,16 @@ function OpenModal(data) {
 
 
     }
+    //Cap - 854
+    else if (itemValue == "Cash Price List") {
+        StartLoadingImage();
+        var obj = new Array();
+        obj.push("SI=" + "Cash Price List");
+        obj.push("Location=" + "STATIC");
+        var result = openModal("frmPrintPDF.aspx", 750, 900, obj, "ctl00_ModalWindow");
+
+    }
+
 
 }
 
@@ -1713,8 +1723,9 @@ function OpenERX(MyType) {
 
     var result = openModal("frmRCopiaWebBrowser.aspx", 1100, 960, obj, "ctl00_ModalWindow");
     var WindowName = $find('ctl00_ModalWindow');
-    WindowName.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close);
-    WindowName.add_close(LoadRcopiaCount);//BugID:54514
+    //CAP-776 Cannot read properties of null 
+    WindowName?.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close);
+    WindowName?.add_close(LoadRcopiaCount);//BugID:54514
     return false;
 }
 
@@ -1885,9 +1896,11 @@ function OnClientClickedSubMenu(data) {
         if (ID == undefined || ID == "") {
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
-            WindowName.add_close(OnClientPatientCommunication);
+            //CAP-780 Cannot read properties of null
+            WindowName?.add_close(OnClientPatientCommunication);
         }
         else {
+            //CAP-780 Cannot read properties of null  
             var result = openModal("frmPatientCommunication.aspx?IsMYQ=N", 810, 1050, obj, "ctl00_ModalWindow");
             var WindowName = $find('ctl00_ModalWindow');
             //CAP-302 - handle null value
@@ -2990,16 +3003,7 @@ function HideLoadIcdon() {
 }
 
 function openNonModal(fromname, height, width, inputargument) {
-    var Argument = "";
-
-    if (fromname != undefined && fromname != null) {
-        if (fromname.indexOf('?') > -1) {
-            fromname += "&allowmultipletab=true";
-        }
-        else {
-            fromname += "?allowmultipletab=true";
-        }
-    }
+    var Argument = "";       
 
     var PageName = fromname;
     if (inputargument != undefined) {
@@ -3015,9 +3019,17 @@ function openNonModal(fromname, height, width, inputargument) {
             PageName = PageName + "?";
         }
     }
-
-    window.open("popup1.aspx", "mywindow", "location=1,status=1,scrollbars=1,width=400,height=400")
-    var result = window.open(PageName + Argument, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes");
+    //Jira #CAP-903
+    if (PageName != undefined && PageName != null) {
+        if (PageName.indexOf('?') > -1) {
+            PageName = PageName+Argument + "&allowmultipletab=true";
+        }
+        else {
+            PageName = PageName+ "?allowmultipletab=true";
+        }
+    }
+    //window.open("popup1.aspx", "mywindow", "location=1,status=1,scrollbars=1,width=400,height=400")
+    var result = window.open(PageName, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes");
     if (result == undefined) { result = window.returnValue; }
     return result;
 }
@@ -3242,12 +3254,22 @@ function OnSuccessSummaryBarEprescription(response) {
     var regex = /<BR\s*[\/]?>/gi;
 
     if (response != null) {
-
+        //CAP-795  Cannot read properties of null
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblAllergies") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblAllergies") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblAllergies").innerHTML = response.d[0];
+        }
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblCheifComplaints") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblCheifComplaints") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblCheifComplaints").innerHTML = response.d[1];
+        }
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblProblemList") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblProblemList") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblProblemList").innerHTML = response.d[2];
+        }
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblVitals") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblVitals") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblVitals").innerHTML = response.d[3];
+        }
+        if (top?.window?.document?.getElementById("ctl00_C5POBody_lblMedication") != undefined && top?.window?.document?.getElementById("ctl00_C5POBody_lblMedication") != null) {
         top.window.document.getElementById("ctl00_C5POBody_lblMedication").innerHTML = response.d[4];
+        }
         if (response.d[5].replace("Allergies :<br/>", "").length != 0)
             top.window.document.getElementById("Allergies_tooltp").innerText = response.d[5].replace(regex, "\n") + "\n";
         else

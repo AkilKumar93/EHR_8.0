@@ -319,7 +319,11 @@ namespace Acurus.Capella.UI
                     }
                     Session["Doc_type"] = Document_type;
                     Session["Key_id"] = Key_id;
-
+                    //Cap - 686
+                    if (Request["CurrentProcess"] != null)
+                    {
+                        hdncurrentProcess.Value = Request["CurrentProcess"].ToUpper().Trim();
+                    }
                     if ((ClientSession.UserRole != null && ClientSession.UserRole.ToUpper().Trim() == "PHYSICIAN" || ClientSession.UserRole == "Physician Assistant") && Request["CurrentProcess"] != null && Request["CurrentProcess"].ToUpper().Trim() == "RESULT_REVIEW")
                     {
                         string sTemp = string.Empty;
@@ -425,7 +429,7 @@ namespace Acurus.Capella.UI
                             //    }
                             //}
                             sTemp = "Electronically Signed by " + PhysicianList[0].PhyPrefix + " " + PhysicianList[0].PhyFirstName + " " + PhysicianList[0].PhyMiddleName + (string.IsNullOrEmpty(PhysicianList[0].PhyMiddleName) ? "" : " ") + PhysicianList[0].PhyLastName + " " + PhysicianList[0].PhySuffix;
-                      
+
                         }
                         //sTemp = sTemp.Replace("<Date>", "");
                         //sTemp = sTemp.Replace(" on ", "");
@@ -540,7 +544,7 @@ namespace Acurus.Capella.UI
 
                 //goto retry;
             }
-            ln:
+        ln:
             try
             {
                 IList<string> ilstHumanTag = new List<string>();
@@ -1415,7 +1419,7 @@ namespace Acurus.Capella.UI
                             btnDeleteIndexing.Visible = false;
                             DelIndexDiv.Attributes.Remove("width");
                         }
-                        if ((Request["Openingfrom"] != null && Request["Openingfrom"] == "MyorderQueue")||(Request["Opening_from"] != null && Request["Opening_from"] == "OrdersList")||(Request["Opening_from"] != null && Request["Opening_from"] == "OrderManagementScreen"))
+                        if ((Request["Openingfrom"] != null && Request["Openingfrom"] == "MyorderQueue") || (Request["Opening_from"] != null && Request["Opening_from"] == "OrdersList") || (Request["Opening_from"] != null && Request["Opening_from"] == "OrderManagementScreen"))
                         {
                             btnDeleteIndexing.Visible = false;
                             DelIndexDiv.Attributes.Remove("width");
@@ -1564,8 +1568,17 @@ namespace Acurus.Capella.UI
                                     if (reviewcomments[i].Contains("Test Reviewed: ") == true)
                                     {
 
-                                        NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", ""); ;
-                                        notesattribute = notesattribute + reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                        NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                                        //Cap - 686
+                                        if (notesattribute == string.Empty)
+                                        {
+                                            notesattribute = reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                        }
+                                        else
+                                        {
+                                            notesattribute = notesattribute + "<br/>" + reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                        }
+
                                     }
                                     else
                                     {
@@ -1723,7 +1736,16 @@ namespace Acurus.Capella.UI
                                         {
 
                                             NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", ""); ;
-                                            notesattribute = notesattribute + reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                            //Cap - 686
+                                            if (notesattribute == string.Empty)
+                                            {
+                                                notesattribute = reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                            }
+                                            else
+                                            {
+                                                notesattribute = notesattribute + "<br/>" + reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                                            }
+
                                         }
                                         else
                                         {
@@ -1806,11 +1828,11 @@ namespace Acurus.Capella.UI
                                 if (ConfigurationSettings.AppSettings["IsEFax"] != null && ConfigurationSettings.AppSettings["IsEFax"].ToString().ToUpper() == "Y")
                                 {
                                     //sFaxSubject
-                                    
-                                   
-                                        string sFaxFirstname = string.Empty;
-                                        string sFaxLastName = string.Empty;
-                                    retry:
+
+
+                                    string sFaxFirstname = string.Empty;
+                                    string sFaxLastName = string.Empty;
+                                retry:
                                     try
                                     {
                                         IList<Human> lsthuman = new List<Human>();
@@ -2085,7 +2107,8 @@ namespace Acurus.Capella.UI
                     wfObj = WFObjMngr.GetByObjectSystemIdIncludeArchive(Convert.ToUInt64(OrderSubID), "DIAGNOSTIC_RESULT");
                     hdnLeftPaneResultMasterID.Value = wfObj.Obj_System_Id.ToString();
                 }
-
+                //Cap - 686
+                hdncurrentProcess.Value = wfObj.Current_Process;
                 if (wfObj.Current_Process == "RESULT_REVIEW" && wfObj.Current_Owner == ClientSession.UserName)
                 {
                     hdnLeftPaneObjType.Value = wfObj.Obj_Type;
@@ -2124,7 +2147,7 @@ namespace Acurus.Capella.UI
                             //    }
                             //}
                             sTemp = "Electronically Signed by " + PhysicianList[0].PhyPrefix + " " + PhysicianList[0].PhyFirstName + " " + PhysicianList[0].PhyMiddleName + (string.IsNullOrEmpty(PhysicianList[0].PhyMiddleName) ? "" : " ") + PhysicianList[0].PhyLastName + " " + PhysicianList[0].PhySuffix;
-                      
+
                         }
                         //sTemp = sTemp.Replace("<Date>", "");
                         //sTemp = sTemp.Replace(" on ", "");
@@ -2911,28 +2934,40 @@ namespace Acurus.Capella.UI
                             string textboxnotes = DLC.txtDLC.Text;
                             string testname = textboxnotes.Split(new string[] { "Test Reviewed:" }, StringSplitOptions.None)[1].Split(';')[0];
                             string NotesHistory = "";
-                            if (notes.IndexOf(testname) >= 0)
+                            //Cap - 686
+                            Boolean DlcUpdate = false;
+                            string[] Result_Review = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+                            for (int i = 0; i < Result_Review.Length; i++)
+                            {
+                                if (Result_Review[i].Trim() != string.Empty && Result_Review[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+                                {
+                                    DlcUpdate = true;
+                                    break;
+                                }
+
+                            }
+                            //Cap - 686
+                            //if (notes.IndexOf(testname) >= 0)
+                            if (DlcUpdate == true)
                             {
                                 string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
 
                                 for (int i = 0; i < Result_Review_Comments.Length; i++)
                                 {
-                                    if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].IndexOf(testname) >= 0)
+                                    //Cap - 686
+                                    //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].IndexOf(testname) >= 0)
+                                    if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                     {
                                         objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text);
                                         txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim().Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text));
 
-
+                                        if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Contains("Test Reviewed: ") == true)
+                                            NotesHistory = NotesHistory + Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
+                                        else if (Result_Review_Comments[i].Trim() != string.Empty)
+                                        {
+                                            NotesHistory = NotesHistory + Result_Review_Comments[i];
+                                        }
                                     }
-
-                                    if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Contains("Test Reviewed: ") == true)
-                                        NotesHistory = NotesHistory + Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
-                                    else if (Result_Review_Comments[i].Trim() != string.Empty)
-                                    {
-                                        NotesHistory = NotesHistory + Result_Review_Comments[i];
-
-                                    }
-
 
                                 }
 
@@ -3387,7 +3422,7 @@ namespace Acurus.Capella.UI
                                     }
                                     else
                                     {
-                                        foreach (XElement element in xmlPhysician.Descendants("p"+ UserElement.Attribute("Physician_Library_ID").Value))
+                                        foreach (XElement element in xmlPhysician.Descendants("p" + UserElement.Attribute("Physician_Library_ID").Value))
                                         {
                                             string phyName = string.Empty;
                                             string username = string.Empty;
@@ -3554,6 +3589,7 @@ namespace Acurus.Capella.UI
                 return;
             }
 
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Startloadinggrid", "{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}", true);
 
             PrintOrders print = new PrintOrders();
             string sOutput = string.Empty;
@@ -3745,7 +3781,7 @@ namespace Acurus.Capella.UI
 
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "Open Print Receipt-Window", "OpenPrintRecipt_Window('" + FaxSubject + "');", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "PrintInterpretation", "PrintInterpretation();", true);
-
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Test", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
         }
 
 
@@ -3902,5 +3938,22 @@ namespace Acurus.Capella.UI
             }
             return sResult;
         }
+
+        //Cap - 686
+        protected void btn_SetValue(object sender, EventArgs e)
+        {
+            txtProvNoteshistory.Attributes.Remove("InterpretationText");
+            txtProvNoteshistory.Text = hdnNewProviderNotesHistory.Value.Replace("<br/>", "\n");
+            txtProvNoteshistory.Attributes.Add("InterpretationText", hdnNewProviderhistoryattribute.Value);
+            //DLC.txtDLC.Text = hdnNewProviderNotes.Value;
+            if (DLC.txtDLC.Text != string.Empty)
+            {
+                btnSave.Disabled = false;
+            }
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Test", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();StopLoadingImage();}", true);
+
+        }
+
+
     }
 }

@@ -345,6 +345,9 @@ function btnMoveToNextProcess_Clicked() {
         }
     }
     document.getElementById("hdnIsEditgrid").value = "";
+
+//Jira #CAP-889
+    RemoveItem(document.URL, "ScanId");
 }
 function ClickMovetoNextProcess() {
     document.getElementById("IsClickDirectUpload").value = "No";
@@ -708,7 +711,12 @@ function btnClose_Clicked() {
                         document.getElementById("btnSave").click();
                     else
                         document.getElementById("btnMoveToNextProcess").click();
-                    "" != $("#hdnPageState").val() && (DisplayErrorMessage("1007001"), self.close())
+                    //"" != $("#hdnPageState").val() && (DisplayErrorMessage("1007001"), self.close())
+                    if ($("#hdnPageState").val()!="" && DisplayErrorMessage("1007001")) {
+                        OnClientCloseWindow();
+                        self.close()
+                    }
+
                     return false;
                 },
                 "No": function () {

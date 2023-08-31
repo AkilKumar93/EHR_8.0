@@ -675,7 +675,7 @@
                                                         <asp:TextBox ID="txtProvNoteshistory" runat="server" ReadOnly="true" Style="background-color: #BFDBFF; width: 440px; height: 55px; resize: none;" TextMode="MultiLine"></asp:TextBox>
                                                     </td>
                                                     <td>
-                                                        <button runat="server" id="imgPrintNotes" onserverclick="btnPrintInt_ServerClick" title="Print Interpretation Notes" visible="false" style="border: aliceblue;">
+                                                        <button runat="server" id="imgPrintNotes" onserverclick="btnPrintInt_ServerClick" title="Print Interpretation Notes" visible="false" style="border: aliceblue;" onclick="{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}">
                                                             <i class="fa fa-print" style="color: #6DABF7;"></i>
                                                         </button>
                                                     </td>
@@ -803,6 +803,15 @@
             <asp:HiddenField ID="hdnLeftPaneCurrentProcess" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnLeftPaneObjType" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnSubDocumentType" runat="server" EnableViewState="false" />
+
+             <asp:HiddenField ID="hdnNewProviderNotes" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnNewProviderNotesHistory" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnNewProviderhistoryattribute" runat="server" EnableViewState="false" />
+            <asp:Button ID="hdnSetvalue" OnClick="btn_SetValue"  runat="server" Style="display: none;"/>
+
+             <asp:HiddenField ID="hdncurrentProcess" runat="server" EnableViewState="false" />
+           
+
             <asp:Button ID="hdnbtngenerateresultxml" runat="server" OnClick="hdnbtngeneratexml_Click" Style="display: none" />
 
             <asp:HiddenField ID="hdnFaxSubject" runat="server" EnableViewState="false" />

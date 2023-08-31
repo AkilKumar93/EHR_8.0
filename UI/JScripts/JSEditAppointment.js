@@ -374,7 +374,11 @@ function ProviderSearchclear()
 }
 $('#btnSave').click(function () {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    //CAP-820 Cannot set properties of undefined
+    if (window?.parent?.parent?.theForm?.ctl00_hdnAppoinment?.value != undefined && window?.parent?.parent?.theForm?.ctl00_hdnAppoinment?.value != null) {
     window.parent.parent.theForm.ctl00_hdnAppoinment.value = true;
+    }
+
     if (DateValidattion("dtpApptDate")) {
         DisplayErrorMessage('380006');
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

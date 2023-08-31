@@ -1033,20 +1033,22 @@
                                             </ul>
                                         </div>
                                     </li>
+                                     <li runat="server" id="mnuHelp">
+                                        <a href="#" id="ancHelp">Help</a>
+                                        <div>
+                                            <ul>
+                                                <li runat="server" id="mnuHelp_smnuCashPriceList"><a href="#" onclick="OpenModal('Cash Price List');">Cash Price List</a></li>                                                
+                                            </ul>
+                                        </div>
+                                    </li>
                                     <li runat="server" id="mnuWindow"><a href="#" id="ancWindow">Window</a>
                                         <div>
                                             <ul runat="server" id="ulwindow" class="winClass"></ul>
                                         </div>
                                     </li>
-                                    <li runat="server" id="mnuHelp">
-                                        <a href="#" id="ancHelp">Help</a>
-                                        <div>
-                                            <ul>
-                                                <li runat="server" id="mnuHelp_smnuAbout"><a href="#" onclick="OpenModal('About');">About</a></li>
-                                                <%--<li runat="server" id="mnuHelp_smnuKnowledgeCenter"><a href="#" onclick="OpenModal('Knowledge Center');">MACRA - Knowledge Center</a></li>--%>
-                                            </ul>
-                                        </div>
-                                    </li>
+                                     <li runat="server" id="mnuAbout"><a href="#" onclick="OpenModal('About');">About</a>
+                                      </li>
+                                   
                                     <li style="position: absolute; right: 52px;">
                                         <asp:Label ID="lblLogged" runat="server" Style="font-weight: bold; font-style: italic;"></asp:Label>
                                     </li>
@@ -2102,6 +2104,7 @@
                         <iframe style="width: 100%; border: none; height: 210px;" id="TabResultInterpretationsFrame"></iframe>
                     </div>
                     <input type="text" id="txtResultInterpretationsInformation" value="" style="display: none;" />
+                    <input type="text" id="txtDeletedInterpretationsInformation" value="" style="display: none;" />
                 </div>
             </div>
         </div>

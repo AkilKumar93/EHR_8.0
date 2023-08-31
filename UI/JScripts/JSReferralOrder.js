@@ -510,6 +510,9 @@ function btnMoveToNextProcess_Clicked(sender, args) {
     var now = new Date();
     var utc = now.toUTCString();
     document.getElementById(GetClientId("hdnLocalTime")).value = utc;
+
+    //Jira #CAP-889
+    RemoveItem(document.URL, "Orders");
 }
 
 function WindowClose() {
@@ -520,7 +523,7 @@ function WindowClose() {
         oWindow = window.frameElement.radWindow;
     if (oWindow != null)
         oWindow.close();
-    window.top.location.href = "frmMyQueueNew.aspx";// BugID:42368
+    //window.top.location.href = "frmMyQueueNew.aspx";// BugID:42368
     
 }
 

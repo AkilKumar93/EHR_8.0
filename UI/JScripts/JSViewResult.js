@@ -138,15 +138,6 @@ function loadRcopia() {
 function openNonModal(fromname, height, width, inputargument) {
     var Argument = "";
 
-    if (fromname != undefined && fromname != null) {
-        if (fromname.indexOf('?') > -1) {
-            fromname += "&allowmultipletab=true";
-        }
-        else {
-            fromname += "?allowmultipletab=true";
-        }
-    }
-
     var PageName = fromname;
     if (inputargument != undefined) {
         for (var i = 0; i < inputargument.length; i++) {
@@ -161,9 +152,17 @@ function openNonModal(fromname, height, width, inputargument) {
             PageName = PageName + "?";
         }
     }
+    //Jira #CAP-903
+    if (PageName != undefined && PageName != null) {
+        if (PageName.indexOf('?') > -1) {
+            PageName = PageName + Argument + "&allowmultipletab=true";
+        }
+        else {
+            PageName = PageName + "?allowmultipletab=true";
+        }
+    }
 
-
-    var result = window.open(PageName + Argument, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes,titlebar=no,toolbar=no");
+    var result = window.open(PageName, '', "Height=" + height + ",Width=" + width + ",resizable=yes,scrollbars=yes,titlebar=no,toolbar=no");
     if (result != null)
         result.moveTo(30, 150);
 
@@ -359,6 +358,8 @@ function ClickMovetoma(sender, args) {
         StartLoadingImage();//BugID:41027 -- move to next result
         __doPostBack('btnMoveToMa', "true");
     }
+//Jira #CAP-889
+    RemoveItem(document.URL, "Orders");
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
 function ClickMovetonextProcess(sender, args) {
@@ -398,6 +399,8 @@ function ClickMovetonextProcess(sender, args) {
     //End For BUg Id 56084-4.9.18
     //BugID:41027 -- move to next result
 
+//Jira #CAP-889
+    RemoveItem(document.URL, "Orders");
 }
 
 function btnSave_ClientClicked(sender, args) {
@@ -550,7 +553,7 @@ function OpenResultInterpretation() {
     if (ProvNoteshistory != '') {
         //Cap - 747
         //notes = ProvNoteshistory;
-        notes = ProvNoteshistory.replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+","~|~|~|~|");
+        notes = ProvNoteshistory.replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
     }
     else {
         //notes = document.getElementById("txtProvNoteshistory").value;
@@ -575,37 +578,129 @@ function OpenResultInterpretation() {
     if (document.getElementById('txtPatientInformation') != null && document.getElementById('txtPatientInformation') != undefined && document.getElementById('txtPatientInformation') != '')
         PatientInformation = document.getElementById('txtPatientInformation').value.split("#").join("%23");
     $(top.window.document).find("#txtResultInterpretationsInformation")[0].value = "";
+    $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value = "";
     $(top.window.document).find("#TabResultInterpretations").modal({ backdrop: "static", keyboard: false }, 'show');
     $(top.window.document).find("#TabModalResultInterpretationsTitle")[0].textContent = "Interpretation Notes";
     $(top.window.document).find("#TabmdldlgResultInterpretations")[0].style.width = "900px";
     $(top.window.document).find("#TabmdldlgResultInterpretations")[0].style.height = "875px";
-    var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&ProviderNotesHistory=" + JSON.stringify(document.getElementById("txtProvNoteshistory").value); //+ "&ResultMasterID=" + document.getElementById(GetClientId('ResultMasterID')).value;
+    var sPath = "frmResultInterpretation.aspx?HumanText=" + PatientInformation + "&FileText=" + document.getElementById('txtFileInformation').value.split("#").join("%23") + "&DocumentSubType=" + document.getElementById(GetClientId('hdnSubDocumentType')).value + "&ProviderNotes=" + JSON.stringify(notes) + "&ProviderNotesHistory=" + JSON.stringify(document.getElementById("txtProvNoteshistory").value) + "&CurrentProcess=" + document.getElementById("hdncurrentProcess").value; //+ "&ResultMasterID=" + document.getElementById(GetClientId('ResultMasterID')).value;
     $(top.window.document).find("#TabResultInterpretationsFrame")[0].style.height = "635px";
     $(top.window.document).find("#TabResultInterpretationsFrame")[0].contentDocument.location.href = sPath;
+
+    //Cap - 686
+    let bRepeat = false;
     $(top.window.document).find("#TabResultInterpretations").on('hide.bs.modal', function (e) {
-        if ($(top.window.document).find("#txtResultInterpretationsInformation")[0].value != null &&
-            $(top.window.document).find("#txtResultInterpretationsInformation")[0].value != undefined
-            && $(top.window.document).find("#txtResultInterpretationsInformation")[0].value != "") {
-            var n = JSON.parse($(top.window.document).find("#txtResultInterpretationsInformation")[0].value);
-            document.getElementById(GetClientId("hdnResultInterpretations")).value = n;
-            document.getElementById('DLC_txtDLC').value = n;
-            var dlc = document.getElementById('DLC_txtDLC');
-            if (dlc.value != '') {
-                $("#DLC_txtDLC").addClass('nonEditabletxtbox');
-                $("#DLC_pbDropdown").addClass('pbDropdownBackgrounddisable');
-                dlc.disabled = true;
-                dlc.setAttribute("style", "resize:none;width:400px;height:55px;overflow-x: hidden;");
+        if (bRepeat == false) {
+            bRepeat = true;
+            if ($(top.window.document).find("#txtResultInterpretationsInformation")[0].value != null &&
+                $(top.window.document).find("#txtResultInterpretationsInformation")[0].value != undefined
+                && $(top.window.document).find("#txtResultInterpretationsInformation")[0].value != "" &&
+                $(top.window.document).find("#txtResultInterpretationsInformation")[0].value != "DeleteProviderNotes") {
+
+                var n = JSON.parse($(top.window.document).find("#txtResultInterpretationsInformation")[0].value);
+                document.getElementById(GetClientId("hdnResultInterpretations")).value = n;
+
+                document.getElementById('DLC_txtDLC').value = n;
+                var dlc = document.getElementById('DLC_txtDLC');
+                if (dlc.value != '') {
+                    $("#DLC_txtDLC").addClass('nonEditabletxtbox');
+                    $("#DLC_pbDropdown").addClass('pbDropdownBackgrounddisable');
+                    dlc.disabled = true;
+                    dlc.setAttribute("style", "resize:none;width:400px;height:55px;overflow-x: hidden;");
+                }
+                else {
+                    dlc.disabled = false;
+                    $("#DLC_txtDLC").removeClass('nonEditabletxtbox');
+                    $("#DLC_pbDropdown").removeClass('pbDropdownBackgrounddisable');
+                    $("#DLC_txtDLC").addClass('Editabletxtbox');
+                    $("#DLC_pbDropdown").addClass('pbDropdownBackground');
+                }
+                EnableSave();
             }
-            else {
-                dlc.disabled = false;
-                $("#DLC_txtDLC").removeClass('nonEditabletxtbox');
-                $("#DLC_pbDropdown").removeClass('pbDropdownBackgrounddisable');
-                $("#DLC_txtDLC").addClass('Editabletxtbox');
-                $("#DLC_pbDropdown").addClass('pbDropdownBackground');
+            else if ($(top.window.document).find("#txtResultInterpretationsInformation")[0].value != null &&
+                $(top.window.document).find("#txtResultInterpretationsInformation")[0].value != undefined
+                && $(top.window.document).find("#txtResultInterpretationsInformation")[0].value == "DeleteProviderNotes") {
+
+                $(top.window.document).find("#txtResultInterpretationsInformation")[0].value = "";
+                var n = ''; //JSON.parse($(top.window.document).find("#txtResultInterpretationsInformation")[0].value);
+                document.getElementById(GetClientId("hdnResultInterpretations")).value = n;
+
+                document.getElementById('DLC_txtDLC').value = n;
+                var dlc = document.getElementById('DLC_txtDLC');
+                if (dlc.value != '') {
+                    $("#DLC_txtDLC").addClass('nonEditabletxtbox');
+                    $("#DLC_pbDropdown").addClass('pbDropdownBackgrounddisable');
+                    dlc.disabled = true;
+                    dlc.setAttribute("style", "resize:none;width:400px;height:55px;overflow-x: hidden;");
+                }
+                else {
+                    dlc.disabled = false;
+                    $("#DLC_txtDLC").removeClass('nonEditabletxtbox');
+                    $("#DLC_pbDropdown").removeClass('pbDropdownBackgrounddisable');
+                    $("#DLC_txtDLC").addClass('Editabletxtbox');
+                    $("#DLC_pbDropdown").addClass('pbDropdownBackground');
+                }
+                document.getElementById(GetClientId("btnSave")).disabled = true;
             }
-            EnableSave();
+
+            if ($(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value != null &&
+                $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value != undefined
+                && $(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value != "") {
+
+                var n = JSON.parse($(top.window.document).find("#txtDeletedInterpretationsInformation")[0].value);
+                //document.getElementById(GetClientId("hdnResultInterpretations")).value = n;
+                const DeletedTemplate = n.split('$$$');
+                const ProviderNotes = document.getElementById('DLC_txtDLC').value;
+                const ProviderNotesHistory = document.getElementById('txtProvNoteshistory').value.split('\n');
+                var NewProviderNotes = '';
+                var NewProviderNotesHistory = '';
+                var NewProviderhistoryattribute = '';
+                //let AttrNotes = $('#txtProvNoteshistory').attr("interpretationtext");//document.getElementById('txtProvNoteshistory').getAttribute("interpretationtext");
+                const AttrSplitNotes = document.getElementById('txtProvNoteshistory').getAttribute("interpretationtext").split('<br/>');
+
+                for (let i = 0; i < DeletedTemplate.length; i++) {
+                    if (DeletedTemplate[i].replaceAll("Test Reviewed: ", "").replace("$$$", "").trim() != null && DeletedTemplate[i].replaceAll("Test Reviewed: ", "").replace("$$$", "").trim() != "") {
+
+                        for (let j = 0; j < ProviderNotesHistory.length; j++) {
+                            if (ProviderNotesHistory[j].split(':')[2] != undefined && ProviderNotesHistory[j].split(':')[2] != null && ProviderNotesHistory[j].split(':')[2].trim() != DeletedTemplate[i].replaceAll("Test Reviewed: ", "").replace("$$$", "").trim()) {
+                                if (NewProviderNotesHistory == "") {
+                                    NewProviderNotesHistory = ProviderNotesHistory[j];
+                                }
+                                else {
+                                    NewProviderNotesHistory = NewProviderNotesHistory + "<br/>" + ProviderNotesHistory[j];
+                                }
+                            }
+                        }
+
+                        for (let k = 0; k < AttrSplitNotes.length; k++) {
+                            if (AttrSplitNotes[k].split(';')[0] != "" && AttrSplitNotes[k].split(';')[0].replaceAll("Test Reviewed: ", "").trim() != DeletedTemplate[i].replaceAll("Test Reviewed: ", "").replace("$$$", "").trim()) {
+                                if (NewProviderhistoryattribute == "") {
+                                    NewProviderhistoryattribute = AttrSplitNotes[k];
+                                }
+                                else {
+                                    NewProviderhistoryattribute = NewProviderhistoryattribute + "<br/>" + AttrSplitNotes[k];
+                                }
+                            }
+                        }
+                    }
+
+                    //if (ProviderNotes.split(':')[1] != undefined && ProviderNotes.split(':')[1] != null && ProviderNotes.split(':')[1].trim().indexOf(DeletedTemplate[i].replaceAll("Test Reviewed: ", "").trim()) < 0) {
+                    //    NewProviderNotes = NewProviderNotes + ProviderNotes;
+                    //    EnableSave();
+                    //}       
+                }
+
+                document.getElementById('hdnNewProviderNotesHistory').value = NewProviderNotesHistory;
+                //document.getElementById('hdnNewProviderNotes').value = NewProviderNotes;
+                document.getElementById('hdnNewProviderhistoryattribute').value = NewProviderhistoryattribute;
+
+                document.getElementById("hdnSetvalue").click();
+                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            }
+
+            //$(top.window.document).find("#TabResultInterpretations").modal({ backdrop: "", keyboard: false }, 'hide');
+            //e.stopPropagation();
         }
-        $(top.window.document).find("#TabResultInterpretations").modal({ backdrop: "", keyboard: false }, 'hide');
     });
     return false;
 }

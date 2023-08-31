@@ -70,6 +70,7 @@
                     <td>
                     </td>
                     <td style="float: right;">
+                         <asp:Button ID="btnDelete" runat="server" OnClientClick="return DeleteClick();" Text="Delete" Width="58px" CssClass="aspresizedredbutton" OnClick="btnDelete_Click"  />
                         <%--<input type="button" id="btnPrintInterpretation" runat="server" value="Print" class="aspresizedbluebutton" onserverclick="btnPrintInt_ServerClick"/>--%>
                         <asp:Button ID="btnReset" runat="server" CssClass="aspresizedbluebutton" Text="Reset" Width="53px" OnClientClick="return btnResetClick();" />
                         <%--<asp:Button ID="btnPrintInt" runat="server" Text="Print" Width="60px" CssClass="aspresizedbluebutton" OnClick="btnPrint_Click" />--%>

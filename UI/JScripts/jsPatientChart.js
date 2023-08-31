@@ -1182,7 +1182,8 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
         var then = now.getDay() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear(); then += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
         var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds();
         document.getElementById(GetClientId("hdnLocalTime")).value = utc;
-        var sStrinh = (window.frames["ctl00_C5POBody_EncounterContainer"].contentDocument.getElementById('pnlBarGroupTabs') != null) ? window.frames["ctl00_C5POBody_EncounterContainer"].contentDocument.getElementById('pnlBarGroupTabs').innerHTML.split('|')[1].trim() : "";
+        //CAP-778 Cannot read properties of null
+        //var sStrinh = (window.frames["ctl00_C5POBody_EncounterContainer"]?.contentDocument?.getElementById('pnlBarGroupTabs') != null) ? window.frames["ctl00_C5POBody_EncounterContainer"]?.contentDocument?.getElementById('pnlBarGroupTabs')?.innerHTML?.split('|')[1]?.trim() : "";
         if (leaf[0].id.split('^')[1] == leaf[0].currentId && leaf[0].From != "Menu") {
             $('#ctl00_C5POBody_EncounterContainer')[0].src = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + leaf[0].id.split('^')[1] + "&leftpane=Y";
             sessionStorage.setItem("EncId_PatSummaryBar", leaf[0].id.split('^')[1]);
