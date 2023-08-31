@@ -1074,7 +1074,8 @@ namespace Acurus.Capella.UI
 
         protected void btnShowToday_Click(object sender, EventArgs e)
         {
-            if (ClientSession.LocalDate != null)
+            //CAP-836
+            if (!string.IsNullOrEmpty(ClientSession.LocalDate))
             {
                 Calendar1.SelectedDate = Convert.ToDateTime(ClientSession.LocalDate);
                 schAppointmentScheduler.SelectedDate = Calendar1.SelectedDate;
@@ -2853,10 +2854,14 @@ namespace Acurus.Capella.UI
             //{
             //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
             //}
-            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
-            IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-
-
+            //CAP-790 - Object reference not set to an instance of an object.
+            IList<FacilityLibrary> ilstFacAncillary = new List<FacilityLibrary>();
+            if (ApplicationObject.facilityLibraryList != null)
+            {
+                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
+                ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+            }
+            
             #region New Code
 
             if (schAppointmentScheduler.SelectedView.ToString().Trim() == "WeekView")
