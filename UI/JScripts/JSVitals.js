@@ -2381,13 +2381,12 @@ function OnVitalsLoad() {
     var sVisitType = "";
     var sDefaulttext = "Not performed - Telemedicine";
 
-    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0].innerHTML
-    if ($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument) != null &&
+    if ($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0] != undefined && $(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0] != null && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument) != null &&
         $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument) != undefined) {
         if (($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs") != null) &&
             $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs") != undefined) {
 
-            if ($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0].innerHTML.split('|').length > 2)
+            if ($($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0] != undefined && $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0] != null &&  $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0].innerHTML.split('|').length > 2)
 
                 sVisitType = $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("#pnlBarGroupTabs")[0].innerHTML.split('|')[2].trim()
         }
@@ -2395,8 +2394,9 @@ function OnVitalsLoad() {
 
 
     document.getElementById('hdnVisittype').value = sVisitType;
-
-    if (sVisitType.toUpperCase() == "TELEMEDICINE") {
+    //Jira #CAP-913
+    //if (sVisitType.toUpperCase() == "TELEMEDICINE" )
+    if (sVisitType.toUpperCase() == "TELEMEDICINE" && window.location.href.split('?')[1].split('&')[0].split('=')[1].toUpperCase() != "MENU") {
 
         if (document.getElementById('Height').value == "" && document.getElementById('HeightInch').value == "" && document.getElementById('txtNotesHeight_txtDLC').value=="") {
             document.getElementById('txtNotesHeight_txtDLC').value = sDefaulttext;
@@ -2425,8 +2425,9 @@ function OnVitalsLoad() {
     }
 
     $("#Height,#Weight,#BPSittingSysDia,#BPSittingDiastolic,#HeightInch").on('keyup', function (e) {
-
-        if (sVisitType.toUpperCase() == "TELEMEDICINE") {
+         //Jira #CAP-913
+    //if (sVisitType.toUpperCase() == "TELEMEDICINE" )
+        if (sVisitType.toUpperCase() == "TELEMEDICINE" && window.location.href.split('?')[1].split('&')[0].split('=')[1].toUpperCase() != "MENU") {
 
             if (document.getElementById('Height').value != "" || document.getElementById('HeightInch').value != "")
                 document.getElementById('txtNotesHeight_txtDLC').value = document.getElementById('txtNotesHeight_txtDLC').value.replace(sDefaulttext, '');

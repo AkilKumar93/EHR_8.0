@@ -5746,7 +5746,7 @@ namespace Acurus.Capella.UI
             return sPatientStrip;
         }
         //Jira #CAP-64,#CAP-67,#CAP-39 
-        public static void RetryExecptionLog(Exception ex, int iTrycount)
+        public static void RetryExecptionLog(Exception ex, int iTrycount,string sFileName = "")
         {
             string sMsg = string.Empty;
             string sExStackTrace = string.Empty;
@@ -5760,9 +5760,9 @@ namespace Acurus.Capella.UI
             if (server.Length > 1)
                 serverno = server[1].Trim();
             if (ex.InnerException != null && ex.InnerException.Message != null)
-                sMsg = ex.InnerException.Message;
+                sMsg = ex.InnerException.Message+"; FileName: "+ sFileName;
             else
-                sMsg = ex.Message;
+                sMsg = ex.Message + "; FileName: " + sFileName;
 
             if (ex != null && ex.StackTrace != null)
                 sExStackTrace = ex.StackTrace;
