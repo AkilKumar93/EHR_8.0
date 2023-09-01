@@ -23,17 +23,20 @@ function myClickHandler() {
     $("div.bootstrap-datetimepicker-widget").css("display", "none");
 }
 function Display(e) {
+    //Cap - 804
+    if (e.currentTarget.id.indexOf('(') < 0 && e.currentTarget.id.indexOf(')')<0)
+    {
+        $("div.bootstrap-datetimepicker-widget").css("display", "block");
+        var pos = $("#" + e.currentTarget.id).offsetParent();
+        var posheight = $("#" + e.currentTarget.id).position();
+        var postop = pos[0].scrollTop + posheight.top;
 
-    $("div.bootstrap-datetimepicker-widget").css("display", "block");
-    var pos = $("#" + e.currentTarget.id).offsetParent();
-    var posheight = $("#" + e.currentTarget.id).position();
-    var postop = pos[0].scrollTop + posheight.top;
-
-    $("div.bootstrap-datetimepicker-widget").css({ top: postop + 15 + "px", left: posheight.left + "px", height: 300 + "px", width: 440 + "px", bgcolor: "#FFFFFF" });
-    $(".bootstrap-datetimepicker-widget .timepicker-hour").css("margin-left", "15px");
-    $(".bootstrap-datetimepicker-widget .timepicker-minute").css("margin-left", "15px");
-    $(".bootstrap-datetimepicker-widget .btn").css({ "width": "42px", "margin-left": "5px" });
-    $("div.bootstrap-datetimepicker-widget").css('z-index', 3000);
+        $("div.bootstrap-datetimepicker-widget").css({ top: postop + 15 + "px", left: posheight.left + "px", height: 300 + "px", width: 440 + "px", bgcolor: "#FFFFFF" });
+        $(".bootstrap-datetimepicker-widget .timepicker-hour").css("margin-left", "15px");
+        $(".bootstrap-datetimepicker-widget .timepicker-minute").css("margin-left", "15px");
+        $(".bootstrap-datetimepicker-widget .btn").css({ "width": "42px", "margin-left": "5px" });
+        $("div.bootstrap-datetimepicker-widget").css('z-index', 3000);
+    }
 }
 function DisplayDate(e) {
 
@@ -2218,15 +2221,18 @@ function OnVitalsLoad() {
             .on('click', function () {
                 e.stopPropagation();
             });
-        $("div.bootstrap-datetimepicker-widget").css("display", "block");
-        var pos = $("#" + e.currentTarget.id).offsetParent();
-        var posheight = $("#" + e.currentTarget.id).position();
-        var postop = pos[0].scrollTop + posheight.top;
-        $("div.bootstrap-datetimepicker-widget").css({ top: postop + 15 + "px", left: posheight.left + "px", height: 300 + "px", width: 440 + "px", bgcolor: "#FFFFFF" });
-        $(".bootstrap-datetimepicker-widget .timepicker-hour").css("margin-left", "15px");
-        $(".bootstrap-datetimepicker-widget .timepicker-minute").css("margin-left", "15px");
-        $(".bootstrap-datetimepicker-widget .btn").css({ "width": "42px", "margin-left": "5px" });
-        $("div.bootstrap-datetimepicker-widget").css('z-index', 3000);
+            //Cap - 804
+        if (e.currentTarget.id.indexOf('(') < 0 && e.currentTarget.id.indexOf(')') < 0) {
+            $("div.bootstrap-datetimepicker-widget").css("display", "block");
+            var pos = $("#" + e.currentTarget.id).offsetParent();
+            var posheight = $("#" + e.currentTarget.id).position();
+            var postop = pos[0].scrollTop + posheight.top;
+            $("div.bootstrap-datetimepicker-widget").css({ top: postop + 15 + "px", left: posheight.left + "px", height: 300 + "px", width: 440 + "px", bgcolor: "#FFFFFF" });
+            $(".bootstrap-datetimepicker-widget .timepicker-hour").css("margin-left", "15px");
+            $(".bootstrap-datetimepicker-widget .timepicker-minute").css("margin-left", "15px");
+            $(".bootstrap-datetimepicker-widget .btn").css({ "width": "42px", "margin-left": "5px" });
+            $("div.bootstrap-datetimepicker-widget").css('z-index', 3000);
+        }
     });
 
     $(".CustomDate").datetimepicker({
