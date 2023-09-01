@@ -337,14 +337,14 @@ namespace Acurus.Capella.UI
             if (Session["Order_Id"] != null && Session["Order_Id"] != string.Empty && Convert.ToUInt32(Session["Order_Id"]) != 0)
             {
                 lstResultMaster = rsManager.GetResultReviewNotesBasedOnOrderSubmitId(Convert.ToUInt32(Session["Order_Id"]));
-                if (lstResultMaster != null && lstResultMaster.Count > 0)
+                if (lstResultMaster != null && lstResultMaster.Count > 0 && lstResultMaster.Count == 1)
                 {
-                    if (lstResultMaster.Count == 1)
-                    {
+                    //Jira #CAP-921 - Condition added in the top if condition
+                   // if (lstResultMaster.Count == 1)
+                    //{
                         objResultMaster = lstResultMaster[0];
-                    }
+                    //}
                 }
-
                 else if (lstResultMaster.Count > 1)
                 {
                     if (Session["Result_Master_Id"] != null && UInt64.TryParse(Session["Result_Master_Id"].ToString(), out resMasID))
