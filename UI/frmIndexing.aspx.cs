@@ -4408,7 +4408,7 @@ namespace Acurus.Capella.UI
                     Thread.Sleep(1500);
                     goto TryAgain;
                 }
-                else { UtilityManager.RetryExecptionLog(ex, iTryCount); }
+                else { UtilityManager.RetryExecptionLog(ex, iTryCount, "SourcePath: "+sSourcePdfPath+ " ~ DestinationPath: "+ sDestinationPdfPath); }
 
             }
         }
