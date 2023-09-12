@@ -44,7 +44,7 @@
                 var IDs = window.parent.theForm.hdnSaveButtonID.value.split(',');
 
                 var childControlsofChildContainer = $find(IDs[1]).get_selectedPageView().get_element().getElementsByTagName("iframe")[0].contentWindow.$telerik.radControls;
-                for (var count = (childControlsofChildContainer.length - 1) ; count >= 0; count--) {
+                for (var count = (childControlsofChildContainer.length - 1); count >= 0; count--) {
                     if (childControlsofChildContainer[count]._element.id == IDs[0]) {
                         var save_button = childControlsofChildContainer[count];
                         var refresh_summary_bar = $find(IDs[1]).get_selectedPageView().get_element().getElementsByTagName("iframe")[0].contentDocument.getElementById('hdnTabSelected');
@@ -98,7 +98,7 @@
                 var IDs = window.parent.theForm.hdnSaveButtonID.value.split(',');
 
                 var childControlsofChildContainer = $find(IDs[1]).get_selectedPageView().get_element().getElementsByTagName("iframe")[0].contentWindow.$telerik.radControls;
-                for (var count = (childControlsofChildContainer.length - 1) ; count >= 0; count--) {
+                for (var count = (childControlsofChildContainer.length - 1); count >= 0; count--) {
                     if (childControlsofChildContainer[count]._element.id == IDs[0]) {
                         var save_button = childControlsofChildContainer[count];
                         if (save_button != undefined || save_button != null) {
@@ -233,13 +233,11 @@ $(document).ready(function () {
                 }
             }
             if (is_disabled == false) {
-                if ($("ul#myTabs li.active a")[0].innerText != this.innerText)
-                { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                if ($("ul#myTabs li.active a")[0].innerText != this.innerText) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
             }
         }
         else {
-            if ($("ul#myTabs li.active a")[0].innerText != this.innerText)
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+            if ($("ul#myTabs li.active a")[0].innerText != this.innerText) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         }
     });
 
@@ -292,12 +290,10 @@ $(document).ready(function () {
         if (cookies[l].indexOf("CUserRole") > -1)
             CUserRole = cookies[l].split("=")[1];
     }
-    if (CUserRole == "Coder")
-    {
+    if (CUserRole == "Coder") {
         cboSourceOfInformation.disabled = true;
     }
-    else
-    {
+    else {
         cboSourceOfInformation.disabled = false;
     }
     if ($("ul#myTabs li.active").length != 0) {
@@ -391,8 +387,14 @@ $(document).ready(function () {
             }
         }
         if ($("#cboPhysician")[0] != undefined && $("#cboPhysician")[0].options.length > 0) {
-            PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
+            //Cap - 927
+            //PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
+            PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].name;
             PhysicianID = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].value;
+            //Cap - 927
+            if (PhysicianName == undefined) {
+                PhysicianName = "";
+            }
         }
         if (PhysicianName != "" || openingFrom == "Queue") {
             $.ajax({
@@ -468,7 +470,8 @@ $(document).ready(function () {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 }
             });
-        } else if (PhysicianName != "" || openingFrom == "Menu") {
+        }
+        else if (PhysicianName != "" || openingFrom == "Menu") {
             $.ajax({
                 type: "POST",
                 url: "WebServices/PastMedicalHistoryService.asmx/LoadPFSHtabMenu",
@@ -550,7 +553,9 @@ $(document).ready(function () {
 
 function LoadPFSHTabs(event) {
     if ($("#cboPhysician")[0] != undefined && $("#cboPhysician")[0].options.length > 0) {
-        PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
+        //Cap - 927
+        //PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
+        PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].name;
     }
     if (PhysicianName != "" || openingFrom == "Queue") {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -583,7 +588,7 @@ function LoadPFSHTabs(event) {
                 sessionStorage.setItem('PFSH_src', src);
                 var prevTabtxt = $(PrevTab).text();
                 sessionStorage.setItem('PFSH_PrevTabText', prevTabtxt);
-                
+
                 //CAP-537 : PFSH - Family History screen loading for long time
                 $(paneID + " iframe").attr("src", src);
                 $('.clsIframe').contents()[1]?.all?.namedItem('btnAdd')?.click();
@@ -714,7 +719,7 @@ function LoadPFSHTabs(event) {
     else { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
 $('.nav-tabs a').on('shown.bs.tab', function (event) {
-    
+
     var is_disabled = false;
     if (PFSH_tab != undefined && PFSH_tab.length > 0) {
         for (var t = 0; t < PFSH_tab.length; t++) {
@@ -801,7 +806,9 @@ $("#btnPFSHVerified").click(function () {
 var bValue = true;
 function LoadPhysicianList(Control) {
     if ($("#cboPhysician")[0] != undefined && $("#cboPhysician")[0].options.length > 0) {
-        PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
+        //Cap - 927
+        //PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
+        PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].name;
     }
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
@@ -822,7 +829,7 @@ function LoadPhysicianList(Control) {
                     $("#lblShowAllPhysician")[0].disabled = true;
                     $("#chkShowAllPhysician")[0].disabled = true;
                     $("#cboPhysician").addClass('nonEditabletxtbox');
-                    if (FacilityRole.split('&')[0] != "" && FacilityRole.split('&')[2] != "" ) {
+                    if (FacilityRole.split('&')[0] != "" && FacilityRole.split('&')[2] != "") {
                         for (var i = 0; i < FacilityList.length; i++) {
                             if (FacilityList[i].getAttribute("name") == FacilityRole.split('&')[0]) {
 
@@ -839,7 +846,7 @@ function LoadPhysicianList(Control) {
                                         //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
                                         //PhyOption.text = PhyName;
                                         //Gitlab# 2485 - Physician Name Display Change
-                                        var PhyName="";
+                                        var PhyName = "";
                                         if (PhyList[j].getAttribute("lastname") != "")
                                             PhyName += PhyList[j].getAttribute("lastname");
                                         if (PhyList[j].getAttribute("firstname") != "") {
@@ -854,6 +861,8 @@ function LoadPhysicianList(Control) {
                                             PhyName += "," + PhyList[j].getAttribute("suffix");
                                         PhyOption.text = PhyName;
                                         PhyOption.value = PhyList[j].getAttribute("ID");
+                                        //Cap - 927
+                                        PhyOption.name = PhyList[j].getAttribute("username");
                                         document.getElementById("cboPhysician").options.add(PhyOption);
                                         break;
                                     }
@@ -896,6 +905,8 @@ function LoadPhysicianList(Control) {
                                         PhyName += "," + PhyList[j].getAttribute("suffix");
                                     PhyOption.text = PhyName;
                                     PhyOption.value = PhyList[j].getAttribute("ID");
+                                    //Cap - 927
+                                    PhyOption.name = PhyList[j].getAttribute("username");
                                     if (chkphysician.indexOf(PhyName.toUpperCase()) <= -1) {
                                         chkphysician.push(PhyName.toUpperCase());
                                         document.getElementById("cboPhysician").options.add(PhyOption);
@@ -938,6 +949,8 @@ function LoadPhysicianList(Control) {
                                                 PhyName += "," + PhyList[j].getAttribute("suffix");
                                             PhyOption.text = PhyName;
                                             PhyOption.value = PhyList[j].getAttribute("ID");
+                                            //Cap - 927
+                                            PhyOption.name = PhyList[j].getAttribute("username");
                                             document.getElementById("cboPhysician").options.add(PhyOption);
                                         }
                                     }
@@ -995,6 +1008,8 @@ function LoadPhysicianList(Control) {
                                     PhyName += "," + PhyList[j].getAttribute("suffix");
                                 PhyOption.text = PhyName;
                                 PhyOption.value = PhyList[j].getAttribute("ID");
+                                //Cap - 927
+                                PhyOption.name = PhyList[j].getAttribute("username");
                                 document.getElementById("cboPhysician").options.add(PhyOption);
                             }
                         }
@@ -1041,7 +1056,9 @@ function LoadPFSHTab(control) {
     var PhysicianName = "";
     var PhysicianID = "";
     if ($("#cboPhysician")[0] != undefined && $("#cboPhysician")[0].options.length > 0) {
-        PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
+        //Cap - 927
+        //PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
+        PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].name;
         PhysicianID = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].value;
     }
     var value = window.location.search.toString();
@@ -1232,7 +1249,7 @@ function EnablePFSH() {
     }
     var bValue = true;
     var PFSHVerified = localStorage.getItem("PFSHVerified");
-    if (PFSHVerified!=null && PFSHVerified!=undefined && PFSHVerified != "") {
+    if (PFSHVerified != null && PFSHVerified != undefined && PFSHVerified != "") {
         var PFSH = PFSHVerified.split('|');
         for (var i = 0; i < PFSH.length; i++) {
             if (PFSH[i].split('-')[0] == Sessionvalues.split('~')[4].split('&')[0]) {
