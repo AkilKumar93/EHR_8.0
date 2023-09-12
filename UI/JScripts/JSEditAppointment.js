@@ -1104,8 +1104,9 @@ function CancelAppointment() {
 
 function PhoneEncounterCancel()
 {
+    //CAP-892 From Patient communication screen when cancelled a Phone encounter, shows Multiple tab restrict access error but the encounter gets cancelled
     DisplayErrorMessage('110094');
-    window.top.location.href = "frmPatientChart.aspx";// returnToParent(null);
+    window.top.location.href = "frmPatientChart.aspx?allowmultipletab=true";// returnToParent(null);
 }
 
 function GetRadWindow() {
