@@ -2115,7 +2115,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             query1.SetString("userName", UserName);
                             query1.SetString("currentOwner", "UNKNOWN");
                             query1.SetString("facilityName", FacName);
-                            query1.SetParameterList("ObjList", ObjType);
+                            string[] ObjTaskType = new string[1];
+                            ObjTaskType[0] = "TASK";
+                            query1.SetParameterList("ObjList", ObjTaskType);
                             FavoriteList = new ArrayList(query1.List());
                             myq.Task_Count = Convert.ToInt16(FavoriteList[0]);
                         }
