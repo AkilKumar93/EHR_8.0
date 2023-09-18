@@ -2962,7 +2962,9 @@ namespace Acurus.Capella.UI
                                 {
                                     //Cap - 686
                                     //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].IndexOf(testname) >= 0)
-                                    if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+                                    //CAP-1042
+                                    //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
+                                    if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':').Length > 3 && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                     {
                                         objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text);
                                         txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim().Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text));
