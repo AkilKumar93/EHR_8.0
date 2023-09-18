@@ -26,14 +26,14 @@ namespace DownloadiPrescribe
             method1Timer.Elapsed += (sender, e) => HandleException(CreateLabOrderTask, method1Timer);
             method1Timer.Interval = TimeSpan.FromMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["OrderTaskTimeSpan"])).TotalMilliseconds;
             method1Timer.Start();
-            Console.WriteLine("Order Task Creation Completed.");
+            Console.WriteLine("Order Task Creation Method Invoked.");
 
             Console.WriteLine("Download RCopia Started");
             Timer method2Timer = new Timer();
             method2Timer.Elapsed += (sender, e) => HandleException(DownloadRCopiaInfo, method2Timer);
             method2Timer.Interval = TimeSpan.FromMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["RCopiaTimeSpan"])).TotalMilliseconds;
             method2Timer.Start();
-            Console.WriteLine("Download RCopia Completed");
+            Console.WriteLine("Download RCopia Method Invoked");
 
             Console.WriteLine("Press Enter to exit.");
             Console.ReadLine();
@@ -64,6 +64,14 @@ namespace DownloadiPrescribe
                 IList<OrderTaskDTO> lstOrderTaskDTOs = new List<OrderTaskDTO>();
                 OrdersSubmitManager OrderSubmitProxy = new OrdersSubmitManager();
                 IList<ulong> lstOrderSubmitIds = new List<ulong>();
+
+                Console.WriteLine("Get order submit records for task notification.");
+                var totalRecords = OrderSubmitProxy.GetOrderDetailsCountForTaskNotification();
+                if(totalRecords == 0)
+                {
+                    return;
+                }
+
                 Console.WriteLine("Get order submit detail for task notification.");
                 lstOrderTaskDTOs = OrderSubmitProxy.GetOrderDetailsForTaskNotification();
 
@@ -77,13 +85,29 @@ namespace DownloadiPrescribe
                         order.Lab_Procedure_Message = labAndICDMessages.Item1;
                         order.ICD_Description_Message = labAndICDMessages.Item2;
 
-                        if (order.Stat == "Y" && order.Created_Date_And_Time.ToUniversalTime().AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["statTimeSpan"])) >= currentDateTimeUTC)
+                        if (order.Stat == "Y" &&
+                            ((order.Created_Date_And_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["statTimeSpan"])) <= currentDateTimeUTC &&
+                            order.Modified_Date_And_Time.ToString("yyyy-MM-dd") == "0001-01-01" &&
+                            (order?.Current_Process ?? string.Empty) != "DELETED_ORDER")
+                            || ((order.Modified_Date_And_Time.ToString("yyyy-MM-dd") != "0001-01-01" &&
+                            (order?.Current_Process ?? string.Empty) != "DELETED_ORDER"
+                            && order.Modified_Date_And_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["statTimeSpan"])) <= currentDateTimeUTC))
+                            || ((order?.Current_Process ?? string.Empty) == "DELETED_ORDER" && order.Current_Arrival_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["statTimeSpan"])) <= currentDateTimeUTC))
+                        )
                         {
                             Console.WriteLine($"Add patient notes for order with stat value as 'Y'.");
                             AddPatientNotes(order);
                         }
-                        else if (order.Stat != "Y" && order.Created_Date_And_Time.ToUniversalTime().AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["withoutStatTimeSpan"])) >= currentDateTimeUTC)
+                        else if (order.Stat != "Y" &&
+                            ((order.Created_Date_And_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["withoutStatTimeSpan"])) <= currentDateTimeUTC &&
+                            order.Modified_Date_And_Time.ToString("yyyy-MM-dd") == "0001-01-01" &&
+                            (order?.Current_Process ?? string.Empty) != "DELETED_ORDER")
+                            || ((order.Modified_Date_And_Time.ToString("yyyy-MM-dd") != "0001-01-01" &&
+                            (order?.Current_Process ?? string.Empty) != "DELETED_ORDER"
+                            && order.Modified_Date_And_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["withoutStatTimeSpan"])) <= currentDateTimeUTC))
+                            || ((order?.Current_Process ?? string.Empty) == "DELETED_ORDER" && order.Current_Arrival_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["withoutStatTimeSpan"])) <= currentDateTimeUTC)))
                         {
+                            Console.WriteLine($"Add patient notes for order with stat value as 'N'.");
                             AddPatientNotes(order);
                         }
                         Console.WriteLine($"Task created for order submit id: {order.Order_Submit_ID}");
@@ -113,7 +137,7 @@ namespace DownloadiPrescribe
             objpatientnotes.Orders_Submit_ID = Convert.ToInt32(orderSubmitData.Order_Submit_ID);
             objpatientnotes.Created_By = orderSubmitData.Created_By;
             objpatientnotes.Type = orderSubmitData.Task;
-            objpatientnotes.Message_Date_And_Time = orderSubmitData.Created_Date_And_Time.ToUniversalTime();
+            objpatientnotes.Message_Date_And_Time = orderSubmitData.Created_Date_And_Time;
             objpatientnotes.Is_PatientChart = "N";
             objpatientnotes.Created_Date_And_Time = DateTime.UtcNow;
 
@@ -124,40 +148,41 @@ namespace DownloadiPrescribe
             if ((orderSubmitData.Created_Date_And_Time != null) && (orderSubmitData.Created_Date_And_Time.ToString() != "0001-01-01") && (orderSubmitData.Modified_Date_And_Time == null || (orderSubmitData.Modified_Date_And_Time.ToString("yyyy-MM-dd") == "0001-01-01")) && (orderSubmitData?.Current_Process ?? string.Empty) != "DELETED_ORDER")
             {
                 strNotes.AppendLine("The new ancillary order has been submitted.");
-                strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:MM-dd-yyyy}");
+                strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:dd-MMM-yyyy}");
                 strNotes.AppendLine($"Ancillary Order # : {orderSubmitData.Order_Submit_ID}");
-                strNotes.AppendLine($"Priority :  {notesPriority}");
-                strNotes.AppendLine($"Ordering Provider :  {orderSubmitData.Physician_Name}");
-                strNotes.AppendLine($"Ancillary Order(s) :  {orderSubmitData.Lab_Procedure_Message}");
-                strNotes.AppendLine($"Facility to perform Test :  {orderSubmitData.Lab_Name}");
-                strNotes.AppendLine($"Associated Order ICD Codes :  {orderSubmitData.ICD_Description_Message}");
+                strNotes.AppendLine($"Priority : {notesPriority}");
+                strNotes.AppendLine($"Ordering Provider : {orderSubmitData.Physician_Name}");
+                strNotes.AppendLine($"Ancillary Order(s) : {orderSubmitData.Lab_Procedure_Message}");
+                strNotes.AppendLine($"Facility to perform Test : {orderSubmitData.Lab_Name}");
+                strNotes.AppendLine($"Associated Order ICD Codes : {orderSubmitData.ICD_Description_Message}");
 
             }
             //Deleted Order
             else if ((orderSubmitData?.Current_Process ?? string.Empty) == "DELETED_ORDER")
             {
                 strNotes.AppendLine("The ancillary order has been deleted.");
-                strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:MM-dd-yyyy}");
+                strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:dd-MMM-yyyy}");
                 strNotes.AppendLine($"Ancillary Order # : {orderSubmitData.Order_Submit_ID}");
-                strNotes.AppendLine($"Priority :  {notesPriority}");
-                strNotes.AppendLine($"Ordering Provider :  {orderSubmitData.Physician_Name}");
-                strNotes.AppendLine($"Ancillary Order(s) :  {orderSubmitData.Lab_Procedure_Message}");
-                strNotes.AppendLine($"Facility to perform Test :  {orderSubmitData.Lab_Name}");
-                strNotes.AppendLine($"Associated Order ICD Codes :  {orderSubmitData.ICD_Description_Message}");
+                strNotes.AppendLine($"Priority : {notesPriority}");
+                strNotes.AppendLine($"Ordering Provider : {orderSubmitData.Physician_Name}");
+                strNotes.AppendLine($"Ancillary Order(s) : {orderSubmitData.Lab_Procedure_Message}");
+                strNotes.AppendLine($"Facility to perform Test : {orderSubmitData.Lab_Name}");
+                strNotes.AppendLine($"Associated Order ICD Codes : {orderSubmitData.ICD_Description_Message}");
             }
             //Updated Order
             else
             {
                 strNotes.AppendLine("The ancillary order has been updated.");
-                strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:MM-dd-yyyy}");
+                strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:dd-MMM-yyyy}");
                 strNotes.AppendLine($"Ancillary Order # : {orderSubmitData.Order_Submit_ID}");
-                strNotes.AppendLine($"Priority :  {notesPriority}");
-                strNotes.AppendLine($"Ordering Provider :  {orderSubmitData.Physician_Name}");
-                strNotes.AppendLine($"Ancillary Order(s) :  {orderSubmitData.Lab_Procedure_Message}");
-                strNotes.AppendLine($"Facility to perform Test :  {orderSubmitData.Lab_Name}");
-                strNotes.AppendLine($"Associated Order ICD Codes :  {orderSubmitData.ICD_Description_Message}");
+                strNotes.AppendLine($"Priority : {notesPriority}");
+                strNotes.AppendLine($"Ordering Provider : {orderSubmitData.Physician_Name}");
+                strNotes.AppendLine($"Ancillary Order(s) : {orderSubmitData.Lab_Procedure_Message}");
+                strNotes.AppendLine($"Facility to perform Test : {orderSubmitData.Lab_Name}");
+                strNotes.AppendLine($"Associated Order ICD Codes : {orderSubmitData.ICD_Description_Message}");
             }
 
+            objpatientnotes.Notes = strNotes.ToString();
 
             Console.WriteLine("Creating wf objects");
             PatientNotesManager patientnotesmngr = new PatientNotesManager();

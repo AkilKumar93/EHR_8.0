@@ -25,6 +25,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         string GetOrderingPhysicianByOrderSubmitID(ulong OrdersSubmitID);
         ulong GetOrderingPhysicianIdByOrderSubmitID(ulong OrdersSubmitID);
         IList<OrderTaskDTO> GetOrderDetailsForTaskNotification();
+        int GetOrderDetailsCountForTaskNotification();
     }
     public partial class OrdersSubmitManager : ManagerBase<OrdersSubmit, ulong>, IOrdersSubmitManager
     {
@@ -826,10 +827,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 OsObj.Modified_Date_And_Time = Convert.ToDateTime((obj[14]));
                 OsObj.Current_Process = obj[15].ToString();
                 OsObj.Human_ID = Convert.ToUInt64(obj[16]);
+                OsObj.Current_Arrival_Time = Convert.ToDateTime((obj[17]));
 
                 OrdersSubmitList.Add(OsObj);
             }
             return OrdersSubmitList;
+        }
+
+        public int GetOrderDetailsCountForTaskNotification()
+        {
+
+            ISession mySession = NHibernateSessionManager.Instance.CreateISession();
+            IQuery query1 = mySession.GetNamedQuery("GetOrderObjectDetails.For.Count");
+
+            ArrayList objects = new ArrayList(query1.List());
+            var count = 0;
+            int.TryParse(objects[0].ToString(), out count);
+            return count;
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Acurus.Capella.Core.DTO
         private string _Lab_Procedure_Message;
         private string _ICD_Description_Message;
         private DateTime _Modified_Date_And_Time;
+        private DateTime _Current_Arrival_Time;
         private ulong _Human_ID;
 
         [DataMember]
@@ -65,6 +66,7 @@ namespace Acurus.Capella.Core.DTO
         public string Current_Process { get { return _Current_Process; } set { _Current_Process = value; } }
         [DataMember]
         public DateTime Modified_Date_And_Time { get { return _Modified_Date_And_Time; } set { _Modified_Date_And_Time = value; } }
+        public DateTime Current_Arrival_Time { get { return _Current_Arrival_Time; } set { _Current_Arrival_Time = value; } }
         [DataMember]
         public ulong Human_ID
         {

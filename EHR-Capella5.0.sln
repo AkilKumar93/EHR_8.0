@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasureCalculator", "Measur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientPortal", "PatientPortal\PatientPortal.csproj", "{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloadiPrescribe", "DownloadiPrescribe\DownloadiPrescribe.csproj", "{6631B5F4-5C58-46AD-9644-BA30E2AAC895}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE93AA8C-D885-4202-A83F-3CECB2B2A0DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6631B5F4-5C58-46AD-9644-BA30E2AAC895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6631B5F4-5C58-46AD-9644-BA30E2AAC895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6631B5F4-5C58-46AD-9644-BA30E2AAC895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6631B5F4-5C58-46AD-9644-BA30E2AAC895}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
