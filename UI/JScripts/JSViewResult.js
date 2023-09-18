@@ -759,7 +759,11 @@ function PrintInterpretation() {
     }
     else {
         // notes = document.getElementById("txtProvNoteshistory").attributes[5].value;//document.getElementById("txtProvNoteshistory").value;
-        notes = document.getElementById("txtProvNoteshistory").attributes.InterpretationText.value;
+        //CAP-1056
+        //notes = document.getElementById("txtProvNoteshistory").attributes.InterpretationText.value;
+        if (document.getElementById("txtProvNoteshistory").attributes.InterpretationText != null && document.getElementById("txtProvNoteshistory").attributes.InterpretationText != undefined) {
+            notes = document.getElementById("txtProvNoteshistory").attributes.InterpretationText.value;
+        }
     }
     if (!notes.includes("Test Reviewed: ")) {
         DisplayErrorMessage('115059');
