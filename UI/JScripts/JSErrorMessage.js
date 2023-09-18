@@ -86,6 +86,24 @@ function inserLog(EncounterId, HumanID, Message) {
 
 //Jira #CAP-30 - Newcode
 //window.addEventListener("error", handleError, true);
+
+function isValidJSON(ValidJson) {
+    try {
+        JSON.parse(ValidJson);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+//function isValidJSON(ValidJson){
+//    if (ValidJson) {
+//       return true
+//    } else {
+//        return  false;
+//    }
+//}
+
 window.onerror = function (message, file, line, column, error) {
     var objError = {
         message: message,
@@ -351,7 +369,6 @@ function downloadFilewellness() {
 }
 var i = 0;
 function DisplayErrorMessage(ErrorNo, NotificationName, Messagelist) {
-
     var bCheckTrue = localStorage.getItem("ErrorCheck");
 
     if (bCheckTrue == "true") {
@@ -2425,11 +2442,19 @@ function ScriptErrorLogEntry(sErrorMessage, sErrorLineNo, sErrorColumnNo, sError
                 else {
                     //Jira #CAP - 382
                     if (xhr.responseText != null && xhr.responseText != undefined) {
-                        var log = JSON.parse(xhr.responseText);
-                        console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
+                        //CAP-798 Unexpected end of JSON input
+                        //CAP-839:Unexpected EOF
+                        try {
+                            var log = JSON.parse(xhr.responseText);
+                            console.log(log);
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
+                        }
+                        catch {
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request in ErrorLogEntry method. Please Login again and retry.");
+                        }
                     }
                 }
             }
