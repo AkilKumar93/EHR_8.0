@@ -36,6 +36,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         int SavePatientWithoutTransaction(IList<PatientNotes> ListToInsert, ISession MySession, string MACAddress);
         PatientDetailDto GetPopupDetailsNew(string humanid);
         void SavePatientTaskByOrder(PatientNotes messages, WFObject Wfobj, string MacAddress);
+        void UpdateAssignTo(ulong ulMessageID, string sUserName);
     }
     public partial class PatientNotesManager : ManagerBase<PatientNotes, ulong>, IPatientNotesManager
     {
@@ -1300,6 +1301,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return PatientDetailsto;
         }
+        public void UpdateAssignTo(ulong ulMessageID,string sUserName)
+
+        {
+            PatientNotes objPatientNotes = new PatientNotes();
+            IList<PatientNotes> lstPatientNotes=new List<PatientNotes>();
+            IList<PatientNotes> lstSavePatientNotes = null;// new List<PatientNotes>();
+            objPatientNotes = GetById(ulMessageID);
+            lstPatientNotes.Add(objPatientNotes);
+            if(lstPatientNotes.Count>0)
+            {
+                lstPatientNotes[0].Assigned_To = sUserName;
+                SaveUpdateDeleteWithTransaction(ref lstSavePatientNotes, lstPatientNotes, null, string.Empty);
+            }
+        }
+
         #endregion
     }
 }
