@@ -8,8 +8,6 @@ using Acurus.Capella.DataAccess.ManagerObjects;
 using Acurus.Capella.DataAccess;
 using System.Globalization;
 using System.Threading.Tasks;
-using NHibernate;
-using System.Collections;
 using static Acurus.Capella.DataAccess.RCopiaXMLResponseProcess;
 using System.Configuration;
 using Acurus.Capella.Core.DTO;
