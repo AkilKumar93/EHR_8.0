@@ -10,8 +10,8 @@ function btnpatientChart_Click() {
     }
     //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=openpatientchart&ScreenMode=Menu&openingfrom=Menu", 780, 1250, obj);//BugID:45892
     //Cap - 891
-    /*Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 780, 1250, obj);*///BugID:45892
-    Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&ScreenMode=Menu&openingfrom=Menu&from=viewresult", 780, 1250, obj);
+    Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 780, 1250, obj);//BugID:45892
+    //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&ScreenMode=Menu&openingfrom=Menu&from=viewresult", 780, 1250, obj);
 
     $('#resultLoading').css("display", "none");
     if (Result == null)
@@ -301,12 +301,17 @@ function SaveClick(sender) {
                 if (sender.defaultValue == "Task Complete" || sender.defaultValue == "Send") {
                     //Jira #CAP-889
                     var sCheckAssigned = data.d;
-                    if ((sender.id == 'btnSaveCompletedMyQ' || sender.id == 'btnSaveSendMyQ') && sCheckAssigned == '"true"') {
+                    if (sender.id == 'btnSaveSendMyQ' && document.URL.indexOf('GenQTask')>-1) {
                         RemoveItem(document.URL, "MessageID");
                     }
-                    if (sender.id == 'btnSaveCompletedMyQ') {
+                    else if (sender.id == 'btnSaveSendMyQ' && sCheckAssigned == '"true"') {
                         RemoveItem(document.URL, "MessageID");
                     }
+                    else if (sender.id == 'btnSaveCompletedMyQ') {
+                        RemoveItem(document.URL, "MessageID");
+                    }
+                    
+
                     if (Result != undefined) {
                         if (false == Result.closed) {
 
