@@ -2203,7 +2203,8 @@ namespace Acurus.Capella.UI
                 try
                 {
                     ImageCodecInfo codecInfo = getCodecForstring(type);
-                    if (bmp.Length == 1)
+                    //CAP-935
+                    if (bmp.Length == 1 && bmp[0] != null)
                     {
                         EncoderParameters iparams = new EncoderParameters(1);
                         System.Drawing.Imaging.Encoder iparam = System.Drawing.Imaging.Encoder.Compression;
@@ -2211,7 +2212,7 @@ namespace Acurus.Capella.UI
                         iparams.Param[0] = iparamPara;
                         bmp[0].Save(location, codecInfo, iparams);
                     }
-                    else if (bmp.Length > 1)
+                    else if (bmp.Length > 1 && bmp[0] != null)
                     {
                         EncoderParameter SaveEncodeParam;
                         EncoderParameter CompressionEncodeParam;
@@ -2252,7 +2253,10 @@ namespace Acurus.Capella.UI
 
                             EncoderParams.Param[0] = CompressionEncodeParam;
                             EncoderParams.Param[1] = SaveEncodeParam;
-                            bmp[i].Tag = (object)s.ToString();
+                            if (bmp[i] != null)
+                            {
+                                bmp[i].Tag = (object)s.ToString();
+                            }
                             bmp[0].SaveAdd(bmp[i], EncoderParams);
                         }
 
@@ -2285,8 +2289,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            else
-                return false;
+            return false;
 
         }
 
@@ -3496,7 +3499,13 @@ namespace Acurus.Capella.UI
                     selectedPageNumbers = (IList<int>)Session["SelectedPages"];
                     System.Drawing.Image[] splittedFiles = null;
                     splittedFiles = splitTiffImageToSeparateImages(sourceFile.ToString(), selectedPageNumbers);
+                    //CAP-935
                     bool res = saveMultipage(splittedFiles, filePath.ToString(), "TIFF");
+                    if (res == false)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "NetworkError", "alert('Problem in Saving Files to Clinical NAS. Please Contact Support.');", true);
+                        return;
+                    }
                 }
                 else if (sourceFile.ToString().ToLower().Contains(".pdf"))
                 {
@@ -4408,7 +4417,17 @@ namespace Acurus.Capella.UI
                     Thread.Sleep(1500);
                     goto TryAgain;
                 }
-                else { UtilityManager.RetryExecptionLog(ex, iTryCount, "SourcePath: "+sSourcePdfPath+ " ~ DestinationPath: "+ sDestinationPdfPath); }
+                else 
+                {
+                    try
+                    {
+                        UtilityManager.RetryExecptionLog(ex, iTryCount, "SourcePath: " + sSourcePdfPath + " ~ DestinationPath: " + sDestinationPdfPath);
+                    }
+                    catch (Exception)
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Key", "alert('Something went wrong. Please reload the page and try again');", true);
+                    }
+                }
 
             }
         }
