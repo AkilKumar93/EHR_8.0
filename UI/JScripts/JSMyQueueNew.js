@@ -1334,12 +1334,22 @@ function loadMytask() {
     }
 
     var showallchecked = localStorage.getItem('MyShowAllMyTask');
-    if (showallchecked == "Checked") {
+//Jira #CAP-1051 
+    //if (showallchecked == "Checked") {
+    //    Showall = "Checked";
+    //    $("#chkMyShowAll")[0].checked = true;
+    //    $("#chkMyTask14")[0].checked = false;
+    //    $("#chkMyTask14")[0].disabled = true;
+    //} else {
+    //    Showall = "Unchecked"
+    //}
+    if ($("#chkMyShowAll")[0].checked == true) {
         Showall = "Checked";
         $("#chkMyShowAll")[0].checked = true;
         $("#chkMyTask14")[0].checked = false;
         $("#chkMyTask14")[0].disabled = true;
-    } else {
+    }
+    else {
         Showall = "Unchecked"
     }
     //Jira #CAP-912
