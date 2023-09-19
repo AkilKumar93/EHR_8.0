@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <!--CAP-897 Dynamically add Javscript reference to the HTML files-->
-    <script type="text/javascript">
-        ["JSErrorMessage.js", "JSModalWindow.js", "JSPotentialDiagnosis.js"].forEach(script => document.write(`<script src="JScripts/${script}?version=${sessionStorage.getItem("ScriptVersion")}"><\/script>`));
-    </script>
     <script src="JScripts/jQueryAngular.js"></script>
     <script src="JScripts/jquery-ui.js"></script>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
@@ -13,6 +9,10 @@
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
     <!--<script src="jscripts/JSPotentialDiagnosis.js?v=6" type="text/javascript"></script>-->
+    <!--CAP-897 Dynamically add Javscript reference to the HTML files-->
+    <script type="text/javascript">
+        ["JSErrorMessage.js", "JSModalWindow.js", "JSPotentialDiagnosis.js"].forEach(script => document.write(`<script src="JScripts/${script}?version=${sessionStorage.getItem("ScriptVersion")}"><\/script>`));
+    </script>
     <style>
         .panel {
             color: #808080;
