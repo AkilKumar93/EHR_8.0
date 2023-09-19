@@ -84,17 +84,18 @@ namespace DownloadiPrescribe
                         order.ICD_Description_Message = labAndICDMessages.Item2;
 
                         if (order.Stat == "Y" &&
-                            ((order.Created_Date_And_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["statTimeSpan"])) <= currentDateTimeUTC &&
+                            ((order.Created_Date_And_Time <= currentDateTimeUTC &&
                             order.Modified_Date_And_Time.ToString("yyyy-MM-dd") == "0001-01-01" &&
                             (order?.Current_Process ?? string.Empty) != "DELETED_ORDER")
                             || ((order.Modified_Date_And_Time.ToString("yyyy-MM-dd") != "0001-01-01" &&
                             (order?.Current_Process ?? string.Empty) != "DELETED_ORDER"
-                            && order.Modified_Date_And_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["statTimeSpan"])) <= currentDateTimeUTC))
-                            || ((order?.Current_Process ?? string.Empty) == "DELETED_ORDER" && order.Current_Arrival_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["statTimeSpan"])) <= currentDateTimeUTC))
+                            && order.Modified_Date_And_Time <= currentDateTimeUTC))
+                            || ((order?.Current_Process ?? string.Empty) == "DELETED_ORDER" && order.Current_Arrival_Time <= currentDateTimeUTC))
                         )
                         {
                             Console.WriteLine($"Add patient notes for order with stat value as 'Y'.");
                             AddPatientNotes(order);
+                            Console.WriteLine($"Task created for order submit id: {order.Order_Submit_ID}");
                         }
                         else if (order.Stat != "Y" &&
                             ((order.Created_Date_And_Time.AddMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["withoutStatTimeSpan"])) <= currentDateTimeUTC &&
@@ -107,8 +108,13 @@ namespace DownloadiPrescribe
                         {
                             Console.WriteLine($"Add patient notes for order with stat value as 'N'.");
                             AddPatientNotes(order);
+                            Console.WriteLine($"Task created for order submit id: {order.Order_Submit_ID}");
                         }
-                        Console.WriteLine($"Task created for order submit id: {order.Order_Submit_ID}");
+                        else
+                        {
+                            Console.WriteLine($"Task creation for order submit id: {order.Order_Submit_ID} is skipped for this iteration.");
+                        }
+                        
                         lstOrderSubmitIds.Add(order.Order_Submit_ID);
                     }
                 }
@@ -142,9 +148,15 @@ namespace DownloadiPrescribe
             var notesPriority = orderSubmitData.Stat == "Y" ? "Stat" : "";
 
             Console.WriteLine("Creating notes message based on order status");
+
+            TimeZoneInfo timeInfo = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+            
             //New Order
             if ((orderSubmitData.Created_Date_And_Time != null) && (orderSubmitData.Created_Date_And_Time.ToString() != "0001-01-01") && (orderSubmitData.Modified_Date_And_Time == null || (orderSubmitData.Modified_Date_And_Time.ToString("yyyy-MM-dd") == "0001-01-01")) && (orderSubmitData?.Current_Process ?? string.Empty) != "DELETED_ORDER")
             {
+                //@MVILLA(18-Sep-2023 03:24:55 AM): tests
+                var pstCreatedDateTime = TimeZoneInfo.ConvertTimeFromUtc(orderSubmitData.Created_Date_And_Time, timeInfo);
+                strNotes.Append($"@{orderSubmitData.Created_By}({pstCreatedDateTime:dd-MMM-yyyy hh:mm:ss tt}): ");
                 strNotes.AppendLine("The new ancillary order has been submitted.");
                 strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:dd-MMM-yyyy}");
                 strNotes.AppendLine($"Ancillary Order # : {orderSubmitData.Order_Submit_ID}");
@@ -158,6 +170,8 @@ namespace DownloadiPrescribe
             //Deleted Order
             else if ((orderSubmitData?.Current_Process ?? string.Empty) == "DELETED_ORDER")
             {
+                var pstUpdatedDateTime = TimeZoneInfo.ConvertTimeFromUtc(orderSubmitData.Created_Date_And_Time, timeInfo);
+                strNotes.Append($"@{orderSubmitData.Created_By}({pstUpdatedDateTime:dd-MMM-yyyy hh:mm:ss tt}): ");
                 strNotes.AppendLine("The ancillary order has been deleted.");
                 strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:dd-MMM-yyyy}");
                 strNotes.AppendLine($"Ancillary Order # : {orderSubmitData.Order_Submit_ID}");
@@ -170,6 +184,8 @@ namespace DownloadiPrescribe
             //Updated Order
             else
             {
+                var pstUpdatedDateTime = TimeZoneInfo.ConvertTimeFromUtc(orderSubmitData.Created_Date_And_Time, timeInfo);
+                strNotes.Append($"@{orderSubmitData.Created_By}({pstUpdatedDateTime:dd-MMM-yyyy hh:mm:ss tt}): ");
                 strNotes.AppendLine("The ancillary order has been updated.");
                 strNotes.AppendLine($"Ancillary Order Date : {orderSubmitData.Created_Date_And_Time:dd-MMM-yyyy}");
                 strNotes.AppendLine($"Ancillary Order # : {orderSubmitData.Order_Submit_ID}");
