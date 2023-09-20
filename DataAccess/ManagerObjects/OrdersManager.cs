@@ -6840,6 +6840,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     MySession = Session.GetISession();
                     humanid = ilstOrderSubmitxml[0].Human_ID;
                     ilstOrderSubmitxml[0].Is_Deleted = "Y";
+                    ilstOrderSubmitxml[0].Is_Task_Created = "N";
 
                     XMLObj = new GenerateXml();
                     IList<OrdersSubmit> ilstOrderSubmitsave = new List<OrdersSubmit>();
