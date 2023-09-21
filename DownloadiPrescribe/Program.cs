@@ -19,19 +19,32 @@ namespace DownloadiPrescribe
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Order Task Creation Started.");
-            Timer method1Timer = new Timer();
-            method1Timer.Elapsed += (sender, e) => HandleException(CreateLabOrderTask, method1Timer);
-            method1Timer.Interval = TimeSpan.FromMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["OrderTaskTimeSpan"])).TotalMilliseconds;
-            method1Timer.Start();
-            Console.WriteLine("Order Task Creation Method Invoked.");
+            switch (ConfigurationManager.AppSettings["AgentName"])
+            {
+                case "DownloadRcopia":
+                    Console.WriteLine("Download RCopia Started");
+                    DownloadRCopiaInfo();
+                    Console.WriteLine("Download RCopia Method Invoked");
+                    break;
+                case "CreateOrderTask":
+                    Console.WriteLine("Order Task Creation Started.");
+                    CreateLabOrderTask();
+                    Console.WriteLine("Order Task Creation Method Invoked.");
+                    break;
+            }
+            //Console.WriteLine("Order Task Creation Started.");
+            //Timer method1Timer = new Timer();
+            //method1Timer.Elapsed += (sender, e) => HandleException(CreateLabOrderTask, method1Timer);
+            //method1Timer.Interval = TimeSpan.FromMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["OrderTaskTimeSpan"])).TotalMilliseconds;
+            //method1Timer.Start();
+            //Console.WriteLine("Order Task Creation Method Invoked.");
 
-            Console.WriteLine("Download RCopia Started");
-            Timer method2Timer = new Timer();
-            method2Timer.Elapsed += (sender, e) => HandleException(DownloadRCopiaInfo, method2Timer);
-            method2Timer.Interval = TimeSpan.FromMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["RCopiaTimeSpan"])).TotalMilliseconds;
-            method2Timer.Start();
-            Console.WriteLine("Download RCopia Method Invoked");
+            //Console.WriteLine("Download RCopia Started");
+            //Timer method2Timer = new Timer();
+            //method2Timer.Elapsed += (sender, e) => HandleException(DownloadRCopiaInfo, method2Timer);
+            //method2Timer.Interval = TimeSpan.FromMinutes(Convert.ToInt32(ConfigurationManager.AppSettings["RCopiaTimeSpan"])).TotalMilliseconds;
+            //method2Timer.Start();
+            //Console.WriteLine("Download RCopia Method Invoked");
 
             Console.WriteLine("Press Enter to exit.");
             Console.ReadLine();

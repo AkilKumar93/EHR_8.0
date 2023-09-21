@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6631B5F4-5C58-46AD-9644-BA30E2AAC895}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DownloadiPrescribe</RootNamespace>
-    <AssemblyName>DownloadiPrescribe</AssemblyName>
+    <RootNamespace>CapellaAgent</RootNamespace>
+    <AssemblyName>CapellaAgent</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
