@@ -133,6 +133,9 @@ namespace Acurus.Capella.UI
                 mpnOrderManagement.Reset();
                 grdReport.DataSource = new string[] { };
                 grdReport.DataBind();
+                //Cap - 1007
+                RadComboBoxSelectedIndexChangedEventArgs e1 = new RadComboBoxSelectedIndexChangedEventArgs("DIAGNOSTIC ORDER", string.Empty, "DIAGNOSTIC ORDER", string.Empty);
+                cboOrderType_SelectedIndexChanged(sender, e1);
 
             }
 
@@ -151,7 +154,8 @@ namespace Acurus.Capella.UI
         private void FillOrderType()
         {
             IList<string> sOrderList = new List<string>();
-            sOrderList.Add("");
+            //Cap - 1007
+            //sOrderList.Add("");
             sOrderList.Add("DIAGNOSTIC ORDER");
             sOrderList.Add("REFERRAL ORDER");
             sOrderList.Add("IMMUNIZATION ORDER");
@@ -171,9 +175,13 @@ namespace Acurus.Capella.UI
             cboLabCenter.Items.Clear();
             cboLabCenter.Enabled = true;
             string labType = string.Empty;
-            if (cboOrderType.Text != string.Empty)
+            //Cap - 1007
+            //if (cboOrderType.Text != string.Empty)
+            if (cboOrderType.Items[cboOrderType.SelectedIndex].Text != string.Empty)
             {
-                labType = cboOrderType.Text.Split(' ')[0];
+                //Cap - 1007
+                //labType = cboOrderType.Text.Split(' ')[0];
+                labType = cboOrderType.Items[cboOrderType.SelectedIndex].Text.Split(' ')[0];
                 if (labType == "DIAGNOSTIC")
                     labType = "LAB";
                 //labList = objLabproxy.GetLabDetails(labType);
