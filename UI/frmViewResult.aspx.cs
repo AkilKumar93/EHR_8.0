@@ -2970,7 +2970,9 @@ namespace Acurus.Capella.UI
                             //if (notes.IndexOf(testname) >= 0)
                             if (DlcUpdate == true)
                             {
-                                string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+                                //Cap - 1099
+                                //string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "]]]" }, StringSplitOptions.None);
+                                string[] Result_Review_Comments = objResultMaster.Result_Review_Comments.Split(new string[] { "<br/>" }, StringSplitOptions.None);
 
                                 for (int i = 0; i < Result_Review_Comments.Length; i++)
                                 {
