@@ -151,7 +151,12 @@ namespace Acurus.Capella.UI
                     ddlAssignedTo.Items.Add("");
                     foreach (var i in patientlst)
                     {
-                        ddlAssignedTo.Items.Add(i.ToString().Split('|')[1]);
+                        //CAP-1091
+                        //ddlAssignedTo.Items.Add(i.ToString().Split('|')[1]);
+                        ListItem li = new ListItem();
+                        li.Text = i.ToString().Split('|')[1];
+                        li.Value = i.ToString().Split('|')[0];
+                        ddlAssignedTo.Items.Add(li);
                     }
                 }
                 if (this.PreviousPage != null)
@@ -4751,7 +4756,8 @@ namespace Acurus.Capella.UI
                     {
                         objpatientnotes.Human_ID = Convert.ToUInt64(txtAccountNo.Text);
                     }
-                    objpatientnotes.Assigned_To = ddlAssignedTo.SelectedItem.Text;
+                    //CAP-1091
+                    objpatientnotes.Assigned_To = ddlAssignedTo.SelectedItem.Value; // ddlAssignedTo.SelectedItem.Text;
                     objpatientnotes.Facility_Name = ClientSession.FacilityName;
                     objpatientnotes.Message_Orign = "Demographics";
                     objpatientnotes.Notes = "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(Convert.ToDateTime(hdnLocalTime.Value)).ToString("dd-MMM-yyyy hh:mm tt") + "): " + txtNotes.txtDLC.Text;
@@ -4764,7 +4770,8 @@ namespace Acurus.Capella.UI
 
                     WFObject objWf = new WFObject();
                     objWf.Current_Process = "START";
-                    objWf.Current_Owner = ddlAssignedTo.SelectedItem.Text;
+                    //CAP-1091
+                    objWf.Current_Owner = ddlAssignedTo.SelectedItem.Value; // ddlAssignedTo.SelectedItem.Text;
                     objWf.Fac_Name = ClientSession.FacilityName;
                     objWf.Obj_Type = "TASK";
                     objWf.Current_Arrival_Time = UtilityManager.ConvertToUniversal();
