@@ -2983,7 +2983,12 @@ namespace Acurus.Capella.UI
                                     if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':').Length > 3 && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                     {
                                         objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text);
-                                        txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim().Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text));
+                                      //Cap - 1099
+                                        if (objResultMaster.Result_Review_Comments.EndsWith("]]]") == false)
+                                        {
+                                            objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments + "]]]";
+                                        }
+                                        txtProvNoteshistory.Attributes.Add("InterpretationText", txtProvNoteshistory.Attributes["InterpretationText"].Trim().Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3).Replace("]]]", ""), DLC.txtDLC.Text));
 
                                         if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Contains("Test Reviewed: ") == true)
                                             NotesHistory = NotesHistory + Result_Review_Comments[i].Substring(0, Result_Review_Comments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "");
