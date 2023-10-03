@@ -373,7 +373,9 @@ function schAppointmentScheduler_AppointmentContextMenuItemClicked(sender, args)
             humanid = Appointment._toolTip.split('-')[0];
 
             //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=openpatientchart&ScreenMode=Menu&openingfrom=Menu", 840, 1278, obj);//BugID:45876,for BugID:45808 increased screen width to 1278px
-            Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 840, 1278, obj);//BugID:45876,for BugID:45808 increased screen width to 1278px
+            // Cap - 891
+            //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 840, 1278, obj);//BugID:45876,for BugID:45808 increased screen width to 1278px
+            Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&ScreenMode=Menu&openingfrom=Menu&from=viewresult", 1000, 1500, obj);//BugID:45876,for BugID:45808 increased screen width to 1278px
             $('#resultLoading').css("display", "none");
             if (Result == null)
                 return false;
@@ -647,7 +649,9 @@ function schAppointmentScheduler_AppointmentContextMenuItemClicked(sender, args)
             humanid = Appointment._toolTip.split('-')[0];
 
             //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=openpatientchart&ScreenMode=Menu&openingfrom=Menu", 840, 1278, obj);//BugID:45876,for BugID:45808 increased screen width to 1278px
-            Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 840, 1278, obj);//BugID:45876,for BugID:45808 increased screen width to 1278px
+            //Cap - 891
+            //Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&from=viewresult&ScreenMode=Menu&openingfrom=Menu", 840, 1278, obj);//BugID:45876,for BugID:45808 increased screen width to 1278px
+            Result = openNonModal("frmPatientchart.aspx?HumanID=" + humanid + "&ScreenMode=Menu&openingfrom=Menu&from=viewresult", 1000, 1500, obj);//BugID:45876,for BugID:45808 increased screen width to 1278px
             $('#resultLoading').css("display", "none");
             if (Result == null)
                 return false;
