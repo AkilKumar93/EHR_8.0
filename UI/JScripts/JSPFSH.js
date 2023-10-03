@@ -456,7 +456,7 @@ $(document).ready(function () {
 
                 error: function OnError(xhr) {
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -533,7 +533,7 @@ $(document).ready(function () {
 
                 error: function OnError(xhr) {
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -788,7 +788,7 @@ $("#btnPFSHVerified").click(function () {
         },
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1219,7 +1219,7 @@ function LoadPFSHTab(control) {
 
                     error: function OnError(xhr) {
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);

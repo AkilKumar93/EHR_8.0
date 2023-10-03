@@ -744,7 +744,7 @@ $(document).ready(function () {
         },
         error: function onerror(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -849,7 +849,7 @@ $(document).ready(function () {
                             error: function OnError(xhr) {
                                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                                 if (xhr.status == 999)
-                                    window.location = xhr.statusText;
+                                    window.location = "/frmSessionExpired.aspx";
                                 else {
                                     var log = JSON.parse(xhr.responseText);
                                     console.log(log);
@@ -1031,7 +1031,7 @@ function Facility() {
             },
             error: function onerror(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);

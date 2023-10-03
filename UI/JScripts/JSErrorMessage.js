@@ -26,7 +26,7 @@ function inserLog(EncounterId, HumanID, Message) {
 
 
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1828,7 +1828,7 @@ function LoadNotification(Value) {
 
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1965,7 +1965,7 @@ function CreateAuditLogEntryForTransactions(TransactionType, EntityName, HumanID
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -2092,7 +2092,7 @@ function RafCalculation() {
         },
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -2133,7 +2133,7 @@ function LoadReport() {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -2190,7 +2190,7 @@ function GetProtocolList() {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -2438,7 +2438,7 @@ function ScriptErrorLogEntry(sErrorMessage, sErrorLineNo, sErrorColumnNo, sError
             if (xhr != null && xhr != undefined) {
                 //if (xhr.status == 999)
                 if (xhr.status != null && xhr.status != undefined && xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     //Jira #CAP - 382
                     if (xhr.responseText != null && xhr.responseText != undefined) {
@@ -2526,7 +2526,7 @@ function RegenerateXML(Humanid, xmlType, page) {
         error: function OnError(xhr) {
             ToolStripAlertHidexml();
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -2593,7 +2593,7 @@ function reloadPatientSummaryBarXmlRegenerate() {
         success: OnSuccessSummaryBar,
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);

@@ -214,7 +214,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             //CAP-798
                             if (isValidJSON(xhr.responseText)) {
@@ -658,7 +658,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             if (isValidJSON(xhr.responseText)) {
                                 var log = JSON.parse(xhr.responseText);
@@ -1115,7 +1115,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
@@ -1259,7 +1259,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1296,7 +1296,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1377,7 +1377,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);

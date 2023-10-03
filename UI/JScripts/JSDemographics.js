@@ -2938,7 +2938,7 @@ if ($("#ctl00_C5POBody_txtSelectinsured").length) {
                         error: function OnError(xhr) {
                             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             if (xhr.status == 999)
-                                window.location = xhr.statusText;
+                                window.location = "/frmSessionExpired.aspx";
                             else {
                                 var log = JSON.parse(xhr.responseText);
                                 console.log(log);
@@ -3113,7 +3113,7 @@ $("#ctl00_C5POBody_txtPlanSearch").autocomplete({
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -3294,7 +3294,7 @@ $("#ctl00_C5POBody_txtProviderSearch").autocomplete({
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
