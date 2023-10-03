@@ -299,7 +299,7 @@ function reloadSummary() {
         success: OnSuccessSummaryBar,
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -401,7 +401,7 @@ function CheckMe(MenuName, e) {
             },
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1166,7 +1166,7 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
@@ -1285,7 +1285,7 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1563,7 +1563,7 @@ function test() {
         },
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1717,7 +1717,7 @@ function loadRAF(sHumanDetails, Is_store) {
         },
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);

@@ -69,7 +69,7 @@ $(document).ready(function () {
             },
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     //CAP-798 Unexpected end of JSON input
                     if (isValidJSON(xhr.responseText)) {

@@ -188,7 +188,7 @@ function LoadAuthorization(IsShowAll) {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -704,7 +704,7 @@ function SaveUpdateAuthorization() {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -899,7 +899,7 @@ function Delete(event) {
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1281,7 +1281,7 @@ $('#btnPrint').click(function () {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1340,7 +1340,7 @@ function closeplanauth(oWindow, args) {
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -1420,7 +1420,7 @@ function ICDAutocomplete(evnt) {
                         error: function OnError(xhr) {
                             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             if (xhr.status == 999)
-                                window.location = xhr.statusText;
+                                window.location = "/frmSessionExpired.aspx";
                             else {
                                 var log = JSON.parse(xhr.responseText);
                                 console.log(log);
@@ -1561,7 +1561,7 @@ $("#txtCPT").autocomplete({
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -1718,7 +1718,7 @@ $("#txtCPTDescription").autocomplete({
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -1928,7 +1928,7 @@ $("#txtReferredFrom").autocomplete({
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
@@ -2163,7 +2163,7 @@ $("#txtReferredTo").autocomplete({
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
@@ -2408,7 +2408,7 @@ function ClosePatIns(oWindow, args) {
                 error: function OnError(xhr) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);

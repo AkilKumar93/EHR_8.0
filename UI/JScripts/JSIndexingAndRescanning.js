@@ -979,7 +979,7 @@ function deletefiles(filename) {
         },
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1043,7 +1043,7 @@ function DeleteThumbnails(FullFilePath, FirstFileName, FirstFilePath) {
 
 
                                 if (xhr.status == 999)
-                                    window.location = xhr.statusText;
+                                    window.location = "/frmSessionExpired.aspx";
                                 else {
                                     var log = JSON.parse(xhr.responseText);
                                     console.log(log);
@@ -1064,7 +1064,7 @@ function DeleteThumbnails(FullFilePath, FirstFileName, FirstFilePath) {
 
 
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1223,7 +1223,7 @@ function MovetoNonMedicalFolder() {
 
 
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1350,7 +1350,7 @@ function OnLoadGrid(lastindexfilename) {
 
 
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1398,7 +1398,7 @@ function GridOpenFile(SelectedFileName, sFilePath, IsPendingCheck, isClick) {
 
 
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -1481,7 +1481,7 @@ function GridOpenFile(SelectedFileName, sFilePath, IsPendingCheck, isClick) {
 
 
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);

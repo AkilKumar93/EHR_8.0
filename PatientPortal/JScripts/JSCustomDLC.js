@@ -40,7 +40,7 @@ function pbDropDown(textcontrol, ListControls, ListValue, textid) {
                         success: OnSuccessMail,
                         error: function OnError(xhr) {
                             if (xhr.status == 999)
-                                window.location = xhr.statusText;
+                                window.location = "/frmSessionExpired.aspx";
                             else {
                                 var log = JSON.parse(xhr.responseText);
                                 console.log(log);
@@ -71,7 +71,7 @@ function pbDropDown(textcontrol, ListControls, ListValue, textid) {
                         success: OnSuccess,
                         error: function OnError(xhr) {
                             if (xhr.status == 999)
-                                window.location = xhr.statusText;
+                                window.location = "/frmSessionExpired.aspx";
                             else {
                                 var log = JSON.parse(xhr.responseText);
                                 console.log(log);
@@ -130,7 +130,7 @@ function pbDropDown(textcontrol, ListControls, ListValue, textid) {
                         success: OnSuccessReason,
                         error: function OnError(xhr) {
                             if (xhr.status == 999)
-                                window.location = xhr.statusText;
+                                window.location = "/frmSessionExpired.aspx";
                             else {
                                 var log = JSON.parse(xhr.responseText);
                                 console.log(log);
@@ -430,7 +430,7 @@ function licstboxclick(e) {
             success: OnSuccessReason,
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -536,7 +536,7 @@ function licstboxclick(e) {
                     },
                     error: function OnError(xhr) {
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);

@@ -316,7 +316,7 @@ function loadMedReconcile(triggeredBy) {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
                             if (xhr.status == 999)
-                                window.location = xhr.statusText;
+                                window.location = "/frmSessionExpired.aspx";
                             else
                                 alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
@@ -329,7 +329,7 @@ function loadMedReconcile(triggeredBy) {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else
                     alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
@@ -352,7 +352,7 @@ function WebServiceRequestError(responseText, status, statusText) {
     var log = JSON.parse(xhr.responseText);
     console.log(log);
     if (xhr.status == 999)
-        window.location = xhr.statusText;
+        window.location = "/frmSessionExpired.aspx";
     else
         alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
@@ -375,7 +375,7 @@ function InvokeResponseReceivedLog(ResponseSentIDList) {
             var log = JSON.parse(xhr.responseText);
             console.log(log);
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else
                 alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +

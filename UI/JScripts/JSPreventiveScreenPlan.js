@@ -370,7 +370,7 @@ function LoadPage() {
         error: function OnError(xhr) {
              {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -470,7 +470,7 @@ function SavePreventiveScreenPlan() {
             AutoSaveUnsuccessful();
              {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -613,7 +613,7 @@ function PreventiveScreenPlanCopyPrevious() {
         },
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -746,7 +746,7 @@ function callweb(icon, List, id) {
             },
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);

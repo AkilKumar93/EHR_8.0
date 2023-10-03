@@ -84,7 +84,7 @@ function btnPrint_Clicked() {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -220,7 +220,7 @@ function SaveMenuClick() {
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -373,7 +373,7 @@ function SaveClick(sender) {
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -651,7 +651,7 @@ function SearchClick() {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1034,7 +1034,7 @@ $(document).ready(function () {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -1169,7 +1169,7 @@ function FillMessageGrid() {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);

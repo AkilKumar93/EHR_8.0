@@ -172,7 +172,7 @@
                 error: function OnError(xhr) {
                     ToolStripAlertHidexml();
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         //CAP-798
                         if (isValidJSON(xhr.responseText)) {

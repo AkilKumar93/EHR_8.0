@@ -393,7 +393,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else
                     alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
@@ -1242,7 +1242,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
@@ -1324,7 +1324,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                     }, error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
@@ -1426,7 +1426,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                     error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);
@@ -1505,7 +1505,7 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                     }, error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         if (xhr.status == 999)
-                            window.location = xhr.statusText;
+                            window.location = "/frmSessionExpired.aspx";
                         else {
                             var log = JSON.parse(xhr.responseText);
                             console.log(log);

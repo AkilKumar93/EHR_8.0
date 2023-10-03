@@ -63,7 +63,7 @@ function btnSave() {
             },
             error: function onerror(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -175,7 +175,7 @@ function loadRx_History() {
         },
         error: function onerror(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -246,7 +246,7 @@ function callweb(icon, List, id) {
             },
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);

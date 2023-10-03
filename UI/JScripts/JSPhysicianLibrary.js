@@ -77,7 +77,7 @@ $(document).ready(function () {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -214,7 +214,7 @@ function LoadGrid() {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -500,7 +500,7 @@ function Add(sCheckDuplicatefax) {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -803,7 +803,7 @@ function AddProvider() {
         error: function OnError(xhr) {
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);

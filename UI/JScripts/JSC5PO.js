@@ -684,7 +684,7 @@ function OpenModal(data) {
                 error: function OnError(xhr) {
                     StopLoadingImage();
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -1539,7 +1539,7 @@ function OpenModal(data) {
             error: function OnError(xhr) {
                 StopLoadingImage();
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2475,7 +2475,7 @@ function OnClientCloseACO(oWindow, args) {
             error: function OnError(xhr) {
                 StopLoadingImage();
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2699,7 +2699,7 @@ function loadRcopia() {
         success: OnSuccessRCopia,
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -2723,7 +2723,7 @@ function loadImpportedPatient() {
             success: OnSuccessImport,
             error: function OnError(xhr) {
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     if (xhr.responseText != null && xhr.responseText.trim() != '' && xhr.responseText != undefined) {
                         var log = JSON.parse(xhr.responseText);
@@ -2771,7 +2771,7 @@ function loadMailClinicalInfoCount() {
                 document.getElementById("tsMailbox").innerText = "MAIL : 0";
 
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2969,7 +2969,7 @@ function CheckEncountersForMenuPFSH(humanID, str) {
         error: function OnError(xhr) {
             StopLoadingImage();
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -3240,7 +3240,7 @@ function reloadSummaryEprescription() {
         success: OnSuccessSummaryBarEprescription,
         error: function OnError(xhr) {
             if (xhr.status == 999)
-                window.location = xhr.statusText;
+                window.location = "/frmSessionExpired.aspx";
             else {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
@@ -3395,7 +3395,7 @@ window.addEventListener("online", (event) => {
             error: function OnError(xhr) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "/frmSessionExpired.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);

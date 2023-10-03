@@ -350,14 +350,15 @@ function GetUserName() {
                 error: function OnError(xhr) {
                     if (xhr.status == 999)
                     {
-                        if (xhr.statusText == "Session Expired")
-                        {
-                            window.location = "frmSessionExpired.aspx";
-                        }
-                        else
-                        {
-                            window.location = xhr.statusText;
-                        }
+                        window.location = "/frmSessionExpired.aspx";
+                        //if (xhr.statusText == "Session Expired")
+                        //{
+                        //    window.location = "frmSessionExpired.aspx";
+                        //}
+                        //else
+                        //{
+                        //    window.location = xhr.statusText;
+                        //}
                     }
                     else {
                         //CAP-798 Unexpected end of JSON input
@@ -394,7 +395,7 @@ function Focus(textbox, event) {
                 success: OnSuccessRCopia,
                 error: function OnError(xhr) {
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
