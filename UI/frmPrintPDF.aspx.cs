@@ -16,6 +16,7 @@ using System.Net;
 using System.Xml;
 using Acurus.Capella.Core.DomainObjects;
 using System.Collections.Generic;
+using Acurus.Capella.DataAccess.ManagerObjects;
 
 namespace Acurus.Capella.UI
 {
@@ -515,7 +516,9 @@ namespace Acurus.Capella.UI
 
                     btnprint.Visible = false;
                     btnSendfax.Visible = false;
-                    if (Request["IntNotes"] != null)
+                    //Cap - 1054
+                    //if (Request["IntNotes"] != null)
+                    if (Request["IntNotes"] !=null && Request["ResultMasterId"] != null)
                     {
                         string sPhysicianSignDate = string.Empty;
                         string sPhysicianSignName = string.Empty;
@@ -532,9 +535,21 @@ namespace Acurus.Capella.UI
                         {
                             sFacAddress = Request["FacAddress"].ToString();
                         }
+                        //Cap - 1054
+                        ResultMasterManager objResMasMngr = new ResultMasterManager();
+                        IList<ResultMaster> lstresultmaster = new List<ResultMaster>();
+                        string sResultReviewComments = string.Empty;
+                        lstresultmaster = objResMasMngr.GetResultMasterListByResultmasterIDForMRE(Convert.ToUInt64(Request["ResultMasterId"]));
+
+                        if (lstresultmaster.Count() > 0)
+                        {
+                            sResultReviewComments = lstresultmaster[0].Result_Review_Comments;
+                        }
                         //Cap - 878
-                       // PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n", "\r\n"));
-                        PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n","\r\n"));
+                        // PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n", "\r\n"));
+                        //Cap - 1054
+                        //PrintInterpretationNotesPDF(Request["IntNotes"].ToString().Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n","\r\n"));
+                        PrintInterpretationNotesPDF(sResultReviewComments.ToString().Replace("$|$|$|$|", "&").Replace("!^!^!^!^", "#").Replace("~|~|~|~|", "+").Replace("\"", ""), sPhysicianSignDate.Replace("\"", ""), sPhysicianSignName.Replace("\"", ""), sFacAddress.Replace("\"", "").Replace("\\r\\n", "\r\n"));
                     }
                 }
                 RadTabStrip2.Enabled = true;
@@ -704,45 +719,47 @@ namespace Acurus.Capella.UI
 
 
 
-           //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
-           //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-           //if (File.Exists(strXmlFilePath) == true)
-           //{
-           //    XmlDocument itemDoc = new XmlDocument();
-           //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-           //    XmlNodeList xmlTagName = null;
-           //    // itemDoc.Load(XmlText);
-           //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-           //    {
-           //        itemDoc.Load(fs);
-           //        XmlText.Close();
+            //string FileName = "Human" + "_" + ClientSession.HumanId + ".xml";
+            //string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    // itemDoc.Load(XmlText);
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        itemDoc.Load(fs);
+            //        XmlText.Close();
 
 
 
-           //        if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
-           //        {
-           //            xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
+            //        if (itemDoc.GetElementsByTagName("HumanList") != null && itemDoc.GetElementsByTagName("HumanList").Count > 0)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes;
 
-           //            if (xmlTagName != null)
-           //            {
-           //                for (int j = 0; j < xmlTagName.Count; j++)
-           //                {
-           //                    if (xmlTagName[j].Attributes["Id"].Value == ClientSession.HumanId.ToString())
-           //                    {
-           //                        DateTime dt = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
-           //                        sPatientInfo = "Patient Name: " + xmlTagName[j].Attributes["Last_Name"].Value + "," + xmlTagName[j].Attributes["First_Name"].Value + "  " + xmlTagName[j].Attributes["MI"].Value + "  " + xmlTagName[j].Attributes["Suffix"].Value + Environment.NewLine +
-           //   "Date of Birth: " + dt.ToString("dd-MMM-yyyy") + Environment.NewLine + "MRN: " + xmlTagName[j].Attributes["Medical_Record_Number"].Value + Environment.NewLine;
-           //                    }
-           //                }
-           //            }
+            //            if (xmlTagName != null)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+            //                    if (xmlTagName[j].Attributes["Id"].Value == ClientSession.HumanId.ToString())
+            //                    {
+            //                        DateTime dt = Convert.ToDateTime(xmlTagName[j].Attributes["Birth_Date"].Value);
+            //                        sPatientInfo = "Patient Name: " + xmlTagName[j].Attributes["Last_Name"].Value + "," + xmlTagName[j].Attributes["First_Name"].Value + "  " + xmlTagName[j].Attributes["MI"].Value + "  " + xmlTagName[j].Attributes["Suffix"].Value + Environment.NewLine +
+            //   "Date of Birth: " + dt.ToString("dd-MMM-yyyy") + Environment.NewLine + "MRN: " + xmlTagName[j].Attributes["Medical_Record_Number"].Value + Environment.NewLine;
+            //                    }
+            //                }
+            //            }
 
-           //        }
-           //        fs.Close();
-           //        fs.Dispose();
-           //    }
-           //}
+            //        }
+            //        fs.Close();
+            //        fs.Dispose();
+            //    }
+            //}
 
-           string[] reviewcomments = sReviewNotes.Split(new string[] { "]]]" }, StringSplitOptions.None);
+            //Cap - 1054
+            //string[] reviewcomments = sReviewNotes.Split(new string[] { "]]]" }, StringSplitOptions.None);
+            string[] reviewcomments = sReviewNotes.Split(new string[] { "<br/>" }, StringSplitOptions.None);
             string NotesHistory = "";
             string notesattribute = "";
 
@@ -753,7 +770,8 @@ namespace Acurus.Capella.UI
                     if (reviewcomments[i].Contains("Test Reviewed: ") == true)
                     {
                         NotesHistory = NotesHistory + reviewcomments[i].Substring(0, reviewcomments[i].IndexOf(";")).Replace("[[[Test Reviewed: ", "") + Environment.NewLine;
-                        notesattribute = notesattribute + reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3);
+                        notesattribute = notesattribute + reviewcomments[i].Substring(reviewcomments[i].IndexOf("[[[") + 3, reviewcomments[i].Length - reviewcomments[i].IndexOf("[[[") - 3).Replace("]]]","");
+                                             
                     }
                     else
                     {
