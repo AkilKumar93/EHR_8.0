@@ -55,7 +55,7 @@
 
         <telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server">
        
-        <table>
+        <table style="width:100%">
             <tr>
                 <td style="vertical-align: top" class="style2">
                     <telerik:RadMultiPage ID="multiPageResult" Runat="server" Width="100%" 
@@ -69,7 +69,7 @@
             </tr>
             <tr>
                 <td>
-                    <table width="800px" bgcolor="White">
+                    <table width="100%" bgcolor="White">
                         <tr>
                          <td style="width: 50px;">
                        
@@ -91,7 +91,7 @@
                             </td>
                             <td style="width: 50px;">
                                 <telerik:RadButton ID="btnClose" runat="server" Text="Close" OnClientClicked="RadWindowClose" CssClass="redbutton" ButtonType="LinkButton"
-                                    width="30px" Height="13px" Font-Size="13px">
+                                    width="55px" Height="25px" Font-Size="13px">
                                 </telerik:RadButton>
                             </td>
                         </tr>

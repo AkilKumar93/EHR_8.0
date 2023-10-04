@@ -23,8 +23,10 @@ function enableField(ChkValue)
 obj.push("Result_Master_ID="+iResultMasterID);
 obj.push("Order_ID=0");
 obj.push("strScreenName=ORDER EXCEPTION");
-obj.push("bMovetonextprocess=false");
-    setTimeout(function(){GetRadWindow().BrowserWindow.openModal("frmLabResult.aspx",750,845,obj,"MessageWindow");},0);
+        obj.push("bMovetonextprocess=false");
+//Jira CAP-1144
+    //setTimeout(function(){GetRadWindow().BrowserWindow.openModal("frmLabResult.aspx",750,845,obj,"MessageWindow");},0);
+        setTimeout(openNonModal("frmLabResult.aspx", 780, 1250, obj), 0);
     }
       function FindPatient()
      {
@@ -79,13 +81,15 @@ obj.push("bMovetonextprocess=false");
     
 function RadWindowClose()
 {
-        var oWindow = null;
-          if (window.radWindow)
-               oWindow = window.radWindow;
-          else if (window.frameElement.radWindow)
-               oWindow = window.frameElement.radWindow;
-          if(oWindow!=null)
-           oWindow.close();
+//Jira CAP-1144
+        //var oWindow = null;
+        //  if (window.radWindow)
+        //       oWindow = window.radWindow;
+        //  else if (window.frameElement.radWindow)
+        //       oWindow = window.frameElement.radWindow;
+        //  if(oWindow!=null)
+    //   oWindow.close();
+    window.close();
 }
 
 function txtToolTip(txtname)
