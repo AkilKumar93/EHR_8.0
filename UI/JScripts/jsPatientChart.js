@@ -301,13 +301,20 @@ function reloadSummary() {
             if (xhr.status == 999)
                 window.location = "/frmSessionExpired.aspx";
             else {
+                //CAP-792
+                if (isValidJSON(xhr.responseText)) {
                 var log = JSON.parse(xhr.responseText);
                 console.log(log);
-                if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
-                    log.Message.indexOf("is an unexpected token") > 0) {
-                    alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+                    if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
+                        log.Message.indexOf("is an unexpected token") > 0) {
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            "Message: " + log.Message);
+                    }
+                    else {
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry.");
+                    }
                 }
             }
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -403,11 +410,18 @@ function CheckMe(MenuName, e) {
                 if (xhr.status == 999)
                     window.location = "/frmSessionExpired.aspx";
                 else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" + xhr.status + "-" + xhr.statusText +
-                        ". \nCannot process request. Please Login again and retry. If issue persists, Please contact Support.\n\nEXCEPTION DETAILS: \nException Type" +
-                        log.ExceptionType + " \nMessage: " + log.Message);
+                    //CAP-792
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" + xhr.status + "-" + xhr.statusText +
+                            ". \nCannot process request. Please Login again and retry. If issue persists, Please contact Support.\n\nEXCEPTION DETAILS: \nException Type" +
+                            log.ExceptionType + " \nMessage: " + log.Message);
+                    }
+                    else {
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry.");
+                    }
                 }
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
