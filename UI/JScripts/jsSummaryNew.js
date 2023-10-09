@@ -1,4 +1,12 @@
-﻿function SummaryAlert()
+﻿//CAP-1024
+$("#txtSearch").bind("keydown", function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault(); //stop event
+    }
+    return true;
+});
+
+function SummaryAlert()
 {
     document.getElementById('summarydiv').style.display = "block";
     document.getElementById('divSummary').style.display = "none";
