@@ -1,6 +1,6 @@
 ﻿<%@ Page Async="true" Language="C#" AutoEventWireup="True" CodeBehind="frmIndexing.aspx.cs" Inherits="Acurus.Capella.UI.frmIndexing" EnableViewState="true" EnableEventValidation="false" %>
 
-<%--<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>--%>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -64,21 +64,30 @@
 
 <body style="margin-top: -25px; font-size: 14px!important;" onloadstart="pageLoad();">
     <form id="frmIndexing" runat="server">
-        <%-- <telerik:RadStyleSheetManager ID="SSTMngr" runat="server" EnableStyleSheetCombine="true" OutputCompression="Forced"></telerik:RadStyleSheetManager>
-        <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableScriptCombine="true">
-            <Scripts>
-                <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
-                <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js"></asp:ScriptReference>
-                <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQueryInclude.js"></asp:ScriptReference>
-            </Scripts>
-        </telerik:RadScriptManager>--%>
-        <asp:ToolkitScriptManager ID="ToolkitScriptManager2" runat="server" >
-        </asp:ToolkitScriptManager>
-        <%--<div id="dMyscanMessage"  style="display:none;height: 647px; margin-top: 130px;margin-left: 310px;width: 1145px;font-size: 20px !important;align-content: center;">
-            <i class="fa fa-check-circle" style="color:green;font-size:165px;margin-left:155px"></i><br />
-                 <div style="margin-left: 115px;color:green;"> File uploaded Sucessfully.</div><br />
-            <div style="margin-left: 68px;"> Please close the screen to continue.</div>
-        </div>--%>
+        <telerik:RadStyleSheetManager ID="SSTMngr" runat="server" EnableStyleSheetCombine="true" OutputCompression="Forced"></telerik:RadStyleSheetManager>
+<telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableScriptCombine="true">
+    <Scripts>
+        <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
+        <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js"></asp:ScriptReference>
+        <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQueryInclude.js"></asp:ScriptReference>
+    </Scripts>
+</telerik:RadScriptManager>
+
+<telerik:RadWindowManager ID="WindowMngr" runat="server">
+    <Windows>
+        <telerik:RadWindow ID="MessageWindow" runat="server" Behaviors="Close" Title="DLC" IconUrl="Resources/16_16.ico">
+        </telerik:RadWindow>
+        <telerik:RadWindow ID="RadWindow1" runat="server" Behaviors="Close" Title="DLC" IconUrl="Resources/16_16.ico">
+        </telerik:RadWindow>
+    </Windows>
+</telerik:RadWindowManager>
+<%--<asp:ToolkitScriptManager ID="ToolkitScriptManager2" runat="server">
+</asp:ToolkitScriptManager>--%>
+<%--<div id="dMyscanMessage"  style="display:none;height: 647px; margin-top: 130px;margin-left: 310px;width: 1145px;font-size: 20px !important;align-content: center;">
+    <i class="fa fa-check-circle" style="color:green;font-size:165px;margin-left:155px"></i><br />
+         <div style="margin-left: 115px;color:green;"> File uploaded Sucessfully.</div><br />
+    <div style="margin-left: 68px;"> Please close the screen to continue.</div>
+</div>--%>
         <div  id="dOverall"  style="height: 647px; width: 1145px; font-size: 14px!important;">
             <div class="blended_grid">
                 <div class="pageLeftMenu" style="margin-left: 3px; margin-top: 9px;">

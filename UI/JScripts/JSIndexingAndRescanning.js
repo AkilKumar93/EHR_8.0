@@ -94,18 +94,23 @@ function btnCurrentPage_Clicked() {
 }
 
 function btnFindPatient_Clicked() {
-    $(top.window.document).find("#txtPatientInformation")[0].value = "";
-    $(top.window.document).find("#TabFindPatient").modal({ backdrop: "static", keyboard: false }, 'show');
-    $(top.window.document).find("#TabModalFindPatientTitle")[0].textContent = "Find Patient";
-    $(top.window.document).find("#TabmdldlgFindPatient")[0].style.width = "94%";
-    $(top.window.document).find("#TabmdldlgFindPatient")[0].style.height = "362px";
-    var sPath = ""
+    //CAP-592
+    var oWnd = GetRadWindow();
+    var childWindow = oWnd.BrowserWindow.radopen("frmFindPatient.aspx", "RadWindow1");
+    childWindow.SetModal(true);
+    childWindow.set_visibleStatusbar(false);
+    childWindow.setSize(1200, 251);
+    childWindow.set_behaviors(Telerik.Web.UI.WindowBehaviors.Move | Telerik.Web.UI.WindowBehaviors.Close);
+    childWindow.set_iconUrl("Resources/16_16.ico");
+    childWindow.set_keepInScreenBounds(true);
+    childWindow.set_centerIfModal(true);
+    childWindow.center();
 
-    sPath = "frmFindPatient.aspx?ScreenName=Indexing";
-    $(top.window.document).find("#TabFindPatientFrame")[0].style.height = "227px";
-    $(top.window.document).find("#TabFindPatientFrame")[0].contentDocument.location.href = sPath;
-    $(top.window.document).find("#TabFindPatient").on('hide.bs.modal', function (e) {
-        if ($(top.window.document).find("#txtPatientInformation")[0].value != null && $(top.window.document).find("#txtPatientInformation")[0].value != undefined && $(top.window.document).find("#txtPatientInformation")[0].value != "") {
+    childWindow.add_close(function PatientDemographicsClick(oWindow, args) {
+        if ($(top.window.document).find("#txtPatientInformation")[0].value != null
+            && $(top.window.document).find("#txtPatientInformation")[0].value != undefined
+            && $(top.window.document).find("#txtPatientInformation")[0].value != "") {
+
             var n = JSON.parse($(top.window.document).find("#txtPatientInformation")[0].value);
             var a = "";
             var i = $("#PatientDetails");
@@ -117,16 +122,15 @@ function btnFindPatient_Clicked() {
                 a = n.Human_id;
             }
             i.val(n.PatientName + " | " + n.PatientDOB + " | " + n.PatientGender + "| Acc #:" + a), i.removeClass("patientPaneEnabled"), "0" != a &&
-            (i.removeClass("patientPaneEnabled"), i.addClass("patientPaneDisabled"), document.getElementById("hdnHumanID").value = a, document.getElementById("PageBox").value = "1", document.getElementById("cboDocumentType").disabled = !1, document.getElementById("btnMoveToNextProcess").disabled = !1)
+                (i.removeClass("patientPaneEnabled"), i.addClass("patientPaneDisabled"), document.getElementById("hdnHumanID").value = a, document.getElementById("PageBox").value = "1", document.getElementById("cboDocumentType").disabled = !1, document.getElementById("btnMoveToNextProcess").disabled = !1)
         }
-        $(top.window.document).find("#TabFindPatient").modal({ backdrop: "", keyboard: false }, 'hide');
 
         var e = $("#btnClearAll").val(),
-       t = document.getElementById("btnSave");
+            t = document.getElementById("btnSave");
         $("#txtSelectedPages").val(""),
-       $("#dtpSpecCollection").val(""),
-       $("#OrdersPanel :input").attr("disabled", !0),
-       t.disabled = !0, $("#btnClearAll").val("Reset"), t.value = "Add";
+            $("#dtpSpecCollection").val(""),
+            $("#OrdersPanel :input").attr("disabled", !0),
+            t.disabled = !0, $("#btnClearAll").val("Reset"), t.value = "Add";
 
         document.getElementById("cboIs_Interperated").selectedIndex = 0;
         document.getElementById("cboDocumentType").selectedIndex = 9;
@@ -144,14 +148,7 @@ function btnFindPatient_Clicked() {
         $("#dOrder").addClass("panel-headingdisable LabelStyle");
         $("#dOrderCollapse")[0].classList.remove("in");
         CheckAll();
-
-
     });
-    return false;
-
-
-
-
 }
 
 function SetRadWindowProperties(e, t, n) {
@@ -182,9 +179,10 @@ function btnSave_Clicked() {
     var a = $("#txtSelectedPages").val(),
     i = parseInt($("#hdnPagecount")[0].value, 10);
     if ($("#rdbPageRange")[0].checked == true) {
-        if ("" == a) return DisplayErrorMessage("115045"), $("#hdnPageState").val(""), !1;
-        if ("0" == a | "" == a) return DisplayErrorMessage("115045"), $("#hdnPageState").val(""), !1;
-        if ("" != a)
+        //CAP-1140
+        var aNew = a.indexOf(',') >= 0 || a.indexOf('-') >= 0 ? a : parseInt(a || 0);
+        if (aNew == 0) return DisplayErrorMessage("115045"), $("#hdnPageState").val(""), !1;
+        if (aNew != 0)
             for (var r = a.split(","), l = 0; l < r.length; l++) {
                 if (r[l].indexOf("-") > -1) {
                     var o = r[l].split("-");
