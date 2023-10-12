@@ -52,6 +52,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //IList<PhysicianLibrary> Get_PhysicianList();
         IList<PhysicianLibrary> GetRenderingPhyisicianList();
         IList<PhysicianLibrary> Get_PhysicianList(string proviserid);
+        IList<PhysicianLibrary> GetphysiciannameByUserName(string sUserName);
         //IList<PhysicianFacilityCompanyCarrier> GetPhyFacCompanyCarrierDetails(ulong ulBillID, ulong ulRendProvID, string sBillingFacility, ulong ulCarrierID);
     }
 
@@ -457,7 +458,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (bFacilityBasis == false)
             {
                 //GitLab#4177 and 4179
-                sq = iMySession.CreateSQLQuery("SELECT p.*,u.* FROM physician_library p,user u where p.Physician_Library_ID=u.Physician_Library_ID and u.Legal_Org='"+sLegalOrg+ "' and u.Status='A' order by p.physician_last_Name asc")
+                sq = iMySession.CreateSQLQuery("SELECT p.*,u.* FROM physician_library p,user u where p.Physician_Library_ID=u.Physician_Library_ID and u.Legal_Org='" + sLegalOrg + "' and u.Status='A' order by p.physician_last_Name asc")
              .AddEntity("p", typeof(PhysicianLibrary))
              .AddEntity("u", typeof(User));
             }
@@ -606,7 +607,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objPhy.PhyState = obj[8].ToString();
                         objPhy.PhyZip = obj[9].ToString();
                         objPhy.PhyNPI = obj[10].ToString();
-                       // objPhy.PhySpecialtyID = Convert.ToUInt64(obj[11]); 7/2/
+                        // objPhy.PhySpecialtyID = Convert.ToUInt64(obj[11]); 7/2/
                         objPhy.PhySpecialtyID = Convert.ToString(obj[11]);
                         objPhy.PhyFax = obj[13].ToString();
                         objPhy.PhyAddrs = obj[14].ToString();
@@ -669,7 +670,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (ilstFacilityLibrary != null && ilstFacilityLibrary.Count > 0)
                             {
                                 objPhy.PhyCity = ilstFacilityLibrary[0].Fac_City.ToString();
-                                objPhy.PhyState =ilstFacilityLibrary[0].Fac_State.ToString();
+                                objPhy.PhyState = ilstFacilityLibrary[0].Fac_State.ToString();
                                 objPhy.PhyZip = ilstFacilityLibrary[0].Fac_Zip.ToString();
                                 objPhy.PhyFax = ilstFacilityLibrary[0].Fac_Fax.ToString();
                                 objPhy.PhyPhone = ilstFacilityLibrary[0].Fac_Telephone.ToString();
@@ -677,7 +678,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         else
                         {
-                            if(obj[12]!=null)
+                            if (obj[12] != null)
                                 objPhy.PhyFacility = obj[12].ToString();
                             if (obj[7] != null)
                                 objPhy.PhyCity = obj[7].ToString();
@@ -688,9 +689,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             if (obj[13] != null)
                                 objPhy.PhyFax = obj[13].ToString();
                             if (obj[15] != null)
-                                objPhy.PhyPhone = obj[15].ToString(); 
+                                objPhy.PhyPhone = obj[15].ToString();
                         }
-                            
+
                         phylst.Add(objPhy);
                     }
                 }
@@ -711,7 +712,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 IQuery query = iMySession.GetNamedQuery("Find.Physician.by.ID");
                 query.SetParameterList("PhyIds", token.ToArray());
-                
+
                 //query.SetParameter(3, "%" + token + "%");
                 //query.SetParameter(4, "%" + token + "%");
                 resultList = new ArrayList(query.List());
@@ -836,7 +837,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         objPhy.PhyEmail = obj[16].ToString();
                         objPhy.PhyCompany = obj[17].ToString();
-                        if (obj[18] != null && obj[18]!="")
+                        if (obj[18] != null && obj[18] != "")
                             objPhy.Category = obj[18].ToString();
                         phylst.Add(objPhy);
                     }
@@ -1191,6 +1192,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return PhyList;
         }
+
+        public IList<PhysicianLibrary> GetphysiciannameByUserName(string sUserName)
+        {
+            IList<PhysicianLibrary> ilstPhysicianLibrary = new List<PhysicianLibrary>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sq1 = iMySession.CreateSQLQuery("SELECT p.* FROM physician_library p, User u  where p.Physician_Library_ID=u.Physician_Library_ID and u.User_Name='" + sUserName + "'").AddEntity("p", typeof(PhysicianLibrary));
+                ilstPhysicianLibrary = sq1.List<PhysicianLibrary>();
+                iMySession.Close();
+            }
+            return ilstPhysicianLibrary;
+            //return criteria.List<PhysicianLibrary>();
+        }
+
         //public IList<PhysicianFacilityCompanyCarrier> GetPhyFacCompanyCarrierDetails(ulong ulBillID, ulong ulRendProvID, string sBillingFacility, ulong ulCarrierID)
         //{
         //    ICriteria criteria;

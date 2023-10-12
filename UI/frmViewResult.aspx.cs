@@ -335,8 +335,9 @@ namespace Acurus.Capella.UI
                         //if (Request["PhysicianId"] != null && Convert.ToUInt32(Request["PhysicianId"]) != 0)
                         if (ClientSession.PhysicianId != 0)
                         {
-                            PhysicianList = objphysican.GetphysiciannameByPhyID(ClientSession.PhysicianId);
-                            if (PhysicianList != null && PhysicianList.Count > 0)
+                            //Cap - 1169
+                            //PhysicianList = objphysican.GetphysiciannameByPhyID(ClientSession.PhysicianId);
+                            PhysicianList = objphysican.GetphysiciannameByUserName(ClientSession.UserName);
                             {
                                 //if (StaticLst != null && StaticLst.Count > 0)
                                 //{
@@ -415,10 +416,12 @@ namespace Acurus.Capella.UI
                     //IList<StaticLookup> StaticLst = objstaticlookup.getStaticLookupByFieldName("WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES");
                     IList<PhysicianLibrary> PhysicianList = new List<PhysicianLibrary>();
                     PhysicianManager objphysican = new PhysicianManager();
-                    if (Request["PhysicianId"] != null && Convert.ToUInt32(Request["PhysicianId"]) != 0)
-                    {
-                        PhysicianList = objphysican.GetphysiciannameByPhyID(Convert.ToUInt32(Request["PhysicianId"]));
-                        if (PhysicianList != null && PhysicianList.Count > 0)
+                    //Cap - 1169
+                    //if (Request["PhysicianId"] != null && Convert.ToUInt32(Request["PhysicianId"]) != 0)
+                    //{                        
+                    //PhysicianList = objphysican.GetphysiciannameByPhyID(Convert.ToUInt32(Request["PhysicianId"]));
+                    PhysicianList = objphysican.GetphysiciannameByUserName(ClientSession.UserName);
+                    if (PhysicianList != null && PhysicianList.Count > 0)
                         {
                             //if (StaticLst != null && StaticLst.Count > 0)
                             //{
@@ -434,7 +437,7 @@ namespace Acurus.Capella.UI
                         //sTemp = sTemp.Replace("<Date>", "");
                         //sTemp = sTemp.Replace(" on ", "");
                         chkPhyName.Text = sTemp;
-                    }
+                    //}
 
                     ConstructTreeView(human_id, Document_type, Key_id);
                     btnPrintEducatnMaterial.Visible = true;
@@ -2149,10 +2152,12 @@ namespace Acurus.Capella.UI
                     IList<PhysicianLibrary> PhysicianList = new List<PhysicianLibrary>();
                     PhysicianManager objphysican = new PhysicianManager();
 
-                    if (ClientSession.PhysicianId != 0)
-                    {
-                        PhysicianList = objphysican.GetphysiciannameByPhyID(Convert.ToUInt32(ClientSession.PhysicianId));
-                        if (PhysicianList != null && PhysicianList.Count > 0)
+                    //Cap - 1169
+                    //if (ClientSession.PhysicianId != 0)
+                    //{
+                    //PhysicianList = objphysican.GetphysiciannameByPhyID(Convert.ToUInt32(ClientSession.PhysicianId));
+                    PhysicianList = objphysican.GetphysiciannameByUserName(ClientSession.UserName);
+                    if (PhysicianList != null && PhysicianList.Count > 0)
                         {
                             //if (StaticLst != null && StaticLst.Count > 0)
                             //{
@@ -2168,7 +2173,7 @@ namespace Acurus.Capella.UI
                         //sTemp = sTemp.Replace("<Date>", "");
                         //sTemp = sTemp.Replace(" on ", "");
                         chkPhyName.Text = sTemp;
-                    }
+                    //}
                 }
                 else
                 {
@@ -2982,7 +2987,7 @@ namespace Acurus.Capella.UI
                                     //if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                     if (Result_Review_Comments[i].Trim() != string.Empty && Result_Review_Comments[i].Split(';')[0].Split(':').Length > 3 && Result_Review_Comments[i].Split(';')[0].Split(':')[3].Trim() == testname.Trim())
                                     {
-                                        objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text);
+                                        objResultMaster.Result_Review_Comments = objResultMaster.Result_Review_Comments.Replace(Result_Review_Comments[i].Substring(Result_Review_Comments[i].IndexOf("[[[") + 3, Result_Review_Comments[i].Length - Result_Review_Comments[i].IndexOf("[[[") - 3), DLC.txtDLC.Text+"]]]");
                                       //Cap - 1099
                                         if (objResultMaster.Result_Review_Comments.EndsWith("]]]") == false)
                                         {
