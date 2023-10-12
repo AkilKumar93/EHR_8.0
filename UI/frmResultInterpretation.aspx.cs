@@ -128,7 +128,7 @@ namespace Acurus.Capella.UI
                 lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR " + Request["DocumentSubType"].ToString());
                 //lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR " + sDocumentSubType.ToString());
                 Templatesource = new Dictionary<string, string>();
-                lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR NUCLEAR MEDICINE");
+                //lstTestOrdered = staticMngr.getStaticLookupByFieldName("RESULT INTERPRETATION TEST FOR NUCLEAR MEDICINE");
                 ddlTemplate.Items.Add("");
                 Templatesource.Add("", "");
                 for (int iCount = 0; iCount < lstTestOrdered.Count; iCount++)
