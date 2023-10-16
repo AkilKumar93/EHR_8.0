@@ -644,13 +644,18 @@ function OpenResultInterpretation() {
     //WindowName.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close + Telerik.Web.UI.WindowBehaviors.Move);
     //WindowName.add_close(FillProviderNotes);
     //return false;
+
+    if (document.getElementById("txtProvNoteshistory").getAttribute("InterpretationText") == undefined || document.getElementById("txtProvNoteshistory").getAttribute("InterpretationText") == null) {
+        document.getElementById("txtProvNoteshistory").setAttribute("InterpretationText", "");
+    }
+
     var notes1 = '';
     var ProvNoteshistory = document.getElementById('DLC_txtDLC').value;
     if (ProvNoteshistory != '') {
         //Cap - 747
         //notes = ProvNoteshistory;
         //Cap - 1076
-        ProvNoteshistory = ProvNoteshistory + document.getElementById("txtProvNoteshistory").attributes[5].value;
+        ProvNoteshistory = ProvNoteshistory + document.getElementById("txtProvNoteshistory").getAttribute("InterpretationText");
         notes1 = ProvNoteshistory.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
     }
     else {
@@ -658,7 +663,7 @@ function OpenResultInterpretation() {
 
         // Cap - 747
         //notes = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "")
-        notes1 = document.getElementById("txtProvNoteshistory").attributes[5].value.replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
+        notes1 = document.getElementById("txtProvNoteshistory").getAttribute("InterpretationText").replaceAll("<br/>", "").replaceAll("&", "$|$|$|$|").replaceAll("#", "!^!^!^!^").replaceAll("+", "~|~|~|~|");
 
     }
     let MoveButtonVisible;
