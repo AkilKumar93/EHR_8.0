@@ -125,7 +125,7 @@ namespace Acurus.Capella.UI
             {
                 Session["ResultMasterID"] = Request["ResultMasterID"];
             }
-            if (!IsPostBack)
+            if (!IsPostBack || Request.Form["__EVENTTARGET"] == "chkShowAll")
             {
                 if (Request["Openingfrom"] != null && Request["Openingfrom"] == "MyorderQueue")
                 {
@@ -3413,9 +3413,9 @@ namespace Acurus.Capella.UI
                                     {
                                         sTxtProvNoteshistoryAttr = sTxtProvNoteshistoryAttr.Replace(ProvNoteshistoryAttr[j], sDLC_TxtDLC);
                                     }
-                                    
-                                }                                                                                   
-                                                                    
+
+                                }
+
                             }
                             else
                             {
@@ -3514,7 +3514,7 @@ namespace Acurus.Capella.UI
                     {
                         ulFileManagementIndexID = Convert.ToUInt64(HttpContext.Current.Session["Key_id"]);
                     }
-                    objResultMaster.MA_Notes = (sTxtMedicalAssistantNotes.Trim() != string.Empty ? sTxtMedicalAssistantNotes + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + sTxtMedicalAssistantNotes;
+                    objResultMaster.MA_Notes = (sTxtMedNoteshistory.Trim() != string.Empty ? sTxtMedNoteshistory + "<br/>" : string.Empty) + "@" + ClientSession.UserName + "(" + UtilityManager.ConvertToLocal(DateTime.UtcNow).ToString("dd-MMM-yyyy hh:mm tt") + "): " + sTxtMedicalAssistantNotes;
                     sTxtMedNoteshistory = objResultMaster.MA_Notes.Replace("<br/>", "\n");
                     sTxtMedicalAssistantNotes = "Empty";
                 }
@@ -3540,7 +3540,9 @@ namespace Acurus.Capella.UI
                 TxtProvNoteshistory = sTxtProvNoteshistory,
                 TxtProvNoteshistoryAttr = sTxtProvNoteshistoryAttr,
                 TxtMedNoteshistory = sTxtMedNoteshistory,
-                TxtMedicalAssistantNotes = sTxtMedicalAssistantNotes
+                TxtMedicalAssistantNotes = sTxtMedicalAssistantNotes,
+                IsPhysician = ((ClientSession.UserRole != null && ClientSession.UserRole.ToUpper().Trim() == "PHYSICIAN" || ClientSession.UserRole == "Physician Assistant") ? true : false),
+                IsMA =  ((ClientSession.UserRole != null && ClientSession.UserRole.ToUpper().Trim() == "MEDICAL ASSISTANT") ? true : false)
             };
 
             return JsonConvert.SerializeObject(result);

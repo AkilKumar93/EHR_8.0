@@ -471,22 +471,24 @@ function btnSave_ClientClicked(sender, args) {
                         return false;
                     }
                     if (NotesVal.DLC_TxtDLC != undefined && NotesVal.DLC_TxtDLC == 'Empty') {
-                        document.getElementById('DLC_txtDLC').value = "";
-                        document.getElementById('DLC_txtDLC').disabled = false;
-                        document.getElementById('DLC_txtDLC').classList.remove("nonEditabletxtbox");
-                        document.getElementById('DLC_txtDLC').style.backgroundColor = "White";
+                            document.getElementById('DLC_txtDLC').value = "";
+                            document.getElementById('DLC_txtDLC').disabled = false;
+                            document.getElementById('DLC_txtDLC').classList.remove("nonEditabletxtbox");
+                            document.getElementById('DLC_txtDLC').style.backgroundColor = "White";
                     }
                     if (NotesVal.TxtProvNoteshistory != undefined && NotesVal.TxtProvNoteshistory != null) {
-                        //document.getElementById('txtProvNoteshistory').innerHTML = NotesVal.TxtProvNoteshistory;
-                        document.getElementById('hdnNewProviderNotesHistory').value = NotesVal.TxtProvNoteshistory;
+                            //document.getElementById('txtProvNoteshistory').innerHTML = NotesVal.TxtProvNoteshistory;
+                            document.getElementById('hdnNewProviderNotesHistory').value = NotesVal.TxtProvNoteshistory;
                     }
                     if (NotesVal.TxtProvNoteshistoryAttr != undefined && NotesVal.TxtProvNoteshistoryAttr != null) {
-                        // document.getElementById('txtProvNoteshistory').setAttribute("InterpretationText", NotesVal.TxtProvNoteshistoryAttr);
-                        document.getElementById('hdnNewProviderhistoryattribute').value = NotesVal.TxtProvNoteshistoryAttr;
+                            //document.getElementById('txtProvNoteshistory').setAttribute("InterpretationText", NotesVal.TxtProvNoteshistoryAttr);
+                            document.getElementById('hdnNewProviderhistoryattribute').value = NotesVal.TxtProvNoteshistoryAttr;
                     }
 
                     if (NotesVal.TxtMedNoteshistory != undefined && NotesVal.TxtMedNoteshistory != null) {
-                        document.getElementById('txtMedNoteshistory').value = NotesVal.TxtMedNoteshistory;
+                        setTimeout(function () {
+                            $("#txtMedNoteshistory").text(NotesVal.TxtMedNoteshistory);
+                        },3000);
                     }
                     if (NotesVal.TxtMedicalAssistantNotes != undefined && NotesVal.TxtMedicalAssistantNotes == 'Empty') {
                         document.getElementById('txtMedicalAssistantNotes').value = "";
@@ -501,10 +503,19 @@ function btnSave_ClientClicked(sender, args) {
             }
             setTimeout(function () {
                  //Cap - 1222
-                document.getElementById('DLC_txtDLC').value = "";
-                document.getElementById('DLC_txtDLC').disabled = false;
-                document.getElementById('DLC_txtDLC').classList.remove("nonEditabletxtbox");
-                document.getElementById('DLC_txtDLC').style.backgroundColor = "White";
+                if ((NotesVal.DLC_TxtDLC != undefined && NotesVal.DLC_TxtDLC == 'Empty') || NotesVal.IsPhysician == true) {
+                    document.getElementById('DLC_txtDLC').value = "";
+                    document.getElementById('DLC_txtDLC').disabled = false;
+                    document.getElementById('DLC_txtDLC').classList.remove("nonEditabletxtbox");
+                    document.getElementById('DLC_txtDLC').style.backgroundColor = "White";
+                }               
+
+                if ((NotesVal.TxtMedicalAssistantNotes != undefined && NotesVal.TxtMedicalAssistantNotes == 'Empty') || NotesVal.IsMA == true) {
+                    document.getElementById('txtMedicalAssistantNotes').value = "";
+                    document.getElementById('txtMedicalAssistantNotes').disabled = false;
+                    document.getElementById('txtMedicalAssistantNotes').classList.remove("nonEditabletxtbox");
+                    document.getElementById('txtMedicalAssistantNotes').style.backgroundColor = "White";
+                }
                 sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart() }, 3000);
 
         },
