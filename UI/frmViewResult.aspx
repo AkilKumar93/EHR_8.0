@@ -820,9 +820,6 @@
             <asp:Button ID="hdnSetvalue" OnClick="btn_SetValue"  runat="server" Style="display: none;"/>
 
              <asp:HiddenField ID="hdncurrentProcess" runat="server" EnableViewState="false" />
-           
-            <asp:HiddenField ID="hdnNotes" runat="server" EnableViewState="false" />
-            <asp:HiddenField ID="hdnOrderSubmitId" runat="server" EnableViewState="false" /> 
 
             <asp:Button ID="hdnbtngenerateresultxml" runat="server" OnClick="hdnbtngeneratexml_Click" Style="display: none" />
 
