@@ -722,7 +722,7 @@
                                             </asp:UpdatePanel></div>
                                                     </td>
                                                     <td><input type="button" id="btnSave" runat="server" value="Save" onclick="return btnSave_ClientClicked();" onserverclick="btnSave_Click1" class="aspresizedgreenbutton" style="height: 26px !important;" />
-                                                    <asp:Button ID="btnTask" runat="server" CssClass="aspresizedbluebutton" Text="Task" Visible="false" OnClientClick="OpenPatientCommunication();" />
+                                                    <asp:Button ID="btnTask" runat="server" CssClass="aspresizedbluebutton" Text="Task" OnClientClick="OpenPatientCommunication();" />
                                                         <asp:Button ID="btnFindAppointments" runat="server" OnClientClick="return OpenFindAllAppointments();"
                                                 Text="Find All Appointments" CssClass="aspresizedbluebutton" />
                                                         <asp:Button ID="btnpatientChart1" runat="server" OnClientClick="return btnpatientChart_Click();" Text="OpenPatientChart"
