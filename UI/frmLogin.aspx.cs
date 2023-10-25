@@ -553,11 +553,30 @@ namespace Acurus.Capella.UI
                             ClientSession.bFollows_DST = true;
                         else
                             ClientSession.bFollows_DST = false;
-                        Server.Transfer("frmPatientChart.aspx");
+                        //CAP-1167
+                        var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                        if (!string.IsNullOrEmpty(returnURL))
+                        {
+                            Response.Redirect(returnURL);
+                        }
+                        else
+                        {
+                            Server.Transfer("frmPatientChart.aspx");
+                        }
                     }
                     else
                     {
-                        Response.Redirect(ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx");
+                        //CAP-1167
+                        var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                        if (!string.IsNullOrEmpty(returnURL))
+                        {
+                            Response.Redirect(returnURL);
+                        }
+                        else
+                        {
+                            Response.Redirect(ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx");
+                        }
+                        
                     }
                     //Response.Redirect("frmMyQueue.aspx");
                 }
@@ -732,7 +751,16 @@ namespace Acurus.Capella.UI
                     data.Add("UserCarrier", ClientSession.UserCarrier.ToString());
                     data.Add("IsFirstTimeCall", "false");
                     data.Add("DefaultServer", Session["Default_Server"].ToString());
-                    HttpHelper.RedirectAndPOST(this.Page, Session["Default_Server"].ToString(), data);
+                    //CAP-1167
+                    var returnURL = Request.QueryString["redirecturl"]?.ToString();
+                    if (!string.IsNullOrEmpty(returnURL))
+                    {
+                        Response.Redirect(returnURL);
+                    }
+                    else
+                    {
+                        HttpHelper.RedirectAndPOST(this.Page, Session["Default_Server"].ToString(), data);
+                    }
 
                     return;
                 }
@@ -742,7 +770,19 @@ namespace Acurus.Capella.UI
                 {
                     var ScnTabRecord = from s in ScnTabList where s.SCN_ID == (int)Session["LandingScnID"] select s;
                     //divLoading.Style.Add("display", "none");
-                    Response.Redirect(ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx");
+                    //CAP-1167
+                    var returnURL = Request.QueryString["redirecturl"]?.ToString();
+
+                    var returnURlData = Request.Url.Query.ToString();
+                    if (!string.IsNullOrEmpty(returnURL))
+                    {
+                        Response.Redirect(returnURL);
+                    }
+                    else
+                    {
+                        Response.Redirect(ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx");
+
+                    }
                 }
             }
         }
