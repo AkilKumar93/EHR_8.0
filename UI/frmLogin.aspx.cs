@@ -753,6 +753,8 @@ namespace Acurus.Capella.UI
                     data.Add("UserCarrier", ClientSession.UserCarrier.ToString());
                     data.Add("IsFirstTimeCall", "false");
                     data.Add("DefaultServer", Session["Default_Server"].ToString());
+                    data.Add("IsAllFacilities", ClientSession.Is_All_Facilities.ToString());
+
                     //CAP-1167
                     var returnURL = Request.QueryString["redirecturl"]?.ToString();
                     if (!string.IsNullOrEmpty(returnURL))

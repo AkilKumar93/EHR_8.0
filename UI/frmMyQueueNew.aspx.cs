@@ -52,6 +52,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
+                chkViewAllFacilities.Checked = false;
                 chkViewAllFacilities.Visible = false;
                 lblViewAllFac.Visible = false;
             }
