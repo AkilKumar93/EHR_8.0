@@ -555,8 +555,8 @@ function CloseImplantable() {
             modal: true,
             title: "Capella EHR",
             position: {
-                my: 'left' + " " + 'center',
-                at: 'center' + " " + 'center + 100px'
+                my: myPos,
+                at: atPos
             },
             buttons: {
                 "Yes": function () {
@@ -578,6 +578,7 @@ function CloseImplantable() {
                     }
                     $(dvdialog).dialog("close");
                     $(dvdialog).remove();
+                    $find("btnAdd").set_text("Save");
                     $find('btnAdd').set_enabled(true);
                     EnableSaveDiagnosticOrder('true');
                     $find('btnAdd').click();
@@ -592,7 +593,6 @@ function CloseImplantable() {
                 "Cancel": function () {
                     $(dvdialog).dialog("close");
                     $(dvdialog).remove();
-                    $(top.window.document).find("#btnCloseImplantable").click();
                     return false;
                 }
             }
