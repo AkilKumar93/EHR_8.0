@@ -177,7 +177,7 @@ $(document).ready(function () {
                     localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
                     if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
                         $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 7 days old encounters, click on "ShowAll".'
+                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
 
                     }
                     else
@@ -1191,7 +1191,7 @@ function MyQLoad() {
                 localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
                 if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
                     $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 7 days old encounters, click on "ShowAll".'
+                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
                 }
                 else
                     $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
@@ -1420,7 +1420,7 @@ function loadMyenc() {
 
             if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
                 $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 7 days old encounters, click on "ShowAll".'
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
             }
 
             else
