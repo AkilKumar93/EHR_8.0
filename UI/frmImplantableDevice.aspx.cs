@@ -63,6 +63,26 @@ namespace Acurus.Capella.UI
             ctmDLC_procedure.txtDLC.Attributes.Add("OnKeyPress", "GetKeyPress()");
             pbProcedure.pbCustomPhrases.Style.Add(HtmlTextWriterStyle.Display, "block");
 
+            //CAP-1307 & CAP-1308
+            if (string.IsNullOrEmpty(txtDeviceIdentifier.Text.Trim()))
+            {
+                txtSerialNumber.Text = string.Empty;
+                txtLotorBatch.Text = string.Empty;
+                txtManufacturedDate.Text = string.Empty;
+                txtExpirationDate.Text = string.Empty;
+                txtDistinctID.Text = string.Empty;
+                txtIssuingAgency.Text = string.Empty;
+                txtBrandName.Text = string.Empty;
+                txtVersionModel.Text = string.Empty;
+                txtManufacturedDate.Text = string.Empty;
+                txtCompanyName.Text = string.Empty;
+                txtMRISafetyStatus.Text = string.Empty;
+                txtGMDNPTName.Text = string.Empty;
+                txtDescription.Text = string.Empty;
+                txtRubberContent.Text = string.Empty;
+                txtDeviceIdentifier.Text = string.Empty;
+            }
+
             if (!IsPostBack)
             {
                 ddActive.Items.Clear();
@@ -337,15 +357,17 @@ namespace Acurus.Capella.UI
 
         void Update(string groupKey)
         {
-            btnClearAllImplantable.Enabled = false;
+            //CAP-1310
+            //btnClearAllImplantable.Enabled = false;
             objOtherProDTO = new InHouseProcedureDTO();
             var lstOtherProcedure = GetFromXML(EncounterID);//ClientSession.EncounterId);
             objOtherProDTO.OtherProcedure = lstOtherProcedure;
             lstUpdate = objOtherProDTO.OtherProcedure.Where(a => a.In_House_Procedure_Group_ID == Convert.ToUInt64(groupKey)).ToList<InHouseProcedure>();
-            txtDeviceIdentifier.ReadOnly = true;
-            txtDeviceIdentifier.BackColor = Color.FromArgb(191, 219, 255);
-            txtDeviceIdentifier.Attributes.Remove("onclick");
-            txtDeviceIdentifier.Attributes.Remove("onchange");
+            //CAP-1310
+            //txtDeviceIdentifier.ReadOnly = true;
+            //txtDeviceIdentifier.BackColor = Color.FromArgb(191, 219, 255);
+            //txtDeviceIdentifier.Attributes.Remove("onclick");
+            //txtDeviceIdentifier.Attributes.Remove("onchange");
             if (lstUpdate[0].Device_Identifier_UDI!="")
                 txtDeviceIdentifier.Text = txtDeviceIdentifier.ToolTip = lstUpdate[0].Device_Identifier_UDI;
             else
