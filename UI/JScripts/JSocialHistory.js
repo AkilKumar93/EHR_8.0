@@ -230,41 +230,42 @@ function OnClientSelectedIndex(sender, eventArgs) {
     //sender.set_text(item.get_text());
 }
 function btnSave_Clicked(sender, args) {
+    //CAP-1235
     if (document.getElementById("DLC_txtDLC")!=null && document.getElementById("DLC_txtDLC")!=undefined && document.getElementById("DLC_txtDLC").value != "" && document.getElementById("DLC_txtDLC").value.length > 32767) {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180032');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
         sender.set_autoPostBack(false);
     }
-    else if (document.getElementById("chkYesSmokinghabit") != null && (document.getElementById("chkYesSmokinghabit").checked == false && document.getElementById("chkNoSmokinghabit").checked == false && document.getElementById("lblSmokinghabit").style.color == "red")) {
+    else if (document.getElementById("chkYesSmokinghabit") != null && (document.getElementById("chkYesSmokinghabit").checked == false && document.getElementById("chkNoSmokinghabit").checked == false && document.getElementById("lblSmokinghabit").getAttribute("class") == "MandLabelstyle")) {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180020');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         sender.set_autoPostBack(false);
     }
-    else if (document.getElementById("chkYesTobaccoUseandExposure") != null && (document.getElementById("chkYesTobaccoUseandExposure").checked == false && document.getElementById("chkNoTobaccoUseandExposure").checked == false && document.getElementById("lblTobaccoUseandExposure").style.color == "red" && document.getElementById("DLCTobaccoUseandExposure_txtDLC") != null && document.getElementById("DLCTobaccoUseandExposure_txtDLC").value == "")) {    //added by Shilpa for Reason_Not_Performed cbo
+    else if (document.getElementById("chkYesTobaccoUseandExposure") != null && (document.getElementById("chkYesTobaccoUseandExposure").checked == false && document.getElementById("chkNoTobaccoUseandExposure").checked == false && document.getElementById("lblTobaccoUseandExposure").getAttribute("class") == "MandLabelstyle" && document.getElementById("DLCTobaccoUseandExposure_txtDLC") != null && document.getElementById("DLCTobaccoUseandExposure_txtDLC").value == "")) {    //added by Shilpa for Reason_Not_Performed cbo
             PFSH_SaveUnsuccessful();
             DisplayErrorMessage('180020');
             top.window.document.getElementById('ctl00_Loading').style.display = 'none';
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             sender.set_autoPostBack(false);
     }
-    else if (document.getElementById("chkYesTobaccoUseandExposure") != null && (document.getElementById("chkYesTobaccoUseandExposure").checked == true && document.getElementById("lblTobaccoUseandExposure").style.color == "red") && document.getElementById("cboTobaccoUseandExposure").value == "") {
+    else if (document.getElementById("chkYesTobaccoUseandExposure") != null && (document.getElementById("chkYesTobaccoUseandExposure").checked == true && document.getElementById("lblTobaccoUseandExposure").getAttribute("class") == "MandLabelstyle") && document.getElementById("cboTobaccoUseandExposure").value == "") {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180055');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         sender.set_autoPostBack(false);
     }
-    else if (document.getElementById("chkNoTobaccoUseandExposure") != null && (document.getElementById("chkNoTobaccoUseandExposure").checked == true && document.getElementById("lblTobaccoUseandExposure").style.color == "red") && document.getElementById("cboTobaccoUseandExposure").value == "") {
+    else if (document.getElementById("chkNoTobaccoUseandExposure") != null && (document.getElementById("chkNoTobaccoUseandExposure").checked == true && document.getElementById("lblTobaccoUseandExposure").getAttribute("class") == "MandLabelstyle") && document.getElementById("cboTobaccoUseandExposure").value == "") {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180055');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         sender.set_autoPostBack(false);
     }
-    else if (document.getElementById("chkYesDrugUse") != null && (document.getElementById("chkYesDrugUse").checked == false && document.getElementById("chkNoDrugUse").checked == false && document.getElementById("lblDrugUse").style.color == "red")) {
+    else if (document.getElementById("chkYesDrugUse") != null && (document.getElementById("chkYesDrugUse").checked == false && document.getElementById("chkNoDrugUse").checked == false && document.getElementById("lblDrugUse").getAttribute("class") == "MandLabelstyle")) {
         PFSH_SaveUnsuccessful();
         DisplayErrorMessage('180020');
         top.window.document.getElementById('ctl00_Loading').style.display = 'none';
