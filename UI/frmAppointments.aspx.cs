@@ -1239,6 +1239,12 @@ namespace Acurus.Capella.UI
                 IList<Encounter> lstencounter = new List<Encounter>();
                 EncounterManager obj = new EncounterManager();
                 lstencounter = obj.GetEncounterByEncounterID(Convert.ToUInt64(hdnEncounterID.Value));
+                //CAP-1275
+                if (hdnSelectedMenu.Value == WalkedAwayMenuText && lstencounter.Count > 0)
+                {
+                    lstencounter[0].Date_of_Service = DateTime.MinValue;
+                    obj.UpdateEncounter(lstencounter[0], string.Empty, new object[] { "false" });
+                }
                 if (lstencounter.Count == 0)
                 {
                     ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "alert('The selected appointment is moved to archive table. So, this transaction is not supported.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
