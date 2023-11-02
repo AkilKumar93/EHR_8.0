@@ -1,4 +1,11 @@
-﻿function AllOthersYesOrNo(ChkValue) {
+﻿//CAP-1158
+$('#DLC_listDLC').keypress(function (event) {
+    if (event.keyCode === 10 || event.keyCode === 13) {
+        event.preventDefault();
+    }
+});
+
+function AllOthersYesOrNo(ChkValue) {
     var pcontrol = document.getElementById(ChkValue);
     var dcontrol = document.getElementById("tblTest");
 
