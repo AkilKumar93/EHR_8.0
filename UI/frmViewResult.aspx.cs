@@ -1423,7 +1423,8 @@ namespace Acurus.Capella.UI
                                 hdnfileindexid.Value = lstScanFiles[0].Scan_Index_Conversion_ID.ToString();
                                 //Cap - 1199
                                 //DelIndexDiv.Attributes.Add("width", "40% !important");
-                                DelIndexDiv.Attributes.Add("width", "35% !important");
+                                //CAP-1287
+                                DelIndexDiv.Attributes.Add("width", "15% !important");
                             }
                             else
                             {
