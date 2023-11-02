@@ -1,6 +1,7 @@
 ﻿var AssignedTo = "";
 var vRowID = "";
 let bOldCheck = false;
+var vOldPriority = "";
 
 function OpenGuarantor() {
     if (document.getElementById(GetClientId('txtAccountNo')).value.length != 0) {
@@ -1197,7 +1198,7 @@ function AddGuarantorClick(oWindow, args) {
     var Result = args.get_argument();
     if (Result) {
         document.getElementById(GetClientId("hdnGuarantorID")).value = Result.HumanID;
-        document.getElementById(GetClientId("btnSave")).disabled = false; s
+        document.getElementById(GetClientId("btnSave")).disabled = false; 
         document.getElementById(GetClientId("hdnSaveFlag")).value = true;
         document.getElementById(GetClientId("btnAddGuarantorRefresh")).click();
     }
@@ -2113,6 +2114,33 @@ function btnaddinsured(e) {
     var PriChecked = document.getElementById("ctl00_C5POBody_rdbPRI").checked;
     var SecChecked = document.getElementById("ctl00_C5POBody_rdbSEC").checked;
     var TerChecked = document.getElementById("ctl00_C5POBody_rdbTER").checked;
+
+    //Cap - 883
+    if (document.getElementById("btnAdd").value == 'Update') {
+        if (document.getElementById("ctl00_C5POBody_rdStatusactive").checked == true && !PriChecked && !SecChecked && !TerChecked) {
+            if (bOldCheck == true && vOldPriority != null) {
+                if (vOldPriorit.includes("PRIMARY")) {
+                    document.getElementById("ctl00_C5POBody_rdbPRI").checked = true;
+                }
+                if (vOldPriorit.includes("SECONDARY")) {
+                    document.getElementById("ctl00_C5POBody_rdbSEC").checked = true;
+                }
+                if (vOldPriorit.includes("TERTIARY")) {
+                    document.getElementById("ctl00_C5POBody_rdbTER").checked = true;
+                }
+            }
+        }
+    }
+
+    //Cap - 182
+    if (PriChecked && document.getElementById("ctl00_C5POBody_txtProviderSearch") && document.getElementById("ctl00_C5POBody_txtProviderSearch") != '' && document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value != null) {
+        document.getElementById(GetClientId("txtPCPProviderTag")).value = document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value;
+    }
+    else {
+        document.getElementById(GetClientId("txtPCPProviderTag")).value = 0;
+    }
+
+
     if (document.getElementById("ctl00_C5POBody_txtPlanSearch").attributes['data-plan-id']) {
         var PlanVal = document.getElementById("ctl00_C5POBody_txtPlanSearch").attributes['data-plan-id'].value;
         var carrierVal = document.getElementById("ctl00_C5POBody_txtPlanSearch").attributes['data-carrier-id'].value;
@@ -2485,6 +2513,8 @@ function Edit(e) {
     //Jira #Cap-255 - old Primary is changed as Primary, Status change active
     if (e.parentElement.parentElement.childNodes[1].innerText.includes("OLD")) {
         bOldCheck = true;
+        //Cap - 883
+        vOldPriorit = e.parentElement.parentElement.childNodes[1].innerText;
     }
 
     // editinsurancetype = e.parentElement.parentElement.childNodes[1].innerText;
