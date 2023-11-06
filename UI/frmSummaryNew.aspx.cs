@@ -46,6 +46,7 @@ namespace Acurus.Capella.UI
         string sTabMode = "false";
 
         string sIsPhoneEncounter = "N";
+        UtilityManager UtilityMngr = new UtilityManager();
         protected void Page_Load(object sender, EventArgs e)
         {
             Loadsummary();
@@ -1325,9 +1326,9 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
-
-            string WordOutputName = NotesName + ".html";
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
+           string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
             #region HPvalue
             ////for hp value
@@ -1956,8 +1957,8 @@ margin:0in 0in 0in 9in;
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
-
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            NotesName= UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
             #region HPvalue
@@ -2950,8 +2951,8 @@ margin:0in 0in 0in 9in;
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
-
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+             NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
             #region HPvalue
@@ -4024,7 +4025,8 @@ margin:0in 0in 0in 9in;
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
 
@@ -4689,7 +4691,8 @@ margin:0in 0in 0in 9in;
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
             //Jira #CAP-344 - OldCode
@@ -5451,7 +5454,8 @@ margin:0in 0in 0in 9in;
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
             //Jira #CAP-344 - OldCode
