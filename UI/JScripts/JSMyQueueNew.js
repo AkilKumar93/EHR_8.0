@@ -3670,7 +3670,7 @@ function RowClick() {
         for (var i = 0; i < existingSelectedItem.length; i++) {
             var processes = existingSelectedItem[i].children[7].childNodes[0].data;
             var isproviderReviewMyQ = processes;
-                if(isproviderReviewMyQ != "PROVIDER_REVIEW" || isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
+                if(isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
                 existingSelectedItem[i].classList.remove("highlight");
             }
         }
