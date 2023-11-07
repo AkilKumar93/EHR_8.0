@@ -32,6 +32,7 @@ namespace Acurus.Capella.UI
         string sXMLHumanDoc = string.Empty;
         string sXMLEncounterDoc = string.Empty;
         IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
+        UtilityManager UtilityMngr = new UtilityManager();
         protected void Page_Load(object sender, EventArgs e)
         {
             ulong Encounter_Id = 0;
@@ -435,7 +436,9 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
+
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
 
@@ -1207,7 +1210,8 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
 
@@ -1855,7 +1859,8 @@ margin:0in 0in 0in 9in;
                     }
                 }
             }
-            NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
             //Jira #CAP-344 - OldCode

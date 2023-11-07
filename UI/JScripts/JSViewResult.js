@@ -313,6 +313,10 @@ function txtProviderNotes_OnValueChanged(e) {
     //document.getElementById('btnSave').disabled = false;
     document.getElementById(GetClientId("btnSave")).disabled = false;
 }
+//Cap - 1268
+$("#txtMedicalAssistantNotes").bind('paste', function () {
+    document.getElementById(GetClientId("btnSave")).disabled = false;
+});
 
 function txtMedicalAssistantNotes_OnValueChanged(sender, args) {
     //document.getElementById('btnSave').disabled = false;

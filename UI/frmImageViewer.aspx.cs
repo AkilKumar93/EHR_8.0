@@ -2097,12 +2097,12 @@ namespace Acurus.Capella.UI
 
                     divrotate.Style.Add("display", "none");
                     string uri = fileGroups[0];//Request.QueryString["FilePath"];
-                    string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPath"];
-                    string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPath"];
-                    string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIP"];
-                    string userName = System.Configuration.ConfigurationSettings.AppSettings["UserName"];
-                    string password = System.Configuration.ConfigurationSettings.AppSettings["Password"];
-                    string domain = System.Configuration.ConfigurationSettings.AppSettings["Domain"];
+                    string UNCAuthPath = System.Configuration.ConfigurationSettings.AppSettings["UNCAuthPathFax"];
+                    string UNCPath = System.Configuration.ConfigurationSettings.AppSettings["UNCPathFax"];
+                    string ftpIP = System.Configuration.ConfigurationSettings.AppSettings["ftpServerIPFax"];
+                    string userName = System.Configuration.ConfigurationSettings.AppSettings["UserNameFax"];
+                    string password = System.Configuration.ConfigurationSettings.AppSettings["PasswordFax"];
+                    string domain = System.Configuration.ConfigurationSettings.AppSettings["DomainFax"];
                     //Jira #CAP-67 
                     int iTryCount = 1;
                 TryAgain:
