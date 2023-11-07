@@ -5976,6 +5976,16 @@ namespace Acurus.Capella.UI
             return bCheckFileNotFoundException;
 
         }
+        public string ReplaceSpecialCharaterInFileName(string FileName)
+        {
+            string sFilename = string.Empty;
+            sFilename = FileName.Replace("#", "").Replace("%","").Replace("&", "").Replace("{", "").Replace("}", "")
+                .Replace("<", "").Replace(">", "").Replace("*", "").Replace("?", "").Replace(" ", "").Replace("$", "")
+                .Replace("!", "").Replace("'", "").Replace(":", "").Replace("@", "").Replace("+", "").Replace("`", "")
+                .Replace("|", "").Replace("=", "").Replace("__", "_").Replace("~", "").Replace("^", "").Replace("\"", "");
+
+            return sFilename;
+        }
     }
 }
 
