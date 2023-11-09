@@ -680,7 +680,8 @@ namespace Acurus.Capella.UI.RCopia
         IList<ProblemList> ilstProblem = new List<ProblemList>();
         IList<Rcopia_Prescription_List> ilstRcopiaPrescription = new List<Rcopia_Prescription_List>();
         public static IList<Rcopia_Update_info> ilstRcopupdateInfo = new List<Rcopia_Update_info>();
-        public static IList<Rcopia_NotificationDTO> ilstNotification = new List<Rcopia_NotificationDTO>();
+        //Jira CAP-1367
+        //public static IList<Rcopia_NotificationDTO> ilstNotification = new List<Rcopia_NotificationDTO>();
 
         ulong MyhumanID = 0;
         Human objPatient;
@@ -700,8 +701,10 @@ namespace Acurus.Capella.UI.RCopia
 
         CultureInfo culture = new CultureInfo("en-US");
 
-        public void ReadXMLResponse(string XMLResponse)
+        public void ReadXMLResponse(string XMLResponse, out IList<Rcopia_NotificationDTO> ilstNotification)
         {
+            ilstNotification = new List<Rcopia_NotificationDTO>();
+
             if (XMLResponse == null)
             {
                 return;

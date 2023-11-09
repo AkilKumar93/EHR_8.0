@@ -87,13 +87,18 @@ namespace Acurus.Capella.UI
             //System.Threading.Thread.Sleep(400);
             sOutputXML = rcopiaSessionMngr.HttpPost(rcopiaSessionMngr.DownloadAddress + sInputXML, 1);
             RCopia.RCopiaXMLResponseProcess objRcopResponseXML = new RCopiaXMLResponseProcess();
-            RCopia.RCopiaXMLResponseProcess.ilstNotification.Clear();
-            //System.Threading.Thread.Sleep(400);
-            objRcopResponseXML.ReadXMLResponse(sOutputXML);
+            //Jira CAP-1367
+            //RCopia.RCopiaXMLResponseProcess.ilstNotification.Clear();
+            IList<Rcopia_NotificationDTO> ilstNotification;
+            ////System.Threading.Thread.Sleep(400);
+            //objRcopResponseXML.ReadXMLResponse(sOutputXML);
+            objRcopResponseXML.ReadXMLResponse(sOutputXML,out ilstNotification);
             string returnText = "";
             try
             {
-                returnText = FillRCopiaNotification();
+                //Jira CAP-1367
+                //returnText = FillRCopiaNotification();
+                returnText = FillRCopiaNotification(ilstNotification);
             }
             catch
             {
@@ -123,13 +128,14 @@ namespace Acurus.Capella.UI
 
         }
 
-
-
-        public static string FillRCopiaNotification()
+        //Jira CAP-1367
+        // public static string FillRCopiaNotification()
+        public static string FillRCopiaNotification(IList<Rcopia_NotificationDTO> ilstnotification)
         {
             string strTex = string.Empty;
             //System.Threading.Thread.Sleep(400);
-            IList<Rcopia_NotificationDTO> ilstnotification = RCopia.RCopiaXMLResponseProcess.ilstNotification;
+            //Jira CAP-1367
+            //IList<Rcopia_NotificationDTO> ilstnotification = RCopia.RCopiaXMLResponseProcess.ilstNotification;
             if (ilstnotification != null)
             {
                 for (int i = 0; i < ilstnotification.Count; i++)
