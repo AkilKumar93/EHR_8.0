@@ -117,10 +117,13 @@ namespace Acurus.Capella.UI
                 }
 
                 int index = 0;
+                //Cap - 1326
+                int iSelectedIndex = 0;
                 if (ilstEncounter != null && ilstEncounter.Count > 0)
                 {
                     ddlFacilitywithDOS.Items.Add("");
                     ddlVoucher.Items.Add("");
+                    
                     for (iCount = 0; iCount < ilstEncounter.Count; iCount++)
                     {
 
@@ -131,6 +134,8 @@ namespace Acurus.Capella.UI
                             cboItem.Value = ilstEncounter[iCount].Id.ToString() + "|" + ilstEncounter[iCount].Batch_Status.ToString() + "|" + ilstEncounter[iCount].Exam_Room.ToString();
                             hdnBatchStatus.Value = ilstEncounter[iCount].Batch_Status.ToString();
                             this.ddlFacilitywithDOS.Items.Add(cboItem);
+                            //Cap - 1326
+                            iSelectedIndex = iSelectedIndex + 1;
 
                             System.Web.UI.WebControls.ListItem Encid = new System.Web.UI.WebControls.ListItem();
                             Encid.Text = ilstEncounter[iCount].Id.ToString();
@@ -139,8 +144,7 @@ namespace Acurus.Capella.UI
                             {
                                 //Cap - 1326
                                 //index = iCount+1;
-                                index = iCount;
-
+                                index = iSelectedIndex;
                             }
                         }
                         //if (ScreenMode == "COLLECT COPAY")
@@ -157,6 +161,7 @@ namespace Acurus.Capella.UI
                 //    ddlFacilitywithDOS.Enabled = true;
                 //    rdbFacilityName.Checked = true;
                 //}
+                
                 if (ScreenMode == "COLLECT COPAY")
                 {
                     rdbNewCollection.Enabled = false;
