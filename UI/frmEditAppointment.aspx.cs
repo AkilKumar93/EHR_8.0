@@ -3755,7 +3755,15 @@ namespace Acurus.Capella.UI
                 }
 
             }
+            //Cap - 1179
             else
+            //{
+            //    hdnrenprovider.Value = "";
+
+            //    hdnrenprovidersearch.Value = "";
+            //    txtProviderSearch.Text = string.Empty;
+            //    txtProviderSearch.Enabled = true;
+            //}
             {
                 //txtReferringProvider.Text = string.Empty;
                 //txtProviderNPI.Text = string.Empty;
@@ -4449,6 +4457,9 @@ namespace Acurus.Capella.UI
 
             if (tabReferringProvAndPCP.SelectedIndex == 0)
             {
+                //Cap - 1234
+                hdnTabRefPcpChange.Value = "Referring";
+
                 var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
                 IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
                 if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
@@ -4579,6 +4590,9 @@ namespace Acurus.Capella.UI
             }
             else if (tabReferringProvAndPCP.SelectedIndex == 1)
             {
+                //Cap - 1234
+                hdnTabRefPcpChange.Value = "PCP";
+
                 imgClearProviderText.Visible = true;
                 imgClearProviderText.Style.Add("top", "224px !important");
                 chkSelfReferred.Visible = false;
@@ -4828,6 +4842,11 @@ namespace Acurus.Capella.UI
                         txtProviderSearch.Enabled = true;
                     }
                 }
+            }
+            //Cap - 1234
+            else
+            {
+                txtProviderSearch.Text = hdnpcpprovidersearch.Value;
             }
 
         }
@@ -7390,7 +7409,7 @@ namespace Acurus.Capella.UI
         [WebMethod(EnableSession = true)]
         public static string GetHumanDetails(string humanid)
         {
-
+           
             if (ClientSession.UserName == string.Empty)
             {
                 HttpContext.Current.Response.StatusCode = 999;
@@ -7398,66 +7417,86 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
-            IList<Human> objhuman = new List<Human>();
-            //HumanManager humanMngr = new HumanManager();
-            //objhuman = humanMngr.patientdetails(hdnHumanID.Value);
+            //Cap - 1234
             string PatientStrip = "";
-            IList<string> ilstEditAppTagList = new List<string>();
-            ilstEditAppTagList.Add("HumanList");
 
-            IList<object> ilstEditAppFinal = new List<object>();
-            ilstEditAppFinal = UtilityManager.ReadBlob(Convert.ToUInt64(humanid), ilstEditAppTagList);
-
-            if (ilstEditAppFinal.Count > 0 && ilstEditAppFinal != null)
+            string sdivPatientstrip = UtilityManager.FillPatientStrip(Convert.ToUInt64(humanid));
+            if (sdivPatientstrip != null)
             {
-                if (ilstEditAppFinal[0] != null)
-                {
-                    for (int iCount = 0; iCount < ((IList<object>)ilstEditAppFinal[0]).Count; iCount++)
-                    {
-                        objhuman.Add((Human)((IList<object>)ilstEditAppFinal[0])[iCount]);
-                    }
-                }
+                PatientStrip = sdivPatientstrip;
             }
 
-            if (objhuman != null && objhuman.Count > 0)
-            {
 
-                string phoneno = "";
+            //IList<Human> objhuman = new List<Human>();
+            ////HumanManager humanMngr = new HumanManager();
+            ////objhuman = humanMngr.patientdetails(hdnHumanID.Value);
+            //string PatientStrip = "";
+            //IList<string> ilstEditAppTagList = new List<string>();
+            //ilstEditAppTagList.Add("HumanList");
+
+            //IList<object> ilstEditAppFinal = new List<object>();
+            //ilstEditAppFinal = UtilityManager.ReadBlob(Convert.ToUInt64(humanid), ilstEditAppTagList);
+
+            //if (ilstEditAppFinal.Count > 0 && ilstEditAppFinal != null)
+            //{
+            //    if (ilstEditAppFinal[0] != null)
+            //    {
+            //        for (int iCount = 0; iCount < ((IList<object>)ilstEditAppFinal[0]).Count; iCount++)
+            //        {
+            //            objhuman.Add((Human)((IList<object>)ilstEditAppFinal[0])[iCount]);
+            //        }
+            //    }
+            //}
+
+            //if (objhuman != null && objhuman.Count > 0)
+            //{
+
+            //    string phoneno = "";
 
 
-                if (objhuman[0].Home_Phone_No.Length == 14)
-                {
-                    phoneno = objhuman[0].Home_Phone_No;
-                }
-                else
-                {
-                    phoneno = objhuman[0].Cell_Phone_Number;
-                }
+            //    if (objhuman[0].Home_Phone_No.Length == 14)
+            //    {
+            //        phoneno = objhuman[0].Home_Phone_No;
+            //    }
+            //    else
+            //    {
+            //        phoneno = objhuman[0].Cell_Phone_Number;
+            //    }
 
-                // cache the current time
-                DateTime now = DateTime.Today; // today is fine, don't need the timestamp from now
-                                               // get the difference in years
-                int years = 0;
-                if (objhuman[0].Birth_Date != null)
-                    years = now.Year - objhuman[0].Birth_Date.Year;
-                // subtract another year if we're before the
-                // birth day in the current year
-                if (now.Month < objhuman[0].Birth_Date.Month || (now.Month == objhuman[0].Birth_Date.Month && now.Day < objhuman[0].Birth_Date.Day))
-                    --years;
+            //    // cache the current time
+            //    DateTime now = DateTime.Today; // today is fine, don't need the timestamp from now
+            //                                   // get the difference in years
+            //    int years = 0;
+            //    if (objhuman[0].Birth_Date != null)
+            //        years = now.Year - objhuman[0].Birth_Date.Year;
+            //    // subtract another year if we're before the
+            //    // birth day in the current year
+            //    if (now.Month < objhuman[0].Birth_Date.Month || (now.Month == objhuman[0].Birth_Date.Month && now.Day < objhuman[0].Birth_Date.Day))
+            //        --years;
 
 
-                string sSex = string.Empty;
-                if (objhuman[0].Sex != null && objhuman[0].Sex.Trim() != "")
-                    sSex = objhuman[0].Sex.Substring(0, 1);
+            //    string sSex = string.Empty;
+            //    if (objhuman[0].Sex != null && objhuman[0].Sex.Trim() != "")
+            //        sSex = objhuman[0].Sex.Substring(0, 1);
+            //    //Cap - 1234
+            //    //     PatientStrip = objhuman[0].Last_Name + "," + objhuman[0].First_Name +
+            //    //"  " + objhuman[0].MI + "  " + objhuman[0].Suffix + "   |   " +
+            //    // objhuman[0].Birth_Date.ToString("dd-MMM-yyyy") + "   |   " +
+            //    //years.ToString() +
+            //    //"  year(s)    |   " + sSex + "   |   Acc #:" + objhuman[0].Id +
+            //    //"   |   " + "Med Rec #:" + objhuman[0].Medical_Record_Number + "   |   " +
+            //    //"Phone #:" + phoneno + "   |   Patient Type:" + objhuman[0].Human_Type;
 
-                PatientStrip = objhuman[0].Last_Name + "," + objhuman[0].First_Name +
-           "  " + objhuman[0].MI + "  " + objhuman[0].Suffix + "   |   " +
-            objhuman[0].Birth_Date.ToString("dd-MMM-yyyy") + "   |   " +
-           years.ToString() +
-           "  year(s)    |   " + sSex + "   |   Acc #:" + objhuman[0].Id +
-           "   |   " + "Med Rec #:" + objhuman[0].Medical_Record_Number + "   |   " +
-           "Phone #:" + phoneno + "   |   Patient Type:" + objhuman[0].Human_Type;
-            }
+            //    PatientStrip = objhuman[0].Last_Name + "," + objhuman[0].First_Name +
+            //"  " + objhuman[0].MI + "  " + objhuman[0].Suffix + "   |   " +
+            // objhuman[0].Birth_Date.ToString("dd-MMM-yyyy") + "   |   " +
+            //years.ToString() +
+            //"  year(s)    |   " + sSex + "   |   Acc #:" + objhuman[0].Id +
+            //"   |   " + "Med Rec #:" + objhuman[0].Medical_Record_Number + "   |   " +
+            //"Home Phone #:" + objhuman[0].Home_Phone_No + "   |   Cell Phone #:" + objhuman[0].Cell_Phone_Number +
+            //"   |   Patient Type:" + objhuman[0].Human_Type;
+
+            //}
             else
             {
                 PatientStrip = " " + "   |" + "|" + "|" + "|" + "|";

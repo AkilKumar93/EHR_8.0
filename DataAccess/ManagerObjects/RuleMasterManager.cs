@@ -1114,7 +1114,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<RuleMaster> hList = new List<RuleMaster>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("select * from rule_master r where r.Is_Status='Active' "+ " and r.Legal_Org =' " + sLegalOrg+"'").AddEntity("r", typeof(RuleMaster));
+                //Cap - 1352
+                //ISQLQuery sql = iMySession.CreateSQLQuery("select * from rule_master r where r.Is_Status='Active' "+ " and r.Legal_Org =' " + sLegalOrg+"'").AddEntity("r", typeof(RuleMaster));
+                ISQLQuery sql = iMySession.CreateSQLQuery("select * from rule_master r where r.Is_Status='Active' " + " and r.Legal_Org ='" + sLegalOrg + "'").AddEntity("r", typeof(RuleMaster));
                 hList = sql.List<RuleMaster>();
                 iMySession.Close();
             }

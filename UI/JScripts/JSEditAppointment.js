@@ -919,7 +919,11 @@ function PcpPrimaryDefault(humanid) {
         success: function (data) {
 
             var objdata = $.parseJSON(data.d);
-            document.getElementById("txtProviderSearch").value = objdata;
+            //Cap - 1234
+            var TabVal = document.getElementById("hdnTabRefPcpChange").value
+            if (TabVal != undefined && TabVal != null && TabVal == "PCP") {
+                document.getElementById("txtProviderSearch").value = objdata;
+            }
             document.getElementById("hdnpcpprovider").value = objdata; 
             document.getElementById("hdnpcpprovidersearch").value = objdata;   
         }
