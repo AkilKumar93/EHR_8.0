@@ -873,6 +873,7 @@
                         <asp:HiddenField ID="hdnTimeTaken" runat="server" />
                         <asp:HiddenField ID="hdnOrderSubmitdata" runat="server" Value="" />
                         <asp:HiddenField ID="hdnFacility" runat="server" Value="" />
+                        <asp:HiddenField ID="hdnTabRefPcpChange" runat="server" />
                         <asp:Button ID="btnReferralandPCP" runat="server" Style="display: none" OnClick="btnReferralandPCP_Click" />
                         <asp:Button ID="btnOrderCreate" runat="server" Style="display: none" OnClick="btnOrderCreate_Click" />
                    <asp:Button ID="hdnbtngeneratexmlAppointment" runat="server" OnClick="hdnbtngeneratexml_Click"  style="display:none" />
