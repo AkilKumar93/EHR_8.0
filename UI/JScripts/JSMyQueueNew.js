@@ -880,7 +880,10 @@ function MyQclick() {
                 var windowName = $find('MessageWindow');
 
                 windowName.add_close(OnClientCloseWindow);
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                {
+              //Cap - 1393
+             //sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+                }
                 return false;
             }
             else if (ObjType.toUpperCase() == "DIAGNOSTIC_RESULT") {
