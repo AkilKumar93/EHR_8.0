@@ -3408,6 +3408,8 @@ namespace Acurus.Capella.UI
 
         protected void chkShowAll_CheckedChanged(object sender, EventArgs e)
         {
+            //Cap - 1374
+            btnSave.Disabled = false;
             FillCombobox();
             ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ErrmormsgMa", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
