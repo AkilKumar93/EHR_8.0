@@ -1316,7 +1316,8 @@ function FillCarePlanTable(objdata, MasterID) {
                 }
 
                 if ($(lbl).parents("tr")[0].style.display != "none") {
-                    if (lbl[0].parentNode.nextElementSibling.children[0].className == "combo SelectStyle") {
+                    //CAP-1396
+                    if (lbl[0].parentNode.nextElementSibling.children[0].className == "combo SelectStyle" || lbl[0].parentNode.nextElementSibling.children[0].className == "combo SelectStyle spanstyle") {
                         lbl[0].parentNode.nextElementSibling.children[0].value = objdata[i].Status;
                         if (objdata[i].Care_Name_Value.toUpperCase().indexOf("SEXUAL ORIENTATION") > -1) {
                             if (objdata[i].Status.indexOf("please describe") <= -1)
