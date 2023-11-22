@@ -2505,8 +2505,6 @@ function btnaddinsured(e) {
             alert(data.d);
         }
     });
-    //Cap -1369
-    e.preventDefault();
 }
 
 function Edit(e) {

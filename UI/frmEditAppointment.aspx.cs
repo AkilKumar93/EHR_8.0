@@ -3757,108 +3757,108 @@ namespace Acurus.Capella.UI
             }
             //Cap - 1179
             else
-            //{
-            //    hdnrenprovider.Value = "";
-
-            //    hdnrenprovidersearch.Value = "";
-            //    txtProviderSearch.Text = string.Empty;
-            //    txtProviderSearch.Enabled = true;
-            //}
             {
-                //txtReferringProvider.Text = string.Empty;
-                //txtProviderNPI.Text = string.Empty;
-                //txtReferringFacility.Text = string.Empty;
-                //txtReferingAddress.Text = string.Empty;
-                //msktxtReferingPhoneNo.Text = string.Empty;
-                //msktxtReferingFaxNo.Text = string.Empty;
+                hdnrenprovider.Value = "";
 
-                PhysicianLibrary objPhysicianLibrary = GetPhysicianDetailsByPhyID(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value);//PhyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value));
-                if (objPhysicianLibrary != null)
-                {
-                    FacilityManager obj = new FacilityManager();
-                    IList<FacilityLibrary> lstfacirty = obj.GetFacilityByFacilityname(cboFacility.SelectedItem.Text);
-                    string sPhyName = string.Empty;
-                    if (objPhysicianLibrary != null)
-                    {
-                        string facilityadd = "";
-                        if (lstfacirty.Count > 0)
-                        {
-                            facilityadd = lstfacirty[0].Fac_Address1;
-                        }
-                        //old code
-                        // sPhyName = objPhysicianLibrary.PhyPrefix + " " + objPhysicianLibrary.PhyFirstName + " " + objPhysicianLibrary.PhyLastName + " " + objPhysicianLibrary.PhySuffix;
-                        //Gitlab# 2485 - Physician Name Display Change
-                        sPhyName = string.Empty;
-                        if (objPhysicianLibrary.PhyLastName != String.Empty)
-                            sPhyName += objPhysicianLibrary.PhyLastName;
-                        if (objPhysicianLibrary.PhyFirstName != String.Empty)
-                        {
-                            if (sPhyName != String.Empty)
-                                sPhyName += "," + objPhysicianLibrary.PhyFirstName;
-                            else
-                                sPhyName += objPhysicianLibrary.PhyFirstName;
-                        }
-                        if (objPhysicianLibrary.PhyMiddleName != String.Empty)
-                            sPhyName += " " + objPhysicianLibrary.PhyMiddleName;
-                        if (objPhysicianLibrary.PhySuffix != String.Empty)
-                            sPhyName += "," + objPhysicianLibrary.PhySuffix;
-                        if (sPhyName.Trim() != "")
-                        {
-                            hdnrenprovider.Value = objPhysicianLibrary.Id + "|" + sPhyName + "|" + objPhysicianLibrary.PhyNPI + "|" + "" + "|" + cboFacility.SelectedItem.Text + "|" +
-                               facilityadd + "|" + objPhysicianLibrary.PhyTelephone + "|" + objPhysicianLibrary.PhyFax;
-                            //Jira #CAP-156 - Index was outside bounds 
-                            //hdnrenprovidersearch.Value = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
-                            //    objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
-                            //                                      "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
-                            //                                     "" + " | " +
-                            //                                      "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
-                            //                                      "ADDR: " + facilityadd + ", " +
-                            //                                      objPhysicianLibrary.PhyCity + "," +
-                            //                                      objPhysicianLibrary.PhyState + " " +
-                            //                                      objPhysicianLibrary.PhyZip + " | " +
-                            //                                      ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") +
-                            //                                      (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
-
-                            hdnrenprovidersearch.Value = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
-                                 objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
-                                                                   "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
-                                                                  "" + " | " +
-                                                                   "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
-                                                                   "ADDR: " + facilityadd + ", " +
-                                                                   objPhysicianLibrary.PhyCity + "," +
-                                                                   objPhysicianLibrary.PhyState + " " +
-                                                                   objPhysicianLibrary.PhyZip + " | " +
-                                                                   ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "PH: | ") +
-                                                                   (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "FAX:");
-
-                            //Jira #CAP-156 - Index was outside bounds 
-                            //txtProviderSearch.Text = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
-                            //    objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
-                            //                                      "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
-                            //                                     "" + " | " +
-                            //                                      "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
-                            //                                      "ADDR: " + facilityadd + ", " +
-                            //                                      objPhysicianLibrary.PhyCity + "," +
-                            //                                      objPhysicianLibrary.PhyState + " " +
-                            //                                      objPhysicianLibrary.PhyZip + " | " +
-                            //                                      ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") +
-                            //                                      (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
-                            txtProviderSearch.Text = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
-                               objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
-                                                                 "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
-                                                                "" + " | " +
-                                                                 "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
-                                                                 "ADDR: " + facilityadd + ", " +
-                                                                 objPhysicianLibrary.PhyCity + "," +
-                                                                 objPhysicianLibrary.PhyState + " " +
-                                                                 objPhysicianLibrary.PhyZip + " | " +
-                                                                 ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "PH: | ") +
-                                                                 (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "FAX:");
-
-                        }
-                    }
-                }
+                hdnrenprovidersearch.Value = "";
+                txtProviderSearch.Text = string.Empty;
+                txtProviderSearch.Enabled = true;
             }
+            //{
+            //    //txtReferringProvider.Text = string.Empty;
+            //    //txtProviderNPI.Text = string.Empty;
+            //    //txtReferringFacility.Text = string.Empty;
+            //    //txtReferingAddress.Text = string.Empty;
+            //    //msktxtReferingPhoneNo.Text = string.Empty;
+            //    //msktxtReferingFaxNo.Text = string.Empty;
+
+            //    PhysicianLibrary objPhysicianLibrary = GetPhysicianDetailsByPhyID(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value);//PhyMngr.GetphysiciannameByPhyID(Convert.ToUInt64(ddlPhysicianName.Items[ddlPhysicianName.SelectedIndex].Value));
+            //    if (objPhysicianLibrary != null)
+            //    {
+            //        FacilityManager obj = new FacilityManager();
+            //        IList<FacilityLibrary> lstfacirty = obj.GetFacilityByFacilityname(cboFacility.SelectedItem.Text);
+            //        string sPhyName = string.Empty;
+            //        if (objPhysicianLibrary != null)
+            //        {
+            //            string facilityadd = "";
+            //            if (lstfacirty.Count > 0)
+            //            {
+            //                facilityadd = lstfacirty[0].Fac_Address1;
+            //            }
+            //            //old code
+            //            // sPhyName = objPhysicianLibrary.PhyPrefix + " " + objPhysicianLibrary.PhyFirstName + " " + objPhysicianLibrary.PhyLastName + " " + objPhysicianLibrary.PhySuffix;
+            //            //Gitlab# 2485 - Physician Name Display Change
+            //            sPhyName = string.Empty;
+            //            if (objPhysicianLibrary.PhyLastName != String.Empty)
+            //                sPhyName += objPhysicianLibrary.PhyLastName;
+            //            if (objPhysicianLibrary.PhyFirstName != String.Empty)
+            //            {
+            //                if (sPhyName != String.Empty)
+            //                    sPhyName += "," + objPhysicianLibrary.PhyFirstName;
+            //                else
+            //                    sPhyName += objPhysicianLibrary.PhyFirstName;
+            //            }
+            //            if (objPhysicianLibrary.PhyMiddleName != String.Empty)
+            //                sPhyName += " " + objPhysicianLibrary.PhyMiddleName;
+            //            if (objPhysicianLibrary.PhySuffix != String.Empty)
+            //                sPhyName += "," + objPhysicianLibrary.PhySuffix;
+            //            if (sPhyName.Trim() != "")
+            //            {
+            //                hdnrenprovider.Value = objPhysicianLibrary.Id + "|" + sPhyName + "|" + objPhysicianLibrary.PhyNPI + "|" + "" + "|" + cboFacility.SelectedItem.Text + "|" +
+            //                   facilityadd + "|" + objPhysicianLibrary.PhyTelephone + "|" + objPhysicianLibrary.PhyFax;
+            //                //Jira #CAP-156 - Index was outside bounds 
+            //                //hdnrenprovidersearch.Value = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
+            //                //    objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
+            //                //                                      "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
+            //                //                                     "" + " | " +
+            //                //                                      "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
+            //                //                                      "ADDR: " + facilityadd + ", " +
+            //                //                                      objPhysicianLibrary.PhyCity + "," +
+            //                //                                      objPhysicianLibrary.PhyState + " " +
+            //                //                                      objPhysicianLibrary.PhyZip + " | " +
+            //                //                                      ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") +
+            //                //                                      (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
+
+            //                hdnrenprovidersearch.Value = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
+            //                     objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
+            //                                                       "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
+            //                                                      "" + " | " +
+            //                                                       "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
+            //                                                       "ADDR: " + facilityadd + ", " +
+            //                                                       objPhysicianLibrary.PhyCity + "," +
+            //                                                       objPhysicianLibrary.PhyState + " " +
+            //                                                       objPhysicianLibrary.PhyZip + " | " +
+            //                                                       ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "PH: | ") +
+            //                                                       (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "FAX:");
+
+            //                //Jira #CAP-156 - Index was outside bounds 
+            //                //txtProviderSearch.Text = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
+            //                //    objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
+            //                //                                      "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
+            //                //                                     "" + " | " +
+            //                //                                      "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
+            //                //                                      "ADDR: " + facilityadd + ", " +
+            //                //                                      objPhysicianLibrary.PhyCity + "," +
+            //                //                                      objPhysicianLibrary.PhyState + " " +
+            //                //                                      objPhysicianLibrary.PhyZip + " | " +
+            //                //                                      ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "") +
+            //                //                                      (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "");
+            //                txtProviderSearch.Text = objPhysicianLibrary.PhyLastName + ", " + objPhysicianLibrary.PhyFirstName + " " +
+            //                   objPhysicianLibrary.PhyMiddleName + "(" + objPhysicianLibrary.PhySuffix + ")" + " | " +
+            //                                                     "NPI:" + objPhysicianLibrary.PhyNPI + " | " +
+            //                                                    "" + " | " +
+            //                                                     "FACILITY:" + cboFacility.SelectedItem.Text + " | " +
+            //                                                     "ADDR: " + facilityadd + ", " +
+            //                                                     objPhysicianLibrary.PhyCity + "," +
+            //                                                     objPhysicianLibrary.PhyState + " " +
+            //                                                     objPhysicianLibrary.PhyZip + " | " +
+            //                                                     ((objPhysicianLibrary.PhyTelephone.Trim()) != "" ? "PH:" + objPhysicianLibrary.PhyTelephone + " | " : "PH: | ") +
+            //                                                     (objPhysicianLibrary.PhyFax.Trim() != "" ? "FAX:" + objPhysicianLibrary.PhyFax : "FAX:");
+
+            //            }
+            //        }
+            //    }
+            //}
         }
         protected void cboFacility_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
         {

@@ -2003,7 +2003,9 @@ namespace Acurus.Capella.UI
             ModalWindow.VisibleOnPageLoad = true;
             //ModalWindow.Width = Unit.Pixel(1265);
             ModalWindow.Width = Unit.Pixel(1250);
-            ModalWindow.Behaviors = WindowBehaviors.Close;
+            //Jira CAP-1217
+            //ModalWindow.Behaviors = WindowBehaviors.Close;
+            ModalWindow.Behaviors = WindowBehaviors.None;
             ModalWindow.Visible = true;
             //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "AppointmentFacility", "OpenPhysicianFacility();", true);
             hdnSourceScreen.Value = "";
