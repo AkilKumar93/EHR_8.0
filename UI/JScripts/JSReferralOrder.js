@@ -139,6 +139,8 @@ function OnclientCloseFindPhysician(oWindow, args) {
 }
 
 function refOrderValidation(sender, args) {
+    //CAP-1435
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
     //CAP-1176 - remove all the return statement.
     var isSuccess = true;
     var now = new Date();
@@ -206,20 +208,18 @@ function refOrderValidation(sender, args) {
         else {
             sender.set_autoPostBack(true);
             //ShowLoading();
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
         }
     }
     else {
         sender.set_autoPostBack(true);
         //ShowLoading();
-        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
     }
 }
 
-function StartLoadFromPatChart(){
-    $("#btnClearAllRefOrder").prop('disabled', false);
-    localStorage.setItem("btnClearAllRefOrder", "false");
-}
+//function StartLoadFromPatChart(){
+//    $("#btnClearAllRefOrder").prop('disabled', false);
+//    localStorage.setItem("btnClearAllRefOrder", "false");
+//}
 
 function EnableSaveReferralOrder() {    
    //  
@@ -396,11 +396,13 @@ function btnPrint_Clicked(sender, args) {
 var delIndex = -1;
 function grdReferralOrders_OnCommand(sender, args) {
 
-    if (sender == undefined && args == undefined) {
+    if (sender == undefined && args == undefined) { 
         if (DisplayErrorMessage("720005")) {
             document.getElementById("hdnRowIndex").value = delIndex;
             delIndex = -1;
-            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+            {sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
+            //CAP-1436
+            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
             document.getElementById("btnDelete").click();
 
         }
@@ -554,7 +556,7 @@ function btnClose_Clicked(sender, args) {
         if (window.document.title == 'Orders') {
             if (!$($(window.document).find('iframe')[0].contentDocument).find("body").is('#dvdialogMenu'))
                 $($(window.document).find('iframe')[0].contentDocument).find("body").append('<div id="dvdialogMenu" style="min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;">' +
-                '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save the them?</p></div>');
+                '<p style="font-family: Verdana,Arial,sans-serif; font-size: 13.5px;">There are unsaved changes.Do you want to save them?</p></div>');
             dvdialog = $($(window.document).find('iframe')[0].contentDocument).find("body").find('#dvdialogMenu');
             myPos = "center center";
             atPos = 'center center';
