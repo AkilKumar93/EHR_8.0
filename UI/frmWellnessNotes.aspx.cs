@@ -556,6 +556,8 @@ namespace Acurus.Capella.UI
             //    }
             //}
             string htmlString = System.IO.File.ReadAllText(outputDocument);
+            //Jira CAP-1015
+            htmlString = htmlString.Replace("amp;", "");
 
             string headerstring = string.Empty;
 
