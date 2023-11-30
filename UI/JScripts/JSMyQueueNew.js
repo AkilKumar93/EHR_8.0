@@ -577,7 +577,9 @@ $(document).ready(function () {
             });
             $('#MyQTable tr').removeClass("highlight");
             //Jira CAP-1444
-            $('#MovetoNxtProcess')[0].disabled = true;
+            if ($('#MovetoNxtProcess') != undefined && $('#MovetoNxtProcess')[0]?.disabled != undefined) {
+                $('#MovetoNxtProcess')[0].disabled = true;
+            }
             return false;
         }
 
@@ -3640,7 +3642,9 @@ $('#btnChangeExamRoom').click(function (evt) {
         });
         $('#MyQTable tr').removeClass("highlight");
         //Jira CAP-1444
-        $('#MovetoNxtProcess')[0].disabled = true;
+        if ($('#MovetoNxtProcess') != undefined && $('#MovetoNxtProcess')[0]?.disabled != undefined) {
+            $('#MovetoNxtProcess')[0].disabled = true;
+        }
         return false;
     }
 
@@ -3754,7 +3758,9 @@ function RowClick() {
             $('#MyQTable tr').removeClass("highlight");
 
             //Jira CAP-1444
-            $('#MovetoNxtProcess')[0].disabled = true;
+            if ($('#MovetoNxtProcess') != undefined && $('#MovetoNxtProcess')[0]?.disabled != undefined) {
+                $('#MovetoNxtProcess')[0].disabled = true;
+            }
             return false;
         }
 
