@@ -133,7 +133,8 @@ namespace Acurus.Capella.UI
                     btnFindPhysician.Enabled = true;
                 }
                 btnOrder.Visible = false;
-                
+                //CAP-1114
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false; localStorage.setItem('bSave', 'true'); ", true);
             }
             
         }
