@@ -2111,6 +2111,9 @@ function saveplanDetails() {
 }
 var editinsurancetype = '';
 function btnaddinsured(e) {
+    //Cap - 1369
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); };
+
     var PriChecked = document.getElementById("ctl00_C5POBody_rdbPRI").checked;
     var SecChecked = document.getElementById("ctl00_C5POBody_rdbSEC").checked;
     var TerChecked = document.getElementById("ctl00_C5POBody_rdbTER").checked;
@@ -2390,7 +2393,9 @@ function btnaddinsured(e) {
                     var newRow = document.getElementById('tbodupolicyinfo').insertRow();
                     newRow.innerHTML = "<tr><td style='width: 5%;text-align: center'><img src='Resources/edit.gif' onclick='Edit(this);'/></td><td style='width: 10%;text-align: center'>" + insuranceType + "</td><td style='width: 10 %;text-align: center'>" + planname + "</td><td style='width: 10 %;text-align: center'>" + PolicyVal + "</td><td style='width: 5 %;text-align: center'>" + RelationVal.options[RelationVal.selectedIndex].text + "</td ><td style='width: 10%;text-align: center'>" + insurename + "</td ><td style='width: 10 %;text-align: center'>" + vPCPName + "</td><td style='width: 10 %;text-align: center'>" + SpecificVal + "</td><td style='width: 7 %;text-align: center'> " + EffStartDate + "</td><td style='width: 7 %;text-align: center'>" + EffEndDate + "</td><td style='width: 7 %;text-align: center'>" + status + "</td><td style='display:none'>" + sortordernew + "</td><td style='display:none'>" + PlanVal + "</td><td style='display:none'>" + id + "</td><td style='display:none'>" + insurehumanid + "</td><td style='display:none'>" + parseInt(parseInt(maxvalue) + parseInt("1")) + "</td><td style='display:none'>" + RelationVal.options[RelationVal.selectedIndex].value + "</td><td style='display:none'>" + InsuredFullname + "</td><td style='display:none'>" + carrierVal + "</td><td style='display:none'>" + vPcpId + "</td><td style='display:none'>" + vProviderName + "</td><td style='display:none'>" + vProviderFullName + "</td><td style='display:none'>" + vPcpnpi + "</td><tr>";
                     document.getElementById(GetClientId("txtNoofPolicies")).value = $('#tbodupolicyinfo tr').length;
-                    btnclearinsured(false);
+                    //Cap - 1369
+                    //btnclearinsured(false);
+                    setTimeout(btnclearinsured(false), 1000);
                     //}
                     //else {
                     //   // btnclearinsured(false);
@@ -2441,8 +2446,9 @@ function btnaddinsured(e) {
                             $('#tbodupolicyinfo tr')[j].childNodes[20].innerText = vProviderName;
                             $('#tbodupolicyinfo tr')[j].childNodes[21].innerText = vProviderFullName;
                             $('#tbodupolicyinfo tr')[j].childNodes[22].innerText = vPcpnpi;
-
-                            btnclearinsured(false);
+                            //Cap - 1369
+                            //btnclearinsured(false);
+                            setTimeout(btnclearinsured(false), 1000);
                         }
 
                     }
@@ -2682,6 +2688,8 @@ function btnclearinsured(btnclearAll) {
     document.getElementById("lblSpecifyOther").innerHTML = "Specify Other";
     $('#btnAdd').val("Add");
     $('#btnClearAll').val("Clear All");
+    //Cap - 1369
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
 
 function sortTable() {
