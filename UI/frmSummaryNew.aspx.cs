@@ -2106,7 +2106,9 @@ margin:0in 0in 0in 9in;
 
 
             string htmlString = System.IO.File.ReadAllText(outputDocument);
-
+            //Jira CAP-1015
+            htmlString = htmlString.Replace("amp;", "");
+            
 
             string sProHeader = System.Configuration.ConfigurationSettings.AppSettings["ProgressNotesMainHeader"];
             string headerstring = string.Empty;
@@ -2952,7 +2954,7 @@ margin:0in 0in 0in 9in;
                 }
             }
             //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
-             NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
+            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
             string WordOutputName = NotesName + ".html";
             string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
             #region HPvalue
@@ -3097,6 +3099,8 @@ margin:0in 0in 0in 9in;
 
 
             string htmlString = System.IO.File.ReadAllText(outputDocument);
+            //Jira CAP-1015
+            htmlString = htmlString.Replace("amp;", "");
 
 
             string sProHeader = System.Configuration.ConfigurationSettings.AppSettings["ProgressNotesMainHeader"];
@@ -3707,7 +3711,7 @@ margin:0in 0in 0in 9in;
             //System.IO.File.Delete(pdfFileNamewithHeader);
             //Response.End();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX  : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-
+        
         }
 
         public void CreatePDFFromHTMLFile(string HtmlStream, string FileName)

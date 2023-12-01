@@ -885,6 +885,11 @@ function SaveCarePlan() {
                     alert('Invalid date format!');
                     this.focus();
                     i = 1;
+                    //CAP-1399
+                    SaveUnsuccessful();
+                    AutoSaveUnsuccessful();
+                    localStorage.setItem("bSave", "false");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return false;
                 }
 
@@ -892,6 +897,11 @@ function SaveCarePlan() {
                     alert('Invalid date format!');
                     this.focus();
                     i = 1;
+                    //CAP-1399
+                    SaveUnsuccessful();
+                    AutoSaveUnsuccessful();
+                    localStorage.setItem("bSave", "false");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return false;
                 }
                 if (DateMonthYear[2].length < 2) {
@@ -899,6 +909,11 @@ function SaveCarePlan() {
                     this.focus();
                     $(this)[0].value = "____-___-__";
                     i = 1;
+                    //CAP-1399
+                    SaveUnsuccessful();
+                    AutoSaveUnsuccessful();
+                    localStorage.setItem("bSave", "false");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return false;
                 }
 
@@ -916,6 +931,11 @@ function SaveCarePlan() {
                             alert('Invalid date format!');
                             this.focus();
                             i = 1;
+                            //CAP-1399
+                            SaveUnsuccessful();
+                            AutoSaveUnsuccessful();
+                            localStorage.setItem("bSave", "false");
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             return false;
                         }
                     }
@@ -930,12 +950,22 @@ function SaveCarePlan() {
                             alert('Invalid date format!');
                             this.focus();
                             i = 1;
+                            //CAP-1399
+                            SaveUnsuccessful();
+                            AutoSaveUnsuccessful();
+                            localStorage.setItem("bSave", "false");
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             return false;
                         }
                         if ((lyear == true) && (DateInput > 29)) {
                             alert('Invalid date format!');
                             this.focus();
                             i = 1;
+                            //CAP-1399
+                            SaveUnsuccessful();
+                            AutoSaveUnsuccessful();
+                            localStorage.setItem("bSave", "false");
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             return false;
                         }
                     }
@@ -950,18 +980,33 @@ function SaveCarePlan() {
                         alert("Cannot be future date. Please Enter a Valid Date.");
                         this.focus();
                         i = 1;
+                        //CAP-1399
+                        SaveUnsuccessful();
+                        AutoSaveUnsuccessful();
+                        localStorage.setItem("bSave", "false");
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
                     else if (parseInt(Month) > parseInt(curmonth) && Year >= CurrentYear) {
                         alert("Cannot be future date. Please Enter a Valid Date.");
                         this.focus();
                         i = 1;
+                        //CAP-1399
+                        SaveUnsuccessful();
+                        AutoSaveUnsuccessful();
+                        localStorage.setItem("bSave", "false");
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
                     else if (parseInt(DateMonthYear[2]) > parseInt(curday) && Year >= CurrentYear && parseInt(Month) >= parseInt(curmonth)) {
                         alert("Cannot be future date. Please Enter a Valid Date.");
                         this.focus();
                         i = 1;
+                        //CAP-1399
+                        SaveUnsuccessful();
+                        AutoSaveUnsuccessful();
+                        localStorage.setItem("bSave", "false");
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
 
@@ -969,6 +1014,11 @@ function SaveCarePlan() {
                     alert('Invalid date format!');
                     this.focus();
                     i = 1;
+                    //CAP-1399
+                    SaveUnsuccessful();
+                    AutoSaveUnsuccessful();
+                    localStorage.setItem("bSave", "false");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return false;
                 }
             } else {
@@ -978,24 +1028,44 @@ function SaveCarePlan() {
                     this.focus();
                     i = 1;
 
+                    //CAP-1399
+                    SaveUnsuccessful();
+                    AutoSaveUnsuccessful();
+                    localStorage.setItem("bSave", "false");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return false;
                 } else if (inputText.split('-')[2].length == 1) {
                     alert('Invalid date format!');
                     this.focus();
                     i = 1;
 
+                    //CAP-1399
+                    SaveUnsuccessful();
+                    AutoSaveUnsuccessful();
+                    localStorage.setItem("bSave", "false");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return false;
                 } else if (inputText.split('-')[1].length == 0 && inputText.split('-')[0].length == 0) {
                     alert('Invalid date format!');
                     this.focus();
                     i = 1;
 
+                    //CAP-1399
+                    SaveUnsuccessful();
+                    AutoSaveUnsuccessful();
+                    localStorage.setItem("bSave", "false");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return false;
                 } else if (inputText.split('-')[2].length != 0 && (inputText.split('-')[1].length == 0 || inputText.split('-')[0].length == 0)) {
                     alert('Invalid date format!');
                     this.focus();
                     i = 1;
 
+                    //CAP-1399
+                    SaveUnsuccessful();
+                    AutoSaveUnsuccessful();
+                    localStorage.setItem("bSave", "false");
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     return false;
                 } else if (inputText.split('-')[1] != '___' && inputText.split('-')[1].length != 0 && inputText.split('-')[0].length != 0) {
                     var DateMonthYear = inputText.split('-');
@@ -1004,6 +1074,11 @@ function SaveCarePlan() {
                         this.focus();
                         i = 1;
 
+                        //CAP-1399
+                        SaveUnsuccessful();
+                        AutoSaveUnsuccessful();
+                        localStorage.setItem("bSave", "false");
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
 
@@ -1011,6 +1086,11 @@ function SaveCarePlan() {
                         alert('Invalid date format!');
                         this.focus();
                         i = 1;
+                        //CAP-1399
+                        SaveUnsuccessful();
+                        AutoSaveUnsuccessful();
+                        localStorage.setItem("bSave", "false");
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
 
@@ -1031,6 +1111,11 @@ function SaveCarePlan() {
                             alert("Cannot be future date. Please Enter a Valid Date.");
                             this.focus();
                             i = 1;
+                            //CAP-1399
+                            SaveUnsuccessful();
+                            AutoSaveUnsuccessful();
+                            localStorage.setItem("bSave", "false");
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             return false;
                         }
                         else if (parseInt(Month) > parseInt(curmonth) && Year >= CurrentYear) {
@@ -1038,12 +1123,22 @@ function SaveCarePlan() {
                             alert("Cannot be future date. Please Enter a Valid Date.");
                             this.focus();
                             i = 1;
+                            //CAP-1399
+                            SaveUnsuccessful();
+                            AutoSaveUnsuccessful();
+                            localStorage.setItem("bSave", "false");
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             return false;
                         }
                         else if (parseInt(DateMonthYear[2]) > parseInt(curday) && Year >= CurrentYear && parseInt(Month) >= parseInt(curmonth)) {
                             alert("Cannot be future date. Please Enter a Valid Date.");
                             this.focus();
                             i = 1;
+                            //CAP-1399
+                            SaveUnsuccessful();
+                            AutoSaveUnsuccessful();
+                            localStorage.setItem("bSave", "false");
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                             return false;
                         }
 
@@ -1052,6 +1147,11 @@ function SaveCarePlan() {
                         alert('Invalid date format!');
                         this.focus();
                         i = 1;
+                        //CAP-1399
+                        SaveUnsuccessful();
+                        AutoSaveUnsuccessful();
+                        localStorage.setItem("bSave", "false");
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
                 } else if (inputText.split('-')[0].length != 0) {
@@ -1060,6 +1160,11 @@ function SaveCarePlan() {
                         alert('Invalid date format!');
                         this.focus();
                         i = 1;
+                        //CAP-1399
+                        SaveUnsuccessful();
+                        AutoSaveUnsuccessful();
+                        localStorage.setItem("bSave", "false");
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
 
@@ -1072,6 +1177,11 @@ function SaveCarePlan() {
                         this.focus();
                         i = 1;
                         $(this)[0].value = "____-___-__";
+                        //CAP-1399
+                        SaveUnsuccessful();
+                        AutoSaveUnsuccessful();
+                        localStorage.setItem("bSave", "false");
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                         return false;
                     }
                 }
