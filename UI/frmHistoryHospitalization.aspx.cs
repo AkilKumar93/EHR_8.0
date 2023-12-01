@@ -103,8 +103,60 @@ namespace Acurus.Capella.UI
                     chkPatientDeniesHospitalization.Enabled = true;
 
             }
-           
-           
+            //Cap - 1437 - Code position changed
+            if (chkPatientDeniesHospitalization.Checked)
+            {
+                DLC.Enable = false;
+                pnlHospitalization.Enabled = false;
+                pnlGrid.Enabled = false;
+                btnAdd.Enabled = false;
+                btnClearAll.Enabled = false;
+                dtpToDate.Enable = false;
+                dtpFromDate.Enable = false;
+                txtReasonForHospitalization.Enabled = false;
+                txtDischargePhysician.Enabled = false;
+                lstReasonForHospitalization.Enabled = false;
+                ddlReadmitted.Disabled = true;
+                pbDatabase.ImageUrl = "~/Resources/Database Disable.png";
+                dtpFromDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
+                dtpToDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
+                dtpReadmissionDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
+
+                pbClear.Enabled = false;
+                pbClear.ImageUrl = "~/Resources/close_disabled.png";
+            }
+            else
+            {
+                pnlHospitalization.Enabled = true;
+                pnlGrid.Enabled = true;
+                lstReasonForHospitalization.Enabled = true;
+                txtReasonForHospitalization.Enabled = true;
+                ddlReadmitted.Disabled = false;
+                btnClearAll.Enabled = true;
+                txtDischargePhysician.Enabled = true;
+                if (chkCurrentDate.Checked)
+                {
+                    dtpToDate.Enable = false;
+                    dtpToDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
+                }
+                else
+                {
+                    dtpToDate.Enable = true;
+                }
+                if (ddlReadmitted.SelectedIndex != 1)
+                {
+                    dtpReadmissionDate.Enable = false;
+                    dtpReadmissionDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
+                }
+                else
+                {
+                    dtpReadmissionDate.Enable = true;
+                    dtpReadmissionDate.RadButton1.ImageUrl = "~/Resources/calenda2.bmp";
+                }
+
+                dtpFromDate.Enable = true;
+            }
+
 
             DLC.txtDLC.Attributes.Add("onChange", "CCTextChanged()");
             dtpFromDate.cboDate.SelectedIndexChanged += new RadComboBoxSelectedIndexChangedEventHandler(cboDate_SelectedIndexChanged);
@@ -172,58 +224,7 @@ namespace Acurus.Capella.UI
             else
                 chkPatientDeniesHospitalization.Enabled = true;
 
-            if (chkPatientDeniesHospitalization.Checked)
-            {
-                DLC.Enable = false;
-                pnlHospitalization.Enabled = false;
-                pnlGrid.Enabled = false;
-                btnAdd.Enabled = false;
-                btnClearAll.Enabled = false;
-                dtpToDate.Enable = false;
-                dtpFromDate.Enable = false;
-                txtReasonForHospitalization.Enabled = false;
-                txtDischargePhysician.Enabled = false;
-                lstReasonForHospitalization.Enabled = false;
-                ddlReadmitted.Disabled = true;
-                pbDatabase.ImageUrl = "~/Resources/Database Disable.png";
-                dtpFromDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
-                dtpToDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
-                dtpReadmissionDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
-
-                pbClear.Enabled = false;
-                pbClear.ImageUrl = "~/Resources/close_disabled.png";
-            }
-            else
-            {
-                pnlHospitalization.Enabled = true;
-                pnlGrid.Enabled = true;
-                lstReasonForHospitalization.Enabled = true;
-                txtReasonForHospitalization.Enabled = true;
-                ddlReadmitted.Disabled = false;
-                btnClearAll.Enabled = true;
-                txtDischargePhysician.Enabled = true;
-                if (chkCurrentDate.Checked)
-                {
-                    dtpToDate.Enable = false;
-                    dtpToDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
-                }
-                else
-                {
-                    dtpToDate.Enable = true;
-                }
-                if (ddlReadmitted.SelectedIndex != 1)
-                {
-                    dtpReadmissionDate.Enable = false;
-                    dtpReadmissionDate.RadButton1.ImageUrl = "~/Resources/calenda2_Disabled.bmp";
-                }
-                else
-                {
-                    dtpReadmissionDate.Enable = true;
-                    dtpReadmissionDate.RadButton1.ImageUrl = "~/Resources/calenda2.bmp";
-                }
-	                    
-                dtpFromDate.Enable = true;
-            }
+            
 
             if (ClientSession.UserRole.ToUpper() != "PHYSICIAN" && ClientSession.UserRole.ToUpper() != "PHYSICIAN ASSISTANT")
             {
