@@ -267,6 +267,8 @@ $(document).ready(function () {
             LoadPhysicianList();
 
         }
+        //Cap - 1433
+        document.getElementById("btnClose").disabled = false;
     }
 
     else {
@@ -276,6 +278,8 @@ $(document).ready(function () {
         $("#lblShowAllPhysician").hide();
         document.getElementById("btnClose").style.display = 'none';
         openingFrom = "Queue";
+        //Cap - 1433
+        document.getElementById("btnClose").disabled = true;
     }
     var cboSourceOfInformation = $("#cboSourceOfInformation")[0];
     if (cboSourceOfInformation != null && cboSourceOfInformation != undefined) {
