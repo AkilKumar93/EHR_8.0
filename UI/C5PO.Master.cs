@@ -41,7 +41,14 @@ namespace Acurus.Capella.UI
             var currentURL = Request.Url.AbsoluteUri.ToString();
             var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
             var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
-            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+
+            //CAP-1311
+            if (HttpContext.Current.Request.Cookies["CUserName"]?.Value == null && HttpContext.Current.Request.Cookies["CFacilityName"]?.Value == null)
+            {
+                Response.Redirect("~/frmLogin.aspx");
+            }          
+
+            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern)) 
             {
                 Session["currenturl"] = Request.Url.AbsoluteUri;
             }
@@ -762,6 +769,9 @@ namespace Acurus.Capella.UI
                 Session["ShowAllState"] = null;
                 Session["GeneralQShowAll"] = null;
                 //CAP-1167
+                //
+                
+                Session.Clear();
                 Session.Abandon();
                 //CAP-1311
                 ClientSession.FlushSession();
@@ -769,6 +779,7 @@ namespace Acurus.Capella.UI
                 {
                     HttpCookie myCookie = Request.Cookies[cookieName];
                     myCookie.Value = ""; // Clear the cookie's value
+                    myCookie.Secure = true;
                     myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
                     Response.Cookies.Add(myCookie); // Update the client-side cookie
                 }
