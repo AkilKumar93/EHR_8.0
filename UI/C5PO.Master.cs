@@ -42,15 +42,25 @@ namespace Acurus.Capella.UI
             var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
             var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
 
-            //CAP-1311
-            if (HttpContext.Current.Request.Cookies["CUserName"]?.Value == null && HttpContext.Current.Request.Cookies["CFacilityName"]?.Value == null)
-            {
-                Response.Redirect("~/frmLogin.aspx");
-            }          
+                   
 
             if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern)) 
             {
                 Session["currenturl"] = Request.Url.AbsoluteUri;
+            }
+
+            //CAP-1311
+            if (HttpContext.Current.Request.Cookies["CUserName"]?.Value == null && HttpContext.Current.Request.Cookies["CFacilityName"]?.Value == null)
+            {
+                if(Session["currenturl"] != null && !string.IsNullOrWhiteSpace(Session["currenturl"].ToString()))
+                {
+                    Response.Redirect($"~/frmLogin.aspx?redirecturl={Session["currenturl"].ToString()}");
+                }
+                else
+                {
+                    Response.Redirect("~/frmLogin.aspx");
+                }
+                
             }
             //else if (this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMPATIENTCHART") == true)
             //{
