@@ -1922,7 +1922,8 @@ function SelectedNotes(agrulist) {
     EnableSave();
     var value = agrulist.split(",");
      //CAP-804 Syntax error, unrecognized expression
-    var sugglistval = $("#" + value[1]?.trim() + ".actcmpt").val().trim();
+     //CAP-1471
+    var sugglistval = $("#" + value[1]?.trim() + ".actcmpt")?.val()?.trim()??"";
 
     if (sugglistval != " " && sugglistval != "") {
         var subsugglistval = sugglistval.split(",")
