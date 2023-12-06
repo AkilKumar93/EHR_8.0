@@ -712,37 +712,39 @@
 						return _this.currentTime;
 					};
 
-					_this.nextMonth = function() {
-						var month = _this.currentTime.getMonth()+1;
+					_this.nextMonth = function () {
+						//CAP-1463 
+						var month = (_this?.currentTime?.getMonth()??0)+1;
 						if( month==12 ) {
-							_this.currentTime.setFullYear(_this.currentTime.getFullYear()+1);
+							_this.currentTime.setFullYear((_this.currentTime.getFullYear()??0)+1);
 							month = 0;
 						}
-						_this.currentTime.setDate(
+						_this?.currentTime?.setDate(
 							Math.min(
 								Date.daysInMonth[month],
-								_this.currentTime.getDate()
+								_this?.currentTime?.getDate()
 							)
 						);
-						_this.currentTime.setMonth(month);
+						_this?.currentTime?.setMonth(month);
 						options.onChangeMonth&&options.onChangeMonth.call&&options.onChangeMonth.call(datetimepicker,_xdsoft_datetime.currentTime,datetimepicker.data('input'));
 						datetimepicker.trigger('xchange.xdsoft');
 						return month;
 					};
 
-					_this.prevMonth = function() {
-						var month = _this.currentTime.getMonth()-1;
+					_this.prevMonth = function () {
+						//CAP-1463 
+						var month = (_this?.currentTime?.getMonth()??0)-1;
 						if( month==-1 ) {
-							_this.currentTime.setFullYear(_this.currentTime.getFullYear()-1);
+							_this.currentTime.setFullYear((_this?.currentTime?.getFullYear()??0)-1);
 							month = 11;
 						}
 						_this.currentTime.setDate(
 							Math.min(
 								Date.daysInMonth[month],
-								_this.currentTime.getDate()
+								_this.?currentTime?.getDate()
 							)
 						);
-						_this.currentTime.setMonth(month);
+						_this?.currentTime?.setMonth(month);
 						options.onChangeMonth&&options.onChangeMonth.call&&options.onChangeMonth.call(datetimepicker,_xdsoft_datetime.currentTime,datetimepicker.data('input'));
 						datetimepicker.trigger('xchange.xdsoft');
 						return month;
@@ -799,11 +801,12 @@
 								stop = false;
 
 							(function arguments_callee1(v) {
-								var month =  _xdsoft_datetime.currentTime.getMonth();
+								//CAP-1463 
+								var month =  _xdsoft_datetime?.currentTime?.getMonth();
 								if( $this.hasClass( options.next ) ) {
-									_xdsoft_datetime.nextMonth();
+									_xdsoft_datetime?.nextMonth();
 								}else if( $this.hasClass( options.prev ) ) {
-									_xdsoft_datetime.prevMonth();
+									_xdsoft_datetime?.prevMonth();
 								}
 								if (options.monthChangeSpinner) {
 									!stop&&(timer = setTimeout(arguments_callee1,v?v:100));
@@ -1027,7 +1030,7 @@
 							currentTime = _xdsoft_datetime.currentTime;
 						if( $this.hasClass('xdsoft_disabled') )
 							return false;
-
+							//CAP-1463 
 						currentTime.setDate( 1 );
 						currentTime.setFullYear( $this.data('year') );
 						currentTime.setMonth( $this.data('month') );
