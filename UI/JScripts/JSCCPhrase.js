@@ -132,10 +132,10 @@ function btnClear_Clicked(sender, args) {
             drawChart();
         }, 1000);
     } else {
-        //drawChart();
+       //drawChart();
          //CAP-1334
-        settimeout(function () {
-            drawchart();
+        setTimeout(function () {
+            drawChart();
         }, 1000);
         return false;
     }
