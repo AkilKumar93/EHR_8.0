@@ -31,6 +31,8 @@ namespace Acurus.Capella.UI
 
         string sXMLHumanDoc = string.Empty;
         string sXMLEncounterDoc = string.Empty;
+        //Cap - 1414, 1415, 1449
+        string sIsAkidoEncounter = "false";
         IList<Encounter_Blob> ilstEncounterBlob = new List<Encounter_Blob>();
         UtilityManager UtilityMngr = new UtilityManager();
         protected void Page_Load(object sender, EventArgs e)
@@ -99,10 +101,12 @@ namespace Acurus.Capella.UI
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                 }
                 //Jira #CAP-855
-                string sIsAkidoEncounter = "false";
+                
                 string sExMessage = "";
                 sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
-                if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
+                //Cap - 1414, 1415, 1449
+                //if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true"
+                if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true"  && !Request.QueryString["Menu"].Contains("FAX"))
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                     return;
@@ -166,781 +170,1648 @@ namespace Acurus.Capella.UI
                 }
             }
         }
-      
-      
+
+
         protected void btnFax_Click(object sender, EventArgs e)
         {
+            //Cap - 1414, 1415, 1449
+            //string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
+            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+
+            ////string FileName = strXmlEncounterPath; ;// "Encounter" + "_" + ClientSession.EncounterId + ".xml";
+            //string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml"; ;
+            //// string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+            ////string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
+
+
+            ////string xmlDataFile = strXmlEncounterPath;
+            //string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Consultation_Notes.xsl");
+            //string OutputNamingConvention = System.Configuration.ConfigurationSettings.AppSettings["ConsultationNotesNamingConvention"];
+            //string sNamingConvention = string.Empty;
+            //string[] OutputName = OutputNamingConvention.Split('~');
+            //string NotesName = OutputNamingConvention;
+            //string result = string.Empty;
+            //string[] dtFormat = OutputNamingConvention.Split('^');
+            //string sDateFormat = string.Empty;
+            //if (dtFormat.Count() > 1)
+            //{
+            //    if (dtFormat[1].Contains("@"))
+            //    {
+            //        dtFormat[1] = dtFormat[1].Split('@')[0];
+            //    }
+            //}
+            //string[] FormatCase = OutputNamingConvention.Split('@');
+            //for (int i = 0; i < OutputName.Length; i++)
+            //{
+            //    if (OutputName[i] != "")
+            //    {
+            //        result = ExtractBetween(OutputName[i], "[", "]");
+            //        //if (result.ToUpper().Contains("FACILITY"))
+            //        //{
+            //        //    if (FormatCase.Count() > 1)
+            //        //    {
+            //        //        if (FormatCase[1].ToUpper().Contains("YES"))
+            //        //            NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", "")).ToUpper();
+            //        //        else
+            //        //        {
+            //        //            NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", ""));
+            //        //        }
+            //        //        NotesName = NotesName.Replace(FormatCase[1], "");
+            //        //    }
+            //        //    else
+            //        //    {
+            //        //        NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", ""));
+            //        //    }
+
+            //        //}
+
+            //        if (result.ToUpper().Contains("HUMAN"))
+            //        {
+            //            NotesName = NotesName.Replace("[" + result + "]", ClientSession.HumanId.ToString());
+            //        }
+            //        if (result.ToUpper().Contains("ENCOUNTER"))
+            //        {
+            //            NotesName = NotesName.Replace("[" + result + "]", ClientSession.EncounterId.ToString());
+
+            //        }
+            //        if (result.ToUpper().Contains("MEMBER") || result.ToUpper().Contains("LAST") || result.ToUpper().Contains("FIRST") || result.ToUpper().Contains("DOB"))
+            //        {
+            //            string sExternalAccNo = string.Empty;
+            //            string sLastName = string.Empty;
+            //            string sFirstName = string.Empty;
+            //            string sDOB = string.Empty;
+            //            //try
+            //            //{
+            //            //if (File.Exists(strXmlHumanPath) == true)
+            //            if (sXMLHumanDoc != string.Empty)
+            //            {
+            //                XmlDocument itemDoc = new XmlDocument();
+            //                //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
+            //                // itemDoc.Load(XmlText);
+            //                itemDoc.LoadXml(sXMLHumanDoc);
+            //                //using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //                //{
+            //                //    itemDoc.Load(fs);
+
+            //                //    XmlText.Close();
+            //                if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+            //                {
+            //                    if (result.ToUpper().Contains("MEMBER"))
+            //                    {
+            //                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value != "")
+            //                        {
+            //                            sExternalAccNo = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value.ToString();
+            //                        }
+            //                        NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);
+            //                    }
+            //                    else if (result.ToUpper().Contains("LAST"))
+            //                    {
+            //                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != "")
+            //                        {
+            //                            if (FormatCase.Count() > 1)
+            //                            {
+            //                                if (FormatCase[1].ToUpper().Contains("YES"))
+            //                                    sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToUpper().ToString();
+            //                                else
+            //                                {
+            //                                    sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+            //                                }
+            //                                NotesName = NotesName.Replace(FormatCase[1], "");
+            //                            }
+            //                            else
+            //                            {
+            //                                sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+            //                            }
+            //                        }
+            //                        NotesName = NotesName.Replace("[" + result + "]", (sLastName.Replace("/", "").Replace(",", "_").Replace(":", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("*", "").Replace("?", "").Replace(";", "").Replace("\\", "").Replace("\"", "")).Trim());
+            //                    }
+            //                    else if (result.ToUpper().Contains("FIRST"))
+            //                    {
+            //                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != "")
+            //                        {
+            //                            if (FormatCase.Count() > 1)
+            //                            {
+            //                                if (FormatCase[1].ToUpper().Contains("YES"))
+            //                                    sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToUpper().ToString();
+            //                                else
+            //                                {
+            //                                    sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+            //                                }
+            //                                NotesName = NotesName.Replace(FormatCase[1], "");
+            //                            }
+            //                            else
+            //                            {
+            //                                sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+            //                            }
+            //                        }
+            //                        NotesName = NotesName.Replace("[" + result + "]", (sFirstName.Replace("/", "").Replace(",", "_").Replace(":", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("*", "").Replace("?", "").Replace(";", "").Replace("\\", "").Replace("\"", "")).Trim());
+            //                    }
+            //                    else if (result.ToUpper().Contains("DOB") || (OutputName[i].ToUpper().Contains("DATE") && OutputName[i].ToUpper().Contains("BIRTH")))
+            //                    {
+            //                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value != "")
+            //                        {
+            //                            if (dtFormat.Count() > 1)
+            //                            {
+            //                                if (dtFormat[1] == "yyyyMMdd")
+            //                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+            //                                else if (dtFormat[1] == "MMddyyyy")
+            //                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("MMddyyyy");
+            //                                else if (dtFormat[1] == "MMddyy")
+            //                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("MMddyy");
+            //                                else if (dtFormat[1] == "yyMMdd")
+            //                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyMMdd");
+            //                                else
+            //                                {
+            //                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+            //                                }
+            //                                NotesName = NotesName.Replace(dtFormat[1], "");
+            //                            }
+            //                            else
+            //                            {
+            //                                sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+            //                            }
+            //                        }
+            //                        NotesName = NotesName.Replace("[" + result + "]", sDOB);
+            //                    }
+            //                }
+            //                //    fs.Close();
+            //                //    fs.Dispose();
+            //                //}
+            //            }
+            //            //}
+            //            //catch (Exception ex)
+            //            //{
+            //            //    throw new Exception(ex.Message + " - " + strXmlHumanPath);
+            //            //}
+
+            //        }
+            //        if ((result.ToUpper().Contains("DOS")) || (OutputName[i].ToUpper().Contains("DATE")) || result.ToUpper().Contains("FACILITY"))
+            //        {
+
+            //            //try
+            //            //{
+            //            //if (File.Exists(strXmlEncounterPath) == true)
+            //            if (sXMLEncounterDoc != string.Empty)
+            //            {
+            //                XmlDocument itemDoc = new XmlDocument();
+            //                //XmlTextReader XmlText = new XmlTextReader(strXmlEncounterPath);
+            //                // itemDoc.Load(XmlText);
+            //                itemDoc.LoadXml(sXMLEncounterDoc);
+            //                //using (FileStream fs = new FileStream(strXmlEncounterPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //                //{
+            //                //    itemDoc.Load(fs);
+
+            //                //    XmlText.Close();
+            //                if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
+            //                {
+            //                    string sDOS = string.Empty;
+
+            //                    if ((result.ToUpper().Contains("DOS") || OutputName[i].ToUpper().Contains("DATE")) && itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value != "")
+            //                    {
+            //                        if (dtFormat.Count() > 1)
+            //                        {
+            //                            if (dtFormat[1] == "yyyyMMdd")
+            //                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
+            //                            else if (dtFormat[1] == "MMddyyyy")
+            //                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("MMddyyyy");
+            //                            else if (dtFormat[1] == "MMddyy")
+            //                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("MMddyy");
+            //                            else if (dtFormat[1] == "yyMMdd")
+            //                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyMMdd");
+            //                            else
+            //                            {
+            //                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
+            //                            }
+            //                            NotesName = NotesName.Replace(dtFormat[1], "");
+            //                        }
+            //                        else
+            //                        {
+            //                            sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
+            //                        }
+            //                        NotesName = NotesName.Replace("[" + result + "]", sDOS);
+            //                    }
+            //                    else if (result.ToUpper().Contains("FACILITY") && itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Trim() != "")
+            //                    {
+            //                        if (FormatCase.Count() > 1)
+            //                        {
+            //                            if (FormatCase[1].ToUpper().Contains("YES"))
+            //                                NotesName = NotesName.Replace("[" + result + "]", itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Replace(",", "")).ToUpper();
+            //                            else
+            //                            {
+            //                                NotesName = NotesName.Replace("[" + result + "]", itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Replace(",", ""));
+            //                            }
+            //                            NotesName = NotesName.Replace(FormatCase[1], "");
+            //                        }
+            //                        else
+            //                        {
+            //                            NotesName = NotesName.Replace("[" + result + "]", itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Replace(",", ""));
+            //                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        NotesName = NotesName.Replace("[" + result + "]", "");
+            //                    }
+
+            //                }
+            //                //    fs.Close();
+            //                //    fs.Dispose();
+            //                //}
+            //            }
+            //            //}
+            //            //catch (Exception ex)
+            //            //{
+            //            //    throw new Exception(ex.Message + " - " + strXmlEncounterPath);
+            //            //}
+            //        }
+            //    }
+            //}
+            //if (NotesName.Contains('['))
+            //{
+            //    string[] sName = NotesName.Split('~');
+
+            //    for (int i = 0; i < sName.Length; i++)
+            //    {
+            //        if (sName[i] != "")
+            //        {
+            //            if (sName[i].Contains("["))
+            //            {
+            //                result = ExtractBetween(sName[i], "[", "]");
+            //                NotesName = NotesName.Replace("[" + result + "]", "");
+            //            }
+            //        }
+            //    }
+            //}
+            ////NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+            //NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
+
+            //string WordOutputName = NotesName + ".html";
+            //string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
+
+            ////Jira #CAP-344 - OldCode
+            ////DataSet ds;
+            ////XmlDataDocument xmlDoc;
+            ////XslCompiledTransform xslTran;
+            ////XmlElement root;
+            ////XPathNavigator nav;
+            ////XmlTextWriter writer;
+            ////XsltSettings settings = new XsltSettings(true, false);
+
+            ////ds = new DataSet();
+            //////ds.ReadXml(xmlDataFile);
+            //////ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+            ////StringBuilder sb = new StringBuilder();
+            ////sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+
+            ////string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+
+            ////sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+            ////ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+
+            ////xmlDoc = new XmlDataDocument(ds);
+            ////xslTran = new XslCompiledTransform();
+            ////// xslTran.Load(xsltFile);
+            ////UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            ////xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+            ////UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+
+            ////root = xmlDoc.DocumentElement;
+
+
+            ////nav = root.CreateNavigator();
+            ////if (File.Exists(outputDocument))
+            ////{
+            ////    File.Delete(outputDocument);
+            ////}
+            ////writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+            ////xslTran.Transform(nav, writer);
+            ////writer.Close();
+            ////writer = null;
+            ////nav = null;
+            ////root = null;
+            ////xmlDoc = null;
+            ////ds = null;
+
+            ////Jira #CAP-344 - NewCode
+            //UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc,  sXMLHumanDoc,  xsltFile,  outputDocument, sGroup_ID_Log);
+            //System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
+            ////  string htmlString = System.IO.File.ReadAllText(outputDocument);
+
+            ////  IList<PatientPane> lstpane = new List<PatientPane>();
+            ////   lstpane = ClientSession.PatientPaneList.ToList<PatientPane>();
+            //string Patient_Name = "";
+            //// if(lstpane.Count>0)
+            //// Patient_Name=lstpane[0].Last_Name + "," + "" + lstpane[0].First_Name + " " + lstpane[0].MI;
+
+            //string Encounter_signedDate = "";
+
+            //string Encounter_Provider_Name = "";
+            //string Provider_Speciality = "";
+            //TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
+            //XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
+            //TextReader HumanXMLContentdoc = new StringReader(sXMLHumanDoc);
+            //XDocument xmlDocument = XDocument.Load(HumanXMLContentdoc);
+            //string Encounter_Provider_id = "";
+
+            //foreach (XElement elements in xmlDocument.Descendants("HumanList"))
+            //{
+
+            //    foreach (XElement Human in elements.Elements())
+            //    {
+            //        if (Human.Attribute("First_Name") != null && Human.Attribute("Last_Name") != null && Human.Attribute("MI") != null)
+            //            Patient_Name = Human.Attribute("Last_Name").Value + "," + "" + Human.Attribute("First_Name").Value + " " + Human.Attribute("MI").Value;
+
+            //    }
+            //}
+
+
+
+
+
+            //string Encounter_Reviewed_signedDate = "";
+            //string Encounter_Reviewed_Name = "";
+            //string Encounter_Reviewed_Id = "";
+            //// xmlDocumentType = XDocument.Load(strXmlEncounterPath);
+
+            //foreach (XElement elements in xmlDocumentType.Descendants("EncounterList"))
+            //{
+            //    foreach (XElement Encounter in elements.Elements())
+            //    {
+            //        DateTime dt = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Review_Signed_Date").Value);
+            //        Encounter_Reviewed_signedDate = UtilityManager.ConvertToLocal(dt).ToString("dd-MMM-yyyy hh:mm tt");
+
+            //        DateTime dtPro = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Signed_Date").Value);
+            //        Encounter_signedDate = UtilityManager.ConvertToLocal(dtPro).ToString("dd-MMM-yyyy hh:mm tt");
+
+            //        Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
+
+            //    }
+
+            //    //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
+            //    //{
+            //    // foreach (XElement Encounter in elements.Elements())
+            //    // {
+            //    //     DateTime dt = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Signed_Date").Value);
+            //    //     Encounter_signedDate = UtilityManager.ConvertToLocal(dt).ToString("dd-MMM-yyyy hh:mm:ss tt");
+            //    //}
+            //    //}
+            //}
+            ////Provider Name 
+            //foreach (XElement elements in xmlDocumentType.Descendants("EncounterDetails"))
+            //{
+            //    foreach (XElement Encounter in elements.Elements())
+            //    {
+            //        Encounter_Provider_Name = Encounter.Value;
+            //        break;
+            //    }
+            //    break;
+            //}
+            ////Provider Reviewed Name 
+            //if (Encounter_Reviewed_Id != "")
+            //{
+            //    string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
+            //    if (File.Exists(xmlFilepathUser))
+            //    {
+            //        XmlDocument xdoc = new XmlDocument();
+            //        XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
+            //        xdoc.Load(itext);
+            //        itext.Close();
+            //        XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
+            //        if (xnodelst != null && xnodelst.Count > 0)
+            //        {
+            //            foreach (XmlNode xnode in xnodelst)
+            //            {
+            //                if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == Encounter_Reviewed_Id)
+            //                {
+            //                    Encounter_Reviewed_Name = xnode.Attributes.GetNamedItem("person_name").Value;
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //}
+
+
+            //foreach (XElement elements in xmlDocumentType.Descendants("EncounterDetails"))
+            //{
+            //    foreach (XElement Encounter in elements.Elements())
+            //    {
+            //        // if (Encounter.LastAttribute != null && Encounter.LastAttribute.Name.ToString() == "Specialties")
+            //        if (Encounter.Attribute("Specialties") != null)
+            //        {
+            //            Provider_Speciality = Encounter.LastAttribute.Value;
+            //            break;
+
+
+            //        }
+
+
+            //    }
+
+            //}
+
+
+
+            //string strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+            ////string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
+            ////     " have reviewed the chart and agree with the management plan with the changes to the plan as indicated.";
+
+            //string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
+            //StaticLookupManager staticMngr = new StaticLookupManager();
+            //string strfooterProviderReviewed = string.Empty;
+            //IList<StaticLookup> CommonList = staticMngr.getStaticLookupByFieldName(StaticLookupValues);
+            //if (CommonList.Count > 0)
+            //    strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
+
+
+            //string htmlString = System.IO.File.ReadAllText(outputDocument);
+            //if (file.Exists)
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //var strBody = new StringBuilder();
+            //string imgpath = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath"];
+            //string imgpath_phy = System.Configuration.ConfigurationSettings.AppSettings["phyConsultationLogoPath"];
+            //string imgpath_PalliativeCare = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath_PalliativeCare"];
+            //string imgpath_Integrum = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath_Integrum"];
+
+            //string phyheaderstring = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_phy + "' alt='logo' height='100' width='200'></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+            //string headerstring = "<table  style='width:100%'><tr><td><span><img src='" + imgpath + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+            //string header = "<table style='width:100%'><tr><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+            //string headerLogo_PalliativeCare = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_PalliativeCare + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+            //string headerLogo_Integrum = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_Integrum + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+            //string finalHeadeString = string.Empty;
+            //string PatientName = "RE: " + Patient_Name;
+
+            //string sProHeader = System.Configuration.ConfigurationSettings.AppSettings["ProgressNotesMainHeader"];
+            //if (System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoIntegrum"] != null && System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoIntegrum"] == "ALL")
+            //    finalHeadeString = imgpath_Integrum;
+            //else if (Provider_Speciality.ToUpper().Contains("ENDOCRINOLOGY"))
+            //    finalHeadeString = imgpath;
+            //else if (Encounter_Provider_id == "4198")
+            //    finalHeadeString = imgpath_phy;
+            //else if (Encounter_Provider_id == "3101" || Encounter_Provider_id == "321")
+            //    finalHeadeString = imgpath_PalliativeCare;
+            //else
+            //    finalHeadeString = "";
+
+
+            //string strfooterF = "";
+
+            //string strfooterPA = "";
+            //string strfooterP = "";
+            //if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "" && Encounter_Reviewed_signedDate != "01-Jan-0001 12:00 AM")
+            //{
+            //    strfooterPA = strfooterProvider;
+
+            //    strfooterP = strfooterProviderReviewed;
+            //    strfooterF = " ";
+            //    //  strfooterProvider = strfooterProvider + "<br/>" + strfooterProviderReviewed;
+            //}
+            //else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM")
+            //{
+            //    strfooterF = strfooterProvider;
+            //}
+            //else
+            //{
+
+
+            //    strfooterF = "";
+
+            //}
+
+
+            //if (file.Exists)
+            //{
+            //    File.Delete(outputDocument);
+            //}
+            //// var strBody = new StringBuilder();
+
+            //string sbTop = "";
+
+            //sbTop = sbTop + htmlString;
+
+
+            //string strHtml = string.Empty;
+            //string pdfFileName = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], NotesName + "test" + ".pdf");//System.Configuration.ConfigurationSettings.AppSettings["XMLPath"] + NotesName + "test" + ".pdf";
+
+            //string pdfFileNamewithHeader = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], NotesName + ".pdf");//)System.Configuration.ConfigurationSettings.AppSettings["XMLPath"] + NotesName + ".pdf";
+
+            //if (htmlString.Length > 0)
+            //{
+            //    try
+            //    {
+            //        CreatePDFFromHTMLFile(sbTop, pdfFileName);
+            //    }
+
+            //    catch (Exception ex)
+            //    {
+            //        if (ex.Message.ToUpper().Contains("NO PAGES"))
+            //        {
+            //            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "DisplayErrorMessage('1011187'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //            return;
+
+            //        }
+            //        else
+            //            throw ex;
+            //    }
+
+            //    var reader = new PdfReader(pdfFileName);
+
+            //    using (var fileStream = new FileStream(pdfFileNamewithHeader, FileMode.Create, FileAccess.Write))
+            //    {
+
+
+            //        var document1 = new Document(new Rectangle(625, 975));
+
+            //        Rectangle pageSize = new Rectangle(625, 975);
+            //        var writerpdf = PdfWriter.GetInstance(document1, fileStream);
+
+            //        document1.Open();
+            //        int count = reader.NumberOfPages;
+
+
+
+            //        sProHeader = "N";
+            //        for (var i = 1; i <= count; i++)
+            //        {
+            //            document1.NewPage();
+
+            //            var baseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            //            PdfReader.unethicalreading = true;
+
+            //            var importedPage = writerpdf.GetImportedPage(reader, i);
+
+
+            //            var con = writerpdf.DirectContent;
+
+            //            float X = 80f, Y = 20f;
+            //            BaseFont baseFont1 = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+            //            con.BeginText();
+
+            //            con.SetFontAndSize(FontFactory.GetFont(FontFactory.TIMES_ITALIC).BaseFont, 9);
+
+            //            if (strfooterF == "")
+            //            {
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+            //            }
+            //            else if (strfooterPA != "" && strfooterP != "")
+            //            {
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterPA, 30, 30, 0);
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterP, 30, 20, 0);
+
+            //                //ColumnText ct = new ColumnText(con);
+            //                //ct.SetSimpleColumn(new Phrase(new Chunk(strfooterPA, FontFactory.GetFont(FontFactory.TIMES_ITALIC, 9, Font.NORMAL))),
+            //                //                   35, 77, 530, 36, 14, iTextSharp.text.Element.ALIGN_LEFT | iTextSharp.text.Element.ALIGN_BOTTOM);
+            //                //ct.Go();
+
+            //                //ct = new ColumnText(con);
+            //                //ct.SetSimpleColumn(new Phrase(new Chunk(strfooterP, FontFactory.GetFont(FontFactory.TIMES_ITALIC, 9, Font.NORMAL))),
+            //                //                   35, 65, 530, 36, 14, iTextSharp.text.Element.ALIGN_LEFT | iTextSharp.text.Element.ALIGN_BOTTOM);
+            //                //ct.Go(); 
+
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+            //            }
+            //            else
+            //            {
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterF, 30, 20, 0);
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+            //            }
+
+            //            if (sProHeader == "Y")
+            //            {
+            //                Y += 70;
+            //            }
+
+            //            else
+            //                Y += 10;
+
+            //            con.SetFontAndSize(baseFont1, 10);
+            //            con.SetColorFill(BaseColor.BLACK);
+            //            con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
+
+            //            X += 103;
+
+            //            con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
+            //            // string imagepath = "";
+
+            //            if (finalHeadeString != "")
+            //            {
+            //                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(finalHeadeString);
+            //                logo.ScaleAbsolute(50, 50);
+            //                logo.SetAbsolutePosition(pageSize.GetLeft(X) - 150, pageSize.GetTop(Y) - 30);
+            //                con.AddImage(logo);
+
+
+            //            }
+
+
+            //            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, PatientName, pageSize.GetLeft(X) + 200, pageSize.GetTop(Y) - 30, 0);
+            //            con.SetColorFill(BaseColor.BLACK);
+            //            con.EndText();
+            //            if (sProHeader == "Y")
+            //            {
+
+            //                con.AddTemplate(importedPage, 0, 0);
+            //            }
+            //            else
+            //                con.AddTemplate(importedPage, 0, 60);
+
+            //        }
+
+            //        document1.Close();
+            //        writerpdf.Close();
+            //        fileStream.Close();
+            //        fileStream.Dispose();
+            //    }
+            //    if (File.Exists(pdfFileName))
+            //    {
+            //        File.Delete(pdfFileName);
+
+            //    }
+            //}
+            //else
+            //{
+            //    using (var fileStream = new FileStream(pdfFileNamewithHeader, FileMode.Create, FileAccess.Write))
+            //    {
+            //        var document1 = new Document(new Rectangle(625, 975));
+
+            //        Rectangle pageSize = new Rectangle(625, 975);
+            //        var writerpdf = PdfWriter.GetInstance(document1, fileStream);
+
+            //        document1.Open();
+            //        int count = 1;
+
+
+            //        sProHeader = "N";
+
+            //        for (var i = 1; i <= count; i++)
+            //        {
+            //            document1.NewPage();
+
+            //            var baseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            //            PdfReader.unethicalreading = true;
+
+            //            var con = writerpdf.DirectContent;
+
+            //            float X = 80f, Y = 20f;
+            //            BaseFont baseFont1 = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+            //            con.BeginText();
+            //            if (sProHeader == "Y")
+            //            {
+
+
+            //                //float U = 75;
+            //                //float S = 60f;
+
+
+            //            }
+            //            con.SetFontAndSize(FontFactory.GetFont(FontFactory.TIMES_ITALIC).BaseFont, 8);
+
+            //            if (strfooterProvider != "")
+            //            {
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterProvider, 30, 30, 0);
+            //                if (strfooterProviderReviewed != "")
+            //                    con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterProviderReviewed, 30, 20, 0);
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+            //            }
+            //            else if (strfooterF != "")
+            //            {
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterF, 30, 20, 0);
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+            //            }
+            //            else
+            //            {
+            //                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+            //            }
+
+
+            //            Y += 10;
+            //            con.MoveTo(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
+
+
+            //            #region Column1
+            //            if (sProHeader == "Y")
+            //            {
+            //                Y += 70;
+            //            }
+
+            //            else
+            //                Y += 10;
+
+            //            con.SetFontAndSize(baseFont1, 10);
+            //            con.SetColorFill(BaseColor.BLACK);
+            //            con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
+            //            if (finalHeadeString != "")
+            //            {
+            //                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(finalHeadeString);
+            //                logo.ScaleAbsolute(50, 50);
+            //                logo.SetAbsolutePosition(pageSize.GetLeft(X) - 150, pageSize.GetTop(Y) - 30);
+            //                con.AddImage(logo);
+
+
+            //            }
+
+
+            //            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, PatientName, pageSize.GetLeft(X) + 200, pageSize.GetTop(Y) - 30, 0);
+
+
+
+            //            #endregion
+
+
+            //            con.LineTo(pageSize.GetRight(X) + 40, pageSize.GetTop(Y));
+            //            con.Stroke();
+
+
+            //            con.SetColorFill(BaseColor.BLACK);
+            //            con.EndText();
+
+            //        }
+
+            //        document1.Close();
+            //        writerpdf.Close();
+            //        fileStream.Close();
+            //        fileStream.Dispose();
+            //    }
+            //}
+
+
+
+
+            //Response.ContentType = "application/x-download";
+            //Response.AddHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", NotesName + ".pdf"));
+            //Response.WriteFile(pdfFileNamewithHeader);
+
+            //Response.Flush();
+            //System.IO.File.Delete(pdfFileNamewithHeader);
+            //Response.End();
+            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            string sFaxSubject = string.Empty;
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-
-            //string FileName = strXmlEncounterPath; ;// "Encounter" + "_" + ClientSession.EncounterId + ".xml";
-            string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml"; ;
-            // string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
-            //string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
-
-
-            //string xmlDataFile = strXmlEncounterPath;
-            string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Consultation_Notes.xsl");
-            string OutputNamingConvention = System.Configuration.ConfigurationSettings.AppSettings["ConsultationNotesNamingConvention"];
-            string sNamingConvention = string.Empty;
-            string[] OutputName = OutputNamingConvention.Split('~');
-            string NotesName = OutputNamingConvention;
-            string result = string.Empty;
-            string[] dtFormat = OutputNamingConvention.Split('^');
-            string sDateFormat = string.Empty;
-            if (dtFormat.Count() > 1)
+            //Cap - 1414, 1415, 1449
+            if (sIsAkidoEncounter == "false")
             {
-                if (dtFormat[1].Contains("@"))
+               
+                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+                
+                //string FileName = strXmlEncounterPath; //"Encounter" + "_" + ClientSession.EncounterId + ".xml";
+                string human_id = "Human" + "_" + ClientSession.HumanId.ToString() + ".xml"; ;
+                // string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+                //string strXmlHumanPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], human_id);
+
+
+                //string xmlDataFile = strXmlEncounterPath;
+                string xsltFile = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "EHR_Consultation_Notes.xsl");
+                string OutputNamingConvention = System.Configuration.ConfigurationSettings.AppSettings["ConsultationNotesNamingConvention"];
+                string sNamingConvention = string.Empty;
+                string[] OutputName = OutputNamingConvention.Split('~');
+                string NotesName = OutputNamingConvention;
+                string result = string.Empty;
+                string[] dtFormat = OutputNamingConvention.Split('^');
+                string sDateFormat = string.Empty;
+                if (dtFormat.Count() > 1)
                 {
-                    dtFormat[1] = dtFormat[1].Split('@')[0];
+                    if (dtFormat[1].Contains("@"))
+                    {
+                        dtFormat[1] = dtFormat[1].Split('@')[0];
+                    }
                 }
-            }
-            string[] FormatCase = OutputNamingConvention.Split('@');
-            for (int i = 0; i < OutputName.Length; i++)
-            {
-                if (OutputName[i] != "")
+                string[] FormatCase = OutputNamingConvention.Split('@');
+                for (int i = 0; i < OutputName.Length; i++)
                 {
-                    result = ExtractBetween(OutputName[i], "[", "]");
-                    //if (result.ToUpper().Contains("FACILITY"))
-                    //{
-                    //    if (FormatCase.Count() > 1)
-                    //    {
-                    //        if (FormatCase[1].ToUpper().Contains("YES"))
-                    //            NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", "")).ToUpper();
-                    //        else
-                    //        {
-                    //            NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", ""));
-                    //        }
-                    //        NotesName = NotesName.Replace(FormatCase[1], "");
-                    //    }
-                    //    else
-                    //    {
-                    //        NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", ""));
-                    //    }
-
-                    //}
-
-                    if (result.ToUpper().Contains("HUMAN"))
+                    if (OutputName[i] != "")
                     {
-                        NotesName = NotesName.Replace("[" + result + "]", ClientSession.HumanId.ToString());
-                    }
-                    if (result.ToUpper().Contains("ENCOUNTER"))
-                    {
-                        NotesName = NotesName.Replace("[" + result + "]", ClientSession.EncounterId.ToString());
-
-                    }
-                    if (result.ToUpper().Contains("MEMBER") || result.ToUpper().Contains("LAST") || result.ToUpper().Contains("FIRST") || result.ToUpper().Contains("DOB"))
-                    {
-                        string sExternalAccNo = string.Empty;
-                        string sLastName = string.Empty;
-                        string sFirstName = string.Empty;
-                        string sDOB = string.Empty;
-                        //try
+                        result = ExtractBetween(OutputName[i], "[", "]");
+                        //if (result.ToUpper().Contains("FACILITY"))
                         //{
-                        //if (File.Exists(strXmlHumanPath) == true)
-                        if (sXMLHumanDoc != string.Empty)
-                        {
-                            XmlDocument itemDoc = new XmlDocument();
-                            //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
-                            // itemDoc.Load(XmlText);
-                            itemDoc.LoadXml(sXMLHumanDoc);
-                            //using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                            //{
-                            //    itemDoc.Load(fs);
+                        //    if (FormatCase.Count() > 1)
+                        //    {
+                        //        if (FormatCase[1].ToUpper().Contains("YES"))
+                        //            NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", "")).ToUpper();
+                        //        else
+                        //        {
+                        //            NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", ""));
+                        //        }
+                        //        NotesName = NotesName.Replace(FormatCase[1], "");
+                        //    }
+                        //    else
+                        //    {
+                        //        NotesName = NotesName.Replace("[" + result + "]", ClientSession.FacilityName.Replace(",", ""));
+                        //    }
 
-                            //    XmlText.Close();
-                            if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
+                        //}
+
+                        if (result.ToUpper().Contains("HUMAN"))
+                        {
+                            NotesName = NotesName.Replace("[" + result + "]", ClientSession.HumanId.ToString());
+                        }
+                        if (result.ToUpper().Contains("ENCOUNTER"))
+                        {
+                            NotesName = NotesName.Replace("[" + result + "]", ClientSession.EncounterId.ToString());
+
+                        }
+                        if (result.ToUpper().Contains("MEMBER") || result.ToUpper().Contains("LAST") || result.ToUpper().Contains("FIRST") || result.ToUpper().Contains("DOB"))
+                        {
+                            string sExternalAccNo = string.Empty;
+                            string sLastName = string.Empty;
+                            string sFirstName = string.Empty;
+                            string sDOB = string.Empty;
+                            //if (File.Exists(strXmlHumanPath) == true)
+                            if (sXMLHumanDoc != string.Empty)
                             {
-                                if (result.ToUpper().Contains("MEMBER"))
+                                XmlDocument itemDoc = new XmlDocument();
+                                //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
+                                // itemDoc.Load(XmlText);
+                                itemDoc.LoadXml(sXMLHumanDoc);
+                                //using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                                //{
+                                //    itemDoc.Load(fs);
+
+                                //    XmlText.Close();
+                                if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
                                 {
-                                    if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value != "")
+                                    if (result.ToUpper().Contains("MEMBER"))
                                     {
-                                        sExternalAccNo = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value.ToString();
-                                    }
-                                    NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);
-                                }
-                                else if (result.ToUpper().Contains("LAST"))
-                                {
-                                    if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != "")
-                                    {
-                                        if (FormatCase.Count() > 1)
+                                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value != "")
                                         {
-                                            if (FormatCase[1].ToUpper().Contains("YES"))
-                                                sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToUpper().ToString();
+                                            sExternalAccNo = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value.ToString();
+                                        }
+                                        NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);
+                                    }
+                                    else if (result.ToUpper().Contains("LAST"))
+                                    {
+                                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != "")
+                                        {
+                                            if (FormatCase.Count() > 1)
+                                            {
+                                                if (FormatCase[1].ToUpper().Contains("YES"))
+                                                    sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToUpper().ToString();
+                                                else
+                                                {
+                                                    sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
+                                                }
+                                                NotesName = NotesName.Replace(FormatCase[1], "");
+                                            }
                                             else
                                             {
                                                 sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
                                             }
-                                            NotesName = NotesName.Replace(FormatCase[1], "");
                                         }
-                                        else
-                                        {
-                                            sLastName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
-                                        }
+                                        NotesName = NotesName.Replace("[" + result + "]", (sLastName.Replace("/", "").Replace(",", "_").Replace(":", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("*", "").Replace("?", "").Replace(";", "").Replace("\\", "").Replace("\"", "")).Trim());
                                     }
-                                    NotesName = NotesName.Replace("[" + result + "]", (sLastName.Replace("/", "").Replace(",", "_").Replace(":", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("*", "").Replace("?", "").Replace(";", "").Replace("\\", "").Replace("\"", "")).Trim());
-                                }
-                                else if (result.ToUpper().Contains("FIRST"))
-                                {
-                                    if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != "")
+                                    else if (result.ToUpper().Contains("FIRST"))
                                     {
-                                        if (FormatCase.Count() > 1)
+                                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != "")
                                         {
-                                            if (FormatCase[1].ToUpper().Contains("YES"))
-                                                sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToUpper().ToString();
+                                            if (FormatCase.Count() > 1)
+                                            {
+                                                if (FormatCase[1].ToUpper().Contains("YES"))
+                                                    sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToUpper().ToString();
+                                                else
+                                                {
+                                                    sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+                                                }
+                                                NotesName = NotesName.Replace(FormatCase[1], "");
+                                            }
                                             else
                                             {
                                                 sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
                                             }
-                                            NotesName = NotesName.Replace(FormatCase[1], "");
                                         }
-                                        else
-                                        {
-                                            sFirstName = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
-                                        }
+                                        NotesName = NotesName.Replace("[" + result + "]", (sFirstName.Replace("/", "").Replace(",", "_").Replace(":", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("*", "").Replace("?", "").Replace(";", "").Replace("\\", "").Replace("\"", "")).Trim());
                                     }
-                                    NotesName = NotesName.Replace("[" + result + "]", (sFirstName.Replace("/", "").Replace(",", "_").Replace(":", "").Replace("<", "").Replace(">", "").Replace("|", "").Replace("*", "").Replace("?", "").Replace(";", "").Replace("\\", "").Replace("\"", "")).Trim());
+                                    else if (result.ToUpper().Contains("DOB") || (OutputName[i].ToUpper().Contains("DATE") && OutputName[i].ToUpper().Contains("BIRTH")))
+                                    {
+                                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value != "")
+                                        {
+                                            if (dtFormat.Count() > 1)
+                                            {
+                                                if (dtFormat[1] == "yyyyMMdd")
+                                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+                                                else if (dtFormat[1] == "MMddyyyy")
+                                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("MMddyyyy");
+                                                else if (dtFormat[1] == "MMddyy")
+                                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("MMddyy");
+                                                else if (dtFormat[1] == "yyMMdd")
+                                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyMMdd");
+                                                else
+                                                {
+                                                    sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+                                                }
+                                                NotesName = NotesName.Replace(dtFormat[1], "");
+                                            }
+                                            else
+                                            {
+                                                sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+                                            }
+                                        }
+                                        NotesName = NotesName.Replace("[" + result + "]", sDOB);
+                                    }
                                 }
-                                else if (result.ToUpper().Contains("DOB") || (OutputName[i].ToUpper().Contains("DATE") && OutputName[i].ToUpper().Contains("BIRTH")))
+                                //    fs.Close();
+                                //    fs.Dispose();
+                                //}
+                            }
+
+                        }
+                        if ((result.ToUpper().Contains("DOS")) || (OutputName[i].ToUpper().Contains("DATE")) || result.ToUpper().Contains("FACILITY"))
+                        {
+                            //if (File.Exists(strXmlEncounterPath) == true)
+                            if (sXMLEncounterDoc != string.Empty)
+                            {
+                                XmlDocument itemDoc = new XmlDocument();
+                                //XmlTextReader XmlText = new XmlTextReader(strXmlEncounterPath);
+                                // itemDoc.Load(XmlText);
+                                itemDoc.LoadXml(sXMLEncounterDoc);
+                                //using (FileStream fs = new FileStream(strXmlEncounterPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                                //{
+                                //itemDoc.Load(fs);
+
+                                //XmlText.Close();
+                                if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
                                 {
-                                    if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value != "")
+                                    string sDOS = string.Empty;
+                                    if (((result.ToUpper().Contains("DOS")) || (OutputName[i].ToUpper().Contains("DATE"))) && itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value != "")
                                     {
                                         if (dtFormat.Count() > 1)
                                         {
                                             if (dtFormat[1] == "yyyyMMdd")
-                                                sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+                                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
                                             else if (dtFormat[1] == "MMddyyyy")
-                                                sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("MMddyyyy");
+                                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("MMddyyyy");
                                             else if (dtFormat[1] == "MMddyy")
-                                                sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("MMddyy");
+                                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("MMddyy");
                                             else if (dtFormat[1] == "yyMMdd")
-                                                sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyMMdd");
+                                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyMMdd");
                                             else
                                             {
-                                                sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
+                                                sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
                                             }
                                             NotesName = NotesName.Replace(dtFormat[1], "");
                                         }
                                         else
                                         {
-                                            sDOB = Convert.ToDateTime(itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Birth_Date").Value).ToString("yyyyMMdd");
-                                        }
-                                    }
-                                    NotesName = NotesName.Replace("[" + result + "]", sDOB);
-                                }
-                            }
-                            //    fs.Close();
-                            //    fs.Dispose();
-                            //}
-                        }
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    throw new Exception(ex.Message + " - " + strXmlHumanPath);
-                        //}
-
-                    }
-                    if ((result.ToUpper().Contains("DOS")) || (OutputName[i].ToUpper().Contains("DATE")) || result.ToUpper().Contains("FACILITY"))
-                    {
-
-                        //try
-                        //{
-                        //if (File.Exists(strXmlEncounterPath) == true)
-                        if (sXMLEncounterDoc != string.Empty)
-                        {
-                            XmlDocument itemDoc = new XmlDocument();
-                            //XmlTextReader XmlText = new XmlTextReader(strXmlEncounterPath);
-                            // itemDoc.Load(XmlText);
-                            itemDoc.LoadXml(sXMLEncounterDoc);
-                            //using (FileStream fs = new FileStream(strXmlEncounterPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                            //{
-                            //    itemDoc.Load(fs);
-
-                            //    XmlText.Close();
-                            if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
-                            {
-                                string sDOS = string.Empty;
-
-                                if ((result.ToUpper().Contains("DOS") || OutputName[i].ToUpper().Contains("DATE")) && itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value != "")
-                                {
-                                    if (dtFormat.Count() > 1)
-                                    {
-                                        if (dtFormat[1] == "yyyyMMdd")
                                             sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
-                                        else if (dtFormat[1] == "MMddyyyy")
-                                            sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("MMddyyyy");
-                                        else if (dtFormat[1] == "MMddyy")
-                                            sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("MMddyy");
-                                        else if (dtFormat[1] == "yyMMdd")
-                                            sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyMMdd");
-                                        else
+                                        }
+                                        NotesName = NotesName.Replace("[" + result + "]", sDOS);
+                                    }
+                                    else if (result.ToUpper().Contains("FACILITY") && itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Trim() != "")
+                                    {
+                                        if (FormatCase.Count() > 1)
                                         {
-                                            sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
+                                            if (FormatCase[1].ToUpper().Contains("YES"))
+                                                NotesName = NotesName.Replace("[" + result + "]", itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Replace(",", "")).ToUpper();
+                                            else
+                                            {
+                                                NotesName = NotesName.Replace("[" + result + "]", itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Replace(",", ""));
+                                            }
+                                            NotesName = NotesName.Replace(FormatCase[1], "");
                                         }
-                                        NotesName = NotesName.Replace(dtFormat[1], "");
-                                    }
-                                    else
-                                    {
-                                        sDOS = Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("yyyyMMdd");
-                                    }
-                                    NotesName = NotesName.Replace("[" + result + "]", sDOS);
-                                }
-                                else if (result.ToUpper().Contains("FACILITY") && itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Trim() != "")
-                                {
-                                    if (FormatCase.Count() > 1)
-                                    {
-                                        if (FormatCase[1].ToUpper().Contains("YES"))
-                                            NotesName = NotesName.Replace("[" + result + "]", itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Replace(",", "")).ToUpper();
                                         else
                                         {
                                             NotesName = NotesName.Replace("[" + result + "]", itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Replace(",", ""));
                                         }
-                                        NotesName = NotesName.Replace(FormatCase[1], "");
                                     }
                                     else
                                     {
-                                        NotesName = NotesName.Replace("[" + result + "]", itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Facility_Name").Value.Replace(",", ""));
+                                        NotesName = NotesName.Replace("[" + result + "]", "");
                                     }
                                 }
-                                else
-                                {
-                                    NotesName = NotesName.Replace("[" + result + "]", "");
-                                }
-
+                                //    fs.Close();
+                                //    fs.Dispose();
+                                //}
                             }
-                            //    fs.Close();
-                            //    fs.Dispose();
-                            //}
-                        }
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    throw new Exception(ex.Message + " - " + strXmlEncounterPath);
-                        //}
-                    }
-                }
-            }
-            if (NotesName.Contains('['))
-            {
-                string[] sName = NotesName.Split('~');
-
-                for (int i = 0; i < sName.Length; i++)
-                {
-                    if (sName[i] != "")
-                    {
-                        if (sName[i].Contains("["))
-                        {
-                            result = ExtractBetween(sName[i], "[", "]");
-                            NotesName = NotesName.Replace("[" + result + "]", "");
                         }
                     }
                 }
-            }
-            //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
-            NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
-
-            string WordOutputName = NotesName + ".html";
-            string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
-
-            //Jira #CAP-344 - OldCode
-            //DataSet ds;
-            //XmlDataDocument xmlDoc;
-            //XslCompiledTransform xslTran;
-            //XmlElement root;
-            //XPathNavigator nav;
-            //XmlTextWriter writer;
-            //XsltSettings settings = new XsltSettings(true, false);
-
-            //ds = new DataSet();
-            ////ds.ReadXml(xmlDataFile);
-            ////ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
-            //StringBuilder sb = new StringBuilder();
-            //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
-
-            //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
-
-            //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
-            //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
-
-            //xmlDoc = new XmlDataDocument(ds);
-            //xslTran = new XslCompiledTransform();
-            //// xslTran.Load(xsltFile);
-            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-            //xslTran.Load(xsltFile, settings, new XmlUrlResolver());
-            //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-
-            //root = xmlDoc.DocumentElement;
-
-
-            //nav = root.CreateNavigator();
-            //if (File.Exists(outputDocument))
-            //{
-            //    File.Delete(outputDocument);
-            //}
-            //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
-            //xslTran.Transform(nav, writer);
-            //writer.Close();
-            //writer = null;
-            //nav = null;
-            //root = null;
-            //xmlDoc = null;
-            //ds = null;
-            
-            //Jira #CAP-344 - NewCode
-            UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc,  sXMLHumanDoc,  xsltFile,  outputDocument, sGroup_ID_Log);
-            System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
-            //  string htmlString = System.IO.File.ReadAllText(outputDocument);
-
-            //  IList<PatientPane> lstpane = new List<PatientPane>();
-            //   lstpane = ClientSession.PatientPaneList.ToList<PatientPane>();
-            string Patient_Name = "";
-            // if(lstpane.Count>0)
-            // Patient_Name=lstpane[0].Last_Name + "," + "" + lstpane[0].First_Name + " " + lstpane[0].MI;
-
-            string Encounter_signedDate = "";
-
-            string Encounter_Provider_Name = "";
-            string Provider_Speciality = "";
-            TextReader EncXMLContent = new StringReader(sXMLEncounterDoc);
-            XDocument xmlDocumentType = XDocument.Load(EncXMLContent);
-            TextReader HumanXMLContentdoc = new StringReader(sXMLHumanDoc);
-            XDocument xmlDocument = XDocument.Load(HumanXMLContentdoc);
-            string Encounter_Provider_id = "";
-
-            foreach (XElement elements in xmlDocument.Descendants("HumanList"))
-            {
-
-                foreach (XElement Human in elements.Elements())
+                if (NotesName.Contains('['))
                 {
-                    if (Human.Attribute("First_Name") != null && Human.Attribute("Last_Name") != null && Human.Attribute("MI") != null)
-                        Patient_Name = Human.Attribute("Last_Name").Value + "," + "" + Human.Attribute("First_Name").Value + " " + Human.Attribute("MI").Value;
+                    string[] sName = NotesName.Split('~');
 
-                }
-            }
-
-
-
-
-
-            string Encounter_Reviewed_signedDate = "";
-            string Encounter_Reviewed_Name = "";
-            string Encounter_Reviewed_Id = "";
-            // xmlDocumentType = XDocument.Load(strXmlEncounterPath);
-
-            foreach (XElement elements in xmlDocumentType.Descendants("EncounterList"))
-            {
-                foreach (XElement Encounter in elements.Elements())
-                {
-                    DateTime dt = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Review_Signed_Date").Value);
-                    Encounter_Reviewed_signedDate = UtilityManager.ConvertToLocal(dt).ToString("dd-MMM-yyyy hh:mm tt");
-
-                    DateTime dtPro = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Signed_Date").Value);
-                    Encounter_signedDate = UtilityManager.ConvertToLocal(dtPro).ToString("dd-MMM-yyyy hh:mm tt");
-
-                    Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
-
-                }
-
-                //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
-                //{
-                // foreach (XElement Encounter in elements.Elements())
-                // {
-                //     DateTime dt = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Signed_Date").Value);
-                //     Encounter_signedDate = UtilityManager.ConvertToLocal(dt).ToString("dd-MMM-yyyy hh:mm:ss tt");
-                //}
-                //}
-            }
-            //Provider Name 
-            foreach (XElement elements in xmlDocumentType.Descendants("EncounterDetails"))
-            {
-                foreach (XElement Encounter in elements.Elements())
-                {
-                    Encounter_Provider_Name = Encounter.Value;
-                    break;
-                }
-                break;
-            }
-            //Provider Reviewed Name 
-            if (Encounter_Reviewed_Id != "")
-            {
-                string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
-                if (File.Exists(xmlFilepathUser))
-                {
-                    XmlDocument xdoc = new XmlDocument();
-                    XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
-                    xdoc.Load(itext);
-                    itext.Close();
-                    XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
-                    if (xnodelst != null && xnodelst.Count > 0)
+                    for (int i = 0; i < sName.Length; i++)
                     {
-                        foreach (XmlNode xnode in xnodelst)
+                        if (sName[i] != "")
                         {
-                            if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == Encounter_Reviewed_Id)
+                            if (sName[i].Contains("["))
                             {
-                                Encounter_Reviewed_Name = xnode.Attributes.GetNamedItem("person_name").Value;
+                                result = ExtractBetween(sName[i], "[", "]");
+                                NotesName = NotesName.Replace("[" + result + "]", "");
+                            }
+                        }
+                    }
+                }
+                //NotesName = NotesName.Replace("~", "").Replace("__", "_").Replace("^", "").Replace("@", "");
+                NotesName = UtilityMngr.ReplaceSpecialCharaterInFileName(NotesName);
+                string WordOutputName = NotesName + ".html";
+                string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
+                //Jira #CAP-344 - OldCode
+                //DataSet ds;
+                //XmlDataDocument xmlDoc;
+                //XslCompiledTransform xslTran;
+                //XmlElement root;
+                //XPathNavigator nav;
+                //XmlTextWriter writer;
+                //XsltSettings settings = new XsltSettings(true, false);
+
+                //ds = new DataSet();
+                ////ds.ReadXml(xmlDataFile);
+                ////ds.ReadXml(new XmlTextReader(new StringReader(sXMLEncounterDoc)));
+                //StringBuilder sb = new StringBuilder();
+                //sb.Append(sXMLEncounterDoc.ToString().Replace("</notes>", "").Replace("</Modules>", ""));
+
+                //string SUB = sXMLHumanDoc.ToString().Substring(0, sXMLHumanDoc.LastIndexOf("?>") + 2);
+
+                //sb.Append(sXMLHumanDoc.ToString().Replace(SUB, "").Replace("<notes>", "").Replace("<Modules>", ""));
+                //ds.ReadXml(new XmlTextReader(new StringReader(sb.ToString())));
+
+                //xmlDoc = new XmlDataDocument(ds);
+                //xslTran = new XslCompiledTransform();
+                //// xslTran.Load(xsltFile);
+                //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax XSLT Load : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+                //xslTran.Load(xsltFile, settings, new XmlUrlResolver());
+                //UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax XSLT Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+
+                //root = xmlDoc.DocumentElement;
+
+
+                //nav = root.CreateNavigator();
+                //if (File.Exists(outputDocument))
+                //{
+                //    File.Delete(outputDocument);
+                //}
+                //writer = new XmlTextWriter(outputDocument, System.Text.Encoding.UTF8);
+                //xslTran.Transform(nav, writer);
+                //writer.Close();
+                //writer = null;
+                //nav = null;
+                //root = null;
+                //xmlDoc = null;
+                //ds = null;
+                //Jira #CAP-344 - NewCode
+                UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+                System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
+                //  string htmlString = System.IO.File.ReadAllText(outputDocument);
+
+                //  IList<PatientPane> lstpane = new List<PatientPane>();
+                //   lstpane = ClientSession.PatientPaneList.ToList<PatientPane>();
+                string Patient_Name = "";
+                // if(lstpane.Count>0)
+                // Patient_Name=lstpane[0].Last_Name + "," + "" + lstpane[0].First_Name + " " + lstpane[0].MI;
+
+                string Encounter_signedDate = "";
+
+                string Encounter_Provider_Name = "";
+                string Provider_Speciality = "";
+                TextReader EncXMLContentdoc = new StringReader(sXMLEncounterDoc);
+                XDocument xmlDocumentType = XDocument.Load(EncXMLContentdoc);
+                TextReader HumanXMLContentdoc = new StringReader(sXMLHumanDoc);
+                XDocument xmlDocument = XDocument.Load(HumanXMLContentdoc);
+                string Encounter_Provider_id = "";
+
+                foreach (XElement elements in xmlDocument.Descendants("HumanList"))
+                {
+
+                    foreach (XElement Human in elements.Elements())
+                    {
+                        if (Human.Attribute("First_Name") != null && Human.Attribute("Last_Name") != null && Human.Attribute("MI") != null)
+                            Patient_Name = Human.Attribute("Last_Name").Value + "," + "" + Human.Attribute("First_Name").Value + " " + Human.Attribute("MI").Value;
+
+                    }
+                }
+
+
+
+
+
+                string Encounter_Reviewed_signedDate = "";
+                string Encounter_Reviewed_Name = "";
+                string Encounter_Reviewed_Id = "";
+                // XDocument xmlDocumentType = XDocument.Load(strXmlEncounterPath);
+
+                foreach (XElement elements in xmlDocumentType.Descendants("EncounterList"))
+                {
+                    foreach (XElement Encounter in elements.Elements())
+                    {
+                        DateTime dt = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Review_Signed_Date").Value);
+                        Encounter_Reviewed_signedDate = UtilityManager.ConvertToLocal(dt).ToString("dd-MMM-yyyy hh:mm tt");
+
+                        DateTime dtPro = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Signed_Date").Value);
+                        Encounter_signedDate = UtilityManager.ConvertToLocal(dtPro).ToString("dd-MMM-yyyy hh:mm tt");
+
+                        Encounter_Reviewed_Id = Encounter.Attribute("Encounter_Provider_Review_ID").Value;
+
+                    }
+
+                    //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
+                    //{
+                    // foreach (XElement Encounter in elements.Elements())
+                    // {
+                    //     DateTime dt = Convert.ToDateTime(Encounter.Attribute("Encounter_Provider_Signed_Date").Value);
+                    //     Encounter_signedDate = UtilityManager.ConvertToLocal(dt).ToString("dd-MMM-yyyy hh:mm:ss tt");
+                    //}
+                    //}
+                }
+                //Provider Name 
+                foreach (XElement elements in xmlDocumentType.Descendants("EncounterDetails"))
+                {
+                    foreach (XElement Encounter in elements.Elements())
+                    {
+                        Encounter_Provider_Name = Encounter.Value;
+                        break;
+                    }
+                }
+                //Provider Reviewed Name 
+                if (Encounter_Reviewed_Id != "")
+                {
+                    string xmlFilepathUser = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\User.xml");
+                    if (File.Exists(xmlFilepathUser))
+                    {
+                        XmlDocument xdoc = new XmlDocument();
+                        XmlTextReader itext = new XmlTextReader(xmlFilepathUser);
+                        xdoc.Load(itext);
+                        itext.Close();
+                        XmlNodeList xnodelst = xdoc.GetElementsByTagName("User");
+                        if (xnodelst != null && xnodelst.Count > 0)
+                        {
+                            foreach (XmlNode xnode in xnodelst)
+                            {
+                                if (xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() != "0" && xnode.Attributes.GetNamedItem("Physician_Library_ID").Value.ToString() == Encounter_Reviewed_Id)
+                                {
+                                    Encounter_Reviewed_Name = xnode.Attributes.GetNamedItem("person_name").Value;
+                                }
                             }
                         }
                     }
                 }
 
-            }
 
-
-            foreach (XElement elements in xmlDocumentType.Descendants("EncounterDetails"))
-            {
-                foreach (XElement Encounter in elements.Elements())
+                foreach (XElement elements in xmlDocumentType.Descendants("EncounterDetails"))
                 {
-                    // if (Encounter.LastAttribute != null && Encounter.LastAttribute.Name.ToString() == "Specialties")
-                    if (Encounter.Attribute("Specialties") != null)
+                    foreach (XElement Encounter in elements.Elements())
                     {
-                        Provider_Speciality = Encounter.LastAttribute.Value;
-                        break;
+                        // if (Encounter.LastAttribute != null && Encounter.LastAttribute.Name.ToString() == "Specialties")
+                        if (Encounter.Attribute("Specialties") != null)
+                        {
+                            Provider_Speciality = Encounter.LastAttribute.Value;
+                            break;
+
+
+                        }
 
 
                     }
 
+                }
+
+
+
+                string strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
+                //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
+                //     " have reviewed the chart and agree with the management plan with the changes to the plan as indicated.";
+
+                string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
+                StaticLookupManager staticMngr = new StaticLookupManager();
+                string strfooterProviderReviewed = string.Empty;
+                IList<StaticLookup> CommonList = staticMngr.getStaticLookupByFieldName(StaticLookupValues);
+                if (CommonList.Count > 0)
+                    strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
+
+                string htmlString = System.IO.File.ReadAllText(outputDocument);
+                if (file.Exists)
+                {
+                    File.Delete(outputDocument);
+                }
+                var strBody = new StringBuilder();
+                string imgpath = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath"];
+                string imgpath_phy = System.Configuration.ConfigurationSettings.AppSettings["phyConsultationLogoPath"];
+                string imgpath_PalliativeCare = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath_PalliativeCare"];
+                string imgpath_Integrum = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath_Integrum"];
+
+                string phyheaderstring = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_phy + "' alt='logo' height='100' width='200'></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+                string headerstring = "<table  style='width:100%'><tr><td><span><img src='" + imgpath + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+                string header = "<table style='width:100%'><tr><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+                string headerLogo_PalliativeCare = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_PalliativeCare + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+                string headerLogo_Integrum = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_Integrum + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
+                string finalHeadeString = string.Empty;
+                string PatientName = "RE: " + Patient_Name;
+
+                string sProHeader = System.Configuration.ConfigurationSettings.AppSettings["ProgressNotesMainHeader"];
+                if (System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoIntegrum"] != null && System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoIntegrum"] == "ALL")
+                    finalHeadeString = imgpath_Integrum;
+                else if (Provider_Speciality.ToUpper().Contains("ENDOCRINOLOGY"))
+                    finalHeadeString = imgpath;
+                else if (Encounter_Provider_id == "4198")
+                    finalHeadeString = imgpath_phy;
+                else if (Encounter_Provider_id == "3101" || Encounter_Provider_id == "321")
+                    finalHeadeString = imgpath_PalliativeCare;
+                else
+                    finalHeadeString = "";
+
+
+                string strfooterF = "";
+
+                string strfooterPA = "";
+                string strfooterP = "";
+                if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "" && Encounter_Reviewed_signedDate != "01-Jan-0001 12:00 AM")
+                {
+                    strfooterPA = strfooterProvider;
+
+                    strfooterP = strfooterProviderReviewed;
+                    strfooterF = " ";
+                    //  strfooterProvider = strfooterProvider + "<br/>" + strfooterProviderReviewed;
+                }
+                else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM")
+                {
+                    strfooterF = strfooterProvider;
+                }
+                else
+                {
+
+
+                    strfooterF = "";
 
                 }
 
-            }
 
 
 
-            string strfooterProvider = "Electronically Signed by " + Encounter_Provider_Name + " at " + Encounter_signedDate;
-            //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
-            //     " have reviewed the chart and agree with the management plan with the changes to the plan as indicated.";
-
-            string[] StaticLookupValues = new string[] { "WELLNESS NOTE FOR PROVIDER SIGN WITH CHANGES" };
-            StaticLookupManager staticMngr = new StaticLookupManager();
-            string strfooterProviderReviewed = string.Empty;
-            IList<StaticLookup> CommonList = staticMngr.getStaticLookupByFieldName(StaticLookupValues);
-            if (CommonList.Count > 0)
-                strfooterProviderReviewed = CommonList[0].Value.Replace("<Physician>", Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate).Replace("|", "");
-
-
-            string htmlString = System.IO.File.ReadAllText(outputDocument);
-            if (file.Exists)
-            {
-                File.Delete(outputDocument);
-            }
-            var strBody = new StringBuilder();
-            string imgpath = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath"];
-            string imgpath_phy = System.Configuration.ConfigurationSettings.AppSettings["phyConsultationLogoPath"];
-            string imgpath_PalliativeCare = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath_PalliativeCare"];
-            string imgpath_Integrum = System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoPath_Integrum"];
-
-            string phyheaderstring = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_phy + "' alt='logo' height='100' width='200'></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
-            string headerstring = "<table  style='width:100%'><tr><td><span><img src='" + imgpath + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
-            string header = "<table style='width:100%'><tr><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
-            string headerLogo_PalliativeCare = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_PalliativeCare + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
-            string headerLogo_Integrum = "<table  style='width:100%'><tr><td><span><img src='" + imgpath_Integrum + "' alt='logo' ></span></td><td style=' text-align:right;font-size: 9pt; font-family:Arial;'><span>" + "RE: " + Patient_Name + "</span></td></tr></table> ";
-            string finalHeadeString = string.Empty;
-            string PatientName = "RE: " + Patient_Name;
-
-            string sProHeader = System.Configuration.ConfigurationSettings.AppSettings["ProgressNotesMainHeader"];
-            if (System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoIntegrum"] != null && System.Configuration.ConfigurationSettings.AppSettings["ConsultationLogoIntegrum"] == "ALL")
-                finalHeadeString = imgpath_Integrum;
-            else if (Provider_Speciality.ToUpper().Contains("ENDOCRINOLOGY"))
-                finalHeadeString = imgpath;
-            else if (Encounter_Provider_id == "4198")
-                finalHeadeString = imgpath_phy;
-            else if (Encounter_Provider_id == "3101" || Encounter_Provider_id == "321")
-                finalHeadeString = imgpath_PalliativeCare;
-            else
-                finalHeadeString = "";
-
-
-            string strfooterF = "";
-
-            string strfooterPA = "";
-            string strfooterP = "";
-            if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM" && Encounter_Reviewed_signedDate != "" && Encounter_Reviewed_signedDate != "01-Jan-0001 12:00 AM")
-            {
-                strfooterPA = strfooterProvider;
-
-                strfooterP = strfooterProviderReviewed;
-                strfooterF = " ";
-                //  strfooterProvider = strfooterProvider + "<br/>" + strfooterProviderReviewed;
-            }
-            else if (Encounter_signedDate != "" && Encounter_signedDate != "01-Jan-0001 12:00 AM")
-            {
-                strfooterF = strfooterProvider;
-            }
-            else
-            {
-
-
-                strfooterF = "";
-
-            }
-
-
-            if (file.Exists)
-            {
-                File.Delete(outputDocument);
-            }
-            // var strBody = new StringBuilder();
-
-            string sbTop = "";
-
-            sbTop = sbTop + htmlString;
-
-
-            string strHtml = string.Empty;
-            string pdfFileName = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], NotesName + "test" + ".pdf");//System.Configuration.ConfigurationSettings.AppSettings["XMLPath"] + NotesName + "test" + ".pdf";
-
-            string pdfFileNamewithHeader = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], NotesName + ".pdf");//)System.Configuration.ConfigurationSettings.AppSettings["XMLPath"] + NotesName + ".pdf";
-
-            if (htmlString.Length > 0)
-            {
-                try
+                if (file.Exists)
                 {
-                    CreatePDFFromHTMLFile(sbTop, pdfFileName);
+                    File.Delete(outputDocument);
                 }
+                // var strBody = new StringBuilder();
 
-                catch (Exception ex)
+                string sbTop = "";
+
+                sbTop = sbTop + htmlString;
+
+
+
+
+
+
+                DirectoryInfo virdir = new DirectoryInfo(Page.MapPath("atala-capture-download/" + Session.SessionID + "/ConsultationNotesFax"));
+                if (!virdir.Exists)
                 {
-                    if (ex.Message.ToUpper().Contains("NO PAGES"))
+                    virdir.Create();
+                }
+                string strHtml = string.Empty;
+                string pdfFileName = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], NotesName + "test" + ".pdf");//System.Configuration.ConfigurationSettings.AppSettings["XMLPath"] + NotesName + "test" + ".pdf";
+
+                string filename = "atala-capture-download/" + Session.SessionID + "/ConsultationNotesFax/" + NotesName + ".pdf";
+
+                string pdfFileNamewithHeader = Page.MapPath(filename);
+                if (htmlString.Length > 0)
+                {
+                    try
                     {
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "DisplayErrorMessage('1011187'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
-                        return;
+                        CreatePDFFromHTMLFile(sbTop, pdfFileName);
 
                     }
-                    else
-                        throw ex;
-                }
-
-                var reader = new PdfReader(pdfFileName);
-
-                using (var fileStream = new FileStream(pdfFileNamewithHeader, FileMode.Create, FileAccess.Write))
-                {
-
-
-                    var document1 = new Document(new Rectangle(625, 975));
-
-                    Rectangle pageSize = new Rectangle(625, 975);
-                    var writerpdf = PdfWriter.GetInstance(document1, fileStream);
-
-                    document1.Open();
-                    int count = reader.NumberOfPages;
-
-
-
-                    sProHeader = "N";
-                    for (var i = 1; i <= count; i++)
+                    catch (Exception ex)
                     {
-                        document1.NewPage();
-
-                        var baseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-                        PdfReader.unethicalreading = true;
-
-                        var importedPage = writerpdf.GetImportedPage(reader, i);
-
-
-                        var con = writerpdf.DirectContent;
-
-                        float X = 80f, Y = 20f;
-                        BaseFont baseFont1 = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                        con.BeginText();
-
-                        con.SetFontAndSize(FontFactory.GetFont(FontFactory.TIMES_ITALIC).BaseFont, 9);
-
-                        if (strfooterF == "")
+                        if (ex.Message.ToUpper().Contains("NO PAGES"))
                         {
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
-                        }
-                        else if (strfooterPA != "" && strfooterP != "")
-                        {
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterPA, 30, 30, 0);
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterP, 30, 20, 0);
+                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "DisplayErrorMessage('1011187'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                            return;
 
-                            //ColumnText ct = new ColumnText(con);
-                            //ct.SetSimpleColumn(new Phrase(new Chunk(strfooterPA, FontFactory.GetFont(FontFactory.TIMES_ITALIC, 9, Font.NORMAL))),
-                            //                   35, 77, 530, 36, 14, iTextSharp.text.Element.ALIGN_LEFT | iTextSharp.text.Element.ALIGN_BOTTOM);
-                            //ct.Go();
-
-                            //ct = new ColumnText(con);
-                            //ct.SetSimpleColumn(new Phrase(new Chunk(strfooterP, FontFactory.GetFont(FontFactory.TIMES_ITALIC, 9, Font.NORMAL))),
-                            //                   35, 65, 530, 36, 14, iTextSharp.text.Element.ALIGN_LEFT | iTextSharp.text.Element.ALIGN_BOTTOM);
-                            //ct.Go(); 
-
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
                         }
                         else
+                            throw ex;
+                    }
+                    var reader = new PdfReader(pdfFileName);
+
+                    using (var fileStream = new FileStream(pdfFileNamewithHeader, FileMode.Create, FileAccess.Write))
+                    {
+
+
+                        var document1 = new Document(new Rectangle(625, 975));
+
+                        Rectangle pageSize = new Rectangle(625, 975);
+                        var writerpdf = PdfWriter.GetInstance(document1, fileStream);
+
+                        document1.Open();
+                        int count = reader.NumberOfPages;
+
+
+
+                        sProHeader = "N";
+                        for (var i = 1; i <= count; i++)
                         {
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterF, 30, 20, 0);
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+                            document1.NewPage();
+
+                            var baseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                            PdfReader.unethicalreading = true;
+
+                            var importedPage = writerpdf.GetImportedPage(reader, i);
+
+
+                            var con = writerpdf.DirectContent;
+
+                            float X = 80f, Y = 20f;
+                            BaseFont baseFont1 = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+                            con.BeginText();
+
+                            con.SetFontAndSize(FontFactory.GetFont(FontFactory.TIMES_ITALIC).BaseFont, 9);
+
+                            if (strfooterF == "")
+                            {
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+                            }
+                            else if (strfooterPA != "" && strfooterP != "")
+                            {
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterPA, 30, 30, 0);
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterP, 30, 20, 0);
+
+                                //ColumnText ct = new ColumnText(con);
+                                //ct.SetSimpleColumn(new Phrase(new Chunk(strfooterPA, FontFactory.GetFont(FontFactory.TIMES_ITALIC, 9, Font.NORMAL))),
+                                //                   35, 77, 530, 36, 14, iTextSharp.text.Element.ALIGN_LEFT | iTextSharp.text.Element.ALIGN_BOTTOM);
+                                //ct.Go();
+
+                                //ct = new ColumnText(con);
+                                //ct.SetSimpleColumn(new Phrase(new Chunk(strfooterP, FontFactory.GetFont(FontFactory.TIMES_ITALIC, 9, Font.NORMAL))),
+                                //                   35, 65, 530, 36, 14, iTextSharp.text.Element.ALIGN_LEFT | iTextSharp.text.Element.ALIGN_BOTTOM);
+                                //ct.Go(); 
+
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+                            }
+                            else
+                            {
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterF, 30, 20, 0);
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+                            }
+
+                            if (sProHeader == "Y")
+                            {
+                                Y += 70;
+                            }
+
+                            else
+                                Y += 10;
+
+                            con.SetFontAndSize(baseFont1, 10);
+                            con.SetColorFill(BaseColor.BLACK);
+                            con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
+
+                            X += 103;
+
+                            con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
+                            // string imagepath = "";
+
+                            if (finalHeadeString != "")
+                            {
+                                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(finalHeadeString);
+                                logo.ScaleAbsolute(50, 50);
+                                logo.SetAbsolutePosition(pageSize.GetLeft(X) - 150, pageSize.GetTop(Y) - 30);
+                                con.AddImage(logo);
+
+
+                            }
+
+
+                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, PatientName, pageSize.GetLeft(X) + 200, pageSize.GetTop(Y) - 30, 0);
+                            con.SetColorFill(BaseColor.BLACK);
+                            con.EndText();
+                            if (sProHeader == "Y")
+                            {
+
+                                con.AddTemplate(importedPage, 0, 0);
+                            }
+                            else
+                                con.AddTemplate(importedPage, 0, 60);
+
                         }
 
-                        if (sProHeader == "Y")
-                        {
-                            Y += 70;
-                        }
+                        document1.Close();
+                        writerpdf.Close();
+                        fileStream.Close();
+                        fileStream.Dispose();
+                    }
+                    if (File.Exists(pdfFileName))
+                    {
+                        File.Delete(pdfFileName);
 
-                        else
+                    }
+                }
+                else
+                {
+                    using (var fileStream = new FileStream(pdfFileNamewithHeader, FileMode.Create, FileAccess.Write))
+                    {
+                        var document1 = new Document(new Rectangle(625, 975));
+
+                        Rectangle pageSize = new Rectangle(625, 975);
+                        var writerpdf = PdfWriter.GetInstance(document1, fileStream);
+
+                        document1.Open();
+                        int count = 1;
+
+
+                        sProHeader = "N";
+
+                        for (var i = 1; i <= count; i++)
+                        {
+                            document1.NewPage();
+
+                            var baseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+                            PdfReader.unethicalreading = true;
+
+                            var con = writerpdf.DirectContent;
+
+                            float X = 80f, Y = 20f;
+                            BaseFont baseFont1 = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+                            con.BeginText();
+                            if (sProHeader == "Y")
+                            {
+
+
+                                //float U = 75;
+                                //float S = 60f;
+
+
+                            }
+                            con.SetFontAndSize(FontFactory.GetFont(FontFactory.TIMES_ITALIC).BaseFont, 8);
+
+                            if (strfooterProvider != "")
+                            {
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterProvider, 30, 30, 0);
+                                if (strfooterProviderReviewed != "")
+                                    con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterProviderReviewed, 30, 20, 0);
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+                            }
+                            else if (strfooterF != "")
+                            {
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterF, 30, 20, 0);
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+                            }
+                            else
+                            {
+                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
+                            }
+
+
                             Y += 10;
+                            con.MoveTo(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
 
-                        con.SetFontAndSize(baseFont1, 10);
-                        con.SetColorFill(BaseColor.BLACK);
-                        con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
 
-                        X += 103;
+                            #region Column1
+                            if (sProHeader == "Y")
+                            {
+                                Y += 70;
+                            }
 
-                        con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
-                        // string imagepath = "";
+                            else
+                                Y += 10;
 
-                        if (finalHeadeString != "")
-                        {
-                            iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(finalHeadeString);
-                            logo.ScaleAbsolute(50, 50);
-                            logo.SetAbsolutePosition(pageSize.GetLeft(X) - 150, pageSize.GetTop(Y) - 30);
-                            con.AddImage(logo);
+                            con.SetFontAndSize(baseFont1, 10);
+                            con.SetColorFill(BaseColor.BLACK);
+                            con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
+                            if (finalHeadeString != "")
+                            {
+                                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(finalHeadeString);
+                                logo.ScaleAbsolute(50, 50);
+                                logo.SetAbsolutePosition(pageSize.GetLeft(X) - 150, pageSize.GetTop(Y) - 30);
+                                con.AddImage(logo);
 
+
+                            }
+
+
+                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, PatientName, pageSize.GetLeft(X) + 200, pageSize.GetTop(Y) - 30, 0);
+
+
+
+                            #endregion
+
+
+                            con.LineTo(pageSize.GetRight(X) + 40, pageSize.GetTop(Y));
+                            con.Stroke();
+
+
+                            con.SetColorFill(BaseColor.BLACK);
+                            con.EndText();
 
                         }
 
-
-                        con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, PatientName, pageSize.GetLeft(X) + 200, pageSize.GetTop(Y) - 30, 0);
-                        con.SetColorFill(BaseColor.BLACK);
-                        con.EndText();
-                        if (sProHeader == "Y")
-                        {
-
-                            con.AddTemplate(importedPage, 0, 0);
-                        }
-                        else
-                            con.AddTemplate(importedPage, 0, 60);
-
+                        document1.Close();
+                        writerpdf.Close();
+                        fileStream.Close();
+                        fileStream.Dispose();
                     }
-
-                    document1.Close();
-                    writerpdf.Close();
-                    fileStream.Close();
-                    fileStream.Dispose();
                 }
-                if (File.Exists(pdfFileName))
-                {
-                    File.Delete(pdfFileName);
 
-                }
+
+                hdnFilePath.Value = pdfFileNamewithHeader;
             }
-            else
+            //For Bug ID 63721
+            string sFaxFirstname = string.Empty;
+            string sFaxLastName = string.Empty;
+            string sFaxDOS = string.Empty;
+            //if (File.Exists(strXmlHumanPath) == true)
+            if (sXMLHumanDoc != string.Empty)
             {
-                using (var fileStream = new FileStream(pdfFileNamewithHeader, FileMode.Create, FileAccess.Write))
+                XmlDocument itemDoc = new XmlDocument();
+                //XmlTextReader XmlText = new XmlTextReader(strXmlHumanPath);
+                itemDoc.LoadXml(sXMLHumanDoc);
+                //using (FileStream fs = new FileStream(strXmlHumanPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //{
+                //itemDoc.Load(fs);
+
+                //XmlText.Close();
+                if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
                 {
-                    var document1 = new Document(new Rectangle(625, 975));
-
-                    Rectangle pageSize = new Rectangle(625, 975);
-                    var writerpdf = PdfWriter.GetInstance(document1, fileStream);
-
-                    document1.Open();
-                    int count = 1;
-
-
-                    sProHeader = "N";
-
-                    for (var i = 1; i <= count; i++)
+                    if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes.Count > 0)
                     {
-                        document1.NewPage();
-
-                        var baseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-                        PdfReader.unethicalreading = true;
-
-                        var con = writerpdf.DirectContent;
-
-                        float X = 80f, Y = 20f;
-                        BaseFont baseFont1 = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-                        con.BeginText();
-                        if (sProHeader == "Y")
-                        {
-
-
-                            //float U = 75;
-                            //float S = 60f;
-
-
-                        }
-                        con.SetFontAndSize(FontFactory.GetFont(FontFactory.TIMES_ITALIC).BaseFont, 8);
-
-                        if (strfooterProvider != "")
-                        {
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterProvider, 30, 30, 0);
-                            if (strfooterProviderReviewed != "")
-                                con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterProviderReviewed, 30, 20, 0);
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
-                        }
-                        else if (strfooterF != "")
-                        {
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, strfooterF, 30, 20, 0);
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
-                        }
-                        else
-                        {
-                            con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, " page " + i, 550, 20, 0);
-                        }
-
-
-                        Y += 10;
-                        con.MoveTo(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
-
-
-                        #region Column1
-                        if (sProHeader == "Y")
-                        {
-                            Y += 70;
-                        }
-
-                        else
-                            Y += 10;
-
-                        con.SetFontAndSize(baseFont1, 10);
-                        con.SetColorFill(BaseColor.BLACK);
-                        con.SetTextMatrix(pageSize.GetLeft(X) - 40, pageSize.GetTop(Y));
-                        if (finalHeadeString != "")
-                        {
-                            iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(finalHeadeString);
-                            logo.ScaleAbsolute(50, 50);
-                            logo.SetAbsolutePosition(pageSize.GetLeft(X) - 150, pageSize.GetTop(Y) - 30);
-                            con.AddImage(logo);
-
-
-                        }
-
-
-                        con.ShowTextAligned(PdfContentByte.ALIGN_LEFT, PatientName, pageSize.GetLeft(X) + 200, pageSize.GetTop(Y) - 30, 0);
-
-
-
-                        #endregion
-
-
-                        con.LineTo(pageSize.GetRight(X) + 40, pageSize.GetTop(Y));
-                        con.Stroke();
-
-
-                        con.SetColorFill(BaseColor.BLACK);
-                        con.EndText();
+                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value != null)
+                            sFaxFirstname = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("First_Name").Value.ToString();
+                        if (itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value != null)
+                            sFaxLastName = "_" + itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Last_Name").Value.ToString();
 
                     }
-
-                    document1.Close();
-                    writerpdf.Close();
-                    fileStream.Close();
-                    fileStream.Dispose();
                 }
+                //    fs.Close();
+                //    fs.Dispose();
+                //}
             }
+            //DOS
+            string sRefProvider = string.Empty;
+            //  if (File.Exists(strXmlEncounterPath) == true)
+            if (sXMLEncounterDoc != string.Empty)
+            {
+                XmlDocument itemDoc = new XmlDocument();
+                //XmlTextReader XmlText = new XmlTextReader(strXmlEncounterPath);
+                itemDoc.LoadXml(sXMLEncounterDoc);
+                //using (FileStream fs = new FileStream(strXmlEncounterPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                //{
+                //    itemDoc.Load(fs);
 
+                //    XmlText.Close();
+                string sDOS = string.Empty;
+                //Jira CAP-1387
+                string sEmailId = string.Empty;
 
+                if (itemDoc.GetElementsByTagName("EncounterList")[0] != null)
+                {
+                    if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes.Count > 0)
+                    {
+                        if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value != "")
+                        {
+                            sFaxDOS = "_" + Convert.ToDateTime(itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Local_Time").Value).ToString("dd-MMM-yyyy");
 
+                        }
+                        //Jira CAP-1358
+                        //if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value != "")
+                        //{
 
-            Response.ContentType = "application/x-download";
-            Response.AddHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", NotesName + ".pdf"));
-            Response.WriteFile(pdfFileNamewithHeader);
+                        //    sRefProvider = " |" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value +
+                        //        "| NPI: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value +
+                        //        "| Facility: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Facility").Value +
+                        //        "| Address:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Address").Value +
+                        //        "| Fax No:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Fax_No").Value +
+                        //        "| Phone No:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Phone_No").Value;
+                        //}
 
-            Response.Flush();
-            System.IO.File.Delete(pdfFileNamewithHeader);
-            Response.End();
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation PDF : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+                        //Jira CAP-1358
+                        if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value != "")
+                        {
+                            //Jira CAP-1387 - Start
+                            if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml"))
+                            {
+                                string sPhysicianXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianAddressDetails.xml";
+                                XmlDocument itemPhysiciandoc = new XmlDocument();
+                                XmlTextReader XmlPhysicianText = new XmlTextReader(sPhysicianXmlPath);
+                                itemPhysiciandoc.Load(XmlPhysicianText);
+
+                                XmlNodeList xmlphy = itemPhysiciandoc.ChildNodes[1].ChildNodes;
+                                foreach (XmlNode xmlphyitem in xmlphy)
+                                {
+                                    if (itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value != "" && xmlphyitem.Attributes[8].Value == itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value)
+                                    {
+                                        sEmailId = xmlphyitem.Attributes[9].Value;
+                                        break;
+                                    }
+                                }
+                            }
+                            //Jira CAP-1387 - End
+
+                            sRefProvider = itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Physician").Value +
+                                " | NPI: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Provider_NPI").Value +
+                                " | FACILITY: " + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Facility").Value +
+                                " | ADDR:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Address").Value +
+                                " | PH:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Phone_No").Value +
+                                " | Email:" + sEmailId +
+                                " | FAX:" + itemDoc.GetElementsByTagName("EncounterList")[0].ChildNodes[0].Attributes.GetNamedItem("Referring_Fax_No").Value;
+                        }
+                    }
+                }
+                //    fs.Close();
+                //    fs.Dispose();
+                //}
+            }
+        
+            sFaxSubject = "Consultation Notes" + sFaxLastName + sFaxFirstname + sFaxDOS;//<Patient Name>_<Date_of_service> 
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "','Y');", true);
+
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
 
         }
 

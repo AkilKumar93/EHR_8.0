@@ -44,6 +44,8 @@ namespace Acurus.Capella.UI
         HumanBlobManager HumanBlobMngr = new HumanBlobManager();
         EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
         string sTabMode = "false";
+        //Cap - 1414, 1415, 1449
+        string sIsAkidoEncounter = "false";
 
         string sIsPhoneEncounter = "N";
         UtilityManager UtilityMngr = new UtilityManager();
@@ -162,7 +164,9 @@ namespace Acurus.Capella.UI
                 ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "Summary", "AkidoNoteClickSum('" + sAkidoURL + "');", true);
                 return;
             }
-            else if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
+            //Cap - 1414, 1415, 1449
+            //else if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
+            else if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true" && !Request.QueryString["Menu"].Contains("FAX"))
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011197'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                 return;
@@ -2683,9 +2687,13 @@ margin:0in 0in 0in 9in;
 
         protected void btnsendFax_Click(object sender, EventArgs e)
         {
-            string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
-            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            //Cap - 1414, 1415, 1449
             string sFaxSubject = string.Empty;
+            string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
+            if (sIsAkidoEncounter == "false") 
+            { 
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Send FAX : Start", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
+            
             Stopwatch objTimernew = new Stopwatch();
             objTimernew.Start();
             //string xmlDataFile = strXmlEncounterPath;
@@ -3626,6 +3634,7 @@ margin:0in 0in 0in 9in;
 
 
             hdnFilePath.Value = pdfFileNamewithHeader;
+        }
             // itemDoc.Load(XmlText);
             string sFaxFirstname = string.Empty;
             string sFaxLastName = string.Empty;
@@ -3700,8 +3709,9 @@ margin:0in 0in 0in 9in;
 
 
             sFaxSubject = "Progress Notes" + sFaxLastName + sFaxFirstname + sFaxDOS;//<Patient Name>_<Date_of_service> 
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "');", true);
+            //Cap - 1414, 1415, 1449
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "','N');", true);
 
             //Response.ContentType = "application/x-download";
             //Response.AddHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", NotesName + ".pdf"));
@@ -4415,7 +4425,7 @@ margin:0in 0in 0in 9in;
         {
             //Jira #CAP-731 -start
             //Jira #CAP-855
-            string sIsAkidoEncounter = "false";
+            
             string sExMessage = "";
             sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
             if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
@@ -6066,7 +6076,9 @@ margin:0in 0in 0in 9in;
             }
 
             sFaxSubject = "Consultation Notes" + sFaxLastName + sFaxFirstname + sFaxDOS;//<Patient Name>_<Date_of_service> 
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "');", true);
+            //Cap - 1414, 1415, 1449
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "EFax", "OpenEfax('" + sFaxSubject + "','" + sRefProvider + "','Y');", true);
 
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Consultation Send Fax : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
         }

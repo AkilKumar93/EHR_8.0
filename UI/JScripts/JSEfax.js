@@ -535,12 +535,21 @@ function LoadEfax()
         //Input Mask for landline phone number
         $("#msktxtRecipientFax").mask("(999)999-9999");
         $("#txtSenderMaskFax").mask("(999)999-9999");
-
+        //Cap - 1414, 1415, 1449
+        var sRefPhyName = "";
+        if (vlocation[1].split("=")[1].split("|")[0] != undefined && vlocation[1].split("=")[1].split("|")[0] != "") {
+            sRefPhyName = vlocation[1].split("=")[1].split("|")[0].replaceAll(/%20/gi, ' ');
+        }
+        if (vlocation != undefined && vlocation[2] != undefined && vlocation[2].split("=")[1] != undefined) {
+            var sIsConsultation = vlocation[2].split("=")[1];
+        }
+        
         $.ajax({
             type: "POST",
             url: "frmEFax.aspx/GetFaxload",
             contentType: "application/json;charset=utf-8",
-            data: '',
+            //Cap - 1414, 1415, 1449
+            data: '{sIsConsultation : "' + sIsConsultation +'"}',
             datatype: "json",
             success: function success(data) {
 
@@ -585,6 +594,10 @@ function LoadEfax()
                         //else if (FaxLoadList.LookUpList[i].Field_Name == "SIGNATURE") {
                         else if (FaxLoadList.LookUpList[i].Field_Name == "EFAX_SIGNATURE") {
                             $("#txtareaCoverpage").val(FaxLoadList.LookUpList[i].Value.replace("<Name of the user>", FaxLoadList.Nameoftheuser).replace("<ClientName>", FaxLoadList.FaciltyName).replace("<Facility Address>", FaxLoadList.FacilityAddress).replace("<Facility Phone Number>", FaxLoadList.FacilityPhoneNumber).replace("<Facility Fax Number>", FaxLoadList.FacilityFaxNumber));
+                        }
+                        //Cap - 1414, 1415, 1449
+                        else if (FaxLoadList.LookUpList[i].Field_Name == "EFAX_SIGNATURE_CONSULTATION") {
+                            $("#txtareaCoverpage").val(FaxLoadList.LookUpList[i].Value.replace("<Referring Physician Name>", sRefPhyName).replace("<Patient Name>", FaxLoadList.sPatientName).replace("<Encounter Physician Name>", FaxLoadList.Nameoftheuser).replace("<Appointment Facility>", FaxLoadList.FaciltyName).replace("<Facility Address>", FaxLoadList.FacilityAddress).replace("<Facility Phone Number>", FaxLoadList.FacilityPhoneNumber).replace("<Facility Fax Number>", FaxLoadList.FacilityFaxNumber));
                         }
                     }
                     for (var x = 0; x < ddlDropDwnpriority.length - 1 ; x++) {
