@@ -218,7 +218,10 @@ function OpenServiceProcedureCode() {
                 $(top.window.document).find("#TabmdldlgEandM")[0].style.height = "85%";
                 $(top.window.document).find("#TabModalTitleEandM")[0].textContent = "Service Procedure Code";
                 $(top.window.document).find("#TabFrameEandM")[0].style.height = "100%";
-                $(top.window.document).find("#TabFrameEandM")[0].contentDocument.location.href = "htmlEandMCoding.html?EnableScreen=True";
+                //Jira CAP-1355 - Start
+                //$(top.window.document).find("#TabFrameEandM")[0].contentDocument.location.href = "htmlEandMCoding.html?EnableScreen=True";
+                $(top.window.document).find("#TabFrameEandM")[0].contentDocument.location.href = "htmlEandMCoding.html?EnableScreen=False";
+                 //Jira CAP-1355 - End
                 $(top.window.document).find("#TabModalEandM").one("hidden.bs.modal", function () {
                     location.reload();
                 });

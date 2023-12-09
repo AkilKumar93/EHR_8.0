@@ -537,10 +537,14 @@ function LoadEfax()
         $("#txtSenderMaskFax").mask("(999)999-9999");
         //Cap - 1414, 1415, 1449
         var sRefPhyName = "";
-        if (vlocation[1].split("=")[1].split("|")[0] != undefined && vlocation[1].split("=")[1].split("|")[0] != "") {
+        //Jira CAP-1524
+        //if (vlocation[1].split("=")[1].split("|")[0] != undefined && vlocation[1].split("=")[1].split("|")[0] != "") {
+        if (vlocation[1]?.split("=")[1]?.split("|")[0] != undefined && vlocation[1]?.split("=")[1]?.split("|")[0] != "") {
             sRefPhyName = vlocation[1].split("=")[1].split("|")[0].replaceAll(/%20/gi, ' ');
         }
-        if (vlocation != undefined && vlocation[2] != undefined && vlocation[2].split("=")[1] != undefined) {
+        //Jira CAP-1524
+        //if (vlocation != undefined && vlocation[2] != undefined && vlocation[2].split("=")[1] != undefined) {
+        if (vlocation != undefined && vlocation[2] != undefined && vlocation[2]?.split("=")[1] != undefined) {
             var sIsConsultation = vlocation[2].split("=")[1];
         }
         
