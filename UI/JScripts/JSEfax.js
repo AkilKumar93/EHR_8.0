@@ -569,8 +569,9 @@ function LoadEfax()
                     $('#txtSenderMaskFax').val(fax);
                 }
                 if (FaxLoadList.Email != undefined && FaxLoadList.Email != '') {
-
-                    $('#txtSenderEmail').val(FaxLoadList.Email);
+                    //Jira CAP - 1415
+                    //$('#txtSenderEmail').val(FaxLoadList.Email);
+                    $('#txtSenderEmail').val("");
                 }
                 if (vDMEOrder != undefined && vDMEOrder != '') {
                     $('#lblattach').html(vDMEOrder);
@@ -768,8 +769,10 @@ function ProviderSelected(event, ui) {
         $('#msktxtRecipientFax').val('');
     }
     if (ProviderDetails.sphyEmail != undefined && ProviderDetails.sphyEmail != '') {
-       
-        $('#txtRecipientmail').val(ProviderDetails.sphyEmail);
+
+        //Jira CAP-1415
+        //$('#txtRecipientmail').val(ProviderDetails.sphyEmail);
+        $('#txtRecipientmail').val("");
     }
     else
     {

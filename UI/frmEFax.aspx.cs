@@ -78,16 +78,17 @@ namespace Acurus.Capella.UI
                         }
                     }
 
-                    //Jira CAP-1387
-                    string sEmail = txtRecName.Value;
-                    if (sEmail.Contains("Email"))
-                    {
-                        sEmail = sEmail.Substring(sEmail.IndexOf("Email"));
-                        if (sEmail != string.Empty && sEmail.Split('|')[0].Split(':').Length >= 2 && sEmail.Split('|')[0].Split(':')[1] != "" && sEmail.Split('|')[0].Split(':')[1] != " ")
-                        {
-                            txtRecipientmail.Value = sEmail.Split('|')[0].Split(':')[1];
-                        }
-                    }
+                    // Commented due to Jira CAP-1415
+                    ////Jira CAP-1387
+                    //string sEmail = txtRecName.Value;
+                    //if (sEmail.Contains("Email"))
+                    //{
+                    //    sEmail = sEmail.Substring(sEmail.IndexOf("Email"));
+                    //    if (sEmail != string.Empty && sEmail.Split('|')[0].Split(':').Length >= 2 && sEmail.Split('|')[0].Split(':')[1] != "" && sEmail.Split('|')[0].Split(':')[1] != " ")
+                    //    {
+                    //        txtRecipientmail.Value = sEmail.Split('|')[0].Split(':')[1];
+                    //    }
+                    //}
 
 
                 }
