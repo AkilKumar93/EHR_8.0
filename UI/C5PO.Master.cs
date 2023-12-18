@@ -23,6 +23,7 @@ using System.IO;
 using System.Web.SessionState;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Acurus.Capella.UI.Extensions;
 
 namespace Acurus.Capella.UI
 {
@@ -39,14 +40,9 @@ namespace Acurus.Capella.UI
             }
             //CAP-1167
             var currentURL = Request.Url.AbsoluteUri.ToString();
-            var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
-            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?$";
-
-                   
-
-            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern)) 
+            if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL)) 
             {
-                Session["currenturl"] = Request.Url.AbsoluteUri;
+                Session["currenturl"] = HttpUtility.UrlEncode(Request.Url.AbsoluteUri);
             }
 
             //CAP-1311
@@ -220,19 +216,21 @@ namespace Acurus.Capella.UI
                             {
                                 ClientSession.HumanId = Convert.ToUInt32(Request["HumanID"]);
                             }
-                            ModalWindow.Visible = true;
-                            ModalWindow.VisibleOnPageLoad = true;
-                            ModalWindow.VisibleStatusbar = false;
-                            ModalWindow.ReloadOnShow = true;
-                            ModalWindow.ShowContentDuringLoad = false;
-                            ModalWindow.Height = Unit.Pixel(800);
-                            ModalWindow.Width = Unit.Pixel(1220);
-                            ModalWindow.Top = Unit.Pixel(1);
-                            ModalWindow.Left = Unit.Pixel(72);
-                            ModalWindow.Behaviors = WindowBehaviors.Close;
-                            ModalWindow.NavigateUrl = "HtmlPhoneEncounter.html?openingfrom=" + Convert.ToString(Request["openingfrom"]) + "&MyHumanID=" + Request["HumanID"].ToString();
-                            ModalWindow.Modal = true;
-                            //ModalWindow.NavigateUrl = "frmPhoneEncounter.aspx?MyHumanID=" + Request["HumanID"].ToString() + "&openingfrom=" + Convert.ToString(Request["openingfrom"]);
+                            //CAP-1428
+                            //ModalWindow.Visible = true;
+                            //ModalWindow.VisibleOnPageLoad = true;
+                            //ModalWindow.VisibleStatusbar = false;
+                            //ModalWindow.ReloadOnShow = true;
+                            //ModalWindow.ShowContentDuringLoad = false;
+                            //ModalWindow.Height = Unit.Pixel(800);
+                            //ModalWindow.Width = Unit.Pixel(1220);
+                            //ModalWindow.Top = Unit.Pixel(1);
+                            //ModalWindow.Left = Unit.Pixel(72);
+                            //ModalWindow.Behaviors = WindowBehaviors.Close;
+                            //ModalWindow.NavigateUrl = "HtmlPhoneEncounter.html?openingfrom=" + Convert.ToString(Request["openingfrom"]) + "&MyHumanID=" + Request["HumanID"].ToString();
+                            //ModalWindow.Modal = true;
+                            ////ModalWindow.NavigateUrl = "frmPhoneEncounter.aspx?MyHumanID=" + Request["HumanID"].ToString() + "&openingfrom=" + Convert.ToString(Request["openingfrom"]);
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, " window.setTimeout(function () {OpenModal('Phone Encounter');}, 2000);", true);
                         }
                     }
                 }
@@ -277,6 +275,25 @@ namespace Acurus.Capella.UI
                                 ModalWindow.Top = Unit.Pixel(0);
                                 ModalWindow.Left = Unit.Pixel(200);
                             }
+                        }
+                    }
+                }
+                //CAP-1506
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "OrderManagement")
+                {
+                    if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)
+                    {
+                        if (Request["HumanID"] != null && Request["HumanID"] != string.Empty)
+                        {
+                            ModalWindow.Visible = true;
+                            ModalWindow.VisibleOnPageLoad = true;
+                            ModalWindow.VisibleStatusbar = false;
+                            ModalWindow.ReloadOnShow = true;
+                            ModalWindow.ShowContentDuringLoad = true;
+                            ModalWindow.Height = Unit.Pixel(670);
+                            ModalWindow.Width = Unit.Pixel(1200);
+                            ModalWindow.Behaviors = WindowBehaviors.None;
+                            ModalWindow.NavigateUrl = "frmOrderManagement.aspx";
                         }
                     }
                 }
@@ -368,12 +385,12 @@ namespace Acurus.Capella.UI
             if (ClientSession.UserName == "" && ClientSession.FacilityName == "")
             {
                 //CAP-1075
-                if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+                if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
                 {
-                    var CurrentUrl = Session["currenturl"]?.ToString();
-                    if (!string.IsNullOrEmpty(CurrentUrl))
+                    var SessionCurrentUrl = Session["currenturl"]?.ToString();
+                    if (!string.IsNullOrEmpty(SessionCurrentUrl))
                     {
-                        var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                        var returnURL = $"~/frmLogin.aspx?redirecturl={HttpUtility.UrlEncode(SessionCurrentUrl)}";
                         Session["currenturl"] = null;
                         Response.Redirect(returnURL);
                     }
@@ -779,8 +796,6 @@ namespace Acurus.Capella.UI
                 Session["ShowAllState"] = null;
                 Session["GeneralQShowAll"] = null;
                 //CAP-1167
-                //
-                
                 Session.Clear();
                 Session.Abandon();
                 //CAP-1311

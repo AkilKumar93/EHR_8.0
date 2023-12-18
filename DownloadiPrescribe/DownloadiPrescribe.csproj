@@ -35,15 +35,16 @@
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.1.0.39271, Culture=neutral, PublicKeyToken=3a9cab8f8d22bfb7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Antlr3.Runtime.dll</HintPath>
+      <HintPath>C:\Users\AnuragSingh\Project\New folder\ehr-capella5.0\DataAccess\bin\Debug\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Iesi.Collections.dll</HintPath>
+      <HintPath>C:\Users\AnuragSingh\Project\New folder\ehr-capella5.0\DataAccess\bin\Debug\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="LinFu.DynamicProxy, Version=1.0.3.14911, Culture=neutral, PublicKeyToken=62a6874124340d6e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\LinFu.DynamicProxy.dll</HintPath>
+      <HintPath>C:\Users\AnuragSingh\Project\New folder\ehr-capella5.0\DataAccess\bin\Debug\LinFu.DynamicProxy.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\DataAccess\bin\Debug\log4net.dll</HintPath>
@@ -54,11 +55,11 @@
     </Reference>
     <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\NHibernate.dll</HintPath>
+      <HintPath>C:\Users\AnuragSingh\Project\New folder\ehr-capella5.0\DataAccess\bin\Debug\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.ByteCode.LinFu, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\NHibernate.ByteCode.LinFu.dll</HintPath>
+      <HintPath>C:\Users\AnuragSingh\Project\New folder\ehr-capella5.0\DataAccess\bin\Debug\NHibernate.ByteCode.LinFu.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -76,6 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="bin\Debug\Acurus.Capella.DataAccess.dll.config" />
+    <None Include="bin\Debug\CapellaAgent.exe.config" />
     <None Include="bin\Debug\DownloadiPrescribe.exe.config" />
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +95,29 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\Acurus.Capella.Core.dll" />
+    <Content Include="bin\Debug\Acurus.Capella.Core.pdb" />
+    <Content Include="bin\Debug\Acurus.Capella.DataAccess.dll" />
+    <Content Include="bin\Debug\Acurus.Capella.DataAccess.pdb" />
+    <Content Include="bin\Debug\BouncyCastle.Crypto.dll" />
+    <Content Include="bin\Debug\CapellaAgent.exe" />
+    <Content Include="bin\Debug\CapellaAgent.pdb" />
     <Content Include="bin\Debug\DownloadiPrescribe.exe" />
     <Content Include="bin\Debug\DownloadiPrescribe.pdb" />
+    <Content Include="bin\Debug\HbmMaps\Request_Sent_Log.hbm.xml" />
+    <Content Include="bin\Debug\HbmMaps\Response_Received_Log.hbm.xml" />
+    <Content Include="bin\Debug\hibernate.cfg.xml" />
+    <Content Include="bin\Debug\K4os.Compression.LZ4.dll" />
+    <Content Include="bin\Debug\K4os.Compression.LZ4.Streams.dll" />
+    <Content Include="bin\Debug\K4os.Hash.xxHash.dll" />
+    <Content Include="bin\Debug\log4net.dll" />
+    <Content Include="bin\Debug\MySql.Data.dll" />
+    <Content Include="bin\Debug\System.Buffers.dll" />
+    <Content Include="bin\Debug\System.Memory.dll" />
+    <Content Include="bin\Debug\System.Numerics.Vectors.dll" />
+    <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="bin\Debug\Ubiety.Dns.Core.dll" />
+    <Content Include="bin\Debug\Zstandard.Net.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
