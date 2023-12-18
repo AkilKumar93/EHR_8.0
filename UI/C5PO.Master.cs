@@ -276,6 +276,25 @@ namespace Acurus.Capella.UI
                         }
                     }
                 }
+                //CAP-1506
+                else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "OrderManagement")
+                {
+                    if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)
+                    {
+                        if (Request["HumanID"] != null && Request["HumanID"] != string.Empty)
+                        {
+                            ModalWindow.Visible = true;
+                            ModalWindow.VisibleOnPageLoad = true;
+                            ModalWindow.VisibleStatusbar = false;
+                            ModalWindow.ReloadOnShow = true;
+                            ModalWindow.ShowContentDuringLoad = true;
+                            ModalWindow.Height = Unit.Pixel(670);
+                            ModalWindow.Width = Unit.Pixel(1200);
+                            ModalWindow.Behaviors = WindowBehaviors.None;
+                            ModalWindow.NavigateUrl = "frmOrderManagement.aspx";
+                        }
+                    }
+                }
                 else if (Request["ScreenName"] != null && Request["ScreenName"].ToString() == "MRE")
                 {
                     if (ClientSession.FillPatientChart != null && ClientSession.FillPatientChart.PatChartList.Count > 0)

@@ -38,7 +38,7 @@ namespace Acurus.Capella.UI.Extensions
         public static bool IsValidRedirectUrlForLogin(string currentURL)
         {
             var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
-            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?$";
+            var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?(&ScreenName=OrderManagement)?$";
 
             if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
             {
@@ -85,7 +85,8 @@ namespace Acurus.Capella.UI.Extensions
             IDictionary<string, ulong> scn_tab_dict = new Dictionary<string, ulong>()
             {
                 {"ERX", 5400 },
-                {"CREATEORDER", 8507}
+                {"CREATEORDER", 8507},
+                {"ORDERMANAGEMENT", 70900}
             };
 
             var currentScreen = scn_tab_dict.FirstOrDefault(x => x.Key.Equals(scn_name, StringComparison.InvariantCultureIgnoreCase));
