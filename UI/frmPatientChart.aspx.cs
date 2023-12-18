@@ -2011,7 +2011,7 @@ namespace Acurus.Capella.UI
             {
                 ulong ulHumanId = 0;
 
-                ulong.TryParse(Request["HumanID"].ToString().Replace("?", ""),out ulHumanId);
+                ulong.TryParse(Request["HumanID"]?.ToString()?.Replace("?", ""),out ulHumanId);
 
                 if(ulHumanId <= 0)
                 {
