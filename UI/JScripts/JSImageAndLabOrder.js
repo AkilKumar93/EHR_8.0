@@ -107,6 +107,8 @@ function OpenPDFImage(FaxSubject) {
     $(top.window.document).find("#PrintPDFmdldlg")[0].style.height = "750px";
     $(top.window.document).find("#PrintPDFFrame")[0].style.height = "685px";
     $(top.window.document).find("#PrintPDFFrame")[0].contentDocument.location.href = "frmPrintPDF.aspx?SI=" + document.getElementById('hdnSelectedItem').value + "&Location=DYNAMIC" + "&FromOrder=Y";
+    //CAP-1498
+    document.getElementById('btnOrderSubmit').disabled = true;
 }
 function OnClientCloseDiagnosis(oWindow, args) {
     if (oWindow != null) {
