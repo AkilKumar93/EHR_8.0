@@ -9,6 +9,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 {
     public partial interface IProcedureModifierLookupManager : IManagerBase<ProcedureModifierLookupManager, ulong>
     {
+        IList<ProcedureModifierLookup> GetProcedureList(List<string> CPT);
     }
     public partial class ProcedureModifierLookupManager : ManagerBase<ProcedureModifierLookupManager, ulong>, IProcedureModifierLookupManager
     {
