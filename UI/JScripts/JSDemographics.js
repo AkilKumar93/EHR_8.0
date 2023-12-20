@@ -846,18 +846,20 @@ function PatientInformationValidation() {
             return false;
         }       
         //Cap - 1570
-        if (DateDeath > dtDeath) {
-            DisplayErrorMessage('420080');
-            document.getElementById(GetClientId("dtpDateOfDeath")).focus();
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return false;
-        }        
+              
         if (DOBValidation(GetClientId("dtpDateOfDeath")) == false && document.getElementById(GetClientId("dtpDateOfDeath")).value != "__-___-____") {
             DisplayErrorMessage('420093');
             document.getElementById(GetClientId("dtpDateOfDeath")).focus();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             return false;
         }
+
+        if (DateDeath > dtDeath) {
+            DisplayErrorMessage('420080');
+            document.getElementById(GetClientId("dtpDateOfDeath")).focus();
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            return false;
+        }  
 
         if (document.getElementById(GetClientId("ddlReasonForDeath")).value.length == 0) {
 
