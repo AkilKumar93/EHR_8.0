@@ -137,6 +137,7 @@ namespace Acurus.Capella.UI
                 else if (ddlPatientStatus.Text.ToUpper() == "DECEASED")
                 {
                     dtpDateOfDeath.Attributes.Remove("readonly");
+                    dtpDateOfDeath.CssClass = "Editabletxtbox";
                 }
                    
                 if (chkEnrollOnlineAccess.Checked == false)
@@ -3350,6 +3351,10 @@ namespace Acurus.Capella.UI
             }
             if (ddlPatientStatus.Text == "DECEASED")
             {
+                //Cap - 1583
+                dtpDateOfDeath.Attributes.Remove("readonly");
+                dtpDateOfDeath.CssClass = "Editabletxtbox";
+
                 objHuman.Patient_Status = ddlPatientStatus.Text;
                 if (dtpDateOfDeath.Text == "")
                 {

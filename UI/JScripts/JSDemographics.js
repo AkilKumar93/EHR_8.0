@@ -847,7 +847,7 @@ function PatientInformationValidation() {
         }       
         //Cap - 1570
               
-        if (DOBValidation(GetClientId("dtpDateOfDeath")) == false && document.getElementById(GetClientId("dtpDateOfDeath")).value != "__-___-____") {
+        if (DeathValidation(GetClientId("dtpDateOfDeath")) == false && document.getElementById(GetClientId("dtpDateOfDeath")).value != "__-___-____") {
             DisplayErrorMessage('420093');
             document.getElementById(GetClientId("dtpDateOfDeath")).focus();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -992,6 +992,79 @@ function DOBValidation(dateToValidate) {
         return true;
     }
 }
+//Cap - 1582
+function DeathValidation(dateToValidate) {
+    var splitdate = document.getElementById(GetClientId(dateToValidate.split('_')[2])).value
+    var dt1 = new Date();
+    var dd = new Date();
+    var month = new Array();
+    switch (splitdate.split('-')[1]) {
+        case "Jan":
+            x = 0;
+            break;
+        case "Feb":
+            x = 1;
+            break;
+        case "Mar":
+            x = 2;
+            break;
+        case "Apr":
+            x = 3;
+            break;
+        case "May":
+            x = 4;
+            break;
+        case "Jun":
+            x = 5;
+            break;
+        case "Jul":
+            x = 6;
+            break;
+        case "Aug":
+            x = 7;
+            break;
+        case "Sep":
+            x = 8;
+            break;
+        case "Oct":
+            x = 9;
+            break;
+        case "Nov":
+            x = 10;
+            break;
+        case "Dec":
+            x = 11;
+            break;
+        case splitdate.split('-')[1]:
+            return false;
+            break;
+
+    }
+    if (isNaN(Date.parse(splitdate))) {
+        return false;
+    }
+    if (splitdate.split('-')[0] == "00") {
+        return false;
+    }
+    dd.setFullYear(splitdate.split('-')[2], x, splitdate.split('-')[0]);
+    if (isNaN(dd)) {
+        return false;
+    }
+    if (parseInt(splitdate.split('-')[0]) > 31) {
+        return false;
+    }
+    if ((dd.getFullYear() > dt1.getFullYear())) {
+        return false;
+    }
+    else if (dd.getMonth() > dt1.getMonth() && (dd.getFullYear() >= dt1.getFullYear())) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+
 function PhNoValid(sphno) {
     var s = document.getElementById(sphno).value;
     sReplace = s.replace(/_/gi, "");
