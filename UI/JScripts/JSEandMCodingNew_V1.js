@@ -2629,7 +2629,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         /*Start For Git Lab Id: 1666*/
         var icdcount = false;
         // CAP  1571;
-        var sICDCode;
+        var sICDCode='';
             //End
         if (index == "Submit") {
             //Save and submit
