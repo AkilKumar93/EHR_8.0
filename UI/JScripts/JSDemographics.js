@@ -1053,12 +1053,6 @@ function DeathValidation(dateToValidate) {
     if (parseInt(splitdate.split('-')[0]) > 31) {
         return false;
     }
-    if ((dd.getFullYear() > dt1.getFullYear())) {
-        return false;
-    }
-    else if (dd.getMonth() > dt1.getMonth() && (dd.getFullYear() >= dt1.getFullYear())) {
-        return false;
-    }
     else {
         return true;
     }
@@ -1905,6 +1899,16 @@ $(document).ready(function () {
     uPatientId = document.getElementById("ctl00_C5POBody_HiddenPatientName").value.split('&')[1];
     loadgrid();
     //  scrolify($('#tblpolicyinfo'), 50);
+
+    //Cap - 1583
+    if (document.getElementById(GetClientId("ctl00_C5POBody_ddlPatientStatus")).value == "ALIVE") {
+        $('#ctl00_C5POBody_dtpDateOfDeath').removeClass('Editabletxtbox');
+        $('#ctl00_C5POBody_dtpDateOfDeath').addClass('nonEditabletxtbox');
+    }
+    else {
+        $('#ctl00_C5POBody_dtpDateOfDeath').removeClass('nonEditabletxtbox');
+        $('#ctl00_C5POBody_dtpDateOfDeath').addClass('Editabletxtbox');
+    }
 
 });
 
