@@ -436,7 +436,10 @@ function chkpaperorderChanged() {
     else {
         document.getElementById('btnOrderSubmit').disabled = true;
     }
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
+    //CAP-1613
+    if (window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable != undefined && window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable != null) {
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
+    }
     localStorage.setItem("bSave", "false");
     var chkPaper = document.getElementById("chkpaperorder");
     if (chkPaper.checked) {
@@ -544,7 +547,6 @@ function MoveToNextProcessClicked(sender, args) {
 
 }
 function saveorder() {
-    
     var rows = $('#tabMed tbody >tr');
     var columns;
     var inputdata = "";
@@ -624,6 +626,7 @@ function OpenMedication_dosage() {
         if ($('#' + this.id)[0].labels[0].innerText.indexOf('x__') > -1) {
             if (procedure == "")
             //CAP-1471
+            //CAP-1613
                 procedure = $('#' + this.id)[0]?.labels[0]?.innerText + "|" + $('#' + this.id)[0]?.parentElement?.attributes["orderid"]?.value;
             else {
                 procedure = procedure + "~" + $('#' + this.id)[0]?.labels[0]?.innerText + "|" + $('#' + this.id)[0]?.parentElement?.attributes["orderid"]?.value;
@@ -694,7 +697,8 @@ function closepopup() {
     else {
         $(top.window.document).find("#btnCloseMed").click();
         if (localStorage.getItem("ProcedureQuantity") != "") {
-            var datalist = localStorage.getItem("ProcedureQuantity").split('~');
+            //CAP-1613
+            var datalist = localStorage.getItem("ProcedureQuantity")?.split('~')??"";
             for (var i = 0; i < datalist.length; i++) {
                 var quantity = datalist[i].split('|');
                 var orderid = quantity[1];
@@ -718,8 +722,9 @@ function closepopup() {
 $(top.window.document).find("#ProcessModalMed").on("hidden.bs.modal", function () {
     // put your default event here
   
-        if (localStorage.getItem("ProcedureQuantity") != "") {
-            var datalist = localStorage.getItem("ProcedureQuantity").split('~');
+    if (localStorage.getItem("ProcedureQuantity") != "") {
+        //CAP-1613
+            var datalist = localStorage?.getItem("ProcedureQuantity")?.split('~')??"";
             for (var i = 0; i < datalist.length; i++) {
                 var quantity = datalist[i].split('|');
                 var orderid = quantity[1];
@@ -1333,16 +1338,22 @@ function ChklstAssessmentEnable() {
 }
 //added by balaji.TJ
 function ChklstFrequentlyEnable() {
-    if (document.getElementById('chklstFrequentlyUsedProcedures').disabled == false) {
-        document.getElementById('btnOrderSubmit').disabled = false; //$find('btnOrderSubmit').set_enabled(true);
-    }
-    else {
-        document.getElementById('btnOrderSubmit').disabled = true; //$find('btnOrderSubmit').set_enabled(false);
+    //CAP-1613
+    if (document?.getElementById('btnOrderSubmit') != undefined && document?.getElementById('btnOrderSubmit') != null) {
+        if (document?.getElementById('chklstFrequentlyUsedProcedures')?.disabled == false) {
+            document.getElementById('btnOrderSubmit').disabled = false; //$find('btnOrderSubmit').set_enabled(true);
+        }
+        else {
+            document.getElementById('btnOrderSubmit').disabled = true; //$find('btnOrderSubmit').set_enabled(false);
+        }
     }
 
     var selectedLab = document.getElementById("cboLab").options[document.getElementById("cboLab").selectedIndex].text;//cboLab.get_selectedItem().get_text();
     if (selectedLab != null && selectedLab == "CMG Anc.-In House") {
-        document.getElementById('btnImportresult').disabled = false; //$find("btnImportresult").set_enabled(true);
+        //CAP-1613
+        if (document?.getElementById('btnImportresult') != undefined && document?.getElementById('btnImportresult') != null) {
+            document.getElementById('btnImportresult').disabled = false; //$find("btnImportresult").set_enabled(true);
+        }
     }
 
 }
@@ -1710,12 +1721,16 @@ function dtpCollectionDate_OnDateSelected(sender, args) {
         var checkBoxArray = elementRef.getElementsByTagName('input');
         for (var i = 0; i < checkBoxArray.length; i++) {
             var checkBoxRef = checkBoxArray[i];
-            if (checkBoxRef.checked == true) {
-                document.getElementById('btnImportresult').disabled = false; //$find("btnImportresult").set_enabled(true);
-                return;
-            }
-            else {
-                document.getElementById('btnImportresult').disabled = true;//$find("btnImportresult").set_enabled(false);
+            //CAP-1613
+            if (document?.getElementById('btnImportresult') != undefined && document?.getElementById('btnImportresult') != null)
+            {
+                if (checkBoxRef.checked == true) {
+                    document.getElementById('btnImportresult').disabled = false; //$find("btnImportresult").set_enabled(true);
+                    return;
+                }
+                else {
+                    document.getElementById('btnImportresult').disabled = true;//$find("btnImportresult").set_enabled(false);
+                }
             }
         }
 
@@ -1839,28 +1854,35 @@ function SavedSuccessfully() {
 
 function chklstFrequentlyUsedProcedures_Changed() {
     if (document.getElementById("cboLab").options[document.getElementById("cboLab").selectedIndex].text == "CMG Anc.-In House") {
-        if ($("#chklstFrequentlyUsedProcedures input:checked").length > 0)
-            document.getElementById("btnImportresult").disabled = false; //$find("btnImportresult").set_enabled(true);
-        else
-            document.getElementById("btnImportresult").disabled = true; //$find("btnImportresult").set_enabled(false);
+        //CAP-1613
+        if (document?.getElementById("btnImportresult") != undefined && document?.getElementById("btnImportresult") != null)
+        { 
+            if ($("#chklstFrequentlyUsedProcedures input:checked").length > 0)
+                document.getElementById("btnImportresult").disabled = false; //$find("btnImportresult").set_enabled(true);
+            else
+                document.getElementById("btnImportresult").disabled = true; //$find("btnImportresult").set_enabled(false);
+        }
     }
     if (document.getElementById("btnOrderSubmit") != undefined)
         document.getElementById("btnOrderSubmit").disabled = false;
     if (document.getElementById("txtQuantity").value != "") {
-        if (document.getElementById("lblUnits").innerText.indexOf("*") != -1) {
-            var lblunits = document.getElementById("lblUnits");
-            //CAP-1501
-            lblunits.innerHTML += "*";
-            $(lblunits).html($(lblunits).html().replace("*", "<span class='manredforstar'>*</span>"));
-            $('#lblUnits').removeClass('spanstyle');
-            $('#lblUnits').addClass('MandLabelstyle');
-        }
-        else {
-            document.getElementById("lblUnits").innerText = "Units";
-            document.getElementById("lblUnits").innerHTML = "Units";
-            document.getElementById("lblUnits").style.color = "Black";
-            $('#lblUnits').removeClass('MandLabelstyle');
-            $('#lblUnits').addClass('spanstyle');
+        //CAP-1613 Uncaught ReferenceError: lblunits is not defined
+        if (document?.getElementById("lblUnits") != undefined && document?.getElementById("lblUnits") != null) {
+            if (document.getElementById("lblUnits").innerText.indexOf("*") != -1) {
+                var lblunits = document.getElementById("lblUnits");
+                //CAP-1501
+                lblunits.innerHTML += "*";
+                $(lblunits).html($(lblunits).html().replace("*", "<span class='manredforstar'>*</span>"));
+                $('#lblUnits').removeClass('spanstyle');
+                $('#lblUnits').addClass('MandLabelstyle');
+            }
+            else {
+                document.getElementById("lblUnits").innerText = "Units";
+                document.getElementById("lblUnits").innerHTML = "Units";
+                document.getElementById("lblUnits").style.color = "Black";
+                $('#lblUnits').removeClass('MandLabelstyle');
+                $('#lblUnits').addClass('spanstyle');
+            }
         }
     }
 }
