@@ -1592,7 +1592,17 @@ namespace Acurus.Capella.UI
 
                         }
                         else
+                        {
                             objMoveVerifyDTO = objEncounterManager.PerformMovetoNextProcess(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, ClientSession.FillEncounterandWFObject.EncounterWFRecord, ClientSession.FillEncounterandWFObject.EncRecord, ClientSession.FillEncounterandWFObject.DocumentationWFRecord, null, IsPatientDiscussed, IsDiscussedBy);
+                            //CAP-975
+                            if ((Convert.ToBoolean(objMoveVerifyDTO.IsGcodePresent) == true) && (Convert.ToBoolean(objMoveVerifyDTO.IsICDPresent) == false))
+                            {
+                                ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "ErrorMessage", "DisplayErrorMessage('180045','','');", true);
+                                if (hdnTab != null)
+                                    hdnTab.Value = "tbEandM";
+                                return;
+                            }
+                        }
                     }
                 }
                 else
