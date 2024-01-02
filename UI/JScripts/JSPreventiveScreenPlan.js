@@ -444,8 +444,12 @@ function SavePreventiveScreenPlan() {
             var lbl;
             if (objdata != "[]") {
                 for (var i = 0; i < objdata.length; i++) {
+                    //Jira CAP-1591 declare lbl = ""
+                    lbl = "";
                     for (var p = 0; p < rows.length; p++) {
-                        if (rows[p].innerText == objdata[i].Preventive_Service_Value) {
+                        //Jira CAP-1591
+                        //if (rows[p].innerText == objdata[i].Preventive_Service_Value) {
+                        if (rows[p].innerText.replaceAll(" ", "") == objdata[i].Preventive_Service_Value.replaceAll(" ", "")) {
                             lbl = rows[p];
                             break;
                         }
@@ -586,8 +590,12 @@ function PreventiveScreenPlanCopyPrevious() {
                 }
                 if (previouslst != "[]") {
                     for (var i = 0; i < previouslst.length; i++) {
+                        //Jira CAP-1591 declare lbl = ""
+                        lbl = "";
                         for (var p = 0; p < rows.length; p++) {
-                            if (rows[p].innerText == previouslst[i].Preventive_Service_Value) {
+                            //Jira CAP-1591
+                            //if (rows[p].innerText == previouslst[i].Preventive_Service_Value) {
+                            if (rows[p].innerText.replaceAll(" ", "") == previouslst[i].Preventive_Service_Value.replaceAll(" ", "")) {
                                 lbl = rows[p];
                                 break;
                             }
