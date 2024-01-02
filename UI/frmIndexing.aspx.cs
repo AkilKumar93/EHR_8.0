@@ -4821,8 +4821,9 @@ namespace Acurus.Capella.UI
                     btnMoveToNextProcess.Disabled = true;
                 txtSelectedPages.Disabled = true;
                 rdbPageRange.Checked = false;
-
-
+                //CAP-1225
+                cboDocumentType.SelectedIndex = 0;
+                cboDocumentSubType.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
