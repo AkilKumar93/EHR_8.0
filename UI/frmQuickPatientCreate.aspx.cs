@@ -541,7 +541,8 @@ namespace Acurus.Capella.UI
 
             SecurityServiceUtility objSecurityServiceUtility = new SecurityServiceUtility();
             objSecurityServiceUtility.ApplyUserPermissions(this);
-            btnUploadDocuments.CssClass = "aspresizedgreenbutton";
+            //CAP-1572
+            btnUploadDocuments.CssClass = "aspresizedbluebutton";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "closeload", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
         }
