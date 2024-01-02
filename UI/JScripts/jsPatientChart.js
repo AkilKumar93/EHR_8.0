@@ -337,7 +337,7 @@ function reloadSummary() {
                     //Jira CAP-1587
                     //if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
                     //    log.Message.indexOf("is an unexpected token") > 0) {
-                    if (log.Message.indexOf("Human XML is invalid") == -1 && log.Message.indexOf("Human XML is not found") == -1 && log.Message.indexOf("Encounter XML is invalid") == -1 && log.Message.indexOf("Encounter XML is not found") > -1) {
+                    if (log.Message.indexOf("Human XML is invalid") == -1 && log.Message.indexOf("Human XML is not found") == -1 && log.Message.indexOf("Encounter XML is invalid") == -1 && log.Message.indexOf("Encounter XML is not found") == -1) {
                         alert("USER MESSAGE:\n" +
                             ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
                             "Message: " + log.Message);
@@ -351,7 +351,7 @@ function reloadSummary() {
                 }
                 //Jira CAP-1587
                 else {
-                    if (xhr.responseText.indexOf("Human XML is invalid") == -1 && xhr.responseText.indexOf("Human XML is not found") == -1 && xhr.responseText.indexOf("Encounter XML is invalid") == -1 && xhr.responseText.indexOf("Encounter XML is not found") > -1) {
+                    if (xhr.responseText.indexOf("Human XML is invalid") == -1 && xhr.responseText.indexOf("Human XML is not found") == -1 && xhr.responseText.indexOf("Encounter XML is invalid") == -1 && xhr.responseText.indexOf("Encounter XML is not found") == -1) {
                         alert("USER MESSAGE:\n" +
                             ". Cannot process request. Please Login again and retry.");
                     }
