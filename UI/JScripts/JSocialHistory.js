@@ -58,6 +58,8 @@ function LoadSocialHistory()
 }
 function displayalerttobacco()
 {
+    //CAP-1320
+    PFSH_SaveUnsuccessful();
     alert("Please Pick at least one Reason Not Performed for Tobacco Use and Exposure and do not modify the selected item");
         return false
 }
