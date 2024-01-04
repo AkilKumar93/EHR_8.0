@@ -1477,9 +1477,7 @@ function FaceSheetClick() {
     }
 
     if (window?.parent?.document?.body != undefined && window?.parent?.document?.body != null) {
-        setTimeout(function () {
             $(window.parent.document.body).css({ overflow: "hidden" });
-        }, 3000);  
     }
 
     document.getElementById('btnface').click();
