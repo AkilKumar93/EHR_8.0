@@ -3090,6 +3090,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             $scope.orderByField = ['-IsPrimary', 'ICDCode'];
 
             $scope.reverseSort = false;
+            //Cap - 1624
+            $('#btnSave')[0].disabled = false;
 
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         })
