@@ -2737,13 +2737,16 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true" &&
             localStorage.getItem("bSave") == "false") {
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-            var isSaved = $scope.SaveAssessment();
-            $scope.SaveEnableDisable(true);
-            if (isSaved != "false") {
+            //Cap - 1022, 1626
+           // var isSaved = $scope.SaveAssessment();
+            //$scope.SaveEnableDisable(true);
+            //if (isSaved != "false") {
                 $scope.CopyPreviousEncounter();
-            }
-            else { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            return;
+            //}
+            //else { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            //return;
+
+
             //dvdialog = window.parent.parent.parent.parent.document.getElementsByTagName('div').namedItem('dvdialogAssessment');
             //$(dvdialog).dialog({
             //    modal: true,
@@ -3092,6 +3095,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             $scope.reverseSort = false;
             //Cap - 1624
             $('#btnSave')[0].disabled = false;
+            //Cap - 1627
+            localStorage.setItem("bSave", "false");
+            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
 
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         })
