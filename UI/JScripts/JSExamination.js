@@ -458,7 +458,9 @@ function SetPhysicianSpecificFocusedVisibility() {
                 var y = new Date();
             }
 
-            if ($(rows[i]).attr("gender") != undefined) {
+            //Jira CAP-1600
+            //if ($(rows[i]).attr("gender") != undefined) {
+            if ($(rows[i]).attr("gender") != undefined && (gender.toUpperCase() == "MALE" || gender.toUpperCase() == "FEMALE")) {
                 if ($(rows[i]).attr("gender").toUpperCase() != gender.toUpperCase() && $(rows[i]).attr("gender") != "") {
                     rows[i].style.display = "none";
                 }
@@ -530,7 +532,9 @@ function SetPhysicianSpecificVisibility() {
                 $('#btnCopyPrevious')[0].disabled = false;
                 $('#btnClearAll')[0].disabled = false;
             }
-            if ($(rows[i]).attr("gender") != undefined) {
+            //Jira CAP-1600
+            //if ($(rows[i]).attr("gender") != undefined) {
+            if ($(rows[i]).attr("gender") != undefined && (gender.toUpperCase() == "MALE" || gender.toUpperCase() == "FEMALE")) {
                 if ($(rows[i]).attr("gender").toUpperCase() != gender.toUpperCase() && $(rows[i]).attr("gender") != "") {
                     rows[i].style.display = "none";
 
