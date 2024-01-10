@@ -1420,8 +1420,8 @@ function OpenModal(data) {
             $(top.window.document).find('#ProcessiFrameNotes')[0].contentDocument.location.href = "frmSummaryNew.aspx?Menu=FAX&TabMode=true";
             $(top.window.document).find("#ModalTtleNotes")[0].textContent = "Progress Notes";
 
-
-            StopLoadingImage();
+            //CAP-1601
+            //StopLoadingImage();
         }
         else {
             StopLoadingImage();

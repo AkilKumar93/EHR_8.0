@@ -1039,7 +1039,8 @@ namespace Acurus.Capella.UI
             //ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "SummaryAlert", "SummaryTimeStamp('" + totaltime + "','" + transformtime + "');", true);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary Page Load : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Summary : End", DateTime.Now, sGroup_ID_Log, "frmSummaryNew");
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Summary", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //CAP-1601
+            //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Summary", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
 
         }

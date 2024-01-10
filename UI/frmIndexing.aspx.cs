@@ -1867,7 +1867,8 @@ namespace Acurus.Capella.UI
             }
             if (Path.GetExtension(file_name.ToString()).ToString().ToUpper() == ".PDF" && Path.GetFileNameWithoutExtension(file_name.ToString()).ToString().Contains("#") == true)
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile();alert('The selected file can not be indexed as the file has the special character such as #.Please rename the file and retry again.');", true);
+                //CAP-1556
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "Fileextension", "StopLoadOnUploadFile(); document.getElementById('divLoading').style.display = 'none'; alert('The selected file can not be indexed as the file has the special character such as #.Please rename the file and retry again.');", true);
                 return;
             }
 
