@@ -463,7 +463,18 @@ namespace Acurus.Capella.UI
             if (ClientSession.PatientPaneList != null)
             {
                 if (ClientSession.PatientPaneList.Count > 0)
-                    sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                {
+                    //Cap - 1599
+                    //sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                    if (ClientSession.PatientPaneList[0].Sex.ToUpper().Contains("MALE"))
+                    {
+                        sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                    }
+                    else
+                    {
+                        sex = ClientSession.PatientPaneList[0].Sex.ToUpper();
+                    }
+                }
                 else
                 {
                     IList<string> ilsHumanTagList = new List<string>();
@@ -489,7 +500,19 @@ namespace Acurus.Capella.UI
 
                     }
                     if (lsthuman.Count > 0)
-                        sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                    {
+                        //Cap - 1599
+                        //sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                        if (lsthuman[0].Sex.ToUpper().Contains("MALE") == true)
+                        {
+                            sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                        }
+                        else
+                        {
+                            sex = lsthuman[0].Sex.ToUpper();
+                        }
+                    }
+
                     //string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + ClientSession.HumanId.ToString() + ".xml");
                     //if (File.Exists(strXmlEncounterPath) == true)
                     //{
@@ -1330,7 +1353,18 @@ namespace Acurus.Capella.UI
             if (ClientSession.PatientPaneList != null)
             {
                 if (ClientSession.PatientPaneList.Count > 0)
-                    sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                {
+                    //Cap - 1599
+                    //sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                    if (ClientSession.PatientPaneList[0].Sex.ToUpper().Contains("MALE"))
+                    {
+                        sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                    }
+                    else
+                    {
+                        sex = ClientSession.PatientPaneList[0].Sex.ToUpper();
+                    }
+                }
                 else
                 {
                     IList<string> ilsHumanTagList = new List<string>();
@@ -1356,7 +1390,18 @@ namespace Acurus.Capella.UI
                         
                     }
                     if(lsthuman.Count>0)
-                        sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                    {
+                        //Cap - 1599
+                        //sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                        if (lsthuman[0].Sex.ToUpper().Contains("MALE") == true)
+                        {
+                            sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                        }
+                        else
+                        {
+                            sex = lsthuman[0].Sex.ToUpper();
+                        }
+                    }
 
                     //string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + ClientSession.HumanId.ToString() + ".xml");
                     //try
@@ -2180,7 +2225,18 @@ namespace Acurus.Capella.UI
                         if (ClientSession.PatientPaneList != null)
                         {
                             if (ClientSession.PatientPaneList.Count > 0)
-                                sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                            {
+                                //Cap - 1599
+                                //sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                                if (ClientSession.PatientPaneList[0].Sex.ToUpper().Contains("MALE"))
+                                {
+                                    sex = ClientSession.PatientPaneList[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                                }
+                                else
+                                {
+                                    sex = ClientSession.PatientPaneList[0].Sex.ToUpper();
+                                }
+                            }
                             else
                             {
                                 IList<string> ilsHumanTagList = new List<string>();
@@ -2206,7 +2262,18 @@ namespace Acurus.Capella.UI
 
                                 }
                                 if (lsthuman.Count > 0)
-                                    sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                                {
+                                    //Cap - 1599
+                                    //sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                                    if (lsthuman[0].Sex.ToUpper().Contains("MALE") == true)
+                                    {
+                                        sex = lsthuman[0].Sex.ToUpper() == "MALE" ? "FEMALE" : "MALE";
+                                    }
+                                    else
+                                    {
+                                        sex = lsthuman[0].Sex.ToUpper();
+                                    }
+                                }
                                 //string strXmlEncounterPath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], "Human_" + ClientSession.HumanId.ToString() + ".xml");
                                 //if (File.Exists(strXmlEncounterPath) == true)
                                 //{
