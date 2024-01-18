@@ -1462,7 +1462,8 @@ function OpenModal(data) {
     }
     else if (itemValue.toUpperCase() == "CONSULTATION NOTES FAX") {
         if (document.getElementById(GetClientId("hdnEncounterId")) != null && document.getElementById(GetClientId("hdnEncounterId")).value != "" && document.getElementById(GetClientId("hdnEncounterId")).value != "0") {
-
+            //CAP-1601
+            StartLoadingImage();
             var obj = new Array();
             obj.push("Date=" + document.getElementById(GetClientId('hdnLocalTime')).value);
             obj.push("Menu=" + "FAX");
