@@ -941,10 +941,10 @@ namespace Acurus.Capella.UI.WebServices
             {
                 cpt.Is_Delete = "Y";
                 //Cap - 1301
-
-                //EAndMCPTUpdateList.Add(cpt);
-                cpt.Sort_Order = 1000;
-                EAndMCPTSaveList.Add(cpt);
+                //cpt.Sort_Order = 1000;
+                EAndMCPTUpdateList.Add(cpt);
+                //Cap -  1675
+                //EAndMCPTSaveList.Add(cpt);
 
                 if (CPT_ImmDelCodes.IndexOf(cpt.Procedure_Code.Trim()) == -1)
                 {
@@ -1062,65 +1062,110 @@ namespace Acurus.Capella.UI.WebServices
                 EAndMCoding objEandMCoding = null;
                 IList<EAndMCoding> eandmCPTList = null;
                 //Cap - 1301
-                //var eandmList = from eandm in EAndMCPTTempList where Convert.ToString(eandm.Id) == objCPT.ToString().Split('~')[8] select eandm;
-                //eandmCPTList = eandmList.ToList<EAndMCoding>();
-
-                //if (eandmCPTList.Count > 0)
-                //{
-                //    objEandMCoding = eandmCPTList[0];
-                //}
-                //else
-                //{
-                //    objEandMCoding = new EAndMCoding();
-                //}
-                objEandMCoding = new EAndMCoding();
-
-                objEandMCoding.Encounter_ID = ClientSession.EncounterId;
-                objEandMCoding.Human_ID = ClientSession.HumanId;
-                objEandMCoding.Physician_ID = ClientSession.PhysicianId;
-                objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
-                objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
-                if (objCPT.ToString().Split('~')[2] != "")
-                    objEandMCoding.Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
-                objEandMCoding.Modifier1 = objCPT.ToString().Split('~')[3];
-                objEandMCoding.Modifier2 = objCPT.ToString().Split('~')[4];
-                objEandMCoding.Modifier3 = objCPT.ToString().Split('~')[5];
-                objEandMCoding.Modifier4 = objCPT.ToString().Split('~')[6];
-                objEandMCoding.Diagnosis_Pointer_1 = objCPT.ToString().Split('~')[12];
-                objEandMCoding.Diagnosis_Pointer_2 = objCPT.ToString().Split('~')[13];
-                objEandMCoding.Diagnosis_Pointer_3 = objCPT.ToString().Split('~')[14];
-                objEandMCoding.Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
-                objEandMCoding.Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
-                objEandMCoding.Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
-                //Cap - 1301
-                //objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
-
+                var eandmList = from eandm in EAndMCPTTempList where Convert.ToString(eandm.Id) == objCPT.ToString().Split('~')[8] select eandm;
+                eandmCPTList = eandmList.ToList<EAndMCoding>();
+                //Cap -  1675
                 IList<ProcedureModifierLookup> lsttempCPT = new List<ProcedureModifierLookup>();
-                lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == objCPT.ToString().Split('~')[3] select m).ToList<ProcedureModifierLookup>();
-
-                if (lsttempCPT.Count > 0)
-                    objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;// Convert.ToInt32(objCPT.ToString().Split('~')[18]);
-                                                                         //Cap - 1604
-                                                                         //else
-                                                                         //    objEandMCoding.Sort_Order = 0;
-                else
+                if (eandmCPTList.Count > 0)
                 {
-                    lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
+                    eandmCPTList[0].Modifier1 = objCPT.ToString().Split('~')[3];
+                    eandmCPTList[0].Modifier2 = objCPT.ToString().Split('~')[4];
+                    eandmCPTList[0].Modifier3 = objCPT.ToString().Split('~')[5];
+                    eandmCPTList[0].Modifier4 = objCPT.ToString().Split('~')[6];
+                    lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == eandmCPTList[0].Procedure_Code && m.Modifier == eandmCPTList[0].Modifier1 select m).ToList<ProcedureModifierLookup>();
+
                     if (lsttempCPT.Count > 0)
-                    {
-                        objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;
-                    }
+                        eandmCPTList[0].Sort_Order = lsttempCPT[0].Sort_Order;
+                    // Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+                    //Cap - 1604
+                    //else
+                    //    objEandMCoding.Sort_Order = 0;
                     else
                     {
-                        objEandMCoding.Sort_Order = 0;
+                        lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == eandmCPTList[0].Procedure_Code && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
+                        if (lsttempCPT.Count > 0)
+                        {
+                            eandmCPTList[0].Sort_Order = lsttempCPT[0].Sort_Order;
+                        }
+                        else
+                        {
+                            eandmCPTList[0].Sort_Order = 0;
+                        }
                     }
-                }
+                    if (objCPT.ToString().Split('~')[2] != "")
+                        eandmCPTList[0].Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
 
-                //if (objCPT.ToString().Split('~')[7] != "")
-                //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);
-                objEandMCoding.Is_Delete = "N";
-                //objEandMCoding.CPT_Order = Convert.ToInt32(objCPT.ToString().Split('~')[10]);
-                objEandMCoding.Charge_Amount = Convert.ToDecimal(objCPT.ToString().Split('~')[11]);
+                    eandmCPTList[0].Diagnosis_Pointer_1 = objCPT.ToString().Split('~')[12];
+                    eandmCPTList[0].Diagnosis_Pointer_2 = objCPT.ToString().Split('~')[13];
+                    eandmCPTList[0].Diagnosis_Pointer_3 = objCPT.ToString().Split('~')[14];
+                    eandmCPTList[0].Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
+                    eandmCPTList[0].Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
+                    eandmCPTList[0].Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
+                    if (objCPT.ToString().Split('~')[9] != "")
+                        eandmCPTList[0].Version = Convert.ToInt32(objCPT.ToString().Split('~')[9]);
+                    eandmCPTList[0].Modified_By = ClientSession.UserName;
+                    eandmCPTList[0].Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+
+                    objEandMCoding = eandmCPTList[0];
+                    EAndMCPTUpdateList.Add(objEandMCoding);
+                }
+                else
+                {
+                    objEandMCoding = new EAndMCoding();
+
+
+                    objEandMCoding.Encounter_ID = ClientSession.EncounterId;
+                    objEandMCoding.Human_ID = ClientSession.HumanId;
+                    objEandMCoding.Physician_ID = ClientSession.PhysicianId;
+                    objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
+                    objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
+                    if (objCPT.ToString().Split('~')[2] != "")
+                        objEandMCoding.Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
+                    objEandMCoding.Modifier1 = objCPT.ToString().Split('~')[3];
+                    objEandMCoding.Modifier2 = objCPT.ToString().Split('~')[4];
+                    objEandMCoding.Modifier3 = objCPT.ToString().Split('~')[5];
+                    objEandMCoding.Modifier4 = objCPT.ToString().Split('~')[6];
+                    objEandMCoding.Diagnosis_Pointer_1 = objCPT.ToString().Split('~')[12];
+                    objEandMCoding.Diagnosis_Pointer_2 = objCPT.ToString().Split('~')[13];
+                    objEandMCoding.Diagnosis_Pointer_3 = objCPT.ToString().Split('~')[14];
+                    objEandMCoding.Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
+                    objEandMCoding.Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
+                    objEandMCoding.Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
+                    //Cap - 1301
+                    //objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+
+                    lsttempCPT = new List<ProcedureModifierLookup>();
+                    lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == objCPT.ToString().Split('~')[3] select m).ToList<ProcedureModifierLookup>();
+
+                    if (lsttempCPT.Count > 0)
+                        objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;// Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+                                                                             //Cap - 1604
+                                                                             //else
+                                                                             //    objEandMCoding.Sort_Order = 0;
+                    else
+                    {
+                        lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
+                        if (lsttempCPT.Count > 0)
+                        {
+                            objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;
+                        }
+                        else
+                        {
+                            objEandMCoding.Sort_Order = 0;
+                        }
+                    }
+
+                    //if (objCPT.ToString().Split('~')[7] != "")
+                    //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);
+                    objEandMCoding.Is_Delete = "N";
+                    //objEandMCoding.CPT_Order = Convert.ToInt32(objCPT.ToString().Split('~')[10]);
+                    objEandMCoding.Charge_Amount = Convert.ToDecimal(objCPT.ToString().Split('~')[11]);
+                    //Cap -  1675
+                    objEandMCoding.Created_By = ClientSession.UserName;
+                    objEandMCoding.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    EAndMCPTSaveList.Add(objEandMCoding);
+
+                }
                 //Cap - 1301
                 //if (eandmCPTList.Count > 0)
                 //{
@@ -1132,9 +1177,9 @@ namespace Acurus.Capella.UI.WebServices
                 //}
                 //else
                 //{
-                objEandMCoding.Created_By = ClientSession.UserName;
-                objEandMCoding.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                EAndMCPTSaveList.Add(objEandMCoding);
+                //    objEandMCoding.Created_By = ClientSession.UserName;
+                //    objEandMCoding.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                //    EAndMCPTSaveList.Add(objEandMCoding);
                 //}
             }
             //Cap - 1301
@@ -1179,7 +1224,7 @@ namespace Acurus.Capella.UI.WebServices
                     objEandMCoding.Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
                     objEandMCoding.Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
                     objEandMCoding.Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
-                    objEandMCoding.Sort_Order = 1000;
+                    objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
                     //if (objCPT.ToString().Split('~')[7] != "")
                     //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);
                     objEandMCoding.Is_Delete = "Y";
@@ -1348,20 +1393,15 @@ namespace Acurus.Capella.UI.WebServices
             // lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList().Concat(EAndMCPTUpdateList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList()).ToList();
             lstInsertUpdateCpt = EAndMCPTSaveList.Where(a => a.Is_Delete.Trim().ToUpper() != "Y").ToList();
 
-            //Jira CAP-998
-            //Boolean bGcode = CheckGcodes(lstInsertUpdateICD, lstInsertUpdateCpt);
-            string sGcode = CheckGcodes(lstInsertUpdateICD, lstInsertUpdateCpt);
+
+            Boolean bGcode = CheckGcodes(lstInsertUpdateICD, lstInsertUpdateCpt);
             string isZcode = "";
-            //Jira CAP-998
-            //if (bGcode == false)
-            if (sGcode.Split('~')[0] == "false")
+            if (bGcode == false)
             {
                 //   return JsonConvert.SerializeObject("530024");
                 // var result = new { IsBillableNo = "180045" };
                 // return JsonConvert.SerializeObject(result);
-                //Jira CAP-998
-                //isZcode = "180045";
-                isZcode = "180045" + "~" + sGcode.Split('~')[1];
+                isZcode = "180045";
             }
 
 
@@ -1369,10 +1409,11 @@ namespace Acurus.Capella.UI.WebServices
             //ClientSession.FillEncounterandWFObject.EncRecord = objencManager.GetEncounterByEncounterID(ClientSession.EncounterId)[0];//BugID:51613
             //Cap - 1301
             IList<EAndMCoding> lsteandmcodingDeletelist = new List<EAndMCoding>();
-            EAndMCodingManager objeandm = new EAndMCodingManager();
-            lsteandmcodingDeletelist = objeandm.GetDetailsByEncounterID(ClientSession.EncounterId);
+            //Cap -  1675
+            // EAndMCodingManager objeandm = new EAndMCodingManager();
+            // lsteandmcodingDeletelist = objeandm.GetDetailsByEncounterID(ClientSession.EncounterId);
             IList<EAndMCoding> lstDeleteList = new List<EAndMCoding>();
-            lstDeleteList = (from m in lsteandmcodingDeletelist where m.Is_Delete == "Y" select m).ToList<EAndMCoding>();
+            // lstDeleteList = (from m in lsteandmcodingDeletelist where m.Is_Delete == "Y" select m).ToList<EAndMCoding>();
 
             if (ClientSession.FillEncounterandWFObject != null)
             {
@@ -1398,7 +1439,8 @@ namespace Acurus.Capella.UI.WebServices
                         }
                         //Cap - 1301
                         //eandmDTO = EandMCodingMngr.SaveUpdateEandMCoding(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, EncRecord, sBillingInstruction, ImmDelList, ImmHisDelList, CareplanUpdate);
-                        EAndMCPTSaveList = EAndMCPTSaveList.Concat(lstDeleteList).ToList();
+                        //Cap -  1675
+                        //  EAndMCPTSaveList = EAndMCPTSaveList.Concat(lstDeleteList).ToList();
                         eandmDTO = EandMCodingMngr.SaveUpdateEandMCoding(EAndMCPTSaveList, EAndMCPTUpdateList, EAndMICDSaveList, ClientSession.UserName, UtilityManager.ConvertToUniversal(), EAndMICDUpdateList, EncRecord, sBillingInstruction, ImmDelList, ImmHisDelList, CareplanUpdate, lsteandmcodingDeletelist);
 
                     }
@@ -2258,38 +2300,15 @@ namespace Acurus.Capella.UI.WebServices
 
             return "{\"ListofCPTs\" :" + json + "}";
         }
-        //Jira CAP-998
-        //public Boolean CheckGcodes(IList<EandMCodingICD> eandmICDList, IList<EAndMCoding> EandMCodingList)
-        public string CheckGcodes(IList<EandMCodingICD> eandmICDList, IList<EAndMCoding> EandMCodingList)
+
+        public Boolean CheckGcodes(IList<EandMCodingICD> eandmICDList, IList<EAndMCoding> EandMCodingList)
+
         {
             bool IsGcodePresent = false; ;
-            //bool bGCodeCheck = true; ;
-            string sGCodeCheck = "true";
+            bool bGCodeCheck = true; ;
             bool IsICDPresent = false;
             IDictionary<string, IList<string>> CPTICD = new Dictionary<string, IList<string>>();
-            //Jira CAP-998 - Start
-            string sAlert = string.Empty;
-            //string sE_And_M_CPT_And_ICD = System.Configuration.ConfigurationSettings.AppSettings["E_And_M_CPT_And_ICD"].ToString();
-            string sE_And_M_CPT_And_ICD_Validation = string.Empty;
-            HumanManager HumanMngr = new HumanManager();
-            EncounterManager EncounterMngr = new EncounterManager();
-            Human objHuman = new Human();
-            Encounter objEncounter = new Encounter();
-            objHuman = HumanMngr.GetHumanFromHumanID(EandMCodingList[0].Human_ID);
-            objEncounter = EncounterMngr.GetById(EandMCodingList[0].Encounter_ID);
-            int iAge = UtilityManager.CalculateAgeByDOS(objHuman.Birth_Date, objEncounter.Date_of_Service);
-            if (iAge > 18)
-            {
-                sAlert = "180045";
-                sE_And_M_CPT_And_ICD_Validation = "E_And_M_CPT_And_ICD";
-            }
-            else
-            {
-                sAlert = "180057";
-                sE_And_M_CPT_And_ICD_Validation = "E_And_M_CPT_And_ICD_LessThenOrEqual18Age";
-            }
-            string sE_And_M_CPT_And_ICD = System.Configuration.ConfigurationSettings.AppSettings[sE_And_M_CPT_And_ICD_Validation].ToString();
-            //Jira CAP-998 - End
+            string sE_And_M_CPT_And_ICD = System.Configuration.ConfigurationSettings.AppSettings["E_And_M_CPT_And_ICD"].ToString();
             string sPlan = "";// System.Configuration.ConfigurationSettings.AppSettings["Primary_Plan"].ToString();
             if (sE_And_M_CPT_And_ICD != "")
             {
@@ -2356,14 +2375,14 @@ namespace Acurus.Capella.UI.WebServices
 
                 if (Convert.ToBoolean(IsGcodePresent) == true && Convert.ToBoolean(IsICDPresent) == false)
                 {
-                    sGCodeCheck = "false";
+                    bGCodeCheck = false;
                 }
                 else
                 {
-                    sGCodeCheck = "true";
+                    bGCodeCheck = true;
                 }
             }
-            return sGCodeCheck + "~" + sAlert;
+            return bGCodeCheck;
         }
     }
 }
