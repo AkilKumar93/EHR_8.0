@@ -365,7 +365,15 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         else {
             $(top.window.document).find("#btnClose").click();
             self.close();
+            //CAP-1663
+            var isSummary = $($($(top.window.document).find("iframe")[0].contentDocument).find('#myTabs')).length > 0 ? false : true;
+            if (isSummary) {
+                $($(top.window.document).find("iframe")[0].contentDocument.location.reload(true));
+            }
+            else {
             redirectToCC();
+        }
+            
         }
         return 1;
     }
