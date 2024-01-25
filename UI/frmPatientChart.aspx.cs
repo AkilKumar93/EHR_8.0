@@ -1882,6 +1882,12 @@ namespace Acurus.Capella.UI
         public void Patientchartload()
         {
             //CAP-1167
+            //CAP-1651
+            if ((Request.QueryString["IsDirectURL"] ?? string.Empty).ToUpper() == "Y")
+            {
+                return;
+            } 
+
             var currentURL = HttpContext.Current.Request.Url;
             var notificationType = Request["Notification_Type"]?.ToString();
             //CAP-1167
