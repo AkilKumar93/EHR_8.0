@@ -365,7 +365,15 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         else {
             $(top.window.document).find("#btnClose").click();
             self.close();
+            //CAP-1663
+            var isSummary = $($($(top.window.document).find("iframe")[0].contentDocument).find('#myTabs')).length > 0 ? false : true;
+            if (isSummary) {
+                $($(top.window.document).find("iframe")[0].contentDocument.location.reload(true));
+            }
+            else {
             redirectToCC();
+        }
+            
         }
         return 1;
     }
@@ -1213,7 +1221,9 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "frmAssessmentNew.aspx/SearchDescrptionText",
-                    data: "{\"text\":\"" + document.getElementById("txtICD10").value + "|" + "txtICD10" + "|" + "ICD_10" + "\"}",
+                    //CAP-1667
+                    data: JSON.stringify({ text: document.getElementById("txtICD10").value + "|txtICD10" + "|ICD_10" }),
+                    //data: "{\"text\":\"" + document.getElementById("txtICD10").value + "|" + "txtICD10" + "|" + "ICD_10" + "\"}",
                     dataType: "json",
                     async: true,
                     success: function (data) {
@@ -1398,7 +1408,9 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "frmAssessmentNew.aspx/SearchDescrptionText",
-                    data: "{\"text\":\"" + document.getElementById("txtDescription").value + "|" + "txtDescription" + "|" + "ICD_10" + "\"}",
+                    //CAP-1667
+                    data: JSON.stringify({ text: document.getElementById("txtDescription").value + "|txtDescription" + "|ICD_10" }),
+                   // data: "{\"text\":\"" + document.getElementById("txtDescription").value + "|" + "txtDescription" + "|" + "ICD_10" + "\"}",
                     dataType: "json",
                     async: true,
                     success: function (data) {

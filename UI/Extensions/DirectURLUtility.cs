@@ -39,8 +39,9 @@ namespace Acurus.Capella.UI.Extensions
         {
             var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
             var humanUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?(?:HumanID=\d+)?(&ScreenMode=Menu)?(&openingfrom=Menu)?(&ScreenName=ERX)?(&ScreenName=CreateOrder)?(&ScreenName=OrderManagement)?(&IsDirectURL=Y)?$";
-
-            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern))
+            var screenUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+&Screen=[a-zA-Z0-9]+$";
+            var screenNameUrlPattern = @"https?://[^/]+/frmPatientChart\.aspx\?HumanID=\d+&ScreenName=[A-Za-z0-9_]+&IsDirectUrl=Y+$";
+            if (Regex.IsMatch(currentURL, humanUrlPattern) || Regex.IsMatch(currentURL, encounterUrlPattern) || Regex.IsMatch(currentURL, screenUrlPattern) || Regex.IsMatch(currentURL, screenNameUrlPattern))
             {
                 return true;
             }
