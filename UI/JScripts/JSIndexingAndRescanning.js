@@ -87,6 +87,9 @@ function clearall() {
         $('#ddEncPhyName').val("");
         $("#ddEncPhyName").empty();
         //document.getElementById("ddEncPhyName").selectedIndex = 0;
+        //CAP-1633
+        var t = document.getElementById("btnResetFields");
+        t.click();
         CheckAll();
     }
     return true;
