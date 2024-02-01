@@ -84,8 +84,9 @@ function OpenModal(data) {
             //Jira #CAP-769
             //var test = $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe').contents()[7].all.namedItem('btnSave');
             var test = null;
+            //CAP-1692
             if ($(top.window.document).find('#ctl00_C5POBody_EncounterContainer') != undefined && $(top.window.document).find('#ctl00_C5POBody_EncounterContainer') != null && $(top.window.document).find('#ctl00_C5POBody_EncounterContainer').length > 0) {
-                test = $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0].contentDocument).find('.clsIframe').contents()[7].all.namedItem('btnSave');
+                test = $($(top.window.document).find('#ctl00_C5POBody_EncounterContainer')[0]?.contentDocument)?.find('.clsIframe')?.contents()[7]?.all?.namedItem('btnSave');
             }
             if (test != null && test != undefined && test.disabled == false) {
                 $(top.window.document).find("body").append("<div id='dvdialog' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
