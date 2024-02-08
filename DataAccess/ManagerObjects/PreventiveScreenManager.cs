@@ -21,6 +21,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PreventiveScreen> GetPreventiveScreenPlanDetails(ulong Encounter_id, ulong HumanId);
         IList<PreventiveScreen> SavePreventiveList(IList<PreventiveScreen> PreLst, string MacAddress);
         IList<PreventiveScreen> UpdatePreventiveList(IList<PreventiveScreen> PreLst, string MacAddress);
+        IList<PreventiveScreen> SaveDeletePreventiveList(IList<PreventiveScreen> PreLst, IList<PreventiveScreen> DelProLst,string MacAddress);
     }
     public partial class PreventiveScreenManager : ManagerBase<PreventiveScreen, ulong>, IPreventiveScreenManager
     {
@@ -613,6 +614,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //    XMLObj.GenerateXmlSave(lstObj, encounterid, string.Empty);
             //}
             return listPrevent;
+        }
+        //CAP-1690
+        public IList<PreventiveScreen> SaveDeletePreventiveList(IList<PreventiveScreen> PreLst, IList<PreventiveScreen> DelProLst, string MacAddress)
+        {
+            IList<PreventiveScreen> nullList = null;
+            // SaveUpdateDeleteWithTransaction(ref PreLst, null, null, MacAddress);
+            SaveUpdateDelete_DBAndXML_WithTransaction(ref nullList, ref nullList, DelProLst, MacAddress, true, false, PreLst[0].Encounter_ID, string.Empty);
+            SaveUpdateDelete_DBAndXML_WithTransaction(ref PreLst, ref nullList, null, MacAddress, true, false, PreLst[0].Encounter_ID, string.Empty);
+            // GenerateXml XMLObj = new GenerateXml();
+            //if (PreLst.Count > 0)
+            //{
+
+            //    ulong encounterid = PreLst[0].Encounter_ID;
+            //    List<object> lstObj = PreLst.Cast<object>().ToList();
+            //    XMLObj.GenerateXmlSave(lstObj, encounterid, string.Empty);
+            //}
+            return GetPreventiveScreenPlanDetails(PreLst[0].Encounter_ID, PreLst[0].Human_ID);
         }
 
         //public IList<PreventiveScreenDTO> UpdatePreventiveScreen(IList<PreventiveScreen> PreLst, string MacAddress)

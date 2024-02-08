@@ -2077,8 +2077,8 @@ namespace Acurus.Capella.UI.WebServices
                     objPreventiveScreen.Preventive_Service = dicValues["Preventive_Service"]==null?string.Empty:dicValues["Preventive_Service"].ToString();
                     objPreventiveScreen.Preventive_Service_Value = dicValues["Preventive_Service_Value"]==null?string.Empty:dicValues["Preventive_Service_Value"].ToString();
                     objPreventiveScreen.Status = dicValues["Status"]==null?string.Empty:dicValues["Status"].ToString();
-
-                    if (PreventiveScreenLst.Count == 0)
+                    //CAP-1690
+                    if (PreventiveScreenLst.Count == 0 || PreventiveScreenLst.Count != data.Length)
                     {
                         objPreventiveScreen.Created_By = ClientSession.PhysicianUserName;
                         objPreventiveScreen.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
@@ -2096,9 +2096,15 @@ namespace Acurus.Capella.UI.WebServices
                     }
                 }
             }
-            if (SavePreventiveScreenLst.Count > 0)
+            //CAP-1690
+            if (SavePreventiveScreenLst.Count > 0 && PreventiveScreenLst.Count == 0)
             {
                 lstPreventivescreen = objPrevewntvScrnManager.SavePreventiveList(SavePreventiveScreenLst, string.Empty);
+            }
+            //CAP-1690
+            else if (SavePreventiveScreenLst.Count > 0 && PreventiveScreenLst.Count != data.Length)
+            {
+                lstPreventivescreen = objPrevewntvScrnManager.SaveDeletePreventiveList(SavePreventiveScreenLst, PreventiveScreenLst, string.Empty);
             }
             else
             {
