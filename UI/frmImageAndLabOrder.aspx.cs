@@ -3593,6 +3593,8 @@ namespace Acurus.Capella.UI
             //    }
 
             //}
+            //Jira CAP-1628
+            Session["OrderSubmitId"] = string.Empty;
         }
 
         public int validateTestDtandCPT()
@@ -5842,12 +5844,16 @@ namespace Acurus.Capella.UI
         }
         protected void hdnbuttonload_Click(object sender, EventArgs e)
         {
-            ulong uid = Convert.ToUInt32(Session["OrderSubmitId"]);
-            DiagnosticDTO objDiagnosticDTO = new DiagnosticDTO();
-            if (LookUpPerRequest.Keys.Contains("procedureType") == true)
-                objDiagnosticDTO = objOrdersManager.FillDiagnosticDTO(uid, EncounterID, HumanID, PhysicianID, LookUpPerRequest["procedureType"].ToUpper(), ClientSession.FacilityName, ClientSession.LegalOrg);
-            LoadScreenFromOrderList(objDiagnosticDTO);
-            Session["objDiagnosticDTO"] = objDiagnosticDTO;
+            //Jira CAP-1628 - added if condition
+            if (Session["OrderSubmitId"] != null && Session["OrderSubmitId"].ToString() != "")
+            {
+                ulong uid = Convert.ToUInt32(Session["OrderSubmitId"]);
+                DiagnosticDTO objDiagnosticDTO = new DiagnosticDTO();
+                if (LookUpPerRequest.Keys.Contains("procedureType") == true)
+                    objDiagnosticDTO = objOrdersManager.FillDiagnosticDTO(uid, EncounterID, HumanID, PhysicianID, LookUpPerRequest["procedureType"].ToUpper(), ClientSession.FacilityName, ClientSession.LegalOrg);
+                LoadScreenFromOrderList(objDiagnosticDTO);
+                Session["objDiagnosticDTO"] = objDiagnosticDTO;
+            }
         }
         public void ClearAllCmg(bool IsNewOrder)
         {
