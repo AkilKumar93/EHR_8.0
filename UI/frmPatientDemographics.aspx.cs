@@ -240,6 +240,7 @@ namespace Acurus.Capella.UI
                                 if (ddlGuarantorSex.Items[k].Text == ddlPatientsex.SelectedItem.Text)
                                 {
                                     ddlGuarantorSex.SelectedIndex = k;
+                                    hdnGuarantorSex.Value = ddlPatientsex.SelectedItem.Text;
                                     break;
                                 }
                             }
@@ -248,6 +249,7 @@ namespace Acurus.Capella.UI
                                 if (ddlGuarantorState.Items[l].Text == ddlState.SelectedItem.Text)
                                 {
                                     ddlGuarantorState.SelectedIndex = l;
+                                    hdnGuarantorState.Value = ddlState.SelectedItem.Text;
                                     break;
                                 }
                             }
@@ -326,6 +328,7 @@ namespace Acurus.Capella.UI
                                 if (ddlGuarantorSex.Items[k].Text == ddlPatientsex.SelectedItem.Text)
                                 {
                                     ddlGuarantorSex.SelectedIndex = k;
+                                    hdnGuarantorSex.Value = ddlPatientsex.SelectedItem.Text;
                                     break;
                                 }
                             }
@@ -334,6 +337,7 @@ namespace Acurus.Capella.UI
                                 if (ddlGuarantorState.Items[l].Text == ddlState.SelectedItem.Text)
                                 {
                                     ddlGuarantorState.SelectedIndex = l;
+                                    hdnGuarantorState.Value = ddlState.SelectedItem.Text;
                                     break;
                                 }
                             }
@@ -439,6 +443,7 @@ namespace Acurus.Capella.UI
                         if (ddlGuarantorSex.Items[k].Text == ddlPatientsex.SelectedItem.Text)
                         {
                             ddlGuarantorSex.SelectedIndex = k;
+                            hdnGuarantorSex.Value = ddlPatientsex.SelectedItem.Text;
                             break;
                         }
                     }
@@ -447,6 +452,7 @@ namespace Acurus.Capella.UI
                         if (ddlGuarantorState.Items[l].Text == ddlState.SelectedItem.Text)
                         {
                             ddlGuarantorState.SelectedIndex = l;
+                            hdnGuarantorState.Value = ddlState.SelectedItem.Text;
                             break;
                         }
                     }
@@ -473,7 +479,7 @@ namespace Acurus.Capella.UI
                     DisableTableLayout(pnlGuarantorInfo);
                     ddlGuarantorRelationship.Enabled = true;
                     ddlGuarantorRelationship.BackColor = Color.White;
-                    ClearGuarantorInfo();
+                    //ClearGuarantorInfo();
                     ddlGuarantorRelationship.CssClass = "Editabletxtbox";
                 }
             }
@@ -2491,6 +2497,7 @@ namespace Acurus.Capella.UI
                     if (Convert.ToString(ddlGuarantorSex.Items[i].Text).ToUpper() == objHumanDTO.HumanDetails.Guarantor_Sex.ToUpper())
                     {
                         ddlGuarantorSex.SelectedIndex = i;
+                        hdnGuarantorSex.Value = ddlGuarantorSex.Items[i].Text;
                         break;
                     }
                 }
@@ -2521,6 +2528,7 @@ namespace Acurus.Capella.UI
                     if (Convert.ToString(ddlGuarantorState.Items[i].Text).ToUpper() == objHumanDTO.HumanDetails.Guarantor_State.ToUpper())
                     {
                         ddlGuarantorState.SelectedIndex = i;
+                        hdnGuarantorState.Value = objHumanDTO.HumanDetails.Guarantor_State;
                         break;
                     }
                 }
@@ -3163,8 +3171,26 @@ namespace Acurus.Capella.UI
                     objHuman.Guarantor_Street_Address1 = txtGuarantorAddress.Text;
                     objHuman.Guarantor_Street_Address2 = txtGuarantorAddressLine2.Text;
                     objHuman.Guarantor_City = txtGuarantorCity.Text;
-                    objHuman.Guarantor_Sex = ddlGuarantorSex.Text;
-                    objHuman.Guarantor_State = ddlGuarantorState.Text;
+                    //CAP-1440 - In Testing: Guarantor Information displayed as blank in Demographics screen
+                    objHuman.Guarantor_Sex = hdnGuarantorSex.Value;
+                    objHuman.Guarantor_State = hdnGuarantorState.Value;
+                    for (int k = 0; k < ddlGuarantorSex.Items.Count; k++)
+                    {
+                        if (ddlGuarantorSex.Items[k].Text == hdnGuarantorSex.Value)
+                        {
+                            ddlGuarantorSex.SelectedIndex = k;
+                            break;
+                        }
+                    }
+                    for (int l = 0; l < ddlGuarantorState.Items.Count; l++)
+                    {
+                        if (ddlGuarantorState.Items[l].Text == hdnGuarantorState.Value)
+                        {
+                            ddlGuarantorState.SelectedIndex = l;
+                            break;
+                        }
+                    }
+
                     if (msktxtGuarantorZipCode.TextWithLiterals != "-")
                     {
                         if (msktxtGuarantorZipCode.TextWithLiterals.Length == 6 && msktxtGuarantorZipCode.TextWithLiterals.Length < 10)
@@ -3420,6 +3446,7 @@ namespace Acurus.Capella.UI
                     {
                         ddlGuarantorSex.ClearSelection();
                         ddlGuarantorSex.Items.FindByValue(ddlPatientsex.SelectedItem.Text).Selected = true;
+                        hdnGuarantorSex.Value = ddlPatientsex.SelectedItem.Text;
                         //ddlGuarantorSex.SelectedIndex = k;
                         break;
                     }
@@ -3431,6 +3458,7 @@ namespace Acurus.Capella.UI
 
                         ddlGuarantorState.ClearSelection();
                         ddlGuarantorState.Items.FindByValue(ddlState.SelectedItem.Text).Selected = true;
+                        hdnGuarantorState.Value = ddlState.SelectedItem.Text;
                         //ddlGuarantorState.SelectedIndex = l;
                         break;
                     }
@@ -4311,6 +4339,7 @@ namespace Acurus.Capella.UI
                 txtGuarantorLastName.Text = txtPatientlastname.Text;
                 txtGuarantorFirstName.Text = txtPatientfirstname.Text;
                 ddlGuarantorSex.SelectedItem.Text = ddlPatientsex.SelectedItem.Text;
+                hdnGuarantorSex.Value = ddlPatientsex.SelectedItem.Text;
 
                 msktxtGuarantorHomeNo.Text = msktxtHomePhno.Text;
                 msktxtGuarantorCellNo.Text = msktxtCellPhno.Text;
@@ -4318,6 +4347,7 @@ namespace Acurus.Capella.UI
 
                 txtGuarantorMiddleName.Text = txtPatientmiddlename.Text;
                 ddlGuarantorState.SelectedItem.Text = ddlState.SelectedItem.Text;
+                hdnGuarantorState.Value = ddlState.SelectedItem.Text;
                 ddlGuarantorRelationship.CssClass = "nonEditabletxtbox";
             }
 
@@ -4409,12 +4439,18 @@ namespace Acurus.Capella.UI
                     for (int i = 0; i < ddlGuarantorSex.Items.Count; i++)
                     {
                         if (Convert.ToString(ddlGuarantorSex.Items[i].Value).ToUpper() == humanlist[0].Sex.ToUpper())
+                        {
                             ddlGuarantorSex.SelectedIndex = i;
+                            hdnGuarantorSex.Value = humanlist[0].Sex;
+                        }
                     }
                     for (int i = 0; i < ddlGuarantorState.Items.Count; i++)
                     {
                         if (Convert.ToString(ddlGuarantorState.Items[i].Value).ToUpper() == humanlist[0].State.ToUpper())
+                        {
                             ddlGuarantorState.SelectedIndex = i;
+                            hdnGuarantorState.Value = humanlist[0].State;
+                        }
                     }
                     msktxtGuarantorCellNo.Text = humanlist[0].Cell_Phone_Number;
                     msktxtGuarantorHomeNo.Text = humanlist[0].Home_Phone_No;
@@ -4560,6 +4596,7 @@ namespace Acurus.Capella.UI
                 if (Convert.ToString(ddlGuarantorSex.Items[i].Text).ToUpper() == objHumanDTO.HumanDetails.Guarantor_Sex.ToUpper())
                 {
                     ddlGuarantorSex.SelectedIndex = i;
+                    hdnGuarantorSex.Value = ddlGuarantorSex.Items[i].Text;
                     break;
                 }
             }
@@ -4589,6 +4626,7 @@ namespace Acurus.Capella.UI
                 if (Convert.ToString(ddlGuarantorSex.Items[i].Text).ToUpper() == objHumanDTO.HumanDetails.Guarantor_Sex.ToUpper())
                 {
                     ddlGuarantorSex.SelectedIndex = i;
+                    hdnGuarantorSex.Value = objHumanDTO.HumanDetails.Guarantor_Sex;
                     break;
                 }
             }
@@ -4598,6 +4636,7 @@ namespace Acurus.Capella.UI
                 if (Convert.ToString(ddlGuarantorState.Items[i].Text).ToUpper() == objHumanDTO.HumanDetails.Guarantor_State.ToUpper())
                 {
                     ddlGuarantorState.SelectedIndex = i;
+                    hdnGuarantorState.Value = objHumanDTO.HumanDetails.Guarantor_State;
                     break;
                 }
             }
@@ -4938,12 +4977,18 @@ namespace Acurus.Capella.UI
                             for (int i = 0; i < ddlGuarantorSex.Items.Count; i++)
                             {
                                 if (Convert.ToString(ddlGuarantorSex.Items[i].Value).ToUpper() == humanlist[0].Sex.ToUpper())
+                                {
                                     ddlGuarantorSex.SelectedIndex = i;
+                                    hdnGuarantorSex.Value = ddlGuarantorSex.Items[i].Value;
+                                }
                             }
                             for (int i = 0; i < ddlGuarantorState.Items.Count; i++)
                             {
                                 if (Convert.ToString(ddlGuarantorState.Items[i].Value).ToUpper() == humanlist[0].State.ToUpper())
+                                {
                                     ddlGuarantorState.SelectedIndex = i;
+                                    hdnGuarantorState.Value = ddlGuarantorState.Items[i].Value;
+                                }
                             }
                             msktxtGuarantorCellNo.Text = humanlist[0].Cell_Phone_Number;
                             msktxtGuarantorHomeNo.Text = humanlist[0].Home_Phone_No;
@@ -4986,6 +5031,7 @@ namespace Acurus.Capella.UI
                         if (ddlGuarantorSex.Items[k].Text == ddlPatientsex.SelectedItem.Text)
                         {
                             ddlGuarantorSex.SelectedIndex = k;
+                            hdnGuarantorSex.Value = ddlPatientsex.SelectedItem.Text;
                             break;
                         }
                     }
@@ -4994,6 +5040,7 @@ namespace Acurus.Capella.UI
                         if (ddlGuarantorState.Items[l].Text == ddlState.SelectedItem.Text)
                         {
                             ddlGuarantorState.SelectedIndex = l;
+                            hdnGuarantorState.Value = ddlState.SelectedItem.Text;
                             break;
                         }
                     }

@@ -1149,6 +1149,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.DropDownList ddlGuarantorSex;
 
         /// <summary>
+        /// hdnGuarantorSex control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnGuarantorSex;
+
+        /// <summary>
         /// lblGuarantorAddress control.
         /// </summary>
         /// <remarks>
@@ -1219,6 +1228,15 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlGuarantorState;
+
+        /// <summary>
+        /// hdnGuarantorState control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnGuarantorState;
 
         /// <summary>
         /// lblGuarantorZipCode control.

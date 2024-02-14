@@ -1259,6 +1259,7 @@
                                             <asp:DropDownList ID="ddlGuarantorSex" runat="server" Cssclass="nonEditabletxtbox" onchange="AutoSave();"
                                                 Width="190px"  EnableViewState="true">
                                             </asp:DropDownList>
+                                            <asp:HiddenField ID="hdnGuarantorSex" runat="server" />
                                         </td>
                                         <td>&nbsp;
                                         </td>
@@ -1316,6 +1317,7 @@
                                                         <asp:DropDownList ID="ddlGuarantorState" runat="server" Cssclass="nonEditabletxtbox" onchange="AutoSave();"
                                                             Width="100px"  EnableViewState="true">
                                                         </asp:DropDownList>
+                                                        <asp:HiddenField ID="hdnGuarantorState" runat="server" />
                                                     </td>
                                                 </tr>
                                             </table>
