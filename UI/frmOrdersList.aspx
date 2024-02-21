@@ -84,14 +84,14 @@ legend {font-size:13px; font-weight:bold; }
                             <asp:HyperLink Style="position: absolute; left: -37px; top: 120px;
     width: 89px;font-weight:bold;font-family:'Microsoft Sans Serif'; font-size:11.5px;" CssClass="vertiAlign" ID="lnkOrderList" runat="server" NavigateUrl="~/frmOrdersList.aspx"
                                 >Order List</asp:HyperLink>  </p>--%>
-                              <p class="verti" style="height: 90px; margin-top: -16.3em; width: 22px; margin-left: -14px;">
+                              <p style="height: 90px; margin-top: -16.3em; width: 22px; margin-left: -57px;">
                                         <asp:HyperLink ID="lnkDiagnosticOrder" Style="position: absolute; width: 105px; font-weight:bold;font-family:'Microsoft Sans Serif'; font-size:11px;"
-                                            CssClass="verti" runat="server" NavigateUrl="~/frmImageAndLabOrder.aspx"
+                                            runat="server" NavigateUrl="~/frmImageAndLabOrder.aspx"
                                             EnableViewState="false">Detailed Order</asp:HyperLink>
                                     </p>
-                                    <p class="verti " style="height: 90px; margin-top: -1em; width: 20px; margin-left: -2px;">
+                                    <p style="height: 90px; margin-top: -1em; width: 20px; margin-left: -42px;">
                                         <asp:HyperLink Style="position: absolute; width: 75px; font-weight:bold;font-family:'Microsoft Sans Serif'; font-size:11px;"
-                                            CssClass="verti" ID="lnkOrderList" runat="server" NavigateUrl="~/frmOrdersList.aspx"
+                                            ID="lnkOrderList" runat="server" NavigateUrl="~/frmOrdersList.aspx"
                                             EnableViewState="false">Order List</asp:HyperLink>
                                     </p>
                            </td>
@@ -103,7 +103,7 @@ legend {font-size:13px; font-weight:bold; }
             <tr>
                 <td style="vertical-align: top; width: 100%;">
                     <asp:Panel ID="Panel1" runat="server" GroupingText="List Of Orders"
-                        Width="100%" Height="540px" Style="margin-left: -20px;" CssClass="LabelStyleBold">
+                        Width="100%" Height="540px" Style="margin-left: -3px;" CssClass="LabelStyleBold">
                         <telerik:RadGrid ID="grdOrders" runat="server" Width="1140px" Style="margin-left: -8px;margin-right: -8px;"  AutoGenerateColumns="False"
                             CellSpacing="0" GridLines="None" OnItemCommand="grdOrders_ItemCommand"
                             onitemcreated="grdOrders_ItemCreated" Height="500px" CssClass="Gridbodystyle"  >
