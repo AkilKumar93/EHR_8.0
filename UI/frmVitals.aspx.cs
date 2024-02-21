@@ -4103,6 +4103,8 @@ namespace Acurus.Capella.UI
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "HiddenValue", " closePopup();", true);
             }
+            //CAP-958 - Vitals data not reflect in Summary
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "HiddenValue", " vitalsAutoSaveSuccessful();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 

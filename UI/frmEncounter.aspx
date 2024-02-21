@@ -981,12 +981,14 @@
                     sessionStorage.setItem("Enc_PaneId", paneID);
                     sessionStorage.setItem("Enc_Src", $(paneID).attr('data-src'));
                     if ($('.clsIframe')?.contents()[4]?.all?.namedItem('btnSaveVitals') != null && $('.clsIframe')?.contents()[4]?.all?.namedItem('btnSaveVitals') != undefined) {
+                        //CAP-958 - Vitals data not reflect in Summary
+                        sessionStorage.setItem("VitalsAutoSave", true);
                         $('.clsIframe').contents()[4].all.namedItem('btnSaveVitals').click();
                     }
 
-                    paneID = $(event.target).attr('href');
-                    src = $(paneID).attr('data-src');
-                    $(paneID + " iframe").attr("src", src);
+                    //paneID = $(event.target).attr('href');
+                    //src = $(paneID).attr('data-src');
+                    //$(paneID + " iframe").attr("src", src);
                 }
                 else if (PrevTab[0].innerText == "EXAM") {
                     var subtab = localStorage.getItem("PrevSubTab");

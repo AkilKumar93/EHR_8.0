@@ -956,7 +956,16 @@ function btnSave_Clicked() {
     }
 
 
+}
+//CAP-958 - Vitals data not reflect in Summary
+function vitalsAutoSaveSuccessful() {
+    var vitalAutoSave = sessionStorage.getItem('VitalsAutoSave');
+    if (vitalAutoSave == true || vitalAutoSave == "true") {
+        sessionStorage.setItem('EncAutoSave', true);
+        sessionStorage.removeItem('VitalsAutoSave');
+        AutoSaveSuccessful();
     }
+}
 function convertDate(inputFormat) {
     var d = new Date(inputFormat);
     return [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/');
