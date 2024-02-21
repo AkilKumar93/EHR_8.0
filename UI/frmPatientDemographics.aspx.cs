@@ -4578,6 +4578,8 @@ namespace Acurus.Capella.UI
             }
 
             UpdateGuarantorDetails(objRefreshHumanDTO);
+            //CAP-1750
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "showVal", " sessionStorage.removeItem('ActiveAnyGuarantor');", true);
             //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "showVal", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 

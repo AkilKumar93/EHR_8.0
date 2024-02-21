@@ -126,6 +126,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         ICriteria PatGuarantorPrevious = mySession.CreateCriteria(typeof(PatGuarantor)).Add(Expression.Eq("Human_ID", ListToInsert[0].Human_ID)).AddOrder(Order.Desc("Id"));
                         IList<PatGuarantor> PatGuarantorOldList = PatGuarantorPrevious.List<PatGuarantor>();
+                        IList<PatGuarantor> PatGuarantorNewList = new List<PatGuarantor>();
                         iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref AddList, ref ListToInsert, null, MySession, MACAddress, false, false, 0, "", ref ObjXML);
 
                         if (iResult == 0)
@@ -136,9 +137,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 {
                                     PatGuarantorOldList[i].To_Date = ListToInsert[0].Created_Date_And_Time;
                                     PatGuarantorOldList[i].Active = "NO";
-                                    SaveUpdateDelete_DBAndXML_WithoutTransaction(ref AddList, ref PatGuarantorOldList, null, MySession, MACAddress, false, false, 0, "", ref ObjXML);
+                                    //CAP-1751 - In Testing & Production - Demographics screen getting crashed
+                                    //PatGuarantorOldList[i].Version = ListToInsert[0].Version;
+                                    PatGuarantorNewList.Add(PatGuarantorOldList[i]);
                                 }
                             }
+                            //CAP-1751 - In Testing & Production - Demographics screen getting crashed
+                            SaveUpdateDelete_DBAndXML_WithoutTransaction(ref AddList, ref PatGuarantorNewList, null, MySession, MACAddress, false, false, 0, "", ref ObjXML);
                         }
 
                     }

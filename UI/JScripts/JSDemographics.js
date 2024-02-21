@@ -16,6 +16,9 @@ function OpenGuarantor() {
                 var oWnd = GetRadWindow();
                 var childWindow = oWnd.BrowserWindow.radopen("frmViewGuarantor.aspx?HumanID=" + HumanID + "&Patype=" + PatType, "ctl00_DemographicsModalWindow");
                 SetRadWindowProperties(childWindow, 650, 850);
+                //CAP-1441 - In Testing & Production: Selected Guarantor Information through View guarantor is not displayed in Demographics screen
+                childWindow.remove_close(ViewGaurantorClick);
+                childWindow.add_close(ViewGaurantorClick);
                 childWindow.remove_close(AddGuarantorClick);
                 childWindow.remove_close(OpenPatIns);
                 childWindow.remove_close(OpenAddInsForNewPatient);
@@ -1350,8 +1353,11 @@ function ViewGaurantorClick(oWindow, args) {
     if (Result) {
         document.getElementById(GetClientId("hdnGuarantorIdForView")).value = Result.GuarantorId;
     }
-    document.getElementById(GetClientId("hdnBtnLoadInsurance")).click();
-
+    //CAP-1750 - Guarantor information displayed as blank in Demographics screen
+    var activeAnyGuarantor = sessionStorage.getItem("ActiveAnyGuarantor");
+    if (activeAnyGuarantor == true || activeAnyGuarantor == 'true') {
+        document.getElementById(GetClientId("hdnBtnLoadInsurance")).click();
+    }
 }
 
 
@@ -1518,6 +1524,8 @@ function ViewGuarantorshowTime() {
 }
 
 function CloseViewGuarantorWindow() {
+    //CAP-1750 - Guarantor information displayed as blank in Demographics screen
+    sessionStorage.setItem("ActiveAnyGuarantor", 'true');
     self.close();
 }
 function CloseEligibilityHistoryWindow() {
