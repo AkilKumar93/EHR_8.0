@@ -138,7 +138,6 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     PatGuarantorOldList[i].To_Date = ListToInsert[0].Created_Date_And_Time;
                                     PatGuarantorOldList[i].Active = "NO";
                                     //CAP-1751 - In Testing & Production - Demographics screen getting crashed
-                                    //PatGuarantorOldList[i].Version = ListToInsert[0].Version;
                                     PatGuarantorNewList.Add(PatGuarantorOldList[i]);
                                 }
                             }
