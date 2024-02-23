@@ -983,6 +983,7 @@
 	<Message number="530027" Type="OK" Text="For CPT {0}, Diagnosis Pointer {2} has been skipped. Please add the Diagnosis Pointers sequentially.."></Message>
 	<Message number="530028" Type="OK" Text="For CPT {0}, Modifiers {2} has been skipped. Please add the Modifiers sequentially.."></Message>
 	<Message number="530029" Type="OK" Text="For CPT {1}, There is a Duplicate Modifier. Please remove or replace with a new Modifier."></Message>
+	<Message number="530030" Type="OK" Text="Please add ICD Sequence # ‘A1’ for at least one CPT."></Message>
 
 
 	<Message number="580001" Type="OK" Text="To Date cannot be earlier to From Date."></Message>

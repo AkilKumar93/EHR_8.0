@@ -156,7 +156,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<EandMCodingICD> EandMCodingdto = new List<EandMCodingICD>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit2 = iMySession.CreateCriteria(typeof(EandMCodingICD)).Add(Expression.Eq("Encounter_ID", EncID)).Add(Expression.Eq("Is_Delete", "N")).Add(Expression.Eq("Source","ASSESSMENT"));
+                // ICriteria crit2 = iMySession.CreateCriteria(typeof(EandMCodingICD)).Add(Expression.Eq("Encounter_ID", EncID)).Add(Expression.Eq("Is_Delete", "N")).Add(Expression.Eq("Source","ASSESSMENT"));
+                ICriteria crit2 = iMySession.CreateCriteria(typeof(EandMCodingICD)).Add(Expression.Eq("Encounter_ID", EncID)).Add(Expression.Eq("Is_Delete", "N"));
                 EandMCodingdto = crit2.List<EandMCodingICD>();
                 iMySession.Close();
             }

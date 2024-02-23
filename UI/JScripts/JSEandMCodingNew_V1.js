@@ -25,8 +25,8 @@ $(document).ready(function () {
     $('#txtUnits').val("6");
     localStorage.setItem("CCAndEandMAutosave", "false");
     EnableSaveButton();
-    
-   
+
+
     $(top.window.document).find("#btnMinimizeViewResultCPT").css({ "display": "block" });
     $(top.window.document).find("#btnMinimizeViewResultICD").css({ "display": "block" });
 });
@@ -85,7 +85,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         url: "WebServices/EandMCodingService.asmx/LoadEandMCodingCPTTable",
         dataType: 'json',
         method: 'POST',
-        data: '{strEandMCodingCPT: "Load", sEnableScreen:"'+ ValEnableScreen +'"}',
+        data: '{strEandMCodingCPT: "Load", sEnableScreen:"' + ValEnableScreen + '"}',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
             "X-Requested-With": "XMLHttpRequest"
@@ -103,7 +103,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         $scope.Modifiers4 = JSON.parse(test.ModifierList);
         $scope.EandMCodingCPTTable = test.ProcedureList;
         $scope.EandMCodingICDTable = test.ICDList;
-        $scope.AssEandMCodingICDTable = test.AssICDlist;
+        //Cap - 1280
+        //$scope.AssEandMCodingICDTable = test.AssICDlist;
         cptlist = test.ProcedureList;
         UserRole = test.UserRole.toUpperCase();
         var CloseVisible = test.CloseVisible;
@@ -120,7 +121,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         //Jira - #CAP-80
         //sessionStorage.setItem("Is_CMG_Ancillary", test.IsCMGAncillary);
         if (test.IsCMGAncillary != undefined && test.IsCMGAncillary != null)
-        localStorage.setItem("Is_CMG_Ancillary", test.IsCMGAncillary);
+            localStorage.setItem("Is_CMG_Ancillary", test.IsCMGAncillary);
         if (test.BillingInstruction != "")
             $('#txtBillingInstruction').val(test.BillingInstruction);
 
@@ -129,7 +130,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         var saveEnable = test.SaveEnable;
         if (EnableScreen != "") {
             $('#AngularDiv').find('input').attr("disabled", "disabled");
-           // $('#AngularDiv').find('button').attr("disabled", "disabled");
+            // $('#AngularDiv').find('button').attr("disabled", "disabled");
             $('#AngularDiv').find('button').not('[id*="btnClose"]').attr("disabled", "disabled");
             $('#AngularDiv').find('textarea').attr("disabled", "disabled");
             $('#AngularDiv').find('select').attr("disabled", "disabled");
@@ -164,7 +165,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         }
         //Cap - 1301
         $scope.RefershGrid();
-       { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     })
         .error(function (error, status, headers, config) {
 
@@ -192,7 +193,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     contentType: "application/json; charset=utf-8",
                     url: "WebServices/EandMCodingService.asmx/SearchCPTDescrptionText",
                     //CAP-1585
-                   // data: "{\"text\":\"" + document.getElementById("txtCPT").value + "|" + "txtCPT" + "\"}",
+                    // data: "{\"text\":\"" + document.getElementById("txtCPT").value + "|" + "txtCPT" + "\"}",
                     data: JSON.stringify({ text: document.getElementById("txtCPT").value + "|txtCPT" }),
                     dataType: "json",
                     async: true,
@@ -226,12 +227,12 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                         else {
                             //CAP-798
                             if (isValidJSON(xhr.responseText)) {
-                            var log = JSON.parse(xhr.responseText);
-                            console.log(log);
-                            alert("USER MESSAGE:\n" +
-                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                "Message: " + log.Message);
-                        }
+                                var log = JSON.parse(xhr.responseText);
+                                console.log(log);
+                                alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                    "Message: " + log.Message);
+                            }
                             else {
                                 alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry.");
@@ -712,7 +713,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     url: "WebServices/EandMCodingService.asmx/SearchCPTDescrptionText",
                     //CAP-1585
                     data: JSON.stringify({ text: document.getElementById("txtCPTDescription").value + "|txtCPTDescription" }),
-                   // data: "{\"text\":\"" + document.getElementById("txtCPTDescription").value + "|" + "txtCPTDescription" + "\"}",
+                    // data: "{\"text\":\"" + document.getElementById("txtCPTDescription").value + "|" + "txtCPTDescription" + "\"}",
                     dataType: "json",
                     async: true,
                     success: function (data) {
@@ -753,7 +754,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                                 alert("USER MESSAGE:\n" +
                                     ". Cannot process request. Please Login again and retry.");
                             }
-                        }     
+                        }
                     }
                 });
             }
@@ -814,7 +815,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 if ($scope.EandMCodingCPTTable.length != 0) {
                     for (iMax = 0; iMax < $scope.EandMCodingCPTTable.length; iMax++) {
                         //if (parseFloat($scope.EandMCodingCPTTable[iMax].Amount) <= parseFloat(ui.item.value)) {
-                            //Cap - 1301
+                        //Cap - 1301
                         iOrder = parseFloat($scope.EandMCodingCPTTable[iMax].Order);
                         //if (parseFloat($scope.EandMCodingCPTTable[iMax].Order) <= parseFloat(ui.item.value.split('~')[1])) {
 
@@ -911,7 +912,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 }
                 else {
                     //Cap - 1301
-                   // $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
+                    // $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
                     $scope.EandMCodingCPTTable.push({ 'CPTCode': ui.item.label.split('~')[0], 'CPTDesc': ui.item.label.split('~')[1], 'EandMCPTID': '', 'Units': '1', 'Modifier1': Modifier, 'Modifier2': '', 'Modifier3': '', 'Modifier4': '', 'CPTCheck': '6', 'CPTVersion': '', 'btnDelete': 'Resources/Delete-Blue.png', 'Order': ui.item.value.split('~')[1], 'RVU': ui.item.value.split('~')[2], 'Amount': ui.item.value.split('~')[0], 'DiaPointer1': '', 'DiaPointer2': '', 'DiaPointer3': '', 'DiaPointer4': '', 'DiaPointer5': '', 'DiaPointer6': '' });
 
                 }
@@ -1173,12 +1174,15 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     //const sNoSeq = parseInt($scope.EandMCodingICDTable.length) + 1;
                     var max = 0;
                     $('.maxseq').each(function () {
-                        $this = parseInt($(this).text().replace('B', ''));
+                        //Cap - 1280
+                        // $this = parseInt($(this).text().replace('B', ''));
+                        $this = parseInt($(this).text().replace('B', '').replace('A', ''));
                         if ($this > max) max = $this;
                     });
                     max = parseInt(max) + 1;
-
-                    $scope.EandMCodingICDTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'ICDVersion': '0', 'btnDelete': 'Resources/Delete-Blue.png', 'IsPrimary': 'N', 'EandMICDID': '0', 'EnablePriRbtn': EnablePriRbtn, 'Sequence': 'B' + max });
+                    //Cap - 1280
+                    //$scope.EandMCodingICDTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'ICDVersion': '0', 'btnDelete': 'Resources/Delete-Blue.png', 'IsPrimary': 'N', 'EandMICDID': '0', 'EnablePriRbtn': EnablePriRbtn, 'Sequence': 'B' + max });
+                    $scope.EandMCodingICDTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'ICDVersion': '0', 'btnDelete': 'Resources/Delete-Blue.png', 'IsPrimary': 'N', 'EandMICDID': '0', 'EnablePriRbtn': EnablePriRbtn, 'Sequence': 'A' + max, 'ICDSource': 'EMICD', 'HCC': '' });
                     $scope.RefershGrid();
                 }
                 $scope.EnableSaveButton();
@@ -1317,11 +1321,15 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     //const sNoSeq = parseInt($scope.EandMCodingICDTable.length) + 1;
                     var max = 0;
                     $('.maxseq').each(function () {
-                        $this = parseInt($(this).text().replace('B', ''));
+                        //Cap - 1280
+                        // $this = parseInt($(this).text().replace('B', ''));
+                        $this = parseInt($(this).text().replace('B', '').replace('A', ''));
                         if ($this > max) max = $this;
                     });
                     max = parseInt(max) + 1;
-                    $scope.EandMCodingICDTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'ICDVersion': '0', 'btnDelete': 'Resources/Delete-Blue.png', 'IsPrimary': 'N', 'EandMICDID': '0', 'Sequence': 'B' + max, 'EnablePriRbtn': EnablePriRbtn });
+                    //Cap - 1280
+                    //$scope.EandMCodingICDTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'ICDVersion': '0', 'btnDelete': 'Resources/Delete-Blue.png', 'IsPrimary': 'N', 'EandMICDID': '0', 'Sequence': 'B' + max, 'EnablePriRbtn': EnablePriRbtn });
+                    $scope.EandMCodingICDTable.push({ 'ICDCode': ui.item.label.split('~')[0], 'ICDDescription': ui.item.label.split('~')[1], 'ICDVersion': '0', 'btnDelete': 'Resources/Delete-Blue.png', 'IsPrimary': 'N', 'EandMICDID': '0', 'Sequence': 'A' + max, 'EnablePriRbtn': EnablePriRbtn, 'ICDSource': 'EMICD', 'HCC': '' });
                     lstSelectedCPT.push(ui.item.label);
                     $scope.RefershGrid();
                 }
@@ -2423,7 +2431,7 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
     var iIndex = -1;
     $scope.CPTDelete = function (index) {
-         //Cap - 1573
+        //Cap - 1573
         //DeleteArray = new Array();
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         if (index != undefined) {
@@ -2643,8 +2651,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         /*Start For Git Lab Id: 1666*/
         var icdcount = false;
         // CAP  1571;
-        var sICDCode='';
-            //End
+        var sICDCode = '';
+        //End
         if (index == "Submit") {
             //Save and submit
             Esuperbillclicked = "Y";
@@ -2657,671 +2665,644 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         var arrlstAssICD = [];
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         // if (index == "Submit") {
-        setTimeout(function () { 
-        if ($('#tblEandMCodingCPT tr td').length == 0) { //any cpt not mapped
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            DisplayErrorMessage('530003');
-            bSaveCheck = true;
-            AutoSaveUnsuccessful();
-            return;
-        }
-        else if (($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0)) { //save service procedure code without icd.
+        setTimeout(function () {
+            if ($('#tblEandMCodingCPT tr td').length == 0) { //any cpt not mapped
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                DisplayErrorMessage('530003');
+                bSaveCheck = true;
+                AutoSaveUnsuccessful();
+                return;
+            }
+            //Cap - 1280
+            // else if (($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0)) { //save service procedure code without icd.
+            else if (($('#tblEandMCodingICD tr td').length == 0)) {
+                if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'OFFICE MANAGER' && UserRole.toUpperCase() != 'CODER' && UserRole.toUpperCase() != 'TECHNICIAN' && ValEnableScreen.indexOf('EnableScreen') < 0) {
+                    //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 
-            if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'OFFICE MANAGER' && UserRole.toUpperCase() != 'CODER' && UserRole.toUpperCase() != 'TECHNICIAN' && ValEnableScreen.indexOf('EnableScreen')<0) {
-              //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    icdcount = true;
 
-                icdcount = true;
+                    //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                    //return;
 
-                //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                //return;
 
+                }
+
+                else {
+                    if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'OFFICE MANAGER') {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        DisplayErrorMessage('530004');
+                        bSaveCheck = true;
+                        AutoSaveUnsuccessful();
+
+                        //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                        return;
+                    }
+                }
 
             }
-            
-            else {
-                if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT' && UserRole.toUpperCase() != 'OFFICE MANAGER') {
+
+            //else if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT') {
+            //    for (var j = 1; j < 7; j++) {
+            //        if ($('#tblEandMCodingCPT tr td input.chkCPT' + j + ':checked').length > 0 && ($('#tblEandMCodingICD tr td input.chkICD' + j + ':checked').length == 0 && $('#tblAssEandMCodingICD tr td input.chkICD' + j + ':checked').length == 0)) {//mapping not complete i.e 6 markd in CPT but 6 not marked in ICD
+            //            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            //            sessionStorage.setItem("EncCancel", "false");
+            //            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+            //            DisplayErrorMessage('530014', "", "'" + j + "'"); No need for now
+            //            bSaveCheck = true;
+            //            AutoSaveUnsuccessful();
+            //            return;
+            //        }
+            //    }
+            //}
+            //Cap - 1280
+            //else if ($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0) {  //any icd not mapped userRole:coder//BugID:47922 -- ServProc REVAMP
+            else if ($('#tblEandMCodingICD tr td').length == 0) {
+                if (bbtnSubAllForSuperbilltted == true || UserRole.toUpperCase() == 'CODER') {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     DisplayErrorMessage('530004');
                     bSaveCheck = true;
                     AutoSaveUnsuccessful();
-
-                    //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
                     return;
                 }
             }
+            if ($('#tblEandMCodingCPT tr').length > 0) {
+                for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+                    // Units c=validation
+                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[3].children[0].value == "") {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        DisplayErrorMessage('530016');
+                        bSaveCheck = true;
+                        return;
+                    }
+                    else if ($($('#tblEandMCodingCPT tr'))[cptlength].children[3].children[0].value == "0" || $($('#tblEandMCodingCPT tr'))[cptlength].children[3].children[0].value == "00" || $($('#tblEandMCodingCPT tr'))[cptlength].children[3].children[0].value == "000") {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        DisplayErrorMessage('530017');
+                        bSaveCheck = true;
+                        return;
 
+                    }
+                }
+            }
+            //// }
+            var isprimary = false;
+            if (UserRole.toUpperCase() == 'CODER' || UserRole.toUpperCase() == 'PHYSICIAN') {
+                var bIsPrimary = false, bIsAssPrimary = false, bPriICDSelected = false, bPriICDAssSelected = false;
+
+                if ($('#tblEandMCodingICD tr td input.IsPrimary:checked').length > 0) {
+                    bIsPrimary = true;
+                    //for (var i = 1; i < 7; i++) {
+                    //    if ($('#tblEandMCodingICD tr td input.IsPrimary:checked').parent().parent()[0].children[i].children[0].checked == true) {
+                    //        bPriICDSelected = true;
+                    //    }
+                    //}
+                }
+                //Cap - 1280
+                //var AssICDrows_PrimaryCol = $('#tblAssEandMCodingICD tr td:first-child');
+                //for (var i = 0; i < AssICDrows_PrimaryCol.length; i++) {
+                //    if (AssICDrows_PrimaryCol[i].firstElementChild.firstElementChild.innerText.trim() == "Pri") {
+                //        bIsAssPrimary = true;
+                //        //for (var j = 1; j < 7; j++) {
+                //        //    if ($(AssICDrows_PrimaryCol[i]).parent()[0].children[j].children[0].checked == true) {
+                //        //        bPriICDAssSelected = true;
+                //        //    }
+                //        //}
+                //    }
+                //}
+                //if (!(bPriICDSelected || bPriICDAssSelected)) {//primary not marked
+                //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                //    DisplayErrorMessage('530018'); // No need for now
+                //    bSaveCheck = true;
+                //    AutoSaveUnsuccessful();
+                //    return;
+                //}
+
+
+                if (!(bIsPrimary || bIsAssPrimary)) {
+                    if ((UserRole.toUpperCase() == 'CODER')&& ValEnableScreen.indexOf('EnableScreen') >= 0) {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        DisplayErrorMessage('530005');
+                        bSaveCheck = true;
+                        AutoSaveUnsuccessful();
+                        return;
+                    }
+                }
+
+
+                else {
+                    isprimary = true;
+                }
+
+            }
+            /*
+            for (var j = 1; j < 7; j++) {
+                if ($('#tbleandmcodingcpt tr td input.chkcpt' + j + ':checked').length > 0 && ($('#tbleandmcodingicd tr td input.chkicd' + j + ':checked').length == 0 && $('#tblasseandmcodingicd tr td input.chkicd' + j + ':checked').length == 0)) {//mapping not complete i.e 6 markd in cpt but 6 not marked in icd
+                    { sessionstorage.setitem('startloading', 'false'); stoploadfrompatchart(); }
+                    displayerrormessage('530014', "", "'" + j + "'"); no need for now
+                    bsavecheck = true;
+                    autosaveunsuccessful();
+                    return;
+                }
+            }
         }
-
-        //else if (UserRole.toUpperCase() != 'MEDICAL ASSISTANT') {
-        //    for (var j = 1; j < 7; j++) {
-        //        if ($('#tblEandMCodingCPT tr td input.chkCPT' + j + ':checked').length > 0 && ($('#tblEandMCodingICD tr td input.chkICD' + j + ':checked').length == 0 && $('#tblAssEandMCodingICD tr td input.chkICD' + j + ':checked').length == 0)) {//mapping not complete i.e 6 markd in CPT but 6 not marked in ICD
-        //            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        //            sessionStorage.setItem("EncCancel", "false");
-        //            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-        //            DisplayErrorMessage('530014', "", "'" + j + "'"); No need for now
-        //            bSaveCheck = true;
-        //            AutoSaveUnsuccessful();
-        //            return;
-        //        }
-        //    }
-        //}
-        else if ($('#tblEandMCodingICD tr td').length == 0 && $('#tblAssEandMCodingICD tr td').length == 0) {  //any icd not mapped userRole:coder//BugID:47922 -- ServProc REVAMP
-            if (bbtnSubAllForSuperbilltted == true || UserRole.toUpperCase() == 'CODER') {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                DisplayErrorMessage('530004');
+    
+        //For Bug Id 55636
+        for (var iCPTChk = 1; iCPTChk < $('#tblEandMCodingCPT tr').length; iCPTChk++) { //Please select the sequence
+            if ($($('#tblEandMCodingCPT tr')[iCPTChk]).find("input:checked").length == 0) {
+                DisplayErrorMessage('530023', "", "'" + $('#tblEandMCodingCPT tr')[iCPTChk].cells[7].innerText + "'"); No need for now
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
                 return;
             }
         }
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-                // Units c=validation
-                if ($($('#tblEandMCodingCPT tr'))[cptlength].children[3].children[0].value == "") {
+        for (var iRowCPT = 1; iRowCPT < $('#tblEandMCodingCPT tr').length; iRowCPT++) {
+            var SelectedRow = $('#tblEandMCodingCPT tr')[iRowCPT];//CPT is not selected but the modifier is added
+            if (SelectedRow.children[10].children[0].selectedOptions[0].innerText.trim() != "" || SelectedRow.children[10].children[1].selectedOptions[0].innerText.trim() != ""
+                || SelectedRow.children[10].children[2].selectedOptions[0].innerText.trim() != "" || SelectedRow.children[10].children[3].selectedOptions[0].innerText.trim() != "") {
+                if ($('#tblEandMCodingCPT tr input.chkCPTRow' + SelectedRow.children[13].innerText.trim() + SelectedRow.children[7].innerText.trim() + ':checked').length == 0) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    DisplayErrorMessage('530016');
-                    bSaveCheck = true;
-                    return;
-                }
-                else if ($($('#tblEandMCodingCPT tr'))[cptlength].children[3].children[0].value == "0" || $($('#tblEandMCodingCPT tr'))[cptlength].children[3].children[0].value == "00" || $($('#tblEandMCodingCPT tr'))[cptlength].children[3].children[0].value == "000") {
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    DisplayErrorMessage('530017');
-                    bSaveCheck = true;
-                    return;
-
-                }
-            }
-        }
-        //// }
-        var isprimary = false;
-        if (UserRole.toUpperCase() == 'CODER' || UserRole.toUpperCase() == 'PHYSICIAN' ) {
-            var bIsPrimary = false, bIsAssPrimary = false, bPriICDSelected = false, bPriICDAssSelected = false;
-
-            if ($('#tblEandMCodingICD tr td input.IsPrimary:checked').length > 0) {
-                bIsPrimary = true;
-                //for (var i = 1; i < 7; i++) {
-                //    if ($('#tblEandMCodingICD tr td input.IsPrimary:checked').parent().parent()[0].children[i].children[0].checked == true) {
-                //        bPriICDSelected = true;
-                //    }
-                //}
-            }
-            var AssICDrows_PrimaryCol = $('#tblAssEandMCodingICD tr td:first-child');
-            for (var i = 0; i < AssICDrows_PrimaryCol.length; i++) {
-                if (AssICDrows_PrimaryCol[i].firstElementChild.firstElementChild.innerText.trim() == "Pri") {
-                    bIsAssPrimary = true;
-                    //for (var j = 1; j < 7; j++) {
-                    //    if ($(AssICDrows_PrimaryCol[i]).parent()[0].children[j].children[0].checked == true) {
-                    //        bPriICDAssSelected = true;
-                    //    }
-                    //}
-                }
-            }
-            //if (!(bPriICDSelected || bPriICDAssSelected)) {//primary not marked
-            //    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            //    DisplayErrorMessage('530018'); // No need for now
-            //    bSaveCheck = true;
-            //    AutoSaveUnsuccessful();
-            //    return;
-            //}
-
-           
-            if (!(bIsPrimary || bIsAssPrimary)) {
-                if ((UserRole.toUpperCase() == 'CODER')&& ValEnableScreen.indexOf('EnableScreen') >= 0) {
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    DisplayErrorMessage('530005');
+                    DisplayErrorMessage('530015'); -- No need for now 
                     bSaveCheck = true;
                     AutoSaveUnsuccessful();
                     return;
                 }
             }
-           
-            
-            else {
-                isprimary = true;
+            if (SelectedRow.children[9].children[0].value == "") {//units not entered for selected CPT
+                if ($('#tblEandMCodingCPT tr input.chkCPTRow' + SelectedRow.children[13].innerText.trim() + SelectedRow.children[7].innerText.trim() + ':checked').length > 0) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    DisplayErrorMessage('530016'); *
+                    bSaveCheck = true;
+                    return;
+                }
             }
-
-        }
-        /*
-        for (var j = 1; j < 7; j++) {
-            if ($('#tbleandmcodingcpt tr td input.chkcpt' + j + ':checked').length > 0 && ($('#tbleandmcodingicd tr td input.chkicd' + j + ':checked').length == 0 && $('#tblasseandmcodingicd tr td input.chkicd' + j + ':checked').length == 0)) {//mapping not complete i.e 6 markd in cpt but 6 not marked in icd
-                { sessionstorage.setitem('startloading', 'false'); stoploadfrompatchart(); }
-                displayerrormessage('530014', "", "'" + j + "'"); no need for now
-                bsavecheck = true;
-                autosaveunsuccessful();
-                return;
+            if (SelectedRow.children[9].children[0].value == "0" || SelectedRow.children[9].children[0].value == "00" || SelectedRow.children[9].children[0].value == "000") {//units to be between 1 to 999//BugID:49446
+                if ($('#tblEandMCodingCPT tr input.chkCPTRow' + SelectedRow.children[13].innerText.trim() + SelectedRow.children[7].innerText.trim() + ':checked').length > 0) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    DisplayErrorMessage('530017'); *
+                    bSaveCheck = true;
+                    AutoSaveUnsuccessful();
+                    return;
+                }
             }
         }
-    }
-
-    //For Bug Id 55636
-    for (var iCPTChk = 1; iCPTChk < $('#tblEandMCodingCPT tr').length; iCPTChk++) { //Please select the sequence
-        if ($($('#tblEandMCodingCPT tr')[iCPTChk]).find("input:checked").length == 0) {
-            DisplayErrorMessage('530023', "", "'" + $('#tblEandMCodingCPT tr')[iCPTChk].cells[7].innerText + "'"); No need for now
-            bSaveCheck = true;
-            AutoSaveUnsuccessful();
-            return;
-        }
-    }
-    for (var iRowCPT = 1; iRowCPT < $('#tblEandMCodingCPT tr').length; iRowCPT++) {
-        var SelectedRow = $('#tblEandMCodingCPT tr')[iRowCPT];//CPT is not selected but the modifier is added
-        if (SelectedRow.children[10].children[0].selectedOptions[0].innerText.trim() != "" || SelectedRow.children[10].children[1].selectedOptions[0].innerText.trim() != ""
-            || SelectedRow.children[10].children[2].selectedOptions[0].innerText.trim() != "" || SelectedRow.children[10].children[3].selectedOptions[0].innerText.trim() != "") {
-            if ($('#tblEandMCodingCPT tr input.chkCPTRow' + SelectedRow.children[13].innerText.trim() + SelectedRow.children[7].innerText.trim() + ':checked').length == 0) {
+    
+        for (var i = 1; i < 7; i++) {
+            if ($('#tblEandMCodingCPT tr td input.chkCPT' + i + ':checked').length == 0 && ($('#tblEandMCodingICD tr td input.chkICD' + i + ':checked').length > 0 || $('#tblAssEandMCodingICD tr td input.chkICD' + i + ':checked').length > 0)) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                DisplayErrorMessage('530015'); -- No need for now 
+                sessionStorage.setItem("EncCancel", "false");
+                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                DisplayErrorMessage('530013', "", "'" + i + "'");    NO need for now // incomplete mapping icd mapped to 6, no CPT mapped to 6
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
                 return;
             }
         }
-        if (SelectedRow.children[9].children[0].value == "") {//units not entered for selected CPT
-            if ($('#tblEandMCodingCPT tr input.chkCPTRow' + SelectedRow.children[13].innerText.trim() + SelectedRow.children[7].innerText.trim() + ':checked').length > 0) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                DisplayErrorMessage('530016'); *
-                bSaveCheck = true;
-                return;
-            }
-        }
-        if (SelectedRow.children[9].children[0].value == "0" || SelectedRow.children[9].children[0].value == "00" || SelectedRow.children[9].children[0].value == "000") {//units to be between 1 to 999//BugID:49446
-            if ($('#tblEandMCodingCPT tr input.chkCPTRow' + SelectedRow.children[13].innerText.trim() + SelectedRow.children[7].innerText.trim() + ':checked').length > 0) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                DisplayErrorMessage('530017'); *
+    
+        for (var jICD = 1; jICD < $('#tblAssEandMCodingICD tr').length; jICD++) {
+            if ($($('#tblAssEandMCodingICD tr')[jICD]).find("input:checked").length == 0) {
+                DisplayErrorMessage('530022');  NO need for now // Seq not marked for an ICD
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
                 return;
             }
         }
-    }
+        for (var jICD = 1; jICD < $('#tblEandMCodingICD tr').length; jICD++) {
+            if ($($('#tblEandMCodingICD tr')[jICD]).find("input:checked").length == 0) {
+                DisplayErrorMessage('530022');  NO need for now// Seq not marked for an ICD
+                bSaveCheck = true;
+                AutoSaveUnsuccessful();
+                return;
+            }
+        }*/
 
-    for (var i = 1; i < 7; i++) {
-        if ($('#tblEandMCodingCPT tr td input.chkCPT' + i + ':checked').length == 0 && ($('#tblEandMCodingICD tr td input.chkICD' + i + ':checked').length > 0 || $('#tblAssEandMCodingICD tr td input.chkICD' + i + ':checked').length > 0)) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            sessionStorage.setItem("EncCancel", "false");
-            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-            DisplayErrorMessage('530013', "", "'" + i + "'");    NO need for now // incomplete mapping icd mapped to 6, no CPT mapped to 6
-            bSaveCheck = true;
-            AutoSaveUnsuccessful();
-            return;
-        }
-    }
+            //Validation
 
-    for (var jICD = 1; jICD < $('#tblAssEandMCodingICD tr').length; jICD++) {
-        if ($($('#tblAssEandMCodingICD tr')[jICD]).find("input:checked").length == 0) {
-            DisplayErrorMessage('530022');  NO need for now // Seq not marked for an ICD
-            bSaveCheck = true;
-            AutoSaveUnsuccessful();
-            return;
-        }
-    }
-    for (var jICD = 1; jICD < $('#tblEandMCodingICD tr').length; jICD++) {
-        if ($($('#tblEandMCodingICD tr')[jICD]).find("input:checked").length == 0) {
-            DisplayErrorMessage('530022');  NO need for now// Seq not marked for an ICD
-            bSaveCheck = true;
-            AutoSaveUnsuccessful();
-            return;
-        }
-    }*/
+            var DiagnosisPointerCPTList = [];
+            var DiagnosisPointerICDList = [];
 
-        //Validation
+            DiagnosisPointerCPTList = new Array();
+            DiagnosisPointerICDList = new Array();
 
-        var DiagnosisPointerCPTList = [];
-        var DiagnosisPointerICDList = [];
-
-        DiagnosisPointerCPTList = new Array();
-        DiagnosisPointerICDList = new Array();
-
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-                for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() != "") {
-                        if (DiagnosisPointerCPTList.length == 0) {
-                            DiagnosisPointerCPTList.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim());
-                        }
-                        else if (DiagnosisPointerCPTList.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim()) == -1) {
-                            DiagnosisPointerCPTList.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim());
+            if ($('#tblEandMCodingCPT tr').length > 0) {
+                for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+                    for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
+                        if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() != "") {
+                            if (DiagnosisPointerCPTList.length == 0) {
+                                DiagnosisPointerCPTList.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim());
+                            }
+                            else if (DiagnosisPointerCPTList.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim()) == -1) {
+                                DiagnosisPointerCPTList.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim());
+                            }
                         }
                     }
                 }
             }
-        }
-
-        if (DiagnosisPointerCPTList.length > 0 && $('#tblAssEandMCodingICD tr').length > 0) {
-            for (var IcdAsslength = 1; IcdAsslength < $('#tblAssEandMCodingICD tr').length; IcdAsslength++) {
-                if ($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim() != "") {
-                    if (DiagnosisPointerICDList.length == 0) {
-                        DiagnosisPointerICDList.push($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim());
-                    }
-                    else if (DiagnosisPointerICDList.indexOf($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim()) == -1) {
-                        DiagnosisPointerICDList.push($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim());
+            //Cap - 1280
+            //if (DiagnosisPointerCPTList.length > 0 && $('#tblAssEandMCodingICD tr').length > 0) {
+            //    for (var IcdAsslength = 1; IcdAsslength < $('#tblAssEandMCodingICD tr').length; IcdAsslength++) {
+            //        if ($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim() != "") {
+            //            if (DiagnosisPointerICDList.length == 0) {
+            //                DiagnosisPointerICDList.push($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim());
+            //            }
+            //            else if (DiagnosisPointerICDList.indexOf($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim()) == -1) {
+            //                DiagnosisPointerICDList.push($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim());
+            //            }
+            //        }
+            //    }
+            //}
+            if (DiagnosisPointerCPTList.length > 0 && $('#tblEandMCodingICD tr').length > 0) {
+                for (var IcdEandMlength = 1; IcdEandMlength < $('#tblEandMCodingICD tr').length; IcdEandMlength++) {
+                    if ($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim() != "") {
+                        if (DiagnosisPointerICDList.length == 0) {
+                            DiagnosisPointerICDList.push($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim());
+                        }
+                        else if (DiagnosisPointerICDList.indexOf($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim()) == -1) {
+                            DiagnosisPointerICDList.push($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim());
+                        }
                     }
                 }
             }
-        }
-        if (DiagnosisPointerCPTList.length > 0 && $('#tblEandMCodingICD tr').length > 0) {
-            for (var IcdEandMlength = 1; IcdEandMlength < $('#tblEandMCodingICD tr').length; IcdEandMlength++) {
-                if ($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim() != "") {
-                    if (DiagnosisPointerICDList.length == 0) {
-                        DiagnosisPointerICDList.push($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim());
-                    }
-                    else if (DiagnosisPointerICDList.indexOf($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim()) == -1) {
-                        DiagnosisPointerICDList.push($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim());
-                    }
+
+            if (DiagnosisPointerCPTList.length > 0 && DiagnosisPointerICDList.length > 0) // Diagosis pointers are not mandatory
+            {
+                var DiagnosisPointerdiff = [];
+                jQuery.grep(DiagnosisPointerCPTList, function (el) {
+                    if (jQuery.inArray(el, DiagnosisPointerICDList) == -1) DiagnosisPointerdiff.push(el);
+                });
+                if (DiagnosisPointerdiff.length > 0) {
+                    DisplayErrorMessage('530025', "", "'" + DiagnosisPointerdiff[0] + "'");
+                    // DisplayErrorMessage('530025', "", "'" + DiagnosisPointerdiff + "'");
+                    bSaveCheck = true;
+                    AutoSaveUnsuccessful();
+                    return;
                 }
             }
-        }
-
-        if (DiagnosisPointerCPTList.length > 0 && DiagnosisPointerICDList.length > 0) // Diagosis pointers are not mandatory
-        {
-            var DiagnosisPointerdiff = [];
-            jQuery.grep(DiagnosisPointerCPTList, function (el) {
-                if (jQuery.inArray(el, DiagnosisPointerICDList) == -1) DiagnosisPointerdiff.push(el);
-            });
-            if (DiagnosisPointerdiff.length > 0) {
-                DisplayErrorMessage('530025', "", "'" + DiagnosisPointerdiff[0] + "'");
+            else if (DiagnosisPointerCPTList.length > 0 && DiagnosisPointerICDList.length == 0) {
+                DisplayErrorMessage('530025', "", "'" + DiagnosisPointerCPTList[0] + "'");
                 // DisplayErrorMessage('530025', "", "'" + DiagnosisPointerdiff + "'");
                 bSaveCheck = true;
                 AutoSaveUnsuccessful();
                 return;
             }
-        }
-        else if (DiagnosisPointerCPTList.length > 0 && DiagnosisPointerICDList.length == 0) {
-            DisplayErrorMessage('530025', "", "'" + DiagnosisPointerCPTList[0] + "'");
-            // DisplayErrorMessage('530025', "", "'" + DiagnosisPointerdiff + "'");
-            bSaveCheck = true;
-            AutoSaveUnsuccessful();
-            return;
-        }
 
-        //Duplicate Diagnosis Pointer Validation
-        var DuplicateDiagnosis = [];
-        DuplicateDiagnosis = new Array();
+            //Duplicate Diagnosis Pointer Validation
+            var DuplicateDiagnosis = [];
+            DuplicateDiagnosis = new Array();
 
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+            if ($('#tblEandMCodingCPT tr').length > 0) {
+                for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
 
-                DuplicateDiagnosis = new Array();
-                for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.trim() != "") {
-                        if (DuplicateDiagnosis.length == 0) {
-                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
+                    DuplicateDiagnosis = new Array();
+                    for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
+                        if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.trim() != "") {
+                            if (DuplicateDiagnosis.length == 0) {
+                                DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
+                            }
+                            else if (DuplicateDiagnosis.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim()) > -1) {
+
+                                DisplayErrorMessage('530026', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
+                                bSaveCheck = true;
+                                AutoSaveUnsuccessful();
+                                return;
+                            }
+                            else {
+                                DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
+                            }
                         }
-                        else if (DuplicateDiagnosis.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim()) > -1) {
+                    }
+                }
+            }
 
-                            DisplayErrorMessage('530026', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
+            //Cap - 1553
+            var DuplicateModifier = [];
+            DuplicateModifier = new Array();
+
+            if ($('#tblEandMCodingCPT tr').length > 0) {
+                for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+
+                    DuplicateModifier = new Array();
+                    for (var DiaPointer = 0; DiaPointer < 4; DiaPointer++) {
+                        if ($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.trim() != "") {
+                            if (DuplicateModifier.length == 0) {
+                                DuplicateModifier.push($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase());
+                            }
+                            else if (DuplicateModifier.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim()) > -1) {
+
+                                DisplayErrorMessage('530029', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
+                                bSaveCheck = true;
+                                AutoSaveUnsuccessful();
+                                return;
+                            }
+                            else {
+                                DuplicateModifier.push($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase());
+                            }
+                        }
+                    }
+                }
+            }
+
+            var bSerial = false;
+            var bSeqValidation = false;
+            var iDiaPointerPosition = 0;
+            var iDiaPointerPosition = false;
+
+            if ($('#tblEandMCodingCPT tr').length > 0) {
+                for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+                    bSerial = false;
+                    bSeqValidation = false;
+                    bPosition = false;
+                    iDiaPointerPosition = 0;
+                    for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
+                        if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() == "") {
+                            if (bSeqValidation != true) {
+                                iDiaPointerPosition = parseInt(DiaPointer) + 1;
+                            }
+                            if (bPosition == false) {
+                                bPosition = true;
+                                iDiaPointerPosition = parseInt(DiaPointer) + 1;
+                            }
+
+                            bSerial = true;
+                        }
+                        if (bSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() != "") {
+                            var Cpt = $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim();
+                            if (iDiaPointerPosition == 0) {
+                                iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
+                            }
+                            DisplayErrorMessage('530027', "", "'" + Cpt + "'-'" + (parseInt(DiaPointer) + 1) + "'-'" + iDiaPointerPosition + "'");
                             bSaveCheck = true;
                             AutoSaveUnsuccessful();
                             return;
                         }
                         else {
-                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
+                            bSeqValidation = true;
+                            // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
                         }
                     }
                 }
             }
-        }
+            //Cap - 1761
+            if (UserRole.toUpperCase() == "CODER") {
+                var bPriICDPointer = false;
+                if ($('#tblEandMCodingCPT tr').length > 0) {
+                    for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+                        bSerial = false;
+                        bSeqValidation = false;
+                        bPosition = false;
+                        iDiaPointerPosition = 0;
+                        for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
 
-        //Cap - 1553
-        var DuplicateModifier = [];
-        DuplicateModifier = new Array();
-
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-
-                DuplicateModifier = new Array();
-                for (var DiaPointer = 0; DiaPointer < 4; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.trim() != "") {
-                        if (DuplicateModifier.length == 0) {
-                            DuplicateModifier.push($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase());
+                            if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() == "A1") {
+                                bPriICDPointer = true;
+                                break;
+                            }
                         }
-                        else if (DuplicateModifier.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim()) > -1) {
+                        if (bPriICDPointer) {
+                            break;
+                        }
+                    }
+                }
+                if (!bPriICDPointer) {
+                    DisplayErrorMessage('530030');
+                    bSaveCheck = true;
+                    AutoSaveUnsuccessful();
+                    return;
+                }
+            }
 
-                            DisplayErrorMessage('530029', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
+            //Cap - 1553
+            var bModifiersSerial = false;
+            var bModifiersSeqValidation = false;
+            var iModifiersPosition = 0;
+
+            if ($('#tblEandMCodingCPT tr').length > 0) {
+                for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
+                    bModifiersSerial = false;
+                    bModifiersSeqValidation = false;
+                    bPosition = false;
+                    iModifiersPosition = 0;
+                    for (var DiaPointer = 0; DiaPointer < 4; DiaPointer++) {
+                        if ($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() == "") {
+                            if (bModifiersSeqValidation != true) {
+                                iModifiersPosition = parseInt(DiaPointer) + 1;
+                            }
+                            if (bPosition == false) {
+                                bPosition = true;
+                                iModifiersPosition = parseInt(DiaPointer) + 1;
+                            }
+
+                            bModifiersSerial = true;
+                        }
+                        if (bModifiersSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() != "") {
+                            var Cpt = $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim();
+                            if (iModifiersPosition == 0) {
+                                iModifiersPosition = parseInt(iModifiersPosition) + 1;
+                            }
+                            DisplayErrorMessage('530028', "", "'" + Cpt + "'-'" + (parseInt(DiaPointer) + 1) + "'-'" + iModifiersPosition + "'");
                             bSaveCheck = true;
                             AutoSaveUnsuccessful();
                             return;
                         }
                         else {
-                            DuplicateModifier.push($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase());
+                            bModifiersSeqValidation = true;
+                            // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
                         }
                     }
                 }
             }
-        }
 
-        var bSerial = false;
-        var bSeqValidation = false;
-        var iDiaPointerPosition = 0;
-        var iDiaPointerPosition = false;
 
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-                bSerial = false;
-                bSeqValidation = false;
-                bPosition = false;
-                iDiaPointerPosition = 0;
-                for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() == "") {
-                        if (bSeqValidation != true) {
-                            iDiaPointerPosition = parseInt(DiaPointer) + 1;
-                        }
-                        if (bPosition == false) {
-                            bPosition = true;
-                            iDiaPointerPosition = parseInt(DiaPointer) + 1;
-                        }
 
-                        bSerial = true;
-                    }
-                    if (bSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() != "") {
-                        var Cpt = $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim();
-                        if (iDiaPointerPosition == 0) {
-                            iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
-                        }
-                        DisplayErrorMessage('530027', "", "'" + Cpt + "'-'" + (parseInt(DiaPointer) + 1) + "'-'" + iDiaPointerPosition + "'");
-                        bSaveCheck = true;
-                        AutoSaveUnsuccessful();
-                        return;
-                    }
-                    else {
-                        bSeqValidation = true;
-                        // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
-                    }
+            var aryCPTList = [];
+            var aryICDList = [];
+            //Cap - 1280
+            var aryEandMICDList = [];
+            if ($('#tblEandMCodingCPT tr').length > 0) {
+                var chkCPTContainer = $('#tblEandMCodingCPT tr');
+                for (var iCheck = 1; iCheck < chkCPTContainer.length; iCheck++) {
+                    var sCPTCode = chkCPTContainer[iCheck].cells[1].innerText.trim();
+                    var sCPTDesc = chkCPTContainer[iCheck].cells[2].innerText.trim();
+                    var sUnits = chkCPTContainer[iCheck].cells[3].children[0].value;
+                    var sModi1 = chkCPTContainer[iCheck].cells[4].children[0].selectedOptions[0].innerText.trim();
+                    var sModi2 = chkCPTContainer[iCheck].cells[4].children[1].selectedOptions[0].innerText.trim();
+                    var sModi3 = chkCPTContainer[iCheck].cells[4].children[2].selectedOptions[0].innerText.trim();
+                    var sModi4 = chkCPTContainer[iCheck].cells[4].children[3].selectedOptions[0].innerText.trim();
+                    var sDiaPointer1 = chkCPTContainer[iCheck].cells[5].children[0].value.toUpperCase().trim();
+                    var sDiaPointer2 = chkCPTContainer[iCheck].cells[5].children[1].value.toUpperCase().trim();
+                    var sDiaPointer3 = chkCPTContainer[iCheck].cells[5].children[2].value.toUpperCase().trim();
+                    var sDiaPointer4 = chkCPTContainer[iCheck].cells[5].children[3].value.toUpperCase().trim();
+                    var sDiaPointer5 = chkCPTContainer[iCheck].cells[5].children[4].value.toUpperCase().trim();
+                    var sDiaPointer6 = chkCPTContainer[iCheck].cells[5].children[5].value.toUpperCase().trim();
+                    var sSortOrder = chkCPTContainer[iCheck].cells[8].innerText.trim();
+
+
+                    //aryCPTList.push(sCPTCode + "~" + sCPTDesc + "~" + sUnits + "~" + sModi1 + "~" + sModi2 + "~" + sModi3 + "~" + sModi4 + "~" + $('#tblEandMCodingCPT tr td')[iCheck].className.replace("chkCPT", "")[0] + "~" + chkCPTContainer.parent().parent()[iCheck].cells[11].innerText.trim() + "~" + chkCPTContainer.parent().parent()[iCheck].cells[12].innerText.trim() + "~" + chkCPTContainer.parent().parent()[iCheck].cells[13].innerText.trim() + "~" + chkCPTContainer.parent().parent()[iCheck].cells[14].innerText.trim());
+                    aryCPTList.push(sCPTCode + "~" + sCPTDesc + "~" + sUnits + "~" + sModi1 + "~" + sModi2 + "~" + sModi3 + "~" + sModi4 + "~" + "" + "~" + chkCPTContainer[iCheck].cells[6].innerText.trim() + "~" + chkCPTContainer[iCheck].cells[7].innerText.trim() + "~" + chkCPTContainer[iCheck].cells[8].innerText.trim() + "~" + chkCPTContainer[iCheck].cells[9].innerText.trim() + "~" + sDiaPointer1 + "~" + sDiaPointer2 + "~" + sDiaPointer3 + "~" + sDiaPointer4 + "~" + sDiaPointer5 + "~" + sDiaPointer6 + "~" + sSortOrder);
+
                 }
             }
-        }
-
-        //Cap - 1553
-        var bModifiersSerial = false;
-        var bModifiersSeqValidation = false;
-        var iModifiersPosition = 0;
-
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-                bModifiersSerial = false;
-                bModifiersSeqValidation = false;
-                bPosition = false;
-                iModifiersPosition = 0;
-                for (var DiaPointer = 0; DiaPointer < 4; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() == "") {
-                        if (bModifiersSeqValidation != true) {
-                            iModifiersPosition = parseInt(DiaPointer) + 1;
-                        }
-                        if (bPosition == false) {
-                            bPosition = true;
-                            iModifiersPosition = parseInt(DiaPointer) + 1;
-                        }
-
-                        bModifiersSerial = true;
-                    }
-                    if (bModifiersSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() != "") {
-                        var Cpt = $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim();
-                        if (iModifiersPosition == 0) {
-                            iModifiersPosition = parseInt(iModifiersPosition) + 1;
-                        }
-                        DisplayErrorMessage('530028', "", "'" + Cpt + "'-'" + (parseInt(DiaPointer) + 1) + "'-'" + iModifiersPosition + "'");
-                        bSaveCheck = true;
-                        AutoSaveUnsuccessful();
-                        return;
-                    }
-                    else {
-                        bModifiersSeqValidation = true;
-                        // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
-                    }
+            //Cap - 1280
+            //for (var jICD = 1; jICD < $('#tblAssEandMCodingICD tr').length; jICD++) {
+            //    var chkICDContainer = $('#tblAssEandMCodingICD tr')[jICD];
+            //    var chkICD1 = ""; var chkICD2 = ""; var chkICD3 = ""; var chkICD4 = ""; var chkICD5 = ""; var chkICD6 = "";
+            //    var IsPrimary = 'N';
+            //    if (chkICDContainer.cells[0].firstElementChild.firstElementChild.innerText.trim() == "Pri") {
+            //        IsPrimary = 'Y';
+            //    }
+            //    //if (chkICDContainer.cells[1].children[0].checked == true) {
+            //    //    chkICD1 = '1';
+            //    //}
+            //    //if (chkICDContainer.cells[2].children[0].checked == true) {
+            //    //    chkICD2 = '2';
+            //    //}
+            //    //if (chkICDContainer.cells[3].children[0].checked == true) {
+            //    //    chkICD3 = '3';
+            //    //}
+            //    //if (chkICDContainer.cells[4].children[0].checked == true) {
+            //    //    chkICD4 = '4';
+            //    //}
+            //    //if (chkICDContainer.cells[5].children[0].checked == true) {
+            //    //    chkICD5 = '5';
+            //    //}
+            //    //if (chkICDContainer.cells[6].children[0].checked == true) {
+            //    //    chkICD6 = '6';
+            //    //}
+            //    var sSequence = chkICDContainer.cells[1].innerText.trim();
+            //    var sICDCode = chkICDContainer.cells[2].innerText.trim();
+            //    var sICDDesc = chkICDContainer.cells[3].innerText.trim();
+            //    var Source = "ASSESSMENT";
+            //    //Jira - #CAP-80
+            //    //if (sessionStorage.getItem("Is_CMG_Ancillary") != null && sessionStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {//BugID:52857
+            //    if (localStorage.getItem("Is_CMG_Ancillary") != null && localStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {
+            //        Source = "ORDERS_ASSESSMENT";
+            //    }
+            //    // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
+            //    aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[4].innerText.trim() + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + Source + "~" + sSequence);
+            //    arrlstAssICD.push(sICDCode);
+            //}
+            for (var jICD = 1; jICD < $('#tblEandMCodingICD tr').length; jICD++) {
+                var chkICDContainer = $('#tblEandMCodingICD tr')[jICD];
+                var chkICD1 = ""; var chkICD2 = ""; var chkICD3 = ""; var chkICD4 = ""; var chkICD5 = ""; var chkICD6 = "";
+                var IsPrimary = 'N';
+                //Cap -1280
+                // if (chkICDContainer.cells[0].firstElementChild.firstElementChild.innerText.trim() == "Pri") {
+                if (chkICDContainer.cells[1].children[0].children[0].checked == true) {
+                    IsPrimary = 'Y';
                 }
-            }
-        }
 
-       
+                var sSequence = chkICDContainer.cells[2].innerText.trim();
+                sICDCode = chkICDContainer.cells[3].innerText.trim();
+                var sICDDesc = chkICDContainer.cells[4].innerText.trim();
+                var dupicd = false;
+                var source = chkICDContainer.cells[5].innerText.trim();
 
-        var aryCPTList = [];
-        var aryICDList = [];
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            var chkCPTContainer = $('#tblEandMCodingCPT tr');
-            for (var iCheck = 1; iCheck < chkCPTContainer.length; iCheck++) {
-                var sCPTCode = chkCPTContainer[iCheck].cells[1].innerText.trim();
-                var sCPTDesc = chkCPTContainer[iCheck].cells[2].innerText.trim();
-                var sUnits = chkCPTContainer[iCheck].cells[3].children[0].value;
-                var sModi1 = chkCPTContainer[iCheck].cells[4].children[0].selectedOptions[0].innerText.trim();
-                var sModi2 = chkCPTContainer[iCheck].cells[4].children[1].selectedOptions[0].innerText.trim();
-                var sModi3 = chkCPTContainer[iCheck].cells[4].children[2].selectedOptions[0].innerText.trim();
-                var sModi4 = chkCPTContainer[iCheck].cells[4].children[3].selectedOptions[0].innerText.trim();
-                var sDiaPointer1 = chkCPTContainer[iCheck].cells[5].children[0].value.toUpperCase().trim();
-                var sDiaPointer2 = chkCPTContainer[iCheck].cells[5].children[1].value.toUpperCase().trim();
-                var sDiaPointer3 = chkCPTContainer[iCheck].cells[5].children[2].value.toUpperCase().trim();
-                var sDiaPointer4 = chkCPTContainer[iCheck].cells[5].children[3].value.toUpperCase().trim();
-                var sDiaPointer5 = chkCPTContainer[iCheck].cells[5].children[4].value.toUpperCase().trim();
-                var sDiaPointer6 = chkCPTContainer[iCheck].cells[5].children[5].value.toUpperCase().trim();
-                var sSortOrder = chkCPTContainer[iCheck].cells[8].innerText.trim();
-
-
-                //aryCPTList.push(sCPTCode + "~" + sCPTDesc + "~" + sUnits + "~" + sModi1 + "~" + sModi2 + "~" + sModi3 + "~" + sModi4 + "~" + $('#tblEandMCodingCPT tr td')[iCheck].className.replace("chkCPT", "")[0] + "~" + chkCPTContainer.parent().parent()[iCheck].cells[11].innerText.trim() + "~" + chkCPTContainer.parent().parent()[iCheck].cells[12].innerText.trim() + "~" + chkCPTContainer.parent().parent()[iCheck].cells[13].innerText.trim() + "~" + chkCPTContainer.parent().parent()[iCheck].cells[14].innerText.trim());
-                aryCPTList.push(sCPTCode + "~" + sCPTDesc + "~" + sUnits + "~" + sModi1 + "~" + sModi2 + "~" + sModi3 + "~" + sModi4 + "~" + "" + "~" + chkCPTContainer[iCheck].cells[6].innerText.trim() + "~" + chkCPTContainer[iCheck].cells[7].innerText.trim() + "~" + chkCPTContainer[iCheck].cells[8].innerText.trim() + "~" + chkCPTContainer[iCheck].cells[9].innerText.trim() + "~" + sDiaPointer1 + "~" + sDiaPointer2 + "~" + sDiaPointer3 + "~" + sDiaPointer4 + "~" + sDiaPointer5 + "~" + sDiaPointer6 + "~" + sSortOrder);
+                // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
+                if (source != "EMICD")
+                    arrlstAssICD.push(sICDCode);
 
             }
-        }
-        for (var jICD = 1; jICD < $('#tblAssEandMCodingICD tr').length; jICD++) {
-            var chkICDContainer = $('#tblAssEandMCodingICD tr')[jICD];
-            var chkICD1 = ""; var chkICD2 = ""; var chkICD3 = ""; var chkICD4 = ""; var chkICD5 = ""; var chkICD6 = "";
-            var IsPrimary = 'N';
-            if (chkICDContainer.cells[0].firstElementChild.firstElementChild.innerText.trim() == "Pri") {
-                IsPrimary = 'Y';
-            }
-            //if (chkICDContainer.cells[1].children[0].checked == true) {
-            //    chkICD1 = '1';
-            //}
-            //if (chkICDContainer.cells[2].children[0].checked == true) {
-            //    chkICD2 = '2';
-            //}
-            //if (chkICDContainer.cells[3].children[0].checked == true) {
-            //    chkICD3 = '3';
-            //}
-            //if (chkICDContainer.cells[4].children[0].checked == true) {
-            //    chkICD4 = '4';
-            //}
-            //if (chkICDContainer.cells[5].children[0].checked == true) {
-            //    chkICD5 = '5';
-            //}
-            //if (chkICDContainer.cells[6].children[0].checked == true) {
-            //    chkICD6 = '6';
-            //}
-            var sSequence = chkICDContainer.cells[1].innerText.trim();
-            var sICDCode = chkICDContainer.cells[2].innerText.trim();
-            var sICDDesc = chkICDContainer.cells[3].innerText.trim();
-            var Source = "ASSESSMENT";
-            //Jira - #CAP-80
-            //if (sessionStorage.getItem("Is_CMG_Ancillary") != null && sessionStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {//BugID:52857
-            if (localStorage.getItem("Is_CMG_Ancillary") != null && localStorage.getItem("Is_CMG_Ancillary").toUpperCase() == "TRUE") {
-                Source = "ORDERS_ASSESSMENT";
-            }
-            // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
-            aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[4].innerText.trim() + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + Source + "~" + sSequence);
-            arrlstAssICD.push(sICDCode);
-        }
+            for (var jICD = 1; jICD < $('#tblEandMCodingICD tr').length; jICD++) {
+                var chkICDContainer = $('#tblEandMCodingICD tr')[jICD];
+                var chkICD1 = ""; var chkICD2 = ""; var chkICD3 = ""; var chkICD4 = ""; var chkICD5 = ""; var chkICD6 = "";
+                var IsPrimary = 'N';
+                if (chkICDContainer.cells[1].children[0].children[0].checked == true) {
+                    IsPrimary = 'Y';
+                }
+                source = chkICDContainer.cells[5].innerText.trim();
+                sICDCode = "";
+                //if (chkICDContainer.cells[2].children[0].checked == true) {
+                //    chkICD1 = '1';
+                //}
+                //if (chkICDContainer.cells[3].children[0].checked == true) {
+                //    chkICD2 = '2';
+                //}
+                //if (chkICDContainer.cells[4].children[0].checked == true) {
+                //    chkICD3 = '3';
+                //}
+                //if (chkICDContainer.cells[5].children[0].checked == true) {
+                //    chkICD4 = '4';
+                //}
+                //if (chkICDContainer.cells[6].children[0].checked == true) {
+                //    chkICD5 = '5';
+                //}
+                //if (chkICDContainer.cells[7].children[0].checked == true) {
+                //    chkICD6 = '6';
+                //}3
+                var sSequence = chkICDContainer.cells[2].innerText.trim();
+                //Cap - 1280
+                if (source == "EMICD")
+                sICDCode = chkICDContainer.cells[3].innerText.trim();
+                var sICDDesc = chkICDContainer.cells[4].innerText.trim();
+                var dupicd = false;
+               
+                    var source = chkICDContainer.cells[5].innerText.trim();
+                var icddup = '';
+                // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
+                //Cap - 1280
+                var sICDCodeNew = chkICDContainer.cells[3].innerText.trim();
+                aryICDList.push(sICDCodeNew + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + chkICDContainer.cells[6].innerText.trim() + "~" + source + "~" + sSequence);
+                //Cap - 1280
+                //if (arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole.toUpperCase() == "MEDICAL ASSISTANT" || UserRole.toUpperCase() == "OFFICE MANAGER"  || UserRole.toUpperCase() == "CODER" || UserRole.toUpperCase() == 'TECHNICIAN'  || ValEnableScreen.indexOf('EnableScreen') >= 0)) { 
+                if (sICDCode != "" && arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole.toUpperCase() == "MEDICAL ASSISTANT" || UserRole.toUpperCase() == "OFFICE MANAGER" || UserRole.toUpperCase() == "CODER" || UserRole.toUpperCase() == 'TECHNICIAN' || ValEnableScreen.indexOf('EnableScreen') >= 0)) {
+                    DisplayErrorMessage('530021', "", "'" + sICDCode + "'");
+                    bSaveCheck = true;
+                    AutoSaveUnsuccessful();
+                    return;
+                }
+                //Cap - 1280
+                // else  if (arrlstAssICD.indexOf(sICDCode) != -1) {
+                else if (sICDCode != "" && arrlstAssICD.indexOf(sICDCode) != -1) {
+                    // bSaveCheck = true;
+                    // AutoSaveUnsuccessful();
+                    dupicd = true;
+                    break;
+                    // CAP-1571
 
-        for (var jICD = 1; jICD < $('#tblEandMCodingICD tr').length; jICD++) {
-            var chkICDContainer = $('#tblEandMCodingICD tr')[jICD];
-            var chkICD1 = ""; var chkICD2 = ""; var chkICD3 = ""; var chkICD4 = ""; var chkICD5 = ""; var chkICD6 = "";
-            var IsPrimary = 'N';
-            if (chkICDContainer.cells[1].children[0].checked == true) {
-                IsPrimary = 'Y';
-            }
-            //if (chkICDContainer.cells[2].children[0].checked == true) {
-            //    chkICD1 = '1';
-            //}
-            //if (chkICDContainer.cells[3].children[0].checked == true) {
-            //    chkICD2 = '2';
-            //}
-            //if (chkICDContainer.cells[4].children[0].checked == true) {
-            //    chkICD3 = '3';
-            //}
-            //if (chkICDContainer.cells[5].children[0].checked == true) {
-            //    chkICD4 = '4';
-            //}
-            //if (chkICDContainer.cells[6].children[0].checked == true) {
-            //    chkICD5 = '5';
-            //}
-            //if (chkICDContainer.cells[7].children[0].checked == true) {
-            //    chkICD6 = '6';
-            //}3
-            var sSequence = chkICDContainer.cells[2].innerText.trim();
-            sICDCode = chkICDContainer.cells[3].innerText.trim();
-            var sICDDesc = chkICDContainer.cells[4].innerText.trim();
-            var dupicd = false;
-            var icddup = '';
-            // if (chkICD1 != "" || chkICD2 != "" || chkICD3 != "" || chkICD4 != "" || chkICD5 != "" || chkICD6 != "")
-            aryICDList.push(sICDCode + "~" + sICDDesc + "~" + IsPrimary + "~" + chkICD1 + "~" + chkICD2 + "~" + chkICD3 + "~" + chkICD4 + "~" + chkICD5 + "~" + chkICD6 + "~" + chkICDContainer.cells[5].innerText.trim() + "~" + chkICDContainer.cells[6].innerText.trim() + "~" + "EMICD" + "~" + sSequence);
-
-            if (arrlstAssICD.indexOf(sICDCode) != -1 && (UserRole.toUpperCase() == "MEDICAL ASSISTANT" || UserRole.toUpperCase() == "OFFICE MANAGER"  || UserRole.toUpperCase() == "CODER" || UserRole.toUpperCase() == 'TECHNICIAN'  || ValEnableScreen.indexOf('EnableScreen') >= 0)) { 
-                DisplayErrorMessage('530021', "", "'" + sICDCode + "'");
-                bSaveCheck = true;
-                AutoSaveUnsuccessful();
-                return;
-            }
-
-           else  if (arrlstAssICD.indexOf(sICDCode) != -1) {
-               // bSaveCheck = true;
-               // AutoSaveUnsuccessful();
-                dupicd = true;
-                break;
-                // CAP-1571
-
-             //   if (!alert('ICD' + sICDCode + 'has already been added under Assessment ICDs.Please remove it ')) {
+                    //   if (!alert('ICD' + sICDCode + 'has already been added under Assessment ICDs.Please remove it ')) {
                     //CAP-980
-                  //  localStorage.setItem("bSave", "true");
-                   // window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+                    //  localStorage.setItem("bSave", "true");
+                    // window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
                     //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
                     //$($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
 
-                  //  return;
+                    //  return;
 
 
-               // }
-            }
-           
-
-
-        }
-
-        localStorage.setItem("bSave", "true");
-        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-
-        $http({
-            url: "WebServices/EandMCodingService.asmx/SaveEandMCodingTable",
-            dataType: 'json',
-            method: 'POST',
-            async: false,
-            data: JSON.stringify({ arylstCPT: aryCPTList, arylstICD: aryICDList, sBillingInstruction: $('#txtBillingInstruction').val(), arylstDelCPT: DeleteArray, arylstDelICD: DeleteArrayICD, sESuperbillSubmitted: Esuperbillclicked }),
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "X-Requested-With": "XMLHttpRequest"
-            }
-        }).success(function (response) {
-            var str = response.d;
-            var test = JSON.parse(str);
-            if (icdcount) {
-
-                if (!alert('Please select at least one ICD')) {
-
-                    localStorage.setItem("bSave", "true");
-                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
-                    localStorage.setItem("CCAndEandMAutosave", "true");
-                    bSaveCheck = false;
-                    DisableChartLevelAutoSave();//BugID:52795
-                    AutoSaveSuccessful();
-                    DeleteArray = [];
-                    RefreshNotification('ServiceAndProcedureCode');
-
-                    if (localStorage.getItem("MovetofromEandM") == "False") {
-
-                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
-                        return;
-                    }
-                    else {
-                        localStorage.setItem("MovetofromEandM", "False");
-                        $scope.EandMCodingCPTTable = test.ProcedureList;
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                        return;
-
-
-                    }
+                    // }
                 }
-             
-                //DisplayErrorMessage('530004');
 
-                // bSaveCheck = true;
-                //AutoSaveUnsuccessful();
-
-            }
-            if (!isprimary && UserRole.toUpperCase() == 'PHYSICIAN') {
-
-                localStorage.setItem("bSave", "true");
-                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
-                localStorage.setItem("CCAndEandMAutosave", "true");
-                bSaveCheck = false;
-                DisableChartLevelAutoSave();//BugID:52795
-                AutoSaveSuccessful();
-                DeleteArray = [];
-                RefreshNotification('ServiceAndProcedureCode');
-                if (!alert('Please mark the Primary ICD') ) {
-                    if (localStorage.getItem("MovetofromEandM") == "False") {
-
-                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
-                        return;
-                    }
-                    else {
-                        localStorage.setItem("MovetofromEandM", "False");
-                        $scope.EandMCodingCPTTable = test.ProcedureList;
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                        return;
-
-
-                    }
-                }
-                //BugID: 49118
-                // bSaveCheck = true;
-                //AutoSaveUnsuccessful();
 
 
             }
 
-            // CAP-1571
-            if (dupicd) {
+            localStorage.setItem("bSave", "true");
+            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
 
-                if (!alert('ICD ' + sICDCode + ' has already been added under Assessment ICDs.Please remove it ')) {
-                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
-                    $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
-                    return;
-
+            $http({
+                url: "WebServices/EandMCodingService.asmx/SaveEandMCodingTable",
+                dataType: 'json',
+                method: 'POST',
+                async: false,
+                data: JSON.stringify({ arylstCPT: aryCPTList, arylstICD: aryICDList, sBillingInstruction: $('#txtBillingInstruction').val(), arylstDelCPT: DeleteArray, arylstDelICD: DeleteArrayICD, sESuperbillSubmitted: Esuperbillclicked }),
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "X-Requested-With": "XMLHttpRequest"
                 }
-            }
-            //GitLab #3038
-            //Jira CAP-998
-            //if (test.IsBillableNo == "180045") {
-            if (test.IsBillableNo.split('~')[0] == "180045") {
+            }).success(function (response) {
+                var str = response.d;
+                var test = JSON.parse(str);
+                if (icdcount) {
 
-                localStorage.setItem("bSave", "true");
-                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
-                localStorage.setItem("CCAndEandMAutosave", "true");
-                bSaveCheck = false;
-                DisableChartLevelAutoSave();//BugID:52795
-                AutoSaveSuccessful();
-                DeleteArray = [];
-                RefreshNotification('ServiceAndProcedureCode');
-                //Jira CAP-998 - Start
-                var alertMessage;
-                if (test.IsBillableNo.split('~')[1] == "180057") {
-                    alertMessage = 'Please select the ICD Z00.121 or Z00.129 for Gcodes G0438 or G0439';
-                }
-                else {
-                    alertMessage = 'Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439';
-                }
-                //Jira CAP-998 - End
-                if (UserRole.toUpperCase() == 'PHYSICIAN' && ValEnableScreen.indexOf('EnableScreen') < 0) {
+                    if (!alert('Please select at least one ICD')) {
 
-                    //Jira CAP-998
-                    //if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439'))   {
-                    if (!alert(alertMessage)) {
+                        localStorage.setItem("bSave", "true");
+                        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+                        localStorage.setItem("CCAndEandMAutosave", "true");
+                        bSaveCheck = false;
+                        DisableChartLevelAutoSave();//BugID:52795
+                        AutoSaveSuccessful();
+                        DeleteArray = [];
+                        RefreshNotification('ServiceAndProcedureCode');
+
                         if (localStorage.getItem("MovetofromEandM") == "False") {
 
                             $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
@@ -3337,57 +3318,150 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
 
                         }
                     }
+
+                    //DisplayErrorMessage('530004');
+
+                    // bSaveCheck = true;
+                    //AutoSaveUnsuccessful();
+
+                }
+                if (!isprimary && UserRole.toUpperCase() == 'PHYSICIAN') {
+
+                    localStorage.setItem("bSave", "true");
+                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+                    localStorage.setItem("CCAndEandMAutosave", "true");
+                    bSaveCheck = false;
+                    DisableChartLevelAutoSave();//BugID:52795
+                    AutoSaveSuccessful();
+                    DeleteArray = [];
+                    RefreshNotification('ServiceAndProcedureCode');
+                    if (!alert('Please mark the Primary ICD')) {
+                        if (localStorage.getItem("MovetofromEandM") == "False") {
+
+                            $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                            $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                            return;
+                        }
+                        else {
+                            localStorage.setItem("MovetofromEandM", "False");
+                            $scope.EandMCodingCPTTable = test.ProcedureList;
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                            return;
+
+
+                        }
+                    }
+                    //BugID: 49118
+                    // bSaveCheck = true;
+                    //AutoSaveUnsuccessful();
+
+
+                }
+
+                // CAP-1571
+                if (dupicd) {
+
+                    if (!alert('ICD ' + sICDCode + ' has already been added under Assessment ICDs.Please remove it ')) {
+                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                        $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                        return;
+
+                    }
+                }
+                //GitLab #3038
+                //Jira CAP-998
+                //if (test.IsBillableNo == "180045") {
+                if (test.IsBillableNo.split('~')[0] == "180045") {
+
+                    localStorage.setItem("bSave", "true");
+                    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+                    localStorage.setItem("CCAndEandMAutosave", "true");
+                    bSaveCheck = false;
+                    DisableChartLevelAutoSave();//BugID:52795
+                    AutoSaveSuccessful();
+                    DeleteArray = [];
+                    RefreshNotification('ServiceAndProcedureCode');
+                    //Jira CAP-998 - Start
+                    var alertMessage;
+                    if (test.IsBillableNo.split('~')[1] == "180057") {
+                        alertMessage = 'Please select the ICD Z00.121 or Z00.129 for Gcodes G0438 or G0439';
+                    }
+                    else {
+                        alertMessage = 'Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439';
+                    }
+                    //Jira CAP-998 - End
+                    if (UserRole.toUpperCase() == 'PHYSICIAN' && ValEnableScreen.indexOf('EnableScreen') < 0) {
+
+                        //Jira CAP-998
+                        //if (!alert('Please select the ICD Z00.00 or Z00.01 for Gcodes G0438 or G0439'))   {
+                        if (!alert(alertMessage)) {
+                            if (localStorage.getItem("MovetofromEandM") == "False") {
+
+                                $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[0].click();
+                                $($(window.top.document).find('iframe[id=ctl00_C5POBody_EncounterContainer]')[0].contentDocument).find("ul li a")[7].click();
+                                return;
+                            }
+                            else {
+                                localStorage.setItem("MovetofromEandM", "False");
+                                $scope.EandMCodingCPTTable = test.ProcedureList;
+                                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                                return;
+
+
+                            }
+                        }
+                    }
+                    else {
+                        DisplayErrorMessage(test.IsBillableNo.split('~')[1]);
+                    }
+                }
+                $scope.EandMCodingCPTTable = test.ProcedureList;
+                $scope.EandMCodingICDTable = test.ICDList;
+                //Cap - 1280
+                //$scope.AssEandMCodingICDTable = test.AssICDlist;
+                if (test.BillingInstruction != "")
+                    $('#txtBillingInstruction').val(test.BillingInstruction);
+
+
+                if (test.IsBillableNo == "530024") {
+                    DisplayErrorMessage('530024');
+                    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+                    return;
+                }
+                UserRole = test.UserRole.toUpperCase();
+                if (UserRole != undefined && UserRole.toUpperCase() == 'SCRIBE') {
+                    $("#btnSubAllForSuperbill").attr("disabled", "disabled");
+                    bSubmitted = false;
+                }
+                //  $scope.orderByFieldCPT = 'Amount';
+                // $scope.orderByFieldICD = 'ICDCode';
+                // $scope.reverseSort = false;
+                EnablePriRbtn = test.EnablePriRbtn;
+                $('#btnSave').attr("disabled", "disabled");
+                if (bSubmitted == false) { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (Esuperbillclicked != 'Y') {
+                    DisplayErrorMessage('110019');
                 }
                 else {
-                    DisplayErrorMessage(test.IsBillableNo.split('~')[1]);
+                    DisplayErrorMessage('230150');
+                    $("#btnSubAllForSuperbill").attr("disabled", "disabled");
+                    bSubmitted = false;
                 }
-            }
-            $scope.EandMCodingCPTTable = test.ProcedureList;
-            $scope.EandMCodingICDTable = test.ICDList;
-            $scope.AssEandMCodingICDTable = test.AssICDlist;
-            if (test.BillingInstruction != "")
-                $('#txtBillingInstruction').val(test.BillingInstruction);
-
-
-            if (test.IsBillableNo == "530024") {
-                DisplayErrorMessage('530024');
-                sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+                localStorage.setItem("bSave", "true");
+                window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
+                localStorage.setItem("CCAndEandMAutosave", "true");
+                bSaveCheck = false;
+                DisableChartLevelAutoSave();//BugID:52795
+                AutoSaveSuccessful();
+                DeleteArray = []; //BugID: 49118
+                RefreshNotification('ServiceAndProcedureCode');
+                if (isclosemodal == 1) {
+                    $(top.window.document).find("#btnClosedEandM").click();
+                    isclosemodal = 0;
+                    self.close();
+                }
                 return;
-            }
-            UserRole = test.UserRole.toUpperCase();
-            if (UserRole != undefined && UserRole.toUpperCase() == 'SCRIBE') {
-                $("#btnSubAllForSuperbill").attr("disabled", "disabled");
-                bSubmitted = false;
-            }
-            //  $scope.orderByFieldCPT = 'Amount';
-            // $scope.orderByFieldICD = 'ICDCode';
-            // $scope.reverseSort = false;
-            EnablePriRbtn = test.EnablePriRbtn;
-            $('#btnSave').attr("disabled", "disabled");
-            if (bSubmitted == false) { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (Esuperbillclicked != 'Y') {
-                DisplayErrorMessage('110019');
-            }
-            else {
-                DisplayErrorMessage('230150');
-                $("#btnSubAllForSuperbill").attr("disabled", "disabled");
-                bSubmitted = false;
-            }
-            localStorage.setItem("bSave", "true");
-            window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
-            localStorage.setItem("CCAndEandMAutosave", "true");
-            bSaveCheck = false;
-            DisableChartLevelAutoSave();//BugID:52795
-            AutoSaveSuccessful();
-            DeleteArray = []; //BugID: 49118
-            RefreshNotification('ServiceAndProcedureCode');
-            if (isclosemodal == 1) {
-                $(top.window.document).find("#btnClosedEandM").click();
-                isclosemodal = 0;
-                self.close();
-            }
-            return;
-        })
+            })
                 .error(function (error, status, headers, config) {
 
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

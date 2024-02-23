@@ -1111,6 +1111,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
+                //Cap - 1745
                 //var querystr = @"SELECT V.* 
                 //                 FROM   PATIENT_RESULTS V 
                 //                        INNER JOIN DYNAMIC_SCREEN S 
