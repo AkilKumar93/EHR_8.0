@@ -3152,6 +3152,15 @@ function minimizeICD() {
     if ($("#ProcessModal") != undefined && $("#ProcessModal")[0] != undefined && $(top?.window?.document?.getElementById("ProcessFrame")?.contentWindow?.document)?.find(".modal-backdrop")?.length != undefined && $(top?.window?.document?.getElementById("ProcessFrame")?.contentWindow?.document)?.find(".modal-backdrop")?.length > 0) {
         $(top.window.document.getElementById("ProcessFrame").contentWindow.document).find(".modal-backdrop").css({ "position": "static" });
     }
+    //Jira CAP-1769
+    if ($("#RadWindowWrapper_ctl00_ModalWindow") != undefined && $(top?.window?.document?.getElementsByName("ModalWindow")[0]?.contentWindow?.document)?.find(".modal-backdrop")?.length != undefined && $(top?.window?.document?.getElementsByName("ModalWindow")[0]?.contentWindow?.document)?.find(".modal-backdrop")?.length > 0) {
+        $(top?.window?.document?.getElementsByName("ModalWindow")[0]?.contentWindow?.document)?.find(".modal-backdrop")?.css({ "position": "static" });
+    }
+    //Jira CAP-1769
+    if ($("#RadWindowWrapper_ctl00_ModalWindow")[0] != undefined && $("#RadWindowWrapper_ctl00_ModalWindow")[0]?.attributes?.style?.value != undefined && $("#RadWindowWrapper_ctl00_ModalWindow")[0].attributes.style.value.indexOf("display: none") == -1) {
+        $(top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document).find(".modal-backdrop").css({ "position": "static" });
+
+    }
 }
 function minimizeCPT() {
 
@@ -3164,9 +3173,15 @@ function minimizeCPT() {
     $(top.window.document).find("#main").css({ "position": "absolute" });
     $(top.window.document).find("#divCPTFormView").css({ "position": "static", "height": "108%!important" });
     //to access backdrop of modalh
+    if ($($(top?.window?.document)?.find("iframe[id=ctl00_C5POBody_EncounterContainer]")[0]?.contentDocument?.activeElement)?.find(".tab-pane.active")[0]?.firstElementChild != undefined && $($(top?.window?.document)?.find("iframe[id=ctl00_C5POBody_EncounterContainer]")[0]?.contentDocument?.activeElement)?.find(".tab-pane.active")[0]?.firstElementChild != null) {
+        var activeFrame = $($($(top.window.document).find("iframe[id=ctl00_C5POBody_EncounterContainer]")[0].contentDocument.activeElement).find(".tab-pane.active")[0].firstElementChild);
+        $(activeFrame[0].contentDocument.activeElement).find(".modal-backdrop").css({ "position": "static" });
+    }
+    //Jira CAP-1769
+    if ($("#RadWindowWrapper_ctl00_ModalWindow")[0] != undefined && $("#RadWindowWrapper_ctl00_ModalWindow")[0]?.attributes?.style?.value != undefined && $("#RadWindowWrapper_ctl00_ModalWindow")[0].attributes.style.value.indexOf("display: none") == -1) {
+        $(top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document).find(".modal-backdrop").css({ "position": "static" });
 
-    var activeFrame = $($($(top.window.document).find("iframe[id=ctl00_C5POBody_EncounterContainer]")[0].contentDocument.activeElement).find(".tab-pane.active")[0].firstElementChild);
-    $(activeFrame[0].contentDocument.activeElement).find(".modal-backdrop").css({ "position": "static" });
+    }
 }
 $(top.window.document).find("#btnICDClose").on('click', function () {
     maximizeICD();
