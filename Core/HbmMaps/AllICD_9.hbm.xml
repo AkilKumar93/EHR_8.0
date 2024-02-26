@@ -27,7 +27,10 @@
     <property name="SNOMED_Code_Description" column="SNOMED_Code_Description" />
     <property name="Short_Description" column="Short_Description" />
     <property name="ICD_ID" column="ICD_ID" />
-    
-  
+	<property name="HCC_Value" column="HCC_Value" />
+	<property name="Mutually_Exclusive_ICD" column="Mutually_Exclusive_ICD" />
+
+
+
   </class>
 </hibernate-mapping>

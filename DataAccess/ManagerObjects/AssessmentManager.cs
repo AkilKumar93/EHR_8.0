@@ -806,7 +806,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 if (lstobj.Current_Process.ToString().ToUpper() != "BATCHING_COMPLETE")
                                 {
 
-                                    if (lstEandMICDInsert.Count > 0 )
+                                    //if (lstEandMICDInsert.Count > 0 )
+                                    if (lstEandMICDInsert.Count > 0 || lstEandMICDDelete.Count > 0)
                                     {
                                         //using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                                         //{

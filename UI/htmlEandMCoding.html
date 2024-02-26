@@ -242,93 +242,64 @@
                 </table>
             </div>
         </div>
-        <table style="width:100%">
-            <tr style="width:100%">
-                <td style="width: 45%">
-                    <div id="divAssICDPanel" style="border: 1px solid !important;border-color: black !important;height: 235px;">
-                        <div class="panel-headingservICD">
-                            <div style="transform: rotate(270deg);margin-left: -124px;display: inline-block;font-size: 13px;width: 280px;font-weight: bold;letter-spacing: 1px;margin-top: 32px;">Assessment ICDs</div>
-                        </div>
-                        <div class="panel-body">
-                            <!--<div style="margin-top: -39.80%;"></div>-->
-                            <table id="tblAssEandMCodingICD" class="Gridbodystyle AssEandMCodingICDServ" style="margin-top: -235px;">
-                                <thead id="AssEandMCodingICDHead" class="Gridheaderstyle">
-                                    <tr style="width:100%" class="Gridheaderstyle">
-                                        <th style="width:1.5%;">Pri</th>
-                                        <th style="width:5%;text-align:center">S#</th>
-                                        <th style="width:7%;text-align:center">ICD</th>
-                                        <th style="width:71%;text-align:center">Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="AssEandMCodingICDBody" class="Editabletxtbox">
-                                    <tr style="width: 100%; height: 25px;" ng-repeat="a in AssEandMCodingICDTable| orderSequenceBy:'Sequence'">
-                                        <td style="width: 1.5%; border-top: 1px solid #ddd;" align="center"><div style="width:20px!important;"><span style="color:blue;font-size:13.5px!important;">{{a.IsPrimary}}</span></div></td>
-                                        <td style="width: 3% ;border-top: 1px solid #ddd; text-align: center;">{{ a.Sequence  }}</td>
-                                        <td style="width: 7%; border-top: 1px solid #ddd; text-align: center;">{{ a.ICDCode  }}</td>
-                                        <td style="width: 71%; border-top: 1px solid #ddd;">{{ a.ICDDescription  }}</td>
-                                        <td style="display:none">{{a.EandMICDID}}</td>
-                                        <td style="display:none">{{a.ICDVersion}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </td>
-                <td style="width:54%;">
-                    <div id="divICDPanel" class="panel panel-default">
-                        <div class="panel-headingservICDServ">
-                            <div style="transform: rotate(270deg); margin-left: -55px; display: inline-block; font-size: 13px; width: 113px; font-weight: bold; letter-spacing: 1px; margin-top: 9px;">Additional  ICDs</div>
-                        </div>
-                        <div style="border: 1px solid !important;border-color: black !important;height: 235px;">
-                            <table id="ICDDetails" style="width: 94%; margin-left: 5%;">
-                                <tr>
-                                    <td style="width:93px;">
-                                        <span class="Editabletxtbox">ICD Code</span>
-                                    </td>
-                                    <td style="width:245px;">
-                                        <input type="text" style="width:240px;border:1px solid;" id="txtICD10" placeholder="Type your ICD code here .." class="Editabletxtbox" /><!--ng-keyup="LoadICDDescription()"-->
-                                        <datalist id="dlstICD10"></datalist>
-                                    </td>
-                                    <td style="width:130px;" class="Editabletxtbox">
-                                        <span>ICD Description</span>
-                                    </td>
-                                    <td style="width:450px;">
-                                        <input type="text" style="width:100%;border:1px solid;" id="txtDescription" placeholder="Type your ICD description here .." class="Editabletxtbox" /><!--ng-keyup="LoadICDDescription()"-->
-                                    </td>
-                                    <td align="right" style="width:120px">
-                                        <button type="button" id="btnFavICDSheet" class="btn icdsheetstyle" ng-click="OpenFormViewICD()">ICD Sheet</button>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--<div style="margin-top: 0.5%;margin-bottom: 0.5%;"></div>-->
-                            <table id="tblEandMCodingICD" style="height: 83%; width: 92%; margin-left: 6%; border: 1px solid !important; border-color: black !important; color: #3a3a3a; font-family: Helvetica Neue,Helvetica,Arial,sans-serif; font-size: 13px;">
-                                <thead id="EandMCodingICDHead" class="Gridheaderstyle">
-                                    <tr style="width: 100% ;" class="Gridheaderstyle">
-                                        <th style="width:6%;">Del.</th>
-                                        <th style="width:5%;">Pri.</th>
-                                        <th style="width:5%;">S#</th>
-                                        <th style="width: 8%; text-align: center;">ICD</th>
-                                        <th style="width: 50%; text-align: center;">Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="EandMCodingICDBody" class="Editabletxtbox">
-                                    <tr style="height: 25px;" ng-repeat="a in EandMCodingICDTable| orderSequenceBy:'Sequence'">
-                                        <td style="width:2%; border-top: 1px solid #ddd;"><img id="followbutton" title="Delete" ng-src={{a.btnDelete}} ng-click="a.EnableScreen=='disabled'?'return false':ICDDelete($index)" /> <!--ng-click="a.EnableScreen=='disabled'?'return false':CPTDelete($index)"--> </td>
-                                        <td style="width: 5%; border-top: 1px solid #ddd;" align="center"><input type="radio" name="Primary" class="IsPrimary" ng-checked="a.IsPrimary=='Pri'" ng-click="EnableSaveButton()" ng-disabled="a.EnablePriRbtn=='disabled'?'disabled':''" /></td>
-                                        <td style="width: 5%; border-top: 1px solid #ddd;" class="maxseq">{{ a.Sequence  }}</td>
-                                        <td style="width: 8%; border-top: 1px solid #ddd;">{{ a.ICDCode  }}</td>
-                                        <td style="width: 70%; border-top: 1px solid #ddd;">{{ a.ICDDescription  }}</td>
-                                        <td style="display:none">{{a.EandMICDID}}</td>
-                                        <td style="display:none">{{a.ICDVersion}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <div id="divICDPanel" class="panel panel-default" style="padding:0px;height: 245px;">
+            <div class="panel-headingserv">
+                <div style="transform: rotate(270deg);margin-left: -124px;display: inline-block;font-size: 13px;width: 245px;font-weight: bold;letter-spacing: 1px;margin-top: 0px;">Additional  ICDs</div>
+            </div>
+            <div class="panel-body">
 
-                </td>
-            </tr>
-        </table>
+                <table id="ICDDetails" style="width: 100%;">
+                    <tr>
+                        <td style="width:93px;">
+                            <span class="Editabletxtbox">ICD Code</span>
+                        </td>
+                        <td style="width:245px;">
+                            <input type="text" style="width:240px;border:1px solid;" id="txtICD10" placeholder="Type your ICD code here .." class="Editabletxtbox" /><!--ng-keyup="LoadICDDescription()"-->
+                            <datalist id="dlstICD10"></datalist>
+                        </td>
+                        <td style="width:130px;" class="Editabletxtbox">
+                            <span>ICD Description  </span>
+                        </td>
+                        <td style="width:450px;">
+                            <input type="text" style="width:100%;border:1px solid;" id="txtDescription" placeholder="Type your ICD description here .." class="Editabletxtbox" /><!--ng-keyup="LoadICDDescription()"-->
+                        </td>
+                        <td align="right" style="width:120px">
+                            <button type="button" id="btnFavICDSheet" class="btn icdsheetstyle" ng-click="OpenFormViewICD()">ICD Sheet</button>
+                        </td>
+                    </tr>
+                </table>
+                <!--<div style="margin-top: 0.5%;margin-bottom: 0.5%;"></div>-->
+                <table id="tblEandMCodingICD" class="table Gridbodystyle" style="height: 83%;">
+                    <thead id="EandMCodingICDHead" class="Gridheaderstyle">
+                        <tr style="width: 100% ;" class="Gridheaderstyle">
+                            <th style="width:6%;">Del.</th>
+                            <th style="width: 5%; text-align: center">Pri.</th>
+                            <th style="width: 6%; text-align: center">S#</th>
+                            <th style="width: 6%; text-align: center;">ICD</th>
+                            <th style="width: 45%; text-align: center;">Description</th>
+                            <th style="width: 32%; text-align: center;">Source</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="EandMCodingICDBody" class="Editabletxtbox">
+                        <tr style="height: 25px;width:100%;" ng-repeat="a in EandMCodingICDTable| orderSequenceBy:'Sequence'">
+                            <td style="width: 5.6%; border-top: 1px solid #ddd; overflow: hidden;"><div style="width: 50px;"><img id="followbutton" title="Delete" ng-src={{a.btnDelete}} ng-click="a.EnableScreen=='disabled'?'return false':ICDDelete($index)" /> <!--ng-click="a.EnableScreen=='disabled'?'return false':CPTDelete($index)"--> </div></td>
+                            <td style="width: 4.3%; border-top: 1px solid #ddd; overflow: hidden;"><div style="width: 35px;"><input type="radio" name="Primary" class="IsPrimary" ng-checked="a.IsPrimary=='Pri'" ng-click="EnableSaveButton()" ng-disabled="a.EnablePriRbtn=='disabled'?'disabled':''" /></div></td>
+                            <td style="width: 4.3%; border-top: 1px solid #ddd; overflow: hidden;" class="maxseq"><div style="width: 40px;">{{ a.Sequence  }}</div></td>
+                            <td style="width: 10%; border-top: 1px solid #ddd; overflow: hidden;"><div style="width: 40px;">{{ a.ICDCode  }}</div></td>
+                            <td style="width: 27%; border-top: 1px solid #ddd; overflow: hidden;"><div style="width: 500px;">{{ a.ICDDescription  }}</div></td>
+                            <td style="width: 16%; border-top: 1px solid #ddd; text-align: left; overflow: hidden;"><div style="width: 100%;">{{ a.ICDSource  }}</div></td>
+                            <td style="display:none">{{a.EandMICDID}}</td>
+                            <td style="display:none">{{a.ICDVersion}}</td>
+                            <td style="display:none">{{a.HCC}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
 
 
         <table style="width:100%">

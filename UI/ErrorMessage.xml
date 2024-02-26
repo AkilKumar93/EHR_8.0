@@ -983,6 +983,7 @@
 	<Message number="530027" Type="OK" Text="For CPT {0}, Diagnosis Pointer {2} has been skipped. Please add the Diagnosis Pointers sequentially.."></Message>
 	<Message number="530028" Type="OK" Text="For CPT {0}, Modifiers {2} has been skipped. Please add the Modifiers sequentially.."></Message>
 	<Message number="530029" Type="OK" Text="For CPT {1}, There is a Duplicate Modifier. Please remove or replace with a new Modifier."></Message>
+	<Message number="530030" Type="OK" Text="Please add ICD Sequence # ‘A1’ for at least one CPT."></Message>
 
 
 	<Message number="580001" Type="OK" Text="To Date cannot be earlier to From Date."></Message>
@@ -3014,5 +3015,10 @@
 	<Message number="1011198" Type="OK" Text="A new phone encounter can not be created while you have an encounter open."></Message>
 	<Message number="1011199" Type="OK" Text="We have encountered an error retrieving the clinical note.  Try again and if this persists, contact support."></Message>
 	<Message number="1011201" Type="OK" Text="Electronic is not present in EV Type dropdown. Please contact support."></Message>
+
+	<Message number="10113401" Type="OK" Text="Please select a Username."></Message>
+	<Message number="10113402" Type="OK" Text="Please enter a valid Password."></Message>
+	<Message number="10113403" Type="OK" Text="Invalid Password."></Message>
+	<Message number="10113404" Type="OK" Text="Please check the default server in DB. It does not have frmLogin."></Message>
 
 </ErrorMessage>

@@ -20,6 +20,8 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Diagnostics;
 using System.Xml.Serialization;
+using DocumentFormat.OpenXml.Vml.Spreadsheet;
+using DYMO.DLS.Runtime;
 
 
 namespace Acurus.Capella.UI.WebServices
@@ -277,7 +279,9 @@ namespace Acurus.Capella.UI.WebServices
                 }
                 foreach (string s in eandmDTO.ICDList)
                 {
-                    if (EandMICD.IndexOf(s.Split('~')[1]) == -1)
+                    //Cap - 1280
+                    //if (EandMICD.IndexOf(s.Split('~')[1]) == -1)
+                    if (EandMICD.IndexOf(s.Split('~')[1]) == -1 && EandMICD.IndexOf(s.Split('~')[1].Trim()) == -1 )
                     {
                         ICDtoremove.Add(s);
                     }
@@ -340,8 +344,18 @@ namespace Acurus.Capella.UI.WebServices
             })
                 .OrderBy(c => c.Order).ThenByDescending(n => n.RVU).ThenBy(o => o.CPTCode);
             //BugID:48668 -- ServProc REVAMP
+            //Cap - 1280
+            //var EandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "EMICD").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = btnDeleteAdditionalICD, EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = EnableScreen, EnablePriRbtn = EnablePriRbtn });
 
-            var EandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "EMICD").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = btnDeleteAdditionalICD, EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = EnableScreen, EnablePriRbtn = EnablePriRbtn });
+
+            // var EandMCodingListICD = eandmDTO.ICDList.Select(a => new { ICDSource = a.Split('~')[0], ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = a.Split('~')[0] == "EMICD" ? "Resources/Delete-Blue.png" : "Resources/Delete-Grey.png" , EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = a.Split('~')[0]=="EMICD" ? "enable" : "disabled", EnablePriRbtn = a.Split('~')[0] == "EMICD" ? "enable" : "disabled", HCC = string.Empty });
+            IList<string> AssPriCount = new List<string>();
+            AssPriCount = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
+            if (AssPriCount != null && AssPriCount.Count > 0)
+            {
+                EnablePriRbtn = "disabled";
+            }
+            var EandMCodingListICD = eandmDTO.ICDList.Select(a => new { ICDSource = a.Split('~')[0], ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = a.Split('~')[0] == "EMICD" ? (ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT" && ClientSession.UserRole.ToUpper() != "OFFICE MANAGER" && ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "TECHNICIAN") || sEnableScreen == "EnableScreen=False" ? "Resources/Delete-Grey.png" : "Resources/Delete-Blue.png" : "Resources/Delete-Grey.png", EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = a.Split('~')[0] == "EMICD" ? "enable" : "disabled", EnablePriRbtn = AssPriCount != null && AssPriCount.Count > 0 ? EnablePriRbtn : a.Split('~')[0] == "EMICD" ? (ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT" || ClientSession.UserRole.ToUpper() == "OFFICE MANAGER" || ClientSession.UserRole.ToUpper() == "CODER" || ClientSession.UserRole.ToUpper() == "TECHNICIAN") && sEnableScreen != "EnableScreen=False" ? "enable" : "disabled" : "disabled", HCC = string.Empty });
             string modifierlst = new JavaScriptSerializer().Serialize(ModifiersList);
             if (eandmDTO.EandMCodingList != null)
                 HttpContext.Current.Session["EandMList"] = eandmDTO.EandMCodingList;
@@ -351,8 +365,9 @@ namespace Acurus.Capella.UI.WebServices
             //BugID:52857 -- to bring in DiagOrder ICDs & CPTs only for CMG_Ancillary facility (no Assessment ICDs)
             if (!Is_CMG_Ancillary)
             {
-                IList<string> AssPriCount = new List<string>();
-                AssPriCount = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
+                //Cap - 1280
+                //IList<string> AssPriCount = new List<string>();
+                //AssPriCount = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
                 if (ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT" && ClientSession.UserRole.ToUpper() != "OFFICE MANAGER")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
                 {
                     EnablePriRbtn = "disabled";
@@ -361,9 +376,11 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     EnablePriRbtn = "disabled";
                 }
+                //Cap - 1280
                 //var AssEandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen, SNo = a.Split('~')[8] });
-                var AssEandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
-                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sBillingInstruction, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, IsCMGAncillary = Is_CMG_Ancillary, CloseVisible = sCloseVisible };
+                //var AssEandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
+                //var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sBillingInstruction, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, IsCMGAncillary = Is_CMG_Ancillary, CloseVisible = sCloseVisible };
+                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sBillingInstruction, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, IsCMGAncillary = Is_CMG_Ancillary, CloseVisible = sCloseVisible };
                 HttpContext.Current.Session["SuggCPTList"] = ProcedureList;
 
                 HttpContext.Current.Session["EnablePriRbtn"] = EnablePriRbtn;
@@ -371,9 +388,11 @@ namespace Acurus.Capella.UI.WebServices
             }
             else
             {
+                //Cap - 1280
                 //var OrdersAssEandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ORDERS_ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen, SNo = a.Split('~')[8] });
-                var OrdersAssEandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ORDERS_ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
-                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = OrdersAssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sBillingInstruction, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, IsCMGAncillary = Is_CMG_Ancillary, CloseVisible = sCloseVisible };
+                //var OrdersAssEandMCodingListICD = eandmDTO.ICDList.Where(a => a.Split('~')[0] == "ORDERS_ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
+                //var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = OrdersAssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sBillingInstruction, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, IsCMGAncillary = Is_CMG_Ancillary, CloseVisible = sCloseVisible };
+                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sBillingInstruction, SaveEnable = bsaveenable, EnablePriRbtn = EnablePriRbtn, ModifierList = modifierlst, IsCMGAncillary = Is_CMG_Ancillary, CloseVisible = sCloseVisible };
                 if (eandmDTO.EandMCodingList != null)
                     HttpContext.Current.Session["EandMList"] = eandmDTO.EandMCodingList;
                 if (eandmDTO.EandMCodingICDList != null)
@@ -683,7 +702,9 @@ namespace Acurus.Capella.UI.WebServices
                 var Record1 = (from b in sFormviewICD.Split('|').ToArray() where !ICDList.Any(a => a.ICD_9 == b.Split('~')[0]) select b).ToList();
                 if (Record1.Count > 0)
                 {
-                    var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1].Replace('$', '\"'), IsPrimary = a.Split('~')[2], Sequence = 'B' + a.Split('~')[3], ICDVersion = '0', EandMICDID = '0', btnDelete = "Resources/Delete-Blue.png", EnablePriRbtn = HttpContext.Current.Session["EnablePriRbtn"].ToString() });
+                    //Cap -1280
+                    //var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1].Replace('$', '\"'), IsPrimary = a.Split('~')[2], Sequence = 'B' + a.Split('~')[3], ICDVersion = '0', EandMICDID = '0', btnDelete = "Resources/Delete-Blue.png", EnablePriRbtn = HttpContext.Current.Session["EnablePriRbtn"].ToString() });
+                    var ResultRecord1 = Record1.Select(a => new { ICDCode = a.Split('~')[0], ICDDescription = a.Split('~')[1].Replace('$', '\"'), IsPrimary = a.Split('~')[2], Sequence = 'B' + a.Split('~')[3], ICDVersion = '0', EandMICDID = '0', btnDelete = "Resources/Delete-Blue.png", EnablePriRbtn = HttpContext.Current.Session["EnablePriRbtn"].ToString(), ICDSource = "EMICD", HCC = "" });
                     json = new JavaScriptSerializer().Serialize(ResultRecord1);
                 }
             }
@@ -1113,52 +1134,52 @@ namespace Acurus.Capella.UI.WebServices
                 {
                     objEandMCoding = new EAndMCoding();
 
-                objEandMCoding.Encounter_ID = ClientSession.EncounterId;
-                objEandMCoding.Human_ID = ClientSession.HumanId;
-                objEandMCoding.Physician_ID = ClientSession.PhysicianId;
-                objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
-                objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
-                if (objCPT.ToString().Split('~')[2] != "")
-                    objEandMCoding.Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
-                objEandMCoding.Modifier1 = objCPT.ToString().Split('~')[3];
-                objEandMCoding.Modifier2 = objCPT.ToString().Split('~')[4];
-                objEandMCoding.Modifier3 = objCPT.ToString().Split('~')[5];
-                objEandMCoding.Modifier4 = objCPT.ToString().Split('~')[6];
-                objEandMCoding.Diagnosis_Pointer_1 = objCPT.ToString().Split('~')[12];
-                objEandMCoding.Diagnosis_Pointer_2 = objCPT.ToString().Split('~')[13];
-                objEandMCoding.Diagnosis_Pointer_3 = objCPT.ToString().Split('~')[14];
-                objEandMCoding.Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
-                objEandMCoding.Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
-                objEandMCoding.Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
-                //Cap - 1301
-                //objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+                    objEandMCoding.Encounter_ID = ClientSession.EncounterId;
+                    objEandMCoding.Human_ID = ClientSession.HumanId;
+                    objEandMCoding.Physician_ID = ClientSession.PhysicianId;
+                    objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
+                    objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
+                    if (objCPT.ToString().Split('~')[2] != "")
+                        objEandMCoding.Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
+                    objEandMCoding.Modifier1 = objCPT.ToString().Split('~')[3];
+                    objEandMCoding.Modifier2 = objCPT.ToString().Split('~')[4];
+                    objEandMCoding.Modifier3 = objCPT.ToString().Split('~')[5];
+                    objEandMCoding.Modifier4 = objCPT.ToString().Split('~')[6];
+                    objEandMCoding.Diagnosis_Pointer_1 = objCPT.ToString().Split('~')[12];
+                    objEandMCoding.Diagnosis_Pointer_2 = objCPT.ToString().Split('~')[13];
+                    objEandMCoding.Diagnosis_Pointer_3 = objCPT.ToString().Split('~')[14];
+                    objEandMCoding.Diagnosis_Pointer_4 = objCPT.ToString().Split('~')[15];
+                    objEandMCoding.Diagnosis_Pointer_5 = objCPT.ToString().Split('~')[16];
+                    objEandMCoding.Diagnosis_Pointer_6 = objCPT.ToString().Split('~')[17];
+                    //Cap - 1301
+                    //objEandMCoding.Sort_Order = Convert.ToInt32(objCPT.ToString().Split('~')[18]);
 
-                lsttempCPT = new List<ProcedureModifierLookup>();
-                lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == objCPT.ToString().Split('~')[3] select m).ToList<ProcedureModifierLookup>();
+                    lsttempCPT = new List<ProcedureModifierLookup>();
+                    lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == objCPT.ToString().Split('~')[3] select m).ToList<ProcedureModifierLookup>();
 
-                if (lsttempCPT.Count > 0)
-                    objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;// Convert.ToInt32(objCPT.ToString().Split('~')[18]);
-                                                                         //Cap - 1604
-                                                                         //else
-                                                                         //    objEandMCoding.Sort_Order = 0;
-                else
-                {
-                    lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
                     if (lsttempCPT.Count > 0)
-                    {
-                        objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;
-                    }
+                        objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;// Convert.ToInt32(objCPT.ToString().Split('~')[18]);
+                                                                             //Cap - 1604
+                                                                             //else
+                                                                             //    objEandMCoding.Sort_Order = 0;
                     else
                     {
-                        objEandMCoding.Sort_Order = 0;
+                        lsttempCPT = (from m in lstcptlibtemp where m.Procedure_Code == objCPT.ToString().Split('~')[0] && m.Modifier == string.Empty select m).ToList<ProcedureModifierLookup>();
+                        if (lsttempCPT.Count > 0)
+                        {
+                            objEandMCoding.Sort_Order = lsttempCPT[0].Sort_Order;
+                        }
+                        else
+                        {
+                            objEandMCoding.Sort_Order = 0;
+                        }
                     }
-                }
 
-                //if (objCPT.ToString().Split('~')[7] != "")
-                //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);
-                objEandMCoding.Is_Delete = "N";
-                //objEandMCoding.CPT_Order = Convert.ToInt32(objCPT.ToString().Split('~')[10]);
-                objEandMCoding.Charge_Amount = Convert.ToDecimal(objCPT.ToString().Split('~')[11]);
+                    //if (objCPT.ToString().Split('~')[7] != "")
+                    //    objEandMCoding.Sequence = Convert.ToInt32(objCPT.ToString().Split('~')[7]);
+                    objEandMCoding.Is_Delete = "N";
+                    //objEandMCoding.CPT_Order = Convert.ToInt32(objCPT.ToString().Split('~')[10]);
+                    objEandMCoding.Charge_Amount = Convert.ToDecimal(objCPT.ToString().Split('~')[11]);
                     //Cap -  1675
                     objEandMCoding.Created_By = ClientSession.UserName;
                     objEandMCoding.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
@@ -1419,7 +1440,135 @@ namespace Acurus.Capella.UI.WebServices
             // lsteandmcodingDeletelist = objeandm.GetDetailsByEncounterID(ClientSession.EncounterId);
             IList<EAndMCoding> lstDeleteList = new List<EAndMCoding>();
             // lstDeleteList = (from m in lsteandmcodingDeletelist where m.Is_Delete == "Y" select m).ToList<EAndMCoding>();
+            //cap -1280
+            IList<EandMCodingICD> lsttempicd = EAndMICDSaveList;
+            // IList<EandMCodingICD> lsttempicd = new List<EandMCodingICD>();
+            lsttempicd = lsttempicd.Concat(EAndMICDUpdateList).ToList<EandMCodingICD>();
+            List<string> lstICDs = (from m in lsttempicd where m.ICD_Category.ToUpper() != "PRIMARY" && m.Is_Delete.ToUpper() == "N" select m.ICD).ToList<string>();
+            List<string> lstPriICDs = (from m in lsttempicd where m.ICD_Category.ToUpper() == "PRIMARY" && m.Is_Delete.ToUpper() == "N" select m.ICD).ToList<string>();
+            IList<AllICD_9> iListIcd = new List<AllICD_9>();
+            IList<AllICD_9> iListIcdbyorder = new List<AllICD_9>();
+            IList<AllICD_9> iListIcdtemp = new List<AllICD_9>();
+            IList<AllICD_9> iListIcdzerohcc = new List<AllICD_9>();
+            AllICD_9Manager objAllICDMngr = new AllICD_9Manager();
 
+            iListIcd = objAllICDMngr.GetICDList(lstICDs);
+
+            iListIcdtemp = (from m in iListIcd where m.HCC_Value > 0 select m).GroupBy(a => a.HCC_Value).Select(x => x.First()).ToList<AllICD_9>();
+
+            iListIcdzerohcc = (from m in iListIcd where m.HCC_Value.ToString() == "0" select m).OrderBy(a => a.ICD_9).ToList<AllICD_9>();
+            IList<EandMCodingICD> iEandMTempICD = new List<EandMCodingICD>();
+
+            //iListIcdbyorder = iListIcdtemp;
+            //IList<AllICD_9> iListIcdwithoutzerohcc = new List<AllICD_9>();
+            //iListIcdwithoutzerohcc = iListIcd.Except(iListIcdzerohcc).ToList<AllICD_9>();
+            ////while (iListIcd.Count != (iListIcdbyorder.Count + iListIcdzerohcc.Count))
+            //while (iListIcdwithoutzerohcc.Count != (iListIcdbyorder.Count))
+
+            //{
+            //    iListIcdtemp = iListIcdwithoutzerohcc.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).GroupBy(a => a.HCC_Value).Select(x => x.First()).ToList<AllICD_9>();
+            //    iListIcdbyorder = iListIcdbyorder.Concat(iListIcdtemp).ToList<AllICD_9>();
+            //}
+            //IList<EandMCodingICD> iEandMTempICD = new List<EandMCodingICD>();
+            //iListIcdbyorder = iListIcdbyorder.Concat(iListIcdzerohcc).ToList<AllICD_9>();
+
+
+            iListIcdbyorder = iListIcdtemp;
+            iListIcdbyorder = iListIcdbyorder.Concat(iListIcdzerohcc).ToList<AllICD_9>();
+            IList<AllICD_9> iListIcdwithoutzerohcc = new List<AllICD_9>();
+            iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).OrderBy(n => n.ICD_9).ToList<AllICD_9>();
+            iListIcdbyorder = iListIcdbyorder.Concat(iListIcdwithoutzerohcc).ToList<AllICD_9>();
+
+            for (int k = 0; k < lsttempicd.Count; k++)
+            {
+                EandMCodingICD obj = new EandMCodingICD();
+
+                if (lsttempicd[k].ICD_Category.ToUpper() == "PRIMARY")
+                {
+                    obj.ICD = lsttempicd[k].ICD;
+                    obj.ICD_Description = lsttempicd[k].ICD_Description;
+                    obj.Is_Delete = lsttempicd[k].Is_Delete;
+                    obj.Human_ID = lsttempicd[k].Human_ID;
+                    obj.Encounter_ID = lsttempicd[k].Encounter_ID;
+                    obj.Source = lsttempicd[k].Source;
+                    obj.ICD_Category = lsttempicd[k].ICD_Category;
+                    obj.Created_By = lsttempicd[k].Created_By;
+                    obj.Created_Date_And_Time = lsttempicd[k].Created_Date_And_Time;
+                    obj.Modified_By = lsttempicd[k].Modified_By;
+                    obj.Modified_Date_And_Time = lsttempicd[k].Modified_Date_And_Time;
+                    obj.Version = lsttempicd[k].Version;
+                    obj.Sequence = "A1";
+                    iEandMTempICD.Add(obj);
+                    break;
+                }
+
+            }
+            int SEQ = 2;
+            if (lstPriICDs.Count > 0)
+            {
+                SEQ = 2;
+            }
+            else
+            {
+                SEQ = 1;
+            }
+
+            for (int k = 0; k < iListIcdbyorder.Count; k++)
+            {
+                IList<EandMCodingICD> eanmicdtemp = new List<EandMCodingICD>();
+                eanmicdtemp = (from m in lsttempicd where m.ICD.Trim() == iListIcdbyorder[k].ICD_9.Trim() select m).ToList<EandMCodingICD>();
+                if (eanmicdtemp.Count > 0)
+                {
+                    EandMCodingICD obj = new EandMCodingICD();
+
+                    obj.ICD = eanmicdtemp[0].ICD;
+                    obj.ICD_Description = eanmicdtemp[0].ICD_Description;
+                    obj.Is_Delete = eanmicdtemp[0].Is_Delete;
+                    obj.Human_ID = eanmicdtemp[0].Human_ID;
+                    obj.Encounter_ID = eanmicdtemp[0].Encounter_ID;
+                    obj.Source = eanmicdtemp[0].Source;
+                    obj.ICD_Category = eanmicdtemp[0].ICD_Category;
+                    obj.Sequence = "A" + SEQ.ToString();
+                    obj.Created_By = eanmicdtemp[0].Created_By;
+                    obj.Created_Date_And_Time = eanmicdtemp[0].Created_Date_And_Time;
+                    obj.Modified_By = eanmicdtemp[0].Modified_By;
+                    obj.Modified_Date_And_Time = eanmicdtemp[0].Modified_Date_And_Time;
+                    obj.Version = eanmicdtemp[0].Version;
+                    iEandMTempICD.Add(obj);
+                    SEQ++;
+                }
+
+
+            }
+
+            for (int k = 0; k < EAndMICDSaveList.Count; k++)
+            {
+                IList<EandMCodingICD> eanmicdtemp = new List<EandMCodingICD>();
+                eanmicdtemp = (from m in iEandMTempICD where m.ICD.Trim() == EAndMICDSaveList[k].ICD.Trim() select m).ToList<EandMCodingICD>();
+                if (eanmicdtemp.Count > 0)
+                {
+
+                    EAndMICDSaveList[k].Sequence = eanmicdtemp[0].Sequence;
+
+
+                }
+
+
+            }
+            for (int k = 0; k < EAndMICDUpdateList.Count; k++)
+            {
+                IList<EandMCodingICD> eanmicdtemp = new List<EandMCodingICD>();
+                eanmicdtemp = (from m in iEandMTempICD where m.ICD.Trim() == EAndMICDUpdateList[k].ICD.Trim() select m).ToList<EandMCodingICD>();
+                if (eanmicdtemp.Count > 0)
+                {
+
+                    EAndMICDUpdateList[k].Sequence = eanmicdtemp[0].Sequence;
+
+
+                }
+
+
+            }
             if (ClientSession.FillEncounterandWFObject != null)
             {
                 if (ClientSession.FillEncounterandWFObject.EncRecord == null || ClientSession.FillEncounterandWFObject.EncRecord.Id == 0)
@@ -1627,9 +1776,12 @@ namespace Acurus.Capella.UI.WebServices
           string EnableScreenAdditionalICD = "disabled";
              */
             string EnablePriRbtn = "";
+            //Cap -1280
+            IList<string> AssPriCount = new List<string>();
             if (!Is_CMG_Ancillary)
             {
-                IList<string> AssPriCount = new List<string>();
+                //Cap - 1280
+               // IList<string> AssPriCount = new List<string>();
                 AssPriCount = ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
                 if (ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT" && ClientSession.UserRole.ToUpper() != "OFFICE MANAGER")//Added for Provider_Review PhysicianAssistant WorkFlow Change. Implementation of CA Rule for Provider Review
                 {
@@ -1695,9 +1847,22 @@ namespace Acurus.Capella.UI.WebServices
             //Cap - 1301
             //var EandMCodingListCPT = ProcedureList.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1], EandMCPTID = a.Split('~')[2], Units = a.Split('~')[3], Modifier1 = a.Split('~')[4], Modifier2 = a.Split('~')[5], Modifier3 = a.Split('~')[6], Modifier4 = a.Split('~')[7], CPTCheck = a.Split('~')[8], EnableScreen = EnableScreen, CPTVersion = a.Split('~')[9], btnDelete = btnDelete, Order = Convert.ToInt32(a.Split('~')[10]), Amount = a.Split('~')[11], DiaPointer1 = a.Split('~')[12], DiaPointer2 = a.Split('~')[13], DiaPointer3 = a.Split('~')[14], DiaPointer4 = a.Split('~')[15], DiaPointer5 = a.Split('~')[16], DiaPointer6 = a.Split('~')[17] });  
             var EandMCodingListCPT = ProcedureList.Select(a => new { CPTCode = a.Split('~')[0], CPTDesc = a.Split('~')[1], EandMCPTID = a.Split('~')[2], Units = a.Split('~')[3], Modifier1 = a.Split('~')[4], Modifier2 = a.Split('~')[5], Modifier3 = a.Split('~')[6], Modifier4 = a.Split('~')[7], CPTCheck = a.Split('~')[8], EnableScreen = EnableScreen, CPTVersion = a.Split('~')[9], btnDelete = btnDelete, Order = Convert.ToInt32(a.Split('~')[10]), RVU = Convert.ToDouble(a.Split('~')[18]), Amount = a.Split('~')[11], DiaPointer1 = a.Split('~')[12], DiaPointer2 = a.Split('~')[13], DiaPointer3 = a.Split('~')[14], DiaPointer4 = a.Split('~')[15], DiaPointer5 = a.Split('~')[16], DiaPointer6 = a.Split('~')[17] }).OrderBy(c => c.Order).ThenByDescending(n => n.RVU).ThenBy(o => o.CPTCode);
-            var EandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "EMICD").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = btnDeleteAdditionalICD, EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = EnableScreen, EnablePriRbtn = EnablePriRbtn });
-            var AssEandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
-            var OrdersAssEandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "ORDERS_ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
+            //cap -1280
+            // var EandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "EMICD").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = btnDeleteAdditionalICD, EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = EnableScreen, EnablePriRbtn = EnablePriRbtn });
+
+            AssPriCount = new List<string>();
+            AssPriCount = ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT" && a.Split('~')[4] == "Pri").ToList<string>();
+            if (AssPriCount != null && AssPriCount.Count > 0)
+            {
+                EnablePriRbtn = "disabled";
+            }
+            var EandMCodingListICD = ICDList.Select(a => new { ICDSource = a.Split('~')[0], ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = a.Split('~')[0] == "EMICD" ? ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT" && ClientSession.UserRole.ToUpper() != "OFFICE MANAGER" && ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "TECHNICIAN" ? "Resources/Delete-Grey.png" : "Resources/Delete-Blue.png" : "Resources/Delete-Grey.png", EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = a.Split('~')[0] == "EMICD" ? "enable" : "disabled", EnablePriRbtn = AssPriCount != null && AssPriCount.Count > 0 ? EnablePriRbtn : a.Split('~')[0] == "EMICD" ? ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT" || ClientSession.UserRole.ToUpper() == "OFFICE MANAGER" || ClientSession.UserRole.ToUpper() == "CODER" || ClientSession.UserRole.ToUpper() == "TECHNICIAN" ? "enable" : "disabled" : "disabled", HCC = string.Empty });
+
+
+            //var EandMCodingListICD = ICDList.Select(a => new { ICDSource = a.Split('~')[0], ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = a.Split('~')[0] == "EMICD" ? ClientSession.UserRole.ToUpper() != "MEDICAL ASSISTANT" && ClientSession.UserRole.ToUpper() !="OFFICE MANAGER" && ClientSession.UserRole.ToUpper() != "CODER" && ClientSession.UserRole.ToUpper() != "TECHNICIAN"  ? "Resources/Delete-Grey.png": "Resources/Delete-Blue.png" : "Resources/Delete-Grey.png", EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = a.Split('~')[0] == "EMICD" ? "enable" : "disabled", EnablePriRbtn = a.Split('~')[0] == "EMICD" ? "enable" : "disabled", HCC = string.Empty });
+            //var EandMCodingListICD = ICDList.Select(a => new { ICDSource = a.Split('~')[0], ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], btnDelete = btnDeleteAdditionalICD, EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], IsPrimary = a.Split('~')[4], EnableScreen = EnableScreen, EnablePriRbtn = EnablePriRbtn, HCC = string.Empty });
+            // var AssEandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
+            // var OrdersAssEandMCodingListICD = ICDList.Where(a => a.Split('~')[0] == "ORDERS_ASSESSMENT").Select(a => new { ICDCode = a.Split('~')[1], ICDDescription = a.Split('~')[2], ICDVersion = a.Split('~')[3], IsPrimary = a.Split('~')[4], EandMICDID = a.Split('~')[5], Sequence = a.Split('~')[6], ResultCheck = a.Split('~')[7], EnableScreen = EnableScreen });
             HttpContext.Current.Session["EandMList"] = eandmDTO.EandMCodingList;
             HttpContext.Current.Session["EandMICDList"] = eandmDTO.EandMCodingICDList;
             HttpContext.Current.Session["EnablePriRbtn"] = EnablePriRbtn;
@@ -1712,7 +1877,9 @@ namespace Acurus.Capella.UI.WebServices
                 if (bCheck == false)
                 {
                     //   return JsonConvert.SerializeObject("530024");
-                    var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = "530024" };
+                    //Cap - 1280
+                    //var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = "530024" };
+                    var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = "530024" };
                     return JsonConvert.SerializeObject(result);
                 }
 
@@ -1771,12 +1938,16 @@ namespace Acurus.Capella.UI.WebServices
             /*End For Git Lab Id: 1666*/
             if (!Is_CMG_Ancillary)
             {
-                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = isZcode };
+                //Cap - 1280
+                //var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = AssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = isZcode };
+                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = isZcode };
                 return JsonConvert.SerializeObject(result);
             }
             else
             {
-                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = OrdersAssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = isZcode };
+                //Cap -1280
+                // var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, AssICDlist = OrdersAssEandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = isZcode };
+                var result = new { ProcedureList = EandMCodingListCPT, ICDList = EandMCodingListICD, UserRole = ClientSession.UserRole, EnableScreen = EnableScreen, BillingInstruction = sOldBillingInstruction, EnablePriRbtn = EnablePriRbtn, IsBillableNo = isZcode };
                 return JsonConvert.SerializeObject(result);
 
             }

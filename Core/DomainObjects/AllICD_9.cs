@@ -32,6 +32,8 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _SNOMED_Code_Description = string.Empty;
         private string _Short_Description = string.Empty;
          private string _ICD_ID = string.Empty;
+        private double _HCC_Value = 0;
+        private string _Mutually_Exclusive_ICD = string.Empty;
 
 
 
@@ -71,6 +73,8 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_SNOMED_Code_Description);
             sb.Append(_Short_Description);
             sb.Append(_ICD_ID);
+            sb.Append(_HCC_Value);
+            sb.Append(_Mutually_Exclusive_ICD);
 
             return sb.ToString().GetHashCode();
         }
@@ -214,6 +218,18 @@ namespace Acurus.Capella.Core.DomainObjects
              get { return _To_Date; }
              set { _To_Date = value; }
          }
+        [DataMember]
+        public virtual double HCC_Value
+        {
+            get { return _HCC_Value; }
+            set { _HCC_Value = value; }
+        }
+        [DataMember]
+        public virtual string Mutually_Exclusive_ICD
+        {
+            get { return _Mutually_Exclusive_ICD; }
+            set { _Mutually_Exclusive_ICD = value; }
+        }
         #endregion
     }
 }

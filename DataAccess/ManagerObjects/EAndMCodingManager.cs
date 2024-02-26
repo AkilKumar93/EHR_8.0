@@ -1884,7 +1884,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     }
                                 }
                             }
-                            iAssessmentSequence = 1;
+                            // iAssessmentSequence = 1;
+                            iAssessmentSequence = eandmCode.EandMCodingICDList.Count + 1;
                             if (OrdersAssICDList != null && OrdersAssICDList.Count > 0)
                             {
                                 IList<OrdersAssIcd> ICDListinOrders_notinEMICD = new List<OrdersAssIcd>();
@@ -1893,9 +1894,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     foreach (OrdersAssIcd assOrderICD in ICDListinOrders_notinEMICD)
                                     {
                                         sAssesmentPrimary = string.Empty;
+                                        IList<EandMCodingICD> ICDListTemp = (from m in eandmCode.EandMCodingICDList where m.ICD.Trim() == assOrderICD.ICD.Trim() select m).ToList<EandMCodingICD>(); ;
+                                        if (ICDListTemp.Count > 0)
+                                        {
+                                            ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + ICDListTemp[0].Sequence.ToString() + "~" + "");
+                                        }
                                         //ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "6" + "~" + "" + "~" + "A" + iAssessmentSequence.ToString());
-                                        ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "A" + iAssessmentSequence.ToString() + "~" + "");
-                                        iAssessmentSequence += 1;
+                                        else
+                                        {
+                                            ICDList.Add("ORDERS_ASSESSMENT" + "~" + assOrderICD.ICD + "~" + assOrderICD.ICD_Description + "~" + 0 + "~" + sAssesmentPrimary + "~" + "0" + "~" + "A" + iAssessmentSequence.ToString() + "~" + "");
+                                            iAssessmentSequence += 1;
+                                        }
                                     }
                             }
                         }

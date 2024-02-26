@@ -1626,8 +1626,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 IList<object> lstObj = deleteList.Cast<object>().ToList();
                                 lstobjxml = lstObj;
                                 GenerateXml objtempxml = new GenerateXml();
-                                objtempxml.itemDoc = null;  
-                                XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false, objtempxml);
+                                objtempxml.itemDoc = null;
+                                //Cap - 1658
+                                if ((saveList != null && saveList.Count > 0) || (updateList != null && updateList.Count > 0))
+                                    XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false, XMLObj);
+                                else
+                                    XMLObj.GenerateXmlDelete(lstObj, EncounterOrHumanId, sGeneralNotesText, false, objtempxml);
+
                                 bsavehit = true;
                             }
                         #region XML type
