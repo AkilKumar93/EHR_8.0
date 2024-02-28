@@ -1510,7 +1510,7 @@ namespace Acurus.Capella.UI
             int flag = 0;
             for (int k = 0; k < eanmicdoverallicd.Count; k++)
             {
-                if (eanmicdoverallicd[k].ICD_Category.ToUpper() == "PRIMARY" && (eanmicdoverallicd[k].ICD == lstassprimaryicdICDs[0].Trim().ToString().Trim()))
+                if (eanmicdoverallicd[k].ICD_Category.ToUpper() == "PRIMARY" && (eanmicdoverallicd[k].ICD.Trim() == lstassprimaryicdICDs[0].Trim().ToString().Trim()))
                 {
                     flag = 1;
                     EandMCodingICD obj = new EandMCodingICD();
