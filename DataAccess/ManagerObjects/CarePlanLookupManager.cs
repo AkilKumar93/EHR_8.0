@@ -402,6 +402,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         if (PlanDto.Care_Plan_Notes.Trim() == "")
                                             PlanDto.Care_Plan_Notes = Convert.ToString(((object[])ires)[1]);//For git Id 1594 
                                     }
+                                    //Cap - 606
+                                    else if (Convert.ToString(((object[])ires)[2]).ToUpper().Contains("VACCINE"))
+                                    {
+                                        PlanDto.Status = Convert.ToString(((object[])ires)[3]);
+                                        if (PlanDto.Status.ToUpper() == "YES")
+                                            PlanDto.Plan_Date = Convert.ToString(((object[])ires)[1]);
+                                        else
+                                            PlanDto.Plan_Date = "";
+                                    }
+
                                     else
                                     {
                                         PlanDto.Status = "Yes";
@@ -411,11 +421,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                             }
                             else if (((object[])ires).Count() > 3)
-                            {
-                                PlanDto.Status = "Yes";
-                                PlanDto.Plan_Date = Convert.ToString(((object[])ires)[1]);
-                                PlanDto.Status_Value = ((object[])ires)[2].ToString();
-
+                            {                               
+                                    PlanDto.Status = "Yes";
+                                    PlanDto.Plan_Date = Convert.ToString(((object[])ires)[1]);
+                                    PlanDto.Status_Value = ((object[])ires)[2].ToString();
                             }
                             else
                             {
@@ -424,6 +433,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     PlanDto.Status = Convert.ToString(((object[])ires)[1]);
                                     PlanDto.Plan_Date = Convert.ToString(((object[])ires)[2]);
                                 }
+                               
                                 else
                                 {
                                     PlanDto.Status = "Yes";
