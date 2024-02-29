@@ -1494,7 +1494,9 @@ namespace Acurus.Capella.UI
             iListIcdbyorder = iListIcdtemp;
             iListIcdbyorder = iListIcdbyorder.Concat(iListIcdzerohcc).ToList<AllICD_9>();
             IList<AllICD_9> iListIcdwithoutzerohcc = new List<AllICD_9>();
-            iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).OrderBy(n => n.ICD_9).ToList<AllICD_9>();
+            //Cap - 1806
+            //iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).OrderBy(n => n.ICD_9).ToList<AllICD_9>();
+            iListIcdwithoutzerohcc = iListIcd.Except(iListIcdbyorder).ToList<AllICD_9>().OrderByDescending(m => m.HCC_Value).ThenBy(n => n.ICD_9).ToList<AllICD_9>();
             iListIcdbyorder = iListIcdbyorder.Concat(iListIcdwithoutzerohcc).ToList<AllICD_9>();
 
 
