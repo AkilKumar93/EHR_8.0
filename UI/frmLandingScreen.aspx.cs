@@ -705,7 +705,7 @@ namespace Acurus.Capella.UI
             request.AddParameter("code", $"{code}");
             RestResponse response = client.ExecuteAsync(request).Result;
 
-            Root myDeserializedClass = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
+            TokenResponse myDeserializedClass = JsonConvert.DeserializeObject<TokenResponse>(response.Content);
 
             //Get User Information
             var useroptions = new RestClientOptions(ConfigurationSettings.AppSettings["okta:OktaDomain"])
