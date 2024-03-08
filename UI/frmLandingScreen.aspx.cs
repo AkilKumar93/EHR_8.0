@@ -24,7 +24,7 @@ namespace Acurus.Capella.UI
     {
         UserManager UserMngr = new UserManager();
         DirectURLUtility directURLUtility = new DirectURLUtility();
-
+       
         protected void Page_Load(object sender, EventArgs e)
         {
             //Direct URL should be suspended
@@ -117,6 +117,7 @@ namespace Acurus.Capella.UI
             if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
             {
                 login = objLoginDTO.User;
+                ClientSession.UserName = login[0].user_name.Trim().ToUpper();
                 //lstLookUp = objLoginDTO.lstLookUp;
             }
             //----Added By Nijanthan(17-11-15)
@@ -169,11 +170,11 @@ namespace Acurus.Capella.UI
                         data.Add("UserName", login[0].user_name.ToString().ToUpper());
                         data.Add("EHRUserName", login[0].user_name.ToString().ToUpper());
                         data.Add("EHRFacilityName", login[0].Default_Facility);
-                        data.Add("EHRhdnLocalTime", hdnLocalTime.Value);
-                        data.Add("EHRhdnLocalDate", hdnLocalDate.Value);
-                        data.Add("EHRhdnUniversaloffset", hdnUniversaloffset.Value);
-                        data.Add("EHRhdnLocalDateAndTime", hdnLocalDateAndTime.Value);
-                        data.Add("EHRhdnFollowsDayLightSavings", hdnFollowsDayLightSavings.Value);
+                        data.Add("EHRhdnLocalTime", ClientSession.LocalOffSetTime);
+                        data.Add("EHRhdnLocalDate", ClientSession.LocalDate);
+                        data.Add("EHRhdnUniversaloffset", ClientSession.UniversalTime);
+                        data.Add("EHRhdnLocalDateAndTime", ClientSession.LocalTime);
+                        data.Add("EHRhdnFollowsDayLightSavings", ClientSession.bFollows_DST.ToString());
                         data.Add("UserRole", login[0].role);
                         data.Add("RCopiaUserName", login[0].RCopia_User_Name);
                         data.Add("EMailAddress", login[0].EMail_Address);
@@ -236,7 +237,6 @@ namespace Acurus.Capella.UI
                         this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010024');", true);
                         return;
                     }
-                    ClientSession.UserName = login[0].user_name.Trim().ToUpper();
                     ClientSession.UserRole = login[0].role;
                     ClientSession.RCopiaUserName = login[0].RCopia_User_Name;
                     ClientSession.FacilityName = login[0].Default_Facility;
@@ -272,14 +272,14 @@ namespace Acurus.Capella.UI
                     var ScnTabRecord = from s in ScnTabList where s.SCN_ID == login[0].Landing_Screen_ID select s;
 
 
-                    ClientSession.LocalOffSetTime = hdnLocalTime.Value;
-                    ClientSession.LocalDate = hdnLocalDate.Value;
-                    ClientSession.UniversalTime = hdnUniversaloffset.Value;
-                    ClientSession.LocalTime = hdnLocalDateAndTime.Value;
-                    if (hdnFollowsDayLightSavings.Value.ToLower() == "true")
-                        ClientSession.bFollows_DST = true;
-                    else
-                        ClientSession.bFollows_DST = false;
+                    //ClientSession.LocalOffSetTime = hdnLocalTime.Value;
+                    //ClientSession.LocalDate = hdnLocalDate.Value;
+                    //ClientSession.UniversalTime = hdnUniversaloffset.Value;
+                    //ClientSession.LocalTime = hdnLocalDateAndTime.Value;
+                    //if (hdnFollowsDayLightSavings.Value.ToLower() == "true")
+                    //    ClientSession.bFollows_DST = true;
+                    //else
+                    //    ClientSession.bFollows_DST = false;
 
                     //if (txtPassword.Value == "Password1!" || DateTime.Now.Subtract(login[0].Password_Changed_Date).Days == Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ResetPasswordDaysLimit"]))
                     //{
@@ -401,7 +401,7 @@ namespace Acurus.Capella.UI
                 if (objIsActiveSession.Count == 0)
                 {
                     //ImpersonateUser
-                    if (Session["Default_Server"] != null && Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGINNEW.ASPX") == true)
+                    if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGINNEW.ASPX") == true))
                     {
                         ClientSession.SavedSession = "DELETED";
                     }
@@ -438,11 +438,11 @@ namespace Acurus.Capella.UI
                     data.Add("UserName", ClientSession.UserName);
                     data.Add("EHRUserName", ClientSession.UserName);
                     data.Add("EHRFacilityName", ClientSession.FacilityName);
-                    data.Add("EHRhdnLocalTime", hdnLocalTime.Value);
-                    data.Add("EHRhdnLocalDate", hdnLocalDate.Value);
-                    data.Add("EHRhdnUniversaloffset", hdnUniversaloffset.Value);
-                    data.Add("EHRhdnLocalDateAndTime", hdnLocalDateAndTime.Value);
-                    data.Add("EHRhdnFollowsDayLightSavings", hdnFollowsDayLightSavings.Value);
+                    data.Add("EHRhdnLocalTime", ClientSession.LocalOffSetTime);
+                    data.Add("EHRhdnLocalDate", ClientSession.LocalDate);
+                    data.Add("EHRhdnUniversaloffset", ClientSession.UniversalTime);
+                    data.Add("EHRhdnLocalDateAndTime", ClientSession.LocalTime);
+                    data.Add("EHRhdnFollowsDayLightSavings", ClientSession.bFollows_DST.ToString());
                     data.Add("UserRole", hdnroleLanding.Value);
                     data.Add("RCopiaUserName", hdnRCopia_User_NameLanding.Value);
                     data.Add("EMailAddress", hdnEMailAddress.Value);
@@ -514,11 +514,11 @@ namespace Acurus.Capella.UI
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
 
             //hdnFacltyName.Value = sFacilityName;
-            hdnLocalTime.Value = shdnLocalTime;
-            hdnLocalDate.Value = shdnLocalDate;
-            hdnUniversaloffset.Value = shdnUniversaloffset;
-            hdnLocalDateAndTime.Value = shdnLocalDateAndTime;
-            hdnFollowsDayLightSavings.Value = shdnFollowsDayLightSavings;
+            //hdnLocalTime.Value = shdnLocalTime;
+            //hdnLocalDate.Value = shdnLocalDate;
+            //hdnUniversaloffset.Value = shdnUniversaloffset;
+            //hdnLocalDateAndTime.Value = shdnLocalDateAndTime;
+            //hdnFollowsDayLightSavings.Value = shdnFollowsDayLightSavings;
             hdnroleLanding.Value = sUserRole;
             hdnRCopia_User_NameLanding.Value = sRCopiaUserName;
             hdnEMailAddress.Value = sEMailAddress;

@@ -33,51 +33,6 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlButton hdnbtnLogin;
 
         /// <summary>
-        /// hdnLocalTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnLocalTime;
-
-        /// <summary>
-        /// hdnLocalDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnLocalDate;
-
-        /// <summary>
-        /// hdnUniversaloffset control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnUniversaloffset;
-
-        /// <summary>
-        /// hdnLocalDateAndTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnLocalDateAndTime;
-
-        /// <summary>
-        /// hdnFollowsDayLightSavings control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnFollowsDayLightSavings;
-
-        /// <summary>
         /// hdnGroupId control.
         /// </summary>
         /// <remarks>

@@ -64,7 +64,10 @@ $(document).ready(function () {
         }
         else {
             $("#lblProduct").hide();
-        }
+    }
+    setTimeZone();
+    ShowLoading();
+    getIpAddress();
 });
 
 function LoadSystemMessagesKnowledgeCenterdetails() {

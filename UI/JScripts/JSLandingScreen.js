@@ -173,67 +173,67 @@ function CheckMandatory(txtbx) {
     else {
         document.getElementById('hdnOkButton').value = "true";
         document.getElementById('hdnFacltyName').value = document.getElementById('ddlFacility').value;
-        setTimeZone();
-        ShowLoading();
-        getIpAddress();
+        //setTimeZone();
+        //ShowLoading();
+        //getIpAddress();
         return true;
     }
 
 }
 
-function getIpAddress() {
-    $.ajax({
-        type: "POST",
-        url: "frmRCopiaToolbar.aspx/GetIPAddress",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            localStorage.setItem("ClientIpAddress", data.d);
-        },
-        error: function OnError(xhr) {
-        }
-    });
-}
+//function getIpAddress() {
+//    $.ajax({
+//        type: "POST",
+//        url: "frmRCopiaToolbar.aspx/GetIPAddress",
+//        dataType: "json",
+//        contentType: "application/json; charset=utf-8",
+//        success: function (data) {
+//            localStorage.setItem("ClientIpAddress", data.d);
+//        },
+//        error: function OnError(xhr) {
+//        }
+//    });
+//}
 
-function setTimeZone() {
-    var hiddenObj = document.getElementById('hdnLocalTime');
-    hiddenObj.value = showTime().toString();
+//function setTimeZone() {
+//    //var hiddenObj = document.getElementById('hdnLocalTime');
+//    //hiddenObj.value = showTime().toString();
 
 
-}
-function showTime() {
-    var dt = new Date();
-    var LocalTime = dt.stdTimezoneOffset();
-    var LocalDate = dt.toLocaleDateString("en-US");
+//}
+//function showTime() {
+//    var dt = new Date();
+//    var LocalTime = dt.stdTimezoneOffset();
+//    var LocalDate = dt.toLocaleDateString("en-US");
 
-    if (LocalDate.indexOf("/") != -1) {
-        var LocalDatenew = LocalDate.split('/');
-        var day = ("0" + (LocalDatenew[1])).slice(-2);
-        LocalDate = LocalDatenew[0] + "/" + day + "/" + LocalDatenew[2];
-    }
-    if (LocalDate.indexOf("-") != -1) {
-        var LocalDatenew = LocalDate.split('-');
-        var day = ("0" + (LocalDatenew[1])).slice(-2);
-        LocalDate = LocalDatenew[0] + "/" + day + "/" + LocalDatenew[2];
-    }
-    document.getElementById('hdnUniversaloffset').value = createOffset(dt);
-    var dt1 = new Date(); var now = new Date(); var then = now.getDay() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear(); then += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(); var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds(); document.getElementById("hdnLocalDateAndTime").value = dt1.toLocaleTimeString();
+//    if (LocalDate.indexOf("/") != -1) {
+//        var LocalDatenew = LocalDate.split('/');
+//        var day = ("0" + (LocalDatenew[1])).slice(-2);
+//        LocalDate = LocalDatenew[0] + "/" + day + "/" + LocalDatenew[2];
+//    }
+//    if (LocalDate.indexOf("-") != -1) {
+//        var LocalDatenew = LocalDate.split('-');
+//        var day = ("0" + (LocalDatenew[1])).slice(-2);
+//        LocalDate = LocalDatenew[0] + "/" + day + "/" + LocalDatenew[2];
+//    }
+//    document.getElementById('hdnUniversaloffset').value = createOffset(dt);
+//    var dt1 = new Date(); var now = new Date(); var then = now.getDay() + '-' + (now.getMonth() + 1) + '-' + now.getFullYear(); then += ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(); var utc = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '/' + now.getUTCFullYear(); utc += ' ' + now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds(); document.getElementById("hdnLocalDateAndTime").value = dt1.toLocaleTimeString();
 
-    document.getElementById('hdnLocalDate').value = LocalDate;
-    document.getElementById('hdnFollowsDayLightSavings').value = (dt.dst()).toString().toLowerCase();
-    return LocalTime;
+//    document.getElementById('hdnLocalDate').value = LocalDate;
+//    document.getElementById('hdnFollowsDayLightSavings').value = (dt.dst()).toString().toLowerCase();
+//    return LocalTime;
 
-}
-function pad(value) {
-    return value < 10 ? '0' + value : value;
-}
-function createOffset(date) {
-    var sign = (date.stdTimezoneOffset() > 0) ? "-" : "+";
-    var offset = Math.abs(date.stdTimezoneOffset());
-    var hours = pad(Math.floor(offset / 60));
-    var minutes = pad(offset % 60);
-    return sign + hours + "." + minutes;
-}
+//}
+//function pad(value) {
+//    return value < 10 ? '0' + value : value;
+//}
+//function createOffset(date) {
+//    var sign = (date.stdTimezoneOffset() > 0) ? "-" : "+";
+//    var offset = Math.abs(date.stdTimezoneOffset());
+//    var hours = pad(Math.floor(offset / 60));
+//    var minutes = pad(offset % 60);
+//    return sign + hours + "." + minutes;
+//}
 function SessionExpired() {
     window.location.href = "frmLoginNew.aspx";
 }
@@ -424,35 +424,35 @@ function OnSuccessRCopia(response) {
 
 }
 
-function ShowLoading() {
-    if (localStorage["phyIDList"] != undefined) {
-        var phyIDList = JSON.parse(localStorage["phyIDList"]);
-        var list = Object.keys(phyIDList).map(function (key) { return phyIDList[key] });
-        var strList = "";
-        for (var i = 0; i < list.length; i++) {
-            strList += list[i] + "#";
-        }
-        strList = strList.substr(0, strList.length);
-        document.cookie = "LocalStorage=" + strList + ";path=/;";
-    }
-}
+//function ShowLoading() {
+//    if (localStorage["phyIDList"] != undefined) {
+//        var phyIDList = JSON.parse(localStorage["phyIDList"]);
+//        var list = Object.keys(phyIDList).map(function (key) { return phyIDList[key] });
+//        var strList = "";
+//        for (var i = 0; i < list.length; i++) {
+//            strList += list[i] + "#";
+//        }
+//        strList = strList.substr(0, strList.length);
+//        document.cookie = "LocalStorage=" + strList + ";path=/;";
+//    }
+//}
 
-Date.prototype.stdTimezoneOffset = function () {
-    var jan = new Date(this.getFullYear(), 0, 1);
-    var jul = new Date(this.getFullYear(), 6, 1);
-    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
-}
-Date.prototype.dst = function () {
-    var jan = new Date(this.getFullYear(), 0, 1);
-    var jul = new Date(this.getFullYear(), 6, 1);
-    var Jan_Offset = jan.getTimezoneOffset();
-    var July_Offset = jul.getTimezoneOffset();
-    var difference = Jan_Offset - July_Offset;
-    if (difference != 0)
-        return true;
-    else
-        return false;
-}
+//Date.prototype.stdTimezoneOffset = function () {
+//    var jan = new Date(this.getFullYear(), 0, 1);
+//    var jul = new Date(this.getFullYear(), 6, 1);
+//    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+//}
+//Date.prototype.dst = function () {
+//    var jan = new Date(this.getFullYear(), 0, 1);
+//    var jul = new Date(this.getFullYear(), 6, 1);
+//    var Jan_Offset = jan.getTimezoneOffset();
+//    var July_Offset = jul.getTimezoneOffset();
+//    var difference = Jan_Offset - July_Offset;
+//    if (difference != 0)
+//        return true;
+//    else
+//        return false;
+//}
 
 function CheckLastModified(sDates) {
     sessionStorage.clear();

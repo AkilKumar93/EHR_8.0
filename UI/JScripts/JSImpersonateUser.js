@@ -20,6 +20,8 @@ function CheckUserAndPassword() {
 //Jira CAP-1787
     else {
         setTimeZone();
+        ShowLoading();
+        getIpAddress();
     }
     return true;
 }
@@ -184,4 +186,30 @@ Date.prototype.dst = function () {
         return true;
     else
         return false;
+}
+function ShowLoading() {
+    if (localStorage["phyIDList"] != undefined) {
+        var phyIDList = JSON.parse(localStorage["phyIDList"]);
+        var list = Object.keys(phyIDList).map(function (key) { return phyIDList[key] });
+        var strList = "";
+        for (var i = 0; i < list.length; i++) {
+            strList += list[i] + "#";
+        }
+        strList = strList.substr(0, strList.length);
+        document.cookie = "LocalStorage=" + strList + ";path=/;";
+    }
+}
+
+function getIpAddress() {
+    $.ajax({
+        type: "POST",
+        url: "frmRCopiaToolbar.aspx/GetIPAddress",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+            localStorage.setItem("ClientIpAddress", data.d);
+        },
+        error: function OnError(xhr) {
+        }
+    });
 }

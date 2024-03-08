@@ -11,11 +11,11 @@
     <form id="form1" runat="server">
         <div>
             <button id="hdnbtnLogin" runat="server" style="display: none;" onserverclick="hdnbtnLogin_Click">hdnLogin</button>
-            <asp:HiddenField ID="hdnLocalTime" runat="server" EnableViewState="false" />
+            <%--<asp:HiddenField ID="hdnLocalTime" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnLocalDate" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnUniversaloffset" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnLocalDateAndTime" runat="server" EnableViewState="false" />
-            <asp:HiddenField ID="hdnFollowsDayLightSavings" runat="server" Value="false" />
+            <asp:HiddenField ID="hdnFollowsDayLightSavings" runat="server" Value="false" />--%>
             <asp:HiddenField ID="hdnGroupId" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnPersonName" runat="server" EnableViewState="false" />
             <asp:HiddenField ID="hdnVersion" runat="server" EnableViewState="false" />

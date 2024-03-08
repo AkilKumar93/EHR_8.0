@@ -64,6 +64,14 @@ namespace Acurus.Capella.UI
                 hdnServiceLink.Value = System.Configuration.ConfigurationSettings.AppSettings["EVServiceLink"];
             if (System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"] != null)
                 hdnEvProjectName.Value = System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"];
+            ClientSession.LocalOffSetTime = hdnLocalTime.Value;
+            ClientSession.LocalDate = hdnLocalDate.Value;
+            ClientSession.UniversalTime = hdnUniversaloffset.Value;
+            ClientSession.LocalTime = hdnLocalDateAndTime.Value;
+            if (hdnFollowsDayLightSavings.Value.ToLower() == "true")
+                ClientSession.bFollows_DST = true;
+            else
+                ClientSession.bFollows_DST = false;
         }
 
         
