@@ -54,7 +54,7 @@ namespace Acurus.Capella.UI
                         cboLegalOrg.Items.Add(listItem);
                     }
                 }
-                cboLegalOrg.Text = ClientSession.LegalOrg;
+                cboLegalOrg.SelectedValue = ClientSession.UserName;
                 FillFacilityComboBox(ClientSession.LegalOrg);
             }
 
