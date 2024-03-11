@@ -436,7 +436,7 @@
                 <script src="JScripts/jsLoginNew.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"]%>"></script>
                 <script src="JScripts/jsErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"]%>"></script>
                 <script src="JScripts/JSAvoidRightClick.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
-                <%-- <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>--%>
+                 <script src="JScripts/JsRestrictMultipleTab.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             </asp:PlaceHolder>
         </div>
 
