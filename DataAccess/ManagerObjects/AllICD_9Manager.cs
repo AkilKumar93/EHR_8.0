@@ -943,7 +943,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<AllICD_9> listICD = new List<AllICD_9>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ICriteria crit = iMySession.CreateCriteria(typeof(AllICD_9)).Add(Expression.In("ICD_9", ICD)).AddOrder(Order.Desc("HCC_Value"));
+                ICriteria crit = iMySession.CreateCriteria(typeof(AllICD_9)).Add(Expression.In("ICD_9", ICD)).AddOrder(Order.Desc("HCC_Value")).AddOrder(Order.Desc("HCC_Category")); 
                 listICD = crit.List<AllICD_9>();
                 iMySession.Close();
             }
