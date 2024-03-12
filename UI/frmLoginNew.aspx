@@ -221,11 +221,11 @@
                         <br />
                         <div class="row">
                             <div class="col-md-6 mobile-hide col-lg-6 col-sm-6">
-                                <div id="divpanelsucess">
+                                <div id="divpanelsucess" style="height:269px;" runat="server">
                                     <div id="dvpanelheading">
                              Key Features
                                     </div>
-                                    <div class="panel-body fixed-panel Editabletxtbox">
+                                    <div class="panel-body Editabletxtbox" style="height: 258px;">
                                         <br />
                                         <ul id="ulFeatures">
                                         </ul>
