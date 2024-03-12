@@ -784,8 +784,10 @@ function OpenMedication_dosage() {
     $(top.window.document).find("#ProcessModalMed").modal({ backdrop: 'static', keyboard: false }, 'show');
     $(top.window.document).find("#mdldlgMed")[0].style.width = "50%";
     $(top.window.document).find("#mdldlgMed")[0].style.height = "345px";
+    $(top.window.document).find("#mdldlgMed")[0].style.removeProperty("margin-left");
+    $(top.window.document).find("#mdldlgMed")[0].style.removeProperty("position");
     if ($(top.window.document).find("#mdldlgMed")[0]?.children[0]?.className != undefined && $(top.window.document).find("#mdldlgMed")[0].children[0].className.indexOf("modal-content") > -1) {
-        $(top.window.document).find("#mdldlgMed")[0].children[0].style.setProperty("margin-left", "135px");
+        //$(top.window.document).find("#mdldlgMed")[0].children[0].style.setProperty("margin-left", "135px");
         $(top.window.document).find("#mdldlgMed")[0].children[0].style.setProperty("margin-top", "120px");
     }
     $(top.window.document).find("#ProcessModalMed")[0].style.removeProperty("margin-left");
@@ -799,56 +801,54 @@ function OpenMedication_dosage() {
 }
 
 function closepopup() {
-    if (!$('#btnsave').attr("disabled")) 
-    {
-        sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
-        saveorder();
+    if (!$('#btnsave').attr("disabled")) {
+        //CAP-1798
+        //sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
+        //saveorder();
 
-        sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
-        return false;
-        //$("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
-        //                       "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
-        //dvdialog = $('#dvdialogMenu');
-        //myPos = "center center";
-        //atPos = 'center center';
+        //sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+        //return false;
+        $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'> <p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+        dvdialog = $('#dvdialogMenu');
+        myPos = "center center";
+        atPos = 'center center';
 
-        //$(dvdialog).dialog({
-        //    modal: true,
-        //    title: "Capella EHR",
-        //    position: {
-        //        my: 'left' + " " + 'center',
-        //        at: 'center' + " " + 'center'
-
-        //    },
-        //    buttons: {
-        //        "Yes": function () {
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
-        //            saveorder();
-                  
-        //            sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
-        //            return false;
-        //        },
-        //        "No": function () {
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            $(top.window.document).find("#btnCloseMed").click();
-        //            return false;
-        //        },
-        //        "Cancel": function () {
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            return false;
-        //        }
-        //    }
-        //});
+        $(dvdialog).dialog({
+            modal: true,
+            title: "Capella EHR",
+            position: {
+                my: myPos,
+                at: atPos
+            },
+            buttons: {
+                "Yes": function () {
+                    sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
+                    saveorder();
+                    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    $(top.window.document).find("#btnCloseMed").click();
+                    return false;
+                },
+                "No": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    $(top.window.document).find("#btnCloseMed").click();
+                    return false;
+                },
+                "Cancel": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    return false;
+                }
+            }
+        });
     }
     else {
         $(top.window.document).find("#btnCloseMed").click();
         if (localStorage.getItem("ProcedureQuantity") != "") {
             //CAP-1613
-            var datalist = localStorage.getItem("ProcedureQuantity")?.split('~')??"";
+            var datalist = localStorage.getItem("ProcedureQuantity")?.split('~') ?? "";
             for (var i = 0; i < datalist.length; i++) {
                 var quantity = datalist[i].split('|');
                 var orderid = quantity[1];
@@ -865,7 +865,7 @@ function closepopup() {
                 }
             }
         }
-     
+
         return false;
     }
 }
