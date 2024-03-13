@@ -21,51 +21,51 @@ function Numeric_OnKeyPress(evt) {
 }
 function closepopup() {
     if (!$('#btnsave').attr("disabled")) {
-        sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
-        saveorder();
+        //CAP-1798
+        //sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
+        //saveorder();
 
-        sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
-        return false;
-        //$("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'>" +
-        //                      "<p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
-        //dvdialog = $('#dvdialogMenu');
-        //myPos = "center center";
-        //atPos = 'center center';
-        //$(dvdialog).dialog({
-        //    modal: true,
-        //    title: "Capella EHR",
-        //    position: {
-        //        my: 'left' + " " + 'center',
-        //        at: 'center' + " " + 'center'
+        //sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+        //return false;
+        $("body").append("<div id='dvdialogMenu' style='min-height: 65px !important; width: auto; max-height: none; height: auto; display: none;'> <p style='font-family: Verdana,Arial,sans-serif; font-size: 12.5px;'>There are unsaved changes.Do you want to save them?</p></div>")
+        dvdialog = $('#dvdialogMenu');
+        myPos = "center center";
+        atPos = 'center center';
 
-        //    },
-        //    buttons: {
-        //        "Yes": function () {
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
-        //            saveorder();
-
-        //            sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
-        //            return false;
-        //        },
-        //        "No": function () {
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            $(top.window.document).find("#btnCloseMed").click();
-        //            return false;
-        //        },
-        //        "Cancel": function () {
-        //            $(dvdialog).dialog("close");
-        //            $(dvdialog).remove();
-        //            return false;
-        //        }
-        //    }
-        //});
+        $(dvdialog).dialog({
+            modal: true,
+            title: "Capella EHR",
+            position: {
+                my: myPos,
+                at: atPos
+            },
+            buttons: {
+                "Yes": function () {
+                    sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
+                    saveorder();
+                    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    $(top.window.document).find("#btnCloseMed").click();
+                    return false;
+                },
+                "No": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    $(top.window.document).find("#btnCloseMed").click();
+                    return false;
+                },
+                "Cancel": function () {
+                    $(dvdialog).dialog("close");
+                    $(dvdialog).remove();
+                    return false;
+                }
+            }
+        });
     }
     else {
         $(top.window.document).find("#btnCloseMed").click();
-      
+
         return false;
     }
 }

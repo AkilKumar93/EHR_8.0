@@ -113,6 +113,7 @@ namespace Acurus.Capella.UI
                         txtPassword.Visible = true;
                         btnSignin.Visible = true;
                         btnNext.Visible = false;
+                        divpanelsucess.Style.Add("height", "301px");
                     }
                 }
                 else

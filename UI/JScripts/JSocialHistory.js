@@ -294,6 +294,8 @@ function btnSave_Clicked(sender, args) {
         else
             window.parent.theForm.hdnSaveEnable.value = false;
         sender.set_autoPostBack(true);
+        //CAP-1811
+        $('#btnSave').trigger('click');
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}
     }
 }
