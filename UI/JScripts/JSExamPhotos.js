@@ -245,7 +245,11 @@ function btnSave_Clicked(sender, args) {
             sender.set_autoPostBack(false);
         }
 
-        else { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+        else {
+            //CAP-1811
+            $('#btnSave').trigger('click');
+            sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();
+        }
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
 
         if (document.getElementById("cboPhysicianName") != null && document.getElementById("cboPhysicianName").selectedOptions[0].innerHTML == "") {
