@@ -345,7 +345,10 @@ function btnMoveToNextProcess_Clicked() {
                 else {
                     if (localStorage.getItem('IsSaveClickedSucessfull') == null || localStorage.getItem('IsSaveClickedSucessfull') == "") {
                         ShowLoading();
-                        document.getElementById("IsClickDirectUpload").value = "Yes";
+                        //CAP-1816
+                        if ($('#grdIndexing tbody tr').length > 1) {
+                            document.getElementById("IsClickDirectUpload").value = "Yes";
+                        }
                         document.getElementById("btnSave").disabled = false;
                         $('#btnSave')[0].click();
                         document.getElementById("btnSave").disabled = true;
@@ -373,7 +376,10 @@ function btnMoveToNextProcess_Clicked() {
         }
         else {
             if (localStorage.getItem('IsSaveClickedSucessfull') == null || localStorage.getItem('IsSaveClickedSucessfull') == "") {
-                document.getElementById("IsClickDirectUpload").value = "Yes";
+                //CAP-1816
+                if ($('#grdIndexing tbody tr').length > 1) {
+                    document.getElementById("IsClickDirectUpload").value = "Yes";
+                }
                 document.getElementById("btnSave").disabled = false;
                 $('#btnSave')[0].click();
                 document.getElementById("btnSave").disabled = true;
