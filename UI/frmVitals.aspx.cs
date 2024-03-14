@@ -4396,6 +4396,25 @@ namespace Acurus.Capella.UI
                                     return;
                                 }
                             }
+                            //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                            else if (VitalName.Contains("Hgb Status"))
+                            {
+                                string hgbvalue = Request.Form["Hgb"].Trim();
+                                if (hgbvalue != string.Empty)
+                                {
+
+                                }
+                                else
+                                {
+                                    EnableDisbaleSave(true);
+                                    if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                        divLoading.Style.Add("display", "none");
+                                    else
+                                        //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "hideLoading();", true);
+                                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                                    return;
+                                }
+                            }
                             else
                             {
                                 EnableDisbaleSave(true);
@@ -4516,8 +4535,8 @@ namespace Acurus.Capella.UI
                                 //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
                                 else if (VitalName.Contains("Hgb Status"))
                                 {
-                                    string egfrvalue = Request.Form["Hgb"].Trim();
-                                    if (egfrvalue != string.Empty)
+                                    string hgbvalue = Request.Form["Hgb"].Trim();
+                                    if (hgbvalue != string.Empty)
                                     {
 
                                     }
@@ -5617,6 +5636,20 @@ namespace Acurus.Capella.UI
                                                 return;
                                             }
                                         }
+                                        //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                                        else if (vitalsObj.Loinc_Observation.Contains("Hgb Status"))
+                                        {
+                                            string hgbvalue = Request.Form["Hgb"].Trim();
+                                            if (hgbvalue == string.Empty)
+                                            {
+                                                EnableDisbaleSave(true);
+                                                if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                                    divLoading.Style.Add("display", "none");
+                                                else
+                                                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "hideLoading();", true);
+                                                return;
+                                            }
+                                        }
                                         else
                                         {
                                             EnableDisbaleSave(true);
@@ -5763,7 +5796,42 @@ namespace Acurus.Capella.UI
                                                     }
                                                 }
                                             }
-
+                                            //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                                            else if (vitalsObj.Loinc_Observation.Contains("Hgb Status"))
+                                            {
+                                                string hgbvalue = Request.Form["Hgb"].Trim();
+                                                if (hgbvalue == string.Empty)
+                                                {
+                                                    if (allEmpty == true)
+                                                    {
+                                                        //((reasonnotPerformed != null && Request.Form[reasonnotPerformed.ID].Trim() == string.Empty) || (reasonnotPerformed == null)) && 
+                                                        if (vitalsObj.Value == "" && cb != null && Request.Form[cb.ID + "$txtDLC"].Trim() == "")
+                                                        {
+                                                            vitalsObj.Modified_By = ClientSession.UserName;
+                                                            //vitalsObj.Modified_Date_And_Time = utc;
+                                                            vitalsObj.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                                                            delList.Add(vitalsObj);
+                                                            if (locVital != null)
+                                                            {
+                                                                locVital.Modified_By = ClientSession.UserName;
+                                                                //locVital.Modified_Date_And_Time = utc;
+                                                                locVital.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                                                                delList.Add(locVital);
+                                                            }
+                                                            continue;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        EnableDisbaleSave(true);
+                                                        if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                                            divLoading.Style.Add("display", "none");
+                                                        else
+                                                            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "hideLoading();", true);
+                                                        return;
+                                                    }
+                                                }
+                                            }
                                             else
                                             {
                                                 if (allEmpty == true)
@@ -6092,6 +6160,20 @@ namespace Acurus.Capella.UI
                                             return;
                                         }
                                     }
+                                    //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                                    else if (vitalsObj.Loinc_Observation.Contains("Hgb Status"))
+                                    {
+                                        string hgbvalue = Request.Form["Hgb"].Trim();
+                                        if (hgbvalue == string.Empty)
+                                        {
+                                            EnableDisbaleSave(true);
+                                            if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                                divLoading.Style.Add("display", "none");
+                                            else
+                                                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "hideLoading();", true);
+                                            return;
+                                        }
+                                    }
                                     else
                                     {
                                         EnableDisbaleSave(true);
@@ -6186,6 +6268,30 @@ namespace Acurus.Capella.UI
                                         {
                                             string egfrvalue = Request.Form["eGFR"].Trim();
                                             if (egfrvalue == string.Empty)
+                                            {
+                                                if (allEmpty)
+                                                {
+                                                    if (((cb != null && Request.Form[cb.ID + "$txtDLC"].Trim() == string.Empty) || (cb == null)))//&& ((reasonnotPerformed != null && Request.Form[reasonnotPerformed.ID].Trim() == string.Empty) || (reasonnotPerformed == null)))
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    EnableDisbaleSave(true);
+                                                    if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                                        divLoading.Style.Add("display", "none");
+                                                    else
+                                                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "hideLoading();", true);
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                                        else if (vitalsObj.Loinc_Observation.Contains("Hgb Status"))
+                                        {
+                                            string hgbvalue = Request.Form["Hgb"].Trim();
+                                            if (hgbvalue == string.Empty)
                                             {
                                                 if (allEmpty)
                                                 {
@@ -6828,6 +6934,21 @@ namespace Acurus.Capella.UI
                                                 return;
                                             }
                                         }
+                                        //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                                        else if (vitalsObj.Loinc_Observation.Contains("Hgb Status"))
+                                        {
+                                            string hgbvalue = Request.Form["Hgb"].Trim();
+                                            if (hgbvalue == string.Empty)
+                                            {
+                                                EnableDisbaleSave(true);
+                                                if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                                    divLoading.Style.Add("display", "none");
+                                                else
+                                                    ScriptManager.RegisterStartupScript(this, this.GetType(),
+                                                        string.Empty, "hideLoading();", true);
+                                                return;
+                                            }
+                                        }
                                         else
                                         {
                                             EnableDisbaleSave(true);
@@ -7292,6 +7413,20 @@ namespace Acurus.Capella.UI
                                             return;
                                         }
                                     }
+                                    //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                                    else if (vitalsObj.Loinc_Observation.Contains("Hgb Status"))
+                                    {
+                                        string hgbvalue = Request.Form["Hgb"].Trim();
+                                        if (hgbvalue == string.Empty)
+                                        {
+                                            EnableDisbaleSave(true);
+                                            if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                                divLoading.Style.Add("display", "none");
+                                            else
+                                                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "hideLoading();", true);
+                                            return;
+                                        }
+                                    }
                                     else
                                     {
                                         EnableDisbaleSave(true);
@@ -7360,6 +7495,30 @@ namespace Acurus.Capella.UI
                                         {
                                             string egfrvalue = Request.Form["eGFR"].Trim();
                                             if (egfrvalue == string.Empty)
+                                            {
+                                                if (allEmpty)
+                                                {
+                                                    if (((cb != null && Request.Form[cb.ID + "$txtDLC"].Trim() == string.Empty) || (cb == null)))// && ((reasonnotPerformed != null && Request.Form[reasonnotPerformed.ID].Trim() == string.Empty) || (reasonnotPerformed == null)))
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    EnableDisbaleSave(true);
+                                                    if (Request["openingfrom"].ToString().ToUpper() == "MENU")
+                                                        divLoading.Style.Add("display", "none");
+                                                    else
+                                                        ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "hideLoading();", true);
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                                        else if (vitalsObj.Loinc_Observation.Contains("Hgb Status"))
+                                        {
+                                            string hgbvalue = Request.Form["Hgb"].Trim();
+                                            if (hgbvalue == string.Empty)
                                             {
                                                 if (allEmpty)
                                                 {
@@ -9577,6 +9736,11 @@ namespace Acurus.Capella.UI
                         {
                             string rangeText = defValues[i].Value;
                             string[] sAge = defValues[i].Description.Split('$')[0].Split('|')[0].Split('-');
+                            //CAP-1786 - Vitals data not saved for the Genders listed as 'Unknown' and 'Undifferentiated'.
+                            if (human_Sex.ToString().Substring(0, 1).ToUpper() == "U")
+                            {
+                                break;
+                            }
                             if (human_AgeInMonths >= (Convert.ToInt64(sAge[0]) * 12) && human_AgeInMonths <= (Convert.ToInt64(sAge[1]) * 12))
                             {
                                 if (defValues[i].Description.Split('$')[0].Split('|')[1].Length == 1)
