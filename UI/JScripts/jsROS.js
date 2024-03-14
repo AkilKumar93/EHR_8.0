@@ -272,6 +272,9 @@ function lst_SelectedIndexChanged(listBoxId) {
 }
 
 function saveClientClick() {
+    //Cap - 1765
+    document.getElementById("HdnCopyButton").value = "";
+
     var btnSave = $find('btnSave');
     if (btnSave._enabled) {
         var now = new Date();
