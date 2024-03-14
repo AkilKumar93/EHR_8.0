@@ -34,7 +34,7 @@ function RadWindowClose() {
 }
 
 $(document).ready(function () {
-    document.getElementById('cboUserName').focus();
+    document.getElementById('cboLegalOrg').focus();
 });
 
 function CloseWindow() {

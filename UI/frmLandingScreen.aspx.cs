@@ -30,8 +30,9 @@ namespace Acurus.Capella.UI
             //Direct URL should be suspended
             string sUserName = string.Empty;
 
+            string sUserAccountType = ClientSession.UserAccountType ?? Request.Form["UserAccountType"] ?? string.Empty;
 
-            if (string.IsNullOrEmpty(ClientSession.UserAccountType))
+            if (string.IsNullOrEmpty(sUserAccountType))
             {
                 Response.Redirect("/frmLoginNew.aspx");
                 return;
@@ -44,7 +45,14 @@ namespace Acurus.Capella.UI
                 GenerateAccessToken(code);
             }
 
-            sUserName = ClientSession.EmailAddress;
+            if(Request.Form["AccessToken"] != null && Request.Form["AccessTokenId"] != null)
+            {
+                ClientSession.AccessToken = Request.Form["AccessToken"];
+                ClientSession.AccessTokenId = Request.Form["AccessTokenId"];
+                Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = Request.Form["AccessTokenId"] });
+            }
+
+            sUserName = ClientSession.EmailAddress ?? Request.Form["EMailAddress"] ?? string.Empty;
 
             #region Region - Login Page Load
 
@@ -187,6 +195,9 @@ namespace Acurus.Capella.UI
                         data.Add("IsFirstTimeCall", "true");
                         data.Add("DefaultServer", login[0].Default_Server);
                         data.Add("IsAllFacilities", login[0].Is_All_Facilities);
+                        data.Add("UserAccountType", ClientSession.UserAccountType);
+                        data.Add("AccessToken", ClientSession.AccessToken);
+                        data.Add("AccessTokenId", ClientSession.AccessTokenId);
                         hdnroleLanding.Value = login[0].role;
                         hdnRCopia_User_NameLanding.Value = login[0].RCopia_User_Name;
                         hdnIs_RCopia_Notification_RequiredLanding.Value = login[0].Is_RCopia_Notification_Required;
@@ -494,6 +505,7 @@ namespace Acurus.Capella.UI
             ClientSession.LocalTime = shdnLocalDateAndTime;
             ClientSession.LegalOrg = sLegalOrg;
             ClientSession.UserCarrier = sUserCarrier;
+            ClientSession.EmailAddress = sEMailAddress;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "LandingintoEHR : Start", DateTime.Now, shdnGroupId, "frmLogin");
 
             if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)

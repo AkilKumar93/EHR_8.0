@@ -286,6 +286,10 @@ namespace Acurus.Capella.UI
             if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
             {
                 login = objLoginDTO.User;
+                if (objLoginDTO.User.Count > 0)
+                {
+                    ClientSession.EmailAddress = login[0].EMail_Address;
+                }
                 //lstLookUp = objLoginDTO.lstLookUp;
             }
             //----Added By Nijanthan(17-11-15)
@@ -307,7 +311,8 @@ namespace Acurus.Capella.UI
             //Set the client session variables
             if (login != null && login.Count > 0)
             {
-                if (login[0].status == "A")
+                var isChangeMenuFlag = (System.Configuration.ConfigurationSettings.AppSettings["IsChangeMenu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsChangeMenu"].ToString() == "Y");
+                if (login[0].status == "A" && (!isChangeMenuFlag || (isChangeMenuFlag && login[0].Is_Direct_Login == "Y")))
                 {
                     if (login[0].Is_Down_Time == "Y")
                     {
@@ -802,6 +807,7 @@ namespace Acurus.Capella.UI
             ClientSession.LocalTime = shdnLocalDateAndTime;
             ClientSession.LegalOrg = sLegalOrg;
             ClientSession.UserCarrier = sUserCarrier;
+            ClientSession.EmailAddress = sEMailAddress;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "LandingintoEHR : Start", DateTime.Now, shdnGroupId, "frmLogin");
 
             if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
@@ -880,7 +886,7 @@ namespace Acurus.Capella.UI
             if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
             {
                 //login = objLoginDTO.User;
-                User objUser = new User();
+                User objUser = new User();               
                 objUser.role = sUserRole;
                 objUser.RCopia_User_Name = sRCopiaUserName;
                 objUser.Is_RCopia_Notification_Required = sIs_RCopia_Notification_Required;

@@ -25,16 +25,24 @@ $(document).ready(function () {
     var vEVProjectName = document.getElementById('hdnEvProjectName').value;
     sessionStorage.setItem("EVProjectName", vEVProjectName);
     var ReportPathhttp = document.getElementById('hdnReportPathhttp').value;
-          sessionStorage.setItem("ReportPathhttp", ReportPathhttp);
-    document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
+    sessionStorage.setItem("ReportPathhttp", ReportPathhttp);
+    if (document.getElementById('lblProduct') != undefined && document.getElementById('lblProduct') != null) {
+        document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
+    }
    //Jira - #CAP-80
     //Use localstorage insted of Sessionstorage and currently use sessionstorage also because of sessionstorage use more page
-    if (version.split('-')[1].trim() != undefined && version.split('-')[1].trim() != null){
+    if (version?.split('-')[1]?.trim() != undefined && version?.split('-')[1]?.trim() != null){
     sessionStorage.setItem("ScriptVersion", version.split('-')[1].trim());
     localStorage.setItem("ScriptVersion", version.split('-')[1].trim());
-}
-    document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
-    $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
+    }
+    if (document.getElementById('lblProduct') != undefined && document.getElementById('lblProduct') != null) {
+        document.getElementById('lblProduct').innerHTML = "EHR <span style='color:black;font-size:13px;font-weight:500;'> - " + version.replace('Capella - ', '') + "</span>";
+    }
+
+    if ($('#ulSystemMessages')[0] != undefined) {
+        $($('#ulSystemMessages')[0].parentElement).css('overflow', 'auto');
+    }
+    
     if (sessionStorage.getItem("MailClinicalCnt") != null && sessionStorage.getItem("MailClinicalCnt") != undefined)//BugID:48547
         sessionStorage.removeItem("MailClinicalCnt");
     if (sessionStorage.getItem("importCount") != null && sessionStorage.getItem("importCount") != undefined)
@@ -47,9 +55,12 @@ $(document).ready(function () {
     $('[id^=divpanelsucess]').addClass("Loginboder");
 
         
-        $('.logocolor').attr('style', sessionStorage.getItem("logocolor"));
-        sessionStorage.removeItem("logocolor");
+    $('.logocolor').attr('style', sessionStorage.getItem("logocolor"));
+    sessionStorage.removeItem("logocolor");
+    if ($('#lblProduct').val() != undefined)
+    {
         $('#lblProduct').addClass("logoEHR");
+    }
         sessionStorage.removeItem("logoEHR");
         $('#spnlogo').addClass("logoLogin");
 
