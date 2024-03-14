@@ -351,7 +351,9 @@ namespace Acurus.Capella.UI
             if (objLoginDTO != null)// objLoginDTO.lstLookUp != null)
             {
                 login = objLoginDTO.User;
+                if (objLoginDTO.User.Count > 0) {
                 ClientSession.EmailAddress = login[0].EMail_Address;
+                }
                 //lstLookUp = objLoginDTO.lstLookUp;
             }
             //----Added By Nijanthan(17-11-15)
