@@ -81,7 +81,7 @@ namespace Acurus.Capella.UI
             {
                 #region Check User In DB
                 var user = UserMngr.GetUserByEmailAddress(txtUserName.Value);
-                if (user.Count == 0 || !user.Any(x=> x.Is_Direct_Login.Equals("y", StringComparison.InvariantCultureIgnoreCase))) 
+                if (user.Count == 0) 
                 {
                     this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
                     return;

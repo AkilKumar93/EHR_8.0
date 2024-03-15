@@ -727,7 +727,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.EMail_Address= :UserName and u.status = 'A' and u.Is_Direct_Login='Y'").AddEntity("u", typeof(User));
+                ISQLQuery sql = iMySession.CreateSQLQuery("Select * from User u where u.EMail_Address= :UserName and u.status = 'A'").AddEntity("u", typeof(User));
                 sql.SetParameter("UserName", sEmailAddress);
                 UserList = sql.List<User>();
 
