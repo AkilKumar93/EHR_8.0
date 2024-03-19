@@ -27,7 +27,6 @@ namespace Acurus.Capella.UI
         {
             if (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y")
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "alert('Redirecting to frmLogin.aspx');", true);
                 Response.Redirect("frmLoginNew.aspx");
                 return;
             }

@@ -30,13 +30,10 @@ namespace Acurus.Capella.UI
             //Direct URL should be suspended
             string sUserName = string.Empty;
 
-            string sUserAccountType = ClientSession.UserAccountType ?? Request.Form["UserAccountType"] ?? string.Empty;
-
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "alert('"+ sUserAccountType + "');", true);
+            string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
 
             if (string.IsNullOrEmpty(sUserAccountType))
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "alert('User Account Type is empty.');", true);
                 Response.Redirect("/frmLoginNew.aspx");
                 return;
             }
@@ -55,7 +52,7 @@ namespace Acurus.Capella.UI
                 Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = Request.Form["AccessTokenId"] });
             }
 
-            sUserName = ClientSession.EmailAddress ?? Request.Form["EMailAddress"] ?? string.Empty;
+            sUserName = !string.IsNullOrWhiteSpace(ClientSession.EmailAddress) ? ClientSession.EmailAddress : (Request.Form["EMailAddress"] ?? string.Empty);
 
             #region Region - Login Page Load
 
@@ -84,7 +81,7 @@ namespace Acurus.Capella.UI
                 ClientSession.SavedSession = "DELETED";
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - Before Calling LandingintoEHR - Input is" + Request.Form["EHRUserName"], Request.Url.ToString(), string.Empty);
 
-                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"], Request.Form["EHRhdnLocalDate"], Request.Form["EHRhdnUniversaloffset"], Request.Form["EHRhdnLocalDateAndTime"], Request.Form["EHRhdnFollowsDayLightSavings"], Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"], Request.Form["UserAccountType"]);
+                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"], Request.Form["EHRhdnLocalDate"], Request.Form["EHRhdnUniversaloffset"], Request.Form["EHRhdnLocalDateAndTime"], Request.Form["EHRhdnFollowsDayLightSavings"], Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"]);
 
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After Calling LandingintoEHR - Input is", Request.Url.ToString(), string.Empty);
 
@@ -168,7 +165,6 @@ namespace Acurus.Capella.UI
                         if (login[0].Default_Server.Contains("frmLogin.aspx") == true)
                         {
                             login[0].Default_Server = login[0].Default_Server.Replace("frmLogin.aspx", "frmLandingScreen.aspx");
-                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "alert('default server : " + login[0].Default_Server + "')", true);
                         }
                         else
                         {
@@ -394,7 +390,6 @@ namespace Acurus.Capella.UI
             else
             {
                 Response.Redirect("/frmLoginNew.aspx");
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "alert('User not found in DB.');", true);
                 //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){window.location.href ='/frmLoginNew.aspx'}, 3000);", true);
                 return;
             }
@@ -498,7 +493,7 @@ namespace Acurus.Capella.UI
             }
         }
 
-        public string LandingintoEHR(string sUserName, string sFacilityName, string shdnLocalTime, string shdnLocalDate, string shdnUniversaloffset, string shdnLocalDateAndTime, string shdnFollowsDayLightSavings, string sUserRole, string sRCopiaUserName, string sEMailAddress, string sIs_RCopia_Notification_Required, string sPhysicianId, string sLanding_Screen_ID, string shdnGroupId, string sPersonName, string sLegalOrg, string sUserCarrier, string sIsFirstTimeCall, string sDefaultServer, string sIsAllFacilities, string sUserAccountType)
+        public string LandingintoEHR(string sUserName, string sFacilityName, string shdnLocalTime, string shdnLocalDate, string shdnUniversaloffset, string shdnLocalDateAndTime, string shdnFollowsDayLightSavings, string sUserRole, string sRCopiaUserName, string sEMailAddress, string sIs_RCopia_Notification_Required, string sPhysicianId, string sLanding_Screen_ID, string shdnGroupId, string sPersonName, string sLegalOrg, string sUserCarrier, string sIsFirstTimeCall, string sDefaultServer, string sIsAllFacilities)
         {
             UtilityManager.inserttologgingtableforSessionTimeout("LandingintoEHR API - Start - input is - " + sUserName, Request.Url.ToString(), string.Empty);
 
@@ -511,7 +506,6 @@ namespace Acurus.Capella.UI
             ClientSession.LegalOrg = sLegalOrg;
             ClientSession.UserCarrier = sUserCarrier;
             ClientSession.EmailAddress = sEMailAddress;
-            ClientSession.UserAccountType = sUserAccountType;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "LandingintoEHR : Start", DateTime.Now, shdnGroupId, "frmLogin");
 
             if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
