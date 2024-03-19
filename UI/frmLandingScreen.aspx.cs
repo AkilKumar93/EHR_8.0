@@ -32,8 +32,11 @@ namespace Acurus.Capella.UI
 
             string sUserAccountType = ClientSession.UserAccountType ?? Request.Form["UserAccountType"] ?? string.Empty;
 
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "alert('"+ sUserAccountType + "');", true);
+
             if (string.IsNullOrEmpty(sUserAccountType))
             {
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "alert('User Account Type is empty.');", true);
                 Response.Redirect("/frmLoginNew.aspx");
                 return;
             }
@@ -390,6 +393,7 @@ namespace Acurus.Capella.UI
             else
             {
                 Response.Redirect("/frmLoginNew.aspx");
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "alert('User not found in DB.');", true);
                 //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){window.location.href ='/frmLoginNew.aspx'}, 3000);", true);
                 return;
             }

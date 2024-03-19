@@ -159,6 +159,8 @@ namespace Acurus.Capella.UI
                 ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
                 ClientSession.UserAccountType = "Okta";
                 Response.Redirect($"~/frmLandingScreen.aspx", false);
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "alert('" + ClientSession.UserAccountType + "');", true);
+
             }
             else
             {
@@ -176,6 +178,7 @@ namespace Acurus.Capella.UI
                             ClientSession.EmailAddress = login[0].EMail_Address;
                             ClientSession.UserAccountType = "Okta";
                             Response.Redirect($"~/frmLandingScreen.aspx", false);
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "alert('" + ClientSession.UserAccountType + "');", true);
                         }
                         else
                         {
