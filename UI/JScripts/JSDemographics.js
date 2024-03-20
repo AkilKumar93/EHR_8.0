@@ -1357,6 +1357,8 @@ function ViewGaurantorClick(oWindow, args) {
     //CAP-1750 - Guarantor information displayed as blank in Demographics screen
     var activeAnyGuarantor = sessionStorage.getItem("ActiveAnyGuarantor");
     if (activeAnyGuarantor == true || activeAnyGuarantor == 'true') {
+        //CAP-1803 - In Demographics, warning message not received when click on Close button
+        document.getElementById(GetClientId("hdnSaveFlag")).value = true;
         document.getElementById(GetClientId("hdnBtnLoadInsurance")).click();
     }
 }
