@@ -52,7 +52,14 @@ namespace Acurus.Capella.UI
                 Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = Request.Form["AccessTokenId"] });
             }
 
+            if(sUserAccountType == "Capella")
+            {
+                sUserName = !string.IsNullOrWhiteSpace(ClientSession.UserName) ? ClientSession.UserName : (Request.Form["UserName"] ?? string.Empty);
+            }
+            else
+            {
             sUserName = !string.IsNullOrWhiteSpace(ClientSession.EmailAddress) ? ClientSession.EmailAddress : (Request.Form["EMailAddress"] ?? string.Empty);
+            }
 
             #region Region - Login Page Load
 
@@ -109,6 +116,19 @@ namespace Acurus.Capella.UI
 
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login CheckUserDetails DB call : Start", DateTime.Now, hdnGroupId.Value, "frmLogin");
 
+            if (sUserAccountType == "Capella")
+            {
+                if (ApplicationObject.scntab != null)
+                {
+                    objLoginDTO = UserMngr.CheckUserDetailsByUsername(sUserName, false);
+                    if (objLoginDTO.UserPermissionDTO != null)
+                        objLoginDTO.UserPermissionDTO.Scntab = ApplicationObject.scntab;
+                }
+                else
+                    objLoginDTO = UserMngr.CheckUserDetailsByUsername(sUserName, true);
+            }
+            else
+            {
             if (ApplicationObject.scntab != null)
             {
                 objLoginDTO = UserMngr.GetUserDetailsByOktaEmailAddress(sUserName, false);
@@ -117,6 +137,7 @@ namespace Acurus.Capella.UI
             }
             else
                 objLoginDTO = UserMngr.GetUserDetailsByOktaEmailAddress(sUserName, true);
+            }
 
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login CheckUserDetails DB call : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
 
@@ -151,7 +172,7 @@ namespace Acurus.Capella.UI
                 {
                     if (login[0].Is_Down_Time == "Y")
                     {
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('010014');", true);
+                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('010014');setTimeout(function(){ location.href = \"/frmLoginNew.aspx\";}, 5000);", true);
                         UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "Login btnOk : End", DateTime.Now, hdnGroupId.Value, "frmLogin");
 
                         return;
@@ -383,13 +404,14 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010003');", true);
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = \"/frmLoginNew.aspx\";}, 5000);", true);
                     return;
                 }
             }
             else
             {
-                Response.Redirect("/frmLoginNew.aspx");
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = \"/frmLoginNew.aspx\";}, 5000);", true);
+                //Response.Redirect("/frmLoginNew.aspx");
                 //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){window.location.href ='/frmLoginNew.aspx'}, 3000);", true);
                 return;
             }
@@ -412,7 +434,7 @@ namespace Acurus.Capella.UI
                 if (objIsActiveSession.Count == 0)
                 {
                     //ImpersonateUser
-                    if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true || Session["Default_Server"].ToString().ToUpper().Contains("FRMLANDINGSCREEN.ASPX") == true))
+                    if (Session["Default_Server"] != null && (Session["Default_Server"].ToString().ToUpper().Contains("FRMLOGIN.ASPX") == true))
                     {
                         ClientSession.SavedSession = "DELETED";
                     }

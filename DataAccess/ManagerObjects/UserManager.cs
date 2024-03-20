@@ -35,8 +35,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         LoginDTO CheckUserDetailsWithoutPassword(string UserName, Boolean bIsScnTabLoad);
         void SaveLastSuccessfulyLoginDate(string sUserName, DateTime dtLoginDate);
         LoginDTO GetUserDetailsByOktaEmailAddress(string sEmailAddress, bool bIsScnTabLoad);
-        LoginDTO CheckUserDetailsLegalOrg(string sUserName, Boolean bIsScnTabLoad);
-        IList<User> CheckLegalOrgUser(string sUserName);
+        LoginDTO CheckUserDetailsByUsername(string sUserName, Boolean bIsScnTabLoad);
+        IList<User> CheckUserWithoutPassword(string sUserName);
         IList<User> CheckImpersonateUserWithPassword(string UserName, string Password, out bool Base64Password);
         IList<User> getImpersonateUser(string sUserName, string sLegalOrg);
         LoginDTO CheckImpersonateUserDetails(string UserName, Boolean bIsScnTabLoad);
@@ -298,10 +298,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //End
             return objLoginDTO;
         }
-        public LoginDTO CheckUserDetailsLegalOrg(string sUserName, Boolean bIsScnTabLoad)
+        public LoginDTO CheckUserDetailsByUsername(string sUserName, Boolean bIsScnTabLoad)
         {
             LoginDTO objLoginDTO = new LoginDTO();
-            objLoginDTO.User = CheckLegalOrgUser(sUserName);
+            objLoginDTO.User = CheckUserWithoutPassword(sUserName);
             //Added for BugId : 34193 
             if (objLoginDTO.User.Count > 0)
             {
@@ -345,9 +345,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //End
             return objLoginDTO;
         }
-        public IList<User> CheckLegalOrgUser(string sUserName)
+        public IList<User> CheckUserWithoutPassword(string sUserName)
         {
-
 
             //To refresh the NHibernateSessionUtility
             NHibernateSessionUtility.Instance.FillInstance();

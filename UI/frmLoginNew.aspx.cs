@@ -174,13 +174,14 @@ namespace Acurus.Capella.UI
                         login = objLoginDTO.User;
                         if (objLoginDTO.User.Count > 0)
                         {
+                            ClientSession.UserName = login[0].user_name;
                             ClientSession.EmailAddress = login[0].EMail_Address;
-                            ClientSession.UserAccountType = "Okta";
+                            ClientSession.UserAccountType = "Capella";
                             Response.Redirect($"~/frmLandingScreen.aspx", false);
                         }
                         else
                         {
-                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 5000);", true);
                         }
                     }
                     else
