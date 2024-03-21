@@ -168,6 +168,8 @@ namespace Acurus.Capella.UI
 
 
                 Session["Result_Master_Id"] = 0;
+                //Cap - 1704
+                Session["Order_Id"] = 0;
                 if (Request["OrderSubmitId"] != null && Request["OrderSubmitId"] != "")
 
                     Session["Order_Id"] = Request["OrderSubmitId"];
