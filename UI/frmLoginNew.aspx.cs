@@ -27,6 +27,13 @@ namespace Acurus.Capella.UI
         UserManager UserMngr = new UserManager();
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            if (ConfigurationSettings.AppSettings["IsSSOLogin"] == null || ConfigurationSettings.AppSettings["IsSSOLogin"] == "N")
+            {
+                Response.Redirect("frmLogin.aspx");
+                return;
+            }
+
             DateTime dtStartTime = DateTime.Now;
 
             if (hdnGroupId != null && hdnGroupId.Value == "")
