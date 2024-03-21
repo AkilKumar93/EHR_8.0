@@ -357,8 +357,9 @@ function LoadcboTobacco(sender, args) {
             chkValue = false;
         //if (cboTobacco.get_attributes()._data.CheckedValue.toLowerCase() == "true" || cboTobacco.get_attributes()._data.CheckedValue.toLowerCase() == "false")
         //    chkValue = JSON.parse(cboTobacco.get_attributes()._data.CheckedValue.toLowerCase());
-        if (cboTobacco.attributes.checkedvalue.value.toLowerCase() == "true" || cboTobacco.attributes.checkedvalue.value.toLowerCase() == "false")
-            chkValue = JSON.parse(cboTobacco.attributes.checkedvalue.value.toLowerCase());
+        //CAP-1874
+        //if (cboTobacco.attributes.checkedvalue.value.toLowerCase() == "true" || cboTobacco.attributes.checkedvalue.value.toLowerCase() == "false")
+        //    chkValue = JSON.parse(cboTobacco.attributes.checkedvalue.value.toLowerCase());
         //var cboItems = cboTobacco.get_items();
         //cboTobacco.trackChanges();
         var cboItems = cboTobacco.options;
@@ -373,27 +374,27 @@ function LoadcboTobacco(sender, args) {
         for (i = 0; i < cboItems.length; i++) {
             var item = cboItems.item(i);
             //if (chkValue == "None" && (item.get_attributes()._data.Option == "Yes" || item.get_attributes()._data.Option == "No"))
-            if (chkValue == "None" && (item.attributes[1].value == "Yes" || item.attributes[1].value == "No")) {
+            if (chkValue == "None" && (item.attributes['option'].value == "Yes" || item.attributes['option'].value == "No")) {
                 ////item.hide();
                 item.style.display = "none";
             }
             else {
                 //if (item.get_attributes()._data.Option == "Yes" && chkValue == true) {
-                if (item.attributes[1].value == "Yes" && chkValue == true) {
+                if (item.attributes['option'].value == "Yes" && chkValue == true) {
                     //item.show();
                     item.style.display = "block";
                 }
                 //else if (item.get_attributes()._data.Option == "No" && chkValue == false) {
-                else if (item.attributes[1].value == "No" && chkValue == false) {
+                else if (item.attributes['option'].value == "No" && chkValue == false) {
                     //item.show();
                     item.style.display = "block";
                 }
                 //else if (item.get_attributes()._data.Option == "Yes" || item.get_attributes()._data.Option == "No")
-                else if (item.attributes[1].value == "Yes" || item.attributes[1].value == "No")
+                else if (item.attributes['option'].value == "Yes" || item.attributes['option'].value == "No")
                     //item.hide();
                     item.style.display = "none";
                 //else if (item.get_attributes()._data.Option == undefined)
-                else if (item.attributes[1].value == undefined)
+                else if (item.attributes['option'].value == undefined)
                     //item.show();
                     item.style.display = "block";
             }
