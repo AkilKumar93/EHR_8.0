@@ -188,7 +188,7 @@ namespace Acurus.Capella.UI
                         }
                         else
                         {
-                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');setTimeout(function(){ location.href = location.href;}, 3000);", true);
+                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                         }
                     }
                     else
