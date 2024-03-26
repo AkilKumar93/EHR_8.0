@@ -32,7 +32,7 @@ namespace Acurus.Capella.UI
 
             string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
 
-            //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "CheckingAlert", "alert( ClientSession.UserAccountType ="+ ClientSession.UserAccountType + " Request.Form['UserAccountType'] = "+ Request.Form["UserAccountType"] + ");", true);
+            lblCheck.InnerText = "ClientSession.UserAccountType =" + ClientSession.UserAccountType + ";Request.Form['UserAccountType'] =" + Request.QueryString["UserAccountType"] + ";";
 
             if (string.IsNullOrEmpty(sUserAccountType))
             {
