@@ -30,10 +30,9 @@ namespace Acurus.Capella.UI
             //Direct URL should be suspended
             string sUserName = string.Empty;
 
-            string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
-
-            lblCheck.InnerText = "ClientSession.UserAccountType =" + ClientSession.UserAccountType + ";Request.Form['UserAccountType'] =" + Request.QueryString["UserAccountType"] + ";";
-            return;
+            //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
+            string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.QueryString["UserAccountType"] ?? string.Empty);
+            
             if (string.IsNullOrEmpty(sUserAccountType))
             {
                 Response.Redirect("/frmLoginNew.aspx");
