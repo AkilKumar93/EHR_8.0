@@ -192,7 +192,7 @@
 	<Message number="180017" Type="OK" Text="Date of Surgery cannot be greater than Patient's DOB."></Message>
 	<Message number="180018" Type="OK" Text="Enter the Surgery Name."></Message>
 	<Message number="180019" Type="OK" Text="Please select the Surgery Date." />
-	<Message number="180020" Type="OK" Text="Please check the mandatory items, marked in red color." />
+	<Message number="180020" Type="OK" Text="Please check the mandatory items marked in red color in social history." />
 	<Message number="180021" Type="OK" Text="Downloading mandatory information; this process may take several minutes. Please wait…" />
 	<Message number="180022" Type="OK" Text="Updates waiting... Please use Utility Menu --> Batch Data Download for Downloads" />
 	<Message number="180023" Type="OK" Text="Please enter the From Date in either of the following formats: yyyy/MMM/dd or yyyy/MMM or yyyy" />
