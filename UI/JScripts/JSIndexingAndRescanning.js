@@ -238,15 +238,15 @@ function btnSave_Clicked() {
     var d = $("#cboStandingOrders");
     if (!d[0].disabled) {
         if ("" == d.val())
-            return alert("Please select any of the outstanding order or create a new one"), $("#hdnPageState").val(""), !1;
+            return alert("Please select any of the outstanding order or create a new one"), $("#hdnPageState").val(""), document.getElementById("IsClickDirectUpload").value = "No", !1; //CAP-1890
         if ("Paper Order" != d.val()) {
             var c = $("#cboLab :selected").text();
-            if ("" == c) return alert("Please select the Lab"), $("#hdnPageState").val(""), !1;
+            if ("" == c) return alert("Please select the Lab"), document.getElementById("IsClickDirectUpload").value = "No", $("#hdnPageState").val(""), !1; //CAP-1890
         }
         var so = $("#cboOrderPhysician :selected").text();
-        if ("" == so) return alert("Please select the Ordering Physician."), $("#hdnPageState").val(""), !1;
+        if ("" == so) return alert("Please select the Ordering Physician."), document.getElementById("IsClickDirectUpload").value = "No", $("#hdnPageState").val(""), !1; //CAP-1890
         var s = $("#cboPhysician :selected").text();
-        if ("" == s) return alert("Please select the Review Physician."), $("#hdnPageState").val(""), !1;
+        if ("" == s) return alert("Please select the Review Physician."), document.getElementById("IsClickDirectUpload").value = "No", $("#hdnPageState").val(""), !1; //CAP-1890
     }
 
     if ($("#tbFilesBody tr.highlight").length > 0)
@@ -346,9 +346,7 @@ function btnMoveToNextProcess_Clicked() {
                     if (localStorage.getItem('IsSaveClickedSucessfull') == null || localStorage.getItem('IsSaveClickedSucessfull') == "") {
                         ShowLoading();
                         //CAP-1816
-                        if ($('#grdIndexing tbody tr').length > 1) {
-                            document.getElementById("IsClickDirectUpload").value = "Yes";
-                        }
+                        document.getElementById("IsClickDirectUpload").value = "Yes";
                         document.getElementById("btnSave").disabled = false;
                         $('#btnSave')[0].click();
                         document.getElementById("btnSave").disabled = true;
@@ -377,9 +375,7 @@ function btnMoveToNextProcess_Clicked() {
         else {
             if (localStorage.getItem('IsSaveClickedSucessfull') == null || localStorage.getItem('IsSaveClickedSucessfull') == "") {
                 //CAP-1816
-                if ($('#grdIndexing tbody tr').length > 1) {
-                    document.getElementById("IsClickDirectUpload").value = "Yes";
-                }
+                document.getElementById("IsClickDirectUpload").value = "Yes";
                 document.getElementById("btnSave").disabled = false;
                 $('#btnSave')[0].click();
                 document.getElementById("btnSave").disabled = true;
