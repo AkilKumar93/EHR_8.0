@@ -53,6 +53,8 @@ namespace MeasureCalculator
                     pqriMeasureMngr.FillPQRIMeasureCalculator(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure);
                 else if (version == "V11")
                     pqriMeasureMngr.FillPQRIMeasureCalculatorversion11(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure);
+                else if (version == "V12")
+                    pqriMeasureMngr.FillPQRIMeasureCalculatorversion12(sLegalOrg, ulPhyID, dtFromDate, dtToDate, ilstPQRIMeasure);
 
 
             }
