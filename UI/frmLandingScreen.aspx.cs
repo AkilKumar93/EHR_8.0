@@ -218,7 +218,7 @@ namespace Acurus.Capella.UI
                         data.Add("IsFirstTimeCall", "true");
                         data.Add("DefaultServer", login[0].Default_Server);
                         data.Add("IsAllFacilities", login[0].Is_All_Facilities);
-                        data.Add("UserAccountType", ClientSession.UserAccountType);
+                        data.Add("UserAccountType", sUserAccountType);
                         data.Add("AccessToken", ClientSession.AccessToken);
                         data.Add("AccessTokenId", ClientSession.AccessTokenId);
                         hdnroleLanding.Value = login[0].role;
