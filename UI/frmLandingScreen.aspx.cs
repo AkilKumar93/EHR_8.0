@@ -63,11 +63,7 @@ namespace Acurus.Capella.UI
                 sUserName = !string.IsNullOrWhiteSpace(ClientSession.EmailAddress) ? ClientSession.EmailAddress : (Request.Form["EMailAddress"] ?? Request.QueryString["EMailAddress"] ?? string.Empty);
             }
 
-            if (string.IsNullOrWhiteSpace(sUserName))
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
-                return;
-            }
+           
 
             #region Region - Login Page Load
 
@@ -90,6 +86,12 @@ namespace Acurus.Capella.UI
                 hdnEvProjectName.Value = System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"];
             //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
+
+            if (string.IsNullOrWhiteSpace(sUserName))
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
+                return;
+            }
 
             if (Request.Form["EHRUserName"] != null) //Load Balancer - Automatic Single Sign On
             {
