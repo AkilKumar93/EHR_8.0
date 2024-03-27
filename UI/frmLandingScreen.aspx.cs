@@ -30,6 +30,13 @@ namespace Acurus.Capella.UI
             //Direct URL should be suspended
             string sUserName = string.Empty;
 
+            var code = Request.Params["code"];
+            if (!string.IsNullOrEmpty(code))
+            {
+                ClientSession.UserAccountType = "Microsoft";
+                GenerateAccessToken(code);
+            }
+
             //Jira CAP-1893
             //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
             string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
@@ -40,12 +47,12 @@ namespace Acurus.Capella.UI
                 return;
             }
 
-            var code = Request.Params["code"];
-            if (!string.IsNullOrEmpty(code))
-            {
-                //ClientSession.UserAccountType = "Microsoft";
-                GenerateAccessToken(code);
-            }
+            //var code = Request.Params["code"];
+            //if (!string.IsNullOrEmpty(code))
+            //{
+            //    //ClientSession.UserAccountType = "Microsoft";
+            //    GenerateAccessToken(code);
+            //}
 
             if(Request.Form["AccessToken"] != null && Request.Form["AccessTokenId"] != null)
             {
