@@ -40,8 +40,9 @@ namespace Acurus.Capella.UI
             //Jira CAP-1893
             //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
             string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
-            lblcheck.InnerText = $"ClientSession.UserAccountType={ClientSession.UserAccountType};Request.Form[UserAccountType]={Request.Form["UserAccountType"]};Request.QueryString[UserAccountType]={Request.QueryString["UserAccountType"]};";
-            return;
+            string msg = $"ClientSession.UserAccountType={ClientSession.UserAccountType}$Request.Form[UserAccountType]={Request.Form["UserAccountType"]}$Request.QueryString[UserAccountType]={Request.QueryString["UserAccountType"]}$code={code}$";
+            Response.SetCookie(new HttpCookie("checking") { Value = msg.ToString(), HttpOnly = false });
+
             if (string.IsNullOrEmpty(sUserAccountType))
             {
                 Response.Redirect("/frmLoginNew.aspx");
