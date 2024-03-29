@@ -870,16 +870,16 @@ namespace Acurus.Capella.UI
                     catch { }
                 }
             }
-            string CBeforeIfName = "BeforeIfLogoutVariable" + DateTime.Now.ToString("hh-mm-ss");
-            Response.SetCookie(new HttpCookie(CBeforeIfName) { Value = "UserAccountType=" + ClientSession.UserAccountType.ToString(), HttpOnly = false });
+            //string CBeforeIfName = "BeforeIfLogoutVariable" + DateTime.Now.ToString("hh-mm-ss");
+            //Response.SetCookie(new HttpCookie(CBeforeIfName) { Value = "UserAccountType=" + ClientSession.UserAccountType.ToString(), HttpOnly = false });
 
             #region Logout Microsoft SSO
             if (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y")
             {
                 if (ClientSession.UserAccountType == "Microsoft")
                 {
-                    string CName = "LogoutVariable" + DateTime.Now.ToString("hh-mm-ss");
-                    Response.SetCookie(new HttpCookie(CName) { Value = "UserAccountType="+ClientSession.UserAccountType.ToString(), HttpOnly = false });
+                    //string CName = "LogoutVariable" + DateTime.Now.ToString("hh-mm-ss");
+                    //Response.SetCookie(new HttpCookie(CName) { Value = "UserAccountType="+ClientSession.UserAccountType.ToString(), HttpOnly = false });
                     //SSO_Logout
                     var token = ClientSession.AccessToken;
                     var id_token = ClientSession.AccessTokenId;
