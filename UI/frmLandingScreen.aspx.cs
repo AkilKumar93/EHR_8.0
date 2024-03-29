@@ -41,7 +41,8 @@ namespace Acurus.Capella.UI
             //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
             string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
             string msg = $"ClientSession.UserAccountType={ClientSession.UserAccountType}$Request.Form[UserAccountType]={Request.Form["UserAccountType"]}$Request.QueryString[UserAccountType]={Request.QueryString["UserAccountType"]}$code={code}$";
-            Response.SetCookie(new HttpCookie("checking") { Value = msg.ToString(), HttpOnly = false });
+            string CName = "checking" + DateTime.Now.ToString("hh-mm-ss");
+            Response.SetCookie(new HttpCookie(CName) { Value = msg.ToString(), HttpOnly = false });
 
             if (string.IsNullOrEmpty(sUserAccountType))
             {

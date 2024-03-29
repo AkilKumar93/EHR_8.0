@@ -902,6 +902,31 @@ namespace Acurus.Capella.UI
                     request.AddParameter("token", $"{token}");
                     RestResponse response = client.ExecuteAsync(request).Result;
 
+                    //New code
+                    HttpContext.Current.Session.Abandon();
+                    try
+                    {
+
+                        HttpContext.Current.Application.Remove("user");
+                        Session["ShowAllState"] = null;
+                        Session["GeneralQShowAll"] = null;
+                        //CAP-1167
+                        Session.Clear();
+                        Session.Abandon();
+                        //CAP-1311
+                        ClientSession.FlushSession();
+                        foreach (string cookieName in Request.Cookies.AllKeys)
+                        {
+                            HttpCookie myCookie = Request.Cookies[cookieName];
+                            myCookie.Value = ""; // Clear the cookie's value
+                            myCookie.Secure = true;
+                            myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
+                            Response.Cookies.Add(myCookie); // Update the client-side cookie
+                        }
+                    }
+                    catch
+                    { }
+                    //New code end
 
                     //Redirect To Logout Page
                     Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={id_token}&post_logout_redirect_uri={postLogoutRedirectUri}", false);
