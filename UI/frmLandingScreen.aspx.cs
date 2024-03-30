@@ -29,37 +29,39 @@ namespace Acurus.Capella.UI
         {
             //Direct URL should be suspended
             string sUserName = string.Empty;
+            string sUserAccountType = string.Empty;
+            string sMSUserEmail = string.Empty;
+
             var code = Request.Params["code"];
             if (!IsPostBack)
             {
                 if (!string.IsNullOrEmpty(code))
                 {
-                    ClientSession.UserAccountType = "Microsoft";
-                    GenerateAccessToken(code);
+                    sUserAccountType = "Microsoft";
+                    sMSUserEmail = GenerateAccessToken(code);
+                }
+
+                //Jira CAP-1893
+                //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
+                if (string.IsNullOrWhiteSpace(sUserAccountType))
+                {
+                    if (Request.Form["UserAccountType"] != null && Request.Form["UserAccountType"] == "Microsoft")
+                    {
+                        sUserAccountType = "Microsoft";
                 }
                 else
                 {
-                    ClientSession.UserAccountType = string.Empty;
+                        sUserAccountType = Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty;
                 }
             }
-            //Jira CAP-1893
-            //string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? string.Empty);
-            string sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
             
+                //Remove ClientSession.UserAccountType Dependency
+                //sUserAccountType = !string.IsNullOrWhiteSpace(ClientSession.UserAccountType) ? ClientSession.UserAccountType : (Request.Form["UserAccountType"] ?? Request.QueryString["UserAccountType"] ?? string.Empty);
+
             //For Debug
             //string msg = $"ClientSession.UserAccountType={ClientSession.UserAccountType}$Request.Form[UserAccountType]={Request.Form["UserAccountType"]}$Request.QueryString[UserAccountType]={Request.QueryString["UserAccountType"]}$code={code}$sUserAccountType={sUserAccountType}$";
             //string CName = "checking" + DateTime.Now.ToString("hh-mm-ss");
             //Response.SetCookie(new HttpCookie(CName) { Value = msg.ToString(), HttpOnly = false });
-
-            if (string.IsNullOrEmpty(sUserAccountType))
-            {
-                Response.Redirect("/frmLoginNew.aspx");
-                return;
-            }
-            else
-            {
-                ClientSession.UserAccountType = sUserAccountType;
-            }
 
             //var code = Request.Params["code"];
             //if (!string.IsNullOrEmpty(code))
@@ -77,15 +79,22 @@ namespace Acurus.Capella.UI
 
             if(sUserAccountType == "Capella")
             {
-                sUserName = !string.IsNullOrWhiteSpace(ClientSession.UserName) ? ClientSession.UserName : (Request.Form["UserName"] ?? Request.QueryString["RequestedUserName"] ?? string.Empty);
+                    sUserName = (Request.Form["UserName"] ?? Request.QueryString["RequestedUserName"] ?? string.Empty);
+                    ClientSession.UserName = sUserName;
+                }
+                else
+                {
+                    sUserName = !string.IsNullOrWhiteSpace(sMSUserEmail) ? sMSUserEmail : (Request.Form["EMailAddress"] ?? Request.QueryString["EMailAddress"] ?? string.Empty);
+                    ClientSession.EmailAddress = sUserName;
+                }
             }
             else
             {
-                sUserName = !string.IsNullOrWhiteSpace(ClientSession.EmailAddress) ? ClientSession.EmailAddress : (Request.Form["EMailAddress"] ?? Request.QueryString["EMailAddress"] ?? string.Empty);
+                sUserAccountType = ClientSession.UserAccountType;
+                sUserName = ClientSession.UserAccountType == "Capella" ? ClientSession.UserName : ClientSession.EmailAddress;
             }
 
            
-
             #region Region - Login Page Load
 
             if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
@@ -108,9 +117,33 @@ namespace Acurus.Capella.UI
             //if (System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"] != null)
             //    hdnReportPathhttp.Value = System.Configuration.ConfigurationSettings.AppSettings["Reportpathhttp"];
 
+            ClientSession.LocalOffSetTime = Request.Cookies["LocalOffSetTime"]?.Value ?? Request.Form["EHRhdnLocalTime"] ??"";
+            ClientSession.LocalDate = Request.Cookies["LocalDate"]?.Value ?? Request.Form["EHRhdnLocalDate"] ?? "";
+            ClientSession.UniversalTime = Request.Cookies["UniversalTime"]?.Value ?? Request.Form["EHRhdnUniversaloffset"] ?? "";
+            ClientSession.LocalTime = Request.Cookies["LocalTime"]?.Value ?? Request.Form["EHRhdnLocalDateAndTime"] ?? "";
+            bool.TryParse(Request.Cookies["bFollows_DST"]?.Value ?? Request.Form["EHRhdnFollowsDayLightSavings"], out bool bFollows_DST);
+            ClientSession.bFollows_DST = bFollows_DST;
+
+            if (string.IsNullOrWhiteSpace(sUserAccountType))
+            {
+                if (string.IsNullOrWhiteSpace(sUserName))
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidrequest", "DisplayErrorMessage('000009');", true);
+                }
+                else
+                {
+                    Response.Redirect("/frmLoginNew.aspx");
+                }
+                return;
+            }
+            else
+            {
+                ClientSession.UserAccountType = sUserAccountType;
+            }
+
             if (string.IsNullOrWhiteSpace(sUserName))
             {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidusername", "DisplayErrorMessage('000009');", true);
                 return;
             }
 
@@ -435,13 +468,13 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
                     return;
                 }
             }
             else
             {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
                 //Response.Redirect("/frmLoginNew.aspx");
                 //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                 return;
@@ -519,6 +552,9 @@ namespace Acurus.Capella.UI
                     data.Add("IsFirstTimeCall", "false");
                     data.Add("DefaultServer", Session["Default_Server"].ToString());
                     data.Add("IsAllFacilities", ClientSession.Is_All_Facilities.ToString());
+                    data.Add("UserAccountType", ClientSession.UserAccountType);
+                    data.Add("AccessToken", ClientSession.AccessToken);
+                    data.Add("AccessTokenId", ClientSession.AccessTokenId);
 
                     //CAP-1167
                     var serverRedirectUrl = directURLUtility.GetServerRedirectURLByDirectURL(Request.QueryString["redirecturl"]?.ToString(), Session["Default_Server"].ToString());
@@ -750,7 +786,7 @@ namespace Acurus.Capella.UI
             return string.Empty;
         }
 
-        protected void GenerateAccessToken(string code)
+        protected string GenerateAccessToken(string code)
         {
             var clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             var clientSecret = ConfigurationSettings.AppSettings["okta:ClientSecret"];
@@ -784,11 +820,13 @@ namespace Acurus.Capella.UI
 
             UserInfo userInfoResponse = JsonConvert.DeserializeObject<UserInfo>(userresponse.Content);
 
-            ClientSession.EmailAddress =  userInfoResponse?.email??"";
-            ClientSession.AccessToken = myDeserializedClass?.access_token??"";
-            ClientSession.AccessTokenId = myDeserializedClass?.id_token??"";
+            //ClientSession.EmailAddress =  userInfoResponse?.email??"";
+            ClientSession.AccessToken = myDeserializedClass?.access_token ?? "";
+            ClientSession.AccessTokenId = myDeserializedClass?.id_token ?? "";
 
             Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = ClientSession.AccessTokenId });
+
+            return userInfoResponse?.email ?? "";
         }
 
         public class TokenResponse

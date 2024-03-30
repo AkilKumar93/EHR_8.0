@@ -72,14 +72,25 @@ namespace Acurus.Capella.UI
                 hdnServiceLink.Value = System.Configuration.ConfigurationSettings.AppSettings["EVServiceLink"];
             if (System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"] != null)
                 hdnEvProjectName.Value = System.Configuration.ConfigurationSettings.AppSettings["EVProjectName"];
-            ClientSession.LocalOffSetTime = hdnLocalTime.Value;
-            ClientSession.LocalDate = hdnLocalDate.Value;
-            ClientSession.UniversalTime = hdnUniversaloffset.Value;
-            ClientSession.LocalTime = hdnLocalDateAndTime.Value;
+            //ClientSession.LocalOffSetTime = hdnLocalTime.Value;
+            //ClientSession.LocalDate = hdnLocalDate.Value;
+            //ClientSession.UniversalTime = hdnUniversaloffset.Value;
+            //ClientSession.LocalTime = hdnLocalDateAndTime.Value;
+            //if (hdnFollowsDayLightSavings.Value.ToLower() == "true")
+            //    ClientSession.bFollows_DST = true;
+            //else
+            //    ClientSession.bFollows_DST = false;
+
+            var bFollows_DST = false;
             if (hdnFollowsDayLightSavings.Value.ToLower() == "true")
-                ClientSession.bFollows_DST = true;
-            else
-                ClientSession.bFollows_DST = false;
+                bFollows_DST = true;
+
+            Response.SetCookie(new HttpCookie("LocalOffSetTime") { Value = hdnLocalTime.Value, Expires = DateTime.Now.AddDays(1) });
+            Response.SetCookie(new HttpCookie("LocalDate") { Value = hdnLocalDate.Value, Expires = DateTime.Now.AddDays(1) });
+            Response.SetCookie(new HttpCookie("UniversalTime") { Value = hdnUniversaloffset.Value, Expires = DateTime.Now.AddDays(1) });
+            Response.SetCookie(new HttpCookie("LocalTime") { Value = hdnLocalDateAndTime.Value, Expires = DateTime.Now.AddDays(1) });
+            Response.SetCookie(new HttpCookie("bFollows_DST") { Value = bFollows_DST.ToString(), Expires = DateTime.Now.AddDays(1) });
+
         }
 
 
@@ -107,7 +118,7 @@ namespace Acurus.Capella.UI
                         var isEmail = Regex.IsMatch(txtUserName.Value, regexPattern);
                         if (isEmail)
                         {
-                            ClientSession.UserAccountType = "Microsoft";
+                            //ClientSession.UserAccountType = "Microsoft";
                             var redirectURL = GetOktaAuthorizationUrl(txtUserName.Value);
                             Response.Redirect(redirectURL,
                              false);
@@ -168,10 +179,11 @@ namespace Acurus.Capella.UI
                 if (response.IsSuccessStatusCode)
                 {
                     OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
-                    ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
-                    ClientSession.UserAccountType = "Okta";
+                    //ClientSession.EmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
+                    var sEmailAddress = result?._embedded?.user?.profile?.login ?? string.Empty;
+                    //ClientSession.UserAccountType = "Okta";
                     //Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Okta&EMailAddress={ClientSession.EmailAddress}", false);
-                    Server.Transfer($"~/frmLandingScreen.aspx?UserAccountType=Okta&EMailAddress={ClientSession.EmailAddress}");
+                    Server.Transfer($"~/frmLandingScreen.aspx?UserAccountType=Okta&EMailAddress={sEmailAddress}");
                 }
                 else
                 {
@@ -186,11 +198,11 @@ namespace Acurus.Capella.UI
                             login = objLoginDTO.User;
                             if (objLoginDTO.User.Count > 0)
                             {
-                                ClientSession.UserName = login[0].user_name;
-                                ClientSession.EmailAddress = login[0].EMail_Address;
-                                ClientSession.UserAccountType = "Capella";
+                                //ClientSession.UserName = login[0].user_name;
+                                //ClientSession.EmailAddress = login[0].EMail_Address;
+                                //ClientSession.UserAccountType = "Capella";
                                 //Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Capella&RequestedUserName={ClientSession.UserName}", false);
-                                Server.Transfer($"~/frmLandingScreen.aspx?UserAccountType=Capella&RequestedUserName={ClientSession.UserName}");
+                                Server.Transfer($"~/frmLandingScreen.aspx?UserAccountType=Capella&RequestedUserName={login[0].user_name}");
                             }
                             else
                             {
@@ -219,11 +231,11 @@ namespace Acurus.Capella.UI
                     login = objLoginDTO.User;
                     if (objLoginDTO.User.Count > 0)
                     {
-                        ClientSession.UserName = login[0].user_name;
-                        ClientSession.EmailAddress = login[0].EMail_Address;
-                        ClientSession.UserAccountType = "Capella";
+                        //ClientSession.UserName = login[0].user_name;
+                        //ClientSession.EmailAddress = login[0].EMail_Address;
+                        //ClientSession.UserAccountType = "Capella";
                         //Response.Redirect($"~/frmLandingScreen.aspx?UserAccountType=Capella&RequestedUserName={ClientSession.UserName}", false);
-                        Server.Transfer($"~/frmLandingScreen.aspx?UserAccountType=Capella&RequestedUserName={ClientSession.UserName}");
+                        Server.Transfer($"~/frmLandingScreen.aspx?UserAccountType=Capella&RequestedUserName={login[0].user_name}");
                     }
                     else
                     {
