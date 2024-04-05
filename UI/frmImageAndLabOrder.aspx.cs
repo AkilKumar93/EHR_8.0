@@ -5172,6 +5172,8 @@ namespace Acurus.Capella.UI
 
             }
             #endregion
+            //CAP-1885
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
 
@@ -6007,7 +6009,7 @@ namespace Acurus.Capella.UI
         protected void btnClear_Click(object sender, EventArgs e)
         {
             ClearAll(true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();};disableAutoSave();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "  {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();};disableAutoSaveNew();", true);
         }
         protected void hdnbuttonload_Click(object sender, EventArgs e)
         {

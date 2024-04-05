@@ -617,7 +617,8 @@ function MoveToNextProcessClicked(sender, args) {
 
     }
     else {
-        if ($("#hdnMovetoOrderSubmitId")[0]?.value != undefined && $("#hdnMovetoOrderSubmitId")[0]?.value != null) {
+        //CAP-1885
+        if ($("#hdnMovetoOrderSubmitId")[0]?.value != undefined && $("#hdnMovetoOrderSubmitId")[0]?.value != null && $("#hdnMovetoOrderSubmitId")[0]?.value != "") {
             event.preventDefault();
             event.stopPropagation();
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -2165,10 +2166,12 @@ function scrolify(tblAsJQueryObject, height) {
     }
 }
 //BugID:53431
-function disableAutoSave() {
+//CAP-1885
+function disableAutoSaveNew() {
     localStorage.setItem("bSave", "true");
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-    $('#btnSave')[0].disabled = true;
+    if (window?.parent?.parent?.parent?.parent?.theForm?.ctl00_C5POBody_hdnIsSaveEnable?.value != undefined)
+        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    $('#btnOrderSubmit')[0].disabled = true;
 }
 function warningmethod() {
     $("span[mand=Yes]").addClass('MandLabelstyle');
