@@ -268,26 +268,44 @@ namespace Acurus.Capella.UI
             cboPhysician.Items.Add(new RadComboBoxItem(""));
             cboPhysician.Items[0].Value = "0";
             cboPhysician.Items[0].Selected = false;
+            //CAP-1897
+            string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+            XmlDocument xmldoc = new XmlDocument();
+            if (File.Exists(strXmlFilePathTech))
+            {
+                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+            }
             for (int i = 0; i < PhyList.Count; i++)
             {
-                //Old Code
-                // string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
-                //Gitlab# 2485 - Physician Name Display Change
                 string sPhyName = string.Empty;
-                //PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
-                if (PhyList[i].PhyLastName != String.Empty)
-                    sPhyName += PhyList[i].PhyLastName;
-                if (PhyList[i].PhyFirstName != String.Empty)
+                if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0" && File.Exists(strXmlFilePathTech))
                 {
-                    if (sPhyName != String.Empty)
-                        sPhyName += "," + PhyList[i].PhyFirstName;
-                    else
-                        sPhyName += PhyList[i].PhyFirstName;
+                    XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
+                    if (xmlTec != null && xmlTec[0] != null)
+                    {
+                        sPhyName = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                    }
                 }
-                if (PhyList[i].PhyMiddleName != String.Empty)
-                    sPhyName += " " + PhyList[i].PhyMiddleName;
-                if (PhyList[i].PhySuffix != String.Empty)
-                    sPhyName += "," + PhyList[i].PhySuffix;
+                else
+                {
+                    //Old Code
+                    // string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                    //Gitlab# 2485 - Physician Name Display Change
+                    //PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                    if (PhyList[i].PhyLastName != String.Empty)
+                        sPhyName += PhyList[i].PhyLastName;
+                    if (PhyList[i].PhyFirstName != String.Empty)
+                    {
+                        if (sPhyName != String.Empty)
+                            sPhyName += "," + PhyList[i].PhyFirstName;
+                        else
+                            sPhyName += PhyList[i].PhyFirstName;
+                    }
+                    if (PhyList[i].PhyMiddleName != String.Empty)
+                        sPhyName += " " + PhyList[i].PhyMiddleName;
+                    if (PhyList[i].PhySuffix != String.Empty)
+                        sPhyName += "," + PhyList[i].PhySuffix;
+                }
                 //Old Code
                 //Telerik.Web.UI.RadComboBoxItem tempItem = new Telerik.Web.UI.RadComboBoxItem(PhyList[i].Category.ToString() + " - " + sPhyName);//Instead of PhyUserList.UserList[i].username;
                 //Gitlab# 2485 - Physician Name Display Change
@@ -402,27 +420,44 @@ namespace Acurus.Capella.UI
                 //PhyUserList = objPhysicianManager.GetPhysicianandUser(false, string.Empty);
                 IList<PhysicianLibrary> PhyList = UtilityManager.GetPhysicianList(string.Empty, ClientSession.LegalOrg);               
                 IList<string> tempPhyList = templist.Where(a => a.Category.ToUpper() == "MACHINE").Select(a => a.PhyPrefix + " " + a.PhyFirstName + " " + a.PhyMiddleName + " " + a.PhyLastName + " " + a.PhySuffix).ToList<string>();
+                //CAP-1897
+                string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                XmlDocument xmldoc = new XmlDocument();
+                if (File.Exists(strXmlFilePathTech))
+                {
+                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                }
                 int j = 1;
                 for (int i = 0; i < PhyList.Count; i++)
                 {
-                    //Old Code
-                    //string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
-                    //Gitlab# 2485 - Physician Name Display Change
                     string sPhyName = string.Empty;
-                    if (PhyList[i].PhyLastName != String.Empty)
-                        sPhyName += PhyList[i].PhyLastName;
-                    if (PhyList[i].PhyFirstName != String.Empty)
+                    if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0" && File.Exists(strXmlFilePathTech))
                     {
-                        if (sPhyName != String.Empty)
-                            sPhyName += "," + PhyList[i].PhyFirstName;
-                        else
-                            sPhyName += PhyList[i].PhyFirstName;
+                        XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
+                        if (xmlTec != null && xmlTec[0] != null)
+                        {
+                            sPhyName = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                        }
                     }
-                    if (PhyList[i].PhyMiddleName != String.Empty)
-                        sPhyName += " " + PhyList[i].PhyMiddleName;
-                    if (PhyList[i].PhySuffix != String.Empty)
-                        sPhyName += "," + PhyList[i].PhySuffix;
-
+                    else
+                    {
+                        //Old Code
+                        //string sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName + " " + PhyList[i].PhySuffix;
+                        //Gitlab# 2485 - Physician Name Display Change
+                        if (PhyList[i].PhyLastName != String.Empty)
+                            sPhyName += PhyList[i].PhyLastName;
+                        if (PhyList[i].PhyFirstName != String.Empty)
+                        {
+                            if (sPhyName != String.Empty)
+                                sPhyName += "," + PhyList[i].PhyFirstName;
+                            else
+                                sPhyName += PhyList[i].PhyFirstName;
+                        }
+                        if (PhyList[i].PhyMiddleName != String.Empty)
+                            sPhyName += " " + PhyList[i].PhyMiddleName;
+                        if (PhyList[i].PhySuffix != String.Empty)
+                            sPhyName += "," + PhyList[i].PhySuffix;
+                    }
 
                     if (!tempPhyList.Contains(sPhyName))
                     {
