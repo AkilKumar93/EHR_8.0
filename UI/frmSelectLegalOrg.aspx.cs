@@ -73,6 +73,8 @@ namespace Acurus.Capella.UI
         protected void btnOk_Click(object sender, EventArgs e)
         {
             ClientSession.FacilityName = cboFacilityName.Value;
+            //CAP-1911
+            Response.SetCookie(new HttpCookie("CFacilityName") { Value = ClientSession.FacilityName.ToString(), HttpOnly = false });
             ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "{RadWindowClose();changeReload();}", true);
         }
         protected void btnClose_Click(object sender, EventArgs e)
