@@ -784,7 +784,9 @@ function OpenModal(data) {
         $(top.window.document).find("#TabmdldlgEFax")[0].style.position = "";
         $(top.window.document).find("#TabmdldlgEFax")[0].style.marginLeft = "";
         var sPath = ""
-        sPath = "htmlEFAXTabs.html";
+        //Cap - 1918
+        //sPath = "htmlEFAXTabs.html";
+        sPath = "htmlEFAXTabs.html?version=" + sessionStorage.getItem("ScriptVersion");
         $(top.window.document).find("#TabEFaxFrame")[0].style.height = "500px";
         $(top.window.document).find("#TabEFaxFrame")[0].contentDocument.location.href = sPath;
         $(top.window.document).find("#TabFax").one("hidden.bs.modal", function (e) {
@@ -2848,6 +2850,18 @@ function loadMailClinicalInfoCount() {
 }
 
 $(document).ready(function () {
+    //CAP-1840 and CAP-1841 and CAP-1846 - Start
+    if (document.URL.indexOf("frmPatientchart.aspx?") > -1 && document.URL.indexOf("ScreenMode=Menu") > -1) {
+        
+        $($("#trmaintab nav")[0]).remove();
+        $("#trmaintab td")[0].classList.add("navstyle");
+        $("#trmaintab td")[0].innerHTML = "<label style='color:White;'>Screen opened for reference only. Kindly close.</label>";
+        $("#trmaintab td")[0].style.textAlign = "center";
+
+        $($("#trgeneral nav ul")[0]).remove();
+        $("#trgeneral").remove();
+    }
+    //CAP-1840 and CAP-1841 and CAP-1846 - End
     $('li  div').addClass('navhover');
     $("#falogout").css("display", "block");
     //CAP-1506 & CAP-1507 & CAP-1509
