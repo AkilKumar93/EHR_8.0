@@ -5194,9 +5194,14 @@ namespace Acurus.Capella.UI
                 hdnMovetoOrderSubmitId.Value = string.Empty;
 
             }
+            else
+            {
+                //CAP-1885
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "AlertMsg", "alert('Please update the order before click on Move to next Process.');", true);
+            }
             #endregion
             //CAP-1885
-            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "StopLoad", "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
 
 
