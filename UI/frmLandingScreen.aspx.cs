@@ -127,7 +127,7 @@ namespace Acurus.Capella.UI
             //CAP-1922
             if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
             {
-                var redirectURL = directURLUtility.GetServerRedirectURLByDirectURL(Request.Form["RedirectURL"], Request.Form["DefaultServer"]);
+                var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(Request.Form["RedirectURL"], Request.Form["DefaultServer"]);
                 Response.SetCookie(new HttpCookie("RedirectUri") { Value = redirectURL, Expires = DateTime.Now.AddDays(1) });
             }
 

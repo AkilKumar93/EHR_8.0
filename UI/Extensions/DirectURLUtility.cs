@@ -35,6 +35,23 @@ namespace Acurus.Capella.UI.Extensions
             return serverRedirectUrl;
         }
 
+        public string GetDomainSpecificRedirectURL(string redirecturl, string default_server)
+        {
+            var serverRedirectUrl = redirecturl;
+            if (!string.IsNullOrEmpty(redirecturl))
+            {
+                var returnURL = HttpUtility.UrlDecode(redirecturl);
+                var defaultServerHost = new Uri(default_server);
+                var returnUrlHost = new Uri(returnURL);
+                if (defaultServerHost.Authority != returnUrlHost.Authority)
+                {
+                    serverRedirectUrl = defaultServerHost.Scheme + "://" + defaultServerHost.Authority + returnUrlHost.PathAndQuery;
+                }
+            }
+
+            return serverRedirectUrl;
+        }
+
         public static bool IsValidRedirectUrlForLogin(string currentURL)
         {
             var encounterUrlPattern = @"^https?://[^/]+/frmPatientChart\.aspx\?EncounterID=\d+$";
