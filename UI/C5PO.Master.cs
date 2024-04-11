@@ -34,6 +34,10 @@ namespace Acurus.Capella.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (System.Configuration.ConfigurationManager.AppSettings["IsOpenPatientChart"] != null)
+            {
+                hdnIsOpenPatientChart.Value = System.Configuration.ConfigurationManager.AppSettings["IsOpenPatientChart"].ToString();
+            }
             string SystemTime = string.Empty;
             if (this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMMYQUEUE") == true || this.Page.AppRelativeVirtualPath.ToUpper().Contains("FRMPATIENTCHART") == true)
             {
