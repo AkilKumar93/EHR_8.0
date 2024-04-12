@@ -66,6 +66,7 @@
                         <td style="width: 10%;">
                              <asp:Button ID="btnLogin" runat="server" CssClass="btn btn-primary" OnClick="btnLogin_Click"
                     Text="Click here to Login" Visible="false" style="display:none;"/>
+                            <button id="btnRefresh" class="btn btn-primary" onclick="RefreshPage()" style="display:none;">Click here to Refresh</button>
                         </td>
                         <td style="width: 40%;"></td>
                     </tr>
@@ -80,12 +81,20 @@
             //CAP-1866 - User login during error messages [ZDT# 164835]
             if (window.top.location.pathname.indexOf('ErrorPage.aspx') > 0) {
                 $('#btnLogin').css("display", "block");
+                $('#btnRefresh').css("display", "none");
+            } else {
+                $('#btnLogin').css("display", "none");
+                $('#btnRefresh').css("display", "block");
             }
             jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading .bg').height('100%');
             jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').fadeOut(300);
             jQuery(top.window.parent.parent.parent.parent.document.body).css('cursor', 'default');
             if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block')
                 jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').remove();
+        }
+        //CAP-1866 - User login during error messages [ZDT# 164835]
+        function RefreshPage() {
+            window.top.location.reload();
         }
     </script>
 </body>
