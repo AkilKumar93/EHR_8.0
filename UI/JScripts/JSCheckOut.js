@@ -10,8 +10,13 @@
 	    {
 	        GetRadWindow().close();
 	        { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }//BugID:53790
-	        top.window.setTimeout(function () {
-	            window.top.location.href = "frmMyQueueNew.aspx";
+            top.window.setTimeout(function () {
+                //Jira CAP-1368
+	            //window.top.location.href = "frmMyQueueNew.aspx";
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (top?.window?.$("#RefreshQ")[0] != undefined && top?.window?.$("#RefreshQ")[0] != null) {
+                    top.window.$("#RefreshQ").click();
+                }
 	        }, 5000);
 	    }
 

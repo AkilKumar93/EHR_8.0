@@ -2851,7 +2851,7 @@ function loadMailClinicalInfoCount() {
 
 $(document).ready(function () {
     //CAP-1840 and CAP-1841 and CAP-1846 - Start
-    if (document.getElementById("ctl00_hdnIsOpenPatientChart").value == "Y" && document.URL.indexOf("frmPatientchart.aspx?") > -1 && document.URL.indexOf("ScreenMode=Menu") > -1) {
+    if (document.getElementById("ctl00_hdnIsOpenPatientChart")?.value != null && document.getElementById("ctl00_hdnIsOpenPatientChart")?.value != undefined && document.getElementById("ctl00_hdnIsOpenPatientChart").value == "Y" && document.URL.indexOf("frmPatientchart.aspx?") > -1 && document.URL.indexOf("ScreenMode=Menu") > -1) {
         
         $($("#trmaintab nav")[0]).remove();
         $("#trmaintab td")[0].classList.add("navstyle");
