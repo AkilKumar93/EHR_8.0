@@ -6225,7 +6225,12 @@ namespace Acurus.Capella.UI
                     //Jira CAP-1807
                     if (foundItem == null)
                     {
-                        foundItem = chklstFrequentlyUsedProcedures.Items.FindByText(ProceduresViewList[i].Split('~')[0].Replace("x______", "") + "x___" + ProceduresViewList[i].Split('~')[1].Split('|')[0] + "___");
+                        //Jira CAP-1937
+                        if (ProceduresViewList[i].Contains('~'))
+                        {
+                            foundItem = chklstFrequentlyUsedProcedures.Items.FindByText(ProceduresViewList[i].Split('~')[0].Replace("x______", "") + "x___" + ProceduresViewList[i].Split('~')[1].Split('|')[0] + "___");
+
+                        }
                     }
                     if (foundItem != null)
                     {
