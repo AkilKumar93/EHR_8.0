@@ -961,7 +961,7 @@ function SuccessFn(data) {
                 $(rows[i]).removeClass('displayNone');
         }
 
-    }
+    }    
     if (currentprocess != "SCRIBE_PROCESS" && currentprocess != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess != "DICTATION_REVIEW" && currentprocess != "CODER_REVIEW_CORRECTION" && currentprocess != "PROVIDER_PROCESS" && currentprocess != "MA_REVIEW" && currentprocess != "MA_PROCESS" && currentprocess != "PROVIDER_REVIEW_CORRECTION" && currentprocess != "") {
         $('#btnSave')[0].disabled = true;
         $('#btnClearAll')[0].disabled = true;
@@ -977,6 +977,9 @@ function SuccessFn(data) {
         $('#divHistoryProblem ').find('select').prop('disabled', true);
         $('#chkSelectAllYes')[0].disabled = true;
         $('#chkSelectAllNo')[0].disabled = true;
+        //CAP-1882
+        $('#cboSourceOfInformation', window.parent.document).prop("disabled", true);
+        $('#btnPFSHVerified', window.parent.document).prop("disabled", true);
     }
     top.window.document.getElementById('ctl00_Loading').style.display = 'none';
 }
