@@ -719,13 +719,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 trans.Rollback();
                 // MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
 
             finally
@@ -860,13 +862,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     trans.Rollback();
                     // MySession.Close();
-                    throw new Exception(ex.Message);
+                    //CAP-1942
+                    throw new Exception(ex.Message,ex);
                 }
                 catch (Exception e)
                 {
                     trans.Rollback();
                     //MySession.Close();
-                    throw new Exception(e.Message);
+                    //CAP-1942
+                    throw new Exception(e.Message,e);
                 }
 
                 finally
@@ -1358,8 +1362,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     }
                                     catch (Exception ex1)
                                     {
-
-                                        throw new Exception(ex1.Message);
+                                        //CAP-1942
+                                        throw new Exception(ex1.Message,ex1);
                                     }
                                 }
                                 catch (Exception xmlexcep)
@@ -4293,13 +4297,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         trans.Rollback();
                         // MySession.Close();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
                         //MySession.Close();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
 
                     finally
@@ -4311,7 +4317,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
         }
 
@@ -9633,13 +9640,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         trans.Rollback();
                         // MySession.Close();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
                         //MySession.Close();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -9651,7 +9660,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
 
 
@@ -9801,13 +9811,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 trans.Rollback();
                 // MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             finally
             {
@@ -10019,13 +10031,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 trans.Rollback();
                 // MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             finally
             {
@@ -10278,8 +10292,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 catch (Exception ex1)
                 {
-
-                    throw new Exception(ex1.Message);
+                    //CAP-1942
+                    throw new Exception(ex1.Message,ex1);
                 }
             }
 
@@ -11587,13 +11601,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         trans.Rollback();
                         // MySession.Close();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
                         //MySession.Close();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
 
                     finally
@@ -11606,7 +11622,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
             return EncList[0].Id;
         }
@@ -12117,13 +12134,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             trans.Rollback();
                             // MySession.Close();
-                            throw new Exception(ex.Message);
+                            //CAP-1942
+                            throw new Exception(ex.Message,ex);
                         }
                         catch (Exception e)
                         {
                             trans.Rollback();
                             //MySession.Close();
-                            throw new Exception(e.Message);
+                            //CAP-1942
+                            throw new Exception(e.Message,e);
                         }
 
                         finally
@@ -12136,7 +12155,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 catch (Exception ex1)
                 {
                     //MySession.Close();
-                    throw new Exception(ex1.Message);
+                    //CAP-1942
+                    throw new Exception(ex1.Message,ex1);
                 }
                 //return EncList[0].Id;
                 #endregion
@@ -15810,8 +15830,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     catch (Exception ex1)
                     {
-
-                        throw new Exception(ex1.Message);
+                        //CAP-1942
+                        throw new Exception(ex1.Message,ex1);
                     }
 
                 }
@@ -17438,7 +17458,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
                 {
                     return "ERROR~" + Convert.ToString(ex.InnerException.Message).Replace(Environment.NewLine, string.Empty);
                 }
-
+                //CAP-1942
                 return "ERROR~" + Convert.ToString(ex.Message).Replace(Environment.NewLine, string.Empty);
             }
         }
@@ -17904,13 +17924,15 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
             {
                 trans.Rollback();
                 // MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
 
             finally

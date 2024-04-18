@@ -321,7 +321,8 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in base64Encode" + ex.Message);
+                //CAP-1942
+                throw new Exception("Error in base64Encode" + ex.Message,ex);
             }
         }
 

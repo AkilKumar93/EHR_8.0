@@ -307,7 +307,8 @@ namespace Acurus.Capella.UI
             catch (Exception ex)
             {
                 Filelst.Clear();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
 
 

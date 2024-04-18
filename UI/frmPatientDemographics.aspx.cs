@@ -5808,7 +5808,8 @@ namespace Acurus.Capella.UI
             }
             catch (Exception xmlexcep)
             {
-                throw new Exception(xmlexcep.Message.ToString());
+                //CAP-1942
+                throw new Exception(xmlexcep.Message.ToString(),xmlexcep);
 
                 //trycount++;
                 //if (trycount <= 3)

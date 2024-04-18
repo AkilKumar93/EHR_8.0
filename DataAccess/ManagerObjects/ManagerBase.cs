@@ -267,13 +267,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 trans.Rollback();
                 // MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             finally
             {
@@ -300,13 +302,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 trans.Rollback();
                 // MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             finally
             {
@@ -332,13 +336,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 trans.Rollback();
                 // MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             finally
             {
@@ -364,13 +370,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 trans.Rollback();
                 // MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             finally
             {
@@ -535,7 +543,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 trans.Rollback();
                                 //session.Close();
-                                throw new Exception(ex.Message);
+                                //CAP-1942
+                                throw new Exception(ex.Message,ex);
                             }
                         }
 
@@ -552,14 +561,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             //}
                             trans.Rollback();
                             //session.Close();
-                            throw new Exception(ex.Message);
+                            //CAP-1942
+                            throw new Exception(ex.Message,ex);
                         }
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
                         //MySession.Close();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -570,7 +581,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //session.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
         }
 
@@ -652,12 +664,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (excep.Number == 1213)
                     {
                         iResult = 2;
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     else
                     {
                         iResult = 1;
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                 }
                 else
@@ -677,7 +691,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     iResult = 1;
                     if (trans != null)
                         trans.Rollback();
-                    throw new Exception(ex.Message);
+                    //CAP-1942
+                    throw new Exception(ex.Message,ex);
                 }
             }
             catch (Exception ep)
@@ -685,7 +700,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 iResult = 1;
                 if (trans != null)
                     trans.Rollback();
-                throw new Exception(ep.Message);
+                //CAP-1942
+                throw new Exception(ep.Message,ep);
             }
             finally
             {
@@ -1751,11 +1767,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         }
                                         catch (XmlException xmlexcep)
                                         {
-                                            throw new Exception(xmlexcep.Message);
+                                            //CAP-1942
+                                            throw new Exception(xmlexcep.Message,xmlexcep);
                                         }
                                         catch (IOException ex)
                                         {
-                                            throw new Exception(ex.Message);
+                                            //CAP-1942
+                                            throw new Exception(ex.Message,ex);
                                         }
                                     }
                                     trans.Commit();
@@ -1967,25 +1985,29 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             else
                             {
                                 trans.Rollback();
-                                throw new Exception(ex.Message);
+                                //CAP-1942
+                                throw new Exception(ex.Message,ex);
                             }
                         }
 
                         else
                         {
                             trans.Rollback();
-                            throw new Exception(ex.Message);
+                            //CAP-1942
+                            throw new Exception(ex.Message,ex);
                         }
                     }
                     catch (SoapException e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -1998,7 +2020,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             {
                 //CAP-790 - Object reference not set to an instance of an object.
                 if (string.IsNullOrEmpty(ex1?.Message))
-                    throw new Exception(ex1.Message);
+                    //CAP-1942
+                    throw new Exception(ex1.Message,ex1);
             }
         }
 
@@ -2313,12 +2336,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (excep.Number == 1213)
                     {
                         iResult = 2;
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     else
                     {
                         iResult = 1;
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                 }
                 else
@@ -2326,20 +2351,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     iResult = 1;
                     if (trans != null)
                         trans.Rollback();
-                    throw new Exception(ex.Message);
+                    //CAP-1942
+                    throw new Exception(ex.Message,ex);
                 }
             }
             catch (SoapException e)
             {
                 trans.Rollback();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             catch (Exception ep)
             {
                 iResult = 1;
                 if (trans != null)
                     trans.Rollback();
-                throw new Exception(ep.Message);
+                //CAP-1942
+                throw new Exception(ep.Message,ep);
             }
             finally
             {
@@ -2830,7 +2858,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message + " " + ex.StackTrace);
+                    //CAP-1942
+                    throw new Exception(ex.Message + " " + ex.StackTrace,ex);
                 }
             }
             else
@@ -3215,21 +3244,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         trans.Rollback();
                         //session.Close();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                 }
                 else
                 {
                     trans.Rollback();
                     //session.Close();
-                    throw new Exception(ex.Message);
+                    //CAP-1942
+                    throw new Exception(ex.Message,ex);
                 }
             }
             catch (Exception e)
             {
                 trans.Rollback();
                 //MySession.Close();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             finally
             {

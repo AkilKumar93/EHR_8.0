@@ -125,12 +125,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 catch (NHibernate.Exceptions.GenericADOException ex)
                 {
                     trans.Rollback();
-                    throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message, ex);
                 }
                 catch (Exception e)
                 {
                     trans.Rollback();
-                    throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -212,12 +214,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 catch (NHibernate.Exceptions.GenericADOException ex)
                 {
                     trans.Rollback();
-                    throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message, ex);
                 }
                 catch (Exception e)
                 {
                     trans.Rollback();
-                    throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message, e);
                 }
                 finally
                 {
@@ -591,12 +595,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (NHibernate.Exceptions.GenericADOException ex)
             {
                 trans.Rollback();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message, ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message, e);
             }
             finally
             {
@@ -724,12 +730,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (NHibernate.Exceptions.GenericADOException ex)
             {
                 trans.Rollback();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message, ex);
             }
             catch (Exception e)
             {
                 trans.Rollback();
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message, e);
             }
             finally
             {

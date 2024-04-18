@@ -502,12 +502,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message, ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message, e);
                     }
                     finally
                     {
@@ -519,7 +521,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
             return iResult;
         }
@@ -606,13 +609,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         trans.Rollback();
                         // MySession.Close();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception ex)
                     {
                         trans.Rollback();
                         //MySession.Close();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     finally
                     {
@@ -624,7 +629,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message, ex1);
             }
         }
         public int SaveUpdateEandMCodingICD(IList<EandMCodingICD> SaveList, IList<EandMCodingICD> UpdateList, string MACAddress)
@@ -697,12 +703,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message, ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message, e);
                     }
                     finally
                     {
@@ -714,7 +722,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message, ex1);
             }
             return iResult;
         }
@@ -893,12 +902,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message, ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -909,7 +920,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex)
             {
                 //MySession.Close();
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message, ex);
             }
         }
         public FillEandMCoding LoadEandMCodingForDuplicateCheck(ulong ulEncID)
@@ -3710,12 +3722,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -3725,7 +3739,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message, ex);
             }
             //bugid:x6modifier//WISH FIX .. BugID:45392
             //Load Data from XML
@@ -4705,12 +4720,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -4720,7 +4737,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
             //bugid:x6modifier//WISH FIX .. BugID:45392
             //Load Data from XML
