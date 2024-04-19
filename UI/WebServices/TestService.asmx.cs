@@ -89,7 +89,8 @@ namespace Acurus.Capella.UI.WebServices
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
 
         }

@@ -368,11 +368,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                             catch (XmlException xmlexcep)
                             {
-                                throw new Exception(xmlexcep.Message);
+                                //CAP-1942
+                                throw new Exception(xmlexcep.Message,xmlexcep);
                             }
                             catch (IOException ex)
                             {
-                                throw new Exception(ex.Message);
+                                //CAP-1942
+                                throw new Exception(ex.Message,ex);
                             }
                         }
                         else
@@ -383,12 +385,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -398,7 +402,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             catch (Exception ex1)
             {
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
             // if (saveList.Count > 0)
             // {
@@ -794,11 +799,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                             catch (XmlException xmlexcep)
                             {
-                                throw new Exception(xmlexcep.Message);
+                                //CAP-1942
+                                throw new Exception(xmlexcep.Message,xmlexcep);
                             }
                             catch (IOException ex)
                             {
-                                throw new Exception(ex.Message);
+                                //CAP-1942
+                                throw new Exception(ex.Message,ex);
                             }
                         }
                         else
@@ -810,12 +817,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -825,7 +834,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             catch (Exception ex1)
             {
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
             //if (updtList.Count > 0)
             //{
@@ -1303,22 +1313,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         }
                         catch (XmlException xmlexcep)
                         {
-                            throw new Exception(xmlexcep.Message);
+                            //CAP-1942
+                            throw new Exception(xmlexcep.Message,xmlexcep);
                         }
                         catch (IOException ex)
                         {
-                            throw new Exception(ex.Message);
+                            //CAP-1942
+                            throw new Exception(ex.Message,ex);
                         }
                     }
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -1329,7 +1343,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
             //  GenerateXml XMLObj = new GenerateXml();
             //  if (delList.Count > 0)
@@ -1838,12 +1853,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                   catch (NHibernate.Exceptions.GenericADOException ex)
                   {
                       trans.Rollback();
-                      throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                   }
                   catch (Exception e)
                   {
                       trans.Rollback();
-                      throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                   }
                   finally
                   {
@@ -1853,7 +1870,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
           }
           catch (Exception ex1)
           {
-              throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
           }
           return (object)referralOrderList[0].Referral_Order_Group_ID;
       }

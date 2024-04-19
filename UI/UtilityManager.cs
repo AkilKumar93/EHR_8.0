@@ -2930,16 +2930,18 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        throw new Exception(xmlexcep.Message);
+                        //CAP-1942
+                        throw new Exception(xmlexcep.Message,xmlexcep);
                     }
                 }
             }
             catch (Exception ex)
             {
+                //CAP-1942
                 if (ex.InnerException != null && ex.InnerException.Message != null)
-                    throw new Exception("The Network Path is not reachable. Please contact System Administrator. The Network Path is: " + System.Configuration.ConfigurationManager.AppSettings["UserSessionFolderPath"].ToString() + "." + Environment.NewLine + ex.InnerException.Message + ".");
+                    throw new Exception("The Network Path is not reachable. Please contact System Administrator. The Network Path is: " + System.Configuration.ConfigurationManager.AppSettings["UserSessionFolderPath"].ToString() + "." + Environment.NewLine + ex.InnerException.Message + ex +".");
                 else
-                    throw new Exception("The Network Path is not reachable. Please contact System Administrator. The Network Path is: " + System.Configuration.ConfigurationManager.AppSettings["UserSessionFolderPath"].ToString() + "." + Environment.NewLine + ex.Message + ".");
+                    throw new Exception("The Network Path is not reachable. Please contact System Administrator. The Network Path is: " + System.Configuration.ConfigurationManager.AppSettings["UserSessionFolderPath"].ToString() + "." + Environment.NewLine + ex.Message + ex + ".");
 
                 //Ping pinger = null;
                 //pinger = new Ping();
@@ -3004,16 +3006,18 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        throw new Exception(xmlexcep.Message);
+                        //CAP-1942
+                        throw new Exception(xmlexcep.Message,xmlexcep);
                     }
                 }
             }
             catch (Exception ex)
             {
+                //CAP-1942
                 if (ex.InnerException != null && ex.InnerException.Message != null)
-                    throw new Exception("The Network Path is not reachable. Please contact System Administrator. The Network Path is: " + System.Configuration.ConfigurationManager.AppSettings["UserSessionFolderPath"].ToString() + "." + Environment.NewLine + ex.InnerException.Message + ".");
+                    throw new Exception("The Network Path is not reachable. Please contact System Administrator. The Network Path is: " + System.Configuration.ConfigurationManager.AppSettings["UserSessionFolderPath"].ToString() + "." + Environment.NewLine + ex.InnerException.Message + ex + ".");
                 else
-                    throw new Exception("The Network Path is not reachable. Please contact System Administrator. The Network Path is: " + System.Configuration.ConfigurationManager.AppSettings["UserSessionFolderPath"].ToString() + "." + Environment.NewLine + ex.Message + ".");
+                    throw new Exception("The Network Path is not reachable. Please contact System Administrator. The Network Path is: " + System.Configuration.ConfigurationManager.AppSettings["UserSessionFolderPath"].ToString() + "." + Environment.NewLine + ex.Message + ex + ".");
 
 
                 //Ping pinger = null;
@@ -3100,7 +3104,8 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        throw new Exception(xmlexcep.Message);
+                        //CAP-1942
+                        throw new Exception(xmlexcep.Message,xmlexcep);
                     }
                 }
             }
@@ -4407,8 +4412,8 @@ namespace Acurus.Capella.UI
             }
             catch (Exception Ex)
             {
-
-                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+                //CAP-1942
+                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException,Ex);
             }
 
         }
@@ -4502,7 +4507,11 @@ namespace Acurus.Capella.UI
                                 }
                             }
                         }
-                        catch (Exception e) { sResult = e.Message; }
+                        catch (Exception e) 
+                        {
+                            //CAP-1942
+                            sResult = e.Message + e;
+                        }
 
                     }
                     else
@@ -4621,7 +4630,8 @@ namespace Acurus.Capella.UI
             }
             catch (Exception ex)
             {
-                sResult = "ERROR: " + ex.Message + " STACKTRACE: " + ex.StackTrace;
+                //CAP-1942
+                sResult = "ERROR: " + ex.Message + " STACKTRACE: " + ex.StackTrace + ex;
 
             }
             return sResult;
@@ -4790,14 +4800,19 @@ namespace Acurus.Capella.UI
                             {
                                 DBTransaction.Rollback();
                                 isInserted = false;
-                                throw new Exception(e.Message);
+                                //CAP-1942
+                                throw new Exception(e.Message,e);
                             }
                             finally { }
                         }
                     }
                 }
             }
-            catch (Exception e) { throw new Exception(e.Message); }
+            catch (Exception e) 
+            {
+                //CAP-1942
+                throw new Exception(e.Message,e);
+            }
 
             return isInserted;
         }
@@ -4839,14 +4854,19 @@ namespace Acurus.Capella.UI
                             {
                                 DBTransaction.Rollback();
                                 isInserted = false;
-                                throw new Exception(e.Message);
+                                //CAP-1942
+                                throw new Exception(e.Message,e);
                             }
                             finally { }
                         }
                     }
                 }
             }
-            catch (Exception e) { throw new Exception(e.Message); }
+            catch (Exception e) 
+            {
+                //CAP-1942
+                throw new Exception(e.Message,e);
+            }
 
             return isInserted;
         }
@@ -4880,7 +4900,8 @@ namespace Acurus.Capella.UI
                             {
                                 DBTransaction.Rollback();
                                 isInserted = false;
-                                throw new Exception(e.Message);
+                                //CAP-1942
+                                throw new Exception(e.Message,e);
                             }
                             finally { }
                         }
@@ -4889,7 +4910,8 @@ namespace Acurus.Capella.UI
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
 
             return isInserted;
@@ -4925,7 +4947,8 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception(status + " " + ex.Message + "  " + ex.InnerException);
+                        //CAP-1942
+                        throw new Exception(status + " " + ex.Message + "  " + ex.InnerException,ex);
                     }
 
                     //using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
@@ -4952,7 +4975,8 @@ namespace Acurus.Capella.UI
             }
             catch (Exception Ex)
             {
-                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+                //CAP-1942
+                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException,Ex);
             }
 
         }
@@ -5056,7 +5080,8 @@ namespace Acurus.Capella.UI
                             }
                             catch (Exception e)
                             {
-                                throw new Exception(e.Message);
+                                //CAP-1942
+                                throw new Exception(e.Message,e);
                             }
                             finally { }
                         }
@@ -5065,7 +5090,8 @@ namespace Acurus.Capella.UI
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                //CAP-1942
+                throw new Exception(e.Message,e);
             }
             return bExists;
         }
@@ -5131,14 +5157,16 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception e)
                     {
-                        sResult = e.Message;
+                        //CAP-1942
+                        sResult = e.Message + e;
                     }
                 }
             }
 
             catch (Exception ex)
             {
-                sResult = "ERROR: " + ex.Message + " STACKTRACE: " + ex.StackTrace;
+                //CAP-1942
+                sResult = "ERROR: " + ex.Message + " STACKTRACE: " + ex.StackTrace + ex;
             }
             return sResult;
         }
@@ -5172,7 +5200,8 @@ namespace Acurus.Capella.UI
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception(status + " " + ex.Message + "  " + ex.InnerException);
+                        //CAP-1942
+                        throw new Exception(status + " " + ex.Message + "  " + ex.InnerException,ex);
                     }
 
                     //using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
@@ -5212,7 +5241,8 @@ namespace Acurus.Capella.UI
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception(status + " " + ex.Message + "  " + ex.InnerException);
+                            //CAP-1942
+                            throw new Exception(status + " " + ex.Message + "  " + ex.InnerException,ex);
                         }
                     }
                     else
@@ -5230,7 +5260,8 @@ namespace Acurus.Capella.UI
             }
             catch (Exception Ex)
             {
-                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException);
+                //CAP-1942
+                throw new Exception(status + " " + Ex.Message + "  " + Ex.InnerException,Ex);
             }
 
         }
@@ -5406,7 +5437,8 @@ namespace Acurus.Capella.UI
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message + " " + ex.StackTrace);
+                    //CAP-1942
+                    throw new Exception(ex.Message + " " + ex.StackTrace,ex);
                 }
             }
             else

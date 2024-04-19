@@ -217,7 +217,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         trans.Rollback();
                         // MySession.Close();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message, ex);
                     }
                     finally
                     {
@@ -228,7 +229,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
             //IList<Encounter> encList = new List<Encounter>();
             //if (objEncounter != null)
@@ -474,13 +476,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             trans.Rollback();
                             // MySession.Close();
-                            throw new Exception(ex.Message);
+                            //CAP-1942
+                            throw new Exception(ex.Message, ex);
                         }
                         catch (Exception e)
                         {
                             trans.Rollback();
                             //MySession.Close();
-                            throw new Exception(e.Message);
+                            //CAP-1942
+                            throw new Exception(e.Message, e);
                         }
                         finally
                         {
@@ -492,7 +496,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message, ex1);
             }
 
             EncManager.MoveToNextProcessFromPrintDocuments(ObjEncounter, ulEncounterID, ulHumanID, ulSelectedPhyID, sUserName, sButtonName, sFacilityName, MacAddress, dtCurrentDateTime, bMovetoReview, UserRole, CloseType);
@@ -895,13 +900,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     {
                         trans.Rollback();
                         // MySession.Close();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message, ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
                         //MySession.Close();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -912,7 +919,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 //MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
             IList<Encounter> ilstenc = new List<Encounter>();
             if (encounterRecord != null)

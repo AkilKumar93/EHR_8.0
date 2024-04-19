@@ -346,11 +346,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                                 catch (XmlException xmlexcep)
                                 {
-                                    throw new Exception(xmlexcep.Message);
+                                    //CAP-1942
+                                    throw new Exception(xmlexcep.Message,xmlexcep);
                                 }
                                 catch (IOException ex)
                                 {
-                                    throw new Exception(ex.Message);
+                                    //CAP-1942
+                                    throw new Exception(ex.Message,ex);
                                 }
                             }
                             else
@@ -362,12 +364,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -377,7 +381,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
          
             objInHouseProcdureDTO = LoadInHouseProcedure(savelist[0].Encounter_ID, savelist[0].Physician_ID, savelist[0].Human_ID,sLegalOrg);
@@ -787,11 +792,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                                 catch (XmlException xmlexcep)
                                 {
-                                    throw new Exception(xmlexcep.Message);
+                                    //CAP-1942
+                                    throw new Exception(xmlexcep.Message,xmlexcep);
                                 }
                                 catch (IOException ex)
                                 {
-                                    throw new Exception(ex.Message);
+                                    //CAP-1942
+                                    throw new Exception(ex.Message,ex);
                                 }
                             }
                             else
@@ -803,12 +810,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -821,7 +830,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
 
             objInHouseProcdureDTO = LoadInHouseProcedure(lstProcedure[0].Encounter_ID, lstProcedure[0].Physician_ID, lstProcedure[0].Human_ID,sLegalOrg);
@@ -1137,11 +1147,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             }
                             catch (XmlException xmlexcep)
                             {
-                                throw new Exception(xmlexcep.Message);
+                                //CAP-1942
+                                throw new Exception(xmlexcep.Message,xmlexcep);
                             }
                             catch (IOException ex)
                             {
-                                throw new Exception(ex.Message);
+                                //CAP-1942
+                                throw new Exception(ex.Message,ex);
                             }
 
                         }
@@ -1150,12 +1162,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
                     finally
                     {
@@ -1165,7 +1179,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                //CAP-1942
+                throw new Exception(ex.Message,ex);
             }
           
             objInHouseProcdureDTO = LoadInHouseProcedure(lstDelete[0].Encounter_ID, lstDelete[0].Physician_ID, lstDelete[0].Human_ID,sLegalOrg);
@@ -1320,12 +1335,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     catch (NHibernate.Exceptions.GenericADOException ex)
                     {
                         trans.Rollback();
-                        throw new Exception(ex.Message);
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                     catch (Exception e)
                     {
                         trans.Rollback();
-                        throw new Exception(e.Message);
+                        //CAP-1942
+                        throw new Exception(e.Message,e);
                     }
 
                     finally
@@ -1337,7 +1354,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             catch (Exception ex1)
             {
                 MySession.Close();
-                throw new Exception(ex1.Message);
+                //CAP-1942
+                throw new Exception(ex1.Message,ex1);
             }
             return (object)orderList[0].In_House_Procedure_Group_ID;
         }

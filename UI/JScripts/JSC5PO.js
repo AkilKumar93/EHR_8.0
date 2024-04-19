@@ -868,7 +868,7 @@ function OpenModal(data) {
             CreateAuditLogEntryForTransactions("ACCESS", "Human", Humanid);//BugID:49685
             var Window = $find('ctl00_ModalWindow');
             Window.add_close(function CloseDemoGraphics(oWindow, args) {
-                window.location.href = "frmPatientChart.aspx"
+                window.location.href = "frmPatientChart.aspx";
             });
         }
     }

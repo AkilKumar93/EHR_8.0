@@ -242,13 +242,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     {
                                         trans.Rollback();
                                         // MySession.Close();
-                                        throw new Exception(ex.Message);
+                                        //CAP-1942
+                                        throw new Exception(ex.Message,ex);
                                     }
                                     catch (Exception e)
                                     {
                                         trans.Rollback();
                                         //MySession.Close();
-                                        throw new Exception(e.Message);
+                                        //CAP-1942
+                                        throw new Exception(e.Message,e);
                                     }
                                     finally
                                     {
@@ -259,7 +261,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             catch (Exception ex1)
                             {
                                 //MySession.Close();
-                                throw new Exception(ex1.Message);
+                                //CAP-1942
+                                throw new Exception(ex1.Message,ex1);
                             }
                         }
                     }
@@ -653,13 +656,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     trans.Rollback();
                     //MySession.Close();
-                    throw new Exception(ex.Message);
+                    //CAP-1942
+                    throw new Exception(ex.Message,ex);
                 }
                 catch (Exception e)
                 {
                     trans.Rollback();
                     // MySession.Close();
-                    throw new Exception(e.Message);
+                    //CAP-1942
+                    throw new Exception(e.Message,e);
                 }
 
             }

@@ -117,12 +117,14 @@ namespace Acurus.Capella.UI.Extensions
                     }
                     else
                     {
-                        throw new Exception(ex.Message + "." + Environment.NewLine + "The Network Path is: " + Path.GetPathRoot(this.m_FilePathName));
+                        //CAP-1942
+                        throw new Exception(ex.Message +ex+ "." + Environment.NewLine + "The Network Path is: " + Path.GetPathRoot(this.m_FilePathName));
                     }
                 }
                 else
                 {
-                    throw new Exception("The file name is not found."+Environment.NewLine+ ex.Message + ".");
+                    //CAP-1942
+                    throw new Exception("The file name is not found."+Environment.NewLine+ ex.Message +ex+ ".");
                 }
             }
             finally
@@ -190,12 +192,14 @@ namespace Acurus.Capella.UI.Extensions
                     }
                     else
                     {
-                        throw new Exception(ex.Message + "." + Environment.NewLine + "The Network Path is: " + Path.GetPathRoot(this.m_FilePathName));
+                        //CAP-1942
+                        throw new Exception(ex.Message+ ex + "." + Environment.NewLine + "The Network Path is: " + Path.GetPathRoot(this.m_FilePathName));
                     }
                 }
                 else
                 {
-                    throw new Exception("The file name is not found." + Environment.NewLine + ex.Message + ".");
+                    //CAP-1942
+                    throw new Exception("The file name is not found." + Environment.NewLine + ex.Message + ex +".");
                 }
             }
             finally
@@ -278,7 +282,8 @@ namespace Acurus.Capella.UI.Extensions
                     }
                     else
                     {
-                        throw new Exception(ex.Message + "." + Environment.NewLine + "The Network Path is: " + Path.GetPathRoot(this.m_FilePathName));
+                        //CAP-1942
+                        throw new Exception(ex.Message +ex+ "." + Environment.NewLine + "The Network Path is: " + Path.GetPathRoot(this.m_FilePathName));
                     }
                 }
                 else

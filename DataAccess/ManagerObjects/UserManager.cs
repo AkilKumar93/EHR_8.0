@@ -120,7 +120,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     else
                     {
-                        throw new Exception(ex.Message); ;
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                 }
             }
@@ -157,7 +158,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     else
                     {
-                        throw new Exception(ex.Message); ;
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                 }
             }
@@ -193,7 +195,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     else
                     {
-                        throw new Exception(ex.Message); ;
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex) ;
                     }
                 }
             }
@@ -370,7 +373,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     }
                     else
                     {
-                        throw new Exception(ex.Message); ;
+                        //CAP-1942
+                        throw new Exception(ex.Message,ex);
                     }
                 }
             }
