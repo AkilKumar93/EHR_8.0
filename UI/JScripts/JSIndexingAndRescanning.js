@@ -308,6 +308,12 @@ function GetEndLocalTime() {
 }
 
 function btnMoveToNextProcess_Clicked() {
+    //CAP-1901 - In Indexing, while click on Upload button without selecting the Document sub type ,  warning message not received.
+    if (document.getElementById("btnSave").disabled == false) {
+        document.getElementById("IsClickDirectUpload").value = "Yes";
+        $('#btnSave')[0].click();
+        return false;
+    }
     //CAP-1516
     if (localStorage.getItem('IsClearAllClick') == null && localStorage.getItem('IsClearAllClick') == "") {
         localStorage.setItem('IsSaveClickedSucessfull', '');
