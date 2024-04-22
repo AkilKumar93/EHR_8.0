@@ -228,12 +228,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return ilstActivitylog;
         }
-        public IList<ActivityLog> GetActivityTypeByusername(List<string> ActivityType,string username)
+        public IList<ActivityLog> GetActivityTypeByusername(List<string> ActivityType,string username, DateTime? activityDateTime = null)
         {
             IList<ActivityLog> ilstActivitylog = new List<ActivityLog>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
                 ICriteria criteria = iMySession.CreateCriteria(typeof(ActivityLog)).Add(Expression.In("Activity_Type", ActivityType)).Add(Expression.Eq("Activity_By",username));
+                //CAP-1831 - eFax Outbox - Introduce filter 
+                if (activityDateTime != null)
+                {
+                    criteria.Add(Expression.Ge("Activity_Date_And_Time", activityDateTime));
+                }
                 ilstActivitylog = criteria.List<ActivityLog>();
                 iMySession.Close();
             }
