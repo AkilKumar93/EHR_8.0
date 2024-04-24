@@ -366,6 +366,7 @@ namespace Acurus.Capella.UI
                                         cboFacilityName.Attributes.Add("Tag", PhyList1[i].Id.ToString());
                                     }
                                 }
+                                SortPhysician();
                                 Session["PhysicianList"] = PhyList1;
                             }
                             //else
@@ -444,6 +445,7 @@ namespace Acurus.Capella.UI
                                     cboItem.Value = FacName1;
                                     this.cboFacilityName.Items.Add(cboItem);
                                 }
+                                SortPhysician();
                             }
                             //else
                             //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
@@ -1511,6 +1513,7 @@ namespace Acurus.Capella.UI
                         else
                             chklstProviders.Items[i].Selected = false;
                     }
+                    SortPhysician();
                     List<System.Web.UI.WebControls.ListItem> newly_selected = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).ToList();
                     if (newly_selected.Count == 0)
                     {
@@ -2105,6 +2108,7 @@ namespace Acurus.Capella.UI
                         cboFacilityName.Attributes.Add("Tag", PhysicianList[i].Id.ToString());
                     }
                 }
+                SortPhysician();
             }
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
@@ -4208,6 +4212,24 @@ namespace Acurus.Capella.UI
                             chklstProviders.Items[i].Selected = false;
                     }
                 }
+                SortPhysician();
+            }
+        }
+
+        //CAP-1949 - User list Alpha sort is missing in Appointment scheduler and Create order when click show All, so its difficult to find the user
+        private void SortPhysician()
+        {
+            if (pnlProvidersHeader.InnerText == "Providers" || pnlProvidersHeader.InnerText == "Machine - Technician")
+            {
+                var comboBoxItems = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
+                chklstProviders.Items.Clear();
+                chklstProviders.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
+            }
+            else
+            {
+                var comboBoxItems = cboFacilityName.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
+                cboFacilityName.Items.Clear();
+                cboFacilityName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
             }
         }
         #endregion
