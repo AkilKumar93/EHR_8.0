@@ -1177,11 +1177,13 @@ namespace Acurus.Capella.UI
                         DocumentationWfObjectnundo = wfObjMngrnundo.GetByObjectSystemId(Convert.ToUInt64(hdnEncounterID.Value), "Encounter");
                         hdnMyEncounterStatus.Value = DocumentationWfObjectnundo.Current_Process;
 
-                        if (hdnMyEncounterStatus.Value.ToUpper() == "MA_PROCESS" || hdnMyEncounterStatus.Value.ToUpper() == "CHECK_OUT_WAIT")
-                        {
-                            iCloseType = 1;
-                        }
-                        else if (hdnMyEncounterStatus.Value.ToUpper() == "NO_SHOW")
+                        //Jira CAP-1953 - commented
+                        //if (hdnMyEncounterStatus.Value.ToUpper() == "MA_PROCESS" || hdnMyEncounterStatus.Value.ToUpper() == "CHECK_OUT_WAIT")
+                        //{
+                        //    iCloseType = 1;
+                        //}
+                        //else if (hdnMyEncounterStatus.Value.ToUpper() == "NO_SHOW")
+                        if (hdnMyEncounterStatus.Value.ToUpper() == "NO_SHOW")
                         {
                             iCloseType = 2;
                         }
