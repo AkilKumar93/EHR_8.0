@@ -3982,39 +3982,35 @@ namespace Acurus.Capella.UI
             //}
 
             int iPosition = 0;
-
-            if (Char.IsLetter(sPolicyHolderID[0]) == false && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == true)
+            //CAP-1921
+            if (Char.IsDigit(sPolicyHolderID[0]) && Char.IsLetter(sPolicyHolderID[1]) && Char.IsLetter(sPolicyHolderID[2]))
             {
                 goto MBI;
             }
-            else if (Char.IsLetter(sPolicyHolderID[0]) == false && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == false)
-            {
-                goto HCN1;
-            }
-            else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == false)
-            {
-                goto RRB1;
-            }
-            else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == false)
-            {
-                goto RRB2;
-            }
-            else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == true)
-            {
-                goto RRB3;
-            }
-            else if (Char.IsLetter(sPolicyHolderID[0]) == false && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == false)
-            {
-                goto MBI;
-            }
-            else if (Char.IsLetter(sPolicyHolderID[0]) == false && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == true)
+            //else if (Char.IsLetter(sPolicyHolderID[0]) == false && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == false)
+            //{
+            //    goto HCN1;
+            //}
+            //else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == false)
+            //{
+            //    goto RRB1;
+            //}
+            //else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == false)
+            //{
+            //    goto RRB2;
+            //}
+            //else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == true && Char.IsLetter(sPolicyHolderID[2]) == true)
+            //{
+            //    goto RRB3;
+            //}
+            else if (Char.IsDigit(sPolicyHolderID[0]) && Char.IsLetter(sPolicyHolderID[1]) && Char.IsDigit(sPolicyHolderID[2]))
             {
                 goto MBI;
             }
-            else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == true)
-            {
-                goto RRB1;
-            }
+            //else if (Char.IsLetter(sPolicyHolderID[0]) == true && Char.IsLetter(sPolicyHolderID[1]) == false && Char.IsLetter(sPolicyHolderID[2]) == true)
+            //{
+            //    goto RRB1;
+            //}
 
             iPosition = 0;
         MBI: if (sPolicyHolderID.Length == 11)
@@ -4084,7 +4080,7 @@ namespace Acurus.Capella.UI
                         case 8: //1, 4, 7, 8 = characters
                             if (Char.IsLetter(c) == false)
                             {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
+                                sMyResult = "Fail" + "|1AA0AA0AA00 or 1A00A00AA00";
                                 return sMyResult;
                             }
                             break;
@@ -4095,7 +4091,7 @@ namespace Acurus.Capella.UI
                         case 10: //0, 3, 6, 9, 10 = numbers
                             if (Char.IsDigit(c) == false)
                             {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
+                                sMyResult = "Fail" + "|1AA0AA0AA00 or 1A00A00AA00";
                                 return sMyResult;
                             }
                             break;
@@ -4103,7 +4099,7 @@ namespace Acurus.Capella.UI
                         case 5: //2, 5 = letters or numbers
                             if (Char.IsLetterOrDigit(c) == false)
                             {
-                                sMyResult = "Fail" + "|1EG4TE5MK73";
+                                sMyResult = "Fail" + "|1AA0AA0AA00 or 1A00A00AA00";
                                 return sMyResult;
                             }
                             break;
@@ -4115,7 +4111,7 @@ namespace Acurus.Capella.UI
             }
             else
             {
-                sMyResult = "Fail" + "|1EG4TE5MK73";
+                sMyResult = "Fail" + "|1AA0AA0AA00 or 1A00A00AA00";
                 return sMyResult;
             }
 

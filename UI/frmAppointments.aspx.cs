@@ -366,6 +366,7 @@ namespace Acurus.Capella.UI
                                         cboFacilityName.Attributes.Add("Tag", PhyList1[i].Id.ToString());
                                     }
                                 }
+                                SortPhysician();
                                 Session["PhysicianList"] = PhyList1;
                             }
                             //else
@@ -444,6 +445,7 @@ namespace Acurus.Capella.UI
                                     cboItem.Value = FacName1;
                                     this.cboFacilityName.Items.Add(cboItem);
                                 }
+                                SortPhysician();
                             }
                             //else
                             //logger.Debug("Facility list is null. Note it is Application Object. So it must be some serious issue.");
@@ -1071,6 +1073,8 @@ namespace Acurus.Capella.UI
             Refresh.Stop();
             lblFillAppointments.Text = "Refresh -Minutes: " + Refresh.Elapsed.Minutes.ToString() + " Seconds :" + Refresh.Elapsed.Seconds.ToString() + " MilliSec : " + Refresh.Elapsed.Milliseconds.ToString();
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //Jira CAP-1953
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "EmptyValue", "$('#ctl00_C5POBody_hdnStopLoading')[0].value='';", true);
             //logger.Debug("frmAppointments btnRefresh Click Event Completed. Time Taken: " + Refresh.Elapsed.Seconds + "." + Refresh.Elapsed.Milliseconds + "s.");
         }
 
@@ -1119,7 +1123,9 @@ namespace Acurus.Capella.UI
 
                         if (DocumentationWfObject.Current_Process != "MA_PROCESS")
                         {
-                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "alert('The selected appointment is not in MA_PROCESS. So, this can not be marked as WALKED_AWAY.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                            //Jira CAP-1953
+                            //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "alert('The selected appointment is not in MA_PROCESS. So, this can not be marked as WALKED_AWAY.'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "ProcessMissMatchAlert('not in MA_PROCESS-WALKED_AWAY');", true);
                             return;
                         }
                         //if (DocumentationWfObject.Current_Process == "PROVIDER_PROCESS_WAIT")
@@ -1135,7 +1141,15 @@ namespace Acurus.Capella.UI
                         iCloseType = 2;
                         break;
                     case NoShowMenuText:
-
+                        //Jira CAP-1953
+                        WFObjectManager wfObjMngrnsh = new WFObjectManager();
+                        WFObject DocumentationWfObjectnsh = null;
+                        DocumentationWfObjectnsh = wfObjMngrnsh.GetByObjectSystemId(Convert.ToUInt64(hdnEncounterID.Value), "Encounter");
+                        if (DocumentationWfObjectnsh.Current_Process != "SCHEDULED")
+                        {
+                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "ProcessMissMatchAlert('not in SCHEDULED-NO_SHOW');", true);
+                            return;
+                        }
                         iCloseType = 2;
                         break;
                     case ElectronicSuperBill:
@@ -1157,12 +1171,19 @@ namespace Acurus.Capella.UI
                         return;
 
                     case UndoText:
+                        //Jira CAP-1953
+                        WFObjectManager wfObjMngrnundo = new WFObjectManager();
+                        WFObject DocumentationWfObjectnundo = null;
+                        DocumentationWfObjectnundo = wfObjMngrnundo.GetByObjectSystemId(Convert.ToUInt64(hdnEncounterID.Value), "Encounter");
+                        hdnMyEncounterStatus.Value = DocumentationWfObjectnundo.Current_Process;
 
-                        if (hdnMyEncounterStatus.Value.ToUpper() == "MA_PROCESS" || hdnMyEncounterStatus.Value.ToUpper() == "CHECK_OUT_WAIT")
-                        {
-                            iCloseType = 1;
-                        }
-                        else if (hdnMyEncounterStatus.Value.ToUpper() == "NO_SHOW")
+                        //Jira CAP-1953 - commented
+                        //if (hdnMyEncounterStatus.Value.ToUpper() == "MA_PROCESS" || hdnMyEncounterStatus.Value.ToUpper() == "CHECK_OUT_WAIT")
+                        //{
+                        //    iCloseType = 1;
+                        //}
+                        //else if (hdnMyEncounterStatus.Value.ToUpper() == "NO_SHOW")
+                        if (hdnMyEncounterStatus.Value.ToUpper() == "NO_SHOW")
                         {
                             iCloseType = 2;
                         }
@@ -1186,6 +1207,9 @@ namespace Acurus.Capella.UI
                         //}
                         else
                         {
+                            //Jira CAP-1953
+                            //return;
+                            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "QuickpatientCreate", "ProcessMissMatchAlert('in "+ hdnMyEncounterStatus.Value + "-Undo');", true);
                             return;
                         }
                         if (hdnEncounterID.Value != string.Empty && hdnLocalTime.Value != string.Empty)
@@ -1491,6 +1515,7 @@ namespace Acurus.Capella.UI
                         else
                             chklstProviders.Items[i].Selected = false;
                     }
+                    SortPhysician();
                     List<System.Web.UI.WebControls.ListItem> newly_selected = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().Where(li => li.Selected).ToList();
                     if (newly_selected.Count == 0)
                     {
@@ -2085,6 +2110,7 @@ namespace Acurus.Capella.UI
                         cboFacilityName.Attributes.Add("Tag", PhysicianList[i].Id.ToString());
                     }
                 }
+                SortPhysician();
             }
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
@@ -4188,6 +4214,24 @@ namespace Acurus.Capella.UI
                             chklstProviders.Items[i].Selected = false;
                     }
                 }
+                SortPhysician();
+            }
+        }
+
+        //CAP-1949 - User list Alpha sort is missing in Appointment scheduler and Create order when click show All, so its difficult to find the user
+        private void SortPhysician()
+        {
+            if (pnlProvidersHeader.InnerText == "Providers" || pnlProvidersHeader.InnerText == "Machine - Technician")
+            {
+                var comboBoxItems = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
+                chklstProviders.Items.Clear();
+                chklstProviders.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
+            }
+            else
+            {
+                var comboBoxItems = cboFacilityName.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
+                cboFacilityName.Items.Clear();
+                cboFacilityName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
             }
         }
         #endregion
