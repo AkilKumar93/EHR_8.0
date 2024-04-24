@@ -92,6 +92,13 @@ namespace Acurus.Capella.UI
             {
                 sUserAccountType = ClientSession.UserAccountType;
                 sUserName = ClientSession.UserAccountType == "Capella" ? ClientSession.UserName : ClientSession.EmailAddress;
+
+                if (!string.IsNullOrWhiteSpace(Request.Form["RedirectURL"]))
+                {
+                    var returnUrl = Request.Form["RedirectURL"];
+                    var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(returnUrl, Request.Form["DefaultServer"]);
+                    Response.SetCookie(new HttpCookie("RedirectUri") { Value = redirectURL, Expires = DateTime.Now.AddDays(1) });
+                }
             }
 
            
