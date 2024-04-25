@@ -79,10 +79,12 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        fillRos = Session["fillRos"] != null ? (FillROS)Session["fillRos"] :
+                        fillRos = (Session["fillRos"] != null && ((FillROS)Session["fillRos"]).Ros_List.Count>0) ? (FillROS)Session["fillRos"] :
                                 objROSManager.GetROSAndGeneralNotesByEncounterId(ClientSession.EncounterId, ClientSession.HumanId, false);
                         CopyPrevControls(fillRos, false);
-                        Session["fillRos"] = fillRosPastEncounter;
+                        //Jira CAP-1923
+                        //Session["fillRos"] = fillRosPastEncounter;
+                        Session["fillRos"] = fillRos;
                         //Jira CAP-1923
                         Session["fillPrevRos"] = fillRosPastEncounter;
                     }
