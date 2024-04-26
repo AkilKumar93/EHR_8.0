@@ -308,12 +308,6 @@ function GetEndLocalTime() {
 }
 
 function btnMoveToNextProcess_Clicked() {
-    //CAP-1901 - In Indexing, while click on Upload button without selecting the Document sub type ,  warning message not received.
-    if (document.getElementById("btnSave").disabled == false) {
-        document.getElementById("IsClickDirectUpload").value = "Yes";
-        $('#btnSave')[0].click();
-        return false;
-    }
     //CAP-1516
     if (localStorage.getItem('IsClearAllClick') == null && localStorage.getItem('IsClearAllClick') == "") {
         localStorage.setItem('IsSaveClickedSucessfull', '');
@@ -330,6 +324,14 @@ function btnMoveToNextProcess_Clicked() {
 
     if (document.getElementById("grdIndexing").rows.length > 1) {
         if (DisplayErrorMessage("1105004") == true) {
+            //CAP-1901 - In Indexing, while click on Upload button without selecting the Document sub type ,  warning message not received.
+            if (document.getElementById("btnSave").disabled == false) {
+                document.getElementById("IsClickDirectUpload").value = "Yes";
+                setTimeout(function () {
+                    $('#btnSave')[0].click();
+                }, 1000);
+                return false;
+            }
             if ($("#tbFilesBody tr.highlight").length == 0) {
                 document.getElementById('divLoading').style.display = "none";
                 StopLoadOnUploadFile();
@@ -354,7 +356,7 @@ function btnMoveToNextProcess_Clicked() {
                         //CAP-1816
                         document.getElementById("IsClickDirectUpload").value = "Yes";
                         document.getElementById("btnSave").disabled = false;
-                        $('#btnSave')[0].click();
+                            $('#btnSave')[0].click();
                         document.getElementById("btnSave").disabled = true;
                     }
                 }

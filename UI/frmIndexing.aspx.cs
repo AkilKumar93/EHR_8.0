@@ -1936,11 +1936,11 @@ namespace Acurus.Capella.UI
             if (hdnIsMyScan.Value == "true")
             {
                 hdnIsMyScan.Value = "";
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "CloseAndDisplayAlert", "CloseAndDisplayAlert();", true);
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "CloseAndDisplayAlert", "document.getElementById('hdnIsEditgrid').value='';CloseAndDisplayAlert();", true);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ClickClear", "ClickClear();DisplayErrorMessage('115018');", true);
+                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "ClickClear", "document.getElementById('hdnIsEditgrid').value='';ClickClear();DisplayErrorMessage('115018');", true);
             }
         }
 
