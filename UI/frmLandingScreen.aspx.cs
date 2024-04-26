@@ -143,7 +143,6 @@ namespace Acurus.Capella.UI
                     ExpireRedirectUrlCookie();
                     }
                 }
-            }
 
             if (string.IsNullOrWhiteSpace(sUserAccountType))
             {
