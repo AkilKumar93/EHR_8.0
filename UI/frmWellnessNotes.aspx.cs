@@ -64,7 +64,10 @@ namespace Acurus.Capella.UI
                 //Jira #CAP-855
                 string sIsAkidoEncounter = "false";
                 string sExMessage = "";
-                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage);
+                string sStatus = "";
+                //Jira CAP-1990
+                //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage);
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(Encounter_Id.ToString(), out sExMessage, out sStatus);
 
                 if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
@@ -112,7 +115,10 @@ namespace Acurus.Capella.UI
                 //Jira #CAP-855
                 string sIsAkidoEncounter = "false";
                 string sExMessage = "";
-                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
+                string sStatus = "";
+                //Jira CAP-1990
+                //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
+                sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
 
                 if (Request.QueryString["Menu"] != null && System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
                 {
@@ -148,7 +154,10 @@ namespace Acurus.Capella.UI
             //Jira #CAP-855
             string sIsAkidoEncounter = "false";
             string sExMessage = "";
-            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
+            string sStatus = "";
+            //Jira CAP-1990
+            //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage);
+            sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(ClientSession.EncounterId.ToString(), out sExMessage, out sStatus);
 
             if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteSummary"] == "Y" && sIsAkidoEncounter == "true")
             {

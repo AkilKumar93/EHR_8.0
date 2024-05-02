@@ -4744,7 +4744,7 @@ namespace Acurus.Capella.UI
                 //MessageWindow.VisibleStatusbar = false;
                 //MessageWindow.VisibleOnPageLoad = true;
 
-                ScriptManager.RegisterStartupScript(this, typeof(frmImageAndLabOrder), string.Empty, "OpenPDFImage('" + FaxSubject + "');", true);
+                ScriptManager.RegisterStartupScript(this, typeof(frmImageAndLabOrder), string.Empty, "OpenPDFImage('" + FaxSubject.Replace(@"'", "$|~|$") + "');", true);
             }
             else if (LabAndOrderSubmitID.Count <= 0)
             {

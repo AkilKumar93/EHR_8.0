@@ -1195,8 +1195,13 @@ namespace Acurus.Capella.UI
                     //Jira #CAP-724 -start
                     //Jira #CAP-855
                     string sExMessage = "";
-                    string sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage);
-                    if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sIsAkidoEncounter == "false")
+                    string sStatus = "";
+                    //Jira CAP-1990
+                    //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage);
+                    string sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage, out sStatus);
+                    //Jira CAP-1990
+                    //if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sIsAkidoEncounter == "false")
+                    if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sStatus != System.Configuration.ConfigurationSettings.AppSettings["AkidoSignedStatus"].ToString())
                     {
                         ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('1011196'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                         return;
