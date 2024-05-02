@@ -584,6 +584,9 @@ function pageLoad() {
     $("#dtpLastseenbyPhysician").datetimepicker({  maxDate: 0, closeOnDateSelect: true, format: 'd-M-Y' });
 }
 function OpenPDFImage(FaxSubject) {
+    //Jira CAP-1996 - Start
+    FaxSubject = FaxSubject.replaceAll("$|~|$", "'");
+    //Jira CAP-1996 - End
     if (FaxSubject!="")
         localStorage['FaxSubject1'] = JSON.stringify(FaxSubject);;
     $(top.window.document).find("#PrintPDFModal").modal({ backdrop: 'static', keyboard: false }, 'show');

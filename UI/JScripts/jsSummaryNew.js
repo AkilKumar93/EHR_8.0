@@ -82,6 +82,10 @@ function OnSuccessSummaryBar(response) {
 //Cap - 1414, 1415, 1449
 function OpenEfax(sFaxSubject, sRefProvider, sIsConsultation)
 {
+    //Jira CAP-1996 - Start
+    sFaxSubject = sFaxSubject.replaceAll("$|~|$", "'");
+    sRefProvider = sRefProvider.replaceAll("$|~|$", "'");
+    //Jira CAP-1996 - End
     $(top.window.document).find("#TabFax").modal({ backdrop: "static", keyboard: false }, 'show');
     $(top.window.document).find("#TabFax").css({ "z-index:": "5001" });
     $(top.window.document).find("#TabModalEFaxTitle")[0].textContent = "Efax";
