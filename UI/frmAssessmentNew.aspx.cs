@@ -450,6 +450,64 @@ namespace Acurus.Capella.UI
                                 pblmListCodes.Add(obj.ICD.Trim());
                         }
                     }
+
+                    //CAP-1671
+                    if (assessmentLoadList.VitalsBasedICD_List != null && assessmentLoadList.VitalsBasedICD_List.Count > 0)
+                    {
+                        #region commented
+                        //FillPatientSummaryBarDTO objSummaryDTO = new FillPatientSummaryBarDTO();
+                        //IList<string> assessVitalsList = new List<string>();
+                        //assessVitalsList = assessmentLoadList.VitalsBasedICD_List;
+
+                        //for (int i = 0; i < assessVitalsList.Count; i++)
+                        //{
+                        //    var exist = (from assess in pblmListParentICD where assess.Contains(assessVitalsList[i]) == true select assess);
+                        //    if (exist.Count() == 0)
+                        //        pblmListParentICD.Add(assessVitalsList[i]);
+                        //}
+                        #endregion
+                        //to find the exact match for ICD(Exists used instead of Contains)
+                        IList<string> assessVitalsList = new List<string>();
+                        assessVitalsList = assessmentLoadList.VitalsBasedICD_List;
+                        List<string> ICDList = new List<string>();
+                        for (int y = 0; y < pblmListParentICD.Count; y++)
+                        {
+                            string[] str = pblmListParentICD[y].Split('!');
+                            foreach (string s in str)
+                            {
+                                ICDList.Add(s);
+                            }
+                        }
+                        for (int i = 0; i < assessVitalsList.Count; i++)
+                        {
+                            string s = assessVitalsList[i];
+                            bool val = (ICDList.Exists(a => a == s));
+                            if (val == false)
+                                pblmListParentICD.Add(assessVitalsList[i]);
+                        }
+                    }
+
+                    if (pblmListParentICD != null && pblmListParentICD.Count > 0)
+                    {
+                        var distinct = from h in pblmListParentICD group h by new { h } into g select new { g.Key.h };
+
+                        foreach (var code in distinct)
+                        {
+                            var duplicate1 = problemListCodesWithParentCodesTemp.Where(h => h.Contains(code.h)).Select(s => s).ToList();
+                            var duplicate = (from dup in problemListCodesWithParentCodesTemp where dup.Contains(code.h) select dup).ToList();
+
+                            if (duplicate.Count() == 0)
+                            {
+                                if (code.h != string.Empty)
+                                    problemListCodesWithParentCodesTemp.Add(code.h);
+                            }
+                            else
+                            {
+                                if (code.h.Split('!')[0] != duplicate.First().Split('!')[0])
+                                    problemListCodesWithParentCodesTemp.Add(code.h);
+                            }
+                        }
+                    }
                 }
 
                 if (problemListCodesWithParentCodesTemp != null && problemListCodesWithParentCodesTemp.Count > 0)
@@ -760,8 +818,9 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-                var ListAssessment = assessmentLoadList.Assessment.Select(a => new { ICDCode = a.ICD, ICDDescription = a.ICD_Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.Internal_Property_ProblemListID, Notes = a.Assessment_Notes, AssessmentID = a.Id, iVersion = a.Version, iProblemListVersion = a.Internal_Property_ProblemListVersion, CheckBoxCheck = a.Chronic_Problem, StatusSelected = a.Assessment_Status, IncompleteICDCode = "", ICD9Code = a.ICD_9, ICD9Desc = a.ICD_9_Description, ParentICD = a.Parent_ICD, Created_by = a.Created_By, Created_date = a.Created_Date_And_Time.ToString(), Updated = "N", Orig_Status = a.Assessment_Status });
-                var ListVitalsProblemList = vitalsproblemList.Select(a => new { ICDCode = a.ICD_9, ICDDescription = a.Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.ProblemListId, Notes = a.Notes, AssessmentID = a.AssessmentID, iVersion = a.iVersion, iProblemListVersion = a.iVersion, CheckBoxCheck = a.CheckBoxCheck, StatusSelected = a.StatusSelected, IncompleteICDCode = "", ICD9Code = a.ICD9Code, ICD9Desc = a.ICD9Desc, ParentICD = "", Created_by = a.sCreatedBy, Created_date = a.sCreatedDateTime, Updated = "Y", Orig_Status = a.StatusSelected });
+                //CAP-1671
+                var ListAssessment = assessmentLoadList.Assessment.Select(a => new { ICDCode = a.ICD, ICDDescription = a.ICD_Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.Internal_Property_ProblemListID, Notes = a.Assessment_Notes, AssessmentID = a.Id, iVersion = a.Version, iProblemListVersion = a.Internal_Property_ProblemListVersion, CheckBoxCheck = a.Chronic_Problem, StatusSelected = a.Assessment_Status, IncompleteICDCode = "", ICD9Code = a.ICD_9, ICD9Desc = a.ICD_9_Description, ParentICD = a.Parent_ICD, Created_by = a.Created_By, Created_date = a.Created_Date_And_Time.ToString(), Updated = "N", Orig_Status = a.Assessment_Status }).ToList();
+                var ListVitalsProblemList = vitalsproblemList.Select(a => new { ICDCode = a.ICD_9, ICDDescription = a.Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.ProblemListId, Notes = a.Notes, AssessmentID = a.AssessmentID, iVersion = a.iVersion, iProblemListVersion = a.iVersion, CheckBoxCheck = a.CheckBoxCheck, StatusSelected = a.StatusSelected, IncompleteICDCode = "", ICD9Code = a.ICD9Code, ICD9Desc = a.ICD9Desc, ParentICD = "", Created_by = a.sCreatedBy, Created_date = a.sCreatedDateTime, Updated = "Y", Orig_Status = a.StatusSelected }).ToList();
 
                 bool bPotentialEnable = false;
                 if (assessmentLoadList.Potential_Diagnosis != null && assessmentLoadList.Potential_Diagnosis.Count > 0)
@@ -786,6 +845,47 @@ namespace Acurus.Capella.UI
                 {
                     strICDDesc = new List<string>();
                     ICD10MutipleMapping = new List<string>();
+                    //CAP-1671
+                    if (ListVitalsProblemList.Count() > 0)
+                    {
+                        AssessmentVitalsLookupManager assessmentVitalsLookupManager = new AssessmentVitalsLookupManager();
+                        var assesmentVitals = assessmentVitalsLookupManager.GetAll();
+                        var copyListVitalsProblemList = ListVitalsProblemList;
+                        var assessmentListToDelete = new List<Assessment>();
+                        foreach (var item in copyListVitalsProblemList)
+                        {
+                            if(!ListAssessment.Any(x=>x.ICDCode == item.ICDCode))
+                            {
+                                var vitalLookUpType = assesmentVitals.FirstOrDefault(x => x.ICD_10 == item.ICDCode);
+                                var assesmentLookUpType = assesmentVitals.FirstOrDefault(x => ListAssessment.Any(y => y.ICDCode == x.ICD_10) && x.Field_Name == vitalLookUpType.Field_Name);
+                                if((vitalLookUpType?.Field_Name??"") == (assesmentLookUpType?.Field_Name??""))
+                                {
+                                    var oldAssementVital = ListAssessment.FirstOrDefault(x => x.ICDCode == assesmentLookUpType.ICD_10);
+                                    ListAssessment.Remove(oldAssementVital);
+                                    var assessment = objAssessmentManager.GetAssesmentUsingAssesmentId(oldAssementVital.AssessmentID);
+                                    assessmentListToDelete.Add(assessment);
+                                }
+                                //else
+                                //{
+                                //    ListVitalsProblemList.Remove(item);
+                                //}
+                            }
+                            else
+                            {
+                                ListVitalsProblemList.Remove(item);
+                            }
+                        }
+
+
+                       objAssessmentManager.BatchOperationsToAssessment(new List<Assessment>(),
+                       new List<Assessment>(), assessmentListToDelete.ToArray<Assessment>(),
+                       new List<ProblemList>(), new List<ProblemList>(),
+                       new List<ProblemList>(), string.Empty,
+                       null, new TreatmentPlan(), ClientSession.UserName, ClientSession.EncounterId, ClientSession.HumanId,
+                       ClientSession.PhysicianId, new List<string>(), "No", "", ClientSession.LegalOrg, new List<EandMCodingICD>(), new List<EandMCodingICD>());
+                    }
+
+                    ListAssessment = ListAssessment.Concat(ListVitalsProblemList).ToList();
                 }
                 strICDDesc = (from val in strICDDesc where !lstParent_ICD.Any(a => a.Trim() == val.Split('-')[0].Trim()) select val).ToList<string>();//to prevent a previously added and moved(to assessment grid) parentICD from being added to incomplete problem list(ROS,VITALS,RCopia_MEd ICDs)
                 var IncompleteProblemList = strICDDesc.Select(a => new { ICDCODE = a.Split('-')[0], ICDDescription = a.Split('-')[1] });
@@ -837,11 +937,13 @@ namespace Acurus.Capella.UI
                 }
 
                 HttpContext.Current.Session["ProblemList"] = assessmentLoadList.Problem_List;
-                HttpContext.Current.Session["VitalsList"] = assessmentLoadList.VitalsBasedICD_List;
+                //CAP-1671
+                HttpContext.Current.Session["VitalsList"] = !bSuggestIcds ? new List<string>() : assessmentLoadList.VitalsBasedICD_List;
                 HttpContext.Current.Session["ICD910Code"] = strICD910Code;
                 if (strAssessment != "CopyPrevious")
                 {
-                    HttpContext.Current.Session["VitalsProblemList"] = vitalsproblemList;
+                    //CAP-1671
+                    HttpContext.Current.Session["VitalsProblemList"] = !bSuggestIcds ? new List<VitalsAssesment>() : vitalsproblemList;
                     HttpContext.Current.Session["MultiMappingProblemList"] = ResultICD10MappingICDs;
                     HttpContext.Current.Session["Is_Assessment_CopyPrevious"] = "No";
                 }
@@ -2709,11 +2811,11 @@ namespace Acurus.Capella.UI
             string jsons = "";
 
             assessmentLoadList = objAssessmentManager.LoadProblemList(ClientSession.EncounterId, ClientSession.HumanId,"load");
-
-            if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count() > 0)
-            {
-                bSuggestProblemIcds = true;
-            }
+            //CAP-1671
+            //if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count() > 0)
+            //{
+            //    bSuggestProblemIcds = true;
+            //}
             if (bSuggestProblemIcds == false)
             {
                 if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
@@ -2761,9 +2863,9 @@ namespace Acurus.Capella.UI
                         Ass_Status = idicDefaultStatuslst["ASSESSMENT"];
                 }
 
-
-                if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count > 0)//BugID:53007 
-                    bSuggestIcds = false;
+                //CAP-1671
+                //if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count > 0)//BugID:53007 
+                //    bSuggestIcds = false;
 
                 IList<string> lstParent_ICD = new List<string>();
                 lstParent_ICD = assessmentLoadList.Assessment.Select(a => a.Parent_ICD.Trim()).Distinct().ToList<string>();
@@ -2890,14 +2992,15 @@ namespace Acurus.Capella.UI
                             //Cap - 1713
                             //if (allICD9ForVitalsProblemListPFSH[i].Leaf_Node != "N" && !assessmentLoadList.Assessment.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9) && ((assessmentLoadList.Assessment.Where(s => s.Diagnosis_Source.ToUpper() != "VITALS|DELETED").Count() == 0 ? (assessmentLoadList.Problem_List.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))
                             //   : (assessmentLoadList.Problem_List.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9))) || assessmentLoadList.VitalsBasedICD_List.Any(a => a.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)))//|| currentVitalsBasedICDList.Any(c => c.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)                        
-
-                            if (allICD9ForVitalsProblemListPFSH[i].Leaf_Node != "N" && !assessmentLoadList.Assessment.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()) && ((assessmentLoadList.Assessment.Where(s => s.Diagnosis_Source.ToUpper() != "VITALS|DELETED").Count() == 0 ? (assessmentLoadList.Problem_List.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()))
-                            : (assessmentLoadList.Problem_List.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()))) || assessmentLoadList.VitalsBasedICD_List.Any(a => a.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim())))//|| currentVitalsBasedICDList.Any(c => c.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)                        
+                            //CAP-1671
+                            if (allICD9ForVitalsProblemListPFSH[i].Leaf_Node != "N")
+                            //    && !assessmentLoadList.Assessment.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()) && ((assessmentLoadList.Assessment.Where(s => s.Diagnosis_Source.ToUpper() != "VITALS|DELETED").Count() == 0 ? (assessmentLoadList.Problem_List.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()))
+                            //: (assessmentLoadList.Problem_List.Any(a => a.ICD.Trim() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim()))) || assessmentLoadList.VitalsBasedICD_List.Any(a => a.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9.Trim())))//|| currentVitalsBasedICDList.Any(c => c.Split('!')[0].ToString() == allICD9ForVitalsProblemListPFSH[i].ICD_9)                        
                             {
-                                if (assessmentLoadList.Assessment.Count() > 0 && assessmentLoadList.Assessment.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9 && a.Diagnosis_Source.ToUpper() == "VITALS|DELETED"))
-                                    continue;
-                                if (assessmentLoadList.Assessment.Count() > 0 && assessmentLoadList.Assessment.Any(a => a.ICD_9 == allICD9ForVitalsProblemListPFSH[i].ICD_9))
-                                    continue;
+                                //if (assessmentLoadList.Assessment.Count() > 0 && assessmentLoadList.Assessment.Any(a => a.ICD == allICD9ForVitalsProblemListPFSH[i].ICD_9 && a.Diagnosis_Source.ToUpper() == "VITALS|DELETED"))
+                                //    continue;
+                                //if (assessmentLoadList.Assessment.Count() > 0 && assessmentLoadList.Assessment.Any(a => a.ICD_9 == allICD9ForVitalsProblemListPFSH[i].ICD_9))
+                                //    continue;
                                 VitalsAssesment assMngr = new VitalsAssesment();
                                 assMngr.ICD_9 = allICD9ForVitalsProblemListPFSH[i].ICD_9;
                                 assMngr.Description = allICD9ForVitalsProblemListPFSH[i].ICD_9_Description;
@@ -2925,21 +3028,42 @@ namespace Acurus.Capella.UI
                                 vitalsproblemList.Add(assMngr);
                             }
                         }
+                        //CAP-1671
+                        if (allICD9ForVitalsProblemListPFSH.Where(s => s.Leaf_Node == "N").ToList().Count > 0)
+                        {
+                            foreach (var item in allICD9ForVitalsProblemListPFSH.Where(s => s.Leaf_Node == "N").ToList())
+                            {
+                                int iCount = vitalsproblemList.Where(a => a.ICD_9 == item.ICD_9).ToList().Count;
 
+
+                                if (iCount > 0)
+                                    continue;
+
+
+                                if (item.Version_Year == "ICD_10")
+                                {
+                                    strICDDesc.Add(item.ICD_9 + "-" + item.ICD_9_Description);
+                                }
+                                else
+                                    strICD9CodeDesc.Add(item.ICD_9 + "~" + item.ICD_9_Description + "~" + "" + "IncompleteProblemList" + "~" + "IncompleteProblemList" + "~" + 0 + "~" + 0 + "~" + 0 + "~" + 0 + "~" + "NONE" + "~" + "" + "~" + "" + "~" + "" + "~" + "");//BugID:47478
+                            }
+                        }
                     }
+
+                    strICDDesc = (from val in strICDDesc where !lstParent_ICD.Any(a => a.Trim() == val.Split('-')[0].Trim()) select val).ToList<string>();//to prevent a previously added and moved(to assessment grid) parentICD from being added to incomplete problem list(ROS,VITALS,RCopia_MEd ICDs)
+                    var IncompleteProblemList = strICDDesc.Select(a => new { ICDCODE = a.Split('-')[0], ICDDescription = a.Split('-')[1] });
                     string json;
                     var ListVitalsProblemList = vitalsproblemList.Select(a => new { ICDCode = a.ICD_9, ICDDescription = a.Description, IsPrimary = a.Primary_Diagnosis, ProblemListID = a.ProblemListId, Notes = a.Notes, AssessmentID = a.AssessmentID, iVersion = a.iVersion, iProblemListVersion = a.iVersion, CheckBoxCheck = a.CheckBoxCheck, StatusSelected = a.StatusSelected, IncompleteICDCode = "", ICD9Code = a.ICD9Code, ICD9Desc = a.ICD9Desc, ParentICD = "", Created_by = a.sCreatedBy, Created_date = a.sCreatedDateTime, Updated = "Y", Orig_Status = a.StatusSelected });
                     if (vitalsproblemList.Count > 0)
                     {
-                        json = new JavaScriptSerializer().Serialize(ListVitalsProblemList);
+                        jsons = "{\"AssessmentList\" :" + new JavaScriptSerializer().Serialize(ListVitalsProblemList) + "," +
+                                      "\"FromProblemList\":" + new JavaScriptSerializer().Serialize(IncompleteProblemList) + "}";
                     }
                     else
                     {
                         json = new JavaScriptSerializer().Serialize("220026");
+                        jsons = "{\"AssessmentList\" :" + json + "}";
                     }
-
-
-                    jsons = "{\"AssessmentList\" :" + json + "}";
                 }
 
 
