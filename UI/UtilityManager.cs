@@ -33,6 +33,7 @@ using System.Xml.Xsl;
 using System.Xml.XPath;
 using System.Security.RightsManagement;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace Acurus.Capella.UI
 {
@@ -6013,8 +6014,11 @@ namespace Acurus.Capella.UI
             return bAlert;
         }
 
-        public static string IsAkidoEncounter(string sEncounterID, out string sExMessage)
+        //Jira CAP-1990
+        //public static string IsAkidoEncounter(string sEncounterID, out string sExMessage)
+        public static string IsAkidoEncounter(string sEncounterID, out string sExMessage, out string sStatus)
         {
+            sStatus = "";
             sExMessage = "";
             string bIsAkidoEncounter = "false";
             //Jira CAP-1379
@@ -6044,6 +6048,11 @@ namespace Acurus.Capella.UI
                 if (json.ToString() != "[]")
                 {
                     bIsAkidoEncounter = "true";
+                    //Jira CAP-1990
+                    string sPJason = json.Substring(1, json.Length - 2);
+                    var jsonObject = JObject.Parse(sPJason);
+                    sStatus = (string)jsonObject["status"];
+
                 }
             }
             catch (Exception ex)

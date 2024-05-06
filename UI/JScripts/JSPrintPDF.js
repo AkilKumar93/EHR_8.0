@@ -80,11 +80,19 @@ function btnFaxClick(sender, args) {
                         var vDIAGNOSTIC = vTabstrip[i].innerText.split(".pdf")[0].split("DIAGNOSTIC_ORDER");
                         var vcreatedate = "";
                         var vlab = "";
-                        if (vDIAGNOSTIC != undefined) {
+                        //Jira CAP-1996
+                        //if (vDIAGNOSTIC != undefined) {
+                        if (vDIAGNOSTIC != undefined && vTabstrip[i].innerText.indexOf("DIAGNOSTIC_ORDER") > -1) {
                             vcreatedate = vTabstrip[i].innerText.split(".pdf")[0].split("DIAGNOSTIC_ORDER")[1].split("_")[vDIAGNOSTIC[1].split("_").length - 1];
                             vlab = vTabstrip[i].innerText.split(".pdf")[0].split("DIAGNOSTIC_ORDER")[1].split("_")[vDIAGNOSTIC[1].split("_").length - 3];
                         }
-                        vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + "_" + vcreatedate;
+                        if (vTabstrip[i].innerText.indexOf("DIAGNOSTIC_ORDER") > -1) {
+                            vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + "_" + vcreatedate;
+                        }
+                        //Jira CAP-1996
+                        else {
+                            vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + "_" + FaxSubject.split('$')[1].split('|')[i].split('_')[2];
+                        }
                     }
 
                 }
@@ -93,13 +101,11 @@ function btnFaxClick(sender, args) {
                     if (FaxSubject.split("_")[1] != undefined)
                         vFaxSubject = vGeneralPlan + FaxSubject;
                 }
-                else if (FaxSubject != undefined&&FaxSubject.indexOf('|')>-1) {
+                else if (FaxSubject != undefined && FaxSubject.indexOf('|') > -1) {
                     vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + "_" + FaxSubject.split('$')[1].split('|')[i].split('_')[2];
                 }
-                else if (FaxSubject != undefined)
-                { //Checkout print documents
-                    if (FaxSubject.includes('|') == false)
-                    {
+                else if (FaxSubject != undefined) { //Checkout print documents
+                    if (FaxSubject.includes('|') == false) {
                         //CAP-1266
                         //vFaxSubject = "Order" + FaxSubject.split("|")[0].split("$")[0] + "_" + FaxSubject.split('$')[1].split('|')[i].split('_')[2];
                         var str1Length = FaxSubject.split('$').length;
@@ -112,14 +118,22 @@ function btnFaxClick(sender, args) {
                     var vDIAGNOSTIC = vTabstrip[i].innerText.split(".pdf")[0].split("DME_ORDER");
                     var vcreatedate = "";
                     var vlab = "";
-                    if (vDIAGNOSTIC != undefined) {
+                    //if (vDIAGNOSTIC != undefined) {
+                    if (vDIAGNOSTIC != undefined && vTabstrip[i].innerText.indexOf("DME_ORDER") > -1) {
                         vcreatedate = vTabstrip[i].innerText.split(".pdf")[0].split("DME_ORDER")[1].split("_")[vDIAGNOSTIC[1].split("_").length - 1];
                         vlab = vTabstrip[i].innerText.split(".pdf")[0].split("DME_ORDER")[1].split("_")[vDIAGNOSTIC[1].split("_").length - 2];
                     }
                     var vname = "";
                     if (FaxSubject.split("_")[1] != undefined)
                         vname = FaxSubject.split("_")[1];
-                    vFaxSubject = "DME_Order_" + vname + "_" + vcreatedate;
+                    //Jira CAP-1996 put condition
+                    if (vTabstrip[i].innerText.indexOf("DME_ORDER") > -1) {
+                        vFaxSubject = "DME_Order_" + vname + "_" + vcreatedate;
+                    }
+                    //Jira CAP-1996
+                    else {
+                        vFaxSubject = "DME_Order_" + vname + "_" + FaxSubject.split('$')[1].split('|')[i].split('_')[2];
+                    }
                 }
                 break;
             }

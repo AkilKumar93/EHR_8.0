@@ -147,6 +147,8 @@ namespace Acurus.Capella.UI
                 }
 
                 LoadorderList();
+                //CAP-1985 - In Testing & Production: Referral order screen spinning for long time
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = 'false';", true);
             }
 
             //grdOrders.MasterGridViewTemplate.EnableSorting = true;
@@ -903,7 +905,7 @@ namespace Acurus.Capella.UI
                 //MessageWindow.NavigateUrl = "frmPrintPDF.aspx?Location=DYNAMIC&SI=" + hdnSelectedItem.Value.ToString();
                 //MessageWindow.VisibleStatusbar = false;
                 //MessageWindow.VisibleOnPageLoad = true;
-                ScriptManager.RegisterStartupScript(this, typeof(frmImageAndLabOrder), string.Empty, "OpenPDFImage('" + FaxSubject + "');", true);
+                ScriptManager.RegisterStartupScript(this, typeof(frmImageAndLabOrder), string.Empty, "OpenPDFImage('" + FaxSubject.Replace(@"'", "$|~|$") + "');", true);
                 //ScriptManager.RegisterStartupScript(this, typeof(frmImageAndLabOrder), string.Empty, "OpenPDFImage();", true);
             }
             else

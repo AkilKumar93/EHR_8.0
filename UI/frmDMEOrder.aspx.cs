@@ -2026,7 +2026,7 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-                ScriptManager.RegisterStartupScript(this, typeof(frmDMEOrder), string.Empty, "OpenPDFImage('" + FaxSubject + "');", true);
+                ScriptManager.RegisterStartupScript(this, typeof(frmDMEOrder), string.Empty, "OpenPDFImage('" + FaxSubject.Replace(@"'", "$|~|$") + "');", true);
             }
                 if (FileLocation==string.Empty)
                 {

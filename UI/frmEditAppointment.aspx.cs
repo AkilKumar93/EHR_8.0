@@ -3122,31 +3122,52 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    string sPhyName = string.Empty;
-                    if (PhyList[i] != null)
+                    //CAP-1995 - Testing & Production: In Appointment Scheduler, Duplicate provide list shows in the Provider Name field. 
+                    string strXmlFilePathTech = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\machine_technician.xml");
+                    if (File.Exists(strXmlFilePathTech) == true)
                     {
-                        //old code
-                        //sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
-                        //Gitlab# 2485 - Physician Name Display Change
-                        if (PhyList[i].PhyLastName != String.Empty)
-                            sPhyName += PhyList[i].PhyLastName;
-                        if (PhyList[i].PhyFirstName != String.Empty)
+                        string sPhyName = string.Empty;
+                        string PhyId = string.Empty;
+                        xmldoc = new XmlDocument();
+                        xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "machine_technician" + ".xml");
+                        if (PhyList[i].PhyColor != "" && PhyList[i].PhyColor != "0")
                         {
-                            if (sPhyName != String.Empty)
-                                sPhyName += "," + PhyList[i].PhyFirstName;
-                            else
-                                sPhyName += PhyList[i].PhyFirstName;
+                            XmlNodeList xmlTec = xmldoc.GetElementsByTagName("MachineTechnician" + PhyList[i].PhyColor);
+                            if (xmlTec != null)
+                            {
+                                sPhyName = xmlTec[0].Attributes.GetNamedItem("machine_name").Value + " - " + PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyMiddleName + " " + PhyList[i].PhyLastName;
+                                PhyId = xmlTec[0].Attributes.GetNamedItem("machine_technician_library_id").Value;
+                            }
                         }
-                        if (PhyList[i].PhyMiddleName != String.Empty)
-                            sPhyName += " " + PhyList[i].PhyMiddleName;
-                        if (PhyList[i].PhySuffix != String.Empty)
-                            sPhyName += "," + PhyList[i].PhySuffix;
-                    }
+                        else
+                        {
+                            if (PhyList[i] != null)
+                            {
+                                //old code
+                                //sPhyName = PhyList[i].PhyPrefix + " " + PhyList[i].PhyFirstName + " " + PhyList[i].PhyLastName;
+                                //Gitlab# 2485 - Physician Name Display Change
+                                if (PhyList[i].PhyLastName != String.Empty)
+                                    sPhyName += PhyList[i].PhyLastName;
+                                if (PhyList[i].PhyFirstName != String.Empty)
+                                {
+                                    if (sPhyName != String.Empty)
+                                        sPhyName += "," + PhyList[i].PhyFirstName;
+                                    else
+                                        sPhyName += PhyList[i].PhyFirstName;
+                                }
+                                if (PhyList[i].PhyMiddleName != String.Empty)
+                                    sPhyName += " " + PhyList[i].PhyMiddleName;
+                                if (PhyList[i].PhySuffix != String.Empty)
+                                    sPhyName += "," + PhyList[i].PhySuffix;
 
-                    RadComboBoxItem item = new RadComboBoxItem();
-                    item.Value = PhyList[i].Id.ToString();
-                    item.Text = sPhyName;
-                    ddlPhysicianName.Items.Add(item);
+                                PhyId = PhyList[i].Id.ToString();
+                            }
+                        }
+                        RadComboBoxItem item = new RadComboBoxItem();
+                        item.Value = PhyId;
+                        item.Text = sPhyName;
+                        ddlPhysicianName.Items.Add(item);
+                    }
                 }
                 //if (ddlPhysicianName.Items[i].Value == hdnPhysicianID.Value)
                 //{

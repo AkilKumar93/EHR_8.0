@@ -97,7 +97,11 @@ function OpenManagedFrequentlyUsedProcedures() {
     }
 }
 function OpenPDFImage(FaxSubject) {
-   
+
+    //Jira CAP-1996 - Start
+    FaxSubject = FaxSubject.replaceAll("$|~|$", "'");
+    //Jira CAP-1996 - End
+
     if(FaxSubject!="")
         localStorage['FaxSubject1'] = JSON.stringify(FaxSubject);
    
