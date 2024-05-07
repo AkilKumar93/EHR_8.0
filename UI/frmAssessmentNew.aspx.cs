@@ -840,7 +840,7 @@ namespace Acurus.Capella.UI
                 //BugID:53007 
                 if (bSuggestIcds)
                     ListAssessment = ListAssessment.Concat(ListVitalsProblemList).ToList();
-
+                    
                 if (!bSuggestIcds)
                 {
                     strICDDesc = new List<string>();
@@ -873,14 +873,15 @@ namespace Acurus.Capella.UI
                         }
 
 
-                       objAssessmentManager.BatchOperationsToAssessment(new List<Assessment>(),
-                       new List<Assessment>(), assessmentListToDelete.ToArray<Assessment>(),
-                       new List<ProblemList>(), new List<ProblemList>(),
-                       new List<ProblemList>(), string.Empty,
-                       null, new TreatmentPlan(), ClientSession.UserName, ClientSession.EncounterId, ClientSession.HumanId,
-                       ClientSession.PhysicianId, new List<string>(), "No", "", ClientSession.LegalOrg, new List<EandMCodingICD>(), new List<EandMCodingICD>());
+                        objAssessmentManager.BatchOperationsToAssessment(new List<Assessment>(),
+                        new List<Assessment>(), assessmentListToDelete.ToArray<Assessment>(),
+                        new List<ProblemList>(), new List<ProblemList>(),
+                        new List<ProblemList>(), string.Empty,
+                        null, new TreatmentPlan(), ClientSession.UserName, ClientSession.EncounterId, ClientSession.HumanId,
+                        ClientSession.PhysicianId, new List<string>(), "No", "", ClientSession.LegalOrg, new List<EandMCodingICD>(), new List<EandMCodingICD>());
                     }
-                    else if (assessmentLoadList.VitalsBasedICD_List.Count > 0)
+                    //CAP-1671
+                    if (assessmentLoadList.VitalsBasedICD_List.Count > 0)
                     {
                         AssessmentVitalsLookupManager assessmentVitalsLookupManager = new AssessmentVitalsLookupManager();
                         var assesmentVitals = assessmentVitalsLookupManager.GetAll();
@@ -897,7 +898,10 @@ namespace Acurus.Capella.UI
                                 { 
                                     ListAssessment.Remove(oldAssementVital);
                                     var assessment = objAssessmentManager.GetAssesmentUsingAssesmentId(oldAssementVital.AssessmentID);
-                                    assessmentListToDelete.Add(assessment);
+                                    if (!assessmentListToDelete.Any(x => x.Id == assessment.Id))
+                                    {
+                                        assessmentListToDelete.Add(assessment);
+                                    }
                                 }
                             }
                         }
