@@ -170,13 +170,16 @@ $(document).ready(function () {
             $("#divSearchParameters").show();
             $("#divMain").css("height", "100%")
             LoadGrid();
-            //Jira CAP-2014
-            SearchByTextandCategory();
         }
     }
     ddlCategory_Change();
+
     //Jira CAP-2014
-    $(top.window.document).find("#TabmdldlgPhysicianLibrary").find(".modal-content")[0].style.height = $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height;
+    SearchByTextandCategory();
+    $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "100%";
+    $(top.window.document).find("#TabmdldlgPhysicianLibrary").find(".modal-content")[0].style.height = "95%";
+    $(top.window.document).find("#TabPhysicianLibrary")[0].style.marginTop = "12px";
+
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     //Input Mask for landline phone number
 
@@ -521,7 +524,8 @@ function Add(sCheckDuplicatefax) {
                 DisplayErrorMessage('110020');
                 Aftersave();
             }
-
+            //Jira CAP-2014
+            SearchByTextandCategory();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         },
         error: function OnError(xhr) {
