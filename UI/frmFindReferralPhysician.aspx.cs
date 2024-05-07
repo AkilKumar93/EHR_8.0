@@ -83,9 +83,10 @@ namespace Acurus.Capella.UI
                                          value = new
                                          {
                                              ulPhyId = Phy.PhyId,
-                                             sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName+ " " + Phy.PhyLastName + " " + Phy.PhySuffix,
+                                             //CAP-2008
+                                             sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + (string.IsNullOrWhiteSpace(Phy.PhyLastName) ? " " : ", " + Phy.PhyLastName) + " " + Phy.PhySuffix,
                                              sPhySuffix = Phy.PhySuffix,
-                                             sPhyshortName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyLastName,
+                                             sPhyshortName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + (string.IsNullOrWhiteSpace(Phy.PhyLastName) ? " " : ", " + Phy.PhyLastName),
                                              sPhyNPI = Phy.PhyNPI,
                                              sPhySpecialty = Phy.PhySpecialtyCode,
                                              sPhyFacility = Phy.PhyFacility,
@@ -283,7 +284,8 @@ namespace Acurus.Capella.UI
                                          value = new
                                          {
                                              ulPhyId = Phy.PhyId,
-                                             sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyLastName + " " + Phy.PhySuffix,
+                                             //CAP-2008
+                                             sPhyName = Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix,
                                              sPhyNPI = Phy.PhyNPI,
                                              sPhyFacility = Phy.PhyFacility,
                                              ulPhySplID = Phy.PhySpecialtyID,
