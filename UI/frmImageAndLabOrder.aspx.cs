@@ -187,7 +187,8 @@ namespace Acurus.Capella.UI
             this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "PageObjects", ClientSideObjects, true);
             sScreenMode = Request["ScreenMode"];
             lnkDiagnosticOrder.Attributes.Add("onclick", "WaitCursor();");
-            lnkOrderList.Attributes.Add("onclick", "WaitCursor();");
+            //CAP-1985
+            lnkOrderList.Attributes.Add("onclick", "OrdersListClick();");
             //CAP-1551
             //chklstFrequentlyUsedProcedures.Attributes.Add("onclick", "ChklstFrequentlyEnable();");
             // sFacilityCmg = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].Trim().ToUpper();
