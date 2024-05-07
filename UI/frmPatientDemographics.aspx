@@ -998,8 +998,11 @@
                                 <td style="width:11%">
                                    <%-- <asp:TextBox ID="txtEmail" onchange="AutoSave();" runat="server" OnKeyPress="change(this);" CssClass="Editabletxtbox"
                                         autocomplete="off" Width="99%" MaxLength="100" EnableViewState="false" onkeyup="Copy('Email');"></asp:TextBox>--%>
-                                     <asp:TextBox ID="txtEmail" runat="server" onkeypress="AutoSave(this);" Width="91%" EnableViewState="false"
-                                             MaxLength="100" onkeyup="" class="Editabletxtbox" autocomplete="off"></asp:TextBox>
+                                    <%--CAP-1975 - done--%>
+                                     <%--<asp:TextBox ID="txtEmail" runat="server" onkeypress="AutoSave(this);" Width="91%" EnableViewState="false"
+                                             MaxLength="100" onkeyup="" class="Editabletxtbox"  autocomplete="off"></asp:TextBox>--%>
+                                    <asp:TextBox ID="txtEmail" runat="server" onkeypress="AutoSave(this);" Width="91%" EnableViewState="false"
+                                             MaxLength="100" onkeyup="Copy('Email');" class="Editabletxtbox"  autocomplete="off"></asp:TextBox>
                                 </td>
                                 <%-- <td></td>--%>
                                   <td style="width:11%">

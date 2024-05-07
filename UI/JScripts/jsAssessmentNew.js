@@ -3086,6 +3086,7 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                 return false;
             }
             var icd = test12.AssessmentList;
+            $scope.FromProblemList = test12.FromProblemList;
             var oldicd = $scope.AssessmentTable;
             for (i = 0; i < icd.length; i++) {
                 for (j = 0; j < oldicd.length; j++) {

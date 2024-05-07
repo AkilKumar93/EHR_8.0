@@ -1286,7 +1286,9 @@ namespace Acurus.Capella.UI
                 if (txtExternalAccNo.Text != "999999999999999")
                     sAccountExtNo = txtExternalAccNo.Text;
                 HumanDTO CheckHuman = new HumanDTO();
-                CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo);
+                //Cap - 1883
+                //CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo);
+                CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo, ClientSession.LegalOrg);
                 int iSave = 6;
                 if (CheckHuman.HumanDetails != null)
                 {
@@ -1581,7 +1583,9 @@ namespace Acurus.Capella.UI
                 objHuman.Dynamics_Number = txtDynamicsNumber.Text;
                 HumanDTO CheckHuman = new HumanDTO();
                 if (txtMedicalRecordno.Text.ToUpper() != objHuman.Medical_Record_Number.ToUpper() && txtExternalAccNo.Text.ToUpper() != objHuman.Patient_Account_External.ToUpper())
-                    CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, txtMedicalRecordno.Text, sAccountExtNo);
+                    //Cap - 1883
+                    //CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, txtMedicalRecordno.Text, sAccountExtNo);
+                    CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, txtMedicalRecordno.Text, sAccountExtNo, ClientSession.LegalOrg);
                 if (txtMedicalRecordno.Text.ToUpper() != objHumanDTO.HumanDetails.Medical_Record_Number.ToUpper() && CheckHuman.MedicalRecordNoList == true)
                 {
                     this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Patient Demographics", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('420044');", true);
@@ -4013,8 +4017,9 @@ namespace Acurus.Capella.UI
                         }
 
                         HumanDTO CheckHuman = new HumanDTO();
-
-                        CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo);
+                        //Cap - 1883
+                        //CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo);
+                        CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo, ClientSession.LegalOrg);
                         int iSave = 6;
 
                         if (CheckHuman.HumanDetails != null)
@@ -5219,7 +5224,9 @@ namespace Acurus.Capella.UI
                 if (txtExternalAccNo.Text != "999999999999999")
                     sAccountExtNo = txtExternalAccNo.Text;
                 HumanDTO CheckHuman = new HumanDTO();
-                CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo);
+                //Cap - 1883
+                // CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo);
+                CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(txtPatientlastname.Text, txtPatientfirstname.Text, Convert.ToDateTime(dtpPatientDOB.Text), ddlPatientsex.Text, txtMedicalRecordno.Text, sAccountExtNo, ClientSession.LegalOrg);
                 int iSave = 6;
 
                 if (iSave == 2)
@@ -5512,7 +5519,9 @@ namespace Acurus.Capella.UI
                 }
                 HumanDTO CheckHuman = new HumanDTO();
                 if (txtMedicalRecordno.Text.ToUpper() != objHuman.Medical_Record_Number.ToUpper() && txtExternalAccNo.Text.ToUpper() != objHuman.Patient_Account_External.ToUpper())
-                    CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, txtMedicalRecordno.Text, sAccountExtNo);
+                    //Cap - 1883
+                    //CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, txtMedicalRecordno.Text, sAccountExtNo);
+                    CheckHuman = HumanMngr.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, txtMedicalRecordno.Text, sAccountExtNo, ClientSession.LegalOrg);
                 if (txtMedicalRecordno.Text.ToUpper() != objHumanDTO.HumanDetails.Medical_Record_Number.ToUpper() && CheckHuman.MedicalRecordNoList == true)
                 {
                     // ApplicationObject.erroHandler.DisplayErrorMessage("420044", "Patient Demographics", this.Page);
