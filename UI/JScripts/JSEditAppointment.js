@@ -908,10 +908,11 @@ function PcpPrimaryDefault(humanid) {
             //Cap - 1234
             var TabVal = document.getElementById("hdnTabRefPcpChange").value
             if (TabVal != undefined && TabVal != null && TabVal == "PCP") {
-                document.getElementById("txtProviderSearch").value = objdata;
+                document.getElementById("txtProviderSearch").value = objdata.split("&")[1];
             }
-            document.getElementById("hdnpcpprovider").value = objdata;
-            document.getElementById("hdnpcpprovidersearch").value = objdata;
+            document.getElementById("hdnpcpprovider").value = objdata.split("&")[1];
+            document.getElementById("hdnpcpprovidersearch").value = objdata.split("&")[1];
+            document.getElementById("hdnEditPhysicianId").value = objdata.split("&")[0];
         }
     });
 }
@@ -1613,11 +1614,19 @@ function EditProviderDetails() {
         $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
             var PhyTextboxName = localStorage.getItem("PhyDetails");
             if (PhyTextboxName.split("&")[4] != undefined) {
-                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
-                txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];                
+                document.getElementById("hdnpcpprovider").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                document.getElementById("hdnpcpprovidersearch").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                document.getElementById("hdnrenprovider").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                documnet.getElementById("hdnrenprovidersearch").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+
             }
             else {
                 document.getElementById("txtProviderSearch").value = PhyTextboxName;
+                document.getElementById("hdnpcpprovider").value = PhyTextboxName;
+                document.getElementById("hdnpcpprovidersearch").value = PhyTextboxName;
+                document.getElementById("hdnrenprovider").value = PhyTextboxName;
+                documnet.getElementById("hdnrenprovidersearch").value = PhyTextboxName;
             }
 
 

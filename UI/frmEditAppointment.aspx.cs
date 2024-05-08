@@ -204,6 +204,7 @@ namespace Acurus.Capella.UI
                 if (ulMyEncID != 0)
                 {
                     imgClearProviderText.Style.Add("top", "224px !important");
+                    imgEditProvider.Style.Add("top", "224px !important");
                     //logger.Debug("Screen is in Edit Appoinment Mode as Encounter_ID is" + ulMyEncID.ToString());
                     if (ClientSession.UserName != null)
                         this.Page.Title = "Edit Appointment" + "-" + ClientSession.UserName;
@@ -1231,6 +1232,7 @@ namespace Acurus.Capella.UI
                 if (tabReferringProvAndPCP.SelectedIndex == 0)
                 {
                     imgClearProviderText.Style.Add("top", "234px !important");
+                    imgEditProvider.Style.Add("top", "234px !important");
                     //if (sAncillary != string.Empty && sAncillary != cboFacility.SelectedItem.Text.Trim())
                     //{
                     var fac = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacility.SelectedItem.Text select f;
@@ -1251,6 +1253,7 @@ namespace Acurus.Capella.UI
                 }
                 else if (tabReferringProvAndPCP.SelectedIndex == 1)
                 {
+                    imgEditProvider.Style.Add("top", "224px !important");
                     imgClearProviderText.Style.Add("top", "224px !important");
                     if (EncRecord != null && EncRecord.PCP_Physician != null && EncRecord.PCP_Physician != "")
                     {
@@ -4085,6 +4088,7 @@ namespace Acurus.Capella.UI
                     imgEditProvider.Visible = true;
                 }
                 imgClearProviderText.Style.Add("top", "246px !important");
+                imgEditProvider.Style.Add("top", "246px !important");
                 lblOrder.ForeColor = Color.Red;
                 lblOrder.Text = lblOrder.Text.Replace("*", "");
                 lblOrder.Text += "*";
@@ -4503,6 +4507,7 @@ namespace Acurus.Capella.UI
                 }
 
                 imgClearProviderText.Style.Add("top", "234px !important");
+                imgEditProvider.Style.Add("top", "234px !important");
 
                 chkSelfReferred.Visible = true;
                 if (hdnEncounterID.Value != null && hdnEncounterID.Value != string.Empty)
@@ -4629,6 +4634,7 @@ namespace Acurus.Capella.UI
                 imgClearProviderText.Visible = true;
                 imgEditProvider.Visible = true;
                 imgClearProviderText.Style.Add("top", "224px !important");
+                imgEditProvider.Style.Add("top", "224px !important");
                 chkSelfReferred.Visible = false;
                 //Jira #CAP-69 - labels are missing
                 pcpDefaultDemographics();
@@ -7560,7 +7566,7 @@ namespace Acurus.Capella.UI
             {
                 if (Encntlist[0].PCP_Physician != string.Empty)
                 {
-                    value = Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
+                    value = Encntlist[0].Referring_Physician + "&" + Encntlist[0].PCP_Physician + "| NPI: " + Encntlist[0].PCP_Provider_NPI +
                          "| Facility: " + Encntlist[0].PCP_Facility + "| Address:" + Encntlist[0].PCP_Address +
                          "| Phone No:" + Encntlist[0].PCP_Phone_No + "| Fax No:" + Encntlist[0].PCP_Fax_No;
                 }
@@ -7579,7 +7585,7 @@ namespace Acurus.Capella.UI
                 //                                 ((InsuredList.PhyList[0].PhyPhone.Trim()) != "" ? "Phone No:" + InsuredList.PhyList[0].PhyPhone + " | " : "") +
                 //                                 (InsuredList.PhyList[0].PhyFax.Trim() != "" ? "Fax No:" + InsuredList.PhyList[0].PhyFax : "");
 
-                value = InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
+                value = InsuredList.PhyList[0].PhyId+ "&" +InsuredList.PhyList[0].PhyPrefix + " " + InsuredList.PhyList[0].PhyFirstName + " " + InsuredList.PhyList[0].PhyMiddleName + " " + InsuredList.PhyList[0].PhyLastName + "(" + InsuredList.PhyList[0].PhySuffix + ")" + " | " +
                                                  "NPI:" + InsuredList.PhyList[0].PhyNPI + " | " +
                                                  "Facility:" + InsuredList.PhyList[0].PhyFacility + " | " +
                                                  "Address:" + InsuredList.PhyList[0].PhyAddrs + ", " +
