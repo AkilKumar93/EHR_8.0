@@ -176,10 +176,6 @@ $(document).ready(function () {
 
     //Jira CAP-2014
     SearchByTextandCategory();
-    $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "100%";
-    $(top.window.document).find("#TabmdldlgPhysicianLibrary").find(".modal-content")[0].style.height = "95%";
-    $(top.window.document).find("#TabPhysicianLibrary")[0].style.marginTop = "12px";
-
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
     //Input Mask for landline phone number
 
@@ -749,11 +745,19 @@ function AddProvider() {
                         $("#btnClose").click();
                         var vProviderName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
                         var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
-                        var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
-                        var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value +"&" +vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
-                            + "ADDR: " +$("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
-                            + $("#txtState")[0].value + "," + $("#txtZip")[0].value
-                            + "|" + "PH:" + $("#txtPhone")[0].value+ "FAX:" + $("#txtFax")[0].value ;
+                        //Jira Cap - 1989
+                        //var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        //var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
+                        //    + "ADDR: " + $("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
+                        //    + $("#txtState")[0].value + "," + $("#txtZip")[0].value
+                        //    + "|" + "PH:" + $("#txtPhone")[0].value + "FAX:" + $("#txtFax")[0].value;
+
+                        var vFullName = $("#ddlPrefix")[0].value + " " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                        var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
+                            + "ADDR: " + $("#txtAddressLine1")[0].value + "," + $("#txtCity")[0].value + ","
+                            + $("#txtState")[0].value + " " + $("#txtZip")[0].value
+                            + "|" + "PH:" + $("#txtPhone")[0].value + " | FAX:" + $("#txtFax")[0].value;
+
 
                         localStorage.setItem("PhyDetails", PCP_PhyDetails);
                     }
@@ -780,9 +784,14 @@ function AddProvider() {
                         return;
                     }
 
+                    //Jira Cap - 1989
+                    //var PCP_PhyDetails = objdata[i].Physician_Library_ID + "|" + vName + "|" + objdata[i].NPI + "|" + objdata[i].specialty + "|" + objdata[i].Facility + "|"
+                    //    + objdata[i].Physician_Address1 + "," + objdata[i].Physician_Address2 + "," + objdata[i].Physician_City + "," + objdata[i].Physician_State + "," + objdata[i].Physician_Zip + "|"
+                    //    + objdata[i].Physician_Fax + "|" + objdata[i].Physician_Telephone;
+
                     var PCP_PhyDetails = objdata[i].Physician_Library_ID + "|" + vName + "|" + objdata[i].NPI + "|" + objdata[i].specialty + "|" + objdata[i].Facility + "|"
-                        + objdata[i].Physician_Address1 + "," + objdata[i].Physician_Address2 + "," + objdata[i].Physician_City + "," + objdata[i].Physician_State + "," + objdata[i].Physician_Zip + "|"
-                            + objdata[i].Physician_Fax + "|" + objdata[i].Physician_Telephone ;
+                        + objdata[i].Physician_Address1 + "," + objdata[i].Physician_City + "," + objdata[i].Physician_State + " " + objdata[i].Physician_Zip + "|"
+                        + objdata[i].Physician_Fax + "|" + objdata[i].Physician_Telephone;
 
                     localStorage.setItem("PhyDetails", PCP_PhyDetails);
                    
@@ -1399,7 +1408,7 @@ function SearchByTextandCategory() {
                 row = row + $(this)[0].innerText + "_";
             }
         });
-        if (row.toUpperCase().indexOf(SearchText.value.toUpperCase()) > -1 && ($(this).find("td:eq(1)")[0].innerText == document.getElementById("cboCategory").value || document.getElementById("cboCategory").value == "")) { //
+        if (row.toUpperCase().indexOf(SearchText.value.toUpperCase()) > -1 && ($(this).find("td:eq(1)")[0].innerText == document.getElementById("cboCategory").value || document.getElementById("cboCategory").value == "ALL")) { //
             $(this)[0].style.display = "";
         }
         else {
