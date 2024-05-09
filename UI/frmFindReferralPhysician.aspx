@@ -58,7 +58,7 @@
                             <span><b>Provider Search</b></span>
                         </td>
                         <td style="width: 80%;">
-                            <asp:TextBox ID="txtProviderSearch" runat="server" Width="98%" data-phy-id="0" data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or Facility and follow it by a space.." CssClass="Editabletxtbox" style="resize:none"></asp:TextBox>
+                            <asp:TextBox ID="txtProviderSearch" runat="server" Width="98%" data-phy-id="0" data-phy-details="" Rows="3" TextMode="MultiLine" placeholder="Type minimum 3 characters of Last or First name or City or Facility or Company and follow it by a space.." CssClass="Editabletxtbox" style="resize:none"></asp:TextBox>
                             </td>
                         <td style="width: 1%;">
                             <img id="imgClearProviderText" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field."/>
