@@ -1609,13 +1609,13 @@ function EditProviderDetails() {
                 document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
 
                 if (document.getElementById("chkSelfReferred") != null && document.getElementById("chkSelfReferred").checked == false) {
-                    document.getElementById("hdnrenprovider").value = JSON.stringify(PhyTextboxName.split("&")[4]);
-                    document.getElementById("hdnrenprovidersearch").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                    document.getElementById("hdnrenprovider").value = PhyTextboxName.split("&")[4];
+                    document.getElementById("hdnrenprovidersearch").value = PhyTextboxName.split("&")[4];
                     document.getElementById("hdnRefEditPhyId").value = EditPhyId; 
                 }
                 else {
-                    document.getElementById("hdnpcpprovider").value = JSON.stringify(PhyTextboxName.split("&")[4]);
-                    document.getElementById("hdnpcpprovidersearch").value = JSON.stringify(PhyTextboxName.split("&")[4]);
+                    document.getElementById("hdnpcpprovider").value = PhyTextboxName.split("&")[4];
+                    document.getElementById("hdnpcpprovidersearch").value = PhyTextboxName.split("&")[4];
                     document.getElementById("hdnpcpEditPhyId").value = EditPhyId; 
                 }
 
