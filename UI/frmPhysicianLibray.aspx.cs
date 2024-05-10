@@ -42,7 +42,9 @@ namespace Acurus.Capella.UI
                         string Prefix = ilstPhysicianLibrary[0].PhyPrefix;
                         for (int i = 0; i < ddlPrefix.Items.Count; i++)
                         {
-                            if (ddlPrefix.Items[i].Text.ToUpper() == Prefix.ToUpper())
+                            //Cap - 2050
+                            //if (ddlPrefix.Items[i].Text.ToUpper() == Prefix.ToUpper())
+                                if (ddlPrefix.Items[i].Text.ToUpper() == Prefix.Replace(".","").ToUpper())
                             {
                                 ddlPrefix.SelectedIndex = i;
                             }
