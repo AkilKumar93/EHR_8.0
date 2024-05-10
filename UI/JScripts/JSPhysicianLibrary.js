@@ -579,7 +579,7 @@ function AddProvider() {
             return Returnval;
     }
     if ($("#txtSuffix")[0].value != "") {
-        var Returnval = AvoidSpecailCharacteronsave($("#txtSuffix")[0].value, $("#txtSuffix"));
+        var Returnval = AvoidSpecailCharacteronsuffix($("#txtSuffix")[0].value, $("#txtSuffix"));
         if (!Returnval)
             return Returnval;
     }
@@ -912,6 +912,18 @@ function AvoidSpecailCharacteronsave(soutput, id) {
     }
     return true;
 }
+
+function AvoidSpecailCharacteronsuffix(soutput, id) {
+    var regex = new RegExp("^[a-zA-Z'-.,() t]+$");
+    if (!regex.test(soutput)) {
+        var sid = document.getElementById("lbl" + id[0].id.replace('txt', '')).innerText.replace('*', '');
+        DisplayErrorMessage('1011180', '', sid);
+        document.getElementById(GetClientId(document.getElementById("txt" + id[0].id.replace('lbl', '')))).focus();
+        return false;
+    }
+    return true;
+}
+
 function AllowSpecailCharacteronsave(soutput, id) {
     var regex = new RegExp("^[a-zA-Z0-9'-:#., t'/']+$");
     if (!regex.test(soutput)) {
@@ -962,6 +974,18 @@ function AvoidSpecailCharacter(e) {
     e.preventDefault();
     return false;
 }
+
+function AvoidSpecailCharacterSuffix(e) {
+
+    var regex = new RegExp("^[a-zA-Z'-.,() t]+$");
+    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (regex.test(str)) {
+        return true;
+    }
+    e.preventDefault();
+    return false;
+}
+
 function AllowSpecailCharacter(e) {
     var regex = new RegExp("^[a-zA-Z0-9'-:#., t'/']+$");
     var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);

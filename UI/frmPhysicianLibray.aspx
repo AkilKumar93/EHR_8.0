@@ -98,7 +98,7 @@
                         <td style="width: 35%; padding-bottom: 0.5%">
                             <input type="text" id="txtFirstName" maxlength="50" style="width: 58%" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" runat="server"/>
                             <label id="lblSuffix" class="Editabletxtbox">Suffix</label>
-                            <input type="text" id="txtSuffix" onkeypress="AvoidSpecailCharacter(event)" style="width: 20%" value="" class="Editabletxtbox" runat="server"/>
+                            <input type="text" id="txtSuffix" onkeypress="AvoidSpecailCharacterSuffix(event)" style="width: 20%" value="" class="Editabletxtbox" runat="server"/>
                         </td>
                     </tr>
                     <tr>

@@ -319,13 +319,13 @@ function ProviderSelected(event, ui) {
 
     var vLableVal = JSON.parse(ui.item.val).sPhyshortName + "(" + JSON.parse(ui.item.val).sPhySuffix + ")" + " | " +
         "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
-        "FACILITY:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
-        "ADDR: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
+        "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
+        "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
         JSON.parse(ui.item.val).sPhyCity + "," +
         JSON.parse(ui.item.val).sPhyState + " " +
         JSON.parse(ui.item.val).sPhyZip + " | " +
-        "PH:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
-        "FAX:" + JSON.parse(ui.item.val).sPhyFax;
+        "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
+        "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
     //Cap - 1989
     document.getElementById("hdnCategory").value = ProviderDetails.sCategory;
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
@@ -338,8 +338,8 @@ function ProviderSelected(event, ui) {
     }
     
     txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
-    //txtProviderSearch.value = vLableVal;
-    txtProviderSearch.value = ui.item.label;
+    txtProviderSearch.value = vLableVal;
+    
     var provider = "";
 
     provider = JSON.parse(ui.item.val).sPhyName + "|  NPI: " +

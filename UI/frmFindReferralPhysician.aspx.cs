@@ -72,6 +72,7 @@ namespace Acurus.Capella.UI
                                          label =
                                             Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + (string.IsNullOrWhiteSpace(Phy.PhyLastName)? " " : ", " + Phy.PhyLastName) + (string.IsNullOrWhiteSpace(Phy.PhySuffix) ? string.Empty : "(" + Phy.PhySuffix + ")") + " | " +
                                                               "NPI:" + Phy.PhyNPI +" | " +
+                                                              Phy.PhySpecialtyCode + " | " +
                                                               "Facility:" + Phy.PhyFacility + " | " +
                                                               "Address: " + Phy.PhyAddrs + ", " +
                                                               Phy.PhyCity + "," +
@@ -272,6 +273,7 @@ namespace Acurus.Capella.UI
                                          label =
                                        Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix + " " + " | " +
                                                               "NPI:" + Phy.PhyNPI + " | " +
+                                                              Phy.PhySpecialtyCode + " | " +
                                                               "Facility:" + Phy.PhyFacility + " | " +
                                                               "Address: " + Phy.PhyAddrs + ", " +
                                                               Phy.PhyCity + "," +
@@ -355,6 +357,7 @@ namespace Acurus.Capella.UI
                                          label =
                                        Phy.PhyPrefix + " " + Phy.PhyFirstName + " " + Phy.PhyMiddleName + " " + Phy.PhyLastName + " " + Phy.PhySuffix + " " + " | " +
                                                               "NPI:" + Phy.PhyNPI + " | " +
+                                                              Phy.PhySpecialtyCode + " | " +
                                                               "Facility:" + Phy.PhyFacility + " | " +
                                                               "Address: " + Phy.PhyAddrs + ", " +
                                                               Phy.PhyCity + "," +
