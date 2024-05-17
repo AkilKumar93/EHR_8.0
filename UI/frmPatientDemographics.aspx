@@ -1693,8 +1693,9 @@
                                         <td style="width: 1%;text-align: right;">
                                         <img id="imgClearProviderText" runat="server" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." onclick="return ProviderSearchclear();" style="position: absolute; margin-left: 45px; cursor: pointer; width: 10px; height: 10px;" />
                                         </td>
-                                        <td style="width: 25%;text-align: right;">
-                                            <input type="button" id="btnAddPhysician" value="Add Provider" onclick="return OpenAddPhysician();" style="width: 120px; left: 2000px !important;" class="aspresizedbluebutton" />
+                                         <td style="width: 25%;text-align: left;">
+                                            <img id="imgEditProvider" runat="server" src="Resources/edit.gif" alt="X" title="Click to edit the text field." onclick="return EditProviderDetails();" style="position: absolute; margin-left: 60px; margin-top: -8px ; cursor: pointer; width: 13px; height: 15px;" />
+                                        <%--<input type="button" id="btnAddPhysician" value="Add Provider" onclick="return OpenAddPhysician();" style="width: 120px; left: 2000px !important;" class="aspresizedbluebutton" />--%>
                                         </td>
                                         <td style="width: 10%;text-align: right;">
                                          <input type="button" id="btnAdd" onclick="btnaddinsured(this)" value="Add"   class="aspresizedgreenbutton" />
@@ -1967,6 +1968,8 @@
                 <asp:HiddenField ID="hdnYesNoMessage" runat="server" />
                 <asp:HiddenField ID="hdnBirthOrder" runat="server" EnableViewState="false" />
                 <asp:HiddenField ID="hdnFacilityName" runat="server" />
+                 <asp:HiddenField ID="hdnProviderId" runat="server" EnableViewState="false" />
+                <asp:HiddenField ID="hdnCategory" runat="server" EnableViewState="false" />               
                 <br />
             </div>
             <div id="divLoading" class="modal" runat="server" style="text-align: center; display: none">

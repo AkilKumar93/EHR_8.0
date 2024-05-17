@@ -3406,6 +3406,9 @@ function ProviderSelected(event, ui) {
     var txtProviderSearch = document.getElementById("ctl00_C5POBody_txtProviderSearch");
     document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
     document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
+    //Cap - 2026
+    document.getElementById("ctl00_C5POBody_hdnCategory").value = ProviderDetails.sCategory;
+    document.getElementById("ctl00_C5POBody_hdnProviderId").value = ProviderDetails.ulPhyId;
 
     txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
     txtProviderSearch.attributes['data-phy-details'].value = ProviderDetails.sPhyName;
@@ -3568,23 +3571,80 @@ $("#ctl00_C5POBody_txtProviderSearch").autocomplete({
 $("#ctl00_C5POBody_txtProviderSearch").data("ui-autocomplete")._renderItem = function (ul, item) {
 
     if (item.label != "No matches found.") {
-
-        var list_item = $("<li>")
-            .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
-            .append(item.label)
-            .appendTo(ul);
-
-        return list_item;
+        //Cap - 2026
+        if (flag == 0) {
+            flag = 1;
+            $("<li class='alinkstyle'>")
+                .attr({ "data-value": "Add", "data-val": "Add" }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .append("Click to add Physician").addClass('alinkstyle').css("font-style", "italic")
+                .appendTo(ul).on("click", function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    var obj = new Array();
+                    obj.push("Title=" + "PROVIDER LIBRARY");
+                    localStorage.removeItem("IsEFax");
+                    localStorage.setItem("IsEnableGrid", "false");
+                    //var result = openModal("frmPhysicianLibray.aspx", 330, 750, obj, "MessageWindow");
+                    //var WindowName = $find('MessageWindow');
+                    OpenAddPhysician();
+                    return false;
+                }).on("mouseover", function (e) {
+                    e.preventDefault();
+                    return false;
+                });;;;
+            return $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .append(item.label)
+                .appendTo(ul);
+        }
+        if (flag != 0) {
+            var list_item = $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .append(item.label)
+                .appendTo(ul);
+            return list_item;
+        }
     }
-    else
-        return $("<li>")
-            .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
-            .addClass("disabled")
-            .append(item.label)
-            .appendTo(ul).on("click", function (e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-            });
+    else {
+        //Cap - 2026
+        if (flag == 0) {
+            flag = 1;
+            $("<li class='alinkstyle'>")
+                .attr({ "data-value": "Add", "data-val": "Add" }).css({ "border-bottom": "1px solid #ccc", "font-style": "italic", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .append("Click to add Physician").addClass('alinkstyle')
+                .appendTo(ul).on("click", function (e) {
+                    var obj = new Array();
+                    obj.push("Title=" + "PROVIDER LIBRARY");
+                    localStorage.removeItem("IsEFax");
+                    localStorage.setItem("IsEnableGrid", "false");
+                    var result = openModal("frmPhysicianLibray.aspx", 330, 750, obj, "RadWindow1");
+                    var WindowName = $find('MessageWindow');
+                    return false;
+                    //Jira #Cap#193 - Screen Throwing error message
+                }).on("mouseover", function (e) {
+                    e.preventDefault();
+                    return false;
+                });;;
+            return $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .addClass("disabled")
+                .append(item.label)
+                .appendTo(ul).on("click", function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                });
+        }
+        if (flag != 0) {
+            return $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .addClass("disabled")
+                .append(item.label)
+                .appendTo(ul).on("click", function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                });
+        }
+    }
 };
 
 
@@ -3678,4 +3738,53 @@ function OpenAddPhysician() {
         }
     });
     return false;
+}
+
+//Cap - 2026
+function EditProviderDetails() {
+    var EditPhyId = document.getElementById("ctl00_C5POBody_hdnProviderId").value;
+
+    var ProviderText = document.getElementById("ctl00_C5POBody_txtProviderSearch").value;
+    var Category = document.getElementById("ctl00_C5POBody_hdnCategory").value;
+
+    if (EditPhyId == '' || ProviderText == '') {
+        DisplayErrorMessage('380060');
+    }
+    else if (Category != "NON CAPELLA USER(Physician)" && Category != "NON CAPELLA USER" && Category != "ORGANIZATION") {
+        DisplayErrorMessage('380061', '', Category);
+    }
+    else {
+        localStorage.setItem("PhyDetails", ProviderText);
+        $(top.window.document).find("#TabPhysicianLibrary").modal({ backdrop: "static", keyboard: false }, 'show');
+        $(top.window.document).find("#TabModalPhysicianLibraryTitle")[0].textContent = "Provider Library";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "440px"; //"715px";
+        var sPath = "frmPhysicianLibray.aspx?EditPhyId=" + EditPhyId;
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "275px"; //"495px";
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].contentDocument.location.href = sPath;
+        $(top.window.document).find("#TabPhysicianLibrary").modal("show");
+        $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
+            var PhyTextboxName = localStorage.getItem("PhyDetails");
+            if (PhyTextboxName.split("&")[4] != undefined) {
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = PhyID;
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1];
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2];
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value = PhyDetails.split("&")[3];
+                document.getElementById('ctl00_C5POBody_txtProviderSearch').value = PhyDetails.split("&")[4];
+                document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
+                document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
+                localStorage.setItem("PhyDetails", "");
+            }
+            else {
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").value = PhyTextboxName;
+
+            }
+
+
+        });
+
+        return false;
+    }
+
+
 }
