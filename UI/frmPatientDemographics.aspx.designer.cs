@@ -1896,6 +1896,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlImage imgClearProviderText;
 
         /// <summary>
+        /// imgEditProvider control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage imgEditProvider;
+
+        /// <summary>
         /// chkActiveStatus control.
         /// </summary>
         /// <remarks>
@@ -2632,6 +2641,24 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnFacilityName;
+
+        /// <summary>
+        /// hdnProviderId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnProviderId;
+
+        /// <summary>
+        /// hdnCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnCategory;
 
         /// <summary>
         /// divLoading control.
