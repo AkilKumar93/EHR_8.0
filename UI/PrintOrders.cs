@@ -1482,7 +1482,8 @@ namespace Acurus.Capella.UI
             cell.BackgroundColor = BaseColor.LIGHT_GRAY;
             cell.Colspan = 4;
             patTable.AddCell(cell);
-            cell = CreateCell("Patient Name: \n", humanRecord.Last_Name + "," + humanRecord.First_Name);//(new Phrase("Patient Name: \n" + humanRecord.Last_Name + "," + humanRecord.First_Name, normalFont));
+            //CAP-2075
+            cell = CreateCell("Patient Name: \n", humanRecord.Last_Name + "," + humanRecord.First_Name + " " + humanRecord.MI);//(new Phrase("Patient Name: \n" + humanRecord.Last_Name + "," + humanRecord.First_Name, normalFont));
             patTable.AddCell(cell);
             cell = CreateCell("Patient ID: \n", humanRecord.Id.ToString());
             patTable.AddCell(cell);
@@ -1550,7 +1551,21 @@ namespace Acurus.Capella.UI
                     {
                         cell = CreateCell("Insurance Plan Name: \n", objInsPlan.Ins_Plan_Name);
                         phyTable.AddCell(cell);
-                        cell = CreateCell("Insurance Address: \n", objInsPlan.Payer_Addrress1 + "\n" + objInsPlan.Payer_City);
+                        //CAP-2075
+                        string City1 = string.Empty;
+                        if (objInsPlan.Payer_City != string.Empty)
+                        {
+                            if (objInsPlan.Payer_Addrress1 != string.Empty && objInsPlan.Payer_Addrress2 != string.Empty)
+                                City1 = objInsPlan.Payer_Addrress1 + "\n" + objInsPlan.Payer_Addrress2;
+                            else City1 = objInsPlan.Payer_Addrress1;
+                            if (objInsPlan.Payer_State != string.Empty && objInsPlan.Payer_City != string.Empty)
+                            {
+                                City1 += "\n" + objInsPlan.Payer_City + ", " + objInsPlan.Payer_State + " " + objInsPlan.Payer_Zip;
+                            }
+                            else
+                                City1 = "\n" + objInsPlan.Payer_City;
+                        }
+                        cell = CreateCell("Insurance Address: \n", City1);
                         phyTable.AddCell(cell);
                     }
 
@@ -1569,7 +1584,21 @@ namespace Acurus.Capella.UI
             {
                 cell = CreateCell("Facility Name: \n", objFacility.Fac_Name);
                 phyTable.AddCell(cell);
-                cell = CreateCell("Facility Address: \n", objFacility.Fac_Address1 + "\n" + objFacility.Fac_City);
+                //CAP-2075
+                string City1 = string.Empty;
+                if (objFacility.Fac_City != string.Empty)
+                {
+                    if (objFacility.Fac_Address1 != string.Empty && objFacility.Fac_Address2 != string.Empty)
+                        City1 = objFacility.Fac_Address1 + "\n" + objFacility.Fac_Address2;
+                    else City1 = objFacility.Fac_Address1;
+                    if (objFacility.Fac_State != string.Empty && objFacility.Fac_City != string.Empty)
+                    {
+                        City1 += "\n" + objFacility.Fac_City + ", " + objFacility.Fac_State + " " + objFacility.Fac_Zip;
+                    }
+                    else
+                        City1 = "\n" + objFacility.Fac_City;
+                }
+                cell = CreateCell("Facility Address: \n", City1);
                 phyTable.AddCell(cell);
             }
             if (objPhysician != null)
