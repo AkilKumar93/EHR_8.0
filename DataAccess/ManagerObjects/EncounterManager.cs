@@ -9112,11 +9112,16 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     // Move to Checkout from physician GITLAB #3084
                     if (UserRole.ToUpper() != "MEDICAL ASSISTANT" && encounterRecord.Is_EandM_Submitted != "Y")
+                    {
                         encounterRecord.Is_EandM_Submitted = "N";
+                    }
                     else
+                    {
                         encounterRecord.Is_EandM_Submitted = "Y";
-
-                    encounterRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
+                        //CAP-1778
+                        encounterRecord.E_M_Submitted_Date_And_Time = DateTime.Now;
+                    }
+                    
                     //Added by Janani to update Follow up details in encounter
                     lstencountertemp = UpdateEncounter(encounterRecord, sMacAddress, new object[] { "false" });
                     if (lstencountertemp.Count > 0)
