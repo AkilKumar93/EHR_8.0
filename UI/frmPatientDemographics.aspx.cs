@@ -700,17 +700,53 @@ namespace Acurus.Capella.UI
 
                             if (ilstCurrentPhyFacDTO.Count>0)
                             {
-                                string sPcpGridName = ilstCurrentPhyFacDTO[0].PhyPrefix + " " + ilstCurrentPhyFacDTO[0].PhyFirstName + " " + ilstCurrentPhyFacDTO[0].PhyMiddleName + " " + ilstCurrentPhyFacDTO[0].PhyLastName;
-                                string sPcpTextboxName = ilstCurrentPhyFacDTO[0].PhyPrefix + " " + ilstCurrentPhyFacDTO[0].PhyFirstName + " " + ilstCurrentPhyFacDTO[0].PhyMiddleName + " " + ilstCurrentPhyFacDTO[0].PhyLastName + "(" + ilstCurrentPhyFacDTO[0].PhySuffix + ")" + " | " +
+                                //Cap - 2116
+                                string sPcpGridName = string.Empty;
+                                if (ilstCurrentPhyFacDTO[0].Category.ToUpper() == "ORGANIZATION")
+                                {
+                                    sPcpGridName = ilstCurrentPhyFacDTO[0].PhyCompany;
+                                }
+                                else
+                                {
+                                    sPcpGridName = ilstCurrentPhyFacDTO[0].PhyPrefix + " " + ilstCurrentPhyFacDTO[0].PhyFirstName + " " + ilstCurrentPhyFacDTO[0].PhyMiddleName + " " + ilstCurrentPhyFacDTO[0].PhyLastName;
+                                }
+
+                                //string sPcpTextboxName = ilstCurrentPhyFacDTO[0].PhyPrefix + " " + ilstCurrentPhyFacDTO[0].PhyFirstName + " " + ilstCurrentPhyFacDTO[0].PhyMiddleName + " " + ilstCurrentPhyFacDTO[0].PhyLastName + "(" + ilstCurrentPhyFacDTO[0].PhySuffix + ")" + " | " +
+                                //                              "NPI:" + ilstCurrentPhyFacDTO[0].PhyNPI + " | " +
+                                //                              ilstCurrentPhyFacDTO[0].PhySpecialtyCode + " | " +
+                                //                              "FACILITY:" + ilstCurrentPhyFacDTO[0].PhyFacility + " | " +
+                                //                              "ADDR: " + ilstCurrentPhyFacDTO[0].PhyAddrs + ", " +
+                                //                              ilstCurrentPhyFacDTO[0].PhyCity + "," +
+                                //                              ilstCurrentPhyFacDTO[0].PhyState + " " +
+                                //                              ilstCurrentPhyFacDTO[0].PhyZip + " | " +
+                                //                              ((ilstCurrentPhyFacDTO[0].PhyPhone.Trim()) != "" ? "PH:" + ilstCurrentPhyFacDTO[0].PhyPhone + " | " : "") +
+                                //                              (ilstCurrentPhyFacDTO[0].PhyFax.Trim() != "" ? "FAX:" + ilstCurrentPhyFacDTO[0].PhyFax : "");
+                                string sPcpTextboxName = string.Empty;
+                                if (ilstCurrentPhyFacDTO[0].Category.ToUpper() == "ORGANIZATION")
+                                {
+                                     sPcpTextboxName = ilstCurrentPhyFacDTO[0].PhyCompany + " | " +
                                                               "NPI:" + ilstCurrentPhyFacDTO[0].PhyNPI + " | " +
-                                                              ilstCurrentPhyFacDTO[0].PhySpecialtyCode + " | " +
-                                                              "FACILITY:" + ilstCurrentPhyFacDTO[0].PhyFacility + " | " +
-                                                              "ADDR: " + ilstCurrentPhyFacDTO[0].PhyAddrs + ", " +
+                                                              "Facility:" + ilstCurrentPhyFacDTO[0].PhyFacility + " | " +
+                                                              "Address: " + ilstCurrentPhyFacDTO[0].PhyAddrs + ", " +
                                                               ilstCurrentPhyFacDTO[0].PhyCity + "," +
                                                               ilstCurrentPhyFacDTO[0].PhyState + " " +
                                                               ilstCurrentPhyFacDTO[0].PhyZip + " | " +
-                                                              ((ilstCurrentPhyFacDTO[0].PhyPhone.Trim()) != "" ? "PH:" + ilstCurrentPhyFacDTO[0].PhyPhone + " | " : "") +
-                                                              (ilstCurrentPhyFacDTO[0].PhyFax.Trim() != "" ? "FAX:" + ilstCurrentPhyFacDTO[0].PhyFax : "");
+                                                              ((ilstCurrentPhyFacDTO[0].PhyPhone.Trim()) != "" ? "Phone No:" + ilstCurrentPhyFacDTO[0].PhyPhone + " | " : "") +
+                                                              (ilstCurrentPhyFacDTO[0].PhyFax.Trim() != "" ? "Fax No:" + ilstCurrentPhyFacDTO[0].PhyFax : "");
+                                }
+                                else
+                                {
+                                     sPcpTextboxName = ilstCurrentPhyFacDTO[0].PhyPrefix + " " + ilstCurrentPhyFacDTO[0].PhyFirstName + " " + ilstCurrentPhyFacDTO[0].PhyMiddleName + " " + ilstCurrentPhyFacDTO[0].PhyLastName + "(" + ilstCurrentPhyFacDTO[0].PhySuffix + ")" + " | " +
+                                                              "NPI:" + ilstCurrentPhyFacDTO[0].PhyNPI + " | " +
+                                                              ilstCurrentPhyFacDTO[0].PhySpecialtyCode + " | " +
+                                                              "Facility:" + ilstCurrentPhyFacDTO[0].PhyFacility + " | " +
+                                                              "Address: " + ilstCurrentPhyFacDTO[0].PhyAddrs + ", " +
+                                                              ilstCurrentPhyFacDTO[0].PhyCity + "," +
+                                                              ilstCurrentPhyFacDTO[0].PhyState + " " +
+                                                              ilstCurrentPhyFacDTO[0].PhyZip + " | " +
+                                                              ((ilstCurrentPhyFacDTO[0].PhyPhone.Trim()) != "" ? "Phone No:" + ilstCurrentPhyFacDTO[0].PhyPhone + " | " : "") +
+                                                              (ilstCurrentPhyFacDTO[0].PhyFax.Trim() != "" ? "Fax No:" + ilstCurrentPhyFacDTO[0].PhyFax : "");
+                                }
                                 dr["PCP_Grid_Name"] = sPcpGridName;
                                 dr["PCP_Textbox_Name"] = sPcpTextboxName;
                                 dr["PCP_NPI"] = ilstCurrentPhyFacDTO[0].PhyNPI;

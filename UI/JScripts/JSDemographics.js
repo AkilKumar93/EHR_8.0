@@ -3809,6 +3809,7 @@ function EditProviderDetails() {
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2];
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value = PhyDetails.split("&")[3];
                 document.getElementById('ctl00_C5POBody_txtProviderSearch').value = PhyDetails.split("&")[4];
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-Category'].value = PhyDetails.split("&")[5];
                 document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
                 document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
                 localStorage.setItem("PhyDetails", "");

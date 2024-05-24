@@ -767,6 +767,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         objPhy.PhyAddrs = obj[14].ToString();
                         //objPhy.PhyPhone = obj[15].ToString();
                         objPhy.Category = obj[16].ToString();
+                        objPhy.PhyCompany = obj[17].ToString();
                         if (obj[12] != null)
                         {
                             objPhy.PhyFacility = obj[12].ToString();
