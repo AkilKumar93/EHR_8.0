@@ -151,13 +151,15 @@ function refOrderValidation(sender, args) {
     var now = new Date();
     var utc = now.toUTCString();
     document.getElementById(GetClientId("hdnLocalTime")).value = utc;
-    if ($find('txtProviderName')._text.trim() == '' && isSuccess) {
-        DisplayErrorMessage('720011');
-        sender.set_autoPostBack(false);
-         {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
-        Order_SaveUnsuccessful();
-        isSuccess = false;
-    } else if ($find('cboSpecialty')._text.trim() == '' && isSuccess) {
+    //CAP-2130
+    //if ($find('txtProviderName')._text.trim() == '' && isSuccess) {
+    //    DisplayErrorMessage('720011');
+    //    sender.set_autoPostBack(false);
+    //     {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
+    //    Order_SaveUnsuccessful();
+    //    isSuccess = false;
+    //} else
+    if ($find('cboSpecialty')._text.trim() == '' && isSuccess) {
         DisplayErrorMessage('720003');
         sender.set_autoPostBack(false);
          {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}

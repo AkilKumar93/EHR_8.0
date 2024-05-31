@@ -325,8 +325,7 @@ button.close {
                                             <table style="width: 100%; height: 187px;">
                                                 <tr>
                                                     <td style="width: 15%">
-                                                        <asp:Label ID="lblProviderName" runat="server" Text="Provider Name*" Width="100%"
-                                                            Font-Size="Small"  mand="Yes"></asp:Label>
+                                                        <asp:Label ID="lblProviderName" runat="server" Text="Provider Name" Width="100%" Font-Size="Small" CssClass="Editabletxtbox"></asp:Label>
                                                     </td>
                                                     <td style="width: 8%">
                                                         <telerik:RadTextBox ID="txtProviderName" runat="server" Width="165px" Font-Size="Small"
