@@ -466,7 +466,6 @@ namespace Acurus.Capella.UI
 
                     //Load Balancer - Redirect to a Default Server for the user
                     //ImpersonateUser
-                    login[0].Default_Server = "https://localhost:44351/frmLogin.aspx";
                     if (login[0].Default_Server != string.Empty && login[0].Default_Server.ToUpper().Contains("FRMLOGIN.ASPX") == true || login[0].Default_Server.ToUpper().Contains("FRMLOGINNEW.ASPX"))
                     {
                         //ImpersonateUser - To change the Default Server Login page to the current page
