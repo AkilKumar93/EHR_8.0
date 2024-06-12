@@ -953,6 +953,7 @@ namespace Acurus.Capella.UI
             {
                 if (ClientSession.UserAccountType == "Microsoft" || ClientSession.UserAccountType == "Okta")
                 {
+
                     //string CName = "LogoutVariable" + DateTime.Now.ToString("hh-mm-ss");
                     //Response.SetCookie(new HttpCookie(CName) { Value = "UserAccountType="+ClientSession.UserAccountType.ToString(), HttpOnly = false });
                     //SSO_Logout
@@ -1037,6 +1038,9 @@ namespace Acurus.Capella.UI
                     myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
                     Response.Cookies.Add(myCookie); // Update the client-side cookie
                 }
+
+                //CAP-2166
+                Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddMinutes(5) });
             }
             catch
             { }
