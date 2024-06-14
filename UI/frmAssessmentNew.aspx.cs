@@ -858,18 +858,20 @@ namespace Acurus.Capella.UI
                             {
                                 var vitalLookUpType = assesmentVitals.FirstOrDefault(x => x.ICD_10 == item.ICDCode);
                                 var assesmentLookUpType = assesmentVitals.FirstOrDefault(x => ListAssessment.Any(y => y.ICDCode == x.ICD_10) && x.Field_Name == vitalLookUpType.Field_Name);
-                                if((vitalLookUpType?.Field_Name??"") == (assesmentLookUpType?.Field_Name??""))
-                                {
-                                    var oldAssementVital = ListAssessment.FirstOrDefault(x => x.ICDCode == assesmentLookUpType.ICD_10);
-                                    ListAssessment.Remove(oldAssementVital);
-                                    var assessment = objAssessmentManager.GetAssesmentUsingAssesmentId(oldAssementVital.AssessmentID);
-                                    assessmentListToDelete.Add(assessment);
-                                }
+                                //CAP-2158
+                                //if ((vitalLookUpType?.Field_Name ?? "") == (assesmentLookUpType?.Field_Name ?? ""))
+                                //{
+                                //    var oldAssementVital = ListAssessment.FirstOrDefault(x => x.ICDCode == assesmentLookUpType.ICD_10);
+                                //    ListAssessment.Remove(oldAssementVital);
+                                //    var assessment = objAssessmentManager.GetAssesmentUsingAssesmentId(oldAssementVital.AssessmentID);
+                                //    assessmentListToDelete.Add(assessment);
+                                //}
                             }
-                            else
-                            {
-                                ListVitalsProblemList.Remove(item);
-                            }
+                            //CAP-2158
+                            //else
+                            //{
+                            //    ListVitalsProblemList.Remove(item);
+                            //}
                         }
 
 
@@ -894,15 +896,16 @@ namespace Acurus.Capella.UI
                             if ((lstFieldType?.Field_Name??"") == (assessmentLookUpType?.Field_Name ?? ""))
                             {
                                 var oldAssementVital = ListAssessment.FirstOrDefault(x => x.ICDCode == assessmentLookUpType.ICD_10 && x.ICDCode != item);
-                                if(oldAssementVital != null) 
-                                { 
-                                    ListAssessment.Remove(oldAssementVital);
-                                    var assessment = objAssessmentManager.GetAssesmentUsingAssesmentId(oldAssementVital.AssessmentID);
-                                    if (!assessmentListToDelete.Any(x => x.Id == assessment.Id))
-                                    {
-                                        assessmentListToDelete.Add(assessment);
-                                    }
-                                }
+                                //CAP-2158
+                                //if (oldAssementVital != null)
+                                //{
+                                //    ListAssessment.Remove(oldAssementVital);
+                                //    var assessment = objAssessmentManager.GetAssesmentUsingAssesmentId(oldAssementVital.AssessmentID);
+                                //    if (!assessmentListToDelete.Any(x => x.Id == assessment.Id))
+                                //    {
+                                //        assessmentListToDelete.Add(assessment);
+                                //    }
+                                //}
                             }
                         }
 
