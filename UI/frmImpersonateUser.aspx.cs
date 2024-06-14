@@ -706,6 +706,7 @@ namespace Acurus.Capella.UI
             ClientSession.LocalTime = shdnLocalDateAndTime;
             ClientSession.LegalOrg = sLegalOrg;
             ClientSession.UserCarrier = sUserCarrier;
+            ClientSession.EmailAddress = sEMailAddress;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "LandingintoEHR : Start", DateTime.Now, shdnGroupId, "frmLogin");
 
             if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
