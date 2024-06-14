@@ -409,7 +409,7 @@ namespace Acurus.Capella.UI
                             ModalWindow.Height = Unit.Pixel(700);
                             ModalWindow.Width = Unit.Pixel(1130);
                             ModalWindow.Behaviors = WindowBehaviors.None;
-                            ModalWindow.NavigateUrl = "frmPatientDemographics.aspx";
+                            ModalWindow.NavigateUrl = "frmPatientDemographics.aspx?HumanId=" + Request["HumanID"];
                             if (Request.QueryString["IsDirectURL"] != null)
                             {
                                 string IsDirectURL = Request.QueryString["IsDirectURL"];
