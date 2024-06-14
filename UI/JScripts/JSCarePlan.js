@@ -803,7 +803,7 @@ function LoadCarePlan() {
 
 
     $('#btnSave')[0].disabled = false;
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
     var lbl;
     $.ajax({
         type: "POST",
