@@ -1128,7 +1128,7 @@ function OpenModal(data) {
         debugger;
         //CAP-2181
         //sPath = veportpath + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + CLegalOrg + "&CurrPhyId=" + sCurrPhyId + "&UserCarrier=" + CUserCarrier;
-        sPath = veportpath + "htmlReportGenerator.htm?version=" + sessionStorage.getItem("ScriptVersion") + "&CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + CLegalOrg + "&CurrPhyId=" + sCurrPhyId + "&UserCarrier=" + CUserCarrier;
+        sPath = veportpath + "htmlReportGenerator.htm?version=" + sessionStorage.getItem("ScriptVersion").split('|')[0].trim() + "&CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + CLegalOrg + "&CurrPhyId=" + sCurrPhyId + "&UserCarrier=" + CUserCarrier;
         //sPath = veportpath + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + sessionStorage.getItem("Projname") + "&CurrPhyId=" + sCurrPhyId;
         //sPath = sessionStorage.getItem("ReportPath") + "htmlReportGenerator.htm?CUserRole=" + CUserRole + "&CUserName=" + CUserName + "&CFacilityName=" + CFacilityName + "&ProjectType=" + sessionStorage.getItem("Projname") + "&CurrPhyId=" + sCurrPhyId;
         //CAP-1966        
