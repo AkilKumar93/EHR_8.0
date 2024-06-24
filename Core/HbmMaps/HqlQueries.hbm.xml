@@ -14364,7 +14364,11 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('C
 	</sql-query>
 
 	<sql-query name="PQRI.GetDenominatorList2CMS68v6V12.CurrentMedication">
-		<![CDATA[select distinct(em.human_id) from  e_m_coding em
+		<!--<![CDATA[select distinct(em.human_id) from  e_m_coding em
+where em.is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM 
+cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) and encounter_id in (:EncIds); ]]>-->
+
+		<![CDATA[select distinct(em.encounter_id) from  e_m_coding em
 where em.is_delete='N' and em.procedure_code in(SELECT PQRI_Value FROM 
 cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('CPT','HCPCS')) and encounter_id in (:EncIds); ]]>
 	</sql-query>
@@ -14379,7 +14383,8 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('C
 		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and e.human_id not in (:EncIdsExc) and em.is_delete='N';]]>
 	</sql-query>
 	<sql-query name="PQRI.GetDenominatorCMS68v12.CurrentMedication">
-		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and e.human_id not in (:EncIdsExc) and em.is_delete='N';]]>
+		<!--<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and e.human_id not in (:EncIdsExc) and em.is_delete='N';]]>-->
+		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.encounter_id in (:EncIds) and e.encounter_id not in (:EncIdsExc) and em.is_delete='N';]]>
 	</sql-query>
 	
 	<sql-query name="PQRI.GetDenominator_listCMS68v6.CurrentMedication">
@@ -14392,7 +14397,8 @@ cqm_data where nqf_number =?  and PQRI_calculation_Method=? and PQRI_Type in ('C
 	</sql-query>
 
 	<sql-query name="PQRI.GetDenominator_listCMS68v12.CurrentMedication">
-		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and em.is_delete='N';]]>
+		<!--<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.human_id in (:EncIds) and em.is_delete='N';]]>-->
+		<![CDATA[select e.Encounter_id ,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.encounter_id =em.encounter_id  where e.encounter_id in (:EncIds) and em.is_delete='N';]]>
 	</sql-query>
 	
 	
@@ -14410,9 +14416,12 @@ in('Procedure contraindicated','Medical contraindication ','Treatment not tolera
 	</sql-query>
 	
 	<sql-query name="PQRI.GetDenominatorExceptionCMS68V12.CurrentMedication">
+		<!--<![CDATA[select e.encounter_id,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.human_id =em.human_id  where e.reason_not_performed_medication_reviewed
+in('Procedure contraindicated','Medical contraindication ','Treatment not tolerated','Procedure not indicated')
+ and e.human_id in (:EncIds);]]>-->
 		<![CDATA[select e.encounter_id,e.human_id,em.procedure_code from encounter e join e_m_coding em on e.human_id =em.human_id  where e.reason_not_performed_medication_reviewed
 in('Procedure contraindicated','Medical contraindication ','Treatment not tolerated','Procedure not indicated')
- and e.human_id in (:EncIds);]]>
+ and e.encounter_id in (:EncIds);]]>
 	</sql-query>
 	
 

@@ -22675,7 +22675,8 @@ and b.Encounter_ID in (:EncIds)";
                         for (int i = 0; i < Enc_Exception_lst68.Count; i++)
                         {
                             object[] objEnc = (object[])Enc_Exception_lst68[i];
-                            ulEnc2List68_exc.Add(Convert.ToUInt32(objEnc[1].ToString()));
+                            //ulEnc2List68_exc.Add(Convert.ToUInt32(objEnc[1].ToString()));
+                            ulEnc2List68_exc.Add(Convert.ToUInt32(objEnc[0].ToString()));
                             Encounter objEncList = new Encounter();
                             objEncList.Encounter_ID = Convert.ToUInt32(objEnc[0]);
                             objEncList.Human_ID = Convert.ToUInt32(objEnc[1]);
