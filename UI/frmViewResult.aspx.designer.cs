@@ -852,15 +852,6 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.Button hdnSaveEnable;
 
         /// <summary>
-        /// btnMessageType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMessageType;
-
-        /// <summary>
         /// hdnAssignTo control.
         /// </summary>
         /// <remarks>
@@ -868,6 +859,15 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnAssignTo;
+
+        /// <summary>
+        /// btnMessageType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnMessageType;
 
         /// <summary>
         /// PlaceHolder1 control.

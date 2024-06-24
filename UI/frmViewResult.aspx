@@ -871,9 +871,9 @@
             <asp:HiddenField ID="hdnFaxSubject" runat="server" EnableViewState="false" />
             <asp:Button ID="hdnSaveEnable" runat="server" Style="display: none;" />
             <%--OnClick="hdnSaveEnable_Click"--%>
+            <asp:HiddenField ID="hdnAssignTo" runat="server" EnableViewState="false" />
             <asp:Button ID="btnMessageType" runat="server" Text="Button" Style="display: none"
                 OnClientClick="return ClickClose();" />
-            <asp:HiddenField ID="hdnAssignTo" runat="server" EnableViewState="false" />
         </telerik:RadAjaxPanel>
     </form>
     <asp:PlaceHolder ID="PlaceHolder1" runat="server">
