@@ -1137,6 +1137,10 @@ function OnPageLoad(EmptyValues) {
                 document.getElementById("txtAssignedTo").attributes["val"] = document.getElementById("hdnAssignTo").value;
                 document.getElementById("txtAssignedTo").disabled = true;
             }
+            else {
+                //Jira CAP-2227
+                document.getElementById("txtAssignedTo").attributes["val"] = "";
+            }
         }
     }
     SearchAssignedTo();
