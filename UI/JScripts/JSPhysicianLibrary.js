@@ -796,7 +796,8 @@ function AddProvider() {
                         + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value + "&" + $('#ddlCategory')[0].value;
                 }
                 else {
-                    var PCP_PhyDetails = objdata.split("|")[1] + "&" + $('#txtCompany')[0].value + "&" + $('#txtCompany')[0].value + "&" + $("#txtNPI")[0].value + "&" + $('#txtCompany')[0].value + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
+                    //Cap - 2134
+                    var PCP_PhyDetails = objdata.split("|")[1] + "&" + $('#txtCompany')[0].value.replace("&", "~|") + "&" + $('#txtCompany')[0].value.replace("&", "~|") + "&" + $("#txtNPI")[0].value + "&" + $('#txtCompany')[0].valuetxtCompany + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
                         + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
                         + $("#txtState")[0].value + " " + $("#txtZip")[0].value
                         + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value + "&" + $('#ddlCategory')[0].value;
@@ -820,7 +821,7 @@ function AddProvider() {
                     if (DisplayErrorMessage('1011186') == true) {
                         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                         //Cap - 2114
-                        var PCP_PhyDetails = "" + "&" + $('#txtCompany')[0].value + "&" + $('#txtCompany')[0].value + "&" + $("#txtNPI")[0].value + "&" + $('#txtCompany')[0].value + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
+                        var PCP_PhyDetails = "" + "&" + $('#txtCompany')[0].value.replace("&", "~|") + "&" + $('#txtCompany')[0].value.replace("&", "~|") + "&" + $("#txtNPI")[0].value + "&" + $('#txtCompany')[0].value.replace("&", "~|") + " | " + "NPI: " + $("#txtNPI")[0].value + " | " + "Facility: " + FacilityList + " | "
                             + "Address: " + $("#txtAddressLine1")[0].value + ", " + $("#txtCity")[0].value + ", "
                             + $("#txtState")[0].value + " " + $("#txtZip")[0].value
                             + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value + "&" + $('#ddlCategory')[0].value;
@@ -926,7 +927,15 @@ function IsEmail(email) {
 }
 
 function AvoidSpecailCharacteronsave(soutput, id) {
-    var regex = new RegExp("^[a-zA-Z0-9' t]+$");
+    //Cap - 2134
+    //var regex = new RegExp("^[a-zA-Z0-9' t]+$");
+    var regex;
+    if ($('#ddlCategory')[0].value == 'ORGANIZATION') {
+        regex = new RegExp("^[a-zA-Z0-9'& t]+$");
+    }
+    else {
+        regex = new RegExp("^[a-zA-Z0-9' t]+$");
+    }
     if (!regex.test(soutput)) {
         var sid = document.getElementById("lbl" + id[0].id.replace('txt', '')).innerText.replace('*', '');
         DisplayErrorMessage('1011180', '', sid);
@@ -988,8 +997,15 @@ function isNumberKeyonsave(soutput, id) {
     return true;
 }
 function AvoidSpecailCharacter(e) {
-    
-    var regex = new RegExp("^[a-zA-Z0-9'., t]+$");
+    //Cap - 2134
+    //var regex = new RegExp("^[a-zA-Z0-9'., t]+$");
+    var regex;
+    if ($('#ddlCategory')[0].value == 'ORGANIZATION') {
+        regex = new RegExp("^[a-zA-Z0-9'.,& t]+$");
+    }
+    else {
+        regex = new RegExp("^[a-zA-Z0-9'., t]+$");
+    }
     var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
     if (regex.test(str)) {
         return true;
