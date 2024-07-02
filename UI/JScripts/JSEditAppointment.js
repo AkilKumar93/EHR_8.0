@@ -1621,30 +1621,36 @@ function EditProviderDetails() {
         $(top.window.document).find("#TabPhysicianLibrary").one("hidden.bs.modal", function (e) {
             var PhyTextboxName = localStorage.getItem("PhyDetails");
             if (PhyTextboxName.split("&")[4] != undefined) {
-                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4];
+                //Cap - 2134
+                document.getElementById("txtProviderSearch").value = PhyTextboxName.split("&")[4].replace("~|", "&");
 
                 if (document.getElementById("chkSelfReferred") != null && document.getElementById("chkSelfReferred").checked == false) {
-                    document.getElementById("hdnrenprovider").value = PhyTextboxName.split("&")[4];
-                    document.getElementById("hdnrenprovidersearch").value = PhyTextboxName.split("&")[4];
+                    //Cap - 2134
+                    document.getElementById("hdnrenprovider").value = PhyTextboxName.split("&")[4].replace("~|", "&");
+                    document.getElementById("hdnrenprovidersearch").value = PhyTextboxName.split("&")[4].replace("~|", "&");
                     document.getElementById("hdnRefEditPhyId").value = EditPhyId; 
                 }
                 else {
-                    document.getElementById("hdnpcpprovider").value = PhyTextboxName.split("&")[4];
-                    document.getElementById("hdnpcpprovidersearch").value = PhyTextboxName.split("&")[4];
+                    //Cap - 2134
+                    document.getElementById("hdnpcpprovider").value = PhyTextboxName.split("&")[4].replace("~|", "&");
+                    document.getElementById("hdnpcpprovidersearch").value = PhyTextboxName.split("&")[4].replace("~|", "&");
                     document.getElementById("hdnpcpEditPhyId").value = EditPhyId; 
                 }
 
             }
             else {
-                document.getElementById("txtProviderSearch").value = PhyTextboxName;
-                if (document.getElementById("chkSelfReferred")!= null && document.getElementById("chkSelfReferred").checked == false) {
-                    document.getElementById("hdnrenprovider").value = PhyTextboxName;
-                    document.getElementById("hdnrenprovidersearch").value = PhyTextboxName;
+                //Cap - 2134
+                document.getElementById("txtProviderSearch").value = PhyTextboxName.replace("~|", "&");
+                if (document.getElementById("chkSelfReferred") != null && document.getElementById("chkSelfReferred").checked == false) {
+                    //Cap - 2134
+                    document.getElementById("hdnrenprovider").value = PhyTextboxName.replace("~|", "&");
+                    document.getElementById("hdnrenprovidersearch").value = PhyTextboxName.replace("~|", "&");
                     document.getElementById("hdnRefEditPhyId").value = EditPhyId;
                 }
                 else {
-                    document.getElementById("hdnpcpprovider").value = PhyTextboxName;
-                    document.getElementById("hdnpcpprovidersearch").value = PhyTextboxName;
+                    //Cap - 2134
+                    document.getElementById("hdnpcpprovider").value = PhyTextboxName.replace("~|", "&");
+                    document.getElementById("hdnpcpprovidersearch").value = PhyTextboxName.replace("~|", "&");
                     document.getElementById("hdnpcpEditPhyId").value = EditPhyId; 
                 }
             }
