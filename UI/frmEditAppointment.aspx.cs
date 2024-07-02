@@ -881,6 +881,10 @@ namespace Acurus.Capella.UI
                             }
                         }
                     }
+                    //CAP-2024
+                    var comboBoxItems = ddlPhysicianName.Items.Cast<RadComboBoxItem>().ToList();
+                    ddlPhysicianName.Items.Clear();
+                    ddlPhysicianName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text).ToArray());
                 }
                 //Jira #CAP-168
                 if (ddlPhysicianName.Items.Count == 0 || ddlPhysicianName.SelectedItem.Text == "" || ddlPhysicianName.SelectedItem.Text == string.Empty || ddlPhysicianName.SelectedItem.Text == null)
