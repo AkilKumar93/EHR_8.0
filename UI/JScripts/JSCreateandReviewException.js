@@ -316,7 +316,6 @@ function btnCloseClicked(sender, args) {
             document.getElementById(GetClientId("hdnsuccess")).value = "";
             $find("btnAdd").set_enabled(true);
             if (document.getElementById('txtIssues').value != "") {
-                r
                 $find('btnAdd').set_enabled(true);
             }
             else {
@@ -328,6 +327,8 @@ function btnCloseClicked(sender, args) {
 
         $(top.window.document).find('#btnExceptionId')[0].click();
     }
+    //CAP-2202
+    localStorage.setItem("OpenFeedbackCoding", "NO");
 }
 function LoadException() {
     

@@ -3577,3 +3577,7 @@ $("#btnReportClose").click(function () {
         location.reload();
     }
 });
+//CAP-2202
+$("#ctl00_ulwindow").click(function () {
+    localStorage.setItem("OpenFeedbackCoding", "YES");
+});
