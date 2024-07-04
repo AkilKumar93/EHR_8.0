@@ -2025,19 +2025,22 @@ function CreateCodingException() {
     return false;
 }
 function FeedbackCodingException(Addendumid) {
-    $(top.window.document).find("#TabException").modal({ backdrop: "static", keyboard: false }, 'show');
-    $(top.window.document).find("#TabModalExceptionTitle")[0].textContent = "Feedback for Coding Exception";
-    $(top.window.document).find("#TabmdldlgException")[0].style.width = "950px";
-    $(top.window.document).find("#TabmdldlgException")[0].style.height = "800px";
-    var sPath = "";
-    var patientName = "";
-    if ($("[id*='lblPatientStrip']") != null && $("[id*='lblPatientStrip']") != undefined && $("[id*='lblPatientStrip']")[0] != undefined)
-        patientName = $("[id*='lblPatientStrip']")[0].innerHTML.split('|')[0].trim();
-    sPath = "frmException.aspx?formName=" + "Feedback for Coding Exception" + "&PatientName=" + patientName + "&AddendumID=" + Addendumid;
-    $(top.window.document).find("#TabExceptionFrame")[0].style.height = "725px";
-    $(top.window.document).find("#TabExceptionFrame")[0].contentDocument.location.href = sPath;
-    $(top.window.document).find("#TabException").one("hidden.bs.modal", function (e) {
-    });
+    //CAP-2202
+    if (localStorage.getItem("OpenFeedbackCoding") != "NO") {
+        $(top.window.document).find("#TabException").modal({ backdrop: "static", keyboard: false }, 'show');
+        $(top.window.document).find("#TabModalExceptionTitle")[0].textContent = "Feedback for Coding Exception";
+        $(top.window.document).find("#TabmdldlgException")[0].style.width = "950px";
+        $(top.window.document).find("#TabmdldlgException")[0].style.height = "800px";
+        var sPath = "";
+        var patientName = "";
+        if ($("[id*='lblPatientStrip']") != null && $("[id*='lblPatientStrip']") != undefined && $("[id*='lblPatientStrip']")[0] != undefined)
+            patientName = $("[id*='lblPatientStrip']")[0].innerHTML.split('|')[0].trim();
+        sPath = "frmException.aspx?formName=" + "Feedback for Coding Exception" + "&PatientName=" + patientName + "&AddendumID=" + Addendumid;
+        $(top.window.document).find("#TabExceptionFrame")[0].style.height = "725px";
+        $(top.window.document).find("#TabExceptionFrame")[0].contentDocument.location.href = sPath;
+        $(top.window.document).find("#TabException").one("hidden.bs.modal", function (e) {
+        });
+    }
     return false;
 }
 

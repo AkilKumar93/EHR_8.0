@@ -3050,8 +3050,9 @@ function OnSuccessMailClinicalInfo(response) {
 
 function chkFavCPT_Click() {
     $(top.window.document).find("#CPTok")[0].disabled = false;
-    localStorage.setItem("bSave", "false");
-    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
+    //CAP-2196
+    //localStorage.setItem("bSave", "false");
+    //window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = true;
 }
 function chkFavICD_Click() {
     $(top.window.document).find("#ok")[0].disabled = false;
@@ -3574,6 +3575,15 @@ $("#btnReportClose").click(function () {
         localStorage.setItem("ClearEncounter", "true");
         window.location.href = "frmPatientChart.aspx";
     } else {
+        //CAP-2248
+        var urlParam = new URLSearchParams(window.location.href);
+        isDirectURLParam = urlParam?.get("IsDirectUrl") ?? "";
+        if (isDirectURLParam.toUpperCase() != "Y") {
         location.reload();
     }
+    }
+});
+//CAP-2202
+$("#ctl00_ulwindow").click(function () {
+    localStorage.setItem("OpenFeedbackCoding", "YES");
 });

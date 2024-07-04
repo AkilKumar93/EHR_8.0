@@ -42,6 +42,8 @@ function loadGeneralQueue() {
 }
 $(document).ready(function () {
     localStorage.setItem("PrevSubTab", "");
+    //CAP-2202
+    localStorage.setItem("OpenFeedbackCoding", "YES");
 
     if ($("#MovetoNxtProcess") != null)
         $("#MovetoNxtProcess")[0].disabled = true;
