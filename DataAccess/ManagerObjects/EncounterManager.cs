@@ -17728,7 +17728,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
     "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name, c.Carrier_Name as Payer, ifnull(ins.insurance_plan_name,'') as Plan_Name , enc.Visit_Type as Type_of_Visit, enc.Facility_Name,  " +
 "enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
  "FROM encounter enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
- "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) " +
+ "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id AND ins.Active = 'Y') " +
  "left join carrier c on (c.carrier_id=ins.carrier_id) where :WhereCondition" +
  "union all " +
  "SELECT concat(Last_Name, ',',First_Name,'  ' ,MI,'  ' ,Suffix) as Patient_Name,cast(h.Birth_Date as char(100)) as Patient_DOB, enc.Human_ID as Patient_Account_Number, ifnull(pat.policy_holder_id,'') as Member_ID, cast(enc.Date_of_Service as char(100)) as DOS,   " +
@@ -17736,7 +17736,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
     "ifnull(p.Physician_Middle_Name,''),' ',ifnull(p.Physician_Last_Name,''),' ',ifnull(p.Physician_Suffix,'')) as Provider_Name,c.Carrier_Name as Payer, ifnull(ins.insurance_plan_name,'') as Plan_Name ,  enc.Visit_Type as Type_of_Visit, enc.Facility_Name,  " +
 "enc.Encounter_ID as Encounter_ID, ins.Carrier_ID " +
  "FROM encounter_arc enc left join human h on (enc.human_id=h.human_id) left join physician_library p on (enc.Encounter_Provider_ID = p.physician_library_id)" +
- "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id) " +
+ "left join pat_insured_plan pat on (h.human_id=pat.human_id) left join insurance_plan ins on (pat.insurance_plan_id= ins.insurance_plan_id AND ins.Active = 'Y') " +
  "left join carrier c on (c.carrier_id=ins.carrier_id) where :WhereCondition ) as d order by Patient_Name,Patient_DOB,Patient_Account_Number,Member_ID,DOS,Provider_Name,Payer,Plan_Name,Facility_Name";
 
                 string sWhereCondition = "date(enc.Date_of_Service) between '" + dtFromDate.ToString("yyyy-MM-dd") + "' and '" + dtToDate.ToString("yyyy-MM-dd") + "' and h.Legal_Org ='" + sLegalOrg + "' and pat.Insurance_Type='PRIMARY'";

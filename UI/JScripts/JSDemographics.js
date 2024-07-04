@@ -3773,10 +3773,11 @@ function OpenAddPhysician() {
         //if (PhyID != ""){
         if (PhyID != "" && PhyDetails.split("&")[4] != undefined) {
             document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = PhyID;
-            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1];
-            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2];
-            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value = PhyDetails.split("&")[3];
-            document.getElementById('ctl00_C5POBody_txtProviderSearch').value = PhyDetails.split("&")[4];
+            //Cap - 2134
+            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1].replace("~|", "&");
+            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2].replace("~|", "&");
+            document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value = PhyDetails.split("&")[3].replace("~|", "&");
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').value = PhyDetails.split("&")[4].replace("~|", "&");
             document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
             document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
             localStorage.setItem("PhyDetails", "");
@@ -3813,11 +3814,12 @@ function EditProviderDetails() {
             
             if ( PhyDetails!= '' && PhyDetails.split("&")[4] != undefined) {
                 document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-id'].value = EditPhyId;
-                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1];
-                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2];
-                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value = PhyDetails.split("&")[3];
-                document.getElementById('ctl00_C5POBody_txtProviderSearch').value = PhyDetails.split("&")[4];
-                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-Category'].value = PhyDetails.split("&")[5];
+                //Cap - 2134
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-gridname'].value = PhyDetails.split("&")[1].replace("~|", "&");
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-details'].value = PhyDetails.split("&")[2].replace("~|", "&");
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-npi'].value = PhyDetails.split("&")[3].replace("~|", "&");
+                document.getElementById('ctl00_C5POBody_txtProviderSearch').value = PhyDetails.split("&")[4].replace("~|", "&");
+                document.getElementById("ctl00_C5POBody_txtProviderSearch").attributes['data-phy-Category'].value = PhyDetails.split("&")[5].replace("~|", "&");
                 document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
                 document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
                 localStorage.setItem("PhyDetails", "");
