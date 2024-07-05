@@ -3576,9 +3576,9 @@ $("#btnReportClose").click(function () {
         window.location.href = "frmPatientChart.aspx";
     } else {
         //CAP-2248
-        var urlParam = new URLSearchParams(window.location.href);
-        isDirectURLParam = urlParam?.get("IsDirectUrl") ?? "";
-        if (isDirectURLParam.toUpperCase() != "Y") {
+        var urlParam = new URLSearchParams((window?.location?.href??"").toLowerCase());
+        isDirectURLParam = urlParam?.get("isdirecturl");
+        if (isDirectURLParam.toUpperCase() != "Y" ) {
         location.reload();
     }
     }
