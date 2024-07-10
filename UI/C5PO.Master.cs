@@ -51,7 +51,7 @@ namespace Acurus.Capella.UI
             var currentURL = Request.Url.AbsoluteUri.ToString();
             if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
             {
-                Session["currenturl"] = HttpUtility.UrlEncode(Request.Url.AbsoluteUri);
+                Response.SetCookie(new HttpCookie("RedirectUri") { Value = HttpUtility.UrlEncode(Request.Url.AbsoluteUri), Expires = DateTime.Now.AddDays(1) });
             }
 
             //CAP-1311
@@ -59,9 +59,10 @@ namespace Acurus.Capella.UI
             {
                 //CAP-1752
                 var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
-                if (Session["currenturl"] != null && !string.IsNullOrWhiteSpace(Session["currenturl"].ToString()))
+                //CAP-2019
+                if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrWhiteSpace(Request.Cookies["RedirectUri"]?.Value))
                 {
-                    Response.Redirect($"~/{loginpage}?redirecturl={Session["currenturl"].ToString()}");
+                    Response.Redirect($"~/{loginpage}?IsLoginRequired=true&redirecturl={Request.Cookies["RedirectUri"].Value}");
                 }
                 else
                 {
@@ -1049,11 +1050,11 @@ namespace Acurus.Capella.UI
                     //New code end
 
                     //Redirect To Logout Page
-                    Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={id_token}&post_logout_redirect_uri={postLogoutRedirectUri}", false);
+                    Response.Redirect($"{ConfigurationManager.AppSettings["okta:LogoutURL"]}?id_token_hint={id_token}&post_logout_redirect_uri={postLogoutRedirectUri}&state=true", false);
                 }
                 else
-                {
-                    Response.Write($"<script> window.top.location.href=\"frmLoginNew.aspx\"; </script>");
+                { //CAP-2019
+                    Response.Write($"<script> window.top.location.href=\"frmLoginNew.aspx?IsLoginRequired=true\"; </script>");
                 }
             }
             #endregion
@@ -1078,9 +1079,6 @@ namespace Acurus.Capella.UI
                     myCookie.Expires = DateTime.Now.AddYears(-1);// Expire the cookies
                     Response.Cookies.Add(myCookie); // Update the client-side cookie
                 }
-
-                //CAP-2166
-                Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddMinutes(5) });
             }
             catch
             { }

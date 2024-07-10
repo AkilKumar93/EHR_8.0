@@ -34,20 +34,43 @@ namespace Acurus.Capella.UI
             string sMSUserEmail = string.Empty;
 
             var code = Request.Params["code"];
+            var stateParm = string.Empty;
+            var state = string.Empty;
+            //CAP-2019
+            try
+            {
+                stateParm = Encoding.UTF8.GetString(Convert.FromBase64String(Request.Params["state"] ?? ""));
+                string[] parts = stateParm.Split('|');
+                if (parts.Length > 1)
+                {
+                    state = parts[1];
+
+                    if (!string.IsNullOrWhiteSpace(state))
+                    {
+                        //CAP-2019
+                        Response.SetCookie(new HttpCookie("RedirectUri") { Value = state, Expires = DateTime.Now.AddDays(1) });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine($"Error decoding Base64 string: {ex.Message}");
+            }
+
             var isLoginRequired = !string.IsNullOrWhiteSpace(Request.Params["error"]) && (Request.Params["error"]??"") == "login_required";
             if (!IsPostBack)
             {
                 if (isLoginRequired)
                 {
                     //CAP-2166
-                    Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddMinutes(5) });
+                    Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddSeconds(30) });
 
-                    var redirectUrl = "/frmLoginNew.aspx";
+                    var redirectUrl = "/frmLoginNew.aspx?IsLoginRequired=true";
                     var returnURL = Request.Cookies["RedirectUri"]?.Value;
 
                     if (!string.IsNullOrWhiteSpace(returnURL))
                     {
-                        redirectUrl += $"?redirecturl ={HttpUtility.UrlEncode(returnURL)}";
+                        redirectUrl += $"&redirecturl={HttpUtility.UrlEncode(returnURL)}";
                     }
 
                     Response.Redirect(redirectUrl);

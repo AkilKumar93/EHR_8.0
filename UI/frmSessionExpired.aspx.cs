@@ -31,12 +31,12 @@ namespace Acurus.Capella.UI
                 return;
             }
 
-            if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value)) 
-            {
-                HttpCookie cookie = Request.Cookies["RedirectUri"];
-                cookie.Expires = DateTime.Now.AddMinutes(-5);
-                Response.Cookies.Add(cookie);
-            }
+            //if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value)) 
+            //{
+            //    HttpCookie cookie = Request.Cookies["RedirectUri"];
+            //    cookie.Expires = DateTime.Now.AddMinutes(-5);
+            //    Response.Cookies.Add(cookie);
+            //}
 
                 //Jira CAP-1567
                 if (Request.Cookies["CeRxFlag"] != null && Request.Cookies["CeRxFlag"].Value == "true" && Request.Cookies["CeRxHumanID"].Value != "" && Request.Cookies["CeRxHumanID"].Value != "0")
@@ -108,14 +108,19 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    //CAP-1167
-                    var CurrentUrl = Session["currenturl"]?.ToString();
+                    //CAP-1167,CAP-2233
+                    var CurrentUrl = Request.Cookies["RedirectUri"]?.Value;
+                    if (Request.Cookies["RedirectUri"] != null && !string.IsNullOrEmpty(Request.Cookies["RedirectUri"].Value))
+                    {
+                        HttpCookie cookie = Request.Cookies["RedirectUri"];
+                        cookie.Expires = DateTime.Now.AddMinutes(5);
+                        Response.Cookies.Add(cookie);
+                    }
                     //CAP-1752
                     var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
                     if (!string.IsNullOrEmpty(CurrentUrl))
                     {
-                        var returnURL = $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
-                        Session["currenturl"] = null;
+                        var returnURL = $"{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
                         Response.Write("<script> window.top.location.href=\"" + returnURL + "\"; </script>");
                     }
                     else
