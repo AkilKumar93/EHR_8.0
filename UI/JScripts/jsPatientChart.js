@@ -1263,7 +1263,8 @@ function tree_add_leaf_example_click(leaf, node, pnode, tree) {
         document.getElementById(GetClientId("hdnLocalTime")).value = utc;
         //CAP-778 Cannot read properties of null
         //var sStrinh = (window.frames["ctl00_C5POBody_EncounterContainer"]?.contentDocument?.getElementById('pnlBarGroupTabs') != null) ? window.frames["ctl00_C5POBody_EncounterContainer"]?.contentDocument?.getElementById('pnlBarGroupTabs')?.innerHTML?.split('|')[1]?.trim() : "";
-        if (leaf[0].id.split('^')[1] == leaf[0].currentId && leaf[0].From != "Menu") {
+        //CAP-1321
+        if (leaf[0].id.split('^')[1] == leaf[0].currentId && (leaf[0].From != "Menu" || window.top.location.href.indexOf('ScreenMode=Menu') == -1)) {
             //CAP-1511
             var encounterURL = "frmEncounter.aspx?Date=" + document.getElementById(GetClientId("hdnLocalTime")).value + "&EncounterID=" + leaf[0].id.split('^')[1] + "&leftpane=Y";
             var currentTabNameId = document.getElementById(GetClientId('hdnScreen'))?.value;
