@@ -1688,9 +1688,11 @@ function EnableProviderSearch(EnablePrvdr)
     else if (EnablePrvdr == 'true'){
         if (document.getElementById("txtProviderSearch").value == "") {
             document.getElementById("txtProviderSearch").disabled = false;
+            document.getElementById("imgEditProvider").style.display = "block";
         }
         else {
             document.getElementById("txtProviderSearch").disabled = true;
+            document.getElementById("imgEditProvider").style.display = "none";
         }
         if (document.getElementById("imgClearProviderText")?.style?.visibility != undefined && document.getElementById("imgClearProviderText")?.style?.visibility != null) {
             document.getElementById("imgClearProviderText").style.visibility = true;
