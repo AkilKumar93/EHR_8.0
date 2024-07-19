@@ -61,7 +61,7 @@ namespace Acurus.Capella.UI
                     Response.SetCookie(new HttpCookie("IsOktaUser") { Value = "Y", Expires = DateTime.Now.AddSeconds(30) });
 
                     var redirectUrl = "/frmLoginNew.aspx?IsLoginRequired=true";
-                    var returnURL = Request.Cookies["RedirectUri"]?.Value;
+                    var returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
 
                     if (!string.IsNullOrWhiteSpace(returnURL))
                     {
@@ -864,7 +864,8 @@ namespace Acurus.Capella.UI
                     //CAP-1167
                     string sFileName = ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx";
                     //CAP-1922
-                    var returnURL = Request.Cookies["RedirectUri"]?.Value;
+                    //CAP-2308
+                    var returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
                     ExpireRedirectUrlCookie();
                     if (!string.IsNullOrEmpty(returnURL))
                     {
