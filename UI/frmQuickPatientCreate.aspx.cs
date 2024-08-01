@@ -1423,6 +1423,18 @@ namespace Acurus.Capella.UI
 
 
             }
+            //CAP-2361
+            if (ApplicationObject.facilityLibraryList == null)
+            {
+                ApplicationObject.facilityLibraryList = UtilityManager.GetFacilityList();
+            }
+            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == objCheckOutLoad.EncounterObj.Facility_Name select f;
+            IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+            {
+                btnProviderSave.Visible = false;
+                tdProviderSave.Visible = false;
+            }
         }
         public void Patientinformationdisable()
         {
