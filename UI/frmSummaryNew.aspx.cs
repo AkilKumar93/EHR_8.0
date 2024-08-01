@@ -1481,6 +1481,7 @@ namespace Acurus.Capella.UI
 
 
             string htmlString = System.IO.File.ReadAllText(outputDocument);
+            htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
             string sProHeader = System.Configuration.ConfigurationSettings.AppSettings["ProgressNotesMainHeader"];
             string headerstring = string.Empty;
             if (sProHeader == "Y")
@@ -2114,6 +2115,7 @@ margin:0in 0in 0in 9in;
 
 
             string htmlString = System.IO.File.ReadAllText(outputDocument);
+            htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
             //Jira CAP-1015
             htmlString = htmlString.Replace("amp;", "");
             
@@ -3160,8 +3162,9 @@ margin:0in 0in 0in 9in;
 
 
             string htmlString = System.IO.File.ReadAllText(outputDocument);
-            //Jira CAP-1015
-            htmlString = htmlString.Replace("amp;", "");
+                htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
+                //Jira CAP-1015
+                htmlString = htmlString.Replace("amp;", "");
 
 
             string sProHeader = System.Configuration.ConfigurationSettings.AppSettings["ProgressNotesMainHeader"];
