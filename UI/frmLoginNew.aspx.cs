@@ -54,6 +54,14 @@ namespace Acurus.Capella.UI
                 //CAP-2171,CAP-2019
                 if (Request.Url?.Authority != (ConfigurationManager.AppSettings["RootURL"] ?? "") && (Request.QueryString["IsLoginRequired"]?.ToLower() ?? "") != "true" && string.IsNullOrWhiteSpace(Request.QueryString["state"]))
                 {
+                    //CAP-2171
+                    HttpCookie cookie = Request.Cookies["RedirectUri"];
+                    if (cookie != null)
+                    {
+                        cookie.Expires = DateTime.Now.AddMinutes(-5);
+                        Response.Cookies.Add(cookie);
+                    }
+
                     var oktaVerificationURL = CheckOktaAuthorizationUrl();
                     Response.Redirect(oktaVerificationURL, false);
                     return;
