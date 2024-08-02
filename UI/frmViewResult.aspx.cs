@@ -1183,6 +1183,7 @@ namespace Acurus.Capella.UI
                                 }
                                 else
                                 {
+                                    hdnSubDocumentType.Value = "";
                                     imgCopyPrevious.Visible = false;
                                     //MA process 
                                     if (sNotes != null && sNotes.Count() > 0 && (sNotes.Contains(tvViewIndex.Nodes[0].Nodes[i].Nodes[j].ParentNode.Text.ToUpper())))
@@ -2295,6 +2296,7 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
+                    hdnSubDocumentType.Value = "";
                     imgCopyPrevious.Visible = false;
                     imgPrintNotes.Visible = false;
                 }
