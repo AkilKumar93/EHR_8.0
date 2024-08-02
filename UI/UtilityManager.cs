@@ -2417,7 +2417,7 @@ namespace Acurus.Capella.UI
                     sb_Medication.Append(sColor == Color.Black.Name ?
                             "\"color:Black;\">" : "\"color:Red;\">");
 
-                    sb_Medication.Append("No Known Active Medications");
+                    sb_Medication.Append("No Active Medication");
 
                     sb_Medication.Append("</span><br/>");
                 }
@@ -2431,7 +2431,7 @@ namespace Acurus.Capella.UI
                 sb_Medication.Append(sColor == Color.Black.Name ?
                         "\"color:Black;\">" : "\"color:Red;\">");
 
-                sb_Medication.Append("No Known Active Medications");
+                sb_Medication.Append("No Active Medication");
 
                 sb_Medication.Append("</span><br/>");
 
