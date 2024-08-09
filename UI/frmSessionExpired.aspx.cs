@@ -27,7 +27,7 @@ namespace Acurus.Capella.UI
                 //CAP-2337
                 if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
                 {
-                    string subdomain = Request.Url.Authority.Contains("test6") ? "capella6" : "";
+                    string subdomain = Request.Url.Authority.Contains("test6") ? "" : "";
 
                     if (string.IsNullOrWhiteSpace(subdomain))
                     {
