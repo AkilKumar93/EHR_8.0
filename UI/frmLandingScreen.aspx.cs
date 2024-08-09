@@ -347,7 +347,7 @@ namespace Acurus.Capella.UI
                         //ImpersonateUser - To change the Default Server Login page to the current page
                         if (login[0].Default_Server.Contains("frmLogin.aspx") == true)
                         {
-                            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+                            if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
                             {
                                 string subdomain = string.Empty;
                                 string[] parts = Request.Url.AbsoluteUri.Split('/');
@@ -938,7 +938,7 @@ namespace Acurus.Capella.UI
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddParameter("grant_type", "authorization_code");
             //CAP-2337
-            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
             {
                 string subdomain = string.Empty;
                 string[] parts = Request.Url.AbsoluteUri.Split('/');

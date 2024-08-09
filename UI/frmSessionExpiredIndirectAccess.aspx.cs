@@ -19,7 +19,7 @@ namespace Acurus.Capella.UI
             {
                 //CAP-2337
                 var postLogoutRedirectUri = string.Empty;
-                if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+                if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
                 {
                     string subdomain = string.Empty;
                     string[] parts = Request.Url.AbsoluteUri.Split('/');

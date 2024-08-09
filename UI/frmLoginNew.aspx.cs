@@ -292,7 +292,7 @@ namespace Acurus.Capella.UI
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             //CAP-2337
-            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
             {
                 string subdomain = string.Empty;
                 string[] parts = Request.Url.AbsoluteUri.Split('/');
@@ -327,7 +327,7 @@ namespace Acurus.Capella.UI
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             //CAP-2337
-            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            if ((Request?.Headers["X-Forwarded-Host"]??"") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
             {
                 string subdomain = string.Empty;
                 string[] parts = Request.Url.AbsoluteUri.Split('/');
@@ -362,7 +362,7 @@ namespace Acurus.Capella.UI
             string oktaAuthorizeEndpoint = $"{ConfigurationSettings.AppSettings["okta:AuthorizeURL"]}";
             string clientId = ConfigurationSettings.AppSettings["okta:ClientId"];
             //CAP-2337
-            if (Request.Url?.Authority == ConfigurationSettings.AppSettings["AkidoChartDomain"])
+            if ((Request?.Headers["X-Forwarded-Host"] ?? "") == ConfigurationSettings.AppSettings["AkidoChartDomain"])
             {
                 string subdomain = string.Empty;
                 string[] parts = Request.Url.AbsoluteUri.Split('/');
