@@ -31,7 +31,7 @@ namespace Acurus.Capella.UI
                     string[] parts = Request.Url.AbsoluteUri.Split('/');
                     if (parts.Length > 1)
                     {
-                        subdomain = parts[1];
+                        subdomain = parts[3];
                     }
 
                     if (string.IsNullOrWhiteSpace(subdomain))
