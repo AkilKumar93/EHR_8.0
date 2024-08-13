@@ -459,11 +459,11 @@
 	<Message number="200040" Type="OK" Text="Captured Date Cannot be Empty. "/>
 
 
-	<Message number="200030" Type="OK" Text="Value should be in the range of {0} to {1}. "/>
+	<Message number="200030" Type="OK" Text="{2} Value should be in the range of {0} to {1}. "/>
 	<Message number="200031" Type="OK" Text="Please capture either Value or select a valid reason not performed for  {0}. "/>
 	<Message number="200032" Type="OK" Text="Please enter  Value for {0}. "/>
 	<Message number="200033" Type="OK" Text="Please enter Reason Not Performed For BMI. "/><!--BugID:46825-->
-	<Message number="200034" Type="OK" Text="Value should be in the range of  {0} to {1}. "/>
+	<Message number="200034" Type="OK" Text="Value should be in the range of {0} to {1}. "/>
 	<Message number="200099" Type="OK" Text="Please fill either Value or Reason Not Performed for {0}"/>
 	<Message number="210001" Type="ToolStrip" Text="Moved to next process" />
 	<Message number="210002" Type="OK" Text="The Check out is not done by the patient. Cannot complete the documentation." />
@@ -3028,4 +3028,8 @@
 
 	<Message number="10113405" Type="OK" Text="The selected appointment is {0}. So, this can not be marked as {1}."></Message>
 
+	<Message number="10113601" Type="OK" Text="Please select the keep account."></Message>
+	<Message number="10113602" Type="OK" Text="Please select the merge account."></Message>
+	<Message number="10113603" Type="ToolStrip" Text="Keep and Merge account are cleaned up and downloaded successfully." />
+	<Message number="10113604" Type="OK" Text="You have merged the records. Please click on the download."></Message>
 </ErrorMessage>

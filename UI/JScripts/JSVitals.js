@@ -88,8 +88,8 @@ function CheckMaxValue(minvalue, maxvalue, id) {
                 ctrl.value = minvalue;
             else
                 ctrl.value = maxvalue;
-            DisplayErrorMessage('200034', '', minvalue + "-" + maxvalue);
 
+            DisplayErrorMessage('200030', '', minvalue + "-" + maxvalue + "-" + "BP SittingSys/Dia");
         }
     }
 }
