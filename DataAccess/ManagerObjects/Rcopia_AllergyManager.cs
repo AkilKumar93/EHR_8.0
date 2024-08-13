@@ -16,8 +16,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         void InsertOrUpdateAllergy(IList<Rcopia_Allergy> ilstAllergy, string sUserName, string MACAddress, DateTime dtClientDate);
         IList<Rcopia_Allergy> GetAllergyListUsingHumanId(ulong ulhumanID);
         IList<Rcopia_Allergy> GetRAllergyByHumanID(string ulHumanID);
+        IList<Rcopia_Allergy> GetAllergyWithExactDuplicates(ulong HumanId, string status);
         string UpdateRcopiaAllergy(IList<ulong> ilstRcopiaID, ulong ulHumanID, string sFacilityName, string sLegalOrg, string sUserName);
-        IList<Rcopia_Allergy> GetAllergyWithExactDuplicates(ulong HumanId, string status)
+        
     }
     public partial class Rcopia_AllergyManager : ManagerBase<Rcopia_Allergy, ulong>, IRcopia_AllergyManager
     {
@@ -224,10 +225,27 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             Rcopia_AllergyManager Rcopiamanager = new Rcopia_AllergyManager();
             IList<Rcopia_Allergy> Groupbylist = new List<Rcopia_Allergy>();
+            List<Rcopia_Allergy> Finallist = new List<Rcopia_Allergy>();
 
             IList<Rcopia_Allergy> AllergyList = Rcopiamanager.GetAllergyListByIdStatus(Convert.ToUInt64(HumanId), status);
             Groupbylist = (AllergyList.GroupBy(x => new { x.Allergy_Name, x.Reaction, x.OnsetDate }).Where(g => g.Count() > 1).Select(x => x.FirstOrDefault())).ToList<Rcopia_Allergy>();
-            return Groupbylist;
+
+            if (Groupbylist.Count > 0)
+            {
+                for (int i = 0; i < Groupbylist.Count; i++)
+                {
+                    IList<Rcopia_Allergy> Newlist = AllergyList.Where(a => a.Allergy_Name == Groupbylist[i].Allergy_Name && a.Reaction == Groupbylist[i].Reaction &&
+                                            a.OnsetDate == Groupbylist[i].OnsetDate && a.Id != Groupbylist[i].Id).ToList<Rcopia_Allergy>();
+                    if (Newlist.Count > 0)
+                    {
+                        Finallist.AddRange(Newlist);
+
+                    }
+
+                }
+
+            }
+            return Finallist;
         }
 
 
