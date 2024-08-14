@@ -67,8 +67,8 @@
     <title></title>
 </head>
 <body>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 25px; color: black; opacity: 1;" onclick="patientMergeClose();">
-        <span aria-hidden="true" style="color: black;">×</span>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 20px;" onclick="patientMergeClose();">
+        Close
     </button>
     <div style="padding: 10px;">
         <div>
