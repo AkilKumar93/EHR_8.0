@@ -226,7 +226,9 @@ namespace Acurus.Capella.UI
             {
                 if (string.IsNullOrWhiteSpace(sUserName))
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidrequest", "DisplayErrorMessage('000009');", true);
+                    //CAP-2389 & CAP-2379
+                    var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName, sUserAccountType);
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidrequest", $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
                 }
                 else
                 {
@@ -241,7 +243,9 @@ namespace Acurus.Capella.UI
 
             if (string.IsNullOrWhiteSpace(sUserName))
             {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidusername", "DisplayErrorMessage('000009');", true);
+                //CAP-2389 & CAP-2379
+                var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName, sUserAccountType);
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "invalidusername", $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
                 return;
             }
 
@@ -587,13 +591,18 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
+                    //CAP-2389 & CAP-2379
+                    var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName, sUserAccountType);
+                    // ScriptErrorLogEntry(evt.message, evt.lineno, evt.colno, evt.filename, evt?.error?.stack, true);
+                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
                     return;
                 }
             }
             else
             {
-                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('000009');", true);
+                //CAP-2389 & CAP-2379
+                var unauthorizedUserMessage = GenerateUnAuthorizedUserMessage(sUserName, sUserAccountType);
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, $"ScriptErrorLogEntry('User not permitted', '0', '0', 'frmLandingScreen.aspx', '{unauthorizedUserMessage.Item1}', 'false');DisplayErrorMessage('000009', '', '{string.Join("-", unauthorizedUserMessage.Item2)}');", true);
                 //Response.Redirect("/frmLoginNew.aspx");
                 //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                 return;
@@ -1025,6 +1034,16 @@ namespace Acurus.Capella.UI
 
             }
             return string.Empty;
+        }
+
+        //CAP-2389 & CAP-2379
+        private Tuple<string, List<string>> GenerateUnAuthorizedUserMessage(string sEmailAddress, string sUserAccountType)
+        {
+            List<string> listParams = new List<string>() { (sEmailAddress ?? "").Replace("-", "*"), (sUserAccountType ?? "").Replace("-", "*"), (Request.Url.AbsoluteUri ?? "").Replace("-", "*") };
+
+            var alertMessage = $"You are not a permitted user. Please contact the System Administrator. UserName: {sEmailAddress}, UserAccountType: {sUserAccountType}, Requested URL: {Request.Url.AbsoluteUri}";
+
+            return new Tuple<string, List<string>>(alertMessage, listParams);
         }
 
         public class TokenResponse

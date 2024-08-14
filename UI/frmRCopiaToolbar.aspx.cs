@@ -2148,12 +2148,16 @@ namespace Acurus.Capella.UI
         public static string ErrorLogEntry(string ErrorMessage, string ErrorLineNo, string ErrorColumnNo, string ErrorUrl, string ErrorStack)
         {
             string notification = string.Empty;
-            if (ClientSession.UserName == string.Empty)
+            //CAP-2379 & CAP-2389
+            if (!ErrorMessage.Equals("User not permitted", StringComparison.InvariantCultureIgnoreCase))
             {
-                HttpContext.Current.Response.StatusCode = 999;
-                HttpContext.Current.Response.Status = "999 Session Expired";
-                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
-                return string.Empty;
+                if (ClientSession.UserName == string.Empty)
+                {
+                    HttpContext.Current.Response.StatusCode = 999;
+                    HttpContext.Current.Response.Status = "999 Session Expired";
+                    HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                    return string.Empty;
+                }
             }
             //jira #CAP-30 - Old Code
             //string message = System.Environment.NewLine + System.Environment.NewLine + "------------------------------BEGINNING OF THIS SCRIPT ERROR------------------------------------" + System.Environment.NewLine + System.Environment.NewLine +
