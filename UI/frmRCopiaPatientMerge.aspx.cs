@@ -99,6 +99,15 @@ namespace Acurus.Capella.UI
                 return string.Empty;
             }
 
+            string sErrorMessage = string.Empty;
+            Rcopia_Update_InfoManager objUpdateInfoMngr = new Rcopia_Update_InfoManager();
+            RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(ClientSession.LegalOrg);
+            if (ClientSession.UserName != null && ClientSession.FacilityName != null)
+            {
+                sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(rcopiaSessionMngr.DownloadAddress, ClientSession.UserName, string.Empty, dtClientDate, ClientSession.FacilityName, 0, ulHumanIDMerge, ClientSession.LegalOrg);
+            }
+
+
             Rcopia_MedicationManager rcopia_MedicationManager = new Rcopia_MedicationManager();
             IList<Rcopia_Medication> ilstRcopiaMedicationKeep = new List<Rcopia_Medication>();
             IList<ulong> ilstMedicationIDKeep = new List<ulong>();
