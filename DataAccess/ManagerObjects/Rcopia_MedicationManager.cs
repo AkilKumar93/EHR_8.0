@@ -350,6 +350,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public Rcopia_Medication UpdateMedicationObject(Rcopia_Medication objMedication, Rcopia_Medication objUpdateMedication)
         {
+            //Jira CAP-2281 - Add Human_id
+            objMedication.Human_ID = objUpdateMedication.Human_ID;
             objMedication.Action = objUpdateMedication.Action;
             objMedication.Brand_Name = objUpdateMedication.Brand_Name;
             objMedication.Comments = objUpdateMedication.Comments;

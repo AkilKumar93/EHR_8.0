@@ -145,6 +145,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public Rcopia_Allergy UpdateAllergyRecords(Rcopia_Allergy objAllergy, Rcopia_Allergy objUpdateAllergy)
         {
+            //Jira CAP-2281 - Add Human_id
+            objAllergy.Human_ID = objUpdateAllergy.Human_ID;
             objAllergy.Allergy_Name = objUpdateAllergy.Allergy_Name;
             objAllergy.First_DataBank_Med_ID = objUpdateAllergy.First_DataBank_Med_ID;
             objAllergy.Last_Modified_By = objUpdateAllergy.Last_Modified_By;
