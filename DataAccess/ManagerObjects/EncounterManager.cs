@@ -9111,7 +9111,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     wfObjMngr.MoveToNextProcess(EncounterWfObject.Obj_System_Id, EncounterWfObject.Obj_Type, 1, "UNKNOWN", dtCurrentDateTime, sMacAddress, null, null);
 
                     // Move to Checkout from physician GITLAB #3084
-                    if (UserRole.ToUpper() != "MEDICAL ASSISTANT" && encounterRecord.Is_EandM_Submitted != "Y")
+                    //Jira CAP-2393
+                    //if (UserRole.ToUpper() != "MEDICAL ASSISTANT" && encounterRecord.Is_EandM_Submitted != "Y")
+                    if (UserRole.ToUpper() != "MEDICAL ASSISTANT" && UserRole.ToUpper() != "SCRIBE" && encounterRecord.Is_EandM_Submitted != "Y")
                     {
                         encounterRecord.Is_EandM_Submitted = "N";
                     }
