@@ -2753,66 +2753,34 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
         //    }
         //}
 
-        //Duplicate Diagnosis Pointer Validation
+        //Validation
         var DuplicateDiagnosis = [];
         DuplicateDiagnosis = new Array();
-
         if ($('#tblEandMCodingCPT tr').length > 0) {
             for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-
                 DuplicateDiagnosis = new Array();
                 for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.trim() != "") {
+                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.trim() != "") {
                         if (DuplicateDiagnosis.length == 0) {
-                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
+                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase());
                         }
-                        else if (DuplicateDiagnosis.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim()) > -1) {
-
-                            DisplayErrorMessage('530026', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
+                        else if (DuplicateDiagnosis.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase().trim()) > -1) {
+                            DisplayErrorMessage('530026', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
                             bSaveCheck = true;
                             AutoSaveUnsuccessful();
                             return;
                         }
                         else {
-                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase());
+                            DuplicateDiagnosis.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + +DiaPointer].children[0].value.toUpperCase());
                         }
                     }
                 }
             }
         }
-
-        var DuplicateModifier = [];
-        DuplicateModifier = new Array();
-
-        if ($('#tblEandMCodingCPT tr').length > 0) {
-            for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
-
-                DuplicateModifier = new Array();
-                for (var DiaPointer = 0; DiaPointer < 4; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.trim() != "") {
-                        if (DuplicateModifier.length == 0) {
-                            DuplicateModifier.push($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase());
-                        }
-                        else if (DuplicateModifier.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim()) > -1) {
-
-                            DisplayErrorMessage('530029', "", "'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase().trim() + "'-'" + $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim() + "'-'" + parseInt(DiaPointer + 1) + "'");
-                            bSaveCheck = true;
-                            AutoSaveUnsuccessful();
-                            return;
-                        }
-                        else {
-                            DuplicateModifier.push($($('#tblEandMCodingCPT tr'))[cptlength].children[4].children[DiaPointer].value.toUpperCase());
-                        }
-                    }
-                }
-            }
-        }
-
         var bSerial = false;
         var bSeqValidation = false;
+        var bPosition = false;
         var iDiaPointerPosition = 0;
-        var iDiaPointerPosition = false;
-
         if ($('#tblEandMCodingCPT tr').length > 0) {
             for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
                 bSerial = false;
@@ -2820,7 +2788,7 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 bPosition = false;
                 iDiaPointerPosition = 0;
                 for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() == "") {
+                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase().trim() == "") {
                         if (bSeqValidation != true) {
                             iDiaPointerPosition = parseInt(DiaPointer) + 1;
                         }
@@ -2828,12 +2796,12 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                             bPosition = true;
                             iDiaPointerPosition = parseInt(DiaPointer) + 1;
                         }
-
                         bSerial = true;
                     }
-                    if (bSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() != "") {
+                    if (bSerial == true && $($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase().trim() != "") {
                         var Cpt = $($('#tblEandMCodingCPT tr'))[cptlength].children[1].innerText.toUpperCase().trim();
-                        if (iDiaPointerPosition == 0) {
+                        if (iDiaPointerPosition == 0)
+                        {
                             iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
                         }
                         DisplayErrorMessage('530027', "", "'" + Cpt + "'-'" + (parseInt(DiaPointer) + 1) + "'-'" + iDiaPointerPosition + "'");
@@ -2843,7 +2811,6 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                     }
                     else {
                         bSeqValidation = true;
-                        // iDiaPointerPosition = parseInt(iDiaPointerPosition) + 1;
                     }
                 }
             }
@@ -2858,30 +2825,30 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
         if ($('#tblEandMCodingCPT tr').length > 0) {
             for (var cptlength = 1; cptlength < $('#tblEandMCodingCPT tr').length; cptlength++) {
                 for (var DiaPointer = 0; DiaPointer < 6; DiaPointer++) {
-                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim() != "") {
+                    if ($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase().trim() != "") {
                         if (DiagnosisPointerCPTList.length == 0) {
-                            DiagnosisPointerCPTList.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim());
+                            DiagnosisPointerCPTList.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase().trim());
                         }
-                        else if (DiagnosisPointerCPTList.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim()) == -1) {
-                            DiagnosisPointerCPTList.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5].children[DiaPointer].value.toUpperCase().trim());
+                        else if (DiagnosisPointerCPTList.indexOf($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase().trim()) == -1) {
+                            DiagnosisPointerCPTList.push($($('#tblEandMCodingCPT tr'))[cptlength].children[5 + DiaPointer].children[0].value.toUpperCase().trim());
                         }
                     }
                 }
             }
         }
 
-        //if (DiagnosisPointerCPTList.length > 0 && $('#tblAssEandMCodingICD tr').length > 0) {
-        //    for (var IcdAsslength = 1; IcdAsslength < $('#tblAssEandMCodingICD tr').length; IcdAsslength++) {
-        //        if ($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim() != "") {
-        //            if (DiagnosisPointerICDList.length == 0) {
-        //                DiagnosisPointerICDList.push($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim());
-        //            }
-        //            else if (DiagnosisPointerICDList.indexOf($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim()) == -1) {
-        //                DiagnosisPointerICDList.push($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim());
-        //            }
-        //        }
-        //    }
-        //}
+        if (DiagnosisPointerCPTList.length > 0 && $('#tblAssEandMCodingICD tr').length > 0) {
+            for (var IcdAsslength = 1; IcdAsslength < $('#tblAssEandMCodingICD tr').length; IcdAsslength++) {
+                if ($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim() != "") {
+                    if (DiagnosisPointerICDList.length == 0) {
+                        DiagnosisPointerICDList.push($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim());
+                    }
+                    else if (DiagnosisPointerICDList.indexOf($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim()) == -1) {
+                        DiagnosisPointerICDList.push($($('#tblAssEandMCodingICD tr'))[IcdAsslength].children[1].innerText.toUpperCase().trim());
+                    }
+                }
+            }
+        }
         if (DiagnosisPointerCPTList.length > 0 && $('#tblEandMCodingICD tr').length > 0) {
             for (var IcdEandMlength = 1; IcdEandMlength < $('#tblEandMCodingICD tr').length; IcdEandMlength++) {
                 if ($($('#tblEandMCodingICD tr'))[IcdEandMlength].children[2].innerText.toUpperCase().trim() != "") {
@@ -2907,13 +2874,6 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
                 AutoSaveUnsuccessful();
                 return;
             }
-        }
-        else if (DiagnosisPointerCPTList.length > 0 && DiagnosisPointerICDList.length == 0) {
-            DisplayErrorMessage('530025', "", "'" + DiagnosisPointerCPTList[0] + "'");
-            // DisplayErrorMessage('530025', "", "'" + DiagnosisPointerdiff + "'");
-            bSaveCheck = true;
-            AutoSaveUnsuccessful();
-            return;
         }
 
 
