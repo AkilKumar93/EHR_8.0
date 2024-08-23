@@ -616,24 +616,24 @@ namespace Acurus.Capella.UI
                                 //CAP-1075
                                 //CAP-1167
                                 //CAP-2316
-                                //var currentURL = Request.Url.AbsoluteUri.ToString();
-                                //if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
-                                //{
-                                //    var CurrentUrl = Session["currenturl"]?.ToString();
+                                var currentURL = Request.Url.AbsoluteUri.ToString();
+                                if (DirectURLUtility.IsValidRedirectUrlForLogin(currentURL))
+                                {
+                                    var CurrentUrl = Session["currenturl"]?.ToString();
 
-                                //    if (!string.IsNullOrEmpty(CurrentUrl))
-                                //    {
-                                //        //CAP-1752
-                                //        var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
-                                //        var returnURL = string.IsNullOrEmpty(CurrentUrl) ? $"~/{loginpage}" : $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
-                                //        Session["currenturl"] = null;
-                                //        Response.Redirect(returnURL);
-                                //    }
-                                //}
-                                //else
-                                //{
+                                    if (!string.IsNullOrEmpty(CurrentUrl))
+                                    {
+                                        //CAP-1752
+                                        var loginpage = (ConfigurationSettings.AppSettings["IsSSOLogin"] == "Y" ? "frmLoginNew.aspx" : "frmLogin.aspx");
+                                        var returnURL = string.IsNullOrEmpty(CurrentUrl) ? $"~/{loginpage}" : $"~/{loginpage}?redirecturl={HttpUtility.UrlEncode(CurrentUrl)}";
+                                        Session["currenturl"] = null;
+                                        Response.Redirect(returnURL);
+                                    }
+                                }
+                                else
+                                {
                                     Response.Redirect("~/frmSessionExpired.aspx?From=Globalasaxcs|Linenumber=395");
-                                //}
+                                }
 
                             }
                             //if ( SessionData == "")
