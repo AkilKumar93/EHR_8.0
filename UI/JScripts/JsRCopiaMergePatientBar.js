@@ -12,9 +12,9 @@
         else if (event?.currentTarget?.id == "btnAllergies") {
             $("#btnMedication").removeClass("btncolorMyQ");
             $("#btnAllergies").addClass("btncolorMyQ");
-            $("#lblScreenDis")[0].innerText = "List of Duplicate Allergies in Keep Account";
+            $("#lblScreenDis")[0].innerText = "List of Duplicate Allergies";
             $("#ifrmRcopiaDuplicateScreen")[0].src = ""
-            $("#ifrmRcopiaDuplicateScreen")[0].src = "";
+            $("#ifrmRcopiaDuplicateScreen")[0].src = "frmRCopiaDuplicateAllergy.aspx?HumanID=" + human_id;
         }
     }
 }
