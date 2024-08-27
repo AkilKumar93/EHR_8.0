@@ -40,8 +40,26 @@ namespace Acurus.Capella.UI
                     string sStatus = mngrRcpiaMedi.UpdateRcopiaMedication(ilstRcopiaID, ClientSession.HumanId, ClientSession.FacilityName, ClientSession.LegalOrg, ClientSession.UserName);
 
                 }
+
+                //Delete Duplicate Allergy
+                Rcopia_AllergyManager Rcopiamanager = new Rcopia_AllergyManager();
+                IList<Rcopia_Allergy> Groupbylist = Rcopiamanager.GetAllergyWithExactDuplicates(ulHuman_id, "Active");
+
+                if (Groupbylist.Count > 0)
+                {
+                    IList<ulong> ilstRcopiaID = new List<ulong>();
+                    ilstRcopiaID = Groupbylist.Select(x => x.Id).ToList<ulong>();
+
+                    var Updateval = Rcopiamanager.UpdateRcopiaAllergy(ilstRcopiaID, ClientSession.HumanId, ClientSession.FacilityName, ClientSession.LegalOrg, ClientSession.UserName);
+                }
+
+
+
+
+
+
             }
-                ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }", true);
+            ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }", true);
             
         }
     }

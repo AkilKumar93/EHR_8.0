@@ -397,6 +397,7 @@
     <Content Include="frmPQRIBirtViewDetail.aspx" />
     <Content Include="frmQRCodeGenerator.aspx" />
     <Content Include="frmQuickPatientCreate.aspx" />
+    <Content Include="frmRCopiaDuplicateAllergy.aspx" />
     <Content Include="frmRCopiaDuplicateMediations.aspx" />
     <Content Include="frmRCopiaMergePatientBar.aspx" />
     <Content Include="frmRCopiaPatientMerge.aspx" />
@@ -419,6 +420,7 @@
     <Content Include="JScripts\jquery.ui.autocomplete.js" />
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
+    <Content Include="JScripts\JSRCopiaDuplicateAllergy.js" />
     <Content Include="JScripts\JSRCopiaPatientMerge.js" />
     <Content Include="JScripts\JSImpersonateUser.js" />
     <Content Include="JScripts\JSLandingScreen.js" />
@@ -1541,6 +1543,13 @@
     </Compile>
     <Compile Include="frmQuickPatientCreate.aspx.designer.cs">
       <DependentUpon>frmQuickPatientCreate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmRCopiaDuplicateAllergy.aspx.cs">
+      <DependentUpon>frmRCopiaDuplicateAllergy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmRCopiaDuplicateAllergy.aspx.designer.cs">
+      <DependentUpon>frmRCopiaDuplicateAllergy.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmRCopiaDuplicateMediations.aspx.cs">
       <DependentUpon>frmRCopiaDuplicateMediations.aspx</DependentUpon>
@@ -2680,7 +2689,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55737</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44351/</IISUrl>
+          <IISUrl>https://localhost:44352/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
