@@ -367,6 +367,7 @@
     <Content Include="ConfigXML\CapellaScribeLookupList.xml" />
     <Content Include="ConfigXML\ImmztnRegistry_Lookup.xml" />
     <Content Include="ConfigXML\Insurance_Plan.xml" />
+    <Content Include="CSS\bootstrap-icons.css" />
     <Content Include="CSS\bootstrap.min.css" />
     <Content Include="CSS\metro.css" />
     <Content Include="ErrorMessage.xml">

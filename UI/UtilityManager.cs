@@ -6114,6 +6114,71 @@ namespace Acurus.Capella.UI
 
             return bIsAkidoEncounter;
         }
+        //CAP-1987
+        public static string IsAkidoInterpretationNote(string sOrderSubmitID, out string sExMessage, out string sStatus)
+        {
+            sStatus = "";
+            sExMessage = "";
+            string bIsAkidoInterpretationNote = "false";
+            //Jira CAP-1379
+            int iRetryCount = 0;
+
+        retry:
+            try
+            {
+                iRetryCount = iRetryCount + 1;
+
+                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURL"].ToString().Replace("[CapellaResourceID]", sOrderSubmitID).Replace("[CapellaResourceType]", "capella_order_submit_id"));
+                string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoInterpretationNoteStatusURLToken"].ToString();
+                var myWebRequest = WebRequest.Create(myUri);
+                var myHttpWebRequest = (HttpWebRequest)myWebRequest;
+                myHttpWebRequest.PreAuthenticate = true;
+                myHttpWebRequest.Headers.Add("Authorization", "Bearer " + AccessToken);
+                myHttpWebRequest.Accept = "application/json";
+
+                var myWebResponse = myWebRequest.GetResponse();
+                var responseStream = myWebResponse.GetResponseStream();
+
+                var myStreamReader = new StreamReader(responseStream, Encoding.Default);
+                var json = myStreamReader.ReadToEnd();
+                responseStream.Close();
+                myWebResponse.Close();
+
+                if (json.ToString() != "[]" && json.ToString().ToUpper().Contains("STATUS\":\"SIGNED"))
+                {
+                    bIsAkidoInterpretationNote = "true";
+                    //Jira CAP-1990
+                    string sPJason = json.Substring(1, json.Length - 2);
+                    var jsonObject = JObject.Parse(sPJason);
+                    sStatus = (string)jsonObject["status"];
+
+                }
+            }
+            catch (Exception ex)
+            {
+                //Jira CAP-1379
+                //bIsAkidoEncounter = "Exception";
+                //sExMessage = ex.Message;
+                //Console.WriteLine(ex.ToString());
+
+                //Jira CAP-1379
+                if (iRetryCount < 3)
+                {
+                    Console.WriteLine("Retrying Count : " + iRetryCount + " -> " + ex.ToString());
+                    System.Threading.Thread.Sleep(new TimeSpan(0, 0, 2));
+                    goto retry;
+                }
+                else
+                {
+                    bIsAkidoInterpretationNote = "Exception";
+                    sExMessage = ex.Message;
+                    Console.WriteLine(ex.ToString());
+                }
+
+            }
+
+            return bIsAkidoInterpretationNote;
+        }
         public static bool CheckFileNotFoundException(Exception ex, out string sErrorMessage)
         {
             sErrorMessage = string.Empty;

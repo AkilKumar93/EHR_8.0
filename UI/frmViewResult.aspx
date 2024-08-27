@@ -532,7 +532,7 @@
     <link href="CSS/font-awesome.css" rel="stylesheet" type="text/css" />
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
     <link href="CSS/bootstrap.min.css" rel="stylesheet" />
-
+    <link href="CSS/bootstrap-icons.css" rel="stylesheet" />
 
 </head>
 <body onload="{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}">
@@ -763,6 +763,8 @@
                                                     <td style="display:flex;float:right;">
                                                         <asp:UpdatePanel runat="server" UpdateMode="Conditional">
                                                 <ContentTemplate>
+                                                    <button id="btnAkidoInterpretationNote" runat="server" value="Akido Interpretation Report" class="aspresizedbluebutton" style="margin-right: 4px;" onclick="if(StartLoadingcursor()); AkidoInterpretationNoteClick();">Akido Interpretation Report <i class="bi bi-box-arrow-up-right" aria-hidden="true" style="margin-left: 3px;"></i></button>
+
                                                     <asp:Button ID="btnDeleteIndexing" runat="server" OnClientClick="DeleteFilesIndexing();" Text="Delete Document" CssClass="aspresizedredbutton" Visible="false"  Style="margin-right: 4px;" />
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
@@ -872,6 +874,7 @@
             <asp:Button ID="hdnSaveEnable" runat="server" Style="display: none;" />
             <%--OnClick="hdnSaveEnable_Click"--%>
             <asp:HiddenField ID="hdnAssignTo" runat="server" EnableViewState="false" />
+            <asp:HiddenField ID="hdnAkidoInterpretationNote" runat="server" />
             <asp:Button ID="btnMessageType" runat="server" Text="Button" Style="display: none"
                 OnClientClick="return ClickClose();" />
         </telerik:RadAjaxPanel>
