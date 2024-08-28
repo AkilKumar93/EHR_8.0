@@ -136,8 +136,8 @@
                 </table>
                 </div>
             <div id="divcheckbox" style="float:left;margin-left: 2%;">
-                <input type="checkbox" id="ShowAll" ng-click="ShowActive()"  style="font-size: 14px;" value=""  />
-                  <lable style="font-size: 14px;font-weight: bold;">Check for all status</lable>
+                <input type="checkbox" id="ShowAll" ng-click="ShowActive()"  style="font-size: 14px; display:none;" value=""  />
+                  <lable style="font-size: 14px;font-weight: bold;display:none;">Check for all status</lable>
                 </div>
               <div id="divButtonsPanelClose" style="float:right;margin-right: 2%;">
                  
