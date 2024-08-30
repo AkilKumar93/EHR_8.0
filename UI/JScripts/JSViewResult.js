@@ -1146,3 +1146,24 @@ function OnPageLoad(EmptyValues) {
     SearchAssignedTo();
     imgclear();
 }
+//CAP-1987
+function StartLoadingcursor() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    return true;
+}
+//CAP-1987
+function AkidoInterpretationNoteClick() {
+    var CLegalOrg = "";
+    var cookies = document.cookie.split(';');
+    for (var l = 0; l < cookies.length; l++) {
+        if (cookies[l].indexOf("CLegalOrg") > -1)
+            CLegalOrg = cookies[l].split("=")[1].toLowerCase();
+    }
+    var AkidoNoteURL = document.getElementById('hdnAkidoInterpretationNote').value.replace("[CapellaResourceID]", document.getElementById('hdnLeftPaneOrderSubmitID').value).replace("[ClientName]", CLegalOrg).replace("[CapellaResourceType]", 'capella_order_submit_id');
+    $('#resultLoading').css("display", "none");
+    event.preventDefault();
+    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+
+    window.open(AkidoNoteURL, '_blank');
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+}

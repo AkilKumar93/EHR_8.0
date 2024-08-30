@@ -70,6 +70,8 @@ namespace Acurus.Capella.UI
                         dt.Columns.Add("Zip", typeof(string));
                         dt.Columns.Add("NPI", typeof(string));
                         dt.Columns.Add("Location ID", typeof(string));
+                        //CAP-2385
+                        dt.Columns.Add("Location Name", typeof(string));
                         foreach (LabLocation obj in loclist)
                         {
                             DataRow dr = dt.NewRow();
@@ -81,12 +83,16 @@ namespace Acurus.Capella.UI
                             dr["Zip"] = obj.ZipCode;
                             dr["NPI"] = obj.Lab_NPI;
                             dr["Location ID"] = obj.Id;
+                            //CAP-2385
+                            dr["Location Name"] = obj.Location_Name;
                             dt.Rows.Add(dr);
                         }
                         DataSet ds = new DataSet();
                         ds.Tables.Add(dt);
                         grdLabLocations.DataSource = ds.Tables[0];
                         grdLabLocations.DataBind();
+                        //CAP-2385
+                        grdLabLocations.Columns[6].Visible = false;
                         if (loclist.Count > 0)
                         {
                             lblResult.Text = mpnLabLocation.TotalNoofDBRecords.ToString() + " Result(s) found";
@@ -138,7 +144,9 @@ namespace Acurus.Capella.UI
         {
             btnOk.Enabled = true;
             GridDataItem selectedItem = (GridDataItem)grdLabLocations.SelectedItems[0];
-            hdnSelectedLabText.Value = selectedItem["City"].Text;
+            //CAP-2385
+            //hdnSelectedLabText.Value = selectedItem["City"].Text;
+            hdnSelectedLabText.Value = selectedItem["LocationName"].Text;
             hdnSelectedLocID.Value = selectedItem["LocationID"].Text;
             hdnSelectedLabAddress.Value = selectedItem["Address"].Text + " " + selectedItem["City"].Text + " " + selectedItem["State"].Text + " " + selectedItem["Zip"].Text;
             

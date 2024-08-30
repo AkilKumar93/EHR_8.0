@@ -720,6 +720,39 @@ namespace Acurus.Capella.UI
             }
             else
                 btnEfax.Enabled = false;
+
+            //CAP-1987
+            string sIsAkidoInterpretationNote = "false";
+            string sExMessage = "";
+            string sStatus = "";
+            sIsAkidoInterpretationNote = UtilityManager.IsAkidoInterpretationNote(uOrderID.ToString(), out sExMessage, out sStatus);
+            if (Request.QueryString["Menu"] == null && ConfigurationSettings.AppSettings["IsAkidoInterpretationNote"] == "Y" && sIsAkidoInterpretationNote == "true")
+            {
+                btnAkidoInterpretationNote.InnerHtml = "Signed Interpretation Report <i class=\"bi bi-box-arrow-up-right\" aria-hidden=\"true\" style=\"margin-left: 3px;\"></i>";
+                btnAkidoInterpretationNote.Visible = true;
+                hdnAkidoInterpretationNote.Value = ConfigurationSettings.AppSettings["AkidoInterpretationNoteURL"];
+            }
+            else
+            {
+                if (btnMoveToMa.Visible)
+                {
+                    var userAkidoNote = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101140 && u.user_name == ClientSession.UserName select u;
+                    //CAP-2170 - Disable Akido Note button where the primary physician of encounter is not supervising provider
+                    if (userAkidoNote.ToList().Count > 0)
+                    {
+                        btnAkidoInterpretationNote.Visible = true;
+                        hdnAkidoInterpretationNote.Value = ConfigurationSettings.AppSettings["AkidoInterpretationNoteURL"];
+                    }
+                    else
+                    {
+                        btnAkidoInterpretationNote.Visible = false;
+                    }
+                }
+                else
+                {
+                    btnAkidoInterpretationNote.Visible = false;
+                }
+            }
         }
         private string ConstructTreeView(ulong humanId, string Doc_type, ulong KeyID)
         {

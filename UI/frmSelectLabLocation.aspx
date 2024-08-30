@@ -777,6 +777,9 @@
                                                 <telerik:GridBoundColumn DataField="Location ID" FilterControlAltText="Filter LocationID column"
                                                     HeaderText="Location ID" UniqueName="LocationID" Visible="False">
                                                 </telerik:GridBoundColumn>
+                                                <telerik:GridBoundColumn DataField="Location Name" FilterControlAltText="Filter LocationName column"
+                                                    HeaderText="Location Name" UniqueName="LocationName">
+                                                </telerik:GridBoundColumn>
                                             </Columns>
                                             <EditFormSettings>
                                                 <EditColumn FilterControlAltText="Filter EditCommandColumn column"></EditColumn>

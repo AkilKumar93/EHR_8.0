@@ -231,7 +231,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             List<Rcopia_Allergy> Finallist = new List<Rcopia_Allergy>();
 
             IList<Rcopia_Allergy> AllergyList = Rcopiamanager.GetAllergyListByIdStatus(Convert.ToUInt64(HumanId), status);
-            Groupbylist = (AllergyList.GroupBy(x => new { x.Allergy_Name, x.Reaction, x.OnsetDate }).Where(g => g.Count() > 1).Select(x => x.FirstOrDefault())).ToList<Rcopia_Allergy>();
+            Groupbylist = (AllergyList.OrderByDescending(y => y.Id).GroupBy(x => new { x.Allergy_Name, x.Reaction, x.OnsetDate }).Where(g => g.Count() > 1).Select(x => x.FirstOrDefault())).ToList<Rcopia_Allergy>();
 
             if (Groupbylist.Count > 0)
             {
@@ -266,6 +266,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             DateTime dtRCopia_Allergy_Last_Updated_Date_and_Time = new DateTime(2001, 01, 01);
             RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
             RCopiaTransactionManager rCopiaTransactionManager = new RCopiaTransactionManager();
+            IList<RCopiaDeduplicateLog> ilstrcopia_deduplicate_log = new List<RCopiaDeduplicateLog>();
 
             //To get the Medication list from DrFirst
             sInputXML = rcopiaXML.CreateUpdateAllergyXML(ulHumanID, dtRCopia_Allergy_Last_Updated_Date_and_Time, sLegalOrg, DateTime.MinValue);
@@ -370,12 +371,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         string sStatus = string.Empty;
                         string sTemp = string.Empty;
                         string sErrorRcopiaID = string.Empty;
+                        RCopiaDeduplicateLog rcopiaDuplicatelog = new RCopiaDeduplicateLog();
                         for (int iCont = 1; iCont <= iResponseAllergyListCount; iCont++)
                         {
 
                             sStatus = XMLResponse.SelectSingleNode("RCExtResponse/Response/AllergyList/Allergy[" + iCont + "]/Status")?.InnerText;
                             sTemp = XMLResponse.SelectSingleNode("RCExtResponse/Response/AllergyList/Allergy[" + iCont + "]/RcopiaID")?.InnerText;
-                            if (sTemp != null && sStatus != null && sStatus != "deleted")
+
+                            if (sTemp != null && sStatus != null && sStatus == "deleted")
+                            {
+                                rcopiaDuplicatelog = new RCopiaDeduplicateLog();
+                                rcopiaDuplicatelog.RCopia_ID = Convert.ToUInt64(sTemp);
+                                rcopiaDuplicatelog.Human_ID = ulHumanID;
+                                rcopiaDuplicatelog.Entity_Name = "Allergy";
+                                rcopiaDuplicatelog.Duplicate_Type = "Partial Duplicate";
+                                rcopiaDuplicatelog.Created_Date_and_Time = DateTime.Now.ToUniversalTime();
+                                rcopiaDuplicatelog.Created_By = sUserName;
+                                ilstrcopia_deduplicate_log.Add(rcopiaDuplicatelog);
+                            }
+                            else if (sTemp != null && sStatus != null && sStatus != "deleted")
                             {
                                 sErrorRcopiaID = sErrorRcopiaID + ((sErrorRcopiaID != string.Empty) ? "," : "RCopia ID : ") + sTemp + " : " + sStatus;
                             }
@@ -409,6 +423,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (sErrorMessage != string.Empty)
                 {
                     return "DownloadRCopiaInfo-" + sErrorMessage;
+                }
+
+                //Loging the deleted iteams in ilstRcopia_deduplicate_log
+                if (ilstrcopia_deduplicate_log.Count > 0)
+                {
+                    RCopiaDeduplicateLogManager mngrRCopiaDeduplicateLog = new RCopiaDeduplicateLogManager();
+                    mngrRCopiaDeduplicateLog.SaveRcopia_deduplicate_logWithTransaction(ilstrcopia_deduplicate_log, null, string.Empty);
                 }
             }
 
