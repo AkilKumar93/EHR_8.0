@@ -8282,12 +8282,12 @@ on (m.Template_Master_Id=p.Template_Master_Id) where (m.Template_Name like ? or 
   </sql-query>-->
 	<!--BugID:47602 Added Result_Received_Date to the Query:Fill.ResultMasterList-->
 	<sql-query name="Fill.ResultMasterList">
-		<![CDATA[SELECT r.result_master_id myid,Order_ID,cast(Created_Date_And_Time  as char(100)) as Created_Date_And_Time ,(select OBR_Specimen_Collection_Date_And_Time from result_obr where result_master_id=myid limit 1),
+		<![CDATA[SELECT r.result_master_id myid,Order_ID,cast(Created_Date_And_Time  as char(100)) as Created_Date_And_Time ,(select if(OBR_Specimen_Collection_Date_And_Time<>'',OBR_Specimen_Collection_Date_And_Time,OBR_Specimen_Collection_End_Time) from result_obr where result_master_id=myid limit 1),
 (select group_concat(OBR_Observation_Battery_Identifier,"-",o.OBR_Observation_Battery_Text) from result_obr o where o.result_master_id=myid), (select Order_Type from orders_submit where Order_Submit_ID=r.Order_ID),r.Is_Electronic_Mode,r.msh_date_and_time_of_message
  FROM `result_master` r where r.Matching_Patient_ID =? or r.order_id=? order by result_Received_Date desc;]]>
 	</sql-query>
 	<sql-query name="Fill.ResultMasterListByHumanID">
-		<![CDATA[SELECT r.result_master_id myid,Order_ID,cast(Created_Date_And_Time  as char(100)) as Created_Date_And_Time ,(select OBR_Specimen_Collection_Date_And_Time from result_obr where result_master_id=myid limit 1),
+		<![CDATA[SELECT r.result_master_id myid,Order_ID,cast(Created_Date_And_Time  as char(100)) as Created_Date_And_Time ,(select if(OBR_Specimen_Collection_Date_And_Time<>'',OBR_Specimen_Collection_Date_And_Time,OBR_Specimen_Collection_End_Time) from result_obr where result_master_id=myid limit 1),
 (select group_concat(OBR_Observation_Battery_Identifier,"-",o.OBR_Observation_Battery_Text) from result_obr o where o.result_master_id=myid), (select Order_Type from orders_submit where Order_Submit_ID=r.Order_ID),r.Is_Electronic_Mode,r.msh_date_and_time_of_message
  FROM `result_master` r where r.Matching_Patient_ID =? order by result_Received_Date desc;]]>
 	</sql-query>
