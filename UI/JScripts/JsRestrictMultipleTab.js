@@ -27,17 +27,19 @@ channel.addEventListener('message', (msg) => {
     //    window.location.replace("frmRestrictMultipleTabs.aspx");
     //}
     if (msg.data === 'already-open') {
-        setTimeout(function () {
-            var yesOrNo = DisplayErrorMessage('010027');
-            if (yesOrNo == false) {
-                isOriginal = false;
-                // message received from original tab
-                // replace this with whatever logic you need
-                window.location.replace("frmRestrictMultipleTabs.aspx");
-            } else if (yesOrNo) {
-                channel.postMessage('close-old-tab');
-            }
-        }, 500)
+        if (window.top.location.href.indexOf('IsLoginRequired') > 0) {
+            setTimeout(function () {
+                var yesOrNo = DisplayErrorMessage('010027');
+                if (yesOrNo == false) {
+                    isOriginal = false;
+                    // message received from original tab
+                    // replace this with whatever logic you need
+                    window.location.replace("frmRestrictMultipleTabs.aspx");
+                } else if (yesOrNo) {
+                    channel.postMessage('close-old-tab');
+                }
+            }, 500)
+        }
     }
     if (msg.data === 'close-old-tab') {
         isOriginal = true;
