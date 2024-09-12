@@ -478,8 +478,16 @@ function patientMergeClose() {
         $(top.window.document).find("#btnRCopiaPatientMergeClose").click();
     }
     //CAP-2449
-    if (window.top.location.href.toLocaleLowerCase().indexOf('frmmyqueuenew.aspx') == -1) {
+    if (window.top.location.href.toLocaleLowerCase().indexOf('EncounterID') == 1) {
+        //Cap - 2486
         //parent.location.reload();
-        window.top.location.reload();
+        location.reload();
+    }
+    else {
+
+        var url = window.top.location.href.toLocaleLowerCase().split("?")[1];
+        var ID = url.split("=")[1].split("&")[0];
+
+        window.parent.location.href = "frmPatientChart.aspx?HumanID=" + ID + "&ScreenMode=Menu&openingfrom=Menu";
     }
 };
