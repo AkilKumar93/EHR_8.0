@@ -274,6 +274,23 @@ namespace Acurus.Capella.UI.WebServices
                     string xmls = htmlString.Replace("&nbsp;", "").Replace("&bull;", "").Replace("&amp;", "");
                     xmls = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <content>" + xmls + "</content>";
                     htmlString = htmlString.Replace("<subtab>", "").Replace("</subtab>", "").Replace("<plan>", "").Replace("</plan>", "");
+
+                    //Cap - 2508
+                    while (htmlString.Contains("<AddendumProviderID>"))
+                    {
+                        string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumProviderID>"), (htmlString.IndexOf("</AddendumProviderID>") - htmlString.IndexOf("<AddendumProviderID>") + 21));
+                        string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumPhysicianEMailAddress>") + 32));
+                        htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
+                    }
+
+                    while (htmlString.Contains("<AddendumReviewProviderID>"))
+                    {
+                        string NewInput = htmlString.Substring(htmlString.IndexOf("<AddendumReviewProviderID>"), (htmlString.IndexOf("</AddendumReviewProviderID>") - htmlString.IndexOf("<AddendumReviewProviderID>") + 27));
+                        string NewInput2 = htmlString.Substring(htmlString.IndexOf("<AddendumReviewPhysicianEMailAddress>"), (htmlString.IndexOf("</AddendumReviewPhysicianEMailAddress>") - htmlString.IndexOf("<AddendumReviewPhysicianEMailAddress>") + 38));
+                        htmlString = htmlString.Replace(NewInput, "").Replace(NewInput2, "");
+                    }
+                    //Cap - 2508 End
+
                     //Jira CAP-1015
                     htmlString = htmlString.Replace("amp;", "");
                     XmlDocument doc = new XmlDocument();
