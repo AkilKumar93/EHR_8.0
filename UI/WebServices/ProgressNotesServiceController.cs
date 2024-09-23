@@ -31,14 +31,31 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 if (sHumanID == "")
                 {
-                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "HumanID is not valid. Cannot generate progress note. " });
+                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "HumanID is not valid. Cannot load Capella history data." });
                 }
 
+                if (sCategory.ToUpper() != "" && sCategory.ToUpper() != "ENCOUNTERS" && sCategory.ToUpper() != "FILES" && sCategory.ToUpper() != "LABRESULTS")
+                {
+                    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Category is not valid. Cannot load Capella history data." });
+                }
+
+                Task.Run(() => GenerateCapellaHistoryData(sHumanID, sCategory));
+            }
+            catch (Exception ex)
+            {
+                return Json(new { HumanID = sHumanID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
+            }
+            return Json(new { HumanID = sHumanID, status = "Acknowledged" });
+        }
+
+        private void GenerateCapellaHistoryData(string sHumanID, string sCategory = "")
+        {
+            try
+            {
+                var releaseDate = ConfigurationSettings.AppSettings["ReleaseDate"] ?? "";
+                var thresholdDate = ConfigurationSettings.AppSettings["ThresholdDate"] ?? "";
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "ENCOUNTERS")
                 {
-                    var releaseDate = ConfigurationSettings.AppSettings["ReleaseDate"] ?? "";
-                    var thresholdDate = ConfigurationSettings.AppSettings["ThresholdDate"] ?? "";
-
                     string encounterByHumanIDQury = "SELECT enc.Encounter_ID FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id  WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE' UNION ALL SELECT enc.Encounter_ID FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Human_ID = {0} AND  DATE(enc.Date_of_Service) >= '{1}' AND DATE(enc.Date_of_Service) <= '{2}' and wf.Obj_Type = 'DOCUMENTATION' and wf.Current_Process = 'DOCUMENT_COMPLETE';";
 
                     DataSet result = DBConnector.ReadData(string.Format(encounterByHumanIDQury, sHumanID, thresholdDate, releaseDate));
@@ -48,34 +65,67 @@ namespace Acurus.Capella.UI.WebServices.API
                         foreach (DataRow row in result.Tables[0].Rows)
                         {
                             string encounter_ID = row["Encounter_ID"].ToString();
-                            Task.Run(() => { GenerateJsonNotes(sHumanID, encounter_ID); });
+                            Task.Run(() => { GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow); });
+                            //GenerateJsonNotes(sHumanID, encounter_ID, "Acurus", DateTime.UtcNow);
                         }
                     }
-                    else
-                    {
-                        return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Encounter is not present in DB. Cannot generate progress note." });
-                    }
+                    //else
+                    //{
+                    //    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Encounter is not present in DB. Cannot generate progress note." });
+                    //}
                 }
 
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "FILES")
                 {
+                    string fileManagementIndexQury = "SELECT File_Management_Index_ID FROM file_management_index WHERE Human_ID = {0} AND Is_Delete != 'Y' AND DATE(Created_Date_And_Time) >= '{1}' AND DATE(Created_Date_And_Time) <= '{2}';";
 
+                    DataSet result = DBConnector.ReadData(string.Format(fileManagementIndexQury, sHumanID, thresholdDate, releaseDate));
+
+                    if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow row in result.Tables[0].Rows)
+                        {
+                            string file_Management_Index_ID = row["File_Management_Index_ID"].ToString();
+                            //Task.Run(() => { GenerateCDCEntity(sHumanID, file_Management_Index_ID, "Files", "Acurus", DateTime.UtcNow); });
+                            GenerateCDCEntity(sHumanID, file_Management_Index_ID, "Files", "Acurus", DateTime.UtcNow);
+                        }
+                    }
+                    //else
+                    //{
+                    //    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Image is not present in DB. Cannot generate progress note." });
+                    //}
                 }
 
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "LABRESULTS")
                 {
+                    string resultMasterQury = "SELECT Result_Master_ID FROM result_master WHERE Matching_Patient_ID = {0} and File_Name != '' AND DATE(Created_Date_And_Time) >= '{1}' AND DATE(Created_Date_And_Time) <= '{2}';";
 
+                    DataSet result = DBConnector.ReadData(string.Format(resultMasterQury, sHumanID, thresholdDate, releaseDate));
+
+                    if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow row in result.Tables[0].Rows)
+                        {
+                            string result_Master_Id = row["Result_Master_ID"].ToString();
+                            //Task.Run(() => { GenerateCDCEntity(sHumanID, result_Master_Id, "LabResults", "Acurus", DateTime.UtcNow); });
+                            GenerateCDCEntity(sHumanID, result_Master_Id, "LabResults", "Acurus", DateTime.UtcNow);
+                        }
+                    }
+                    //else
+                    //{
+                    //    return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Lab result is not present in DB. Cannot generate progress note." });
+                    //}
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { HumanID = sHumanID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
+                throw new Exception("Error in processing the request. " + ex.Message.ToString());
+                //return Json(new { HumanID = sHumanID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
             }
-            return Json(new { HumanID = sHumanID, status = "Acknowledged" });
         }
 
         [HttpGet]
-        public IHttpActionResult LoadProgressNotes(string sHumanID, string sEncounterID)
+        public IHttpActionResult LoadProgressNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
         {
             try
             {
@@ -86,7 +136,9 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "EncounterID is not valid. Cannot generate progress note." });
                 }
-                string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION' UNION ALL SELECT enc.Encounter_ID, wf.Current_Process FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
+                //string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION' UNION ALL SELECT enc.Encounter_ID, wf.Current_Process FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
+
+                string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
 
                 DataSet result = DBConnector.ReadData(encounterByHumanIDQury);
 
@@ -100,7 +152,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note." });
                 }
-                Task.Run(() => { GenerateJsonNotes(sHumanID, sEncounterID); });
+                Task.Run(() => { GenerateJsonNotes(sHumanID, sEncounterID, transactionBy, transactionDateTime); });
             }
             catch (Exception ex)
             {
@@ -109,7 +161,7 @@ namespace Acurus.Capella.UI.WebServices.API
             return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "Acknowledged" });
         }
 
-        private void GenerateJsonNotes(string sHumanID, string sEncounterID)
+        private void GenerateJsonNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
         {
             IList<Blob_Progress_Note> ilstBlob_Progress_Note = new List<Blob_Progress_Note>();
             BlobProgressNoteManager BlobProgressNoteMngr = new BlobProgressNoteManager();
@@ -120,7 +172,7 @@ namespace Acurus.Capella.UI.WebServices.API
             IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
             Blob_Progress_Note objBlobProgressNotesInitiated = new Blob_Progress_Note();
             //ilstBlob_Progress_Note = BlobProgressNoteMngr.GetBlobProgressNotes(Convert.ToUInt64(sEncounterID));
-            string blobProgressNotesQry = "SELECT Encounter_ID AS Id, Human_ID, Progress_Note_Json, Status, Error_Description, Created_By, Created_Date_And_Time, Modified_By, Modified_Date_And_Time, Version FROM blob_progress_note WHERE Encounter_ID = {0};";
+            string blobProgressNotesQry = "SELECT Encounter_ID AS Id, Human_ID, Progress_Note_Json, Status, Error_Description, Created_By, Created_Date_And_Time, Modified_By, Modified_Date_And_Time, Version FROM cdc_progress_note WHERE Encounter_ID = {0};";
             DataSet BlobProgressNotesResult = DBConnector.ReadData(string.Format(blobProgressNotesQry, sEncounterID));
             ilstBlob_Progress_Note = DBConnector.DataTableToList<Blob_Progress_Note>(BlobProgressNotesResult.Tables[0]) ?? new List<Blob_Progress_Note>();
             bool isModified = false;
@@ -130,14 +182,14 @@ namespace Acurus.Capella.UI.WebServices.API
                 if (ilstBlob_Progress_Note.Count == 0)
                 {
                     ilstBlob_Progress_Note.Add(objBlobProgressNotesInitiated);
-                    ilstBlob_Progress_Note[0].Created_By = "";
-                    ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
+                    ilstBlob_Progress_Note[0].Created_By = transactionBy;
+                    ilstBlob_Progress_Note[0].Created_Date_And_Time = transactionDateTime;
                     isModified = false;
                 }
                 else
                 {
-                    ilstBlob_Progress_Note[0].Modified_By = "";
-                    ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    ilstBlob_Progress_Note[0].Modified_By = transactionBy;
+                    ilstBlob_Progress_Note[0].Modified_Date_And_Time = transactionDateTime;
                     isModified = true;
                 }
 
@@ -575,13 +627,13 @@ namespace Acurus.Capella.UI.WebServices.API
                     ilstBlob_Progress_Note[0].Error_Description = string.Empty;
                     if (isModified)
                     {
-                        ilstBlob_Progress_Note[0].Modified_By = "";
-                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                        ilstBlob_Progress_Note[0].Modified_By = transactionBy;
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = transactionDateTime;
                     }
                     else
                     {
-                        ilstBlob_Progress_Note[0].Created_By = "";
-                        ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
+                        ilstBlob_Progress_Note[0].Created_By = transactionBy;
+                        ilstBlob_Progress_Note[0].Created_Date_And_Time = transactionDateTime;
                     }
                     BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                 }
@@ -989,6 +1041,69 @@ namespace Acurus.Capella.UI.WebServices.API
                     }
             }
             return string.Empty;
+        }
+
+        private void GenerateCDCEntity(string sHumanID, string sEntityID, string sEntityName, string transactionBy, DateTime transactionDateTime)
+        {
+            IList<CDCEventTracker> ilstCDCEvent = new List<CDCEventTracker>();
+            CDCEventTrackerManager CDCEventMngr = new CDCEventTrackerManager();
+            CDCEventTracker objCDCEventInitiated = new CDCEventTracker();
+
+            string sCDCEntityQry = "SELECT CDC_Entity_Tracker_ID as Id, Entity_ID, Human_ID, Entity_Name, Status, Error_Description, Created_By, Created_Date_and_Time, Modified_By, Modified_Date_and_Time, Version FROM cdc_entity_tracker WHERE Human_ID = {0} and Entity_ID= {1} and Entity_Name= '{2}';";
+            DataSet CDCEventResult = DBConnector.ReadData(string.Format(sCDCEntityQry, sHumanID, sEntityID, sEntityName));
+            ilstCDCEvent = DBConnector.DataTableToList<CDCEventTracker>(CDCEventResult.Tables[0]) ?? new List<CDCEventTracker>();
+            bool isModified = false;
+            try
+            {
+                //Initiate save call
+                if (ilstCDCEvent.Count == 0)
+                {
+                    ilstCDCEvent.Add(objCDCEventInitiated);
+                    ilstCDCEvent[0].Id = 0;
+                    ilstCDCEvent[0].Created_By = transactionBy;
+                    ilstCDCEvent[0].Created_Date_And_Time = transactionDateTime;
+                    isModified = false;
+                }
+                else
+                {
+                    ilstCDCEvent[0].Modified_By = transactionBy;
+                    ilstCDCEvent[0].Modified_By = transactionBy;
+                    ilstCDCEvent[0].Modified_Date_And_Time = transactionDateTime;
+                    isModified = true;
+                }
+
+                ilstCDCEvent[0].Human_ID = Convert.ToUInt64(sHumanID);
+                ilstCDCEvent[0].Entity_ID = Convert.ToUInt64(sEntityID);
+                ilstCDCEvent[0].Entity_Name = sEntityName;
+                ilstCDCEvent[0].Status = "Completed";
+                ilstCDCEvent[0].Error_Description = string.Empty;
+
+                CDCEventMngr.SaveCDCEventTrackerWithTransaction(ilstCDCEvent, string.Empty);
+            }
+            catch (Exception eex)
+            {
+                try
+                {
+                    ilstCDCEvent[0].Human_ID = Convert.ToUInt64(sHumanID);
+                    ilstCDCEvent[0].Entity_ID = Convert.ToUInt64(sEntityID);
+                    ilstCDCEvent[0].Entity_Name = sEntityName;
+                    ilstCDCEvent[0].Status = "Error";
+                    ilstCDCEvent[0].Error_Description = "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
+                    if (isModified)
+                    {
+                        ilstCDCEvent[0].Modified_By = "";
+                        ilstCDCEvent[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        ilstCDCEvent[0].Created_By = "";
+                        ilstCDCEvent[0].Created_Date_And_Time = DateTime.UtcNow;
+                    }
+                    CDCEventMngr.SaveCDCEventTrackerWithTransaction(ilstCDCEvent, string.Empty);
+                    throw new Exception("Error : " + eex?.Message);
+                }
+                catch { throw new Exception("Error : " + eex?.Message); }
+            }
         }
 
         private string ConvertToLocal(string review_Signed_Date)
