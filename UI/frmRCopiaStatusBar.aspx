@@ -19,7 +19,7 @@
             font-size: 14px;
             font-family: 'Inter', sans-serif;
             display: flex;
-            margin: 10px;
+           /* margin: 10px;*/
             /*border-radius: 5px;*/
             font-weight: 700;
             width: fit-content;
