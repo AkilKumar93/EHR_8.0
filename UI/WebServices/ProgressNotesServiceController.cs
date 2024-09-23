@@ -33,7 +33,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "HumanID is not valid. Cannot load Capella history data." });
                 }
-
+                sCategory = sCategory == null ? "" : sCategory;
                 if (sCategory.ToUpper() != "" && sCategory.ToUpper() != "ENCOUNTERS" && sCategory.ToUpper() != "FILES" && sCategory.ToUpper() != "LABRESULTS")
                 {
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Category is not valid. Cannot load Capella history data." });
