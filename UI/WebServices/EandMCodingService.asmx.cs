@@ -1089,6 +1089,8 @@ namespace Acurus.Capella.UI.WebServices
                 IList<ProcedureModifierLookup> lsttempCPT = new List<ProcedureModifierLookup>();
                 if (eandmCPTList.Count > 0)
                 {
+                    //Cap - 2112
+                    eandmCPTList[0].Procedure_Code_Description = objCPT.ToString().Split('~')[1];
                     eandmCPTList[0].Modifier1 = objCPT.ToString().Split('~')[3];
                     eandmCPTList[0].Modifier2 = objCPT.ToString().Split('~')[4];
                     eandmCPTList[0].Modifier3 = objCPT.ToString().Split('~')[5];

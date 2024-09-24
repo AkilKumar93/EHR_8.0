@@ -1038,6 +1038,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //IList<ProblemList> probList = new List<ProblemList>();
             IList<string> ProcList = new List<string>();
             IList<string> ICDList = new List<string>();
+            IList<string> ProcListNew = new List<string>();
             //ArrayList aryAccessCPT = new ArrayList();
             IList<string> TempProcedureList = new List<string>();
             IList<string> TempProcedureListImmunization = new List<string>();
@@ -1854,7 +1855,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             for (int i = 0; i < OrderCPT.Count; i++)
                             {
                                 IList<string> FinalProcedurelist = (from m in TempProcedureListOrdersList where m.Split('~')[0] == OrderCPT[i].ToString() select m).ToList<string>();
-                                
+
+                                //Cap - 2112 - Start
+
+                                ProcListNew = (from m in ProcList where m.Split('~')[0] == OrderCPT[i].ToString() select m).ToList<string>();
+                                if (ProcListNew.Count > 0)
+                                {
+                                    string new1 = ProcListNew[0];
+
+                                    ProcList = (from m in ProcList where m.Split('~')[0] != OrderCPT[i].ToString() select m).ToList<string>();
+
+                                    ProcList.Add(new1.Split('~')[0] + "~" + FinalProcedurelist[0].Split('~')[1] + "~" + new1.Split('~')[2] + "~" + new1.Split('~')[3] + "~" + new1.Split('~')[4] + "~" + new1.Split('~')[5] + "~" + new1.Split('~')[6] + "~" + new1.Split('~')[7] + "~" + new1.Split('~')[8] + "~" + new1.Split('~')[9] + "~" + new1.Split('~')[10] + "~" + new1.Split('~')[11] + "~" + new1.Split('~')[12] + "~" + new1.Split('~')[13] + "~" + new1.Split('~')[14] + "~" + new1.Split('~')[15] + "~" + new1.Split('~')[16] + "~" + new1.Split('~')[17]);
+                                }
+                                //Cap - 2112 - End
+
 
                                 if (FinalProcedurelist.Count > 0)
                                 {
