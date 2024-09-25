@@ -339,7 +339,9 @@ namespace Acurus.Capella.UI
                 btnCorrections.Visible = true;
             else
                 btnCorrections.Visible = false;
-            if (ClientSession.UserRole != null && ClientSession.UserCurrentProcess != null && ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT" && ClientSession.UserCurrentProcess == "MA_PROCESS")
+            //Cap - 2535
+            //if (ClientSession.UserRole != null && ClientSession.UserCurrentProcess != null && ClientSession.UserRole.ToUpper() == "MEDICAL ASSISTANT" && ClientSession.UserCurrentProcess == "MA_PROCESS")
+            if (ClientSession.UserCurrentProcess != null  && ClientSession.UserCurrentProcess == "MA_PROCESS")
             {
 
                 XmlDocument xmldocUser = new XmlDocument();
