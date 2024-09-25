@@ -238,6 +238,7 @@ namespace Acurus.Capella.UI
                 var returnUrl = Request.Form["RedirectURL"];
                 responseRedirectUrl = Request.Form["RedirectURL"];
                 var redirectURL = directURLUtility.GetDomainSpecificRedirectURL(returnUrl, Request.Form["DefaultServer"]);
+                responseRedirectUrl = redirectURL;//Request.Form["RedirectURL"];
                 Response.SetCookie(new HttpCookie("RedirectUri") { Value = redirectURL, Expires = DateTime.Now.AddDays(1) });
             }
             else
@@ -297,7 +298,7 @@ namespace Acurus.Capella.UI
                 ClientSession.SavedSession = "DELETED";
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - Before Calling LandingintoEHR - Input is" + Request.Form["EHRUserName"], Request.Url.ToString(), string.Empty);
                 //CAP-2469
-                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"] ?? localtime, Request.Form["EHRhdnLocalDate"] ?? localdate, Request.Form["EHRhdnUniversaloffset"] ?? universaloffset, Request.Form["EHRhdnLocalDateAndTime"] ?? localDateAndTime, Request.Form["EHRhdnFollowsDayLightSavings"] ?? bDayLightSavings, Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"], Request.Form["RedirectURL"]);
+                LandingintoEHR(Request.Form["EHRUserName"], Request.Form["EHRFacilityName"], Request.Form["EHRhdnLocalTime"] ?? localtime, Request.Form["EHRhdnLocalDate"] ?? localdate, Request.Form["EHRhdnUniversaloffset"] ?? universaloffset, Request.Form["EHRhdnLocalDateAndTime"] ?? localDateAndTime, Request.Form["EHRhdnFollowsDayLightSavings"] ?? bDayLightSavings, Request.Form["UserRole"], Request.Form["RCopiaUserName"], Request.Form["EMailAddress"], Request.Form["Is_RCopia_Notification_Required"], Request.Form["PhysicianId"], Request.Form["Landing_Screen_ID"], hdnGroupId.Value, Request.Form["PersonName"], Request.Form["LegalOrg"], Request.Form["UserCarrier"], Request.Form["IsFirstTimeCall"], Request.Form["DefaultServer"], Request.Form["IsAllFacilities"], responseRedirectUrl);
 
                 UtilityManager.inserttologgingtableforSessionTimeout("Login Page Load - After Calling LandingintoEHR - Input is", Request.Url.ToString(), string.Empty);
 
@@ -937,15 +938,17 @@ namespace Acurus.Capella.UI
                     string sFileName = ScnTabRecord.ToList<ScnTab>()[0].SCN_Name + ".aspx";
                     //CAP-1922
                     //CAP-2308,CAP-2469
-                    DirectURLUtility directURLUtility = new DirectURLUtility();
                     var returnURL = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(Request.Cookies["RedirectUri"]?.Value))
+                    {
                     if (!string.IsNullOrWhiteSpace(redirectURL))
                     {
-                        returnURL = directURLUtility.GetServerRedirectURLByDirectURL(HttpUtility.UrlDecode(redirectURL), sDefaultServer);
+                            returnURL = redirectURL;
                     }
                     else
                     {
                         returnURL = HttpUtility.UrlDecode(Request.Cookies["RedirectUri"]?.Value);
+                    }
                     }
                     ExpireRedirectUrlCookie();
 
