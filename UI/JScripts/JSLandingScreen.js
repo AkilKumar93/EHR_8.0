@@ -615,8 +615,7 @@ function EHRLanding(FileName) {
     //localStorage.setItem("PFSHVerified", "");
     //CAP-2504
     if ((window.location?.origin ?? "") == "https://chart-stage.akidolabs.com") {
-        let iframe = document.querySelector('iframe[data-testid="CapellaRefillIntegrationIFrame"]');
-        iframe.contentWindow.location.href = FileName;
+        $("iframe").contentWindow.location.href = FileName;
     }
     else {
     top.window.location = FileName;
