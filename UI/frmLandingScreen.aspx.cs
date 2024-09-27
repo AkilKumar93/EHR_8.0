@@ -943,7 +943,7 @@ namespace Acurus.Capella.UI
                     {
                     if (!string.IsNullOrWhiteSpace(redirectURL))
                     {
-                            returnURL = redirectURL;
+                            returnURL = HttpUtility.UrlDecode(redirectURL);
                     }
                     else
                     {
