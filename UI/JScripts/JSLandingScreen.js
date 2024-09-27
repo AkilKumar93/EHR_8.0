@@ -616,7 +616,7 @@ function EHRLanding(FileName) {
     //CAP-2504
     if ((window.location?.origin ?? "") == "https://chart-stage.akidolabs.com") {
         console.log("origin :" + window.location?.origin);
-        console.log("iframe :" + $("iframe"));
+        console.log("iframe :" + $("iframe")?.contentWindow);
         console.log("FileName :" + FileName);
         $("iframe").src = FileName;
     }
