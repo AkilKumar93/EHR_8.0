@@ -73,6 +73,7 @@ namespace Acurus.Capella.UI
             MessageWindow.Visible = false;
             MessageWindow.VisibleOnPageLoad = false;
             hdnUserRole.Value = ClientSession.UserRole.ToString();
+            hdnCurrentProcess.Value = ClientSession.UserCurrentProcess.ToString();
             //CAP-1511
             if (!string.IsNullOrEmpty(Request.QueryString["Screen"]))
             {

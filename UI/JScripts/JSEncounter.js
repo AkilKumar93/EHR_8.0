@@ -582,7 +582,9 @@ function getDropdownListSelectedText() {
         if (document.getElementById("chkProviderReview") != null && document.getElementById("chkProviderReview") != undefined)
             document.getElementById("chkProviderReview").checked = true;
     }
-    if (document.getElementById('hdnUserRole').value.toUpperCase() == "MEDICAL ASSISTANT") {
+    //CAP-2547
+    //if (document.getElementById('hdnUserRole').value.toUpperCase() == "MEDICAL ASSISTANT") {
+    if (document.getElementById('hdnCurrentProcess').value != undefined && document.getElementById('hdnCurrentProcess').value != null && document.getElementById('hdnCurrentProcess').value.toUpperCase() == "MA_PROCESS") {
 
         $.ajax({
             type: "GET",
