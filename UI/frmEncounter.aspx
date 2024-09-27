@@ -421,6 +421,7 @@
         <asp:HiddenField ID="hdnAddendumID" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnLocalPhy" runat="server" EnableViewState="true" />
         <asp:HiddenField ID="hdnUserRole" runat="server" EnableViewState="true" />
+        <asp:HiddenField ID="hdnCurrentProcess" runat="server" EnableViewState="true" />
         <asp:HiddenField ID="hdnReviewStatus" runat="server" EnableViewState="false" />
         <asp:HiddenField ID="hdnCloseFS" runat="server" />
         <asp:HiddenField ID="hdnAkidoNote" runat="server" />
