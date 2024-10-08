@@ -224,6 +224,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return ilstEncounter;
             // return crit.List<Encounter>();
         }
+        public IList<Encounter> GetEncounterByEncounterIDIncludeArc(ulong EncounterID)
+        {
+            IList<Encounter> ilstEncounter = new List<Encounter>();
+            // ISession iMySession = NHibernateSessionManager.Instance.CreateISession();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sqlquery = iMySession.CreateSQLQuery("SELECT enc.* FROM encounter enc where enc.encounter_id=" + EncounterID.ToString()+ ";").AddEntity("e", typeof(Encounter));
+                ilstEncounter = sqlquery.List<Encounter>();
+
+                if (ilstEncounter.Count == 0)
+                {
+                    sqlquery = iMySession.CreateSQLQuery("SELECT enc.* FROM encounter_arc enc where enc.encounter_id=" + EncounterID.ToString() + ";").AddEntity("e", typeof(Encounter));
+                    ilstEncounter = sqlquery.List<Encounter>();
+                }
+                iMySession.Close();
+            }
+            return ilstEncounter;
+            // return crit.List<Encounter>();
+        }
         public IList<Encounter> GetrecentEncounterByhumanandProcess(ulong HumanID, string obj, string process)
         {
             IList<Encounter> ilstEncounter = new List<Encounter>();
@@ -8751,7 +8770,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     //if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2") && userCurrentProcess == objDocWfObject.Current_Process)
                     //Jira #CAP-740
                     //if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2") && userCurrentProcess == objDocWfObject.Current_Process && (btnID == "btnPhysiciancorrection"))
-                    if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING") && userCurrentProcess == objDocWfObject.Current_Process && (btnID == "btnPhysiciancorrection" || objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING"))
+                    if ((objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING_QC") && userCurrentProcess == objDocWfObject.Current_Process && (btnID == "btnPhysiciancorrection" || objDocWfObject.Current_Process == "REVIEW_CODING" || objDocWfObject.Current_Process == "REVIEW_CODING_2" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING"))
                     {
                         /***  added for perfomance tuning 
                          * objMoveVerifyDTO.EAndMIsPrimaryFilled  is required only for REVIEW_CODING process
@@ -16521,10 +16540,38 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
 
             //Jira #CAP-707
-            if (objDocWfobj.Current_Process == "AKIDO_SCRIBE_PROCESS")
+            if (objDocWfobj.Current_Process == "AKIDO_SCRIBE_PROCESS" || objDocWfobj.Current_Process == "AKIDO_SCRIBE_QC_PROCESS" || objDocWfobj.Current_Process == "TRANSCRIPT_PROCESS")
             {
+                WFObjectManager WFObjMngr = new WFObjectManager();
+                WFObjMngr.MoveToNextProcess(ulMyEncounterID, "DOCUMENTATION", 1, "UNKNOWN", Convert.ToDateTime(currentDate), string.Empty, null, null);
+            }
+            else if (objDocWfobj.Current_Process == "TRANSCRIPT_QC_PROCESS")
+            {
+                WFObject objDocWfObject = new WFObject();
+                string sEquivalantOwner = string.Empty;
+                WFObjectManager WFObjMngr = new WFObjectManager();
+
+                objDocWfObject = WFObjMngr.GetByObjectSystemId(ulMyEncounterID, "DOCUMENTATION");
+
+                //To get the equivalant allocation process to get the owner
+                if (objDocWfObject.Process_Allocation != string.Empty)
+                {
+                    if (objDocWfObject.Process_Allocation.Contains("PROVIDER_PROCESS") == true)
+                    {
+                        string[] sAlloc = objDocWfObject.Process_Allocation.Split('|');
+                        for (int i = sAlloc.Length-1; i >= 0; i--)
+                        {
+                            if (sAlloc[i].StartsWith("PROVIDER_PROCESS" + "-") == true)
+                            {
+                                string[] sString = sAlloc[i].Split('-');
+                                sEquivalantOwner = sString[1];
+                                break;
+                            }
+                        }
+                    }
+                }
                 WFObjectManager objenco = new WFObjectManager();
-                objenco.MoveToNextProcess(ulMyEncounterID, "DOCUMENTATION", 1, "UNKNOWN", Convert.ToDateTime(currentDate), string.Empty, null, null);
+                objenco.MoveToNextProcess(ulMyEncounterID, "DOCUMENTATION", 1, sEquivalantOwner, Convert.ToDateTime(currentDate), string.Empty, null, null);
             }
 
             return objMoveVerifyDTO;

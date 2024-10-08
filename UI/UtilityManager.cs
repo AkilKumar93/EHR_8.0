@@ -1930,6 +1930,10 @@ namespace Acurus.Capella.UI
 
         public string GetAllergyInfo(IList<NonDrugAllergy> NonDrugAllergyList, IList<Rcopia_Allergy> DrugAllergyList, out string toolTipText)
         {
+            //Cap - 2552
+            NonDrugAllergyList = NonDrugAllergyList.OrderBy(a => a.Non_Drug_Allergy_History_Info).ThenBy(a => a.Description).ToList();
+            DrugAllergyList = DrugAllergyList.OrderBy(a => a.Allergy_Name).ToList();
+
             StringBuilder sbAllergy = new StringBuilder("Allergies :<br/>Drug Allergy:<br/>");
             StringBuilder sbNDA = new StringBuilder("<br/>Non Drug Allergy:<br/>");
             string d = string.Empty;
@@ -6116,6 +6120,35 @@ namespace Acurus.Capella.UI
             }
 
             return bIsAkidoEncounter;
+        }
+        public static string IsCapellaEncounter(string sEncounterXml,ulong ulEncounterID)
+        {
+            string sCapellaEncounter = string.Empty;
+            if (sEncounterXml != string.Empty)
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(sEncounterXml);
+
+
+                sCapellaEncounter = xmlDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Encounter_Provider_Signed_Date").Value;
+            }
+            else
+            {
+                EncounterManager encounterManager = new EncounterManager();
+                IList<Encounter> ilstEncounter = new List<Encounter>();
+                ilstEncounter = encounterManager.GetEncounterByEncounterIDIncludeArc(ulEncounterID);
+                if (ilstEncounter.Count > 0)
+                {
+
+                    sCapellaEncounter = ilstEncounter[0].Encounter_Provider_Signed_Date.ToString("yyyy-MM-dd hh:mm:ss");
+                }
+            }
+
+            if (sCapellaEncounter != string.Empty && !sCapellaEncounter.Contains("0001-01-01"))
+            {
+                sCapellaEncounter = "Y";
+            }
+            return sCapellaEncounter;
         }
         //CAP-1987
         public static string IsAkidoInterpretationNote(string sOrderSubmitID, out string sExMessage, out string sStatus)

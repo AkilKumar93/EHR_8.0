@@ -1017,6 +1017,7 @@ namespace Acurus.Capella.UI
                         if (grdSelectedItem["Current Process"].Text == "PROVIDER_PROCESS")
                         {
                             cboPreviousProcess.Items.Add(new RadComboBoxItem("AKIDO_SCRIBE_PROCESS"));
+                            cboPreviousProcess.Items.Add(new RadComboBoxItem("TRANSCRIPT_PROCESS"));
                             ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
                             return;
                         }
@@ -1189,16 +1190,22 @@ namespace Acurus.Capella.UI
             //Jira #CAP-706-start
             else if (selectedItem["Current Process"].Text == "PROVIDER_PROCESS")
             {
-                
+
                 if (grdAdminModule.SelectedItems[0].Cells[2].Text != string.Empty && selectedItem["Object Type"].Text != string.Empty)
                 {
                     //Jira #CAP-724 -start
                     //Jira #CAP-855
                     string sExMessage = "";
                     string sStatus = "";
+                    string sIsAkidoEncounter = "false";
+                    string sIsCapellaEncounter = string.Empty;
                     //Jira CAP-1990
                     //sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage);
-                    string sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage, out sStatus);
+                    sIsCapellaEncounter = UtilityManager.IsCapellaEncounter(string.Empty, Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text));
+                    if (sIsCapellaEncounter != "Y")
+                    {
+                        sIsAkidoEncounter = UtilityManager.IsAkidoEncounter(grdAdminModule.SelectedItems[0].Cells[2].Text.ToString(), out sExMessage, out sStatus);
+                    }
                     //Jira CAP-1990
                     //if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sIsAkidoEncounter == "false")
                     if (System.Configuration.ConfigurationSettings.AppSettings["IsAkidoEncounterCheck"] == "Y" && cboPreviousProcess.SelectedItem.Text == "AKIDO_SCRIBE_PROCESS" && sStatus != System.Configuration.ConfigurationSettings.AppSettings["AkidoSignedStatus"].ToString())
@@ -1213,26 +1220,26 @@ namespace Acurus.Capella.UI
                     }
                     //Jira #CAP-724 -end
                     WfObjectMngr.MoveToPreviousProcessForAdmin(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), selectedItem["Object Type"].Text, "UNKNOWN", cboPreviousProcess.SelectedItem.Text, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
+
+                    //WfObjectMngr.MoveToNextProcess(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text),"ENCOUNTER",1,"UNKNOWN",)
+                    //    (Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), "ENCOUNTER", "UNKNOWN", cboPreviousProcess.SelectedItem.Text, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
+
+                    if (sStatus == System.Configuration.ConfigurationSettings.AppSettings["AkidoSignedStatus"].ToString())
+                    {
+                        EncounterManager objEncounter = new EncounterManager();
+                        IList<Encounter> ilstUpdateEncounter = new List<Encounter>();
+
+                        ilstUpdateEncounter = objEncounter.GetEncounterByEncounterID(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text));
+                        if (ilstUpdateEncounter.Count > 0)
+                        {
+                            ilstUpdateEncounter[0].Is_Signed_in_Akido_Note = "Y";
+                            ilstUpdateEncounter[0].Modified_By = ClientSession.UserName;
+                            ilstUpdateEncounter[0].Modified_Date_and_Time = UtilityManager.ConvertToUniversal(); ;
+
+                            objEncounter.SaveandMoveAkidoEncounter(ilstUpdateEncounter);
+                        }
+                    }
                 }
-                //WfObjectMngr.MoveToNextProcess(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text),"ENCOUNTER",1,"UNKNOWN",)
-                //    (Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text), "ENCOUNTER", "UNKNOWN", cboPreviousProcess.SelectedItem.Text, System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), string.Empty);
-
-
-                EncounterManager objEncounter = new EncounterManager();
-                IList<Encounter> ilstUpdateEncounter = new List<Encounter>();
-
-                ilstUpdateEncounter = objEncounter.GetEncounterByEncounterID(Convert.ToUInt64(grdAdminModule.SelectedItems[0].Cells[2].Text));
-                if (ilstUpdateEncounter.Count > 0)
-                {
-                    ilstUpdateEncounter[0].Is_Signed_in_Akido_Note = "Y";
-                    ilstUpdateEncounter[0].Modified_By = ClientSession.UserName;
-                    ilstUpdateEncounter[0].Modified_Date_and_Time = UtilityManager.ConvertToUniversal(); ;
-
-                    objEncounter.SaveandMoveAkidoEncounter(ilstUpdateEncounter);
-                }
-
-
-
             }
             //Jira #CAP-706-end
             else
