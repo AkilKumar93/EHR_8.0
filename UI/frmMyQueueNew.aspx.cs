@@ -1321,12 +1321,12 @@ namespace Acurus.Capella.UI
                     if (sViewAllFacilities == "Checked")
                     {
                         MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
-                                                        ClientSession.CurrentObjectType, ExamRoom, "ViewAllFacilities~" + ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                                                        ClientSession.CurrentObjectType, ExamRoom, "ViewAllFacilities~" + ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty, currentProcess);
                     }
                     else
                     {
                         MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
-                                                            ClientSession.CurrentObjectType, ExamRoom, ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                                                            ClientSession.CurrentObjectType, ExamRoom, ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty, currentProcess);
                     }
                     if (dataMove[6] != "")
                         ClientSession.HumanId = Convert.ToUInt64(dataMove[6]);
@@ -1342,12 +1342,12 @@ namespace Acurus.Capella.UI
                     if (sViewAllFacilities == "Checked")
                     {
                         MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
-                            ClientSession.CurrentObjectType, ExamRoom, "ViewAllFacilities~" + ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                            ClientSession.CurrentObjectType, ExamRoom, "ViewAllFacilities~" + ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty, currentProcess);
                     }
                     else
                     {
                         MyQ = EncMngr.UpdateEncounterMoveTo(Convert.ToUInt64(dataMove[2]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime),
-                            ClientSession.CurrentObjectType, ExamRoom, ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty);
+                            ClientSession.CurrentObjectType, ExamRoom, ClientSession.FacilityName, objType, ProcessType, bValue, iDefaultDays, string.Empty, currentProcess);
                     }
                 }
 
@@ -1474,9 +1474,9 @@ namespace Acurus.Capella.UI
 
 
                 if (ClientSession.UserCurrentProcess == "MA_PROCESS")
-                    EncMngr.UpdateEncounterforMyQueue(Convert.ToUInt64(data[1]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime), dt, ClientSession.CurrentObjectType, ExamRoom, string.Empty, sLocal_Time);
+                    EncMngr.UpdateEncounterforMyQueue(Convert.ToUInt64(data[1]), ClientSession.UserName, ClientSession.UserName, Convert.ToDateTime(localTime), dt, ClientSession.CurrentObjectType, ExamRoom, string.Empty, sLocal_Time, ClientSession.UserCurrentProcess);
                 else
-                    EncMngr.UpdateEncounterforMyQueue(Convert.ToUInt64(data[1]), "", ClientSession.UserName, Convert.ToDateTime(localTime), dt, ClientSession.CurrentObjectType, ExamRoom, string.Empty, sLocal_Time);
+                    EncMngr.UpdateEncounterforMyQueue(Convert.ToUInt64(data[1]), "", ClientSession.UserName, Convert.ToDateTime(localTime), dt, ClientSession.CurrentObjectType, ExamRoom, string.Empty, sLocal_Time, ClientSession.UserCurrentProcess);
 
 
                 // UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue ProcessGenEncounter UpdateEncounterforMyQueue DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");

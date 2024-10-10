@@ -134,9 +134,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         string SaveSummaryOfCare(SummaryOfCareDTO SummaryDTOList, string UserName, string FacilityName, ulong EncID, string sLegalOrg);
         HumanDTO GetHumanDetailsbyApptDate(string FacilityName, string EncounterProviderId, string ApptDate);
         IList<string> GetEncounterListArray(ulong ulHuman_ID, string sCategory, string sInterpretationSubDocType);
-        void UpdateEncounterforMyQueue(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, DateTime dtDateOfService, string ObjType, string ExamRoom, string MACAddress, string sLocal_Time);
+        void UpdateEncounterforMyQueue(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, DateTime dtDateOfService, string ObjType, string ExamRoom, string MACAddress, string sLocal_Time, string sCurrentProcess);
         IList<MyQ> UpdateEncounterMoveTo(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, string CurrentObjType,
-        string ExamRoom, string FacName, string objtype, string[] processtype, Boolean bShowall, int DefaultNoofDays, string MACAddress);
+        string ExamRoom, string FacName, string objtype, string[] processtype, Boolean bShowall, int DefaultNoofDays, string MACAddress, string sCurrentProcess);
 
         //MoveVerificationDTO PerformMovetoProvider(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, string IsPatientDiscussed, ulong IsDiscussedBy, bool bAcoCheck, string sRoleName, string sUsername);
         MoveVerificationDTO PerformMovetoNextProcess(ulong ulMyEncounterID, ulong selectedPhysicianID, ulong ulMyHumanID, DateTime currentDate, string FacilityName, string UserName, bool VerifyPFSH, string Source, string SourceOtherInfo, string userCurrentProcess, string MACAddress, string btnPhyCorrectionText, bool bDuplicateCheck, string UserRole, string btnID, bool breview, string IsACOValid, WFObject objEncWfObj, Encounter EncRecord, WFObject objDocWfobj, WFObject objDocReviewWfobj, string IsPatientDiscussed, ulong IsDiscussedBy, out string sAlert);
@@ -15872,7 +15872,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             iMySessiondesc.Close();
             return sDescList;
         }
-        public void UpdateEncounterforMyQueue(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, DateTime dtDateOfService, string ObjType, string ExamRoom, string MACAddress, string sLocal_Time)
+        public void UpdateEncounterforMyQueue(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, DateTime dtDateOfService, string ObjType, string ExamRoom, string MACAddress, string sLocal_Time, string sCurrentProcess)
         {
             ulong ID = 0;
             IList<Encounter> updateEncounterList = GetEncounterByEncounterID(ulEncID);
@@ -15889,7 +15889,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "MEDICAL ASSISTANT")
             if (sMedAsstName != "")
                 updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
-            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "SCRIBE")
+            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "SCRIBE" && sCurrentProcess!= "TRANSCRIPT_PROCESS" && sCurrentProcess != "TRANSCRIPT_QC_PROCESS")
                 updateEncounterList[0].Assigned_Scribe_User_Name = sModifiedBy;
             IList<Encounter> addEncounterList = null;
 
@@ -16158,7 +16158,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //    return lstwfobject;
 
         //}
-        public IList<MyQ> UpdateEncounterMoveTo(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, string CurrentObjType, string ExamRoom, string FacName, string objtype, string[] processtype, Boolean bShowall, int DefaultNoofDays, string MACAddress)
+        public IList<MyQ> UpdateEncounterMoveTo(ulong ulEncID, string sMedAsstName, string sModifiedBy, DateTime dtModifiedDateandTime, string CurrentObjType, string ExamRoom, string FacName, string objtype, string[] processtype, Boolean bShowall, int DefaultNoofDays, string MACAddress, string sCurrentProcess)
         {
             ulong ID = 0;
             IList<Encounter> updateEncounterList = GetEncounterByEncounterID(ulEncID);
@@ -16174,7 +16174,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
             else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "OFFICE MANAGER")
                 updateEncounterList[0].Assigned_Med_Asst_User_Name = sMedAsstName;
-            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "SCRIBE")
+            else if (GetTechnicianIDOrReadingProviderID(sModifiedBy, ref ID) == "SCRIBE" && sCurrentProcess != "TRANSCRIPT_PROCESS" && sCurrentProcess != "TRANSCRIPT_QC_PROCESS")
                 updateEncounterList[0].Assigned_Scribe_User_Name = sModifiedBy;
 
             IList<Encounter> addEncounterList = null;
