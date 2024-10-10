@@ -16218,7 +16218,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     EncRecord.Is_Physician_Asst_Process = "Y";
                 }
-                if (UserRole.Trim().ToUpper() == "TECHNICIAN" && userCurrentProcess.ToUpper() == "TECHNICIAN_PROCESS")//BugID:53885 -- Added for CMG LAB AND ANCILLARY-- When moved to Coder EandMSubmitted is set to 'Y'
+                //Jira CAP-2529
+                //if (UserRole.Trim().ToUpper() == "TECHNICIAN" && userCurrentProcess.ToUpper() == "TECHNICIAN_PROCESS")//BugID:53885 -- Added for CMG LAB AND ANCILLARY-- When moved to Coder EandMSubmitted is set to 'Y'
+                if (userCurrentProcess.ToUpper() == "TECHNICIAN_PROCESS")
                 {
                     EncRecord.Is_EandM_Submitted = "Y";
                     EncRecord.E_M_Submitted_Date_And_Time = DateTime.Now;

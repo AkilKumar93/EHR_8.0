@@ -233,6 +233,11 @@ function LoadDocuments() {
 
     if ((currentprocess ?? "").toUpperCase() == "SCRIBE_PROCESS" || (currentprocess ?? "").toUpperCase() == "AKIDO_SCRIBE_PROCESS" || (currentprocess ?? "").toUpperCase() == "SCRIBE_CORRECTION" || (currentprocess ?? "").toUpperCase() == "SCRIBE_REVIEW_CORRECTION" || (currentprocess ?? "").toUpperCase() == "TRANSCRIPT_PROCESS" || (currentprocess ?? "").toUpperCase() == "TRANSCRIPT_QC_PROCESS" || (currentprocess ?? "").toUpperCase() == "AKIDO_SCRIBE_QC_PROCESS")
         $('#pnlElectronicSignature ').find(':input').prop('disabled', true);
+    //Jira CAP-2529
+    if ((currentprocess ?? "").toUpperCase() == "TECHNICIAN_PROCESS" && (role ?? "").toUpperCase() != "TECHNICIAN") {
+        $('#pnlElectronicSignature ').find(':input').prop('disabled', true);
+    }
+
     $('#btnSave')[0].disabled = true;
     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
     localStorage.setItem("bSave", "true");
