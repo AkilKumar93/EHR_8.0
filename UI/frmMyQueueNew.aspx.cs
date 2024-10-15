@@ -394,8 +394,9 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             return JsonConvert.SerializeObject(MyTask.ToList<MyQ>());
         }
-        [WebMethod(EnableSession = true)]
-        public static string LoadMyOrder(string sShowall)
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadMyOrder()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -407,6 +408,7 @@ namespace Acurus.Capella.UI
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
 
+            string sShowall = HttpContext.Current.Request.Params["extra_search"];
             bool bValue = false;
             if (sShowall == "Checked")
                 bValue = true;
@@ -432,7 +434,12 @@ namespace Acurus.Capella.UI
             var MyOrdersQ = from g in MyHome where g.Current_Owner != "UNKNOWN" orderby g.Created_Date_And_Time descending select g;
             MyOrdersQ = from g in MyOrdersQ orderby g.Is_Abnormal descending select g;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyOrdersQ.ToList<MyQ>());
+            var result = MyOrdersQ.ToList<MyQ>();
+            var resultNew = new
+            {
+                data = result,
+            };
+            return result;
         }
         [WebMethod(EnableSession = true)]
         public static string LoadMyScan(string sShowall)
