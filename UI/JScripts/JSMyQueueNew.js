@@ -1782,6 +1782,8 @@ function loadMyorder() {
         searching: true,
         processing: false,
         ordering: true,
+        scroller: true,
+        deferRender: true,
         order: [],
         pageLength: 25,
         language: {
@@ -1802,14 +1804,17 @@ function loadMyorder() {
             },
             dataSrc: function (json) {
                 var objdata = json.d;
-                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.length + ")";
+                console.log("DB Call Start: ", objdata.dateLog2);
+                console.log("DB Call End: ", objdata.dateLog1);
+                console.log("Data Binding: ", new Date());
+                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.data.length + ")";
                 if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Order_Count", objdata.length);
+                    sessionStorage.setItem("My_Order_Count", objdata.data.length);
                 }
-                localStorage.setItem("Myorderscount", objdata.length);
+                localStorage.setItem("Myorderscount", objdata.data.length);
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "Note:All abnormal results are in <span style='color:red'> RED</span> color font.";
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                return objdata;
+                return objdata.data;
             },
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }

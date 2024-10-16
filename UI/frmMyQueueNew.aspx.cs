@@ -398,6 +398,7 @@ namespace Acurus.Capella.UI
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
         public static object LoadMyOrder()
         {
+            string dateLog2 = DateTime.Now.ToString("hh:mm:ss");
             if (ClientSession.UserName == string.Empty)
             {
                 HttpContext.Current.Response.StatusCode = 999;
@@ -438,8 +439,10 @@ namespace Acurus.Capella.UI
             var resultNew = new
             {
                 data = result,
+                dateLog1 = DateTime.Now.ToString("hh:mm:ss"),
+                dateLog2
             };
-            return result;
+            return resultNew;
         }
         [WebMethod(EnableSession = true)]
         public static string LoadMyScan(string sShowall)
