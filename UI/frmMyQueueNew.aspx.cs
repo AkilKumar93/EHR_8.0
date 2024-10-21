@@ -16,6 +16,8 @@ using System.Xml;
 using System.IO;
 using System.Web.Script.Services;
 using System.Xml.Linq;
+using System.Text;
+using System.IO.Compression;
 
 namespace Acurus.Capella.UI
 {
@@ -394,8 +396,9 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             return JsonConvert.SerializeObject(MyTask.ToList<MyQ>());
         }
-        [WebMethod(EnableSession = true)]
-        public static string LoadMyOrder(string sShowall)
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadMyOrder()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -406,6 +409,14 @@ namespace Acurus.Capella.UI
             }
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+
+            string sShowall = HttpContext.Current.Request.Params["extra_search"];
+            string search = HttpContext.Current.Request.Params["search[value]"];
+            string draw = HttpContext.Current.Request.Params["draw"];
+            string order = HttpContext.Current.Request.Params["order[0][column]"];
+            string orderDir = HttpContext.Current.Request.Params["order[0][dir]"];
+            int startRec = Convert.ToInt32(HttpContext.Current.Request.Params["start"]);
+            int pageSize = Convert.ToInt32(HttpContext.Current.Request.Params["length"]);
 
             bool bValue = false;
             if (sShowall == "Checked")
@@ -432,7 +443,16 @@ namespace Acurus.Capella.UI
             var MyOrdersQ = from g in MyHome where g.Current_Owner != "UNKNOWN" orderby g.Created_Date_And_Time descending select g;
             MyOrdersQ = from g in MyOrdersQ orderby g.Is_Abnormal descending select g;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyOrdersQ.ToList<MyQ>());
+            var result = MyOrdersQ.ToList<MyQ>();
+
+            var resultNew = new
+            {
+                draw,
+                recordsTotal = result.Count,
+                recordsFiltered = result.Count,
+                data = Compress(JsonConvert.SerializeObject(result)),
+            };
+            return resultNew;
         }
         [WebMethod(EnableSession = true)]
         public static string LoadMyScan(string sShowall)
@@ -1674,6 +1694,22 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(result);
 
         }
+        private static string Compress(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
 
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    gzipStream.Write(inputBytes, 0, inputBytes.Length);
+                }
+                return Convert.ToBase64String(outputStream.ToArray());
+            }
+        }
     }
 }
