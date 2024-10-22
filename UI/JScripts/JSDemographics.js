@@ -2564,6 +2564,7 @@ function btnaddinsured(e) {
                     //}
                     DisplayActiveInsurance();
                     sortTable();
+                    AutoSave()
                 }
                 else {
 
@@ -2617,6 +2618,7 @@ function btnaddinsured(e) {
                     }
                     DisplayActiveInsurance();
                     sortTable();
+                    AutoSave()
                 }
             }
 
