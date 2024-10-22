@@ -94,7 +94,18 @@ namespace Acurus.Capella.UI
             //{
             //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
             //}
-            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
+            //CAP-2601
+            var selectedFacility = string.Empty;
+            if (Request["Facility"] != null)
+            {
+                selectedFacility = Request["Facility"].ToString();
+            }
+            else
+            {
+                selectedFacility = ClientSession.FacilityName;
+            }
+
+            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == selectedFacility select f;
             IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
 
             if (System.Configuration.ConfigurationManager.AppSettings["DefaultCheckInButton"] != null)
