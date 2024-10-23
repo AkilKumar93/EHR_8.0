@@ -1042,7 +1042,9 @@ namespace Acurus.Capella.UI
             UserInfo userInfoResponse = JsonConvert.DeserializeObject<UserInfo>(userresponse.Content);
 
             //CAP-2142
-            var userAccountType = GetOktaIDPType(userInfoResponse?.email ?? "");
+            //CAP-2613
+            //var userAccountType = GetOktaIDPType(userInfoResponse?.email ?? "");
+            var userAccountType = GetOktaIDPType(userInfoResponse?.preferred_username ?? "");
 
             //ClientSession.EmailAddress =  userInfoResponse?.email??"";
             ClientSession.AccessToken = myDeserializedClass?.access_token ?? "";
@@ -1052,7 +1054,9 @@ namespace Acurus.Capella.UI
             Response.SetCookie(new HttpCookie("MicrosoftAccessTokenId") { Value = ClientSession.AccessTokenId });
 
             //CAP-242
-            return new Tuple<string,string>(userInfoResponse?.email ?? "", userAccountType);
+            //CAP-2613
+            //return new Tuple<string,string>(userInfoResponse?.email ?? "", userAccountType);
+            return new Tuple<string,string>(userInfoResponse?.preferred_username ?? "", userAccountType);
         }
 
         public void ExpireRedirectUrlCookie()
