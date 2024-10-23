@@ -396,7 +396,7 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             return JsonConvert.SerializeObject(MyTask.ToList<MyQ>());
         }
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
         public static object LoadMyOrder()
         {
@@ -411,13 +411,6 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
 
             string sShowall = HttpContext.Current.Request.Params["extra_search"];
-            string search = HttpContext.Current.Request.Params["search[value]"];
-            string draw = HttpContext.Current.Request.Params["draw"];
-            string order = HttpContext.Current.Request.Params["order[0][column]"];
-            string orderDir = HttpContext.Current.Request.Params["order[0][dir]"];
-            int startRec = Convert.ToInt32(HttpContext.Current.Request.Params["start"]);
-            int pageSize = Convert.ToInt32(HttpContext.Current.Request.Params["length"]);
-
             bool bValue = false;
             if (sShowall == "Checked")
                 bValue = true;
@@ -444,12 +437,8 @@ namespace Acurus.Capella.UI
             MyOrdersQ = from g in MyOrdersQ orderby g.Is_Abnormal descending select g;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var result = MyOrdersQ.ToList<MyQ>();
-
             var resultNew = new
             {
-                draw,
-                recordsTotal = result.Count,
-                recordsFiltered = result.Count,
                 data = Compress(JsonConvert.SerializeObject(result)),
             };
             return resultNew;
@@ -1076,7 +1065,8 @@ namespace Acurus.Capella.UI
         }
 
         [WebMethod(EnableSession = true)]
-        public static string LoadOrder(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadOrder()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -1087,6 +1077,7 @@ namespace Acurus.Capella.UI
             }
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadOrder : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            string sShowall = HttpContext.Current.Request.Params["extra_search"];
             bool bValue = false;
             if (sShowall == "Checked")
                 bValue = true;
@@ -1110,7 +1101,12 @@ namespace Acurus.Capella.UI
             OrdersQ = OrdersQ.Where(a => a.Current_Owner == "UNKNOWN").ToList<MyQ>();
             OrdersQ = OrdersQ.OrderByDescending(a => a.Created_Date_And_Time).ToList<MyQ>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(OrdersQ.ToList<MyQ>());
+            var result = OrdersQ.ToList<MyQ>();
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(result)),
+            };
+            return resultNew;
         }
         //Commented for BugId:36500
         //[WebMethod(EnableSession = true)]
