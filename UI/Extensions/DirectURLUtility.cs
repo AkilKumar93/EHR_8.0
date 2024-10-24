@@ -92,17 +92,24 @@ namespace Acurus.Capella.UI.Extensions
 
             return false;
         }
-        public static bool IsValidLegalOrg(string user_name, ulong humanId)
+        public static bool IsValidLegalOrg(string sUserLegalOrg, ulong humanId)
         {
             HumanManager humanManager = new HumanManager();
-            UserManager userManager = new UserManager();
+
+            //CAP-2596
+            //UserManager userManager = new UserManager();
+
             var humanDetails = humanManager.GetPatientDetailsUsingPatientInformattion(humanId);
-            var user = userManager.GetUser(user_name);
+
+            //CAP-2596
+            //var user = userManager.GetUser(user_name);
 
             var humanLegalOrg = humanDetails?.FirstOrDefault()?.Legal_Org ?? string.Empty;
-            var userLegalOrg = user?.FirstOrDefault()?.Legal_Org ?? string.Empty;
 
-            if (!string.IsNullOrWhiteSpace(humanLegalOrg) && !string.IsNullOrWhiteSpace(userLegalOrg) && humanLegalOrg == userLegalOrg)
+            //CAP-2596
+            //var userLegalOrg = user?.FirstOrDefault()?.Legal_Org ?? string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(humanLegalOrg) && !string.IsNullOrWhiteSpace(sUserLegalOrg) && humanLegalOrg == sUserLegalOrg)
             {
                 return true;
             }

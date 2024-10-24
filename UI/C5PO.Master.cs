@@ -602,7 +602,13 @@ namespace Acurus.Capella.UI
                 //To Load RCopia Notification
                 //LoadRCopiaNotification();
                 string sLoadRcopia = string.Empty;
-                sLoadRcopia = LoadRCopiaNotification();
+
+                //CAP-2596
+                if (!((ConfigurationManager.AppSettings["IsOpenPatientChart"]?.ToString()??"") == "Y" && Request.Url.AbsoluteUri.Contains("frmPatientchart.aspx")
+                    && (Request["ScreenMode"] ?? "").Equals("menu", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    sLoadRcopia = LoadRCopiaNotification();
+                }
                 if (!IsPostBack)
                 {
                     string username = "", userrole = "", userid = "";

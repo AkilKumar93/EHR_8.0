@@ -330,50 +330,55 @@ function OnClientCloseWindow() {   //BugID:42368
 function reloadSummary() {
     var enc_id = sessionStorage.getItem("EncId_PatSummaryBar");
     var enc_DOS = sessionStorage.getItem("Enc_DOS");
-    //sessionStorage.removeItem("EncId_PatSummaryBar");
-    //sessionStorage.removeItem("Enc_DOS");
-    $.ajax({
-        type: "POST",
-        url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
-        data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: OnSuccessSummaryBar,
-        error: function OnError(xhr) {
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                //CAP-792
-                if (isValidJSON(xhr.responseText)) {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    //Jira CAP-1587
-                    //if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
-                    //    log.Message.indexOf("is an unexpected token") > 0) {
-                    if (log.Message.indexOf("Human XML is invalid") == -1 && log.Message.indexOf("Human XML is not found") == -1 && log.Message.indexOf("Encounter XML is invalid") == -1 && log.Message.indexOf("Encounter XML is not found") == -1) {
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
-                    }
-                    //}
-                    //Jira CAP-1587
-                    //else {
-                    //    alert("USER MESSAGE:\n" +
-                    //        ". Cannot process request. Please Login again and retry.");
-                    //}
-                }
-                //Jira CAP-1587
+    //CAP-2596
+    var encounterId = parseInt(enc_id);
+    if ((encounterId??0) > 0) {
+        //sessionStorage.removeItem("EncId_PatSummaryBar");
+        //sessionStorage.removeItem("Enc_DOS");
+        $.ajax({
+            type: "POST",
+            url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
+            data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: OnSuccessSummaryBar,
+            error: function OnError(xhr) {
+                if (xhr.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
                 else {
-                    if (xhr.responseText.indexOf("Human XML is invalid") == -1 && xhr.responseText.indexOf("Human XML is not found") == -1 && xhr.responseText.indexOf("Encounter XML is invalid") == -1 && xhr.responseText.indexOf("Encounter XML is not found") == -1) {
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry.");
+                    //CAP-792
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        //Jira CAP-1587
+                        //if (log.Message.indexOf("Unexpected end of file") > 0 && log.Message.indexOf("There is an unclosed literal string") > 0 &&
+                        //    log.Message.indexOf("is an unexpected token") > 0) {
+                        if (log.Message.indexOf("Human XML is invalid") == -1 && log.Message.indexOf("Human XML is not found") == -1 && log.Message.indexOf("Encounter XML is invalid") == -1 && log.Message.indexOf("Encounter XML is not found") == -1) {
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
+                        }
+                        //}
+                        //Jira CAP-1587
+                        //else {
+                        //    alert("USER MESSAGE:\n" +
+                        //        ". Cannot process request. Please Login again and retry.");
+                        //}
+                    }
+                    //Jira CAP-1587
+                    else {
+                        if (xhr.responseText.indexOf("Human XML is invalid") == -1 && xhr.responseText.indexOf("Human XML is not found") == -1 && xhr.responseText.indexOf("Encounter XML is invalid") == -1 && xhr.responseText.indexOf("Encounter XML is not found") == -1) {
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry.");
+                        }
                     }
                 }
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        }
 
-    });
+        });
+    }
+    
 }
 var list = "";
 var iCount = 0;

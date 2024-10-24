@@ -628,27 +628,32 @@ function reloadSummary() {
     var enc_DOS = sessionStorage.getItem("Enc_DOS");
     //sessionStorage.removeItem("EncId_PatSummaryBar");
     //sessionStorage.removeItem("Enc_DOS");
-    $.ajax({
-        type: "POST",
-        url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
-        // data: JSON.stringify({ EncID: "", Enc_DOS: "" }),
-        data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: OnSuccessSummaryBar,
-        error: function OnError(xhr) {
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
-            }
-        }
 
-    });
+    //CAP-2596
+    var encounterId = parseInt(enc_id);
+    if ((encounterId ?? 0) > 0) {
+        $.ajax({
+            type: "POST",
+            url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
+            // data: JSON.stringify({ EncID: "", Enc_DOS: "" }),
+            data: JSON.stringify({ EncID: enc_id, Enc_DOS: enc_DOS }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: OnSuccessSummaryBar,
+            error: function OnError(xhr) {
+                if (xhr.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+            }
+
+        });
+    }
 
     RefreshNotification("Notify");
 }
@@ -2047,27 +2052,30 @@ function FeedbackCodingException(Addendumid) {
 }
 
 function reloadSummaryBar(encounterId, dateOfService) {
-
-    $.ajax({
-        type: "POST",
-        url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
-        data: JSON.stringify({ EncID: encounterId, Enc_DOS: dateOfService }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: OnSuccessSummaryBar,
-        error: function OnError(xhr) {
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
+    //CAP-2596
+    var encounterId = parseInt(encounterId);
+    if ((encounterId ?? 0) > 0) {
+        $.ajax({
+            type: "POST",
+            url: "frmRCopiaToolbar.aspx/LoadPatientSummaryBar",
+            data: JSON.stringify({ EncID: encounterId, Enc_DOS: dateOfService }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: OnSuccessSummaryBar,
+            error: function OnError(xhr) {
+                if (xhr.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
             }
-        }
 
-    });
+        });
+    }
     RefreshNotification("Notify");
 }
 
