@@ -3662,7 +3662,7 @@ $("#btnReportClose").click(function () {
             location.reload();
         }
         //CAP-2600
-        else if ($(top.window.document).find("#ReportModalTitle")[0].textContent == "Report Generator") {
+        else if ((isDirectURLParam??"") == "" && $(top.window.document).find("#ReportModalTitle")[0].textContent == "Report Generator") {
             location.reload();
         }
     }
