@@ -1,6 +1,8 @@
 ﻿var Role;
 
 var isproviderReview = false;
+var tempObjectMyTask;
+var tempObjectMyQTask;
 
 function loadGeneralQueue() {
     document.getElementById("divGeneralQ").style.display = "";
@@ -368,7 +370,7 @@ $(document).ready(function () {
         }
 
 
-        if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 2) {
+        if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 1) {
             var currentProcessscnt = 0;
             $('#MyQTable tr.highlight').each(function (i, row) {
                 var $row = $(row);
@@ -887,8 +889,8 @@ function OnClientCloseWindow() {
         if (btnid == "btnTask" && $('#GeneralQTable').find("#EncounterTable tbody").length > 0) {
             numberofEncounters = $('#GeneralQTable').find("#EncounterTable tbody").children().length;
         }
-        else if ($('#dvAdd').find("#EncounterTable tbody").length > 0) {
-            numberofEncounters = $('#dvAdd').find("#EncounterTable tbody").children().length;
+        else if ($('#MyQTable').find("#EncounterTable tbody").length > 0) {
+            numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
         }
         else if (btnid == "btnMyOrder") {
             var myOrderCount = $('#btnMyOrder').text();
@@ -906,6 +908,24 @@ function OnClientCloseWindow() {
         if (btnid != undefined && numberofEncounters != undefined) {
             document.getElementById(btnid).innerText = document.getElementById(btnid).innerText.split("(")[0] + " (" + numberofEncounters + ")";
         }
+        var finalcount = 0;
+        if (btnid == "btnMyTask") {
+            tempObjectMyQTask = $.grep(tempObjectMyQTask, function (element) {
+                return element.Message_ID != removearry[i].split("~")[0];
+            });
+            finalcount = tempObjectMyQTask.length;
+            LoadMyTaskTemp();
+        }
+        else {
+            tempObjectMyTask = $.grep(tempObjectMyTask, function (element) {
+                return element.Message_ID != removearry[i].split("~")[0];
+            });
+            finalcount = tempObjectMyTask.length;
+            loadGeneralTaskTemp();
+        }    
+        document.getElementById(btnid).innerText = document.getElementById(btnid).innerText.split("(")[0] + " (" + finalcount+ ")";
+        
+
     }
    
 }
@@ -1480,7 +1500,7 @@ function LoadMyTask() {
     <th style='border: 1px solid #909090;display:none;'>Version</th>
     </tr>
     </thead>
-</table>`);
+</table>`); 
     SortTableHeader('MyQTask');
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     if ($("#chkMyTask14")[0].checked) {
@@ -1522,7 +1542,7 @@ function LoadMyTask() {
                 //var objdata = json.d;
                 var objdata = json.d;
                 objdata.data = Decompress(objdata.data);
-
+                tempObjectMyQTask = objdata.data;
                 $("#btnMyTask")[0].innerText = "My Tasks  " + "(" + objdata.data.length + ")";
                 if (Showall != "Checked") {
                     sessionStorage.setItem("My_Task_Count", objdata.data.length);
@@ -1585,9 +1605,123 @@ function LoadMyTask() {
                         return ConvertDate(row.Modified_Date_Time.replace("T", " "));
                 }, searchable: false
             },
-            { data: 'Message_ID', visible: 'false', sClass: "hide_column" },
-            { data: 'Version', visible: 'false', sClass: "hide_column" },
+            { data: 'Message_ID', sClass: "hide_column", searchable: false },
+            { data: 'Version', sClass: "hide_column", searchable: false },
         ],
+        
+    });    
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+        'width': '500px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    //$('#EncounterTable_filter input').unbind();
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        $('#EncounterTable tr').removeClass("highlight");
+        $(this)[0].classList.add('highlight');
+        MyQclick();   
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        $('#EncounterTable tr').removeClass("highlight");
+        $(this)[0].classList.add('highlight');        
+    });
+    $("#EncounterTable_filter").children("label").children("input").css("width", "300px")
+}
+
+
+function LoadMyTaskTemp() {
+
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#MyQTable").append(`
+    <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
+    <thead class='header' style='border: 0px;width:96.7%;'>
+    <tr class='header' >
+    <th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th>
+    <th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th>
+    <th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th>
+    <th style='border: 1px solid #909090;display:none;'>TaskID</th>
+    <th style='border: 1px solid #909090;display:none;'>Version</th>
+    </tr>
+    </thead>
+</table>`);
+    SortTableHeader('MyQTask');
+    var titleval;
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        order: [],
+        pageLength: 25,
+        language: {
+            search: "Patient Name",
+            searchPlaceholder: "Search by Name or Acct. #",
+            infoFiltered: ""
+        },
+        dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
+        data: tempObjectMyQTask,  
+        
+        columns: [
+            { data: 'Priority', searchable: false },
+            { data: 'Human_ID' },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all'
+            },
+            {
+                data: 'Msg_Date_And_Time', render: function (data, type, row) {
+                    if (row.Msg_Date_And_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Msg_Date_And_Time.replace("T", " ")).split(' ')[0];
+                }, searchable: false
+            },
+            {
+                data: 'Message_Description', render: function (data, type, row) {
+                    if (row.Message_Notes != "") {
+                        titleval = row.Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, "").replace(/'/g, "");
+                    }
+                    else {
+                        titleval = "";
+                    }
+                    return `<span title="${titleval}">${row.Message_Description}</span>`;
+                }, searchable: false
+            },
+            { data: 'Assigned_To', searchable: false },
+            { data: 'Created_By', searchable: false },
+            {
+                data: 'Modified_Date_Time', render: function (data, type, row) {
+                    if (row.Modified_Date_Time == "0001-01-01T00:00:00" || !$("#chkMyTask14")[0].checked)
+                        return "";
+                    else
+                        return ConvertDate(row.Modified_Date_Time.replace("T", " "));
+                }, searchable: false
+            },
+            { data: 'Message_ID', sClass: "hide_column", searchable: false },
+            { data: 'Version', sClass: "hide_column", searchable: false },
+        ],
+
     });
     $('#EncounterTable_filter').css({
         'float': 'left',
@@ -1599,18 +1733,14 @@ function LoadMyTask() {
         'min-width': '180px'
     });
 
-    $('#EncounterTable_filter input').unbind();
-
-    $('#EncounterTable_filter input').on('keyup', function () {
-        dataTable.column(2).search(this.value).draw();
-    });
+    //$('#EncounterTable_filter input').unbind();
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
         $('#EncounterTable tr').removeClass("even");
         $('#EncounterTable tr').removeClass("highlight");
         $(this)[0].classList.add('highlight');
-        MyQclick();   
+        MyQclick();
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
@@ -2423,7 +2553,8 @@ function loadTask() {
     var sShowall = '';
     //var MyShowAll = localStorage.getItem('ShowallGeneralqueue');
     $("#chkShowAll")[0].checked ? sShowall = "Checked" : sShowall = "Unchecked";
-
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
     $("#GeneralQTable").append(`
         <table id=EncounterTable class= 'table table-bordered Gridbodystyle' style = 'table-layout: fixed;' >
         <thead class='header' style='border: 0px;width:96.7%;'>
@@ -2453,7 +2584,7 @@ function loadTask() {
             pageLength: 25,
             language: {
                 search: "Patient Name",
-                searchPlaceholder: "Type to search...",
+                searchPlaceholder: "Search by Name or Acct. #",
                 infoFiltered: ""
             },
             dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
@@ -2470,14 +2601,18 @@ function loadTask() {
                     return d;
                 },
                 dataSrc: function (json) {
+                    //var objdata = json.d;
                     var objdata = json.d;
-                    $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.length + ")";
+                    objdata.data = Decompress(objdata.data);
+                    tempObjectMyTask = objdata.data;
+                    $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.data.length + ")";
                     if (Showall != "Checked") {
-                        sessionStorage.setItem("Task_Count", objdata.length);
+                        sessionStorage.setItem("Task_Count", objdata.data.length);
                     }
                     $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    return objdata;
+                    json.data = objdata.data;
+                    return json.data;
                 },
                 error: function (xhr, error, code) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2498,7 +2633,7 @@ function loadTask() {
                         return " <td style='width:7%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
                     },
                 },
-                { data: 'Priority' },
+                { data: 'Priority', searchable: false },
                 { data: 'Human_ID' },
                 {
                     data: 'Last_Name', render: function (data, type, row) {
@@ -2512,7 +2647,7 @@ function loadTask() {
                             return "";
                         else
                             return ConvertDate(row.Msg_Date_And_Time.replace("T", " ")).split(' ')[0];
-                    },
+                    }, searchable: false
                 },
                 {
                     data: 'Message_Description', render: function (data, type, row) {
@@ -2523,11 +2658,11 @@ function loadTask() {
                             titleval = "";
                         }
                         return `<span title="${titleval}">${row.Message_Description}</span>`;
-                    },
+                    }, searchable: false
                 },
-                { data: 'Facility_Name' },
-                { data: 'Created_By' },
-                { data: 'Message_ID', visible: 'false', sClass: "hide_column" },
+                { data: 'Facility_Name', searchable: false },
+                { data: 'Created_By', searchable: false },
+                { data: 'Message_ID', sClass: "hide_column", searchable: false },
             ],
         });
     $('#EncounterTable_filter').css({
@@ -2542,17 +2677,17 @@ function loadTask() {
 
     $('#EncounterTable_filter input').unbind();
 
-    $('#EncounterTable_filter input').on('keyup', function () {
-        dataTable.column(3).search(this.value).draw();
-    });
-
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         $('#EncounterTable tr').removeClass("highlight");
         $(this)[0].classList.add('highlight');      
-        MyQclick();        
+        RowClick();        
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         $('#EncounterTable tr').removeClass("highlight");
         $(this)[0].classList.add('highlight');
     });
@@ -2622,6 +2757,113 @@ function loadTask() {
     //});
 
 }
+
+function loadGeneralTaskTemp() {
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#GeneralQTable").append(`
+        <table id=EncounterTable class= 'table table-bordered Gridbodystyle' style = 'table-layout: fixed;' >
+        <thead class='header' style='border: 0px;width:96.7%;'>
+        <tr class='header'>
+        <th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th>
+        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Priority</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 5%;'>Acct. #</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient Name</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 8%;'>Message Date</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Message Description</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Facility Name</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Created By</th>
+        <th style='border: 1px solid #909090; display: none;'>Message_ID</th></tr>
+        </thead>
+        </table> `);
+
+    data = JSON.stringify({ "sShowall": Showall });
+    var titleval;
+    var dataTable =
+        new DataTable('#EncounterTable', {
+            serverSide: false,
+            lengthChange: false,
+            searching: true,
+            processing: false,
+            ordering: true,
+            order: [],
+            pageLength: 25,
+            language: {
+                search: "Patient Name",
+                searchPlaceholder: "Search by Name or Acct. #",
+                infoFiltered: ""
+            },
+            dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
+
+            data: tempObjectMyTask,   
+
+            columns: [
+                {
+                    data: '', render: function (data, type, row) {
+                        return " <td style='width:7%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
+                    },
+                },
+                { data: 'Priority', searchable: false },
+                { data: 'Human_ID' },
+                {
+                    data: 'Last_Name', render: function (data, type, row) {
+                        return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                    },
+                    sClass: 'word-break-all'
+                },
+                {
+                    data: 'Msg_Date_And_Time', render: function (data, type, row) {
+                        if (row.Msg_Date_And_Time == "0001-01-01T00:00:00")
+                            return "";
+                        else
+                            return ConvertDate(row.Msg_Date_And_Time.replace("T", " ")).split(' ')[0];
+                    }, searchable: false
+                },
+                {
+                    data: 'Message_Description', render: function (data, type, row) {
+                        if (row.Message_Notes != "") {
+                            titleval = row.Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, "").replace(/'/g, "");
+                        }
+                        else {
+                            titleval = "";
+                        }
+                        return `<span title="${titleval}">${row.Message_Description}</span>`;
+                    }, searchable: false
+                },
+                { data: 'Facility_Name', searchable: false },
+                { data: 'Created_By', searchable: false },
+                { data: 'Message_ID', sClass: "hide_column", searchable: false },
+            ],
+        });
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    $('#EncounterTable_filter input').unbind();
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        $('#EncounterTable tr').removeClass("highlight");
+        $(this)[0].classList.add('highlight');
+        RowClick();
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        $('#EncounterTable tr').removeClass("highlight");
+        $(this)[0].classList.add('highlight');
+    });
+}
+
+
 function LoadGeneralQOrder() {
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
@@ -2971,6 +3213,7 @@ function chkMyTask14Click(sender) {
         language: {
             search: "Patient Search",
             searchPlaceholder: "Search by Name or Acct. #",
+            style : "width: 300px;",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">',
@@ -3109,6 +3352,8 @@ function chkMyTask14Click(sender) {
         'float': 'left',
         'text-align': 'left',
         'margin-left': '30px',
+        'width': '500px',
+
     });
 
     $('#EncounterTable_info').css({

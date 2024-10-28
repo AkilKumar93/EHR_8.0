@@ -1734,7 +1734,13 @@ namespace Acurus.Capella.UI
             //OrdersQ = OrdersQ.OrderByDescending(a => a.Created_Date_And_Time).ToList<MyQ>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
            // return JsonConvert.SerializeObject(TaskQ.ToList<MyQ>());
-            return TaskQ.ToList<MyQ>();
+            
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(TaskQ.ToList<MyQ>())),
+            };
+
+            return resultNew;
         }
         [WebMethod(EnableSession = true)]
         public static string AllTabCount(string sTabName)
