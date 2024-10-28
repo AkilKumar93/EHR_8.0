@@ -122,7 +122,12 @@ $(document).ready(function () {
         loadGeneralQueue();
     }
     else {
-        LoadMyEncounter();
+        var role = $('#ctl00_hdnuserrole').val();
+        if (role != "Medical Assistant" && role != "Front Office" && role != "Surgery Coordinator" && role != "Scribe") {
+            LoadMyEncounter('MyEncounterLoad');
+        } else {
+            loadGeneralQueue();
+        }
     }
 
     $('#btnChkOut').click(function () {
@@ -958,7 +963,7 @@ function MyQLoad() {
     else {
         Showall = "Unchecked";
         $("#chkMyShowAll")[0].checked = false;
-        LoadMyEncounter();
+        LoadMyEncounter('EncounterLoad');
     }
 
 
@@ -1050,7 +1055,7 @@ function ShowMyQTabs(sender) {
     }
 }
 
-function LoadMyEncounter() {
+function LoadMyEncounter(ajaxUrl) {
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -1089,6 +1094,10 @@ function LoadMyEncounter() {
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
     var Ancillary = $('#ctl00_C5POBody_hdnAncillary').val();
+    ajaxUrl = ajaxUrl == '' || ajaxUrl == undefined ? 'chkShowAllMyEncounter' : ajaxUrl;
+    var extra_search = ajaxUrl == 'MyEncounterLoad' ? ViewAllFacilities : '';
+    extra_search = ajaxUrl == 'chkShowAllMyEncounter' ? Showall : '';
+    
     var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
         lengthChange: false,
@@ -1104,101 +1113,28 @@ function LoadMyEncounter() {
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">',
         ajax: {
-            url: '/frmMyQueueNew.aspx/MyEncounterLoad',
+            url: '/frmMyQueueNew.aspx/' + ajaxUrl,
             contentType: "application/json",
             type: "GET",
             dataType: "JSON",
             deferRender: true,
             data: function (d) {
-                d.extra_search = JSON.stringify({
-                    "sShowall": Showall,
-                    "sViewAllFacilities": ViewAllFacilities
-                });
+                d.extra_search = extra_search;
                 return d;
             },
             dataSrc: function (json) {
                 var objdata = json.d;
                 objdata.data = Decompress(objdata.data);
-                Role = objdata.role;
-                let disableOverallSelect = true;
-                if (objdata.role != "Medical Assistant" && objdata.role != "Front Office" && objdata.role != "Surgery Coordinator" && objdata.role != "Scribe") {
-                    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
-                    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
-                    $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
-                    $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
-                    $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
-                    $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-
-                    localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
-                    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
-                        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
-                    }
-                    else
-                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-
-                    $("#btnMyEnc").removeClass("default");
-                    $("#btnMyEnc").addClass("btncolorMyQ");
-                    $("#btnMyQ").removeClass("default");
-                    $("#btnMyQ").addClass("btncolorMyQ");
-                    $("#MovetoNxtProcess").css("display", "inline-block");
-                    //RowClick();
-                    if (disableOverallSelect) {
-                        disableSelectAllMove();
-                    }
+                if (ajaxUrl == 'MyEncounterLoad') {
+                    MyQBind1(objdata);
                 }
-                else {
-                    $("#chkMyShowAll")[0].checked = false;
-                    $("#chkShowAll")[0].checked = false;
-                    var ShowAll = localStorage.getItem('ShowallGeneralqueue');
-                    if (ShowAll == "Checked") {
-                        $("#chkShowAll")[0].checked = true;
-                    }
-                    var MyShowAll = localStorage.getItem('MyShowAll');
-                    if (MyShowAll == "Checked") {
-                        $("#chkMyShowAll")[0].checked = true;
-                    }
-                    document.getElementById("divGeneralQ").style.display = "";
-                    document.getElementById("divMyQ").style.display = "none";
-                    $('#MyQTable').empty();
-                    $('#GeneralQTable').empty();
-                    $('#RefreshQ').css("background-color", "");
-                    $('#btnChkOut').css("background-color", "");
-                    $('#MoveTo').css("background-color", "");
-                    $('#Processenc').css("background-color", "");
-                    $('#RefreshQ')[0].innerText = "Refresh Encounters Q";
-                    $('#lblEr')[0].style.visibility = "visible";
-                    $('#Exam')[0].style.visibility = "visible";
-                    $('#btnChkOut')[0].style.visibility = "visible";
-                    $('#Processenc')[0].style.visibility = "visible";
-                    $('#Processenc')[0].style.width = "134px";
-                    $("#chkShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-                    $('#GeneralQTable').empty();
-                    var tabContents; var eRoomList;
-
-                    $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
-                    $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.count[0].Order_Count + ")";
-                    $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.count[0].Amendmnt_Count + ")";
-                    $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.count[0].Task_Count + ")";
-                    localStorage.setItem("GenralOrderCount", objdata.count[0].Order_Count);
-                    $("#btnEnc").addClass("btncolorMyQ");
-                    $("#btnGeneral").addClass("btncolorMyQ");
-                    if (objdata.dataEroom != undefined && objdata.dataEroom.length > 0) {
-                        if ($('select#Exam option').length == 0) { $.each(objdata.dataEroom, function (i, item) { $('#Exam').append($('<option>', { value: objdata.dataEroom[i], text: objdata.dataEroom[i] })); }); }
-                    }
-                    //RowClick();
+                if (ajaxUrl == 'EncounterLoad') {
+                    MyQBind2(objdata);
                 }
-
-                sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
-                sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
-                sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
-                sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
-                sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
-                sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
-                sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
-                sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
+                if (ajaxUrl == 'chkShowAllMyEncounter') {
+                    MyQBind3(objdata);
+                }
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-
                 json.data = objdata.data;
                 return json.data;
             },
@@ -1328,7 +1264,6 @@ function LoadMyEncounter() {
     });
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
-        debugger
         if ($('#MyQTable').children().find('.highlight').length > 1) {
             alert("Please select one encounter to process");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1359,6 +1294,122 @@ function LoadMyEncounter() {
     });
 }
 
+function MyQBind1(objdata) {
+    //MyEncounterLoad
+    let disableOverallSelect = true;
+    if (objdata.role != "Medical Assistant" && objdata.role != "Front Office" && objdata.role != "Surgery Coordinator" && objdata.role != "Scribe") {
+        for (var i = 0; i < objdata.data.length; i++) {
+            if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+                disableOverallSelect = false;
+            }
+        }
+
+        $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
+        $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
+        $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
+        $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
+        $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
+
+        localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
+        if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+            $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+            $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+        }
+        else
+            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+
+        $("#btnMyEnc").removeClass("default");
+        $("#btnMyEnc").addClass("btncolorMyQ");
+        $("#btnMyQ").removeClass("default");
+        $("#btnMyQ").addClass("btncolorMyQ");
+        $("#MovetoNxtProcess").css("display", "inline-block");
+        if (disableOverallSelect) {
+            disableSelectAllMove();
+        }
+    }
+    sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+    sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+    sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+    sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+    sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+    sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
+    sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
+    sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
+}
+
+function MyQBind2(objdata) {
+    //EncounterLoad
+    let disableOverallSelect = true;
+    for (var i = 0; i < objdata.data.length; i++) {
+        if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+            disableOverallSelect = false;
+        }
+    }
+    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
+    $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
+    $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
+    $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
+    $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
+
+    sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+    sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+    sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+    sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+    sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+
+    localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+    }
+    else
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    $("#btnMyEnc").removeClass("default");
+    $("#btnMyEnc").addClass("btncolorMyQ");
+    $("#btnMyQ").removeClass("default");
+    $("#btnMyQ").addClass("btncolorMyQ");
+    if (disableOverallSelect) {
+        disableSelectAllMove();
+    }
+}
+
+function MyQBind3(objdata) {
+    //chkShowAllMyEncounter
+    let disableOverallSelect = true;
+    for (var i = 0; i < objdata.data.length; i++) {
+        if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+            disableOverallSelect = false;
+        }
+    }
+    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+    if (sessionStorage.getItem("My_Task_Count") != null && sessionStorage.getItem("My_Task_Count") != undefined) {
+        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + sessionStorage.getItem("My_Task_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Order_Count") != null && sessionStorage.getItem("My_Order_Count") != undefined) {
+        $("#btnMyOrder")[0].innerText = "My Orders " + "(" + sessionStorage.getItem("My_Order_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Scan_Count") != null && sessionStorage.getItem("My_Scan_Count") != undefined) {
+        $("#btnMyScan")[0].innerText = "My Scan " + "(" + sessionStorage.getItem("My_Scan_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Presc_Count") != null && sessionStorage.getItem("My_Presc_Count") != undefined) {
+        $("#btnMyPres")[0].innerText = "My Prescription " + "(" + sessionStorage.getItem("My_Presc_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Amendmnt_Count") != null && sessionStorage.getItem("My_Amendmnt_Count") != undefined) {
+        $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + sessionStorage.getItem("My_Amendmnt_Count") + ")";
+    }
+
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+    }
+    else
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    if (disableOverallSelect) {
+        disableSelectAllMove();
+    }
+}
 function loadMytask() {
     var myOpenTask = localStorage.getItem('MyOpenTask');
     if (myOpenTask == "Checked") {
@@ -5601,7 +5652,6 @@ function QRCodeClick(evt) {
     var DOS = "";
     var Physician_id = "";
 
-    debugger
     var node = evt?.parentElement?.parentElement?.childNodes;
     if (node[6] != undefined && node[6] != null && node[6].innerText.trim() == 'TECHNICIAN_PROCESS') {
 
