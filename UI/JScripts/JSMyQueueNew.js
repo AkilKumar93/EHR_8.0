@@ -375,7 +375,7 @@ $(document).ready(function () {
         }
 
 
-        if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 1) {
+        if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 2) {
             var currentProcessscnt = 0;
             $('#MyQTable tr.highlight').each(function (i, row) {
                 var $row = $(row);
@@ -893,14 +893,14 @@ function OnClientCloseWindow() {
             }
 
         }
-
+        
         var numberofEncounters = "";
         if (btnid == "btnTask" && $('#GeneralQTable').find("#EncounterTable tbody").length > 0) {
             numberofEncounters = $('#GeneralQTable').find("#EncounterTable tbody").children().length;
         }
-        else if ($('#MyQTable').find("#EncounterTable tbody").length > 0) {
-            numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
-        }
+        //else if ($('#MyQTable').find("#EncounterTable tbody").length > 0) {
+        //    numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
+        //}
         else if (btnid == "btnMyOrder") {
             var myOrderCount = $('#btnMyOrder').text();
             myOrderCount = parseInt(myOrderCount.match(/\d+/)[0]);
@@ -1184,7 +1184,8 @@ function LoadMyEncounter(ajaxUrl) {
                 data: 'Appt_Date_Time', render: function (data, type, row) {
                     return ConvertDate(data.replace("T", " "));
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             { data: 'Human_ID' },
             { data: 'External_Account_Number', searchable: false },
@@ -1196,9 +1197,10 @@ function LoadMyEncounter(ajaxUrl) {
             },
             {
                 data: 'DOB', render: function (data, type, row) {
-                    return ConvertDate(data.replace("T", " "));
+                    return DOBConvert(data.replace("T00:00:00", ""))
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             { data: 'Type_Of_Visit', visible: (Ancillary == 'false'), searchable: false },
             { data: 'Current_Process', searchable: false },
@@ -1227,7 +1229,8 @@ function LoadMyEncounter(ajaxUrl) {
                 },
                 sWidth: '4%',
                 sClass: "text-align-center",
-                searchable: false
+                searchable: false,
+                visible: (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES"),
             },
         ]
     });
@@ -1323,7 +1326,12 @@ function MyQBind1(objdata) {
         $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
 
         localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
-        if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+        if ($('#hdnIsShowAllMyEncounterQueue').val() == 'Y') {
+            $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+        } else {
+            $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+        }
+        if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncounterQueue').val() != 'Y') {
             $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
             $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
         }
@@ -1371,7 +1379,7 @@ function MyQBind2(objdata) {
     sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
 
     localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
-    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncounterQueue').val() != 'Y') {
         $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
         $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
     }
@@ -1411,7 +1419,7 @@ function MyQBind3(objdata) {
         $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + sessionStorage.getItem("My_Amendmnt_Count") + ")";
     }
 
-    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncounterQueue').val() != 'Y') {
         $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
         $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
     }
@@ -1923,7 +1931,8 @@ function loadMyorder() {
                 data: 'Created_Date_And_Time', render: function (data, type, row) {
                     return ConvertDate(data.replace("T", " "));
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             { data: 'Test_Date', searchable: false, sClass: 'hide_column' },
             { data: 'Human_ID' },
@@ -1938,7 +1947,8 @@ function loadMyorder() {
                 data: 'DOB', render: function (data, type, row) {
                     return DOBConvert(data.replace("T00:00:00", ""))
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             {
                 data: 'Reason_For_Referral', render: function (data, type, row) {
@@ -2231,7 +2241,8 @@ function loadMyprescription() {
                 data: 'Prescription_Date', render: function (data, type, row) {
                     return ConvertDate(data.replace("T", " "));
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             { data: 'Human_ID' },
             { data: 'External_Account_Number', searchable: false },
@@ -2243,9 +2254,10 @@ function loadMyprescription() {
             },
             {
                 data: 'DOB', render: function (data, type, row) {
-                    return ConvertDate(data.replace("T", " "));
+                    return DOBConvert(data.replace("T00:00:00", ""))
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             { data: 'Current_Process', searchable: false },
             { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
@@ -2668,7 +2680,8 @@ function LoadGeneralEncounter() {
                 data: 'Appt_Date_Time', render: function (data, type, row) {
                     return ConvertDate(data.replace("T", " "));
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             { data: 'Human_ID' },
             { data: 'External_Account_Number', searchable: false },
@@ -2680,9 +2693,10 @@ function LoadGeneralEncounter() {
             },
             {
                 data: 'DOB', render: function (data, type, row) {
-                    return ConvertDate(data.replace("T", " "));
+                    return DOBConvert(data.replace("T00:00:00", ""))
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             { data: 'Type_Of_Visit', searchable: false },
             { data: 'Current_Process', searchable: false },
@@ -3162,7 +3176,8 @@ function LoadGeneralQOrder() {
                 data: 'Created_Date_And_Time', render: function (data, type, row) {
                     return ConvertDate(data.replace("T", " "));
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             { data: 'Test_Date', sClass: 'hide_column', searchable: false },
             { data: 'Human_ID' },
@@ -3177,7 +3192,8 @@ function LoadGeneralQOrder() {
                 data: 'DOB', render: function (data, type, row) {
                     return DOBConvert(data.replace("T00:00:00", ""))
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             {
                 data: 'Reason_For_Referral', render: function (data, type, row) {
@@ -3452,7 +3468,8 @@ function chkMyTask14Click(sender) {
                 data: 'DOB', render: function (data, type, row) {
                     return DOBConvert(data.replace("T00:00:00", ""))
                 },
-                searchable: false
+                searchable: false,
+                type: 'date'
             },
             {
                 data: 'Reason_For_Referral', render: function (data, type, row) {

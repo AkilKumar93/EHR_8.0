@@ -102,6 +102,9 @@ table.dataTable > thead > tr > td {
 .word-break-all{
     word-break: break-all;
 }
+.dataTables_empty {
+    display: none;
+}
     </style>
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />
