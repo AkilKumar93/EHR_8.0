@@ -81,7 +81,32 @@
                 left:15px;
                 top:80px;
             }
+                            .hide_column{
+    display:none;
+}
+
+.dataTable > thead > tr > th[class*="sort"]:before,
+.dataTable > thead > tr > th[class*="sort"]:after {
+    content: "" !important;
+    }
+
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+    padding-right: 10px !important;
+    }
+
+.text-align-center{
+    text-align:center;
+}
+
+.word-break-all{
+    word-break: break-all;
+}
+.dataTables_empty {
+    display: none;
+}
     </style>
+    <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />
     <link href="CSS/fontawesome.min.css" rel="stylesheet" type="text/css" />
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
@@ -139,7 +164,7 @@
                                     <td>
                                         <input type="checkbox" id="chkMyShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" /></td>
                                     <td>
-                                        <label for="chkMyShowAll" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px">ShowAll</label></td>
+                                        <label for="chkMyShowAll" id="lblMyShowAll" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px">ShowAll</label></td>
                                     <td>
                                         <button type="button" class="btn btn-primary btncolor" id="btnChangeExamRoom" style="background-color: none;">Change Exam Room</button>
                                     </td>
@@ -181,7 +206,7 @@
                             <label id="lblEr" for="Exam" style="font-weight: normal">Exam Room</label>
                             <select id="Exam">
                             </select>
-                            <label for="chkShowAll" class="checkbox-inline Editabletxtbox">
+                            <label for="chkShowAll" id="lblShowAll" class="checkbox-inline Editabletxtbox">
                                 <input type="checkbox" id="chkShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" />Show All</label>
                             <button type="button" class="btn btn-primary btncolor" id="btnChkOut" style="background-color: none;">Check Out</button>
                             <button type="button" class="btn btn-primary btncolor" onclick="chkShowAllClick(this)" id="RefreshQ" style="background-color: none;">Refresh Encounters Q</button>
@@ -212,6 +237,12 @@
             </div>
         </div>
     </div>
+    <asp:HiddenField ID="hdnAncillary" runat="server" Value="" EnableViewState="false" />
+    <input type="hidden" id="hdnIsShowAllMyEncounterQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyEncounterQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralEncounterQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralEncounterQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyOrderQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyOrderQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralOrderQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrderQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyPrescriptionQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"]%>" />
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false" EnableScriptCombine="true">
         <Scripts>
             <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
@@ -220,7 +251,8 @@
         </Scripts>
     </telerik:RadScriptManager>
   
-
+    <script src="JScripts/pako.min.js"></script>
+    <script src="JScripts/jquery.dataTables.min.js"></script>
     <script src="JScripts/JSMyQueueNew.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
