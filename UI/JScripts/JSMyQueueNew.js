@@ -1146,7 +1146,7 @@ function ShowMyQTabs(sender) {
 }
 
 function LoadMyEncounter(ajaxUrl) {
-    if ($('#hdnIsShowAllMyEncounterQueue').val() == 'Y') {
+    if ($('#hdnIsShowAllMyEncountersQueue').val() == 'Y') {
         $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
     } else {
         $('#chkMyShowAll,#lblMyShowAll').css("display", "");
@@ -1158,25 +1158,25 @@ function LoadMyEncounter(ajaxUrl) {
     <thead class="header" style="border: 0px;width:96.7%;">
         <tr class="header">
             <th style="border: 1px solid #909090;text-align: center;width: 4%;">Select<input type="checkbox" class="myQChkbxAll" onclick="MyQselectAll(this)"></th>
-            <th style="border: 1px solid #909090;text-align: center;width: 12%;">Appt. Date & Time</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 6%;">Acct. #</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 7%;">Ext. Acct. #</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 10%;">Patient Name</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 8%;">Patient DOB</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 8%;">Type of Visit</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 12%;">Current Process</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 8%;">Facility Name</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 12%;">Assigned Physician</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 8%;">Pri. Carrier</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 8%;">Pri. Plan</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 10%;">eSuperbill Status</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 12%;">Test Details</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 12%;">Ordering Physician</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 7%;">Encounter ID</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 7%;">Physician_ID</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 7%;">EHR_Obj_Type</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 7%;">Date_of_Service</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 6%;">QR Code</th>
+            <th style="border: 1px solid #909090;text-align: center;">Appt. Date & Time</th>
+            <th style="border: 1px solid #909090;text-align: center;">Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;">Ext. Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;">Patient Name</th>
+            <th style="border: 1px solid #909090;text-align: center;">Patient DOB</th>
+            <th style="border: 1px solid #909090;text-align: center;">Type of Visit</th>
+            <th style="border: 1px solid #909090;text-align: center;">Current Process</th>
+            <th style="border: 1px solid #909090;text-align: center;">Facility Name</th>
+            <th style="border: 1px solid #909090;text-align: center;">Assigned Physician</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pri. Carrier</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pri. Plan</th>
+            <th style="border: 1px solid #909090;text-align: center;">eSuperbill Status</th>
+            <th style="border: 1px solid #909090;text-align: center;">Test Details</th>
+            <th style="border: 1px solid #909090;text-align: center;">Ordering Physician</th>
+            <th style="border: 1px solid #909090;text-align: center;">Encounter ID</th>
+            <th style="border: 1px solid #909090;text-align: center;">Physician_ID</th>
+            <th style="border: 1px solid #909090;text-align: center;">EHR_Obj_Type</th>
+            <th style="border: 1px solid #909090;text-align: center;">Date_of_Service</th>
+            <th style="border: 1px solid #909090;text-align: center;">QR Code</th>
         </tr>
     </thead>
 </table>`);
@@ -1262,44 +1262,45 @@ function LoadMyEncounter(ajaxUrl) {
                         return "<input type='checkbox' onclick='checkboxclick(this)' />";
                     }
                 },
-                sWidth: '4%',
                 sClass: "text-align-center",
-                searchable: false
+                searchable: false,
+                sWidth: '30px',
             },
             {
                 data: 'Appt_Date_Time', render: function (data, type, row) {
                     return ConvertDate(data.replace("T", " "));
                 },
                 searchable: false,
-                type: 'date'
+                type: 'date',
+                sWidth: '118px'
             },
-            { data: 'Human_ID' },
-            { data: 'External_Account_Number', searchable: false },
+            { data: 'Human_ID', sWidth: '49px' },
+            { data: 'External_Account_Number', searchable: false, sWidth: '62px' },
             {
                 data: 'Last_Name', render: function (data, type, row) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
                 },
-                sClass: 'word-break-all'
+                sClass: 'word-break-all',
             },
             {
                 data: 'DOB', render: function (data, type, row) {
                     return DOBConvert(data.replace("T00:00:00", ""))
                 },
                 searchable: false,
-                type: 'date'
+                type: 'date',
+                sWidth: '77px'
             },
-            //{ data: 'Type_Of_Visit', visible: (Ancillary == 'false'), searchable: false },
-            { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? 'hide_column' : ''), searchable: false },
+            { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column'), searchable: false, sWidth: '77px' },
             { data: 'Current_Process', searchable: false },
             { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false },
-            { data: 'PhyName', visible: (Ancillary == 'false'), searchable: false },
+            { data: 'PhyName', visible: (Ancillary == 'false'), searchable: false, sWidth: '124px' },
             { data: 'Carrier_Name', visible: (Ancillary == 'false'), searchable: false },
             { data: 'Insurance_Plan_Name', visible: (Ancillary == 'false'), searchable: false },
             {
                 data: 'Is_EandM_Submitted', render: function (data, type, row) {
                     return data.toUpperCase() == 'Y' ? "Submitted" : "Not Submitted";
                 },
-                searchable: false
+                searchable: false,
             },
             { data: 'Test_Details', visible: (Ancillary == 'true'), searchable: false },
             { data: 'Ordering_Physician', visible: (Ancillary == 'true'), searchable: false },
@@ -1314,7 +1315,6 @@ function LoadMyEncounter(ajaxUrl) {
                     //return `<i class="fa fa-qrcode" style="font-size: xx-large;" onclick="QRCodeClick(${row.Human_ID},${row.Encounter_ID},'${dos}',${row.Physician_ID})"></i>`;
                     return `<i class="fa fa-qrcode" style="font-size: xx-large;" onclick="QRCodeClick(this)"></i>`;
                 },
-                sWidth: '4%',
                 sClass: "text-align-center",
                 searchable: false,
                 visible: (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES"),
@@ -1421,12 +1421,12 @@ function MyQBind1(objdata) {
         $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
 
         localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
-        if ($('#hdnIsShowAllMyEncounterQueue').val() == 'Y') {
+        if ($('#hdnIsShowAllMyEncountersQueue').val() == 'Y') {
             $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
         } else {
             $('#chkMyShowAll,#lblMyShowAll').css("display", "");
         }
-        if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncounterQueue').val() != 'Y') {
+        if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncountersQueue').val() != 'Y') {
             $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
             $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
         }
@@ -1474,7 +1474,7 @@ function MyQBind2(objdata) {
     sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
 
     localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
-    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncounterQueue').val() != 'Y') {
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncountersQueue').val() != 'Y') {
         $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
         $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
     }
@@ -1514,7 +1514,7 @@ function MyQBind3(objdata) {
         $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + sessionStorage.getItem("My_Amendmnt_Count") + ")";
     }
 
-    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncounterQueue').val() != 'Y') {
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncountersQueue').val() != 'Y') {
         $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
         $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
     }
@@ -1815,7 +1815,6 @@ function LoadMyTask() {
         dataTable.$('tr.highlight').removeClass('highlight');
         $(this)[0].classList.add('highlight');
     });
-    $("#EncounterTable_filter").children("label").children("input").css("width", "300px")
 }
 
 
@@ -1934,13 +1933,11 @@ function LoadMyTaskTemp() {
         dataTable.$('tr.highlight').removeClass('highlight');
         $(this)[0].classList.add('highlight');
     });
-    $("#EncounterTable_filter").children("label").children("input").css("width", "300px")
-
 }
 
 
 function loadMyorder() {
-    if ($('#hdnIsShowAllMyOrderQueue').val() == 'Y') {
+    if ($('#hdnIsShowAllMyOrdersQueue').val() == 'Y') {
         $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
     } else {
         $('#chkMyShowAll,#lblMyShowAll').css("display", "");
@@ -2739,7 +2736,6 @@ function loadMyAmendment() {
         dataTable.$('tr.highlight').removeClass('highlight');
         $(this).addClass("highlight");
     });
-    $("#EncounterTable_filter").children("label").children("input").css("width", "300px")
 
     //$.ajax({
     //    type: "POST",

@@ -144,7 +144,7 @@ namespace Acurus.Capella.UI
             Hashtable LoadMyQ = new Hashtable();
             IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue EncounterLoad : LoadMyQHashTable DB call Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllMyEncounterQueue"] == "Y" ? true : false;
+            bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllMyEncountersQueue"] == "Y" ? true : false;
             LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, ClientSession.FacilityName);//ClientSession.DefaultNoofDays);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue EncounterLoad : LoadMyQHashTable DB call End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
@@ -243,7 +243,7 @@ namespace Acurus.Capella.UI
                 Hashtable LoadMyQ = new Hashtable();
                 IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-                bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllMyEncounterQueue"] == "Y" ? true : false;
+                bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllMyEncountersQueue"] == "Y" ? true : false;
                 LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, ClientSession.FacilityName);//ClientSession.DefaultNoofDays);
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
 
@@ -308,7 +308,7 @@ namespace Acurus.Capella.UI
                 IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
                 string sViewAllFacilities = HttpContext.Current.Request.Params["extra_search"];
-                bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllGeneralEncounterQueue"] == "Y" ? true : false;
+                bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllGeneralEncountersQueue"] == "Y" ? true : false;
                 if (sViewAllFacilities == "Checked")
                 {
                     LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~" + ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, "");//ClientSession.DefaultNoofDays);
@@ -471,7 +471,7 @@ namespace Acurus.Capella.UI
 
             string sShowall = HttpContext.Current.Request.Params["extra_search"];
             bool bValue = false;
-            if (ConfigurationSettings.AppSettings["IsShowAllMyOrderQueue"] == "Y")
+            if (ConfigurationSettings.AppSettings["IsShowAllMyOrdersQueue"] == "Y")
             {
                 bValue = true;
             }
@@ -722,7 +722,7 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyEncounter ShowAll : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             string sShowall = HttpContext.Current.Request.Params["extra_search"];
             bool bValue = false;
-            if (ConfigurationSettings.AppSettings["IsShowAllMyEncounterQueue"] == "Y")
+            if (ConfigurationSettings.AppSettings["IsShowAllMyEncountersQueue"] == "Y")
             {
                 bValue = true;
             }

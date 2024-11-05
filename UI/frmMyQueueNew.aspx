@@ -105,6 +105,9 @@ table.dataTable > thead > tr > td {
 .dataTables_empty {
     display: none;
 }
+.dataTables_filter input {
+    width: 330px !important;
+}
     </style>
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />
@@ -238,10 +241,10 @@ table.dataTable > thead > tr > td {
         </div>
     </div>
     <asp:HiddenField ID="hdnAncillary" runat="server" Value="" EnableViewState="false" />
-    <input type="hidden" id="hdnIsShowAllMyEncounterQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyEncounterQueue"]%>" />
-    <input type="hidden" id="hdnIsShowAllGeneralEncounterQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralEncounterQueue"]%>" />
-    <input type="hidden" id="hdnIsShowAllMyOrderQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyOrderQueue"]%>" />
-    <input type="hidden" id="hdnIsShowAllGeneralOrderQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrderQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyEncountersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyEncountersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralEncountersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralEncountersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyOrdersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"]%>" />
     <input type="hidden" id="hdnIsShowAllMyPrescriptionQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"]%>" />
      <input type="hidden" id="hdnIsShowAllMyScanQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyScanQueue"]%>" />    
     <input type="hidden" id="hdnIsShowAllMyTasksQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyTasksQueue"]%>" />
