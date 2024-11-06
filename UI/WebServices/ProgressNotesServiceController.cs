@@ -706,7 +706,7 @@ namespace Acurus.Capella.UI.WebServices.API
 
                         if (PlanTagcontent.Length > 1)
                         {
-                            ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n"));
+                            ilstsection.Add(PlanTagcontent[1].Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", ""));
                         }
                         if (ilstsection[0].Contains("Amendment Notes"))
                         {
@@ -791,7 +791,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                     {
                                         sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
                                     }
-                                    sNotesName = sNotesName.Replace("<br />", @"\n").Replace("<br/>", @"\n");
+                                    sNotesName = sNotesName.Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", "");
                                     sNotesName = sNotesName.Substring(0, sNotesName.Length - @"\n".Length);
 
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
@@ -843,7 +843,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                         sCreatedAt = Convert.ToDateTime(sCreatedAt).ToString("o");
                                     }
 
-                                    sNotesName = sNotesName.Replace("<br />", @"\n").Replace("<br/>", @"\n");
+                                    sNotesName = sNotesName.Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\t", "");
                                     sNotesName = sNotesName.Substring(0, sNotesName.Length - @"\n".Length);
                                     sFormationJson = sFormationJson + ((sFormationJson[sFormationJson.Length - 1] == '}') ? "," : "")
                                         //Jira CAP-2608
@@ -861,7 +861,7 @@ namespace Acurus.Capella.UI.WebServices.API
                             else
                             {
                                 //value
-                                sectopns[i] = sectopns[i].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n");
+                                sectopns[i] = sectopns[i].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "");
                                 if (sectopns[i] != string.Empty && sectopns[i] != "")
                                 {
                                     sFormationJson = sFormationJson + "\"" + sectopns[i] + "\"" + ((sectopns.Length - 1 == i) ? string.Empty : ",");
@@ -926,7 +926,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                                 {
                                                     //Jira CAP-2608
                                                     //iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "");
-                                                    iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n");
+                                                    iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "");
                                                     sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
                                                 }
 
@@ -1088,7 +1088,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                         {
                                             //Jira CAP-2608
                                             //value = value.Replace(": ", ":");
-                                            value = value.Replace(": ", ":").Replace("\r\n", @"\n").Replace("\n", @"\n"); 
+                                            value = value.Replace(": ", ":").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", ""); 
                                         }
                                     }
                                     if (value != "")
