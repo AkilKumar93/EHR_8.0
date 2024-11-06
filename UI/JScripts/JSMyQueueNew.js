@@ -375,7 +375,7 @@ $(document).ready(function () {
         }
 
 
-        if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 2) {
+        if ($('#MyQTable').children().find('.highlight').length > 0 && $('#MyQTable').children().find('.highlight')[0].classList.length == 1) {
             var currentProcessscnt = 0;
             $('#MyQTable tr.highlight').each(function (i, row) {
                 var $row = $(row);
@@ -477,10 +477,10 @@ function MyQclick() {
             //CAP 314  Uncaught Type Error: Cannot read properties of undefined (reading inner Text)    
             if ($(currRow)[0]?.children[7]?.innerText.trim() == 'TECHNICIAN_PROCESS' && $(currRow)[0]?.children[7]?.innerText.trim() != undefined && $(currRow)[0]?.children[7]?.innerText.trim() != null) {
                 Curprocess = $(currRow)[0]?.children[7]?.innerText.trim()
-                PhyID = $(currRow)[0]?.children[11]?.innerText.trim();
-                date = $(currRow)[0]?.children[13]?.innerText.trim();
-                encounter_id = $(currRow)[0]?.children[10]?.innerText.trim();
-                objtype = $(currRow)[0]?.children[12]?.innerText.trim();
+                PhyID = $(currRow)[0]?.children[12]?.innerText.trim();
+                date = $(currRow)[0]?.children[14]?.innerText.trim();
+                encounter_id = $(currRow)[0]?.children[11]?.innerText.trim();
+                objtype = $(currRow)[0]?.children[13]?.innerText.trim();
             }
             else {
                 Curprocess = $(currRow)[0]?.children[7]?.innerText.trim();
@@ -1159,13 +1159,13 @@ function LoadMyEncounter(ajaxUrl) {
             <th style="border: 1px solid #909090;text-align: center;">Patient DOB</th>
             <th style="border: 1px solid #909090;text-align: center;">Type of Visit</th>
             <th style="border: 1px solid #909090;text-align: center;">Current Process</th>
+            <th style="border: 1px solid #909090;text-align: center;">Test Details</th>
+            <th style="border: 1px solid #909090;text-align: center;">Ordering Physician</th>
             <th style="border: 1px solid #909090;text-align: center;">Facility Name</th>
             <th style="border: 1px solid #909090;text-align: center;">Assigned Physician</th>
             <th style="border: 1px solid #909090;text-align: center;">Pri. Carrier</th>
             <th style="border: 1px solid #909090;text-align: center;">Pri. Plan</th>
             <th style="border: 1px solid #909090;text-align: center;">eSuperbill Status</th>
-            <th style="border: 1px solid #909090;text-align: center;">Test Details</th>
-            <th style="border: 1px solid #909090;text-align: center;">Ordering Physician</th>
             <th style="border: 1px solid #909090;text-align: center;">Encounter ID</th>
             <th style="border: 1px solid #909090;text-align: center;">Physician_ID</th>
             <th style="border: 1px solid #909090;text-align: center;">EHR_Obj_Type</th>
@@ -1288,6 +1288,8 @@ function LoadMyEncounter(ajaxUrl) {
             },
             { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column'), searchable: false, sWidth: '8%' },
             { data: 'Current_Process', searchable: false, sWidth: '12%' },
+            { data: 'Test_Details', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
+            { data: 'Ordering_Physician', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
             { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
             { data: 'PhyName', visible: (Ancillary == 'false'), searchable: false, sWidth: '12%' },
             { data: 'Carrier_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
@@ -1299,8 +1301,6 @@ function LoadMyEncounter(ajaxUrl) {
                 searchable: false,
                 sWidth: '11%'
             },
-            { data: 'Test_Details', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
-            { data: 'Ordering_Physician', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
             { data: 'Encounter_ID', searchable: false, sWidth: '7%' },
             { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
@@ -1341,6 +1341,8 @@ function LoadMyEncounter(ajaxUrl) {
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         var existingSelectedItem = $("#MyQTable tr.highlight");
         for (var i = 0; i < existingSelectedItem.length; i++) {
             var processes = "NoCurrentProcess";
@@ -1372,6 +1374,8 @@ function LoadMyEncounter(ajaxUrl) {
     });
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         if ($('#MyQTable').children().find('.highlight').length > 1) {
             alert("Please select one encounter to process");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2147,6 +2151,8 @@ function loadMyorder() {
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         var existingSelectedItem = $("#MyQTable tr.highlight");
         for (var i = 0; i < existingSelectedItem.length; i++) {
             var processes = "NoCurrentProcess";
@@ -2178,6 +2184,8 @@ function loadMyorder() {
     });
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         if ($('#MyQTable').children().find('.highlight').length > 1) {
             alert("Please select one encounter to process");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -2519,6 +2527,8 @@ function loadMyprescription() {
     });
 
     $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         var existingSelectedItem = $("#MyQTable tr.highlight");
         for (var i = 0; i < existingSelectedItem.length; i++) {
             var processes = "NoCurrentProcess";
@@ -2550,6 +2560,8 @@ function loadMyprescription() {
     });
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
         if ($('#MyQTable').children().find('.highlight').length > 1) {
             alert("Please select one encounter to process");
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
