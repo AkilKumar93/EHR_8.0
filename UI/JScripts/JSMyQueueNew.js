@@ -1200,7 +1200,7 @@ function LoadMyEncounter(ajaxUrl) {
         processing: false,
         ordering: true,
         order: [],
-        pageLength: 25,
+        pageLength: 15,
         language: {
             search: "Patient Search",
             searchPlaceholder: "Search by Name or Acct. #",
@@ -1238,7 +1238,7 @@ function LoadMyEncounter(ajaxUrl) {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "ErrorPage.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -1281,6 +1281,7 @@ function LoadMyEncounter(ajaxUrl) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
                 },
                 sClass: 'word-break-all',
+                sWidth: '85px'
             },
             {
                 data: 'DOB', render: function (data, type, row) {
@@ -1291,8 +1292,8 @@ function LoadMyEncounter(ajaxUrl) {
                 sWidth: '77px'
             },
             { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column'), searchable: false, sWidth: '77px' },
-            { data: 'Current_Process', searchable: false },
-            { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false },
+            { data: 'Current_Process', searchable: false, sWidth: '108px' },
+            { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '80px' },
             { data: 'PhyName', visible: (Ancillary == 'false'), searchable: false, sWidth: '124px' },
             { data: 'Carrier_Name', visible: (Ancillary == 'false'), searchable: false },
             { data: 'Insurance_Plan_Name', visible: (Ancillary == 'false'), searchable: false },
@@ -1318,6 +1319,7 @@ function LoadMyEncounter(ajaxUrl) {
                 sClass: "text-align-center",
                 searchable: false,
                 visible: (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES"),
+                sWidth: '50px'
             },
         ]
     });
@@ -1692,7 +1694,7 @@ function LoadMyTask() {
         processing: false,
         ordering: true,
         order: [],
-        pageLength: 25,
+        pageLength: 15,
         language: {
             search: "Patient Name",
             searchPlaceholder: "Search by Name or Acct. #",
@@ -1853,7 +1855,7 @@ function LoadMyTaskTemp() {
         processing: false,
         ordering: true,
         order: [],
-        pageLength: 25,
+        pageLength: 15,
         language: {
             search: "Patient Name",
             searchPlaceholder: "Search by Name or Acct. #",
@@ -1984,7 +1986,7 @@ function loadMyorder() {
         processing: false,
         ordering: true,
         order: [],
-        pageLength: 25,
+        pageLength: 15,
         language: {
             search: "Patient Search",
             searchPlaceholder: "Search by Name or Acct. #",
@@ -2017,7 +2019,6 @@ function loadMyorder() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    //window.location = xhr.statusText;
                     window.location = "ErrorPage.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
@@ -2279,7 +2280,7 @@ function loadMyscan() {
         processing: false,
         ordering: true,
         order: [],
-        pageLength: 25,
+        pageLength: 15,
         language: {
             search: "File Name Search",
             searchPlaceholder: "Search by File Name",
@@ -2324,7 +2325,7 @@ function loadMyscan() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "ErrorPage.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2425,7 +2426,7 @@ function loadMyprescription() {
         processing: false,
         ordering: true,
         order: [],
-        pageLength: 25,
+        pageLength: 15,
         language: {
             search: "Patient Search",
             searchPlaceholder: "Search by Name or Acct. #",
@@ -2459,7 +2460,7 @@ function loadMyprescription() {
             error: function (xhr, error, code) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 if (xhr.status == 999)
-                    window.location = xhr.statusText;
+                    window.location = "ErrorPage.aspx";
                 else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
@@ -2618,7 +2619,7 @@ function loadMyAmendment() {
         processing: false,
         ordering: true,
         order: [],
-        pageLength: 25,
+        pageLength: 15,
         language: {
             search: "Patient Name",
             searchPlaceholder: "Search by Name or Acct. #",
