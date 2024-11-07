@@ -920,12 +920,7 @@ function OnClientCloseWindow() {
         else if (btnid == "btnMyOrder" || btnid == "btnMyPres") {
             dataTable.search('').draw(false);
             numberofEncounters = dataTable.data().count();
-        } else if (btnid == "btnMyTask") {
-            var table = new DataTable('#EncounterTable');
-            numberofEncounters = table.data().count();
-        }
-        else if (btnid == "btnMyScan")
-        {
+        } else if (btnid == "btnMyTask" || btnid == "btnMyScan") {
             var table = new DataTable('#EncounterTable');
             numberofEncounters = table.data().count();
         }
