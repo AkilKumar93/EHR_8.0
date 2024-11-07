@@ -16,6 +16,9 @@ using System.Xml;
 using System.IO;
 using System.Web.Script.Services;
 using System.Xml.Linq;
+using System.Text;
+using System.IO.Compression;
+using System.Configuration;
 
 namespace Acurus.Capella.UI
 {
@@ -68,6 +71,12 @@ namespace Acurus.Capella.UI
             ClientSession.CurrentObjectType = string.Empty;
             ClientSession.FillEncounterandWFObject = null;
             ClientSession.FillPatientChart.Fill_Encounter_and_WFObject = null;
+            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == ClientSession.FacilityName select f;
+            IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
+            { hdnAncillary.Value = "true"; }
+            else
+            { hdnAncillary.Value = "false"; }
             iDefaultDays = DefaultDays();
         }
         public int DefaultDays()
@@ -110,7 +119,8 @@ namespace Acurus.Capella.UI
             return iDefaultDays;
         }
         [WebMethod(EnableSession = true)]
-        public static string EncounterLoad(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object EncounterLoad()
         {
 
             if (ClientSession.UserName == string.Empty)
@@ -134,7 +144,8 @@ namespace Acurus.Capella.UI
             Hashtable LoadMyQ = new Hashtable();
             IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue EncounterLoad : LoadMyQHashTable DB call Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, ClientSession.FacilityName);//ClientSession.DefaultNoofDays);
+            bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllMyEncountersQueue"] == "Y" ? true : false;
+            LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, ClientSession.FacilityName);//ClientSession.DefaultNoofDays);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue EncounterLoad : LoadMyQHashTable DB call End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
             var pat = new List<MyQ>();
@@ -185,11 +196,19 @@ namespace Acurus.Capella.UI
 
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue EncounterLoad : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var result = new { data = pat, count = QCount, role = ClientSession.UserRole, Ancillary = sAncillary, EncounterCount = Encountershowallcount };
-            return JsonConvert.SerializeObject(result);
+            var newResult = new
+            {
+                data = Compress(JsonConvert.SerializeObject(pat)),
+                count = QCount,
+                role = ClientSession.UserRole,
+                EncounterCount = Encountershowallcount,
+            };
+            return newResult;
         }
 
         [WebMethod(EnableSession = true)]
-        public static string MyEncounterLoad(string sShowall,string sViewAllFacilities)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object MyEncounterLoad()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -224,7 +243,8 @@ namespace Acurus.Capella.UI
                 Hashtable LoadMyQ = new Hashtable();
                 IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-                LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, ClientSession.FacilityName);//ClientSession.DefaultNoofDays);
+                bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllMyEncountersQueue"] == "Y" ? true : false;
+                LoadMyQ = wfMngr.LoadMyQHashTable("ALL", ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, ClientSession.FacilityName);//ClientSession.DefaultNoofDays);
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
 
                 PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
@@ -263,7 +283,14 @@ namespace Acurus.Capella.UI
                 }
                 var result = new { data = pat, count = QCount, role = ClientSession.UserRole, Ancillary = sAncillary, EncounterCount = Encountershowallcount };
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-                return JsonConvert.SerializeObject(result);
+                var newResult = new
+                {
+                    data = Compress(JsonConvert.SerializeObject(pat)),
+                    count = QCount,
+                    role = ClientSession.UserRole,
+                    EncounterCount = Encountershowallcount
+                };
+                return newResult;
 
             }
             else
@@ -280,13 +307,15 @@ namespace Acurus.Capella.UI
                 Hashtable LoadMyQ = new Hashtable();
                 IList<MyQueueCountDTO> QCount = new List<MyQueueCountDTO>();
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+                string sViewAllFacilities = HttpContext.Current.Request.Params["extra_search"];
+                bool flgShowAll = ConfigurationSettings.AppSettings["IsShowAllGeneralEncountersQueue"] == "Y" ? true : false;
                 if (sViewAllFacilities == "Checked")
                 {
-                    LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~"+ ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");//ClientSession.DefaultNoofDays);
+                    LoadMyQ = wfMngr.LoadMyQHashTable("ViewAllFacilities~" + ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, "");//ClientSession.DefaultNoofDays);
                 }
                 else
                 {
-                    LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, false, iDefaultDays, "");//ClientSession.DefaultNoofDays);
+                    LoadMyQ = wfMngr.LoadMyQHashTable(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, flgShowAll, iDefaultDays, "");//ClientSession.DefaultNoofDays);
                 }
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad LoadMyQHashTable DB call: Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
                 PatientQ = (IList<MyQ>)LoadMyQ["MyQ"];
@@ -324,11 +353,19 @@ namespace Acurus.Capella.UI
                 //var result = new { data = pat, count = QCount, dataEroom = eRoomList, role = ClientSession.UserRole, EncounterCount = Encountershowallcount };
                 var result = new { data = pat, count = QCount, dataEroom = eRoomList, role = ClientSession.UserRole };
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-                return JsonConvert.SerializeObject(result);
+                var newResult = new
+                {
+                    data = Compress(JsonConvert.SerializeObject(pat)),
+                    count = QCount,
+                    role = ClientSession.UserRole,
+                    dataEroom = eRoomList
+                };
+                return newResult;
             }
         }
-        [WebMethod(EnableSession = true)]
-        public static string LoadMyTaskCompleted(string sShowall)
+        [WebMethod(EnableSession = true)] 
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadMyTaskCompleted()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -340,6 +377,11 @@ namespace Acurus.Capella.UI
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             bool bValue = false;
+
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string sShowall = searchData["sShowall"];
+
             if (sShowall == "Checked")
                 bValue = true;
             string[] ProcessType = new string[1];
@@ -355,10 +397,17 @@ namespace Acurus.Capella.UI
             var TaskQ = from g in MyTask where g.Message_Description != string.Empty select g;
             IList<MyQ> TaskList = TaskQ.ToList<MyQ>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(TaskQ.ToList<MyQ>());
+            //return JsonConvert.SerializeObject(TaskQ.ToList<MyQ>());
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(TaskQ.ToList<MyQ>())),
+            };
+
+            return resultNew;
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadMyTask(string sShowall, string sOpenTask = "")
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadMyTask()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -370,6 +419,12 @@ namespace Acurus.Capella.UI
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             bool bValue = false;
+
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string sShowall = searchData["sShowall"];
+            string sOpenTask = searchData["sOpenTask"];
+
             if (sShowall == "Checked")
                 bValue = true;
             string[] ProcessType = new string[1];
@@ -392,10 +447,17 @@ namespace Acurus.Capella.UI
 
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask GetListObjects DB call : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyTask : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyTask.ToList<MyQ>());
+            // return JsonConvert.SerializeObject(MyTask.ToList<MyQ>());
+
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(MyTask.ToList<MyQ>())),
+            };
+            return resultNew;
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadMyOrder(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadMyOrder()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -407,9 +469,17 @@ namespace Acurus.Capella.UI
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
 
+            string sShowall = HttpContext.Current.Request.Params["extra_search"];
             bool bValue = false;
-            if (sShowall == "Checked")
+            if (ConfigurationSettings.AppSettings["IsShowAllMyOrdersQueue"] == "Y")
+            {
                 bValue = true;
+            }
+            else
+            {
+                if (sShowall == "Checked")
+                    bValue = true;
+            }
             string[] ProcessType = new string[1];
             ProcessType[0] = "ASSIGNED";
 
@@ -432,10 +502,17 @@ namespace Acurus.Capella.UI
             var MyOrdersQ = from g in MyHome where g.Current_Owner != "UNKNOWN" orderby g.Created_Date_And_Time descending select g;
             MyOrdersQ = from g in MyOrdersQ orderby g.Is_Abnormal descending select g;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyOrdersQ.ToList<MyQ>());
+            var result = MyOrdersQ.ToList<MyQ>();
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(result)),
+            };
+            return resultNew;
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadMyScan(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        //public static string LoadMyScan(string sShowall)
+        public static object LoadMyScan()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -444,6 +521,9 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
+            string extra_search = HttpContext.Current.Request.Params["extra_search"];
+            var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
+            string sShowall = searchData["sShowall"];
 
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyScan : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
@@ -462,10 +542,18 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyScan GetListObjects DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var MyScanList = from g in MyHome where g.Current_Owner != "UNKNOWN" orderby g.Scanned_Date descending select g;
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyScan : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyScanList.ToList<MyQ>());
+            //return JsonConvert.SerializeObject(MyScanList.ToList<MyQ>());
+
+            var result = new
+            {
+                data = Compress(JsonConvert.SerializeObject(MyScanList.ToList<MyQ>()))
+            };
+
+            return result;
         }
         [WebMethod(EnableSession = true)]
-        public static string LoadMyPrescription(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadMyPrescription()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -476,9 +564,17 @@ namespace Acurus.Capella.UI
             }
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyPrescription : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            string sShowall = HttpContext.Current.Request.Params["extra_search"];
             bool bValue = false;
-            if (sShowall == "Checked")
+            if (ConfigurationSettings.AppSettings["IsShowAllMyPrescriptionQueue"] == "Y")
+            {
                 bValue = true;
+            }
+            else
+            {
+                if (sShowall == "Checked")
+                    bValue = true;
+            }
             string[] ProcessType = new string[1];
             ProcessType[0] = "ASSIGNED";
 
@@ -492,7 +588,11 @@ namespace Acurus.Capella.UI
             var MyPrescList = from g in MyHome where g.Current_Owner != "UNKNOWN" select g;
             MyPrescList = MyPrescList.OrderByDescending(a => a.Prescription_Date);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyPrescription : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyPrescList.ToList<MyQ>());
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(MyPrescList.ToList<MyQ>())),
+            };
+            return resultNew;
         }
 
         [WebMethod(EnableSession = true)]
@@ -568,7 +668,8 @@ namespace Acurus.Capella.UI
         }
 
         [WebMethod(EnableSession = true)]
-        public static string LoadMyAmendment(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object LoadMyAmendment()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -577,6 +678,9 @@ namespace Acurus.Capella.UI
                 HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
                 return "Session Expired";
             }
+
+            string sShowall = HttpContext.Current.Request.Params["extra_search"];
+
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyAmendment : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             bool bValue = false;
@@ -596,10 +700,16 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyAmendment GetListObjects DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             MyQ = (MyQ.OrderByDescending(a => a.Appt_Date_Time)).ToList<MyQ>();
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyAmendment : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(MyQ.ToList<MyQ>());
+            // return JsonConvert.SerializeObject(MyQ.ToList<MyQ>());
+            var resultNew = new
+            {
+                data = Compress(JsonConvert.SerializeObject(MyQ.ToList<MyQ>())),
+            };
+            return resultNew;
         }
         [WebMethod(EnableSession = true)]
-        public static string chkShowAllMyEncounter(string sShowall)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json, UseHttpGet = true)]
+        public static object chkShowAllMyEncounter()
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -610,9 +720,17 @@ namespace Acurus.Capella.UI
             }
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyEncounter ShowAll : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            string sShowall = HttpContext.Current.Request.Params["extra_search"];
             bool bValue = false;
-            if (sShowall == "Checked")
+            if (ConfigurationSettings.AppSettings["IsShowAllMyEncountersQueue"] == "Y")
+            {
                 bValue = true;
+            }
+            else
+            {
+                if (sShowall == "Checked")
+                    bValue = true;
+            }
             string[] ProcessType = new string[1];
             ProcessType[0] = "ASSIGNED";
 
@@ -667,7 +785,13 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyEncounter ShowAll GetEncountershowallcount DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var result = new { data = MyQ.ToList<MyQ>(), Ancillary = sAncillary, EncounterCount = Encountershowallcount };
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyEncounter ShowAll : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-            return JsonConvert.SerializeObject(result);
+            var newResult = new
+            {
+                data = Compress(JsonConvert.SerializeObject(MyQ.ToList<MyQ>())),
+                EncounterCount = Encountershowallcount,
+                role = ClientSession.UserRole,
+            };
+            return newResult;
             // return JsonConvert.SerializeObject(MyQ.ToList<MyQ>());
         }
 
@@ -1068,8 +1192,8 @@ namespace Acurus.Capella.UI
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadOrder : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             bool bValue = false;
-            if (sShowall == "Checked")
-                bValue = true;
+                if (sShowall == "Checked")
+                    bValue = true;
             string[] ProcessType = new string[2];
             ProcessType[0] = "UNASSIGNED";
 
@@ -1152,8 +1276,8 @@ namespace Acurus.Capella.UI
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
 
             bool bValue = false;
-            if (sShowall == "Checked")
-                bValue = true;
+                if (sShowall == "Checked")
+                    bValue = true;
             string[] ProcessType = new string[1];
             ProcessType[0] = "UNASSIGNED";
 
@@ -1174,27 +1298,27 @@ namespace Acurus.Capella.UI
                 MyQ = wfMngr.GetListObjects(ClientSession.FacilityName, ObjType, ProcessType, ClientSession.UserName, bValue, iDefaultDays, string.Empty);// ClientSession.DefaultNoofDays); 
             }
 
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick GetListObjects DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-                if (MyQ != null && MyQ.Count > 0)
-                {
-                    //MyQ = MyQ.Where(a => a.Current_Owner == "UNKNOWN" && a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "INTERNAL ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && a.Facility_Name == ClientSession.FacilityName).ToList<MyQ>();
-                    MyQ = MyQ.Where(a => a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "DME ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT").ToList<MyQ>();
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick GetListObjects DB call: End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            if (MyQ != null && MyQ.Count > 0)
+            {
+                //MyQ = MyQ.Where(a => a.Current_Owner == "UNKNOWN" && a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "INTERNAL ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && a.Facility_Name == ClientSession.FacilityName).ToList<MyQ>();
+                MyQ = MyQ.Where(a => a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "DME ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT").ToList<MyQ>();
 
-                    //  MyQ = MyQ.Where(a => a.Current_Owner == "UNKNOWN" && a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "DME ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && a.Facility_Name == ClientSession.FacilityName).ToList<MyQ>();
-                    MyQ = MyQ.OrderByDescending(a => a.Appt_Date_Time).ToList<MyQ>();
-                }
-
-                //ulong Encountershowallcount = 0;
-                //Acurus.Capella.DataAccess.ManagerObjects.ObjectManager objMngr = new Acurus.Capella.DataAccess.ManagerObjects.ObjectManager();
-                //Encountershowallcount = objMngr.GetEncountershowallcount(ProcessType[0], ClientSession.UserName, ObjType, ClientSession.FacilityName);
-
-
-
-                //var result = new { data = MyQ, role = ClientSession.UserRole, EncounterCount = Encountershowallcount };
-                UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-                var result = new { data = MyQ, role = ClientSession.UserRole };
-                return JsonConvert.SerializeObject(result);
+                //  MyQ = MyQ.Where(a => a.Current_Owner == "UNKNOWN" && a.EHR_Obj_Type != "DIAGNOSTIC ORDER" && a.EHR_Obj_Type != "DME ORDER" && a.EHR_Obj_Type != "IMAGE ORDER" && a.EHR_Obj_Type != "SCAN" && a.EHR_Obj_Type != "IMMUNIZATION ORDER" && a.EHR_Obj_Type != "REFERRAL ORDER" && a.Current_Process != "DICTATION_EXCEPTION" && a.Current_Process != "DICTATION_WAIT" && a.Facility_Name == ClientSession.FacilityName).ToList<MyQ>();
+                MyQ = MyQ.OrderByDescending(a => a.Appt_Date_Time).ToList<MyQ>();
             }
+
+            //ulong Encountershowallcount = 0;
+            //Acurus.Capella.DataAccess.ManagerObjects.ObjectManager objMngr = new Acurus.Capella.DataAccess.ManagerObjects.ObjectManager();
+            //Encountershowallcount = objMngr.GetEncountershowallcount(ProcessType[0], ClientSession.UserName, ObjType, ClientSession.FacilityName);
+
+
+
+            //var result = new { data = MyQ, role = ClientSession.UserRole, EncounterCount = Encountershowallcount };
+            UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadEncounterTabClick : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
+            var result = new { data = MyQ, role = ClientSession.UserRole };
+                return JsonConvert.SerializeObject(result);
+        }
 
 
 
@@ -1674,6 +1798,22 @@ namespace Acurus.Capella.UI
             return JsonConvert.SerializeObject(result);
 
         }
+        private static string Compress(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
 
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    gzipStream.Write(inputBytes, 0, inputBytes.Length);
+                }
+                return Convert.ToBase64String(outputStream.ToArray());
+            }
+        }
     }
 }

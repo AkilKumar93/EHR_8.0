@@ -1,6 +1,8 @@
 ﻿var Role;
 
 var isproviderReview = false;
+var tempObjectMyTask;
+var tempObjectMyQTask;
 
 function loadGeneralQueue() {
     document.getElementById("divGeneralQ").style.display = "";
@@ -112,7 +114,7 @@ $(document).ready(function () {
     if (MyShowAllmyQueue == "Checked") {
         $("#chkMyShowAll")[0].checked = true;
         Showall = "Checked";
-        loadMyenc();
+        LoadMyEncounter();
     }
    else if (MyShowAll == "Checked") {
         $("#chkShowAll")[0].checked = true;
@@ -120,236 +122,12 @@ $(document).ready(function () {
         loadGeneralQueue();
     }
     else {
-        var ViewAllFacilities = "";
-        if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
-            $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
+        var role = $('#ctl00_hdnuserrole').val();
+        if (role != "Medical Assistant" && role != "Front Office" && role != "Surgery Coordinator" && role != "Scribe") {
+            LoadMyEncounter('MyEncounterLoad');
+        } else {
+            loadGeneralQueue();
         }
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/MyEncounterLoad",
-            data: JSON.stringify({
-                "sShowall": Showall,
-                "sViewAllFacilities": ViewAllFacilities
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-
-                var objdata = $.parseJSON(data.d);
-                Role = objdata.role;
-                var Ancillary = objdata.Ancillary;
-                if (objdata.role != "Medical Assistant" && objdata.role != "Front Office" && objdata.role != "Surgery Coordinator" && objdata.role != "Scribe") {//BugID:53790
-                    $('#MyQTable').empty();
-                    var tabContents = "";
-                    let disableOverallSelect = true;
-                    if (objdata.data.length > 0) {
-
-                        for (var i = 0; i < objdata.data.length; i++) {
-                            var is_submitted = (objdata.data[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                            let disabled = "disabled='true'";
-                            if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
-                                disabled = "";
-                                disableOverallSelect = false;
-                            }
-                            //if (i == 0) {
-                            //    if (Ancillary != "true")
-                            //        tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                            //    else
-                            //        tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                            //}
-                            //else {
-                            //    if (Ancillary != "true")
-                            //        tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                            //    else
-                            //        tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-
-                            //}
-
-                            //Jira CAP-593
-                            //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                            if (i == 0) {
-                                if (Ancillary != "true")
-                                    tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                                else
-                                    tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                            }
-                            else {
-                                if (Ancillary != "true")
-                                    tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                                else
-                                    tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-
-                            }
-
-
-                            //Jira CAP-593
-                            if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                                tabContents = tabContents + "<td style='width:6%; vertical-align: middle;padding-left: 25px;' onclick='QRCodeClick(this)'><i class='fa fa-qrcode' style='font-size: xx-large;'></i></td></tr>";
-                            }
-                            else {
-                                tabContents = tabContents + "</tr>";
-                            }
-
-
-
-                        }
-                        //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                        if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                            if (Ancillary != "true")
-                                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                            else
-                                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                        }
-                        else {
-                            if (Ancillary != "true")
-                                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                            else
-                                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-
-                        }
-                    }
-                    else {
-                        //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                        if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                            if (Ancillary != "true")
-                                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead></table>");
-                            else
-                                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead></table>");
-
-                        }
-                        else {
-                            if (Ancillary != "true")
-                                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                            else
-                                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-
-                        }
-                    }
-                    //$('#EncounterTable th').addClass('header');
-                    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
-                    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
-                    $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
-                    $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
-                    $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
-                    $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-                    
-                    localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
-                    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
-                        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
-
-                    }
-                    else
-                        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-
-                    $("#btnMyEnc").removeClass("default");
-                    $("#btnMyEnc").addClass("btncolorMyQ");
-                    $("#btnMyQ").removeClass("default");
-                    $("#btnMyQ").addClass("btncolorMyQ");
-                    $("#MovetoNxtProcess").css("display", "inline-block");
-                    //$('#EncounterTable th').addClass('header');
-                    SortTableHeader('MyQ');
-                    RowClick();
-                    if (disableOverallSelect) {
-                        disableSelectAllMove();
-                    }
-                }
-                else {
-                    $("#chkMyShowAll")[0].checked = false;
-                    $("#chkShowAll")[0].checked = false;
-                    var ShowAll = localStorage.getItem('ShowallGeneralqueue');
-                    if (ShowAll == "Checked") {
-                        $("#chkShowAll")[0].checked = true;
-                    }
-                    var MyShowAll = localStorage.getItem('MyShowAll');
-                    if (MyShowAll == "Checked") {
-                        $("#chkMyShowAll")[0].checked = true;
-                    }
-                    document.getElementById("divGeneralQ").style.display = "";
-                    document.getElementById("divMyQ").style.display = "none";
-                    $('#MyQTable').empty();
-                    $('#GeneralQTable').empty();
-                    $('#RefreshQ').css("background-color", "");
-                    $('#btnChkOut').css("background-color", "");
-                    $('#MoveTo').css("background-color", "");
-                    $('#Processenc').css("background-color", "");
-                    $('#RefreshQ')[0].innerText = "Refresh Encounters Q";
-                    $('#lblEr')[0].style.visibility = "visible";
-                    $('#Exam')[0].style.visibility = "visible";
-                    $('#btnChkOut')[0].style.visibility = "visible";
-                    $('#Processenc')[0].style.visibility = "visible";
-                    $('#Processenc')[0].style.width = "134px";
-                    $("#chkShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-                    $('#GeneralQTable').empty();
-                    var tabContents; var eRoomList;
-                    var objdata = $.parseJSON(data.d);
-                    //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                    if (objdata.data.length > 0) {
-                        for (var i = 0; i < objdata.data.length; i++) {
-                            var is_submitted = (objdata.data[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                            if (i == 0)
-                                tabContents = "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:11%'>" + objdata.data[i].PhyName + "</td><td style='width:7%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:7%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                            else
-                                tabContents = tabContents + "<tr><td style='width:5%'><input type='checkbox' onclick='checkboxclick(this)'/></td><td style='width:11%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:11%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:11%'>" + objdata.data[i].PhyName + "</td><td style='width:7%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:7%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:9%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        }
-                        $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    }
-                    else {
-                        $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 5%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                    }
-                    $("#btnEnc")[0].innerText = "Encounters Q " + "(" + objdata.data.length + ")";
-
-                    $("#btnOrder")[0].innerText = "Orders Q " + "(" + objdata.count[0].Order_Count + ")";
-                    $("#btnAmendmnt")[0].innerText = "Amendment Q " + "(" + objdata.count[0].Amendmnt_Count + ")";
-                    $("#btnTask")[0].innerText = "Tasks Q " + "(" + objdata.count[0].Task_Count + ")";
-                    localStorage.setItem("GenralOrderCount", objdata.count[0].Order_Count);
-                    $("#btnEnc").addClass("btncolorMyQ");
-                    $("#btnGeneral").addClass("btncolorMyQ");
-                    if (objdata.dataEroom != undefined && objdata.dataEroom.length > 0) {
-                        if ($('select#Exam option').length == 0) { $.each(objdata.dataEroom, function (i, item) { $('#Exam').append($('<option>', { value: objdata.dataEroom[i], text: objdata.dataEroom[i] })); }); }
-                    }
-                    else {
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    }
-                    RowClick();
-                    //$('#EncounterTable th').addClass('header');
-                    SortTableHeader('GeneralQ');
-
-                }
-
-                sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
-                sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
-                sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
-                sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
-                sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
-
-                sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
-                sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
-                sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
-
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    //CAP-792
-                    if (isValidJSON(xhr.responseText)) {
-                        var log = JSON.parse(xhr.responseText);
-                        console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
-                    }
-                    else {
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry.");
-                    }
-                }
-            }
-        });
     }
 
     $('#btnChkOut').click(function () {
@@ -619,6 +397,9 @@ $(document).ready(function () {
                 $('#MyQTable tr').removeClass("highlight");
                 return false;
             }
+            else if ($('#EncounterTable tr.highlight')[0].innerText == "No data available in table") {
+                return false;
+            }
             else {
                 MyQclick();
             }
@@ -694,12 +475,12 @@ function MyQclick() {
             var encounter_id = '';
             var objtype = '';
             //CAP 314  Uncaught Type Error: Cannot read properties of undefined (reading inner Text)    
-            if ($(currRow)[0]?.children[6]?.innerText.trim() == 'TECHNICIAN_PROCESS' && $(currRow)[0]?.children[6]?.innerText.trim() != undefined && $(currRow)[0]?.children[6]?.innerText.trim() != null) {
-                Curprocess = $(currRow)[0]?.children[6]?.innerText.trim()
-                PhyID = $(currRow)[0]?.children[11]?.innerText.trim();
-                date = $(currRow)[0]?.children[13]?.innerText.trim();
-                encounter_id = $(currRow)[0]?.children[10]?.innerText.trim();
-                objtype = $(currRow)[0]?.children[12]?.innerText.trim();
+            if ($(currRow)[0]?.children[7]?.innerText.trim() == 'TECHNICIAN_PROCESS' && $(currRow)[0]?.children[7]?.innerText.trim() != undefined && $(currRow)[0]?.children[7]?.innerText.trim() != null) {
+                Curprocess = $(currRow)[0]?.children[7]?.innerText.trim()
+                PhyID = $(currRow)[0]?.children[12]?.innerText.trim();
+                date = $(currRow)[0]?.children[14]?.innerText.trim();
+                encounter_id = $(currRow)[0]?.children[11]?.innerText.trim();
+                objtype = $(currRow)[0]?.children[13]?.innerText.trim();
             }
             else {
                 Curprocess = $(currRow)[0]?.children[7]?.innerText.trim();
@@ -1100,10 +881,12 @@ function OnClientCloseWindow() {
                 $('#GeneralQTable tr').find('td:eq(8):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
             }
             else if (btnid == "btnMyScan") {
-                $('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+                var table = new DataTable('#EncounterTable');
+                table.row($('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw(false);
+                //$('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
+
             }
-            else if (btnid =='btnMyPres')
-            {
+            else if (btnid == 'btnMyPres') {
                 $('#MyQTable tr').find('td:eq(7):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
             }
             else {
@@ -1118,6 +901,47 @@ function OnClientCloseWindow() {
         }
         else if ($('#dvAdd').find("#EncounterTable tbody").length > 0) {
              numberofEncounters = $('#dvAdd').find("#EncounterTable tbody").children().length;
+        }
+        //Cap - 2589
+        //else if ($('#MyQTable').find("#EncounterTable tbody").length > 0) {
+        //    numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
+        //}
+        else if (btnid == "btnMyOrder") {
+            var myOrderCount = $('#btnMyOrder').text();
+            myOrderCount = parseInt(myOrderCount.match(/\d+/)[0]);
+            var updatedCount = myOrderCount - removearry.length;
+            numberofEncounters = updatedCount;
+            if (updatedCount > 15) {
+                $('#EncounterTable_info').text(`Showing 1 to 15 of ${updatedCount} entries`);
+            } else {
+                $('#EncounterTable_info').text(`Showing 1 to ${updatedCount} of ${updatedCount} entries`);
+            }
+        } else if (btnid == "btnMyPres") {
+            var myPresCount = $('#btnMyPres').text();
+            myPresCount = parseInt(myPresCount.match(/\d+/)[0]);
+            var updatedCount = myPresCount - removearry.length;
+            numberofEncounters = updatedCount;
+            if (updatedCount > 15) {
+                $('#EncounterTable_info').text(`Showing 1 to 15 of ${updatedCount} entries`);
+            } else {
+                $('#EncounterTable_info').text(`Showing 1 to ${updatedCount} of ${updatedCount} entries`);
+            }
+        } else if (btnid == "btnMyTask") {
+            //Cap - 2589
+            var finalcount = 0;
+            for (let i = 0; i < removearry.length; i++) {
+                tempObjectMyQTask = $.grep(tempObjectMyQTask, function (element) {
+                    return element.Message_ID != removearry[i].split("~")[0];
+                });
+                finalcount = tempObjectMyQTask.length;
+                LoadMyTaskTemp();
+                numberofEncounters = finalcount;
+            }
+        }
+        else if (btnid == "btnMyScan")
+        {
+            var table = new DataTable('#EncounterTable');
+            numberofEncounters = table.data().count();
         }
         else {
             numberofEncounters = 0;
@@ -1143,7 +967,6 @@ function GenQLoad() {
         if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
             $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
         }
-
         $.ajax({
             type: "POST",
             url: "frmMyQueueNew.aspx/LoadEncounter",
@@ -1226,150 +1049,12 @@ function MyQLoad() {
     if (MyShowAll == "Checked") {
         Showall = "Checked";
         $("#chkMyShowAll")[0].checked = true;
-        loadMyenc();
+        LoadMyEncounter();
     }
     else {
         Showall = "Unchecked";
         $("#chkMyShowAll")[0].checked = false;
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/EncounterLoad",
-            data: JSON.stringify({
-                "sShowall": Showall,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                var Ancillary = objdata.Ancillary;
-                let disableOverallSelect = true;
-                if (objdata.data.length > 0) {
-                    for (var i = 0; i < objdata.data.length; i++) {
-                        var is_submitted = (objdata.data[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                        let disabled = "disabled='true'";
-                        if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
-                            disabled = "";
-                            disableOverallSelect = false;
-                        }
-                        //Jira CAP-593
-                        //if (i == 0) {
-                        //    if (Ancillary != "true")
-                        //        tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        //    else
-                        //        tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        //}
-                        //else {
-                        //    if (Ancillary != "true")
-                        //        tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        //    else
-                        //        tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        //}
-
-                        //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                        if (i == 0) {
-                            if (Ancillary != "true")
-                                tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                            else
-                                tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                        }
-                        else {
-                            if (Ancillary != "true")
-                                tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                            else
-                                tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                        }
-
-
-                        if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                            tabContents = tabContents + "<td style='width:6%; vertical-align: middle;padding-left: 25px;' onclick='QRCodeClick(this)'><i class='fa fa-qrcode' style='font-size: xx-large;'></i></td></tr>";
-                        }
-                        else {
-                            tabContents = tabContents + "</tr>";
-                        }
-
-
-
-                    }
-                    //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                    if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                        if (Ancillary != "true")
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                        else
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    }
-                    else {
-                        if (Ancillary != "true")
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                        else
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    }
-                }
-                else {
-                    //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                    if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                        if (Ancillary != "true")
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead></table>");
-                        else
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead></table>");
-                    }
-                    else {
-                        if (Ancillary != "true")
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                        else
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                    }
-                }
-                $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
-                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
-                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
-                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
-                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
-                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
-
-
-                sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
-                sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
-                sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
-                sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
-                sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
-
-                localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
-                if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
-                    $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
-                }
-                else
-                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                $("#btnMyEnc").removeClass("default");
-                $("#btnMyEnc").addClass("btncolorMyQ");
-                $("#btnMyQ").removeClass("default");
-                $("#btnMyQ").addClass("btncolorMyQ");
-                //$('#EncounterTable th').addClass('header');
-                SortTableHeader('MyQ');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-
-                if (disableOverallSelect) {
-                    disableSelectAllMove();
-                }
-
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        LoadMyEncounter('EncounterLoad');
     }
 
 
@@ -1461,164 +1146,394 @@ function ShowMyQTabs(sender) {
     }
 }
 
-function loadMyenc() {
+function LoadMyEncounter(ajaxUrl) {
+    if ($('#hdnIsShowAllMyEncountersQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#MyQTable").append(`
+    <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;width:100%;">
+    <thead class="header" style="border: 0px;width:96.7%;">
+        <tr class="header">
+            <th style="border: 1px solid #909090;text-align: center;width: 4%;">Select<input type="checkbox" class="myQChkbxAll" onclick="MyQselectAll(this)"></th>
+            <th style="border: 1px solid #909090;text-align: center;">Appt. Date & Time</th>
+            <th style="border: 1px solid #909090;text-align: center;">Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;">Ext. Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;">Patient Name</th>
+            <th style="border: 1px solid #909090;text-align: center;">Patient DOB</th>
+            <th style="border: 1px solid #909090;text-align: center;">Type of Visit</th>
+            <th style="border: 1px solid #909090;text-align: center;">Current Process</th>
+            <th style="border: 1px solid #909090;text-align: center;">Test Details</th>
+            <th style="border: 1px solid #909090;text-align: center;">Ordering Physician</th>
+            <th style="border: 1px solid #909090;text-align: center;">Facility Name</th>
+            <th style="border: 1px solid #909090;text-align: center;">Assigned Physician</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pri. Carrier</th>
+            <th style="border: 1px solid #909090;text-align: center;">Pri. Plan</th>
+            <th style="border: 1px solid #909090;text-align: center;">eSuperbill Status</th>
+            <th style="border: 1px solid #909090;text-align: center;">Encounter ID</th>
+            <th style="border: 1px solid #909090;text-align: center;">Physician_ID</th>
+            <th style="border: 1px solid #909090;text-align: center;">EHR_Obj_Type</th>
+            <th style="border: 1px solid #909090;text-align: center;">Date_of_Service</th>
+            <th style="border: 1px solid #909090;text-align: center;">QR Code</th>
+        </tr>
+    </thead>
+</table>`);
 
+    var ViewAllFacilities = "";
+    if ($("#ctl00_C5POBody_chkViewAllFacilities")[0] != undefined && $("#ctl00_C5POBody_chkViewAllFacilities")[0] != null) {
+        $("#ctl00_C5POBody_chkViewAllFacilities")[0].checked ? ViewAllFacilities = "Checked" : ViewAllFacilities = "Unchecked";
+    }
+
+    $("#chkMyShowAll")[0].disabled = false;
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    var Ancillary = $('#ctl00_C5POBody_hdnAncillary').val();
+    ajaxUrl = ajaxUrl == '' || ajaxUrl == undefined ? 'chkShowAllMyEncounter' : ajaxUrl;
+    var extra_search = ajaxUrl == 'MyEncounterLoad' ? ViewAllFacilities : '';
+    extra_search = ajaxUrl == 'chkShowAllMyEncounter' ? Showall : '';
+
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autoWidth: false,
+        order: [],
+        pageLength: 15,
+        language: {
+            search: "Patient Search",
+            searchPlaceholder: "Search by Name or Acct. # or Encounter ID",
+            infoFiltered: ""
+        },
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: '/frmMyQueueNew.aspx/' + ajaxUrl,
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = extra_search;
+                return d;
+            },
+            dataSrc: function (json) {
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+
+                if (ajaxUrl == 'MyEncounterLoad') {
+                    MyQBind1(objdata)
+                }
+                if (ajaxUrl == 'EncounterLoad') {
+                    MyQBind2(objdata)
+                }
+                if (ajaxUrl == 'chkShowAllMyEncounter') {
+                    MyQBind3(objdata)
+                }
+
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                json.data = objdata.data;
+                return json.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "ErrorPage.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+            }
+        },
+        columns: [
+            {
+                data: '', render: function (data, type, row) {
+                    let disabled = "disabled='true'";
+                    if (row.Current_Process.toUpperCase() == "PROVIDER_REVIEW" || row.Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+                        disabled = "";
+                        disableOverallSelect = false;
+                    }
+                    if (Role != "Medical Assistant" && Role != "Front Office" && Role != "Surgery Coordinator" && Role != "Scribe") {
+                        return "<input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/>";
+                    } else {
+                        return "<input type='checkbox' onclick='checkboxclick(this)' />";
+                    }
+                },
+                sClass: "text-align-center",
+                searchable: false,
+                orderable: false,
+                sWidth: '3%',
+            },
+            {
+                data: 'Appt_Date_Time', render: function (data, type, row) {
+                    return ConvertDate(data.replace("T", " "));
+                },
+                searchable: false,
+                type: 'date',
+                sWidth: '12%'
+            },
+            { data: 'Human_ID', sWidth: '6%' },
+            { data: 'External_Account_Number', searchable: false, sWidth: '7%' },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all',
+                sWidth: '10%'
+            },
+            {
+                data: 'DOB', render: function (data, type, row) {
+                    return DOBConvert(data.replace("T00:00:00", ""))
+                },
+                searchable: false,
+                type: 'date',
+                sWidth: '8%'
+            },
+            { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column'), searchable: false, sWidth: '8%' },
+            { data: 'Current_Process', searchable: false, sWidth: '12%' },
+            { data: 'Test_Details', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
+            { data: 'Ordering_Physician', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
+            { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
+            { data: 'PhyName', visible: (Ancillary == 'false'), searchable: false, sWidth: '12%' },
+            { data: 'Carrier_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
+            { data: 'Insurance_Plan_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
+            {
+                data: 'Is_EandM_Submitted', render: function (data, type, row) {
+                    return data.toUpperCase() == 'Y' ? "Submitted" : "Not Submitted";
+                },
+                searchable: false,
+                sWidth: '11%'
+            },
+            { data: 'Encounter_ID', sWidth: '7%' },
+            { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
+            { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
+            { data: 'Date_of_Service', sClass: 'hide_column', searchable: false },
+            {
+                data: '', render: function (data, type, row) {
+                    var dt1 = row.Date_of_Service.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
+                    var dos = ConvertDate(new Date(parseInt(dt1)));
+                    //return `<i class="fa fa-qrcode" style="font-size: xx-large;" onclick="QRCodeClick(${row.Human_ID},${row.Encounter_ID},'${dos}',${row.Physician_ID})"></i>`;
+                    return `<i class="fa fa-qrcode" style="font-size: xx-large;" onclick="QRCodeClick(this)"></i>`;
+                },
+                sClass: "text-align-center",
+                searchable: false,
+                orderable: false,
+                visible: (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES"),
+                sWidth: '6%'
+            },
+        ]
+    });
+
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx').prop('checked', false);
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx').prop('checked', false);
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        var existingSelectedItem = $("#MyQTable tr.highlight");
+        for (var i = 0; i < existingSelectedItem.length; i++) {
+            var processes = "NoCurrentProcess";
+            if (existingSelectedItem[i]?.children[7]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[7]?.childNodes[0]?.data != null) {
+                processes = existingSelectedItem[i].children[7].childNodes[0].data;
+            }
+            var isproviderReviewMyQ = processes;
+            if (isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
+                existingSelectedItem[i].classList.remove("highlight");
+            }
+        }
+
+        $(this)[0].classList.add('highlight');
+        var NewRowprocesses = "NoCurrentProcess";
+        if ($(this)[0]?.children[7]?.childNodes[0]?.data != undefined && $(this)[0]?.children[7]?.childNodes[0]?.data != null) {
+            NewRowprocesses = $(this)[0].children[7].childNodes[0].data;
+        }
+        var isproviderReviewMyQNewRow = NewRowprocesses;
+        if (isproviderReviewMyQNewRow == "PROVIDER_REVIEW" || isproviderReviewMyQNewRow == "PROVIDER_REVIEW_2") {
+            if ($(this)[0].children[0].children[0].checked == false) {
+                $(this)[0].children[0].children[0].checked = true;
+            }
+            else {
+                $(this)[0].children[0].children[0].checked = false;
+                $(this).removeClass("highlight");
+            }
+            MyQcheckboxclickAction($(this)[0].children[0].children[0]);
+        }
+    });
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        if ($('#MyQTable').children().find('.highlight').length > 1) {
+            alert("Please select one encounter to process");
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            $('#MyQTable td').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable th').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable tr').removeClass("highlight");
+
+            if ($('#MovetoNxtProcess') != undefined && $('#MovetoNxtProcess')[0]?.disabled != undefined) {
+                $('#MovetoNxtProcess')[0].disabled = true;
+            }
+            return false;
+        }
+
+        if (event.target.tagName != 'TH' && event.target.type != 'checkbox') {
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+            if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                $(this)[0].children[0].children[0].checked = true;
+                $(this)[0].classList.add('highlight');
+            }
+            MyQclick();
+        }
+        sessionStorage.setItem('MyQRemoveIdList', '');
+    });
+}
+
+function MyQBind1(objdata) {
+    //MyEncounterLoad
+    let disableOverallSelect = true;
+    if (objdata.role != "Medical Assistant" && objdata.role != "Front Office" && objdata.role != "Surgery Coordinator" && objdata.role != "Scribe") {
+        for (var i = 0; i < objdata.data.length; i++) {
+            if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+                disableOverallSelect = false;
+            }
+        }
+
+        $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
+        $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
+        $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
+        $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
+        $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
+
+        localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
+        if ($('#hdnIsShowAllMyEncountersQueue').val() == 'Y') {
+            $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+        } else {
+            $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+        }
+        if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncountersQueue').val() != 'Y') {
+            $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+            $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are<span style="color:red;"> ' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+        }
+        else
+            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+
+        $("#btnMyEnc").removeClass("default");
+        $("#btnMyEnc").addClass("btncolorMyQ");
+        $("#btnMyQ").removeClass("default");
+        $("#btnMyQ").addClass("btncolorMyQ");
+        $("#MovetoNxtProcess").css("display", "inline-block");
+        if (disableOverallSelect) {
+            disableSelectAllMove();
+        }
+    }
+    sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+    sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+    sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+    sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+    sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+    sessionStorage.setItem("Order_Count", objdata.count[0].Order_Count);
+    sessionStorage.setItem("Amendmnt_Count", objdata.count[0].Amendmnt_Count);
+    sessionStorage.setItem("Task_Count", objdata.count[0].Task_Count);
+}
+
+function MyQBind2(objdata) {
+    //EncounterLoad
+    let disableOverallSelect = true;
+    for (var i = 0; i < objdata.data.length; i++) {
+        if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+            disableOverallSelect = false;
+        }
+    }
+    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.count[0].My_Task_Count + ")";
+    $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.count[0].My_Order_Count + ")";
+    $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.count[0].My_Scan_Count + ")";
+    $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.count[0].My_Presc_Count + ")";
+    $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.count[0].My_Amendmnt_Count + ")";
+
+    sessionStorage.setItem("My_Task_Count", objdata.count[0].My_Task_Count);
+    sessionStorage.setItem("My_Order_Count", objdata.count[0].My_Order_Count);
+    sessionStorage.setItem("My_Scan_Count", objdata.count[0].My_Scan_Count);
+    sessionStorage.setItem("My_Presc_Count", objdata.count[0].My_Presc_Count);
+    sessionStorage.setItem("My_Amendmnt_Count", objdata.count[0].My_Amendmnt_Count);
+
+    localStorage.setItem("Myorderscount", objdata.count[0].My_Order_Count);
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncountersQueue').val() != 'Y') {
+        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+    }
+    else
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
     $("#btnMyEnc").removeClass("default");
     $("#btnMyEnc").addClass("btncolorMyQ");
     $("#btnMyQ").removeClass("default");
     $("#btnMyQ").addClass("btncolorMyQ");
-    $("#MovetoNxtProcess").css("display", "inline-block");
-
-    $("#chkMyShowAll")[0].disabled = false;
-    $('#MyQTable').empty();
-    var showallchecked = localStorage.getItem('MyShowAll');
-    if (showallchecked == "Checked") {
-        Showall = "Checked";
-        $("#chkMyShowAll")[0].checked = true;
+    if (disableOverallSelect) {
+        disableSelectAllMove();
     }
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/chkShowAllMyEncounter",
-        data: JSON.stringify({
-            "sShowall": Showall,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents = "";
-            var objdata = $.parseJSON(data.d);
-            var Ancillary = objdata.Ancillary;
-            let disableOverallSelect = true;
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.data.length; i++) {
-                    var is_submitted = (objdata.data[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                    let disabled = "disabled='true'";
-                    if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
-                        disabled = "";
-                        disableOverallSelect = false;
-                    }
+}
 
-                    //Jira CAP-593
-                    //if (i == 0) {
-                    //    if (Ancillary != "true")
-                    //        tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                    //    else
-                    //        tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                    //}
-                    //else {
-                    //    if (Ancillary != "true")
-                    //        tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                    //    else
-                    //        tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                    //}
-
-                    //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                    if (i == 0) {
-                        if (Ancillary != "true")
-                            tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                        else
-                            tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                    }
-                    else {
-                        if (Ancillary != "true")
-                            tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                        else
-                            tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                    }
-
-                    if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                        tabContents = tabContents + "<td style='width:6%; vertical-align: middle;padding-left: 25px;' onclick='QRCodeClick(this)'><i class='fa fa-qrcode' style='font-size: xx-large;'></i></td></tr>";
-                    }
-                    else {
-                        tabContents = tabContents + "</tr>";
-                    }
-
-
-                }
-                //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                    if (Ancillary != "true")
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    else
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                }
-                else {
-                    if (Ancillary != "true")
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    else
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                }
-            }
-            else {
-                //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                    if (Ancillary != "true")
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead></table>");
-                    else
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead></table>");
-                }
-                else {
-                    if (Ancillary != "true")
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                    else
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                }
-
-            }
-            $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
-
-            if (sessionStorage.getItem("My_Task_Count") != null && sessionStorage.getItem("My_Task_Count") != undefined) {
-                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + sessionStorage.getItem("My_Task_Count") +")";
-            }
-
-            if (sessionStorage.getItem("My_Order_Count") != null && sessionStorage.getItem("My_Order_Count") != undefined) {
-                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + sessionStorage.getItem("My_Order_Count") + ")";
-            }
-            if (sessionStorage.getItem("My_Scan_Count") != null && sessionStorage.getItem("My_Scan_Count") != undefined) {
-                $("#btnMyScan")[0].innerText = "My Scan " + "(" + sessionStorage.getItem("My_Scan_Count") +")";
-            }
-            if (sessionStorage.getItem("My_Presc_Count") != null && sessionStorage.getItem("My_Presc_Count") != undefined) {
-                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + sessionStorage.getItem("My_Presc_Count") +")";
-            }
-            if (sessionStorage.getItem("My_Amendmnt_Count") != null && sessionStorage.getItem("My_Amendmnt_Count") != undefined) {
-                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + sessionStorage.getItem("My_Amendmnt_Count")+")";
-            }
-            
-            
-            
-
-
-            if (objdata.EncounterCount != null && objdata.EncounterCount != undefined) {
-                $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
-            }
-
-            else
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-            SortTableHeader('MyQ');
-            RowClick();
-            //$('#EncounterTable th').addClass('header');
-            if (disableOverallSelect) {
-                disableSelectAllMove();
-            }
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
-            }
+function MyQBind3(objdata) {
+    //chkShowAllMyEncounter
+    let disableOverallSelect = true;
+    for (var i = 0; i < objdata.data.length; i++) {
+        if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
+            disableOverallSelect = false;
         }
-    });
+    }
+    $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
+    if (sessionStorage.getItem("My_Task_Count") != null && sessionStorage.getItem("My_Task_Count") != undefined) {
+        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + sessionStorage.getItem("My_Task_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Order_Count") != null && sessionStorage.getItem("My_Order_Count") != undefined) {
+        $("#btnMyOrder")[0].innerText = "My Orders " + "(" + sessionStorage.getItem("My_Order_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Scan_Count") != null && sessionStorage.getItem("My_Scan_Count") != undefined) {
+        $("#btnMyScan")[0].innerText = "My Scan " + "(" + sessionStorage.getItem("My_Scan_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Presc_Count") != null && sessionStorage.getItem("My_Presc_Count") != undefined) {
+        $("#btnMyPres")[0].innerText = "My Prescription " + "(" + sessionStorage.getItem("My_Presc_Count") + ")";
+    }
+    if (sessionStorage.getItem("My_Amendmnt_Count") != null && sessionStorage.getItem("My_Amendmnt_Count") != undefined) {
+        $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + sessionStorage.getItem("My_Amendmnt_Count") + ")";
+    }
 
+    if (objdata.EncounterCount != null && objdata.EncounterCount != undefined && $('#hdnIsShowAllMyEncountersQueue').val() != 'Y') {
+        $("#ctl00_C5POBody_lblcount").css('font-size', '11px');
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = 'Total encounters to be signed are <span style="color:red;">' + objdata.EncounterCount + '</span>. To view current as well as more than 21 days old encounters, click on "ShowAll".'
+    }
+    else
+        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    if (disableOverallSelect) {
+        disableSelectAllMove();
+    }
 }
 
 function loadMytask() {
@@ -1668,355 +1583,1238 @@ function loadMytask() {
     }
     //Jira #CAP-912
     data = JSON.stringify({ "sShowall": Showall, "sOpenTask": OpenTask });
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/" + url,
-        data: data,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
-                        Msg_Date_And_Time = "";
-                    else
-                        Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
-                    if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
-                        Modified_Date_Time = "";
-                    else
-                        Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
-                    if (i == 0) {
-                        //Jira #CAP-119
-                        //tabContents = "<tr  style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                        tabContents = "<tr  style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '').replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                    }
-                    else {
-                        //Jira #CAP-119
-                        //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                        tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '').replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                    }
-                }
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-break: break-all;' >" + tabContents + "</tbody></table>");
-            }
-            else {
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'  ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
-            }
-            //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)"; 
-            $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+    LoadMyTask();
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmMyQueueNew.aspx/" + url,
+    //    data: data,
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        $('#MyQTable').empty();
+    //        var tabContents;
+    //        var objdata = $.parseJSON(data.d);
+    //        if (data.d != "[]") {
+    //            for (var i = 0; i < objdata.length; i++) {
+    //                if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
+    //                    Msg_Date_And_Time = "";
+    //                else
+    //                    Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
+    //                if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
+    //                    Modified_Date_Time = "";
+    //                else
+    //                    Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
+    //                if (i == 0) {
+    //                    //Jira #CAP-119
+    //                    //tabContents = "<tr  style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                    tabContents = "<tr  style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '').replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                }
+    //                else {
+    //                    //Jira #CAP-119
+    //                    //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                    tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '').replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                }
+    //            }
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-break: break-all;' >" + tabContents + "</tbody></table>");
+    //        }
+    //        else {
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header'  ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
+    //        }
+    //        //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)"; 
+    //        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
 
-            if (Showall != "Checked") {
-                sessionStorage.setItem("My_Task_Count", objdata.length);
-            }
+    //        if (Showall != "Checked") {
+    //            sessionStorage.setItem("My_Task_Count", objdata.length);
+    //        }
 
-            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-            SortTableHeader('MyQTask');
-            //$('#EncounterTable th').addClass('header');
-            RowClick();
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    //        SortTableHeader('MyQTask');
+    //        //$('#EncounterTable th').addClass('header');
+    //        RowClick();
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //    },
+    //    error: function OnError(xhr) {
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        if (xhr.status == 999)
+    //            window.location = "/frmSessionExpired.aspx";
+    //        else {
+    //            //CAP-792
+    //            if (isValidJSON(xhr.responseText)) {
+    //                var log = JSON.parse(xhr.responseText);
+    //                console.log(log);
+    //                alert("USER MESSAGE:\n" +
+    //                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+    //                    "Message: " + log.Message);
+    //            }
+    //            else {
+    //                alert("USER MESSAGE:\n" +
+    //                    ". Cannot process request. Please Login again and retry.");
+    //            }
+    //        }
+    //    }
+    //});
+
+}
+
+function LoadMyTask() {
+
+    if ($('#hdnIsShowAllMyTasksQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+        $("#chkMyShowAll").prop('checked', true);
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
+
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#MyQTable").append(`
+    <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
+    <thead class='header' style='border: 0px;width:96.7%;'>
+    <tr class='header' >
+    <th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th>
+    <th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th>
+    <th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th>
+    <th style='border: 1px solid #909090;display:none;'>TaskID</th>
+    <th style='border: 1px solid #909090;display:none;'>Version</th>
+    </tr>
+    </thead>
+</table>`);
+    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
+    if ($("#chkMyTask14")[0].checked) {
+        var url = "LoadMyTaskCompleted";
+    }
+    else {
+        var url = "LoadMyTask";
+    }
+    var Last14 = $("#chkMyTask14")[0].checked ? "Checked" : "Unchecked";
+    var OpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
+    data = JSON.stringify({ "sShowall": Showall, "sOpenTask": OpenTask });
+    var titleval;
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autowidth: false,
+        order: [],
+        pageLength: 15,
+        language: {
+            search: "Patient Name",
+            searchPlaceholder: "Search by Name or Acct. #",
+            infoFiltered: ""
         },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                //CAP-792
-                if (isValidJSON(xhr.responseText)) {
+        dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
+
+        ajax: {
+            url: '/frmMyQueueNew.aspx/' + url,
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = data;
+                return d;
+            },
+            dataSrc: function (json) {
+                //var objdata = json.d;
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+                tempObjectMyQTask = objdata.data;
+                $("#btnMyTask")[0].innerText = "My Tasks  " + "(" + objdata.data.length + ")";
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Task_Count", objdata.data.length);
+                }
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+                //return objdata;
+                json.data = objdata.data;
+                return json.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "ErrorPage.aspx";
+                else {
                     var log = JSON.parse(xhr.responseText);
                     console.log(log);
                     alert("USER MESSAGE:\n" +
                         ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
                         "Message: " + log.Message);
                 }
-                else {
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry.");
-                }
             }
+        },
+        columns: [
+            { data: 'Priority', searchable: false },
+            { data: 'Human_ID' },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all'
+            },
+            {
+                data: 'Msg_Date_And_Time', render: function (data, type, row) {
+                    if (row.Msg_Date_And_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Msg_Date_And_Time.replace("T", " ")).split(' ')[0];
+                }, searchable: false,
+                type: 'date'
+            },
+            {
+                data: 'Message_Description', render: function (data, type, row) {
+                    if (row.Message_Notes != "") {
+                        titleval = row.Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, "").replace(/'/g, "");
+                    }
+                    else {
+                        titleval = "";
+                    }
+                    return `<span title="${titleval}">${row.Message_Description}</span>`;
+                }, searchable: false
+            },
+            { data: 'Assigned_To', searchable: false },
+            { data: 'Created_By', searchable: false },
+            {
+                data: 'Modified_Date_Time', render: function (data, type, row) {
+                    if (row.Modified_Date_Time == "0001-01-01T00:00:00" || !$("#chkMyTask14")[0].checked)
+                        return "";
+                    else
+                        return ConvertDate(row.Modified_Date_Time.replace("T", " "));
+                }, searchable: false,
+                type: 'date'
+            },
+            { data: 'Message_ID', sClass: "hide_column", searchable: false },
+            { data: 'Version', sClass: "hide_column", searchable: false },
+        ],
+
+    });
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+        'width': '500px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    //$('#EncounterTable_filter input').unbind();
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $(this)[0].classList.add('highlight');
+        if ($('#EncounterTable tr.highlight')[0].innerText == "No data available in table") {
+            return false;
+        } else {
+            MyQclick();
         }
     });
 
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $(this)[0].classList.add('highlight');
+    });
 }
+
+
+function LoadMyTaskTemp() {
+    if ($('#hdnIsShowAllMyTasksQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+        $("#chkMyShowAll").prop('checked', true);
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
+
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#MyQTable").append(`
+    <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
+    <thead class='header' style='border: 0px;width:96.7%;'>
+    <tr class='header' >
+    <th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th>
+    <th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th>
+    <th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th>
+    <th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th>
+    <th style='border: 1px solid #909090;display:none;'>TaskID</th>
+    <th style='border: 1px solid #909090;display:none;'>Version</th>
+    </tr>
+    </thead>
+</table>`);
+    var titleval;
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autowidth: false,
+        order: [],
+        pageLength: 15,
+        language: {
+            search: "Patient Name",
+            searchPlaceholder: "Search by Name or Acct. #",
+            infoFiltered: ""
+        },
+        dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
+        data: tempObjectMyQTask,
+        columns: [
+            { data: 'Priority', searchable: false },
+            { data: 'Human_ID' },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all'
+            },
+            {
+                data: 'Msg_Date_And_Time', render: function (data, type, row) {
+                    if (row.Msg_Date_And_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Msg_Date_And_Time.replace("T", " ")).split(' ')[0];
+                }, searchable: false,
+                type: 'date'
+            },
+            {
+                data: 'Message_Description', render: function (data, type, row) {
+                    if (row.Message_Notes != "") {
+                        titleval = row.Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, "").replace(/'/g, "");
+                    }
+                    else {
+                        titleval = "";
+                    }
+                    return `<span title="${titleval}">${row.Message_Description}</span>`;
+                }, searchable: false
+            },
+            { data: 'Assigned_To', searchable: false },
+            { data: 'Created_By', searchable: false },
+            {
+                data: 'Modified_Date_Time', render: function (data, type, row) {
+                    if (row.Modified_Date_Time == "0001-01-01T00:00:00" || !$("#chkMyTask14")[0].checked)
+                        return "";
+                    else
+                        return ConvertDate(row.Modified_Date_Time.replace("T", " "));
+                }, searchable: false,
+                type: 'date'
+            },
+            { data: 'Message_ID', sClass: "hide_column", searchable: false },
+            { data: 'Version', sClass: "hide_column", searchable: false },
+        ],
+
+    });
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+        'width': '500px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    //$('#EncounterTable_filter input').unbind();
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $(this)[0].classList.add('highlight');
+        MyQclick();
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $(this)[0].classList.add('highlight');
+    });
+}
+
+
 function loadMyorder() {
+    if ($('#hdnIsShowAllMyOrdersQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#MyQTable").append(`
+    <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;">
+    <thead class="header" style="border: 0px;width:96.7%;">
+        <tr class="header">
+            <th style="border: 1px solid #909090;text-align: center;width:9%" title="Click here to sort">Order Date</th>
+            <th style="border: 1px solid #909090;display:none;">Test Date</th>
+            <th style="border: 1px solid #909090;text-align: center;width:6%;" title="Click here to sort">Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;width:6%" title="Click here to sort">Ext. Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;width:10%" title="Click here to sort">Patient Name</th>
+            <th style="border: 1px solid #909090;text-align: center;width:8%" title="Click here to sort">Patient DOB</th>
+            <th style="border: 1px solid #909090;text-align: center;width:10%" title="Click here to  sort">Description</th>
+            <th style="border: 1px solid #909090;text-align: center;width:10%" title="Click here to sort">Ordering Physician</th>
+            <th style="border: 1px solid #909090;text-align: center;width:10%" title="Click here to sort">Current Process</th>
+            <th style="border: 1px solid #909090;text-align: center;width:10%" title="Click here to sort">Lab/Referred to</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">Lab Location</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">Encounter_ID</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">Physician_ID</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">Order_ID</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">ObjType</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">LabID</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">LocationID</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">Order_Submit_ID</th>
+            <th style="border: 1px solid #909090;display:none;text-align: center;" title="Click here to sort">Referred to Facility</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">Result_Master_ID</th>
+            <th style="border: 1px solid #909090;display:none;" title="Click here to sort">File_Reference_No</th>
+            <th style="border: 1px solid #909090;text-align: center;width:10%" title="Click here to sort">Narrative Interpretation</th>
+        </tr>
+    </thead>
+    </table>`);
+
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/LoadMyOrder",
-        data: JSON.stringify({
-            "sShowall": Showall,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    var orderType = objdata[i].EHR_Obj_Type.replace("INTERNAL", "").trim();
-                    //Added File_Reference_number in table for ViewResult BugID:43099
-                    if (i == 0) {
-                        if (objdata[i].Reason_For_Referral != "") {
-                            if (objdata[i].Referred_to != "") {
-                                if (objdata[i].Is_Abnormal == "Yes")
-                                    tabContents = "<tr style='color:red;'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'  id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%' >" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td style='display:none;' >" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                else
-                                    tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%' >" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td style='display:none;' >" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                            }
-                            else {
-                                if (objdata[i].Is_Abnormal == "Yes")
-                                    tabContents = "<tr style='color:red;'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%' >" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                else
-                                    tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%' >" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                            }
+
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autoWidth: false,
+        order: [],
+        pageLength: 15,
+        language: {
+            search: "Patient Search",
+            searchPlaceholder: "Search by Name or Acct. #",
+            infoFiltered: ""
+        },
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: '/frmMyQueueNew.aspx/LoadMyOrder',
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = Showall;
+                return d;
+            },
+            dataSrc: function (json) {
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+
+                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.data.length + ")";
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Order_Count", objdata.data.length);
+                }
+                localStorage.setItem("Myorderscount", objdata.data.length);
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "Note:All abnormal results are in <span style='color:red'> RED</span> color font.";
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return objdata.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "ErrorPage.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+            }
+        },
+        columns: [
+            {
+                data: 'Created_Date_And_Time', render: function (data, type, row) {
+                    return ConvertDate(data.replace("T", " "));
+                },
+                searchable: false,
+                type: 'date'
+            },
+            { data: 'Test_Date', searchable: false, sClass: 'hide_column' },
+            { data: 'Human_ID' },
+            { data: 'External_Account_Number', searchable: false },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all'
+            },
+            {
+                data: 'DOB', render: function (data, type, row) {
+                    return DOBConvert(data.replace("T00:00:00", ""))
+                },
+                searchable: false,
+                type: 'date'
+            },
+            {
+                data: 'Reason_For_Referral', render: function (data, type, row) {
+                    var description = "";
+                    if (row.Reason_For_Referral != "") {
+                        if (row.Referred_to != "") {
+                            if (row.Is_Abnormal == "Yes")
+                                description = row.Reason_For_Referral
+                            else
+                                description = row.Reason_For_Referral
                         }
                         else {
-                            if (objdata[i].Referred_to != "") {
-                                if (objdata[i].Is_Abnormal == "Yes")
-                                    tabContents = "<tr style='color:red;'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                else
-                                    tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-
-                            }
-                            else {
-                                if (objdata[i].Is_Abnormal == "Yes")
-                                    tabContents = "<tr style='color:red;'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                else
-                                    tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                            }
+                            if (row.Is_Abnormal == "Yes")
+                                description = row.Reason_For_Referral
+                            else
+                                description = row.Reason_For_Referral
                         }
                     }
                     else {
-                        if (objdata[i].Reason_For_Referral != "") {
-                            if (objdata[i].Referred_to != "") {
-                                if (objdata[i].Is_Abnormal == "Yes")
-                                    tabContents = tabContents + "<tr style='color:red;'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                else
-                                    tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                            }
-                            else {
-                                if (objdata[i].Is_Abnormal == "Yes")
-                                    tabContents = tabContents + "<tr style='color:red;'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                else
-                                    tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                            }
+                        if (row.Referred_to != "") {
+                            if (row.Is_Abnormal == "Yes")
+                                description = row.Procedure_Ordered
+                            else
+                                description = row.Procedure_Ordered
                         }
                         else {
-                            if (objdata[i].Referred_to != "") {
-                                if (objdata[i].Is_Abnormal == "Yes")
-                                    tabContents = tabContents + "<tr style='color:red;'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                else
-                                    tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                            }
-                            else {
-                                if (objdata[i].Is_Abnormal == "Yes")
-                                    tabContents = tabContents + "<tr style='color:red;'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                else
-                                    tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;' id='Test_Date'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;' id='Encounter_ID'>" + objdata[i].Encounter_ID + "</td><td style='display:none;' id='Physician_ID'>" + objdata[i].Physician_ID + "</td><td style='display:none;' id='Order_ID'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;' id='Lab_ID'>" + objdata[i].Lab_ID + "</td><td style='display:none;' id='Lab_Location_ID'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;' id='Order_Submit_ID'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;' id='ResultMasterID'>" + objdata[i].ResultMasterID + "</td><td style='display:none;' id='File_Reference_No'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                            }
+                            if (row.Is_Abnormal == "Yes")
+                                description = row.Procedure_Ordered
+                            else
+                                description = row.Procedure_Ordered
                         }
                     }
-                }
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:8%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Description</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Lab/Referred to</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;text-align: center;display:none;'>Referred to Facility</th><th style='border: 1px solid #909090;display:none;'>Result_Master_ID</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Narrative Interpretation</th></tr></thead><tbody  style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-            }
-            else
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:8%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Description</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Lab/Referred to</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;text-align: center;display:none;'>Referred to Facility</th><th style='border: 1px solid #909090;display:none;'>Result_Master_ID</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Narrative Interpretation</th></tr></thead></table>");
-            $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.length + ")";
-            if (Showall != "Checked") {
-                sessionStorage.setItem("My_Order_Count", objdata.length);
-            }
-
-            localStorage.setItem("Myorderscount", objdata.length);
-            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "Note:All abnormal results are in <span style='color:red'> RED</span> color font.";
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            SortTableHeader('MyQOrder');
-            //$('#EncounterTable th').addClass('header');
-            RowClick();
-        },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+                    return description;
+                },
+                searchable: false
+            },
+            { data: 'PhyName', searchable: false },
+            { data: 'Current_Process', searchable: false },
+            {
+                data: 'Referred_to', render: function (data, type, row) {
+                    var referredTo = "";
+                    if (row.Referred_to != "") {
+                        if (row.Is_Abnormal == "Yes")
+                            referredTo = row.Referred_to
+                        else
+                            referredTo = row.Referred_to
+                    }
+                    else {
+                        if (row.Is_Abnormal == "Yes")
+                            referredTo = row.Lab_Name
+                        else
+                            referredTo = row.Lab_Name
+                    }
+                    return referredTo;
+                },
+                searchable: false
+            },
+            { data: 'Lab_Loc_Name', sClass: 'hide_column', searchable: false },
+            { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Order_ID', sClass: 'hide_column', searchable: false },
+            { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
+            { data: 'Lab_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Lab_Location_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Order_Submit_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Referred_to_Facility', sClass: 'hide_column', searchable: false },
+            { data: 'ResultMasterID', sClass: 'hide_column', searchable: false },
+            { data: 'File_Reference_No', sClass: 'hide_column', searchable: false },
+            { data: 'Is_Narrative', searchable: false },
+        ],
+        createdRow: function (row, data, dataIndex) {
+            if (data.Is_Abnormal == "Yes") {
+                $(row).css('color', 'red');
             }
         }
     });
 
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        var existingSelectedItem = $("#MyQTable tr.highlight");
+        for (var i = 0; i < existingSelectedItem.length; i++) {
+            var processes = "NoCurrentProcess";
+            if (existingSelectedItem[i]?.children[8]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[8]?.childNodes[0]?.data != null) {
+                processes = existingSelectedItem[i].children[8].childNodes[0].data;
+            }
+            var isproviderReviewMyQ = processes;
+            if (isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
+                existingSelectedItem[i].classList.remove("highlight");
+            }
+        }
+
+        $(this)[0].classList.add('highlight');
+        var NewRowprocesses = "NoCurrentProcess";
+        if ($(this)[0]?.children[8]?.childNodes[0]?.data != undefined && $(this)[0]?.children[8]?.childNodes[0]?.data != null) {
+            NewRowprocesses = $(this)[0].children[8].childNodes[0].data;
+        }
+        var isproviderReviewMyQNewRow = NewRowprocesses;
+        if (isproviderReviewMyQNewRow == "PROVIDER_REVIEW" || isproviderReviewMyQNewRow == "PROVIDER_REVIEW_2") {
+            if ($(this)[0].children[0].children[0].checked == false) {
+                $(this)[0].children[0].children[0].checked = true;
+            }
+            else {
+                $(this)[0].children[0].children[0].checked = false;
+                $(this).removeClass("highlight");
+            }
+            MyQcheckboxclickAction($(this)[0].children[0].children[0]);
+        }
+    });
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        if ($('#MyQTable').children().find('.highlight').length > 1) {
+            alert("Please select one encounter to process");
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            $('#MyQTable td').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable th').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable tr').removeClass("highlight");
+
+            if ($('#MovetoNxtProcess') != undefined && $('#MovetoNxtProcess')[0]?.disabled != undefined) {
+                $('#MovetoNxtProcess')[0].disabled = true;
+            }
+            return false;
+        }
+
+        if (event.target.tagName != 'TH' && event.target.type != 'checkbox') {
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+            if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                $(this)[0].children[0].children[0].checked = true;
+                $(this)[0].classList.add('highlight');
+            }
+            MyQclick();
+        }
+        sessionStorage.setItem('MyQRemoveIdList', '');
+    });
 }
 function loadMyscan() {
-    $("#chkMyShowAll")[0].disabled = false;
-    $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/LoadMyScan",
-        data: JSON.stringify({
-            "sShowall": Showall,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    if (i == 0)
-                        tabContents = "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + + "</td></tr>";
-                    else
-                        tabContents = tabContents + "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + "</td></tr>";
-                }
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                //Jira #CAP-938
-                //$("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
-            }
-            else
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
-            //Jira #CAP-938
-            $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+    if ($("#hdnIsShowAllMyScanQueue")[0].value == "Y") {
+        Showall = "Checked";
+        document.getElementById("chkMyShowAll").style.display = "none";
+        $("label[for|='chkMyShowAll']")[0].style.display = "none"
+    }
+    else {
+        $("#chkMyShowAll")[0].disabled = false;
+        $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
-            if (Showall != "Checked") {
-                sessionStorage.setItem("My_Scan_Count", objdata.length);
-            }
-            //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
-            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-            SortTableHeader('MyQScan');
-            RowClick();
-            //$('#EncounterTable th').addClass('header');
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    }
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmMyQueueNew.aspx/LoadMyScan",
+    //    data: JSON.stringify({
+    //        "sShowall": Showall,
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        $('#MyQTable').empty();
+    //        var tabContents;
+    //        var objdata = $.parseJSON(data.d);
+    //        if (data.d != "[]") {
+    //            for (var i = 0; i < objdata.length; i++) {
+    //                if (i == 0)
+    //                    tabContents = "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + + "</td></tr>";
+    //                else
+    //                    tabContents = tabContents + "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + "</td></tr>";
+    //            }
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+    //            //Jira #CAP-938
+    //            //$("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+    //        }
+    //        else
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
+    //        //Jira #CAP-938
+    //        $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+
+    //        if (Showall != "Checked") {
+    //            sessionStorage.setItem("My_Scan_Count", objdata.length);
+    //        }
+    //        //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
+    //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    //        SortTableHeader('MyQScan');
+    //        RowClick();
+    //        //$('#EncounterTable th').addClass('header');
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //    },
+    //    error: function OnError(xhr) {
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        if (xhr.status == 999)
+    //            window.location = "/frmSessionExpired.aspx";
+    //        else {
+    //            var log = JSON.parse(xhr.responseText);
+    //            console.log(log);
+    //            alert("USER MESSAGE:\n" +
+    //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+    //                "Message: " + log.Message);
+    //        }
+    //    }
+    //});
+    $('#MyQTable').empty();
+    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
+
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autowidth: false,
+        order: [],
+        pageLength: 15,
+        language: {
+            search: "File Search",
+            searchPlaceholder: "Search by File Name",
+            infoFiltered: ""
         },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: "frmMyQueueNew.aspx/LoadMyScan",
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = JSON.stringify({
+                    "sShowall": Showall
+                });
+                return d;
+            },
+            dataSrc: function (json) {
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+
+                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.data.length + ")";
+
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Scan_Count", objdata.data.length);
+                }
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+
+                json.draw = objdata.draw;
+                json.recordsTotal = objdata.recordsTotal;
+                json.recordsFiltered = objdata.recordsFiltered;
+                json.data = objdata.data;
+
+
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+
+
+                return json.data;
+
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "ErrorPage.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
             }
+        },
+        columns: [
+            {
+                data: 'Scanned_File_Name',
+                sWidth: '16%',
+                sClass: "word-break-all"
+
+            },
+            {
+                data: 'No_of_Pages', sWidth: '16%', searchable: false
+            },
+            {
+                data: 'Scanned_Date', render: function (data, type, row) {
+                    var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
+                    dt1 = ConvertDate(dt1.replaceAll("T", " "));
+                    var dt2 = dt1.split(' ');
+                    if (dt2.length > 0) {
+                        if (dt2.indexOf("01-01-0001") > -1) {
+                            return "";
+                        }
+                    }
+                    return dt1;
+                }, sWidth: '16%', searchable: false
+            },
+            { data: 'Facility_Name', sWidth: '16%', sClass: "word-break-all", searchable: false },
+            { data: 'Current_Process', sWidth: '16%', searchable: false },
+            { data: 'Scan_ID', sClass: "hide_column", sWidth: '5%', searchable: false },
+            { data: 'Human_ID', sClass: "hide_column", sWidth: '5%', searchable: false }
+
+        ],
+        createdRow: function (row, data, dataIndex) {
+
+        },
+        "fnDrawCallback": function (oSettings) {
+            RowClick();
         }
+
     });
+
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    $("#EncounterTable thead").click(function () {
+        $("#EncounterTable thead tr").removeClass('highlight');
+    });
+
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+
+
 
 }
 function loadMyprescription() {
+    if ($('#hdnIsShowAllMyPrescriptionQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/LoadMyPrescription",
-        data: JSON.stringify({
-            "sShowall": Showall,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    if (i == 0)
-                        tabContents = "<tr><td style='width:20%'>" + ConvertDate(objdata[i].Prescription_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:20%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:20%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:20%'>" + objdata[i].Current_Process + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td  style='display:none;'>" + objdata[i].Prescription_Id + "</td><td  style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td></tr>";
-                    else
-                        tabContents = tabContents + "<tr><td style='width:20%'>" + ConvertDate(objdata[i].Prescription_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:20%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:20%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:20%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td  style='display:none;'>" + objdata[i].Prescription_Id + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td></tr>";
-                }
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:20%'>Prescription Date & Time</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PrescriptionID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-            }
-            else
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:20%'>Prescription Date & Time</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PrescriptionID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><tr></thead></table>");
-            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-            //$("#btnMyPres")[0].innerText = "My Prescription " + "(*)";
-            $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.length + ")";
-            if (Showall != "Checked") {
-                sessionStorage.setItem("My_Presc_Count", objdata.length);
-            }
-
-            SortTableHeader('MyQPrescription');
-            RowClick();
-            //$('#EncounterTable th').addClass('header');
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    $('#MyQTable').empty();
+    $('#GeneralQTable').empty();
+    $("#MyQTable").append(`
+    <table id="EncounterTable" class="table table-bordered Gridbodystyle" style="table-layout: fixed;">
+    <thead class="header" style="border: 0px;width:96.7%;">
+        <tr class="header">
+            <th style="border: 1px solid #909090;text-align: center;width:20%">Prescription Date & Time</th>
+            <th style="border: 1px solid #909090;text-align: center;width:6%">Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;width:7%">Ext. Acct. #</th>
+            <th style="border: 1px solid #909090;text-align: center;width:20%">Patient Name</th>
+            <th style="border: 1px solid #909090;text-align: center;width:20%">Patient DOB</th>
+            <th style="border: 1px solid #909090;text-align: center;width:20%">Current Process</th>
+            <th style="border: 1px solid #909090;display:none;">EncounterID</th>
+            <th style="border: 1px solid #909090;display:none;">PrescriptionID</th>
+            <th style="border: 1px solid #909090;display:none;">ObjType</th>
+        </tr>
+    </thead>
+</table>`);
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autoWidth: false,
+        order: [],
+        pageLength: 15,
+        language: {
+            search: "Patient Search",
+            searchPlaceholder: "Search by Name or Acct. #",
+            infoFiltered: ""
         },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+        dom: '<"top"ipf>rt<"bottom"l><"clear">',
+        ajax: {
+            url: '/frmMyQueueNew.aspx/LoadMyPrescription',
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = Showall;
+                return d;
+            },
+            dataSrc: function (json) {
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.data.length + ")";
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Presc_Count", objdata.data.length);
+                }
+
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                json.data = objdata.data;
+                return json.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "ErrorPage.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
             }
+        },
+        columns: [
+            {
+                data: 'Prescription_Date', render: function (data, type, row) {
+                    return ConvertDate(data.replace("T", " "));
+                },
+                searchable: false,
+                type: 'date'
+            },
+            { data: 'Human_ID' },
+            { data: 'External_Account_Number', searchable: false },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all'
+            },
+            {
+                data: 'DOB', render: function (data, type, row) {
+                    return DOBConvert(data.replace("T00:00:00", ""))
+                },
+                searchable: false,
+                type: 'date'
+            },
+            { data: 'Current_Process', searchable: false },
+            { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
+            { data: 'Prescription_Id', sClass: 'hide_column', searchable: false },
+            { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
+        ]
+    });
+
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        var existingSelectedItem = $("#MyQTable tr.highlight");
+        for (var i = 0; i < existingSelectedItem.length; i++) {
+            var processes = "NoCurrentProcess";
+            if (existingSelectedItem[i]?.children[5]?.childNodes[0]?.data != undefined && existingSelectedItem[i]?.children[5]?.childNodes[0]?.data != null) {
+                processes = existingSelectedItem[i].children[5].childNodes[0].data;
+            }
+            var isproviderReviewMyQ = processes;
+            if (isproviderReviewMyQ != "PROVIDER_REVIEW" && isproviderReviewMyQ != "PROVIDER_REVIEW_2") {
+                existingSelectedItem[i].classList.remove("highlight");
+            }
+        }
+
+        $(this)[0].classList.add('highlight');
+        var NewRowprocesses = "NoCurrentProcess";
+        if ($(this)[0]?.children[5]?.childNodes[0]?.data != undefined && $(this)[0]?.children[5]?.childNodes[0]?.data != null) {
+            NewRowprocesses = $(this)[0].children[5].childNodes[0].data;
+        }
+        var isproviderReviewMyQNewRow = NewRowprocesses;
+        if (isproviderReviewMyQNewRow == "PROVIDER_REVIEW" || isproviderReviewMyQNewRow == "PROVIDER_REVIEW_2") {
+            if ($(this)[0].children[0].children[0].checked == false) {
+                $(this)[0].children[0].children[0].checked = true;
+            }
+            else {
+                $(this)[0].children[0].children[0].checked = false;
+                $(this).removeClass("highlight");
+            }
+            MyQcheckboxclickAction($(this)[0].children[0].children[0]);
         }
     });
 
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        if ($('#MyQTable').children().find('.highlight').length > 1) {
+            alert("Please select one encounter to process");
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            $('#MyQTable td').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable th').find('input[type=checkbox]:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#MyQTable tr').removeClass("highlight");
+
+            if ($('#MovetoNxtProcess') != undefined && $('#MovetoNxtProcess')[0]?.disabled != undefined) {
+                $('#MovetoNxtProcess')[0].disabled = true;
+            }
+            return false;
+        }
+
+        if (event.target.tagName != 'TH' && event.target.type != 'checkbox') {
+            { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+
+            if ($(this)[0]?.children[0]?.children[0]?.checked != undefined) {
+                $(this)[0].children[0].children[0].checked = true;
+                $(this)[0].classList.add('highlight');
+            }
+            MyQclick();
+        }
+        sessionStorage.setItem('MyQRemoveIdList', '');
+    });
 }
 function loadMyAmendment() {
+
+    if ($('#hdnIsShowAllMyAmendmentQueue').val() == 'Y') {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "none");
+        $("#chkMyShowAll").prop('checked', true);
+    } else {
+        $('#chkMyShowAll,#lblMyShowAll').css("display", "");
+    }
+
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/LoadMyAmendment",
-        data: JSON.stringify({
-            "sShowall": Showall,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    if (i == 0) {
-                        tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td style='display:none;' >" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
-                    } else {
-                        tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
-                    }
-                }
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-            }
-            else
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
 
-            //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(*)";
-            $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
-            if (Showall != "Checked") {
-                sessionStorage.setItem("My_Amendmnt_Count", objdata.length);
-            }
-            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-            SortTableHeader('MyQAmendment');
-            //$('#EncounterTable th').addClass('header');
-            RowClick();
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    $('#GeneralQTable').empty();
+    $("#MyQTable").append(`
+    <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
+    <thead class='header' style='border: 0px;width:96.7%;'>
+    <tr class='header' >
+    <th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th>
+    <th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th>
+    <th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th>
+    <th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th>
+    <th style='border: 1px solid #909090;display:none;'>EncounterID</th>
+    <th style='border: 1px solid #909090;display:none;'>PhysicianID</th>
+    <th style='border: 1px solid #909090;display:none;'>ObjType</th>
+    <th style='border: 1px solid #909090;display:none;'>AddendumID</th>
+    <th style='border: 1px solid #909090;display:none;'>Current Owner</th>
+    </tr></thead>
+    </table>`);
+    data = JSON.stringify({ "sShowall": Showall });
+    var dataTable = new DataTable('#EncounterTable', {
+        serverSide: false,
+        lengthChange: false,
+        searching: true,
+        processing: false,
+        ordering: true,
+        autowidth: false,
+        order: [],
+        pageLength: 15,
+        language: {
+            search: "Patient Name",
+            searchPlaceholder: "Search by Name or Acct. #",
+            infoFiltered: ""
         },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+        dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
+        ajax: {
+            url: '/frmMyQueueNew.aspx/LoadMyAmendment',
+            contentType: "application/json",
+            type: "GET",
+            dataType: "JSON",
+            deferRender: true,
+            data: function (d) {
+                d.extra_search = Showall;
+                return d;
+            },
+            dataSrc: function (json) {
+                //var objdata = json.d;
+                var objdata = json.d;
+                objdata.data = Decompress(objdata.data);
+                tempObjectMyQTask = objdata.data;
+                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.data.length + ")";
+                if (Showall != "Checked") {
+                    sessionStorage.setItem("My_Amendmnt_Count", objdata.data.length);
+                }
+                localStorage.setItem("Myorderscount", objdata.data.length);
+                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                return objdata.data;
+            },
+            error: function (xhr, error, code) {
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                if (xhr.status == 999)
+                    window.location = "ErrorPage.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
             }
+        },
+        columns: [
+            {
+                data: 'Appt_Date_Time', render: function (data, type, row) {
+                    if (row.Appt_Date_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Appt_Date_Time.replace("T", " "));
+                }, searchable: false
+            },
+            {
+                data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
+                    if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
+                }, searchable: false
+            },
+            { data: 'Human_ID' },
+            { data: 'External_Account_Number', searchable: false },
+            {
+                data: 'Last_Name', render: function (data, type, row) {
+                    return row.Last_Name + "," + row.First_Name + " " + row.MI;
+                },
+                sClass: 'word-break-all'
+            },
+            { data: 'Current_Process', searchable: false },
+            {
+                data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
+                    if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
+                        return "";
+                    else
+                        return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
+                }, searchable: false
+            },
+            { data: 'Addendum_Created_By', searchable: false },
+            { data: 'Addendum_Signed_By', searchable: false },
+            { data: 'Encounter_ID', sClass: "hide_column", searchable: false },
+            { data: 'Physician_ID', sClass: "hide_column", searchable: false },
+            { data: 'EHR_Obj_Type', sClass: "hide_column", searchable: false },
+            { data: 'Addendum_ID', sClass: "hide_column", searchable: false },
+            { data: 'Current_Owner', sClass: "hide_column", searchable: false },
+        ],
+
+    });
+
+    $('#EncounterTable_filter').css({
+        'float': 'left',
+        'text-align': 'left',
+        'margin-left': '30px',
+        'width': '500px',
+    });
+
+    $('#EncounterTable_info').css({
+        'min-width': '180px'
+    });
+
+    $('#EncounterTable tbody').on('dblclick', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $(this).addClass("highlight");
+        if ($('#EncounterTable tr.highlight')[0].innerText == "No data available in table") {
+            return false;
+        } else {
+            MyQclick();
         }
     });
+
+    $('#EncounterTable tbody').on('click', 'tr', function () {
+        $('#EncounterTable tr').removeClass("odd");
+        $('#EncounterTable tr').removeClass("even");
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $(this).addClass("highlight");
+    });
+
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmMyQueueNew.aspx/LoadMyAmendment",
+    //    data: JSON.stringify({
+    //        "sShowall": Showall,
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        $('#MyQTable').empty();
+    //        var tabContents;
+    //        var objdata = $.parseJSON(data.d);
+    //        if (data.d != "[]") {
+    //            for (var i = 0; i < objdata.length; i++) {
+    //                if (i == 0) {
+    //                    tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td style='display:none;' >" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
+    //                } else {
+    //                    tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
+    //                }
+    //            }
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+    //        }
+    //        else
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
+
+    //        //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(*)";
+    //        $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
+    //        if (Showall != "Checked") {
+    //            sessionStorage.setItem("My_Amendmnt_Count", objdata.length);
+    //        }
+    //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    //        SortTableHeader('MyQAmendment');
+    //        //$('#EncounterTable th').addClass('header');
+    //        RowClick();
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //    },
+    //    error: function OnError(xhr) {
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        if (xhr.status == 999)
+    //            window.location = "/frmSessionExpired.aspx";
+    //        else {
+    //            var log = JSON.parse(xhr.responseText);
+    //            console.log(log);
+    //            alert("USER MESSAGE:\n" +
+    //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+    //                "Message: " + log.Message);
+    //        }
+    //    }
+    //});
 
 }
 function loadenc() {
@@ -2326,140 +3124,142 @@ function chkMyTask14Click(sender) {
     localStorage.setItem('MyOpenTask', "");
     localStorage.setItem('MyShowAllMyTask', "");
     localStorage.setItem('MyTask14', $("#chkMyTask14")[0].checked ? "Checked" : "Unchecked");
-    if ($("#chkMyShowAll") != null) {
-        if ($("#chkMyTask14")[0].checked) {
-            $("#chkOpenTask")[0].disabled = true;
-            $("#chkMyShowAll")[0].disabled = true;
-            $.ajax({
-                type: "POST",
-                url: "frmMyQueueNew.aspx/LoadMyTaskCompleted",
-                data: JSON.stringify({
-                    "sShowall": "",
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                async: true,
-                success: function (data) {
-                    $('#MyQTable').empty();
-                    var tabContents;
-                    var objdata = $.parseJSON(data.d);
-                    if (data.d != "[]") {
-                        for (var i = 0; i < objdata.length; i++) {
-                            if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
-                                Msg_Date_And_Time = "";
-                            else
-                                Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
-                            if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
-                                Modified_Date_Time = "";
-                            else
-                                Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
-                            if (i == 0) {
-                                //Jira #CAP-119
-                                //tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                                tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                            }
-                            else {
-                                //Jira #CAP-119
-                                //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                                tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                            }
-                        }
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%''>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    }
-                    else
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
-                    //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
-                    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
-                    sessionStorage.setItem("My_Task_Count", objdata.length);
+    LoadMyTask();
 
-                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                    SortTableHeader('MyQTask');
-                    //$('#EncounterTable th').addClass('header');
-                    RowClick();
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                },
-                error: function OnError(xhr) {
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    if (xhr.status == 999)
-                        window.location = "/frmSessionExpired.aspx";
-                    else {
-                        var log = JSON.parse(xhr.responseText);
-                        console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
-                    }
-                }
-            });
-        }
-        else {
-            $("#chkOpenTask")[0].disabled = false;
-            $("#chkMyShowAll")[0].disabled = false;
-            $.ajax({
-                type: "POST",
-                url: "frmMyQueueNew.aspx/LoadMyTask",
-                data: JSON.stringify({
-                    "sShowall": "",
-                    "sOpenTask": ""
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                async: true,
-                success: function (data) {
-                    $('#MyQTable').empty();
-                    var tabContents;
-                    var objdata = $.parseJSON(data.d);
-                    if (data.d != "[]") {
-                        for (var i = 0; i < objdata.length; i++) {
-                            if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
-                                Msg_Date_And_Time = "";
-                            else
-                                Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
-                            if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
-                                Modified_Date_Time = "";
-                            else
-                                Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
-                            if (i == 0) {
-                                //Jira #CAP-119
-                                //tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                                tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //if ($("#chkMyShowAll") != null) {
+    //    if ($("#chkMyTask14")[0].checked) {
+    //        $("#chkOpenTask")[0].disabled = true;
+    //        $("#chkMyShowAll")[0].disabled = true;
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "frmMyQueueNew.aspx/LoadMyTaskCompleted",
+    //            data: JSON.stringify({
+    //                "sShowall": "",
+    //            }),
+    //            contentType: "application/json; charset=utf-8",
+    //            dataType: "json",
+    //            async: true,
+    //            success: function (data) {
+    //                $('#MyQTable').empty();
+    //                var tabContents;
+    //                var objdata = $.parseJSON(data.d);
+    //                if (data.d != "[]") {
+    //                    for (var i = 0; i < objdata.length; i++) {
+    //                        if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
+    //                            Msg_Date_And_Time = "";
+    //                        else
+    //                            Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
+    //                        if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
+    //                            Modified_Date_Time = "";
+    //                        else
+    //                            Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
+    //                        if (i == 0) {
+    //                            //Jira #CAP-119
+    //                            //tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                            tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                        }
+    //                        else {
+    //                            //Jira #CAP-119
+    //                            //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                            tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                        }
+    //                    }
+    //                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%''>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+    //                }
+    //                else
+    //                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
+    //                //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
+    //                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+    //                sessionStorage.setItem("My_Task_Count", objdata.length);
 
-                            } else {
-                                //Jira #CAP-119
-                                //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                                tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    //                SortTableHeader('MyQTask');
+    //                //$('#EncounterTable th').addClass('header');
+    //                RowClick();
+    //                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //            },
+    //            error: function OnError(xhr) {
+    //                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //                if (xhr.status == 999)
+    //                    window.location = "/frmSessionExpired.aspx";
+    //                else {
+    //                    var log = JSON.parse(xhr.responseText);
+    //                    console.log(log);
+    //                    alert("USER MESSAGE:\n" +
+    //                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+    //                        "Message: " + log.Message);
+    //                }
+    //            }
+    //        });
+    //    }
+    //    else {
+    //        $("#chkOpenTask")[0].disabled = false;
+    //        $("#chkMyShowAll")[0].disabled = false;
+    //        $.ajax({
+    //            type: "POST",
+    //            url: "frmMyQueueNew.aspx/LoadMyTask",
+    //            data: JSON.stringify({
+    //                "sShowall": "",
+    //                "sOpenTask": ""
+    //            }),
+    //            contentType: "application/json; charset=utf-8",
+    //            dataType: "json",
+    //            async: true,
+    //            success: function (data) {
+    //                $('#MyQTable').empty();
+    //                var tabContents;
+    //                var objdata = $.parseJSON(data.d);
+    //                if (data.d != "[]") {
+    //                    for (var i = 0; i < objdata.length; i++) {
+    //                        if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
+    //                            Msg_Date_And_Time = "";
+    //                        else
+    //                            Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
+    //                        if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
+    //                            Modified_Date_Time = "";
+    //                        else
+    //                            Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
+    //                        if (i == 0) {
+    //                            //Jira #CAP-119
+    //                            //tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                            tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
 
-                            }
-                        }
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%''>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    }
-                    else
-                        $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
-                    //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
-                    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
-                    sessionStorage.setItem("My_Task_Count", objdata.length);
-                    $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                    SortTableHeader('MyQTask');
-                    //$('#EncounterTable th').addClass('header');
-                    RowClick();
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                },
-                error: function OnError(xhr) {
-                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    if (xhr.status == 999)
-                        window.location = "/frmSessionExpired.aspx";
-                    else {
-                        var log = JSON.parse(xhr.responseText);
-                        console.log(log);
-                        alert("USER MESSAGE:\n" +
-                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                            "Message: " + log.Message);
-                    }
-                }
-            });
+    //                        } else {
+    //                            //Jira #CAP-119
+    //                            //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                            tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
 
-        }
-    }
+    //                        }
+    //                    }
+    //                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%''>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+    //                }
+    //                else
+    //                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
+    //                //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
+    //                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+    //                sessionStorage.setItem("My_Task_Count", objdata.length);
+    //                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    //                SortTableHeader('MyQTask');
+    //                //$('#EncounterTable th').addClass('header');
+    //                RowClick();
+    //                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //            },
+    //            error: function OnError(xhr) {
+    //                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //                if (xhr.status == 999)
+    //                    window.location = "/frmSessionExpired.aspx";
+    //                else {
+    //                    var log = JSON.parse(xhr.responseText);
+    //                    console.log(log);
+    //                    alert("USER MESSAGE:\n" +
+    //                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+    //                        "Message: " + log.Message);
+    //                }
+    //            }
+    //        });
+
+    //    }
+    //}
 }
 
 function chkOpenTaskClick() {
@@ -2474,69 +3274,71 @@ function chkOpenTaskClick() {
 
     var Showall = $("#chkMyShowAll")[0].checked ? "Checked" : "Unchecked";
     var OpenTask = $("#chkOpenTask")[0].checked ? "Checked" : "Unchecked";
-    $.ajax({
-        type: "POST",
-        url: "frmMyQueueNew.aspx/LoadMyTask",
-        data: JSON.stringify({
-            "sShowall": Showall,
-            "sOpenTask": OpenTask,
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        async: true,
-        success: function (data) {
-            $('#MyQTable').empty();
-            var tabContents;
-            var objdata = $.parseJSON(data.d);
-            if (data.d != "[]") {
-                for (var i = 0; i < objdata.length; i++) {
-                    if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
-                        Msg_Date_And_Time = "";
-                    else
-                        Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
-                    if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
-                        Modified_Date_Time = "";
-                    else
-                        Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
-                    if (i == 0) {
-                        //Jira #CAP-119
-                        //tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                        tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                    }
-                    else {
-                        //Jira #CAP-119
-                        //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                        tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                    }
-                }
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%''>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-            }
-            else
-                $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
-            //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
-            $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
-            if (Showall != "Checked") {
-                sessionStorage.setItem("My_Task_Count", objdata.length);
-            }
-            $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-            SortTableHeader('MyQTask');
-            //$('#EncounterTable th').addClass('header');
-            RowClick();
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        },
-        error: function OnError(xhr) {
-            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (xhr.status == 999)
-                window.location = "/frmSessionExpired.aspx";
-            else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
-            }
-        }
-    });
+    LoadMyTask();
+
+    //$.ajax({
+    //    type: "POST",
+    //    url: "frmMyQueueNew.aspx/LoadMyTask",
+    //    data: JSON.stringify({
+    //        "sShowall": Showall,
+    //        "sOpenTask": OpenTask,
+    //    }),
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    async: true,
+    //    success: function (data) {
+    //        $('#MyQTable').empty();
+    //        var tabContents;
+    //        var objdata = $.parseJSON(data.d);
+    //        if (data.d != "[]") {
+    //            for (var i = 0; i < objdata.length; i++) {
+    //                if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
+    //                    Msg_Date_And_Time = "";
+    //                else
+    //                    Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
+    //                if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
+    //                    Modified_Date_Time = "";
+    //                else
+    //                    Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
+    //                if (i == 0) {
+    //                    //Jira #CAP-119
+    //                    //tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                    tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                }
+    //                else {
+    //                    //Jira #CAP-119
+    //                    //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + Modified_Date_Time + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                    tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+    //                }
+    //            }
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%''>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+    //        }
+    //        else
+    //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
+    //        //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
+    //        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+    //        if (Showall != "Checked") {
+    //            sessionStorage.setItem("My_Task_Count", objdata.length);
+    //        }
+    //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+    //        SortTableHeader('MyQTask');
+    //        //$('#EncounterTable th').addClass('header');
+    //        RowClick();
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //    },
+    //    error: function OnError(xhr) {
+    //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        if (xhr.status == 999)
+    //            window.location = "/frmSessionExpired.aspx";
+    //        else {
+    //            var log = JSON.parse(xhr.responseText);
+    //            console.log(log);
+    //            alert("USER MESSAGE:\n" +
+    //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+    //                "Message: " + log.Message);
+    //        }
+    //    }
+    //});
 }
 
 function ChangeTableForTabs(sender) {
@@ -2581,7 +3383,7 @@ function ChangeTableForTabs(sender) {
         $('#MovetoNxtProcess').css("background-color", "");
         $('#RefreshMyQ')[0].innerText = "Refresh My Encounters";
         $('#Processenctr')[0].innerText = "Process Encounter";
-        window.setTimeout(loadMyenc, 300);
+        window.setTimeout(LoadMyEncounter, 300);
     }
     else if (sender.innerText.indexOf("My Task") > -1) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -2608,7 +3410,7 @@ function ChangeTableForTabs(sender) {
         $('#RefreshMyQ')[0].innerText = "Refresh My Tasks";
         $('#RefreshMyQ').css("background-color", "");
         $('#Processenctr')[0].innerText = "Process Task";
-        window.setTimeout(loadMytask, 300);
+        window.setTimeout(LoadMyTask, 300);
     }
     else if (sender.innerText.indexOf("My Order") > -1) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
@@ -2858,122 +3660,7 @@ function shwllclck() {
         var Showall = "";
         $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         localStorage.setItem("MyShowAll", Showall);
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/chkShowAllMyEncounter",
-            data: JSON.stringify({
-                "sShowall": Showall,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents = "";
-                var objdata = $.parseJSON(data.d);
-                var Ancillary = objdata.Ancillary;
-                let disableOverallSelect = true;
-                if (data.d != "[]") {
-                    for (var i = 0; i < objdata.data.length; i++) {
-                        var is_submitted = (objdata.data[i].Is_EandM_Submitted.toUpperCase() == 'Y') ? "Submitted" : "Not Submitted";
-                        var dt = ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " "));
-                        let disabled = "disabled='true'";
-                        if (objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW" || objdata.data[i].Current_Process.toUpperCase() == "PROVIDER_REVIEW_2") {
-                            disabled = "";
-                            disableOverallSelect = false;
-                        }
-
-                        //Jira CAP-593
-                        //if (i == 0) {
-                        //    if (Ancillary != "true")
-                        //        tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        //    else
-                        //        tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        //}
-                        //else {
-                        //    if (Ancillary != "true")
-                        //        tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        //    else
-                        //        tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td style='display:none'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td></tr>";
-                        //}
-
-                        //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                        if (i == 0) {
-                            if (Ancillary != "true")
-                                tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                            else
-                                tabContents = "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                        }
-                        else {
-                            if (Ancillary != "true")
-                                tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:8%'>" + objdata.data[i].Type_Of_Visit + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:8%'>" + objdata.data[i].Facility_Name + "</td><td style='width:12%'>" + objdata.data[i].PhyName + "</td><td style='width:8%'>" + objdata.data[i].Carrier_Name + "</td><td style='width:8%'>" + objdata.data[i].Insurance_Plan_Name + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                            else
-                                tabContents = tabContents + "<tr><td style='width:4%;text-align: center;'><input type='checkbox' onclick='MyQcheckboxclick(this)' class='myQChkbx' " + disabled + "/></td><td style='width:12%'>" + ConvertDate(objdata.data[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata.data[i].Human_ID + "</td><td style='width:7%'>" + objdata.data[i].External_Account_Number + "</td><td style='width:10%'>" + objdata.data[i].Last_Name + "," + objdata.data[i].First_Name + " " + objdata.data[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata.data[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:12%'>" + objdata.data[i].Current_Process + "</td><td style='width:12%'>" + objdata.data[i].Test_Details + "</td><td style='width:12%'>" + objdata.data[i].Ordering_Physician + "</td><td style='width:10%;vertical-align: middle;padding-left:25px;'>" + is_submitted + "</td><td  style='width:7%'>" + objdata.data[i].Encounter_ID + "</td><td style='display:none'>" + objdata.data[i].Physician_ID + "</td><td style='display:none'>" + objdata.data[i].EHR_Obj_Type + "</td><td style='display:none'>" + objdata.data[i].Date_of_Service + "</td>";
-                        }
-
-                        //Jira CAP-593
-                        if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                            tabContents = tabContents + "<td style='width:6%; vertical-align: middle;padding-left: 25px;' onclick='QRCodeClick(this)'><i class='fa fa-qrcode' style='font-size: xx-large;'></i></td></tr>";
-                        }
-                        else {
-                            tabContents = tabContents + "</tr>";
-                        }
-
-
-                    }
-                    //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                    if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                        if (Ancillary != "true")
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                        else
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    }
-                    else {
-                        if (Ancillary != "true")
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                        else
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    }
-                }
-                else {
-                    //Jira CAP-1593 - Encounte ID Column is displayed in UI 
-                    if (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES") {
-                        if (Ancillary != "true")
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead></table>");
-                        else
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>QR Code</th></tr></thead></table>");
-                    }   
-                    else {
-                        if (Ancillary != "true")
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'   style='table-layout: fixed;'><thead class='header'  style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Type of Visit</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Assigned Physician</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Carrier</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Pri. Plan</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-                        else
-                            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 4%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='MyQselectAll(this)'></th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Appt. Date & Time</th><th style='border: 1px solid #909090;text-align: center;width: 6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 8%;'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Test Details</th><th style='border: 1px solid #909090;text-align: center;width: 12%;'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>eSuperbill Status</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Encounter ID</th></tr></thead></table>");
-
-                    }
-                }
-                $("#btnMyEnc")[0].innerText = "My Encounters " + "(" + objdata.data.length + ")";
-
-                SortTableHeader('MyQ');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (disableOverallSelect) {
-                    disableSelectAllMove();
-                }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        LoadMyEncounter();
 
 
     }
@@ -3009,74 +3696,75 @@ function shwllclck() {
             $("#chkMyTask14")[0].checked = false;
             $("#chkMyTask14")[0].disabled = false;
         }
+        LoadMyTask();
 
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadMyTask",
-            data: JSON.stringify({
-                "sShowall": Showall,
-                "sOpenTask": OpenTask
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                if (data.d != "[]") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
-                            Msg_Date_And_Time = "";
-                        else
-                            Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
-                        if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
-                            Modified_Date_Time = "";
-                        else
-                            Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
-                        if (i == 0) {
-                            //Jira #CAP-119
-                            //tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                            //CAP-1536
-                            tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+        //$.ajax({
+        //    type: "POST",
+        //    url: "frmMyQueueNew.aspx/LoadMyTask",
+        //    data: JSON.stringify({
+        //        "sShowall": Showall,
+        //        "sOpenTask": OpenTask
+        //    }),
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "json",
+        //    async: true,
+        //    success: function (data) {
+        //        $('#MyQTable').empty();
+        //        var tabContents;
+        //        var objdata = $.parseJSON(data.d);
+        //        if (data.d != "[]") {
+        //            for (var i = 0; i < objdata.length; i++) {
+        //                if (objdata[i].Msg_Date_And_Time == "0001-01-01T00:00:00")
+        //                    Msg_Date_And_Time = "";
+        //                else
+        //                    Msg_Date_And_Time = ConvertDate(objdata[i].Msg_Date_And_Time.replace("T", " "));
+        //                if (objdata[i].Modified_Date_Time == "0001-01-01T00:00:00")
+        //                    Modified_Date_Time = "";
+        //                else
+        //                    Modified_Date_Time = ConvertDate(objdata[i].Modified_Date_Time.replace("T", " "));
+        //                if (i == 0) {
+        //                    //Jira #CAP-119
+        //                    //tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+        //                    //CAP-1536
+        //                    tabContents = "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
 
-                        }
-                        else {
-                            //Jira #CAP-119
-                            //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                            //CAP-1536
-                            tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
-                        }
-                    }
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%''>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
-                }
-                else
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
-                //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
-                $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Task_Count", objdata.length);
-                }
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                SortTableHeader('MyQTask');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        //                }
+        //                else {
+        //                    //Jira #CAP-119
+        //                    //tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "") + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+        //                    //CAP-1536
+        //                    tabContents = tabContents + "<tr style='height:51px'><td style='width:6%'>" + objdata[i].Priority + "</td><td style='width:7%'>" + objdata[i].Human_ID + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:11%'>" + Msg_Date_And_Time.split(' ')[0] + "</td><td style='width:11%' title='" + objdata[i].Message_Notes.replace(/[\r\n]+/gm, "&#013;").replace(/'/g, '') + "'>" + objdata[i].Message_Description + "</td><td style='width:11%'>" + objdata[i].Assigned_To + "</td><td style='width:11%'>" + objdata[i].Created_By + "</td><td style='width:11%'>" + '' + "</td><td style='display:none'>" + objdata[i].Message_ID + "</td><td style='display:none'>" + objdata[i].Version + "</td></tr>";
+        //                }
+        //            }
+        //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%''>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+        //            $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+        //        }
+        //        else
+        //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Date</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Message Description</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Assigned To</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Owner</th><th style='border: 1px solid #909090;text-align: center;width:11%'>Completed Date Time</th><th style='border: 1px solid #909090;display:none;'>TaskID</th><th style='border: 1px solid #909090;display:none;'>Version</th></tr></thead></table>");
+        //        //$("#btnMyTask")[0].innerText = "My Tasks " + "(*)";
+        //        $("#btnMyTask")[0].innerText = "My Tasks " + "(" + objdata.length + ")";
+        //        if (Showall != "Checked") {
+        //            sessionStorage.setItem("My_Task_Count", objdata.length);
+        //        }
+        //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+        //        SortTableHeader('MyQTask');
+        //        //$('#EncounterTable th').addClass('header');
+        //        RowClick();
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    },
+        //    error: function OnError(xhr) {
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //        if (xhr.status == 999)
+        //            window.location = "/frmSessionExpired.aspx";
+        //        else {
+        //            var log = JSON.parse(xhr.responseText);
+        //            console.log(log);
+        //            alert("USER MESSAGE:\n" +
+        //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+        //                "Message: " + log.Message);
+        //        }
+        //    }
+        //});
 
     }
     else if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Scan") > -1 && $('#RefreshMyQ').is(":visible")) {
@@ -3094,57 +3782,58 @@ function shwllclck() {
         var Showall = "";
         $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
         $('#RefreshMyQ').css("background-color", "");
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadMyScan",
-            data: JSON.stringify({
-                "sShowall": Showall,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                if (data.d != "[]") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        if (i == 0)
-                            tabContents = "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + + "</td></tr>";
-                        else
-                            tabContents = tabContents + "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + "</td></tr>";
-                    }
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    //Jira #CAP-938
-                    //$("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
-                }
-                else
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
-                //Jira #CAP-938
-                $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Scan_Count", objdata.length);
-                }
-                //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                SortTableHeader('MyQScan');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        //$.ajax({
+        //    type: "POST",
+        //    url: "frmMyQueueNew.aspx/LoadMyScan",
+        //    data: JSON.stringify({
+        //        "sShowall": Showall,
+        //    }),
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "json",
+        //    async: true,
+        //    success: function (data) {
+        //        $('#MyQTable').empty();
+        //        var tabContents;
+        //        var objdata = $.parseJSON(data.d);
+        //        if (data.d != "[]") {
+        //            for (var i = 0; i < objdata.length; i++) {
+        //                if (i == 0)
+        //                    tabContents = "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + + "</td></tr>";
+        //                else
+        //                    tabContents = tabContents + "<tr><td style='width:16%'>" + objdata[i].Scanned_File_Name + "</td><td style='width:16%'>" + objdata[i].No_of_Pages + "</td><td style='width:16%'>" + ConvertDate(objdata[i].Scanned_Date.replace("T", " ")) + "</td><td style='width:16%'>" + objdata[i].Facility_Name + "</td><td style='width:16%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Scan_ID + "</td><td style='display:none;'>" + objdata[i].Human_ID + "</td></tr>";
+        //            }
+        //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+        //            //Jira #CAP-938
+        //            //$("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+        //        }
+        //        else
+        //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle'style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
+        //        //Jira #CAP-938
+        //        $("#btnMyScan")[0].innerText = "My Scan " + "(" + objdata.length + ")";
+        //        if (Showall != "Checked") {
+        //            sessionStorage.setItem("My_Scan_Count", objdata.length);
+        //        }
+        //        //$("#btnMyScan")[0].innerText = "My Scan " + "(*)";
+        //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+        //        SortTableHeader('MyQScan');
+        //        //$('#EncounterTable th').addClass('header');
+        //        RowClick();
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    },
+        //    error: function OnError(xhr) {
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //        if (xhr.status == 999)
+        //            window.location = "/frmSessionExpired.aspx";
+        //        else {
+        //            var log = JSON.parse(xhr.responseText);
+        //            console.log(log);
+        //            alert("USER MESSAGE:\n" +
+        //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+        //                "Message: " + log.Message);
+        //        }
+        //    }
+        //});
+        loadMyscan();
 
     }
     else if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Orders") > -1 && $('#RefreshMyQ').is(":visible")) {
@@ -3163,111 +3852,7 @@ function shwllclck() {
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
         $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadMyOrder",
-            data: JSON.stringify({
-                "sShowall": Showall,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                if (data.d != "[]") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        var orderType = objdata[i].EHR_Obj_Type.replace("INTERNAL", "").trim();
-                        if (i == 0) {
-                            if (objdata[i].Reason_For_Referral != "") {
-                                if (objdata[i].Referred_to != "") {
-                                    if (objdata[i].Is_Abnormal == "Yes")
-                                        tabContents = "<tr style='color:red'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%' >" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td style='display:none;' >" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                    else
-                                        tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%' >" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td style='display:none;' >" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                } else {
-                                    if (objdata[i].Is_Abnormal == "Yes")
-                                        tabContents = "<tr style='color:red'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%' >" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                    else
-                                        tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%' >" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                }
-                            }
-                            else {
-                                if (objdata[i].Referred_to != "") {
-                                    if (objdata[i].Is_Abnormal == "Yes")
-                                        tabContents = "<tr style='color:red'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                    else
-                                        tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                }
-                                else {
-                                    if (objdata[i].Is_Abnormal == "Yes")
-                                        tabContents = "<tr style='color:red'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                    else
-                                        tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                }
-                            }
-                        }
-                        else {
-                            if (objdata[i].Reason_For_Referral != "") {
-                                if (objdata[i].Referred_to != "") {
-                                    if (objdata[i].Is_Abnormal == "Yes")
-                                        tabContents = tabContents + "<tr style='color:red'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                    else
-                                        tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td  style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                } else {
-                                    if (objdata[i].Is_Abnormal == "Yes")
-                                        tabContents = tabContents + "<tr style='color:red'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                    else
-                                        tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Reason_For_Referral + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                }
-                            }
-                            else {
-                                if (objdata[i].Referred_to != "") {
-                                    if (objdata[i].Is_Abnormal == "Yes")
-                                        tabContents = tabContents + "<tr style='color:red'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                    else
-                                        tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Referred_to + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                }
-                                else {
-                                    if (objdata[i].Is_Abnormal == "Yes")
-                                        tabContents = tabContents + "<tr style='color:red'><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                    else
-                                        tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Created_Date_And_Time.replace("T", " ")) + "</td><td style='display:none;'>" + ConvertDate(objdata[i].Test_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:6%'>" + objdata[i].External_Account_Number + "</td><td style='width:10%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:8%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:10%'>" + objdata[i].Procedure_Ordered + "</td><td style='width:10%'>" + objdata[i].PhyName + "</td><td style='width:10%'>" + objdata[i].Current_Process + "</td><td style='width:10%'>" + objdata[i].Lab_Name + "</td><td style='display:none;'>" + objdata[i].Lab_Loc_Name + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].Order_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Lab_ID + "</td><td style='display:none;'>" + objdata[i].Lab_Location_ID + "</td><td style='display:none;'>" + objdata[i].Order_Submit_ID + "</td><td  style='display:none;'>" + objdata[i].Referred_to_Facility + "</td><td style='display:none;'>" + objdata[i].ResultMasterID + "</td><td style='display:none;'>" + objdata[i].File_Reference_No + "</td><td style='width:10%'>" + objdata[i].Is_Narrative + "</td></tr>";
-                                }
-                            }
-                        }
-                    }
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:8%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Description</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Lab/Referred to</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;text-align: center;display:none;'>Referred to Facility</th><th style='border: 1px solid #909090;display:none;'>Result_Master_ID</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Narrative Interpretation</th></tr></thead><tbody  style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                }
-                else
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:8%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Description</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Lab/Referred to</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;text-align: center;display:none;'>Referred to Facility</th><th style='border: 1px solid #909090;display:none;'>Result_Master_ID</th><th style='border: 1px solid #909090;text-align: center;width:10%'>Narrative Interpretation</th></tr></thead></table>");
-                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.length + ")";
-
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Order_Count", objdata.length);
-                }
-
-                localStorage.setItem("Myorderscount", objdata.length);
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "Note:All abnormal results are in <span style='color:red'> RED</span> color font.";
-                SortTableHeader('MyQOrder');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        loadMyorder();
 
     }
     else if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Amendment") > -1 && $('#RefreshMyQ').is(":visible")) {
@@ -3285,59 +3870,60 @@ function shwllclck() {
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
         $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadMyAmendment",
-            data: JSON.stringify({
-                "sShowall": Showall,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                if (data.d != "[]") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        if (i == 0)
-                            tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td style='display:none;' >" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
-                        else
-                            tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
-                    }
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    //Jira #CAP-938
-                    //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
-                }
-                else
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
-                 //Jira #CAP-938
-                $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
+        loadMyAmendment();
+        //$.ajax({
+        //    type: "POST",
+        //    url: "frmMyQueueNew.aspx/LoadMyAmendment",
+        //    data: JSON.stringify({
+        //        "sShowall": Showall,
+        //    }),
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "json",
+        //    async: true,
+        //    success: function (data) {
+        //        $('#MyQTable').empty();
+        //        var tabContents;
+        //        var objdata = $.parseJSON(data.d);
+        //        if (data.d != "[]") {
+        //            for (var i = 0; i < objdata.length; i++) {
+        //                if (i == 0)
+        //                    tabContents = "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td style='display:none;' >" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
+        //                else
+        //                    tabContents = tabContents + "<tr><td style='width:9%'>" + ConvertDate(objdata[i].Appt_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:9%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:9%'>" + objdata[i].Current_Process + "</td><td style='width:9%'>" + ConvertDate(objdata[i].Addendum_Created_Date_Time.replace("T", " ")) + "</td><td style='width:9%'>" + objdata[i].Addendum_Created_By + "</td><td style='width:9%'>" + objdata[i].Addendum_Signed_By + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td style='display:none;'>" + objdata[i].Physician_ID + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td><td style='display:none;'>" + objdata[i].Addendum_ID + "</td><td style='display:none;'>" + objdata[i].Current_Owner + "</td></tr>";
+        //            }
+        //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
+        //            //Jira #CAP-938
+        //            //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
+        //        }
+        //        else
+        //            $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Current Process</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created Date</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Created By</th><th style='border: 1px solid #909090;text-align: center;width:9%'>Signed By</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PhysicianID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>AddendumID</th><th style='border: 1px solid #909090;display:none;'>Current Owner</th></tr></thead></table>");
+        //         //Jira #CAP-938
+        //        $("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(" + objdata.length + ")";
 
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Amendmnt_Count", objdata.length);
-                }
+        //        if (Showall != "Checked") {
+        //            sessionStorage.setItem("My_Amendmnt_Count", objdata.length);
+        //        }
 
-                //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(*)";
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                SortTableHeader('MyQAmendment');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        //        //$("#btnMyAmendmnt")[0].innerText = "My Amendment " + "(*)";
+        //        $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
+        //        SortTableHeader('MyQAmendment');
+        //        //$('#EncounterTable th').addClass('header');
+        //        RowClick();
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //    },
+        //    error: function OnError(xhr) {
+        //        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        //        if (xhr.status == 999)
+        //            window.location = "/frmSessionExpired.aspx";
+        //        else {
+        //            var log = JSON.parse(xhr.responseText);
+        //            console.log(log);
+        //            alert("USER MESSAGE:\n" +
+        //                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+        //                "Message: " + log.Message);
+        //        }
+        //    }
+        //});
 
     }
     else if (document.getElementById("RefreshMyQ").innerText.indexOf("Refresh My Prescription") > -1 && $('#RefreshMyQ').is(":visible")) {
@@ -3355,57 +3941,7 @@ function shwllclck() {
         $('#RefreshMyQ').css("background-color", "");
         var Showall = "";
         $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
-        $.ajax({
-            type: "POST",
-            url: "frmMyQueueNew.aspx/LoadMyPrescription",
-            data: JSON.stringify({
-                "sShowall": Showall,
-            }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                $('#MyQTable').empty();
-                var tabContents;
-                var objdata = $.parseJSON(data.d);
-                if (data.d != "[]") {
-                    for (var i = 0; i < objdata.length; i++) {
-                        if (i == 0)
-                            tabContents = "<tr><td style='width:20%'>" + ConvertDate(objdata[i].Prescription_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:20%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:20%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:20%'>" + objdata[i].Current_Process + "</td><td  style='display:none;'>" + objdata[i].Encounter_ID + "</td><td  style='display:none;'>" + objdata[i].Prescription_Id + "</td><td  style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td></tr>";
-                        else
-                            tabContents = tabContents + "<tr><td style='width:20%'>" + ConvertDate(objdata[i].Prescription_Date.replace("T", " ")) + "</td><td style='width:6%'>" + objdata[i].Human_ID + "</td><td style='width:7%'>" + objdata[i].External_Account_Number + "</td><td style='width:20%'>" + objdata[i].Last_Name + "," + objdata[i].First_Name + " " + objdata[i].MI + "</td><td style='width:20%'>" + DOBConvert(objdata[i].DOB.replace("T00:00:00", "")) + "</td><td style='width:20%'>" + objdata[i].Current_Process + "</td><td style='display:none;'>" + objdata[i].Encounter_ID + "</td><td  style='display:none;'>" + objdata[i].Prescription_Id + "</td><td style='display:none;'>" + objdata[i].EHR_Obj_Type + "</td></tr>";
-                    }
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:20%'>Prescription Date & Time</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PrescriptionID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th></tr></thead><tbody style='word-wrap: break-word;'>" + tabContents + "</tbody></table>");
-                    //Jira #CAP-938
-                    //$("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.length + ")";
-                }
-                else
-                    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:20%'>Prescription Date & Time</th><th style='border: 1px solid #909090;text-align: center;width:6%'>Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:7%'>Ext. Acct. #</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Patient DOB</th><th style='border: 1px solid #909090;text-align: center;width:20%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>EncounterID</th><th style='border: 1px solid #909090;display:none;'>PrescriptionID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><tr></thead></table>");
-                // $("#btnMyPres")[0].innerText = "My Prescription " + "(*)";
-                //Jira #CAP-938
-                $("#btnMyPres")[0].innerText = "My Prescription " + "(" + objdata.length + ")";
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Presc_Count", objdata.length);
-                }
-                $("#ctl00_C5POBody_lblcount")[0].innerHTML = "";
-                SortTableHeader('MyQPrescription');
-                //$('#EncounterTable th').addClass('header');
-                RowClick();
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            },
-            error: function OnError(xhr) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "/frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    console.log(log);
-                    alert("USER MESSAGE:\n" +
-                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        "Message: " + log.Message);
-                }
-            }
-        });
+        loadMyprescription();
 
     }
     else if (document.getElementById("RefreshQ").innerText.indexOf("Refresh Encounters Q") > -1 && $('#RefreshQ').is(":visible")) {
@@ -3721,6 +4257,8 @@ function RefreshMyQueue() {
 }
 
 function RowClick() {
+    $('#EncounterTable tr').removeClass("odd");
+    $('#EncounterTable tr').removeClass("even");
 
     $("#MyQTable tr").click(function () {
         //Jira CAP-1201
@@ -4607,7 +5145,7 @@ function MyQselectAll(chkbxAll) {
         $("#MovetoNxtProcess")[0].disabled = false;
         isproviderReview = true;
 
-        return false;
+        //return false;
     }
     else {
         //$("input:checkbox[class=myQChkbx]:enabled").removeProp("checked");
@@ -4676,26 +5214,27 @@ function QRCodeClick(evt) {
     var DOS = "";
     var Physician_id = "";
 
-    if (evt?.parentElement?.childNodes[6] != undefined && evt?.parentElement?.childNodes[6] != null && evt?.parentElement?.childNodes[6].innerText.trim() == 'TECHNICIAN_PROCESS') {
+    var node = evt?.parentElement?.parentElement?.childNodes;
+    if (node[6] != undefined && node[6] != null && node[6].innerText.trim() == 'TECHNICIAN_PROCESS') {
 
-        Human_id = evt.parentElement.childNodes[2].innerText;
-        Encounter_id = evt.parentElement.childNodes[10].innerText;
-        DOS = evt.parentElement.childNodes[13].innerText;
-        Physician_id = evt.parentElement.childNodes[11].innerText;
+        Human_id = node[2].innerText;
+        Encounter_id = node[10].innerText;
+        DOS = node[13].innerText;
+        Physician_id = node[11].innerText;
     }
     else {
-        Human_id = evt.parentElement.childNodes[2].innerText;
-        Encounter_id = evt.parentElement.childNodes[13].innerText;
-        DOS = evt.parentElement.childNodes[16].innerText;
-        Physician_id = evt.parentElement.childNodes[14].innerText;
+        Human_id = node[2].innerText;
+        Encounter_id = node[13].innerText;
+        DOS = node[16].innerText;
+        Physician_id = node[14].innerText;
     }
 
     if (window.top.document.getElementById("notificationpopup").innerText != "NOTIFICATION : Loading...") {
         if ($(top.window.document).find("#QRCodeInfo") != undefined) {
             var locatn = "frmQRCodeGenerator.aspx?HumanID=" + Human_id + "&EncounterID=" + Encounter_id + "&PhysicianID=" + Physician_id + "&DOS=" + DOS;
             $(top.window.document).find('#QRCode_Modal')[0].contentDocument.location.href = locatn;
-            
-           
+
+
             $(top.window.document).find("#QRCodeInfo")[0].style.display = "block";
             $(top.window.document).find("#QRCodeInfo").css('background-color', '#00000036');
             $(top.window.document).find("#QRCodeInfo").css('opacity', '1');
@@ -4703,7 +5242,20 @@ function QRCodeClick(evt) {
             $(top.window.document).find("#btnCloseQRCode").css("display", "block");
             $('#btnCloseQRCode').removeClass('btn btn-danger');
             $('#btnCloseQRCode').addClass('aspresizedredbutton');
-            
+
         }
     }
+}
+function Decompress(data) {
+    // Decode the Base64 string
+    const binaryString = window.atob(data);
+    // Convert binary string to byte array
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    // Use pako to decompress the byte array
+    const decompressed = pako.inflate(bytes, { to: 'string' });
+    return JSON.parse(decompressed);
 }

@@ -81,7 +81,38 @@
                 left:15px;
                 top:80px;
             }
+                            .hide_column{
+    display:none;
+}
+
+.dataTable > thead > tr > th[class*="sort"]:before,
+.dataTable > thead > tr > th[class*="sort"]:after {
+    content: "" !important;
+    }
+
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+    padding-right: 10px !important;
+    }
+
+.text-align-center{
+    text-align:center;
+}
+
+.word-break-all{
+    word-break: break-all;
+}
+.dataTables_empty {
+    display: none;
+}
+.dataTables_filter input {
+    width: 330px !important;
+}
+.dataTables_wrapper th {
+    padding: 8px !important;
+}
     </style>
+    <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />
     <link href="CSS/fontawesome.min.css" rel="stylesheet" type="text/css" />
     <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
@@ -139,7 +170,7 @@
                                     <td>
                                         <input type="checkbox" id="chkMyShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" /></td>
                                     <td>
-                                        <label for="chkMyShowAll" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px">ShowAll</label></td>
+                                        <label for="chkMyShowAll" id="lblMyShowAll" class="checkbox-inline Editabletxtbox" style="padding-left: 4px; padding-right: 10px">ShowAll</label></td>
                                     <td>
                                         <button type="button" class="btn btn-primary btncolor" id="btnChangeExamRoom" style="background-color: none;">Change Exam Room</button>
                                     </td>
@@ -181,7 +212,7 @@
                             <label id="lblEr" for="Exam" style="font-weight: normal">Exam Room</label>
                             <select id="Exam">
                             </select>
-                            <label for="chkShowAll" class="checkbox-inline Editabletxtbox">
+                            <label for="chkShowAll" id="lblShowAll" class="checkbox-inline Editabletxtbox">
                                 <input type="checkbox" id="chkShowAll" class="Editabletxtbox" onclick="chkShowAllClick(this)" />Show All</label>
                             <button type="button" class="btn btn-primary btncolor" id="btnChkOut" style="background-color: none;">Check Out</button>
                             <button type="button" class="btn btn-primary btncolor" onclick="chkShowAllClick(this)" id="RefreshQ" style="background-color: none;">Refresh Encounters Q</button>
@@ -212,6 +243,16 @@
             </div>
         </div>
     </div>
+    <asp:HiddenField ID="hdnAncillary" runat="server" Value="" EnableViewState="false" />
+    <input type="hidden" id="hdnIsShowAllMyEncountersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyEncountersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralEncountersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralEncountersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyOrdersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllGeneralOrdersQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllGeneralOrdersQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyPrescriptionQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyPrescriptionQueue"]%>" />
+     <input type="hidden" id="hdnIsShowAllMyScanQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyScanQueue"]%>" />    
+    <input type="hidden" id="hdnIsShowAllMyTasksQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyTasksQueue"]%>" />
+    <input type="hidden" id="hdnIsShowAllMyAmendmentQueue" value="<%=ConfigurationManager.AppSettings["IsShowAllMyAmendmentQueue"]%>" />
+
     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false" EnableScriptCombine="true">
         <Scripts>
             <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
@@ -220,7 +261,8 @@
         </Scripts>
     </telerik:RadScriptManager>
   
-
+    <script src="JScripts/pako.min.js"></script>
+    <script src="JScripts/jquery.dataTables.min.js"></script>
     <script src="JScripts/JSMyQueueNew.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
     <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
