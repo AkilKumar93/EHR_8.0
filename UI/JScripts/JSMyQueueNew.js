@@ -1199,7 +1199,7 @@ function LoadMyEncounter(ajaxUrl) {
         pageLength: 15,
         language: {
             search: "Patient Search",
-            searchPlaceholder: "Search by Name or Acct. #",
+            searchPlaceholder: "Search by Name or Acct. # or Encounter ID",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">',
@@ -1303,7 +1303,7 @@ function LoadMyEncounter(ajaxUrl) {
                 searchable: false,
                 sWidth: '11%'
             },
-            { data: 'Encounter_ID', searchable: false, sWidth: '7%' },
+            { data: 'Encounter_ID', sWidth: '7%' },
             { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
             { data: 'Date_of_Service', sClass: 'hide_column', searchable: false },
