@@ -917,18 +917,9 @@ function OnClientCloseWindow() {
         //else if ($('#MyQTable').find("#EncounterTable tbody").length > 0) {
         //    numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
         //}
-        else if (btnid == "btnMyOrder") {
-            dataTable.search('').draw();
+        else if (btnid == "btnMyOrder" || btnid == "btnMyPres") {
+            dataTable.search('').draw(false);
             numberofEncounters = dataTable.data().count();
-            //var myOrderCount = $('#btnMyOrder').text();
-            //myOrderCount = parseInt(myOrderCount.match(/\d+/)[0]);
-            //numberofEncounters = myOrderCount - removearry.length;
-        } else if (btnid == "btnMyPres") {
-            dataTable.search('').draw();
-            numberofEncounters = dataTable.data().count();
-            //var myPresCount = $('#btnMyPres').text();
-            //myPresCount = parseInt(myPresCount.match(/\d+/)[0]);
-            //numberofEncounters = myPresCount - removearry.length;
         } else if (btnid == "btnMyTask") {
             var table = new DataTable('#EncounterTable');
             numberofEncounters = table.data().count();
