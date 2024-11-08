@@ -99,7 +99,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 //CAP-2522,CAP-2623
                 //if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && ulEncounterID != 0 && ilstEncounter.Any(x=> !x.Is_Signed_in_Akido_Note.Equals("Y", StringComparison.InvariantCultureIgnoreCase)))
-                if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && ulEncounterID != 0 && ilstEncounter.Any(x => !x.Encounter_Provider_Signed_Date.ToString().Contains("0001-01-01")))
+                if ((ConfigurationSettings.AppSettings["IsAkidoNoteCDC"]?.ToString()?.ToUpper() ?? "") == "Y" && ulEncounterID != 0 && ilstEncounter.Any(x => !Convert.ToDateTime(x.Encounter_Provider_Signed_Date).ToString("yyyy-MM-dd").Contains("0001-01-01")))
                 {
                     IsAkidoCDC(ulHumanID.ToString(), ulEncounterID.ToString(), sUserName, dtModifiedDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
                 }

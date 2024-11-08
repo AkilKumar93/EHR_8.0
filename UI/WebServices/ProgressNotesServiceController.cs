@@ -138,14 +138,14 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
                 //string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION' UNION ALL SELECT enc.Encounter_ID, wf.Current_Process FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
 
-                string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
+                string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process,enc.Encounter_Provider_Signed_Date FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
 
                 DataSet result = DBConnector.ReadData(encounterByHumanIDQury);
 
                 if (result?.Tables != null && result.Tables[0].Rows.Count == 0)
                 {
                     //For Archive encounter
-                    string encounterByHumanIDQury_arc = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
+                    string encounterByHumanIDQury_arc = "SELECT enc.Encounter_ID, wf.Current_Process, enc.Encounter_Provider_Signed_Date FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
 
                     result = DBConnector.ReadData(encounterByHumanIDQury_arc);
                 }
@@ -157,7 +157,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
 
                 string current_Process = result.Tables[0].Rows[0]["Current_Process"].ToString();
-                string Encounter_Provider_SignDate = result.Tables[0].Rows[0]["Encounter_Provider_Signed_Date"].ToString();
+                string Encounter_Provider_SignDate = Convert.ToDateTime(result.Tables[0].Rows[0]["Encounter_Provider_Signed_Date"]).ToString("yyyy-MM-dd");
                 if (current_Process != "DOCUMENT_COMPLETE")
                 {
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note." });
