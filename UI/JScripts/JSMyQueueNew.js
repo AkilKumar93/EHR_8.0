@@ -2226,7 +2226,7 @@ function loadMyscan() {
                         }
                     }
                     return dt1;
-                }, sWidth: '16%', searchable: false
+                },type:'date', sWidth: '16%', searchable: false
             },
             { data: 'Facility_Name', sWidth: '16%', sClass: "word-break-all", searchable: false },
             { data: 'Current_Process', sWidth: '16%', searchable: false, sClass: 'process-word-wrap' },
