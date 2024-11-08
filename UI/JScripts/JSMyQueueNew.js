@@ -1,7 +1,6 @@
 ﻿var Role;
 
 var isproviderReview = false;
-var dataTable;
 
 function loadGeneralQueue() {
     document.getElementById("divGeneralQ").style.display = "";
@@ -870,7 +869,8 @@ function OnClientCloseWindow() {
         var removearry = removeList.split(",");
         for (let i = 0; i < removearry.length; i++) {
             if (btnid.indexOf("Order") > -1) {
-                dataTable.row($('#MyQTable tr').find('td:eq(' + removearry[i].split("~")[1] + '):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw(false);
+                var table = new DataTable('#EncounterTable');
+                table.row($('#MyQTable tr').find('td:eq(' + removearry[i].split("~")[1] + '):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw(false);
             }
             else if (btnid == "btnMyTask") {
                 var table = new DataTable('#EncounterTable');
@@ -883,21 +883,14 @@ function OnClientCloseWindow() {
                 var table = new DataTable('#EncounterTable');
                 table.row($('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw(false);
                 //$('#MyQTable tr').find('td:eq(5):contains(' + removearry[i].split("~")[0] + ')').parent().remove();
-
             }
             else if (btnid == 'btnMyPres') {
-                $('#EncounterTable tr').each(function (rowIndex) {
-                    var lengthOfRow = $(this).find('td:eq(7):contains(' + removearry[i].split("~")[0] + ')')?.parent()?.length;
-                    if (lengthOfRow != undefined && lengthOfRow == 1) {
-                        dataTable.row((rowIndex - 1)).remove();
-                        return false;
-                    }
-                });
+                var table = new DataTable('#EncounterTable');
+                table.row($('#MyQTable tr').find('td:eq(7):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw(false);
             }
             else {
                 chkShowAllClick();
             }
-
         }
 
         var numberofEncounters = "";
@@ -905,16 +898,9 @@ function OnClientCloseWindow() {
             numberofEncounters = $('#GeneralQTable').find("#EncounterTable tbody").children().length;
         }
         else if ($('#dvAdd').find("#EncounterTable tbody").length > 0) {
-             numberofEncounters = $('#dvAdd').find("#EncounterTable tbody").children().length;
+            numberofEncounters = $('#dvAdd').find("#EncounterTable tbody").children().length;
         }
-        //Cap - 2589
-        //else if ($('#MyQTable').find("#EncounterTable tbody").length > 0) {
-        //    numberofEncounters = $('#MyQTable').find("#EncounterTable tbody").children().length;
-        //}
-        else if (btnid == "btnMyOrder" || btnid == "btnMyPres") {
-            dataTable.search('').draw(false);
-            numberofEncounters = dataTable.data().count();
-        } else if (btnid == "btnMyTask" || btnid == "btnMyScan") {
+        else if (btnid == "btnMyTask" || btnid == "btnMyScan" || btnid == "btnMyOrder" || btnid == "btnMyPres") {
             var table = new DataTable('#EncounterTable');
             numberofEncounters = table.data().count();
         }
@@ -1857,7 +1843,7 @@ function loadMyorder() {
     $("#chkMyShowAll")[0].disabled = false;
     $("#chkMyShowAll")[0].checked ? Showall = "Checked" : Showall = "Unchecked";
 
-    dataTable = new DataTable('#EncounterTable', {
+    var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
         lengthChange: false,
         searching: true,
@@ -2307,7 +2293,7 @@ function loadMyprescription() {
         </tr>
     </thead>
 </table>`);
-    dataTable = new DataTable('#EncounterTable', {
+    var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
         lengthChange: false,
         searching: true,
