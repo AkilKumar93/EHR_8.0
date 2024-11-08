@@ -111,6 +111,10 @@ table.dataTable > thead > tr > td {
 .dataTables_wrapper th {
     padding: 8px !important;
 }
+.process-word-wrap {
+    word-wrap: break-word;
+}
+
     </style>
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />

@@ -870,13 +870,7 @@ function OnClientCloseWindow() {
         var removearry = removeList.split(",");
         for (let i = 0; i < removearry.length; i++) {
             if (btnid.indexOf("Order") > -1) {
-                $('#EncounterTable tr').each(function (rowIndex) {
-                    var lengthOfRow = $(this).find('td:eq(' + removearry[i].split("~")[1] + '):contains(' + removearry[i].split("~")[0] + ')')?.parent()?.length;
-                    if (lengthOfRow != undefined && lengthOfRow == 1) {
-                        dataTable.row((rowIndex - 1)).remove();
-                        return false;
-                    }
-                });
+                dataTable.row($('#MyQTable tr').find('td:eq(' + removearry[i].split("~")[1] + '):contains(' + removearry[i].split("~")[0] + ')').parent()).remove().draw(false);
             }
             else if (btnid == "btnMyTask") {
                 var table = new DataTable('#EncounterTable');
@@ -1276,7 +1270,7 @@ function LoadMyEncounter(ajaxUrl) {
                 sWidth: '8%'
             },
             { data: 'Type_Of_Visit', sClass: (Ancillary == 'false' ? '' : 'hide_column'), searchable: false, sWidth: '8%' },
-            { data: 'Current_Process', searchable: false, sWidth: '12%' },
+            { data: 'Current_Process', searchable: false, sWidth: '12%', sClass: 'process-word-wrap' },
             { data: 'Test_Details', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
             { data: 'Ordering_Physician', visible: (Ancillary == 'true'), searchable: false, sWidth: '12%' },
             { data: 'Facility_Name', visible: (Ancillary == 'false'), searchable: false, sWidth: '8%' },
@@ -1320,9 +1314,22 @@ function LoadMyEncounter(ajaxUrl) {
         'min-width': '180px'
     });
 
+    dataTable.on('draw', function () {
+        var info = dataTable.page.info();
+        if (info.page !== info.previousPage) {
+            $('.myQChkbxAll').prop('disabled', true);
+            $('.myQChkbx').each(function () {
+                if (!$(this).prop('disabled')) {
+                    $('.myQChkbxAll').prop('disabled', false);
+                    return;
+                }
+            });
+        }
+    });
+
     dataTable.on('page.dt', function () {
         dataTable.$('tr.highlight').removeClass('highlight');
-        $('.myQChkbx').prop('checked', false);
+        $('.myQChkbx,.myQChkbxAll').prop('checked', false);
     });
     dataTable.on('search.dt', function () {
         dataTable.$('tr.highlight').removeClass('highlight');
@@ -1961,7 +1968,7 @@ function loadMyorder() {
                 searchable: false
             },
             { data: 'PhyName', searchable: false },
-            { data: 'Current_Process', searchable: false },
+            { data: 'Current_Process', searchable: false, sClass: 'process-word-wrap' },
             {
                 data: 'Referred_to', render: function (data, type, row) {
                     var referredTo = "";
@@ -2236,7 +2243,7 @@ function loadMyscan() {
                 }, sWidth: '16%', searchable: false
             },
             { data: 'Facility_Name', sWidth: '16%', sClass: "word-break-all", searchable: false },
-            { data: 'Current_Process', sWidth: '16%', searchable: false },
+            { data: 'Current_Process', sWidth: '16%', searchable: false, sClass: 'process-word-wrap' },
             { data: 'Scan_ID', sClass: "hide_column", sWidth: '5%', searchable: false },
             { data: 'Human_ID', sClass: "hide_column", sWidth: '5%', searchable: false }
 
@@ -2375,7 +2382,7 @@ function loadMyprescription() {
                 searchable: false,
                 type: 'date'
             },
-            { data: 'Current_Process', searchable: false },
+            { data: 'Current_Process', searchable: false, sClass: 'process-word-wrap' },
             { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
             { data: 'Prescription_Id', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
@@ -2575,7 +2582,7 @@ function loadMyAmendment() {
                 },
                 sClass: 'word-break-all'
             },
-            { data: 'Current_Process', searchable: false },
+            { data: 'Current_Process', searchable: false, sClass: 'process-word-wrap' },
             {
                 data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
                     if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
