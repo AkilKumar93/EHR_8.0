@@ -310,19 +310,6 @@
 
 </script>--%>
 
-       <script id="ze-snippet" src="<%=ConfigurationManager.AppSettings["ZendeskWidgetURL"].ToString()%>"> </script>
-
-    <script type="text/javascript">
-        window.zESettings = {
-            webWidget: {
-                launcher: {
-                    label: {
-                        'en-US': ' '
-                    }
-                }
-            }
-        };
-    </script>
 
     <form id="frmLoginNew" runat="server" style="width: 100%; height: 900px; overflow-x: hidden; overflow-y: hidden;">
         <div class="container-fluid">
@@ -601,8 +588,21 @@
 
 
 
-
+            <%--CAP-2690--%>
             <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+                  <script id="ze-snippet" src="<%=ConfigurationManager.AppSettings["ZendeskWidgetURL"].ToString()%>"> </script>
+
+    <script type="text/javascript">
+        window.zESettings = {
+            webWidget: {
+                launcher: {
+                    label: {
+                        'en-US': ' '
+                    }
+                }
+            }
+        };
+    </script>
                 <link href="CSS/bootstrap.min3.1.1.css" rel="stylesheet" />
                 <script src="JScripts/bootstrap.min3.1.1.max.js" type="text/javascript"></script>
                 <script src="JScripts/jsLogin.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"]%>"></script>
