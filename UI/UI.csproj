@@ -489,6 +489,7 @@
     <Content Include="Resources\Prasad.jpg" />
     <Content Include="Resources\PrintReq.png" />
     <Content Include="Resources\PrintReq_Disabled.png" />
+    <Content Include="Resources\SearchIcon.png" />
     <Content Include="Resources\Show_Image_Disable.jpg" />
     <Content Include="Resources\wait.ico" />
     <Content Include="SampleXML\Acute_Inpatient_CMS130_CATI.xml" />

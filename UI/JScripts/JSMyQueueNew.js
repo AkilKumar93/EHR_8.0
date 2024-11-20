@@ -2092,7 +2092,7 @@ function loadMyscan() {
         order: [],
         pageLength: 15,
         language: {
-            search: "File Search",
+            search: "",
             searchPlaceholder: "Search by File Name",
             infoFiltered: ""
         },
@@ -2166,7 +2166,7 @@ function loadMyscan() {
                         }
                     }
                     return dt1;
-                },type:'date', sWidth: '16%', searchable: false
+                }, type: 'date', sWidth: '16%', searchable: false, sClass: "process-word-wrap"
             },
             { data: 'Facility_Name', sWidth: '16%', sClass: "word-break-all", searchable: false },
             { data: 'Current_Process', sWidth: '16%', searchable: false, sClass: 'process-word-wrap' },
@@ -2179,6 +2179,9 @@ function loadMyscan() {
         },
         "fnDrawCallback": function (oSettings) {
             RowClick();
+        },
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
         }
 
     });
@@ -3192,7 +3195,7 @@ function loadorder() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -3263,7 +3266,7 @@ function loadorder() {
                         }
                     }
                     return dt1;
-                }, type: 'date', sWidth: '10%', searchable: false
+                }, type: 'date', sWidth: '10%', searchable: false, sClass:"process-word-wrap"
             },
             {
                 data: 'Test_Date', render: function (data, type, row) {
@@ -3278,12 +3281,12 @@ function loadorder() {
                     return dt1;
                 }, type: 'date', sWidth: '10%', searchable: false, sClass: "hide_column"
             },
-            { data: "Human_ID", sWidth: '10%' },
-            { data: "External_Account_Number", sWidth: '10%', searchable: false },
+            { data: "Human_ID", sWidth: '10%', sClass: "process-word-wrap" },
+            { data: "External_Account_Number", sWidth: '10%', searchable: false, sClass: "process-word-wrap" },
             {
                 data: "Last_Name", render: function (data, type, row) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
-                }, sWidth:'10%'
+                }, sWidth: '10%', sClass: "process-word-wrap"
             },
             {
                 data: 'DOB', render: function (data, type, row) {
@@ -3291,7 +3294,8 @@ function loadorder() {
                 },
                 searchable: false,
                 type: 'date',
-                sWidth: '10%'
+                sWidth: '10%',
+                 sClass: "process-word-wrap"
             },
             {
                 data: '', render: function (data, type, row) {
@@ -3301,13 +3305,13 @@ function loadorder() {
                     else {
                         return row.Procedure_Ordered;
                     }
-                }, sWidth: '10%', searchable: false
+                }, sWidth: '10%', searchable: false, sClass: "process-word-wrap"
             },
             {
-                data: "PhyName", searchable: false, sWidth:'10%'
+                data: "PhyName", searchable: false, sWidth: '10%', sClass: "process-word-wrap"
             },
             {
-                data: "Current_Process", searchable: false, sWidth: '10%'
+                data: "Current_Process", searchable: false, sWidth: '10%', sClass: "process-word-wrap"
             },
             {
                 data: "", render: function (data, type, row) {
@@ -3317,7 +3321,7 @@ function loadorder() {
                     else {
                         return row.Lab_Name;
                     }
-                }, searchable: false, sWidth: '10%'
+                }, searchable: false, sWidth: '10%', sClass: "process-word-wrap"
             },
             { data: "Lab_Loc_Name", sClass: "hide_column", searchable: false },
             { data: "Encounter_ID", sClass: "hide_column", searchable: false },
@@ -3333,8 +3337,8 @@ function loadorder() {
         createdRow: function (row, data, dataIndex) {
 
         },
-        "fnDrawCallback": function (oSettings) {
-            
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
         }
 
     });
@@ -3348,7 +3352,7 @@ function loadorder() {
     $('#EncounterTable_info').css({
         'min-width': '180px'
     });
-
+    
     $("#EncounterTable thead").click(function () {
         $("#EncounterTable thead tr").removeClass('highlight');
     });
