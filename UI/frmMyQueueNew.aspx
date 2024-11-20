@@ -114,6 +114,11 @@ table.dataTable > thead > tr > td {
 .process-word-wrap {
     word-wrap: break-word;
 }
+.searchicon {
+        background-image: url(../Resources/SearchIcon.png);
+    background-repeat: no-repeat;
+        padding-left: 26px !important;
+}
 
     </style>
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />

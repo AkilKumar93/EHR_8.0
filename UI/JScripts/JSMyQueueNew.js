@@ -452,7 +452,7 @@ function selectAll(evt) {
         if ($("#EncounterTable tbody tr").length == 1 && $("#EncounterTable tbody tr td").length == 1 && $("#EncounterTable tbody tr td.dataTables_empty").length == 1) {
             $("#EncounterTable tbody tr").removeClass("highlight");
         }
-        return false;
+        //return false;       
     }
     else {
         $('#GeneralQTable td').find('input[type=checkbox]:checked').each(function () {
@@ -1104,7 +1104,7 @@ function LoadMyEncounter(ajaxUrl) {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. # or Encounter ID",
             infoFiltered: ""
         },
@@ -1226,7 +1226,10 @@ function LoadMyEncounter(ajaxUrl) {
                 visible: (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES"),
                 sWidth: '6%'
             },
-        ]
+        ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
     });
 
     $('#EncounterTable_filter').css({
@@ -1619,7 +1622,7 @@ function LoadMyTask() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Name",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -1706,6 +1709,9 @@ function LoadMyTask() {
             { data: 'Message_ID', sClass: "hide_column", searchable: false },
             { data: 'Version', sClass: "hide_column", searchable: false },
         ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
 
     });
     $('#EncounterTable_filter').css({
@@ -1793,7 +1799,7 @@ function loadMyorder() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -1931,6 +1937,9 @@ function loadMyorder() {
             if (data.Is_Abnormal == "Yes") {
                 $(row).css('color', 'red');
             }
+        },
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
         }
     });
 
@@ -2092,7 +2101,7 @@ function loadMyscan() {
         order: [],
         pageLength: 15,
         language: {
-            search: "File Search",
+            search: "",
             searchPlaceholder: "Search by File Name",
             infoFiltered: ""
         },
@@ -2166,7 +2175,7 @@ function loadMyscan() {
                         }
                     }
                     return dt1;
-                },type:'date', sWidth: '16%', searchable: false
+                }, type: 'date', sWidth: '16%', searchable: false, sClass: "process-word-wrap"
             },
             { data: 'Facility_Name', sWidth: '16%', sClass: "word-break-all", searchable: false },
             { data: 'Current_Process', sWidth: '16%', searchable: false, sClass: 'process-word-wrap' },
@@ -2179,6 +2188,9 @@ function loadMyscan() {
         },
         "fnDrawCallback": function (oSettings) {
             RowClick();
+        },
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
         }
 
     });
@@ -2243,7 +2255,7 @@ function loadMyprescription() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -2312,7 +2324,10 @@ function loadMyprescription() {
             { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
             { data: 'Prescription_Id', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
-        ]
+        ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
     });
     
     $('#EncounterTable_filter').css({
@@ -2441,7 +2456,7 @@ function loadMyAmendment() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Name",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -2525,6 +2540,9 @@ function loadMyAmendment() {
             { data: 'Addendum_ID', sClass: "hide_column", searchable: false },
             { data: 'Current_Owner', sClass: "hide_column", searchable: false },
         ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
 
     });
 
@@ -2538,7 +2556,13 @@ function loadMyAmendment() {
     $('#EncounterTable_info').css({
         'min-width': '180px'
     });
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
 
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
         $('#EncounterTable tr').removeClass("even");
@@ -2669,7 +2693,7 @@ function LoadGeneralEncounter(ajaxUrl) {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. # or Encounter ID",
             infoFiltered: ""
         },
@@ -2784,7 +2808,10 @@ function LoadGeneralEncounter(ajaxUrl) {
             { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
             { data: 'Date_of_Service', sClass: 'hide_column', searchable: false },
-        ]
+        ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
     });
 
     $('#EncounterTable_filter').css({
@@ -2861,7 +2888,7 @@ function loadTask() {
         <table id=EncounterTable class= 'table table-bordered Gridbodystyle' style = 'table-layout: fixed;' >
         <thead class='header' style='border: 0px;width:96.7%;'>
         <tr class='header'>
-        <th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' onclick='selectAll(this)'/></th>
+        <th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='selectAll(this)'/></th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Priority</th>
         <th style='border: 1px solid #909090;text-align: center;width: 5%;'>Acct. #</th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient Name</th>
@@ -2885,7 +2912,7 @@ function loadTask() {
             order: [],
             pageLength: 15,
             language: {
-                search: "Patient Name",
+                search: "",
                 searchPlaceholder: "Search by Name or Acct. #",
                 infoFiltered: ""
             },
@@ -2919,7 +2946,7 @@ function loadTask() {
                 error: function (xhr, error, code) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = xhr.statusText;
+                        window.location = "frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -2932,8 +2959,9 @@ function loadTask() {
             columns: [
                 {
                     data: '', render: function (data, type, row) {
-                        return " <td style='width:7%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
+                        return " <td style='width:7%'><input type = 'checkbox' class='myQChkbx' onclick = 'checkboxclick(this)' /></td >";
                     },
+                    orderable: false
                 },
                 { data: 'Priority', searchable: false },
                 { data: 'Human_ID' },
@@ -2967,6 +2995,9 @@ function loadTask() {
                 { data: 'Created_By', searchable: false },
                 { data: 'Message_ID', sClass: "hide_column", searchable: false },
             ],
+            initComplete: function (settings, json) {
+                $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            }
         });
     $('#EncounterTable_filter').css({
         'float': 'left',
@@ -2978,7 +3009,15 @@ function loadTask() {
         'min-width': '180px'
     });
 
-    $('#EncounterTable_filter input').unbind();
+  
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx,.myQChkbxAll').prop('checked', false);
+    });
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+        $('.myQChkbx').prop('checked', false);
+    });
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
@@ -3192,7 +3231,7 @@ function loadorder() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -3263,7 +3302,7 @@ function loadorder() {
                         }
                     }
                     return dt1;
-                }, type: 'date', sWidth: '10%', searchable: false
+                }, type: 'date', sWidth: '10%', searchable: false, sClass:"process-word-wrap"
             },
             {
                 data: 'Test_Date', render: function (data, type, row) {
@@ -3278,12 +3317,12 @@ function loadorder() {
                     return dt1;
                 }, type: 'date', sWidth: '10%', searchable: false, sClass: "hide_column"
             },
-            { data: "Human_ID", sWidth: '10%' },
-            { data: "External_Account_Number", sWidth: '10%', searchable: false },
+            { data: "Human_ID", sWidth: '10%', sClass: "process-word-wrap" },
+            { data: "External_Account_Number", sWidth: '10%', searchable: false, sClass: "process-word-wrap" },
             {
                 data: "Last_Name", render: function (data, type, row) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
-                }, sWidth:'10%'
+                }, sWidth: '10%', sClass: "process-word-wrap"
             },
             {
                 data: 'DOB', render: function (data, type, row) {
@@ -3291,7 +3330,8 @@ function loadorder() {
                 },
                 searchable: false,
                 type: 'date',
-                sWidth: '10%'
+                sWidth: '10%',
+                 sClass: "process-word-wrap"
             },
             {
                 data: '', render: function (data, type, row) {
@@ -3301,13 +3341,13 @@ function loadorder() {
                     else {
                         return row.Procedure_Ordered;
                     }
-                }, sWidth: '10%', searchable: false
+                }, sWidth: '10%', searchable: false, sClass: "process-word-wrap"
             },
             {
-                data: "PhyName", searchable: false, sWidth:'10%'
+                data: "PhyName", searchable: false, sWidth: '10%', sClass: "process-word-wrap"
             },
             {
-                data: "Current_Process", searchable: false, sWidth: '10%'
+                data: "Current_Process", searchable: false, sWidth: '10%', sClass: "process-word-wrap"
             },
             {
                 data: "", render: function (data, type, row) {
@@ -3317,7 +3357,7 @@ function loadorder() {
                     else {
                         return row.Lab_Name;
                     }
-                }, searchable: false, sWidth: '10%'
+                }, searchable: false, sWidth: '10%', sClass: "process-word-wrap"
             },
             { data: "Lab_Loc_Name", sClass: "hide_column", searchable: false },
             { data: "Encounter_ID", sClass: "hide_column", searchable: false },
@@ -3333,8 +3373,8 @@ function loadorder() {
         createdRow: function (row, data, dataIndex) {
 
         },
-        "fnDrawCallback": function (oSettings) {
-            
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
         }
 
     });
@@ -3348,7 +3388,7 @@ function loadorder() {
     $('#EncounterTable_info').css({
         'min-width': '180px'
     });
-
+    
     $("#EncounterTable thead").click(function () {
         $("#EncounterTable thead tr").removeClass('highlight');
     });
@@ -3430,7 +3470,7 @@ function loadamend() {
             order: [],
             pageLength: 25,
             language: {
-                search: "Patient Name",
+                search: "",
                 searchPlaceholder: "Search by Name or Acct. #",
                 infoFiltered: ""
             },
@@ -3459,7 +3499,7 @@ function loadamend() {
                 error: function (xhr, error, code) {
                     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                     if (xhr.status == 999)
-                        window.location = "ErrorPage.aspx";
+                        window.location = "/frmSessionExpired.aspx";
                     else {
                         var log = JSON.parse(xhr.responseText);
                         console.log(log);
@@ -3516,6 +3556,9 @@ function loadamend() {
                 { data: 'Addendum_ID', sClass: "hide_column", searchable: false },
                 { data: 'Current_Owner', sClass: "hide_column", searchable: false },
             ],
+            initComplete: function (settings, json) {
+                $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            }
         });
     $('#EncounterTable_filter').css({
         'float': 'left',
