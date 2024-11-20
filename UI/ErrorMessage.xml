@@ -2301,7 +2301,7 @@
 	<!--frmAddendum-->
 	<!--Modified the Message 7490001 to clear the bug ID:24231. Dated:12-sep-2014-->
 	<Message number="7490001" Type="OK" Text= "Please attest the Amendment created for the Patient"></Message>
-	<Message number="7490002" Type="OK" Text= "Moved to next process" />
+	<Message number="7490002" Type="ToolStrip" Text= "Moved to next process" />
 	<Message number="7490003" Type="OK" Text= "Please Choose the Review Physician"></Message>
 	<Message number="7490004" Type="OKCANCEL" Text= "Would you like to close?"></Message>
 	<Message number="7490005" Type="OKCANCEL" Text= "Would you like to send a copy to provider for review?"></Message>

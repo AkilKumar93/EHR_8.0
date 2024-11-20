@@ -712,7 +712,8 @@ namespace Acurus.Capella.UI
                     // }
                 }
 
-                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "Saved();DisplayErrorMessage('7490002');", true);
+                //CAP-2614
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "Saved();DisplayErrorMessage('7490002'); window.top.location.href =  'frmMyQueueNew.aspx'", true);
                 //frmMyQueue.currentAddendumId = 0;
                 curr_AddendumObjID = 0;
                 isFormClosingRequired = true;
