@@ -1104,7 +1104,7 @@ function LoadMyEncounter(ajaxUrl) {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. # or Encounter ID",
             infoFiltered: ""
         },
@@ -1226,7 +1226,10 @@ function LoadMyEncounter(ajaxUrl) {
                 visible: (sessionStorage.getItem('IsAkidoPhysician') != null && sessionStorage.getItem('IsAkidoPhysician') == "YES"),
                 sWidth: '6%'
             },
-        ]
+        ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
     });
 
     $('#EncounterTable_filter').css({
@@ -1619,7 +1622,7 @@ function LoadMyTask() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Name",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -1706,6 +1709,9 @@ function LoadMyTask() {
             { data: 'Message_ID', sClass: "hide_column", searchable: false },
             { data: 'Version', sClass: "hide_column", searchable: false },
         ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
 
     });
     $('#EncounterTable_filter').css({
@@ -1793,7 +1799,7 @@ function loadMyorder() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -1931,6 +1937,9 @@ function loadMyorder() {
             if (data.Is_Abnormal == "Yes") {
                 $(row).css('color', 'red');
             }
+        },
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
         }
     });
 
@@ -2246,7 +2255,7 @@ function loadMyprescription() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -2315,7 +2324,10 @@ function loadMyprescription() {
             { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
             { data: 'Prescription_Id', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
-        ]
+        ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
     });
     
     $('#EncounterTable_filter').css({
@@ -2444,7 +2456,7 @@ function loadMyAmendment() {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Name",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. #",
             infoFiltered: ""
         },
@@ -2528,6 +2540,9 @@ function loadMyAmendment() {
             { data: 'Addendum_ID', sClass: "hide_column", searchable: false },
             { data: 'Current_Owner', sClass: "hide_column", searchable: false },
         ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
 
     });
 
@@ -2541,7 +2556,13 @@ function loadMyAmendment() {
     $('#EncounterTable_info').css({
         'min-width': '180px'
     });
+    dataTable.on('page.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
 
+    dataTable.on('search.dt', function () {
+        dataTable.$('tr.highlight').removeClass('highlight');
+    });
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
         $('#EncounterTable tr').removeClass("odd");
         $('#EncounterTable tr').removeClass("even");
@@ -2672,7 +2693,7 @@ function LoadGeneralEncounter(ajaxUrl) {
         order: [],
         pageLength: 15,
         language: {
-            search: "Patient Search",
+            search: "",
             searchPlaceholder: "Search by Name or Acct. # or Encounter ID",
             infoFiltered: ""
         },
@@ -2787,7 +2808,10 @@ function LoadGeneralEncounter(ajaxUrl) {
             { data: 'Physician_ID', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
             { data: 'Date_of_Service', sClass: 'hide_column', searchable: false },
-        ]
+        ],
+        initComplete: function (settings, json) {
+            $("#EncounterTable_filter input")[0].classList.add('searchicon');
+        }
     });
 
     $('#EncounterTable_filter').css({
@@ -2888,7 +2912,7 @@ function loadTask() {
             order: [],
             pageLength: 15,
             language: {
-                search: "Patient Name",
+                search: "",
                 searchPlaceholder: "Search by Name or Acct. #",
                 infoFiltered: ""
             },
@@ -2970,6 +2994,9 @@ function loadTask() {
                 { data: 'Created_By', searchable: false },
                 { data: 'Message_ID', sClass: "hide_column", searchable: false },
             ],
+            initComplete: function (settings, json) {
+                $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            }
         });
     $('#EncounterTable_filter').css({
         'float': 'left',
@@ -3434,7 +3461,7 @@ function loadamend() {
             order: [],
             pageLength: 25,
             language: {
-                search: "Patient Name",
+                search: "",
                 searchPlaceholder: "Search by Name or Acct. #",
                 infoFiltered: ""
             },
@@ -3520,6 +3547,9 @@ function loadamend() {
                 { data: 'Addendum_ID', sClass: "hide_column", searchable: false },
                 { data: 'Current_Owner', sClass: "hide_column", searchable: false },
             ],
+            initComplete: function (settings, json) {
+                $("#EncounterTable_filter input")[0].classList.add('searchicon');
+            }
         });
     $('#EncounterTable_filter').css({
         'float': 'left',
