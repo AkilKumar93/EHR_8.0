@@ -1696,46 +1696,46 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             FillWillingonCancel FillApptList = new FillWillingonCancel();
             IList<FillWillingonCancel> ilistApp = new List<FillWillingonCancel>();
-            ArrayList aryAppointmentList = null;
+            ArrayList aryAppointmentList = new ArrayList();
             ArrayList aryArcApptList = null;
             int Count = 0;
             int CountPaging = 0;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                IQuery query3 = iMySession.GetNamedQuery("Get.Appointment.Patient.With.Status.Count");
-                query3.SetString(0, ulHumanID.ToString());
-                if (bShowPastAlso == true)
-                {
-                    query3.SetString(1, "1111-11-11");
-                }
-                else
-                {
-                    query3.SetString(1, DateTime.Now.Date.ToString("yyyy-MM-dd"));
-                }
-                aryAppointmentList = new ArrayList(query3.List());
+                //IQuery query3 = iMySession.GetNamedQuery("Get.Appointment.Patient.With.Status.Count");
+                //query3.SetString(0, ulHumanID.ToString());
+                //if (bShowPastAlso == true)
+                //{
+                //    query3.SetString(1, "1111-11-11");
+                //}
+                //else
+                //{
+                //    query3.SetString(1, DateTime.Now.Date.ToString("yyyy-MM-dd"));
+                //}
+                //aryAppointmentList = new ArrayList(query3.List());
 
-                Count = Convert.ToInt16(aryAppointmentList[0]);
-                CountPaging = Convert.ToInt16(aryAppointmentList[0]);
+                //Count = Convert.ToInt16(aryAppointmentList[0]);
+                //CountPaging = Convert.ToInt16(aryAppointmentList[0]);
                 aryAppointmentList.Clear();
                 if (bShowPastAlso == true)
                 {
-                    IQuery query4 = iMySession.GetNamedQuery("Get.Appointment.Patient.With.Status.Arc.Count");
-                    query4.SetString(0, ulHumanID.ToString());
-                    query4.SetString(1, "1111-11-11");
-                    aryAppointmentList = new ArrayList(query4.List());//Changed from query3 to query4 by srividhya
+                //    IQuery query4 = iMySession.GetNamedQuery("Get.Appointment.Patient.With.Status.Arc.Count");
+                //    query4.SetString(0, ulHumanID.ToString());
+                //    query4.SetString(1, "1111-11-11");
+                //    aryAppointmentList = new ArrayList(query4.List());//Changed from query3 to query4 by srividhya
 
-                    Count = Count + Convert.ToInt16(aryAppointmentList[0]);
+                    //Count = Count + Convert.ToInt16(aryAppointmentList[0]);
                     IQuery query = iMySession.GetNamedQuery("Get.Appointment.Patient.With.Status");
                     query.SetString(0, ulHumanID.ToString());
                     query.SetString(1, "1111-11-11");
-                    PageNumber = PageNumber - 1;
+                    //PageNumber = PageNumber - 1;
                     //query.SetInt32(2, PageNumber * MaxResultSet);
                     //if (FillApptList.ApptCount < 25)
                     //    query.SetInt32(3, FillApptList.ApptCount);
                     //else
                     //query.SetInt32(3, MaxResultSet);
                     aryAppointmentList = new ArrayList(query.List());
-                    if (aryAppointmentList == null || aryAppointmentList.Count < 25)
+                    //if (aryAppointmentList == null || aryAppointmentList.Count < 25)
                     {
                         IQuery query1 = iMySession.GetNamedQuery("Get.Appointment.Patient.With.Status.From.Arc");
                         query1.SetString(0, ulHumanID.ToString());
@@ -1762,7 +1762,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     IQuery query = iMySession.GetNamedQuery("Get.Appointment.Patient.With.Status");
                     query.SetString(0, ulHumanID.ToString());
                     query.SetString(1, DateTime.Now.Date.ToString("yyyy-MM-dd"));
-                    PageNumber = PageNumber - 1;
+                    //PageNumber = PageNumber - 1;
                     //query.SetInt32(2, PageNumber * MaxResultSet);
                     //query.SetInt32(3, MaxResultSet);
                     aryAppointmentList = new ArrayList(query.List());

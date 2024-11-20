@@ -210,16 +210,16 @@ function loadFillResult() {
      <table id="grdAppointment" runat="server" class="table table-bordered Gridbodystyle" style="width:100%;table-layout:fixed;empty-cells:show;">
     <thead class="header" style="border: 0px;width:96.7%;position: sticky;top: 0;">
         <tr class="header">
-            <th style="border: 1px solid #909090;text-align: center;width: 11%;">Appointment Date Time</th>
+            <th style="border: 1px solid #909090;text-align: center;width: 6%;">Appointment Date Time</th>
             <th style="border: 1px solid #909090;text-align: center;width: 6%;display:none;">AppointmentTime</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 9%;">Provider Name</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 6%;">Facility Name</th>
+            <th style="border: 1px solid #909090;text-align: center;width: 8%;">Provider Name</th>
+            <th style="border: 1px solid #909090;text-align: center;width: 7%;">Facility Name</th>
             <th style="border: 1px solid #909090;text-align: center;width: 6%;display:none;">Appt ID</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 7%;">Current Process</th>
+            <th style="border: 1px solid #909090;text-align: center;width: 11%;">Current Process</th>
             <th style="border: 1px solid #909090;text-align: center;width: 6%;display:none;">Appt Provider Id</th>
             <th style="border: 1px solid #909090;text-align: center;width: 6%;display:none;">Test Ordered</th>
             <th style="border: 1px solid #909090;text-align: center;width: 8%;">Rescheduled Appointment Date</th>
-            <th style="border: 1px solid #909090;text-align: center;width: 7%;">Reason for Cancelation</th>
+            <th style="border: 1px solid #909090;text-align: center;width: 9%;">Reason for Cancelation</th>
             <th style="border: 1px solid #909090;text-align: center;width: 5%;display:none;">Is Archieve</th>
         </tr>
     </thead>
@@ -301,16 +301,18 @@ function loadFillResult() {
                     var dt1 = data.replaceAll("/", "").replaceAll("Date(", "").replaceAll(")", "");
                     return ConvertDate(dt1.replaceAll("T", " "));
                 },
-                sWidth: '11%', type: 'date', sClass:'TableCellBorder process-word-wrap'
+                sWidth: '6%', type: 'date', sClass:'TableCellBorder process-word-wrap'
             },
             {
                 data: 'Appointment_Date_Time', render: function (data, type, row) { return ""; }, sWidth: '6%',
                 type:'date', sClass: "hide_column"
             },
-            { data: 'Physician_Name', sWidth: '9%', sClass: 'TableCellBorder process-word-wrap' },
-            { data: 'Facility_Name', sWidth: '6%', sClass: 'TableCellBorder process-word-wrap' },
+            { data: 'Physician_Name', sWidth: '8%', sClass: 'TableCellBorder process-word-wrap' },
+            { data: 'Facility_Name', sWidth: '7%', sClass: 'TableCellBorder process-word-wrap' },
             { data: 'Encounter_ID', sClass: "hide_column", sWidth: '6%' },
-            { data: 'Current_Process', sWidth: '7%', sClass: 'TableCellBorder process-word-wrap' },
+            {
+                data: 'Current_Process', sWidth:'11%', sClass: 'TableCellBorder process-word-wrap'
+},
             {
                 data: 'Physician_ID', render: function (data, type, row) {
                     var fac = facilityLibrary.filter(fl => fl.Fac_Name == row.Facility_Name);
@@ -338,7 +340,7 @@ function loadFillResult() {
                     return dt1;
                 }, sWidth: '8%', type: 'date', sClass: 'TableCellBorder process-word-wrap'
             },
-            { data: 'Reason_for_Cancelation', sWidth: '7%', sClass: 'TableCellBorder process-word-wrap' },
+            { data: 'Reason_for_Cancelation', sWidth: '9%', sClass: 'TableCellBorder process-word-wrap' },
             { data: 'Human_Type', sClass: "hide_column", sWidth: '5%' }
                 
         ],
@@ -353,6 +355,12 @@ function loadFillResult() {
             }
         },
         initComplete: function (settings, json) {
+            if (isAncilaryOfLoginFacility == "Y"
+                && $("#grdAppointment thead th:eq(5)")[0]?.style?.width != undefined
+                && $("#grdAppointment thead th:eq(5)")[0].style.width != "6%") {
+
+                $("#grdAppointment thead th:eq(5)")[0].style.width = "6%";
+            }
         }
     });
 
