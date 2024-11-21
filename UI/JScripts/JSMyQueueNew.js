@@ -2888,12 +2888,12 @@ function loadTask() {
         <table id=EncounterTable class= 'table table-bordered Gridbodystyle' style = 'table-layout: fixed;' >
         <thead class='header' style='border: 0px;width:96.7%;'>
         <tr class='header'>
-        <th style='border: 1px solid #909090;text-align: center;width: 2%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='selectAll(this)'/></th>
+        <th style='border: 1px solid #909090;text-align: center;width: 1%;'>Select<input type='checkbox' class='myQChkbxAll' onclick='selectAll(this)'/></th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Priority</th>
         <th style='border: 1px solid #909090;text-align: center;width: 5%;'>Acct. #</th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Patient Name</th>
-        <th style='border: 1px solid #909090;text-align: center;width: 8%;'>Message Date</th>
-        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Message Description</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Message Date</th>
+        <th style='border: 1px solid #909090;text-align: center;width: 8%;'>Message Description</th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Facility Name</th>
         <th style='border: 1px solid #909090;text-align: center;width: 7%;'>Created By</th>
         <th style='border: 1px solid #909090; display: none;'>Message_ID</th></tr>
@@ -2909,6 +2909,7 @@ function loadTask() {
             searching: true,
             processing: false,
             ordering: true,
+            autoWidth: false,
             order: [],
             pageLength: 15,
             language: {
@@ -2959,8 +2960,9 @@ function loadTask() {
             columns: [
                 {
                     data: '', render: function (data, type, row) {
-                        return " <td style='width:7%'><input type = 'checkbox' class='myQChkbx' onclick = 'checkboxclick(this)' /></td >";
+                        return " <td style='width:5%'><input type = 'checkbox' class='myQChkbx' onclick = 'checkboxclick(this)' /></td >";
                     },
+                    searchable: false,
                     orderable: false
                 },
                 { data: 'Priority', searchable: false },
@@ -3440,7 +3442,7 @@ function loadamend() {
     <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
     <thead class='header' style='border: 0px;width:96.7%;'>
     <tr class='header' >
-    <th style='border: 1px solid #909090;text-align: center;width: 3%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th>
+    <th style='border: 1px solid #909090;text-align: center;width:3%;'>Select<input type='checkbox'  onclick='selectAll(this)'/></th>
     <th style='border: 1px solid #909090;text-align: center;width:9%'>Appt. Date</th>
     <th style='border: 1px solid #909090;text-align: center;width:9%'>Addendum Date</th>
     <th style='border: 1px solid #909090;text-align: center;width:6%;'>Acct. #</th>
@@ -3467,8 +3469,9 @@ function loadamend() {
             searching: true,
             processing: false,
             ordering: true,
+            autoWidth: false,
             order: [],
-            pageLength: 25,
+            pageLength: 15,
             language: {
                 search: "",
                 searchPlaceholder: "Search by Name or Acct. #",
@@ -3512,8 +3515,10 @@ function loadamend() {
             columns: [
                 {
                     data: '', render: function (data, type, row) {
-                        return " <td style='width:4%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
-                    },
+                        return " <td style='width:3%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
+                    }, 
+                    searchable: false,
+                    orderable: false
                 },
                 {
                     data: 'Appt_Date_Time', render: function (data, type, row) {
