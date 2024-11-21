@@ -316,7 +316,7 @@ function loadFillResult() {
             {
                 data: 'Physician_ID', render: function (data, type, row) {
                     var fac = facilityLibrary.filter(fl => fl.Fac_Name == row.Facility_Name);
-                    if (fac[0].Is_Ancillary != "Y") {
+                    if (fac.length == 0 || (fac.length > 0 && fac[0].Is_Ancillary != "Y")) {
                         return row.Physician_ID;
                     }
                     else {
