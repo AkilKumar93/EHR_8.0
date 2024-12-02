@@ -157,6 +157,18 @@ namespace Acurus.Capella.UI
                     tbl.FindControl(button[i]).Visible = true;
 
                 }
+                //CAP-2619
+                string techVisitPhyIDs = System.Configuration.ConfigurationManager.AppSettings["TechVisitPhyIDs"].ToString();
+                if (!string.IsNullOrEmpty(techVisitPhyIDs))
+                {
+                    string physicianID = Request["PhysicianID"] ?? "";
+                    var aryTechVisitPhyIDs = techVisitPhyIDs.Split('|').ToList();
+                    if (!string.IsNullOrEmpty(physicianID) && aryTechVisitPhyIDs.Any(a => a == physicianID))
+                    {
+                        btnProviderSave.Visible = false;
+                        tdProviderSave.Visible = false;
+                    }
+                }
 
                 if (Request["EncounterID"] != null && Request["humanID"] != null && Request["EncStatus"] != null && Request["bShowPat"] != null && Request["sScreenMode"] != null)
                 {
