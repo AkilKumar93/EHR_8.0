@@ -994,6 +994,12 @@ function btnCopyPrevious_ClientClick(sender, args) {
         }
         tabAutoSave(CurrentTab, sender);
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnccAutosave.value == "false";
+        //CAP-2678
+        setTimeout(function () {
+            if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true" && localStorage.getItem("bSave") == "false") {
+                __doPostBack(sender.id, 'OnClick');
+            }
+        }, 1000);
         return false;
     }
     else {
@@ -1012,7 +1018,11 @@ function btnCopyPrevious_ClientClick(sender, args) {
 
 
 function OpenNotification_Before_MovetoNextProcess() {
-    Notification_Popup('MovetoNextProcess');
+    //CAP-2678
+    var bsave = localStorage.getItem("bSave");
+    if ((window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "true" && bsave == "false") || bsave == "true") {
+        Notification_Popup('MovetoNextProcess');
+    }
 }
 
 function IsSaveEnabled(sender) {
@@ -1025,23 +1035,37 @@ function IsSaveEnabled(sender) {
             sessionStorage.setItem("EncPrevTabText", CurrentTab[0].innerText);
         }
         if ((CurrentTab[0].innerText == "CC / HPI" || CurrentTab[0].innerText == "SERV./PROC. CODES") && (val != null && val != undefined && val != "")) {
-            if (val != "true")
+            if (val != "true") {
                 tabAutoSave(CurrentTab, sender);
+                //CAP-2678
+                setTimeout(function () {
+                    if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "false" && localStorage.getItem("bSave") == "true") {
+                        __doPostBack(sender.id, 'OnClick');
+                    }
+                }, 1000);
+            }
             else {
                 disableAutoSave();//to prevent repeated enabling of autosave functionality - from Notification screen 
                 { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
                 return true;
-                 }
+            }
         }
-        else
+        else {
             tabAutoSave(CurrentTab, sender);
+            //CAP-2678
+            setTimeout(function () {
+                if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value == "false" && localStorage.getItem("bSave") == "true") {
+                    __doPostBack(sender.id, 'OnClick');
+                }
+            }, 1000);
+        }
         return false;
     }
     else {
         disableAutoSave();//to prevent repeated enabling of autosave functionality - from Notification screen 
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         return true;
-       
+
     }
 }
 
