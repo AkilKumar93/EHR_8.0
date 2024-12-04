@@ -1621,7 +1621,7 @@ namespace Acurus.Capella.UI
                             string sAlert = string.Empty;
                             WFObjectManager objenco = new WFObjectManager();
                             objenco.MoveToNextProcess(ClientSession.EncounterId, "ENCOUNTER", 6, "UNKNOWN", UtilityManager.ConvertToLocal(dtLocalTime), string.Empty, null, null);
-                            objMoveVerifyDTO = objEncounterManager.PerformMovetoNextProcess(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, null, ClientSession.FillEncounterandWFObject.EncRecord, ClientSession.FillEncounterandWFObject.DocumentationWFRecord, null, IsPatientDiscussed, IsDiscussedBy, out sAlert);
+                            objMoveVerifyDTO = objEncounterManager.PerformMovetoNextProcess(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, null, ClientSession.FillEncounterandWFObject.EncRecord, ClientSession.FillEncounterandWFObject.DocumentationWFRecord, null, IsPatientDiscussed, IsDiscussedBy, ClientSession.LegalOrg, out sAlert);
                         }
                     }
                     else
@@ -1656,7 +1656,7 @@ namespace Acurus.Capella.UI
                         else
                         {
                             string sAlert = string.Empty;
-                            objMoveVerifyDTO = objEncounterManager.PerformMovetoNextProcess(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, ClientSession.FillEncounterandWFObject.EncounterWFRecord, ClientSession.FillEncounterandWFObject.EncRecord, ClientSession.FillEncounterandWFObject.DocumentationWFRecord, null, IsPatientDiscussed, IsDiscussedBy, out sAlert);
+                            objMoveVerifyDTO = objEncounterManager.PerformMovetoNextProcess(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, ClientSession.FillEncounterandWFObject.EncounterWFRecord, ClientSession.FillEncounterandWFObject.EncRecord, ClientSession.FillEncounterandWFObject.DocumentationWFRecord, null, IsPatientDiscussed, IsDiscussedBy, ClientSession.LegalOrg, out sAlert);
                             //CAP-975
                             if ((Convert.ToBoolean(objMoveVerifyDTO.IsGcodePresent) == true) && (Convert.ToBoolean(objMoveVerifyDTO.IsICDPresent) == false))
                             {
@@ -1669,7 +1669,7 @@ namespace Acurus.Capella.UI
                     }
                 }
                 else
-                    objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, out string sAlert);
+                    objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value,ClientSession.LegalOrg, out string sAlert);
             }
 
             string is_revChecked = string.Empty;
@@ -2139,7 +2139,7 @@ namespace Acurus.Capella.UI
 
             string sAlert = string.Empty;
             //MoveVerificationDTO objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, ClientSession.PhysicianId, ClientSession.HumanId, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, btnPhysiciancorrection.Text, bDuplicateCheck, ClientSession.UserRole);
-            MoveVerificationDTO objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, ClientSession.PhysicianId, ClientSession.HumanId, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, btnPhysiciancorrection.Value, bDuplicateCheck, ClientSession.UserRole, "btnPhysiciancorrection", bDuplicateCheck, hdnACOValidated.Value, out sAlert);
+            MoveVerificationDTO objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, ClientSession.PhysicianId, ClientSession.HumanId, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, btnPhysiciancorrection.Value, bDuplicateCheck, ClientSession.UserRole, "btnPhysiciancorrection", bDuplicateCheck, hdnACOValidated.Value,ClientSession.LegalOrg, out sAlert);
             if (btnPhysiciancorrection.Value.ToUpper() != "MOVE TO CHECKOUT")
             {
                 if (objMoveVerifyDTO != null)
@@ -2940,7 +2940,7 @@ namespace Acurus.Capella.UI
             bool bCheck = true;
             //objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, ClientSession.PhysicianId, ClientSession.HumanId, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, btnPhysiciancorrection.Text, bDuplicateCheck, ClientSession.UserRole);
             string check = "True";
-            objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, ClientSession.PhysicianId, ClientSession.HumanId, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, btnPhysiciancorrection.Value, bDuplicateCheck, ClientSession.UserRole, "btnHiddenDuplicateCheck", bCheck, check, out string sAlert);
+            objMoveVerifyDTO = objEncounterManager.PerformMoveVerification(ClientSession.EncounterId, ClientSession.PhysicianId, ClientSession.HumanId, UtilityManager.ConvertToLocal(DateTime.Now), ClientSession.FacilityName, ClientSession.UserName, false, string.Empty, string.Empty, ClientSession.UserCurrentProcess, string.Empty, btnPhysiciancorrection.Value, bDuplicateCheck, ClientSession.UserRole, "btnHiddenDuplicateCheck", bCheck, check, ClientSession.LegalOrg, out string sAlert);
             //Jira Cap- 740
             if (objMoveVerifyDTO.IsWorkflowPushed)
             {
