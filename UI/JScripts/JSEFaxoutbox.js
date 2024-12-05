@@ -1,10 +1,10 @@
 ﻿$(document).ready(function () {
     EFaxoutboxload();
 });
-//CAP-1831 - eFax Outbox - Introduce filter 
-$('#chkLast30daysTransactions').change(function () {
-    EFaxoutboxload();
-});
+////CAP-1831 - eFax Outbox - Introduce filter 
+//$('#chkLast30daysTransactions').change(function () {
+//    EFaxoutboxload();
+//});
 //CAP-1831 - eFax Outbox - Introduce filter 
 function EFaxoutboxload() {
     $('#divEFaxTable').empty();

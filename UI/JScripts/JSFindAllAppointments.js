@@ -362,7 +362,7 @@ function loadFillResult() {
 
             //Always select first iteam
             if ($("#grdAppointment tbody tr").length > 0 && $("#grdAppointment tbody tr td").length > 1) {
-                $($("#grdAppointment tbody tr")[0]).addClass("rgSelectedRow");
+                $($("#grdAppointment tbody tr")[0]).click();
             }
         }
     });
