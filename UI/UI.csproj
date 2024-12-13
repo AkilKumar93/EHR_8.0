@@ -375,7 +375,6 @@
     <Content Include="bin\TimePicker.dll" />
     <Content Include="bin\VsWebSite.Interop.dll" />
     <Content Include="bin\X12_Envelope.dll" />
-    <Content Include="ConfigXML\ImmztnRegistry_Lookup.xml" />
     <Content Include="ConfigXML\Insurance_Plan.xml" />
     <Content Include="CSS\bootstrap-icons.css" />
     <Content Include="CSS\bootstrap.min.css" />
@@ -2441,6 +2440,7 @@
     <Content Include="bin\Acurus.Capella.UI.dll.config" />
     <Content Include="ConfigXML\CapellaScribeLookupList.json" />
     <Content Include="ConfigXML\Master_Vitals.json" />
+    <Content Include="ConfigXML\ImmztnRegistry_Lookup.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />

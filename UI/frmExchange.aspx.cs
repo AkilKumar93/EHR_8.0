@@ -18,6 +18,7 @@ using Ionic.Zip;
 using Newtonsoft.Json;
 using System.Web.UI.HtmlControls;
 using System.Web.Services;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -145,50 +146,95 @@ namespace Acurus.Capella.UI
                 }
                 if (ImmLookupList != null && ImmLookupList.Count == 0)
                 {
-                    string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\ImmztnRegistry_Lookup.xml");
-                    if (File.Exists(strXmlFilePath) == true)
-                    {
+                    //Jira cap - 2771 - XML to JSON - Start
+                   // string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\ImmztnRegistry_Lookup.xml");
+                   // if (File.Exists(strXmlFilePath) == true)
+                    //{
                         try
                         {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                            itemDoc.Load(XmlText);
-                            XmlText.Close();
-                            XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("ImmunizationRegistryRespList");
-                            if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes.Count > 0)
+                        //XmlDocument itemDoc = new XmlDocument();
+                        //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                        //itemDoc.Load(XmlText);
+                        //XmlText.Close();
+                        //XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("ImmunizationRegistryRespList");
+                        //if (xmlNodeList != null && xmlNodeList.Count > 0 && xmlNodeList[0].ChildNodes.Count > 0)
+                        //{
+                        //    for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                        //    {
+                        //        //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
+                        //        //ImmLookupList.Add(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value, xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
+                        //        ImmLookupList.Add(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("key").Value, xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
+                        //    }
+                        //}
+                        //XmlNodeList xmlErrNodeList = itemDoc.GetElementsByTagName("ImmunizationMsgLookupList");
+                        //if (xmlErrNodeList != null && xmlErrNodeList.Count > 0 && xmlErrNodeList[0].ChildNodes.Count > 0)
+                        //{
+                        //    for (int j = 0; j < xmlErrNodeList[0].ChildNodes.Count; j++)
+                        //    {
+                        //        ImmLookupErrList.Add(xmlErrNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value, xmlErrNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
+                        //    }
+                        //}
+                        //XmlNodeList xmlPatNodeList = itemDoc.GetElementsByTagName("ImmunizationErrPatList");
+                        //if (xmlPatNodeList != null && xmlPatNodeList.Count > 0 && xmlPatNodeList[0].ChildNodes.Count > 0)
+                        //{
+                        //    for (int j = 0; j < xmlPatNodeList[0].ChildNodes.Count; j++)
+                        //    {
+                        //        if (xmlPatNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value == "patientList")
+                        //            PatientList = xmlPatNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value;
+                        //        if (xmlPatNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value == "patientProvince")
+                        //            PatientProvince = xmlPatNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value;
+                        //    }
+                        //}
+
+                        IList<ImmunizationRegistryResp> ilistImmunizationRegistryResp = new List<ImmunizationRegistryResp>();
+                        IList<ImmunizationMsgLookupList> ilistImmunizationMsgLookupList = new List<ImmunizationMsgLookupList>();
+                        IList<ImmunizationErrPatList> ilistImmunizationErrPatList = new List<ImmunizationErrPatList>();
+                        ImmztnRegistry_LookupList ilstImmztnRegistryLookupList = new ImmztnRegistry_LookupList();
+
+
+                        ilstImmztnRegistryLookupList = ConfigureBase<ImmztnRegistry_LookupList>.ReadJson("ImmztnRegistry_Lookup.json");
+                        if (ilstImmztnRegistryLookupList != null)
+                        {
+                            ilistImmunizationRegistryResp = ilstImmztnRegistryLookupList.ImmunizationRegistryResp;
+                            ilistImmunizationMsgLookupList = ilstImmztnRegistryLookupList.ImmunizationMsgLookupList;
+                            ilistImmunizationErrPatList = ilstImmztnRegistryLookupList.ImmunizationErrPatList;
+                        }
+
+                        if ((ilistImmunizationRegistryResp?.Count ?? 0) > 0)
+                        {
+                            for (int j = 0; j < ilistImmunizationRegistryResp.Count; j++)
                             {
-                                for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
-                                {
-                                    //CAP-1716,CAP-1719 - Immunization Submission to CAIR Records - To include PI(human_id ) for all  submissions instead of MRN Number 
-                                    //ImmLookupList.Add(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value, xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
-                                    ImmLookupList.Add(xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("key").Value, xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
-                                }
+                                ImmLookupList.Add(ilistImmunizationRegistryResp[j].key, ilistImmunizationRegistryResp[j].value);
                             }
-                            XmlNodeList xmlErrNodeList = itemDoc.GetElementsByTagName("ImmunizationMsgLookupList");
-                            if (xmlErrNodeList != null && xmlErrNodeList.Count > 0 && xmlErrNodeList[0].ChildNodes.Count > 0)
+                        }
+                        if ((ilistImmunizationMsgLookupList?.Count ?? 0) > 0)
+                        {
+                            for (int j = 0; j < ilistImmunizationMsgLookupList.Count; j++)
                             {
-                                for (int j = 0; j < xmlErrNodeList[0].ChildNodes.Count; j++)
-                                {
-                                    ImmLookupErrList.Add(xmlErrNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value, xmlErrNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value);
-                                }
+                                ImmLookupErrList.Add(ilistImmunizationMsgLookupList[j].Field_Name, ilistImmunizationMsgLookupList[j].value);
                             }
-                            XmlNodeList xmlPatNodeList = itemDoc.GetElementsByTagName("ImmunizationErrPatList");
-                            if (xmlPatNodeList != null && xmlPatNodeList.Count > 0 && xmlPatNodeList[0].ChildNodes.Count > 0)
+                        }
+                        if ((ilistImmunizationErrPatList?.Count ?? 0) > 0)
+                        {
+                            for (int j = 0; j < ilistImmunizationErrPatList.Count; j++)
                             {
-                                for (int j = 0; j < xmlPatNodeList[0].ChildNodes.Count; j++)
+                                if (ilistImmunizationErrPatList[j].Field_Name == "patientList")
                                 {
-                                    if (xmlPatNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value == "patientList")
-                                        PatientList = xmlPatNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value;
-                                    if (xmlPatNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value == "patientProvince")
-                                        PatientProvince = xmlPatNodeList[0].ChildNodes[j].Attributes.GetNamedItem("value").Value;
+                                    PatientList = ilistImmunizationErrPatList[j].value;
+                                }
+                                if (ilistImmunizationErrPatList[j].Field_Name == "patientProvince")
+                                {
+                                    PatientProvince = ilistImmunizationErrPatList[j].value;
                                 }
                             }
                         }
-                        catch
+                        //Jira cap - 2771 - XML to JSON - End
+                    }
+                    catch
                         {
 
                         }
-                    }
+                    //}
                 }
             }
             else
