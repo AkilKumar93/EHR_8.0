@@ -2018,7 +2018,6 @@
     <Content Include="ConfigXML\LabLocationList.xml" />
     <Content Include="ConfigXML\LookupList_CCDAErrors.xml" />
     <Content Include="ConfigXML\machine_technician.xml" />
-    <Content Include="ConfigXML\Master_Vitals.xml" />
     <Content Include="ConfigXML\PhysicianAddressDetails.xml" />
     <Content Include="ConfigXML\PhysicianFacilityMapping.xml" />
     <Content Include="ConfigXML\PhysicianReviewProtocols.xml" />
