@@ -14,6 +14,7 @@ using System.Data;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Reflection;
+using Acurus.Capella.Core.DTOJson;
 
 
 
@@ -844,72 +845,106 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         public IList<MasterVitals> LoadMasterVitalsXML()
         {
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Master_Vitals.xml");
+            //Jira CAP-2778
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Master_Vitals.xml");
+            //IList<MasterVitals> lstMasterVitals = new List<MasterVitals>();
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //XmlDocument itemDoc = new XmlDocument();
+            //XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //XmlNodeList xmlTagName = null;
+            //itemDoc.Load(XmlText);
+            //XmlText.Close();
+
+
+
+            //if (itemDoc.GetElementsByTagName("MasterVitalsList")[0] != null)
+            //{
+            //    //Added by Balaji on 17-Nov-2015
+            //    if (itemDoc.GetElementsByTagName("MasterVitalsList").Count > 0)
+            //    {
+            //        xmlTagName = itemDoc.GetElementsByTagName("MasterVitalsList")[0].ChildNodes; ;
+
+            //        if (xmlTagName.Count > 0)
+            //        {
+            //            for (int j = 0; j < xmlTagName.Count; j++)
+            //            {
+
+            //                string TagName = xmlTagName[j].Name;
+            //                XmlSerializer xmlserializer = new XmlSerializer(typeof(MasterVitals));
+            //                MasterVitals objMasterVitals = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as MasterVitals;
+            //                IEnumerable<PropertyInfo> propInfo = null;
+            //                //Added by Balaji on 17-Nov-2015
+            //                if (objMasterVitals != null)
+            //                {
+
+            //                    propInfo = from obji in ((MasterVitals)objMasterVitals).GetType().GetProperties() select obji;
+
+            //                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                    {
+            //                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                        {
+            //                            foreach (PropertyInfo property in propInfo)
+            //                            {
+            //                                if (property.Name == nodevalue.Name)
+            //                                {
+            //                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                        property.SetValue(objMasterVitals, Convert.ToUInt64(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                        property.SetValue(objMasterVitals, Convert.ToString(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                        property.SetValue(objMasterVitals, Convert.ToDateTime(nodevalue.Value), null);
+            //                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                        property.SetValue(objMasterVitals, Convert.ToInt32(nodevalue.Value), null);
+            //                                    else
+            //                                        property.SetValue(objMasterVitals, nodevalue.Value, null);
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    lstMasterVitals.Add(objMasterVitals);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //}
+
+            //Jira CAP-2778
             IList<MasterVitals> lstMasterVitals = new List<MasterVitals>();
-            if (File.Exists(strXmlFilePath) == true)
+            Master_VitalList master_VitalList = new Master_VitalList();
+            master_VitalList = ConfigureBase<Master_VitalList>.ReadJson("Master_Vitals.json");
+
+            if (master_VitalList != null)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                itemDoc.Load(XmlText);
-                XmlText.Close();
+                MasterVitals objMasterVitals = new MasterVitals();
+                List<PropertyInfo> MstVtlsPropertyInfos = new List<PropertyInfo>();
+                List<PropertyInfo> JsonMstvtlsPropertyInfos = new List<PropertyInfo>();
+                MstVtlsPropertyInfos = ((MasterVitals)new MasterVitals()).GetType().GetProperties().OrderBy(x => x.Name).ToList();
+                JsonMstvtlsPropertyInfos = ((Master_Vital)new Master_Vital()).GetType().GetProperties().OrderBy(y => y.Name).ToList();
 
-                if (itemDoc.GetElementsByTagName("MasterVitalsList")[0] != null)
+                foreach (Master_Vital mv in master_VitalList.MasterVitals)
                 {
-                    //Added by Balaji on 17-Nov-2015
-                    if (itemDoc.GetElementsByTagName("MasterVitalsList").Count > 0)
+                    objMasterVitals = new MasterVitals();
+                    for (int iCount = 0; iCount < MstVtlsPropertyInfos.Count(); iCount++)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("MasterVitalsList")[0].ChildNodes; ;
-
-                        if (xmlTagName.Count > 0)
+                        if (MstVtlsPropertyInfos[iCount].Name == JsonMstvtlsPropertyInfos[iCount].Name)
                         {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(MasterVitals));
-                                MasterVitals objMasterVitals = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as MasterVitals;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                //Added by Balaji on 17-Nov-2015
-                                if (objMasterVitals != null)
-                                {
-
-                                    propInfo = from obji in ((MasterVitals)objMasterVitals).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objMasterVitals, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objMasterVitals, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objMasterVitals, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objMasterVitals, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objMasterVitals, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    lstMasterVitals.Add(objMasterVitals);
-                                }
-                            }
+                            if (MstVtlsPropertyInfos[iCount].PropertyType.Name.ToUpper() == "UINT64")
+                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, Convert.ToUInt64(JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null));
+                            else if (MstVtlsPropertyInfos[iCount].PropertyType.Name.ToUpper() == "STRING")
+                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, Convert.ToString(JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null));
+                            else if (MstVtlsPropertyInfos[iCount].PropertyType.Name.ToUpper() == "DATETIME")
+                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, Convert.ToDateTime(JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null));
+                            else if (MstVtlsPropertyInfos[iCount].PropertyType.Name.ToUpper() == "INT32")
+                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, Convert.ToInt32(JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null));
+                            else
+                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null);
                         }
                     }
+                    lstMasterVitals.Add(objMasterVitals);
                 }
-
-
-
-
             }
-
             return lstMasterVitals;
         }
 
