@@ -376,6 +376,7 @@
     <Content Include="bin\VsWebSite.Interop.dll" />
     <Content Include="bin\X12_Envelope.dll" />
     <Content Include="ConfigXML\Insurance_Plan.xml" />
+    <Content Include="ConfigXML\LoginMessage.json" />
     <Content Include="CSS\bootstrap-icons.css" />
     <Content Include="CSS\bootstrap.min.css" />
     <Content Include="CSS\jquery.dataTables.min.css" />
@@ -2015,7 +2016,6 @@
     <Content Include="ConfigXML\icd_9_10_mapping.xml" />
     <Content Include="ConfigXML\LabList.xml" />
     <Content Include="ConfigXML\LabLocationList.xml" />
-    <Content Include="ConfigXML\LoginMessage.xml" />
     <Content Include="ConfigXML\LookupList_CCDAErrors.xml" />
     <Content Include="ConfigXML\machine_technician.xml" />
     <Content Include="ConfigXML\Master_Vitals.xml" />

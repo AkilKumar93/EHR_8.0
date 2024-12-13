@@ -96,20 +96,76 @@ $(document).ready(function () {
 
 function LoadSystemMessagesKnowledgeCenterdetails() {
     localStorage.setItem("PFSHVerified", "");
-    $.ajax({
-        type: "GET",
-        url: "ConfigXML/LoginMessage.xml",
-        dataType: "xml",
-        async: false,
-        cache: false,
-        success: function (xml) {
 
-            $(xml).find('KeyFeatures').each(function () {
-                var name_text = $(this)[0].attributes[0].nodeValue;
-                var description = $(this)[0].attributes[1].nodeValue;
+    //Jira CAP-2775
+    //$.ajax({
+    //    type: "GET",
+    //    url: "ConfigXML/LoginMessage.xml",
+    //    dataType: "xml",
+    //    async: false,
+    //    cache: false,
+    //    success: function (xml) {
+
+    //        $(xml).find('KeyFeatures').each(function () {
+    //            var name_text = $(this)[0].attributes[0].nodeValue;
+    //            var description = $(this)[0].attributes[1].nodeValue;
+    //            var html = "";
+
+    //            if ($(this)[0].attributes[1].nodeValue != null && $(this)[0].attributes[1].nodeValue != '') {
+    //                html = "<li style='padding-top: 5px;color:green;' class='fa fa-check'><a href='" + description + "' target='_blank' class='alinkstyle'>&nbsp;&nbsp;&nbsp;" + name_text + "</a></li></br>";
+    //                $('#ulFeatures').append($(html));
+    //            }
+    //            else {
+    //                html = "<li style='padding-top: 5px;color:green;'  class='fa fa-check'>&nbsp;&nbsp;&nbsp;<h10 class='pagerLink'>" + name_text + "</h10></li></br>";
+    //                $('#ulFeatures').append($(html));
+    //            }
+    //        });
+    //        $(xml).find('SystemMessage').each(function () {
+    //            var html = "";
+    //            var name_text = $(this)[0].attributes[0].nodeValue;
+    //            var descrip = $(this)[0].attributes[1].nodeValue;
+
+    //            if ($(this)[0].attributes[1].nodeValue != null && $(this)[0].attributes[1].nodeValue != '') {
+    //                html = "<li style='color:green;' class='fa fa-check'><a href='" + descrip + "' target='_blank' class='alinkstyle'>&nbsp;&nbsp;&nbsp;" + name_text + "</a></li></br>";
+    //                $('#ulSystemMessages').append($(html));
+    //            }
+    //            else {
+    //                html = "<li style='padding-top: 5px;color:green;'  class='fa fa-check'>&nbsp;&nbsp;&nbsp;<h10 class='pagerLink'>" + name_text + "</h10></li>";
+    //                $('#ulSystemMessages').append($(html));
+    //            }
+    //        });
+    //        $(xml).find('KnowledgeCentre').each(function () {
+
+    //            var $book = $(this);
+    //            var title = $book.attr("Name");
+    //            var description = $book.attr("link");
+
+    //            if ($book.attr("link") != null && $book.attr("link") != '') {
+    //                html = "<li style='color:green;' class='fa fa-check'><a href='" + description + "' target='_blank' class='alinkstyle'>&nbsp;&nbsp;&nbsp;" + title + "</a></li></br>";
+    //                $('#ulKnowledgecenter').append($(html));
+    //            }
+    //            else {
+    //                html = "<li style='padding-top: 5px;color:green;'  class='fa fa-check'>&nbsp;&nbsp;&nbsp;<h10 class='pagerLink'>" + title + "</h10></li>";
+    //                $('#ulKnowledgecenter').append($(html));
+    //            }
+    //        });
+    //        $(xml).find('Address').each(function () {
+    //            var $Addressdetails = $(this)[0].outerHTML;
+    //            $('#pContactDetails').append($Addressdetails);
+    //        });
+    //    }
+    //});
+
+    //Jira CAP-2775
+    $.get("ConfigXML/LoginMessage.json", {}, function (jsonobject) {
+
+        if (jsonobject?.Login?.KeyFeatures != null) {
+            jsonobject?.Login?.KeyFeatures.forEach((item) => {
+                var name_text = item.Name;
+                var description = item.link;
                 var html = "";
 
-                if ($(this)[0].attributes[1].nodeValue != null && $(this)[0].attributes[1].nodeValue != '') {
+                if (description != null && description != '') {
                     html = "<li style='padding-top: 5px;color:green;' class='fa fa-check'><a href='" + description + "' target='_blank' class='alinkstyle'>&nbsp;&nbsp;&nbsp;" + name_text + "</a></li></br>";
                     $('#ulFeatures').append($(html));
                 }
@@ -117,13 +173,16 @@ function LoadSystemMessagesKnowledgeCenterdetails() {
                     html = "<li style='padding-top: 5px;color:green;'  class='fa fa-check'>&nbsp;&nbsp;&nbsp;<h10 class='pagerLink'>" + name_text + "</h10></li></br>";
                     $('#ulFeatures').append($(html));
                 }
-            });
-            $(xml).find('SystemMessage').each(function () {
-                var html = "";
-                var name_text = $(this)[0].attributes[0].nodeValue;
-                var descrip = $(this)[0].attributes[1].nodeValue;
 
-                if ($(this)[0].attributes[1].nodeValue != null && $(this)[0].attributes[1].nodeValue != '') {
+            });
+        }
+        if (jsonobject?.Login?.SystemMessage != null) {
+            jsonobject?.Login?.SystemMessage.forEach((item) => {
+                var html = "";
+                var name_text = item.Name;
+                var descrip = item.link;
+
+                if (descrip != null && descrip != '') {
                     html = "<li style='color:green;' class='fa fa-check'><a href='" + descrip + "' target='_blank' class='alinkstyle'>&nbsp;&nbsp;&nbsp;" + name_text + "</a></li></br>";
                     $('#ulSystemMessages').append($(html));
                 }
@@ -132,13 +191,14 @@ function LoadSystemMessagesKnowledgeCenterdetails() {
                     $('#ulSystemMessages').append($(html));
                 }
             });
-            $(xml).find('KnowledgeCentre').each(function () {
+        }
+        if (jsonobject?.Login?.KnowledgeCentre != null) {
+            jsonobject?.Login?.KnowledgeCentre.forEach((item) => {
+                var title = item.Name;
+                var description = item.link;
+                var html = "";
 
-                var $book = $(this);
-                var title = $book.attr("Name");
-                var description = $book.attr("link");
-
-                if ($book.attr("link") != null && $book.attr("link") != '') {
+                if (description != null && description != '') {
                     html = "<li style='color:green;' class='fa fa-check'><a href='" + description + "' target='_blank' class='alinkstyle'>&nbsp;&nbsp;&nbsp;" + title + "</a></li></br>";
                     $('#ulKnowledgecenter').append($(html));
                 }
@@ -147,13 +207,12 @@ function LoadSystemMessagesKnowledgeCenterdetails() {
                     $('#ulKnowledgecenter').append($(html));
                 }
             });
-            $(xml).find('Address').each(function () {
-                var $Addressdetails = $(this)[0].outerHTML;
-                $('#pContactDetails').append($Addressdetails);
-            });
+        }
+        if (jsonobject?.Login?.ContactDeatilsList?.Address != null) {
+            var $Addressdetails = jsonobject?.Login?.ContactDeatilsList?.Address;
+            $('#pContactDetails').append($Addressdetails);
         }
     });
-
 }
 
 function ValidateNext() {

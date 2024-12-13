@@ -1,0 +1,76 @@
+{
+  "Login": {
+      "KeyFeatures": [
+        {
+          "Name": "ONC Certified - CEHRT 2015 Edition by SLI",
+          "link": ""
+        },
+        {
+          "Name": "WorkFlow Friendly ",
+          "link": ""
+        },
+        {
+          "Name": "Audit Compliant ",
+          "link": ""
+        },
+        {
+          "Name": "Easy Assessment",
+          "link": ""
+        },
+        {
+          "Name": "Integrated with Labs and Pharmacies ",
+          "link": ""
+        }
+      ]
+    ,
+      "SystemMessage": [
+        {
+          "Name": "Capella System Requirement Document .",
+          "link": "https://cmg.capellaehr.com/documents/User_Manual/System_Requirements.pdf"
+        },
+        {
+          "Name": "Release of new version of Capella EHR on Friday, 21st April'23.",
+          "link": "https://cmg.capellaehr.com/documents/User_Manual/DeltaDocument_21stApril.pdf"
+        },
+        {
+          "Name": "Enhancements include changes in demographics screen (PCP, Cell phone mandatory, Translator required).",
+          "link": ""
+        },
+        {
+          "Name": "Issues related to e-signature time stamp, Block Calendar report, Amendment access resolved.",
+          "link": ""
+        }
+      ]
+    ,
+      "KnowledgeCentre": [
+        {
+          "Name": "Delta document for release dated Friday, 21st April'23.",
+          "link": "https://cmg.capellaehr.com/documents/User_Manual/DeltaDocument_21stApril.pdf"
+        },
+        {
+          "Name": "Instructions for accessing Teams.",
+          "link": "https://cmg.capellaehr.com/documents/User_Manual/Teams_Instructions.pdf"
+        },
+        {
+          "Name": "User Manuals / Help Docs.",
+          "link": "https://cmg.capellaehr.com/documents/User_Manual/Capella_Docs_Index.pdf"
+        },
+        {
+          "Name": "Training PPT - FO.",
+          "link": "https://cmg.capellaehr.com/documents/User_Manual/Capella_FO_BusinessProcesses.pdf"
+        },
+        {
+          "Name": "Training PPT - MA.",
+          "link": "https://cmg.capellaehr.com/documents/User_Manual/Capella_MA_BusinessProcesses.pdf"
+        },
+        {
+          "Name": "Training PPT - PHY.",
+          "link": "https://cmg.capellaehr.com/documents/User_Manual/Capella_Provider_BusinessProcesses.pdf"
+        }
+      ]
+    ,
+    "ContactDeatilsList": {
+      "Address": "<b>Address :</b><br/>840 Towne Center Dr.,<br/>Pomona,<br/>CA 91767-5900<br/>USA. <br/> <br/><b> Support Phone#: </b>909-281-9856 (Mon-Fri 8:00 AM - 12:00 AM - US Pacific Time)<br/><br/><b> Email to:</b> capella-support@akidolabs.com (including any after-hours support)<br/><br/><b>Fax:</b> 909-348-8194"
+    }
+  }
+}
