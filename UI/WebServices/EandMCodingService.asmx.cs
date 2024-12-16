@@ -296,19 +296,23 @@ namespace Acurus.Capella.UI.WebServices
                     eandmDTO.ICDList.Remove(s);
                 }
             }
-            //BugID:46020 - to not enable Save and Save&Submit by default - START -
-            if (eandmDTO.EandMCodingList != null && ProcedureList != null)
+            //Jira cap - 2743
+            if (EnableScreen != "disabled")
             {
-                if (eandmDTO.EandMCodingList.Count != ProcedureList.Count)
+                //BugID:46020 - to not enable Save and Save&Submit by default - START -
+                if (eandmDTO.EandMCodingList != null && ProcedureList != null)
                 {
-                    bsaveenable = "true";
+                    if (eandmDTO.EandMCodingList.Count != ProcedureList.Count)
+                    {
+                        bsaveenable = "true";
+                    }
                 }
-            }
-            if (EMDTOIcdlst != null && eandmDTO.ICDList != null)
-            {
-                if (EMDTOIcdlst.Count != eandmDTO.ICDList.Count)
+                if (EMDTOIcdlst != null && eandmDTO.ICDList != null)
                 {
-                    bsaveenable = "true";
+                    if (EMDTOIcdlst.Count != eandmDTO.ICDList.Count)
+                    {
+                        bsaveenable = "true";
+                    }
                 }
             }
             //BugID:48192
