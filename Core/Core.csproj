@@ -339,6 +339,7 @@
     <Compile Include="DomainObjects\WorkFlow.cs" />
     <Compile Include="DomainObjects\WorkFlowTypeMaster.cs" />
     <Compile Include="DomainObjects\workset_proc_alloc.cs" />
+    <Compile Include="DTOJson\Dynamic_Screen.cs" />
     <Compile Include="DTOJson\ImmztnRegistry_LookupList.cs" />
     <Compile Include="DTO\ABIResultsDTO.cs" />
     <Compile Include="DTO\AuthorizationDTO.cs" />
