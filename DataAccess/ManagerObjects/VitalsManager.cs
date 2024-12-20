@@ -775,70 +775,109 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         public IList<DynamicScreen> LoadDynamicScreenXML()
         {
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Dynamic_Screen.xml");
+            //Jira CAP-2768
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Dynamic_Screen.xml");
+            //IList<DynamicScreen> lstDynamicScreen = new List<DynamicScreen>();
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    XmlNodeList xmlTagName = null;
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+
+            //    if (itemDoc.GetElementsByTagName("DynamicScreenList")[0] != null)
+            //    {
+            //        //Added by Balaji on 17-Nov-2015
+            //        if (itemDoc.GetElementsByTagName("DynamicScreenList").Count > 0)
+            //        {
+            //            xmlTagName = itemDoc.GetElementsByTagName("DynamicScreenList")[0].ChildNodes; ;
+
+            //            if (xmlTagName.Count > 0)
+            //            {
+            //                for (int j = 0; j < xmlTagName.Count; j++)
+            //                {
+
+            //                    string TagName = xmlTagName[j].Name;
+            //                    XmlSerializer xmlserializer = new XmlSerializer(typeof(DynamicScreen));
+            //                    DynamicScreen objDynamicScreen = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as DynamicScreen;
+            //                    IEnumerable<PropertyInfo> propInfo = null;
+            //                    //Added by Balaji on 17-Nov-2015
+            //                    if (objDynamicScreen != null)
+            //                    {
+
+            //                        propInfo = from obji in ((DynamicScreen)objDynamicScreen).GetType().GetProperties() select obji;
+
+            //                        for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+            //                        {
+            //                            XmlNode nodevalue = xmlTagName[j].Attributes[i];
+            //                            {
+            //                                foreach (PropertyInfo property in propInfo)
+            //                                {
+            //                                    if (property.Name == nodevalue.Name)
+            //                                    {
+            //                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
+            //                                            property.SetValue(objDynamicScreen, Convert.ToUInt64(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
+            //                                            property.SetValue(objDynamicScreen, Convert.ToString(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+            //                                            property.SetValue(objDynamicScreen, Convert.ToDateTime(nodevalue.Value), null);
+            //                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
+            //                                            property.SetValue(objDynamicScreen, Convert.ToInt32(nodevalue.Value), null);
+            //                                        else
+            //                                            property.SetValue(objDynamicScreen, nodevalue.Value, null);
+            //                                    }
+            //                                }
+            //                            }
+            //                        }
+            //                        lstDynamicScreen.Add(objDynamicScreen);
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+
+
+
+
+            //}
+
+            //Jira CAP-2768
             IList<DynamicScreen> lstDynamicScreen = new List<DynamicScreen>();
-            if (File.Exists(strXmlFilePath) == true)
+            DynamicScreenList dynamicScreenList = new DynamicScreenList();
+            dynamicScreenList = ConfigureBase<DynamicScreenList>.ReadJson("Dynamic_Screen.json");
+            if (dynamicScreenList != null)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                XmlNodeList xmlTagName = null;
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-
-                if (itemDoc.GetElementsByTagName("DynamicScreenList")[0] != null)
+                if (dynamicScreenList?.DynamicScreen != null && (dynamicScreenList?.DynamicScreen?.Count ?? 0) > 0)
                 {
-                    //Added by Balaji on 17-Nov-2015
-                    if (itemDoc.GetElementsByTagName("DynamicScreenList").Count > 0)
+                    IList<PropertyInfo> propInfo = new DynamicScreen().GetType().GetProperties().ToList();
+                    IList<PropertyInfo> prop = null;
+                    IList<PropertyInfo> JsonpropInfo = new Dynamic_Screen().GetType().GetProperties().ToList();
+                    foreach (Dynamic_Screen dynamic_Screen in dynamicScreenList.DynamicScreen)
                     {
-                        xmlTagName = itemDoc.GetElementsByTagName("DynamicScreenList")[0].ChildNodes; ;
-
-                        if (xmlTagName.Count > 0)
+                        DynamicScreen objDynamicScreen = new DynamicScreen();
+                        foreach (PropertyInfo JsonProp in JsonpropInfo)
                         {
-                            for (int j = 0; j < xmlTagName.Count; j++)
-                            {
-
-                                string TagName = xmlTagName[j].Name;
-                                XmlSerializer xmlserializer = new XmlSerializer(typeof(DynamicScreen));
-                                DynamicScreen objDynamicScreen = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as DynamicScreen;
-                                IEnumerable<PropertyInfo> propInfo = null;
-                                //Added by Balaji on 17-Nov-2015
-                                if (objDynamicScreen != null)
-                                {
-
-                                    propInfo = from obji in ((DynamicScreen)objDynamicScreen).GetType().GetProperties() select obji;
-
-                                    for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
-                                    {
-                                        XmlNode nodevalue = xmlTagName[j].Attributes[i];
-                                        {
-                                            foreach (PropertyInfo property in propInfo)
-                                            {
-                                                if (property.Name == nodevalue.Name)
-                                                {
-                                                    if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        property.SetValue(objDynamicScreen, Convert.ToUInt64(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                        property.SetValue(objDynamicScreen, Convert.ToString(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                        property.SetValue(objDynamicScreen, Convert.ToDateTime(nodevalue.Value), null);
-                                                    else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                        property.SetValue(objDynamicScreen, Convert.ToInt32(nodevalue.Value), null);
-                                                    else
-                                                        property.SetValue(objDynamicScreen, nodevalue.Value, null);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    lstDynamicScreen.Add(objDynamicScreen);
-                                }
+                            prop = new List<PropertyInfo>();
+                            prop = propInfo.Where(x => x.Name == JsonProp.Name).ToList();
+                            if ((prop?.Count ?? 0) > 0)
+                            { 
+                                if (prop[0].PropertyType.Name.ToUpper() == "UINT64")
+                                    prop[0].SetValue(objDynamicScreen, Convert.ToUInt64(JsonProp.GetValue(dynamic_Screen)), null);
+                                else if (prop[0].PropertyType.Name.ToUpper() == "STRING")
+                                    prop[0].SetValue(objDynamicScreen, Convert.ToString(JsonProp.GetValue(dynamic_Screen)), null);
+                                else if (prop[0].PropertyType.Name.ToUpper() == "DATETIME")
+                                    prop[0].SetValue(objDynamicScreen, Convert.ToDateTime(JsonProp.GetValue(dynamic_Screen)), null);
+                                else if (prop[0].PropertyType.Name.ToUpper() == "INT32")
+                                    prop[0].SetValue(objDynamicScreen, Convert.ToInt32(JsonProp.GetValue(dynamic_Screen)), null);
+                                else
+                                    prop[0].SetValue(objDynamicScreen, JsonProp.GetValue(dynamic_Screen), null);
                             }
                         }
+                        lstDynamicScreen.Add(objDynamicScreen);
                     }
+
                 }
-
-
-
-
             }
 
             return lstDynamicScreen;
@@ -918,28 +957,29 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             if (master_VitalList != null)
             {
                 MasterVitals objMasterVitals = new MasterVitals();
-                List<PropertyInfo> MstVtlsPropertyInfos = new List<PropertyInfo>();
-                List<PropertyInfo> JsonMstvtlsPropertyInfos = new List<PropertyInfo>();
-                MstVtlsPropertyInfos = ((MasterVitals)new MasterVitals()).GetType().GetProperties().OrderBy(x => x.Name).ToList();
-                JsonMstvtlsPropertyInfos = ((Master_Vital)new Master_Vital()).GetType().GetProperties().OrderBy(y => y.Name).ToList();
+                List<PropertyInfo> MstVtlsPropertyInfos = new MasterVitals().GetType().GetProperties().ToList();
+                List<PropertyInfo> prop = new List<PropertyInfo>();
+                List<PropertyInfo> JsonMstvtlsPropertyInfos = new Master_Vital().GetType().GetProperties().ToList();
 
                 foreach (Master_Vital mv in master_VitalList.MasterVitals)
                 {
                     objMasterVitals = new MasterVitals();
-                    for (int iCount = 0; iCount < MstVtlsPropertyInfos.Count(); iCount++)
+                    foreach (PropertyInfo JsonMstvtlsPropertyInfo in JsonMstvtlsPropertyInfos)
                     {
-                        if (MstVtlsPropertyInfos[iCount].Name == JsonMstvtlsPropertyInfos[iCount].Name)
+                        prop = new List<PropertyInfo>();
+                        prop = MstVtlsPropertyInfos.Where(x => x.Name == JsonMstvtlsPropertyInfo.Name).ToList();
+                        if ((prop?.Count ?? 0) > 0)
                         {
-                            if (MstVtlsPropertyInfos[iCount].PropertyType.Name.ToUpper() == "UINT64")
-                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, Convert.ToUInt64(JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null));
-                            else if (MstVtlsPropertyInfos[iCount].PropertyType.Name.ToUpper() == "STRING")
-                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, Convert.ToString(JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null));
-                            else if (MstVtlsPropertyInfos[iCount].PropertyType.Name.ToUpper() == "DATETIME")
-                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, Convert.ToDateTime(JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null));
-                            else if (MstVtlsPropertyInfos[iCount].PropertyType.Name.ToUpper() == "INT32")
-                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, Convert.ToInt32(JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null));
+                            if (prop[0].PropertyType.Name.ToUpper() == "UINT64")
+                                prop[0].SetValue(objMasterVitals, Convert.ToUInt64(JsonMstvtlsPropertyInfo.GetValue(mv), null));
+                            else if (prop[0].PropertyType.Name.ToUpper() == "STRING")
+                                prop[0].SetValue(objMasterVitals, Convert.ToString(JsonMstvtlsPropertyInfo.GetValue(mv), null));
+                            else if (prop[0].PropertyType.Name.ToUpper() == "DATETIME")
+                                prop[0].SetValue(objMasterVitals, Convert.ToDateTime(JsonMstvtlsPropertyInfo.GetValue(mv), null));
+                            else if (prop[0].PropertyType.Name.ToUpper() == "INT32")
+                                prop[0].SetValue(objMasterVitals, Convert.ToInt32(JsonMstvtlsPropertyInfo.GetValue(mv), null));
                             else
-                                MstVtlsPropertyInfos[iCount].SetValue(objMasterVitals, JsonMstvtlsPropertyInfos[iCount].GetValue(mv), null);
+                                prop[0].SetValue(objMasterVitals, JsonMstvtlsPropertyInfo.GetValue(mv), null);
                         }
                     }
                     lstMasterVitals.Add(objMasterVitals);
