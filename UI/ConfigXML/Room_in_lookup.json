@@ -1,0 +1,626 @@
+{
+  "facility": [
+    {
+      "name": "138 HARVARD AVE",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "1866 N OG AVE # 101",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "1866 N OG AVE # 102",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_4",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_5",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_6",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "1866 N OG AVE # 201",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_4",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "1866 N OG AVE # 202",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_4",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_5",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_6",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_7",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_8",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_9",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_10",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_11",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_12",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1A",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1B",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Strees Room",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "1904 N OG AVE",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_4",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_5",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_6",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "430 W BASELINE AVE",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Miya_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Miya_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Rude_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Rude_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Rude_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Orr_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Orr_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Orr_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Jacoby_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Jacoby_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Kasem_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "Immunization/EKG",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "585 N MTN AVE STE A",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "790 E BONITA AVE",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_202",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_203",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_205",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_206",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_207",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_208",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_210",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_211",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_214",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_216",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_217",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_218",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_219",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_221",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_222",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_223",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_225B",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_226",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_227",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_236",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_238",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_239",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_241",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_243",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_244",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_215",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_237",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "9190 HAVEN AVE 1ST FLR",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_4",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_5",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_7",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_8",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_9",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_10",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_11",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_15",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_17",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_18",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_19",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_20",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_21",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_22",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_23",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_24",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "IVDMC",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "591 N 13TH AVE",
+      "exam_room": [
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_4",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "9190 HAVEN AVE II FLOOR SUITE# 210",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_4",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_5",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_6",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_7",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_8",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_9",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_10",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_11",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_12",
+          "sortorder": "9999"
+        }
+      ]
+    },
+    {
+      "name": "9190 HAVEN AVE II FLOOR SUITE# 200",
+      "exam_room": [
+        {
+          "Name": "",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_1",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_2",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_3",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_4",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_5",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_6",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_7",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_8",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_9",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_10",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_11",
+          "sortorder": "9999"
+        },
+        {
+          "Name": "ER_12",
+          "sortorder": "9999"
+        }
+      ]
+    }
+  ]
+}

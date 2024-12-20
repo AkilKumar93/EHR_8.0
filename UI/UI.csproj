@@ -2021,7 +2021,6 @@
     <Content Include="ConfigXML\PhysicianSpecificBodyImageTemplates.xml" />
     <Content Include="ConfigXML\pqri.xml" />
     <Content Include="ConfigXML\QuestionnaireTab_Lookup.xml" />
-    <Content Include="ConfigXML\room_in_lookup.xml" />
     <Content Include="ConfigXML\Speciality.xml" />
     <Content Include="ConfigXML\staticlookup.xml" />
     <Content Include="ConfigXML\User.xml" />
@@ -2440,6 +2439,7 @@
     <Content Include="ConfigXML\Physician_POV.json" />
     <Content Include="ConfigXML\machine_technician.json" />
     <Content Include="ConfigXML\PhysicianReviewProtocols.json" />
+    <Content Include="ConfigXML\Room_in_lookup.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />

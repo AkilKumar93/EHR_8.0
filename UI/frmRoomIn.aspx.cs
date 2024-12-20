@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using System.Xml;
 using System.IO;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -42,25 +43,46 @@ namespace Acurus.Capella.UI
                 string ExamRoom = Request.QueryString["ExamRoom"];
                 btnOK.Enabled = false;
 
-                XmlDocument xmldoc = new XmlDocument();
-                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml"))
+                //Jira CAP-2785
+                //XmlDocument xmldoc = new XmlDocument();
+                //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml"))
+                //{
+                //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml");
+                //    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("facility");
+                //    if (xmlFacilityList != null)
+                //    {
+                //        foreach (XmlNode xmlCurrentFaacilityNode in xmlFacilityList)
+                //        {
+                //            if (xmlCurrentFaacilityNode.Attributes["name"].Value == ClientSession.FacilityName)
+                //            {
+                //                foreach (XmlNode xmlRoomNodes in xmlCurrentFaacilityNode.ChildNodes)
+                //                {
+                //                    cboExamRoom.Items.Add(new RadComboBoxItem(xmlRoomNodes.Attributes["Name"].Value));
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+                //Jira CAP-2785
+
+                Room_in_lookupList room_In_LookupList = new Room_in_lookupList();
+                room_In_LookupList = ConfigureBase<Room_in_lookupList>.ReadJson("room_in_lookup.json");
+
+                if (room_In_LookupList != null && room_In_LookupList.facility != null)
                 {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml");
-                    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("facility");
-                    if (xmlFacilityList != null)
+                    List<Facility> ilstExamRoomFromFac = new List<Facility>();
+                    ilstExamRoomFromFac = room_In_LookupList.facility.Where(x => x.name == ClientSession.FacilityName).ToList();
+
+                    if ((ilstExamRoomFromFac?.Count ?? 0) > 0)
                     {
-                        foreach (XmlNode xmlCurrentFaacilityNode in xmlFacilityList)
+                        foreach (ExamRoom examRoom in ilstExamRoomFromFac[0].exam_room)
                         {
-                            if (xmlCurrentFaacilityNode.Attributes["name"].Value == ClientSession.FacilityName)
-                            {
-                                foreach (XmlNode xmlRoomNodes in xmlCurrentFaacilityNode.ChildNodes)
-                                {
-                                    cboExamRoom.Items.Add(new RadComboBoxItem(xmlRoomNodes.Attributes["Name"].Value));
-                                }
-                            }
+                            cboExamRoom.Items.Add(new RadComboBoxItem(examRoom.Name));
                         }
                     }
                 }
+
                 if (cboExamRoom.Items.Count > 0 && ExamRoom!=string.Empty)
                 {
                     for (int i = 0; i < cboExamRoom.Items.Count; i++)

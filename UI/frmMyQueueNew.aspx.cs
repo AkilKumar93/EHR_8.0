@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using System.Text;
 using System.IO.Compression;
 using System.Configuration;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -345,25 +346,46 @@ namespace Acurus.Capella.UI
                 }
                 /* To Load Exam Room Content */
                 var eRoomList = new List<String>();
-                XmlDocument xmldoc = new XmlDocument();
-                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml"))
+
+                //Jira CAP-2785
+                //XmlDocument xmldoc = new XmlDocument();
+                //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml"))
+                //{
+                //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml");
+                //    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("facility");
+                //    if (xmlFacilityList != null)
+                //    {
+                //        foreach (XmlNode xmlCurrentFaacilityNode in xmlFacilityList)
+                //        {
+                //            if (xmlCurrentFaacilityNode.Attributes["name"].Value == ClientSession.FacilityName)
+                //            {
+                //                foreach (XmlNode xmlRoomNodes in xmlCurrentFaacilityNode.ChildNodes)
+                //                {
+                //                    eRoomList.Add(xmlRoomNodes.Attributes["Name"].Value);
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+                //Jira CAP-2785
+                Room_in_lookupList room_In_LookupList = new Room_in_lookupList();
+                room_In_LookupList = ConfigureBase<Room_in_lookupList>.ReadJson("room_in_lookup.json");
+
+                if (room_In_LookupList != null)
                 {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml");
-                    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("facility");
-                    if (xmlFacilityList != null)
+                    List<Facility> ilstExamRoomFromFac = new List<Facility>();
+                    ilstExamRoomFromFac = room_In_LookupList.facility.Where(x => x.name == ClientSession.FacilityName).ToList();
+
+                    if ((ilstExamRoomFromFac?.Count ?? 0) > 0)
                     {
-                        foreach (XmlNode xmlCurrentFaacilityNode in xmlFacilityList)
+                        foreach (ExamRoom examRoom in ilstExamRoomFromFac[0].exam_room)
                         {
-                            if (xmlCurrentFaacilityNode.Attributes["name"].Value == ClientSession.FacilityName)
-                            {
-                                foreach (XmlNode xmlRoomNodes in xmlCurrentFaacilityNode.ChildNodes)
-                                {
-                                    eRoomList.Add(xmlRoomNodes.Attributes["Name"].Value);
-                                }
-                            }
+                            eRoomList.Add(examRoom.Name);
                         }
                     }
                 }
+
                 //var result = new { data = pat, count = QCount, dataEroom = eRoomList, role = ClientSession.UserRole, EncounterCount = Encountershowallcount };
                 var result = new { data = pat, count = QCount, dataEroom = eRoomList, role = ClientSession.UserRole };
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue MyEncounterLoad : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
@@ -1137,25 +1159,46 @@ namespace Acurus.Capella.UI
             }
             /* To Load Exam Room Content */
             var eRoomList = new List<String>();
-            XmlDocument xmldoc = new XmlDocument();
-            if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml"))
+
+            //Jira CAP-2785
+            //XmlDocument xmldoc = new XmlDocument();
+            //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml"))
+            //{
+            //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml");
+            //    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("facility");
+            //    if (xmlFacilityList != null)
+            //    {
+            //        foreach (XmlNode xmlCurrentFaacilityNode in xmlFacilityList)
+            //        {
+            //            if (xmlCurrentFaacilityNode.Attributes["name"].Value == ClientSession.FacilityName)
+            //            {
+            //                foreach (XmlNode xmlRoomNodes in xmlCurrentFaacilityNode.ChildNodes)
+            //                {
+            //                    eRoomList.Add(xmlRoomNodes.Attributes["Name"].Value);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            //Jira CAP-2785
+            Room_in_lookupList room_In_LookupList = new Room_in_lookupList();
+            room_In_LookupList = ConfigureBase<Room_in_lookupList>.ReadJson("room_in_lookup.json");
+
+            if (room_In_LookupList != null && room_In_LookupList.facility != null)
             {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "room_in_lookup.xml");
-                XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("facility");
-                if (xmlFacilityList != null)
+                List<Facility> ilstExamRoomFromFac = new List<Facility>();
+                ilstExamRoomFromFac = room_In_LookupList.facility.Where(x=>x.name== ClientSession.FacilityName).ToList();
+
+                if ((ilstExamRoomFromFac?.Count ?? 0) > 0)
                 {
-                    foreach (XmlNode xmlCurrentFaacilityNode in xmlFacilityList)
+                    foreach (ExamRoom examRoom in ilstExamRoomFromFac[0].exam_room)
                     {
-                        if (xmlCurrentFaacilityNode.Attributes["name"].Value == ClientSession.FacilityName)
-                        {
-                            foreach (XmlNode xmlRoomNodes in xmlCurrentFaacilityNode.ChildNodes)
-                            {
-                                eRoomList.Add(xmlRoomNodes.Attributes["Name"].Value);
-                            }
-                        }
+                        eRoomList.Add(examRoom.Name);
                     }
                 }
             }
+
             //  ulong Encountershowallcount = 0;
             //  Acurus.Capella.DataAccess.ManagerObjects.ObjectManager objMngr = new Acurus.Capella.DataAccess.ManagerObjects.ObjectManager();
             // Encountershowallcount = objMngr.GetEncountershowallcount(ProcessType[0], ClientSession.UserName, ObjType, ClientSession.FacilityName);
