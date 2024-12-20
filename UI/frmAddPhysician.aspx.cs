@@ -16,6 +16,7 @@ using Acurus.Capella.Core.DomainObjects;
 using System.Collections.Generic;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using System.IO;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -186,24 +187,38 @@ namespace Acurus.Capella.UI
                 //}
                 if (ClientSession.UserRole.ToString().ToUpper() != "OFFICE MANAGER")
                     ddlFacility.Enabled = false;
+                //Jira CAP-2786
+                //XmlDocument xmldoc = new XmlDocument();
 
-                XmlDocument xmldoc = new XmlDocument();
+                //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Speciality.xml");
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Speciality" + ".xml");
+                //    XmlNodeList xmlSpecialityList = xmldoc.GetElementsByTagName("speciality");
+                //    ddlSpecialty.Items.Add(new ListItem("", "0"));
+                //    if (xmlSpecialityList.Count > 0)
+                //    {
+                //        foreach (XmlNode item in xmlSpecialityList)
+                //        {
+                //            if (item != null)
+                //                ddlSpecialty.Items.Add(new ListItem(item.Attributes[0].Value));
+                //        }
+                //    }
+                //}
 
-                string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Speciality.xml");
-                if (File.Exists(strXmlFilePath) == true)
+                //Jira CAP-2786
+                SpecialityList specialityList = new SpecialityList();
+                specialityList = ConfigureBase<SpecialityList>.ReadJson("Speciality.json");
+
+                if (specialityList != null && specialityList.speciality != null)
                 {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Speciality" + ".xml");
-                    XmlNodeList xmlSpecialityList = xmldoc.GetElementsByTagName("speciality");
                     ddlSpecialty.Items.Add(new ListItem("", "0"));
-                    if (xmlSpecialityList.Count > 0)
+                    foreach (Speciality speciality in specialityList.speciality)
                     {
-                        foreach (XmlNode item in xmlSpecialityList)
-                        {
-                            if (item != null)
-                                ddlSpecialty.Items.Add(new ListItem(item.Attributes[0].Value));
-                        }
+                        ddlSpecialty.Items.Add(new ListItem(speciality.name));
                     }
                 }
+
                 if (sPhyLastName != string.Empty)
                 {
                     txtLastName.Text = sPhyLastName;

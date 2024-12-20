@@ -1,0 +1,943 @@
+{
+  "speciality": [
+    {
+      "name": "ACTIVE ANESTHESIA"
+    },
+    {
+      "name": "ACTIVE CRITICAL CARE MEDICINE PULMONARY MEDICINE"
+    },
+    {
+      "name": "ACTIVE EMERGENCY MEDICINE"
+    },
+    {
+      "name": "ACTIVE ENDOCRINOLOGY DIABETES & METABOLISM"
+    },
+    {
+      "name": "ACTIVE FAMILY MEDICINE"
+    },
+    {
+      "name": "ACTIVE GASTROENTEROLOGY INTERNAL MEDICINE"
+    },
+    {
+      "name": "ACTIVE GYNECOLOGIC ONCOLOGY"
+    },
+    {
+      "name": "ACTIVE INTERNAL MEDICINE"
+    },
+    {
+      "name": "ACTIVE INTERVENTIONAL NEUROLOGY"
+    },
+    {
+      "name": "ACTIVE NEONATOLOGY"
+    },
+    {
+      "name": "ACTIVE NEPHROLOGY"
+    },
+    {
+      "name": "ACTIVE NEPHROLOGY INTERNAL MEDICINE"
+    },
+    {
+      "name": "ACTIVE OB/GYN"
+    },
+    {
+      "name": "ACTIVE OPHTHALMOLOGY"
+    },
+    {
+      "name": "ACTIVE OPHTHALMOLOGY PEDIATRIC OPHTHALMOLOGY"
+    },
+    {
+      "name": "ACTIVE PEDIATRIC CARDIOLOGY"
+    },
+    {
+      "name": "ACTIVE PEDIATRIC GASTROENTEROLOGY"
+    },
+    {
+      "name": "ACTIVE PEDIATRIC OPHTHALMOLOGY OPHTHALMOLOGY"
+    },
+    {
+      "name": "ACTIVE PEDIATRIC SURGERY"
+    },
+    {
+      "name": "ACTIVE PEDIATRICS"
+    },
+    {
+      "name": "ACTIVE PSYCHIATRY"
+    },
+    {
+      "name": "ACTIVE RADIOLOGY"
+    },
+    {
+      "name": "ACTIVE SURGERY ORTHOPEDIC"
+    },
+    {
+      "name": "ACTIVE SURGERY, ORTHOPEDIC"
+    },
+    {
+      "name": "ACTIVE SURGERY, PODIATRIC"
+    },
+    {
+      "name": "ACTIVE TELERADIOLOGY"
+    },
+    {
+      "name": "ACTIVE UROLOGY"
+    },
+    {
+      "name": "ACTIVE VITREO-RETINAL OPHTHALMOLOGY"
+    },
+    {
+      "name": "ACUPUNCTURIST"
+    },
+    {
+      "name": "ADDICTION MEDICINE"
+    },
+    {
+      "name": "ADOLESCENT MEDICINE"
+    },
+    {
+      "name": "ADVANCED PRACTICE NURSING PROVIDERS"
+    },
+    {
+      "name": "ALLERGIST"
+    },
+    {
+      "name": "ALLERGY & IMMUNOLOGY"
+    },
+    {
+      "name": "ALLERGY/IMMUNOLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "ALLOPATHIC & OSTEOPATHIC PHYSICIANS"
+    },
+    {
+      "name": "ANESTHESIA"
+    },
+    {
+      "name": "ANESTHESIA/PAIN MANAGEMENT"
+    },
+    {
+      "name": "ANESTHESIOLOGY"
+    },
+    {
+      "name": "ASSOCIATE OTOLARYNGOLOGY"
+    },
+    {
+      "name": "ASSOCIATE PSYCHIATRY"
+    },
+    {
+      "name": "ASSOCIATE WITH VOTE FAMILY MEDICINE OB/GYN"
+    },
+    {
+      "name": "AUDIOLOGIST"
+    },
+    {
+      "name": "BEHAVIORAL HEALTH & SOCIAL SERVICE PROVIDERS"
+    },
+    {
+      "name": "BOARD CERTIFIED IN CARDIOVASCULAR DISEASE"
+    },
+    {
+      "name": "BOARD CERTIFIED IN NUCLEAR CARDIOLOGY"
+    },
+    {
+      "name": "BOARD CERTIFIED IN PULMONARY"
+    },
+    {
+      "name": "CARDIAC ELECTROPHYSIOLOGY"
+    },
+    {
+      "name": "CARDIOLOGY"
+    },
+    {
+      "name": "CARDIOLOGY /ELECTROPHYSIOLOGY"
+    },
+    {
+      "name": "CARDIOLOGY INTERNAL MEDICINE"
+    },
+    {
+      "name": "CARDIOLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "CARDIOLOGY-DISEASE"
+    },
+    {
+      "name": "CARDIOLOGY/INTERNAL MEDICINE"
+    },
+    {
+      "name": "CARDIOLOGY1NTERVENTIONAL CARDIOLOGY"
+    },
+    {
+      "name": "CARDIOTHORACIC PHYSICIAN ASS!."
+    },
+    {
+      "name": "CARDIOTHORACIC PHYSICIAN ASST"
+    },
+    {
+      "name": "CARDIOTHORACIC PHYSICIAN ASST."
+    },
+    {
+      "name": "CARDIOTHORACIC SURGERY"
+    },
+    {
+      "name": "CARDIOTHORACIC VASCULAR SURGERY"
+    },
+    {
+      "name": "CARDIOVASCULAR DISEASE"
+    },
+    {
+      "name": "CARDIOVASCULAR DISEASE, INTERNAL MEDICINE"
+    },
+    {
+      "name": "CARDIOVASCULAR MEDICINE"
+    },
+    {
+      "name": "CHILD PSYCHIATRY"
+    },
+    {
+      "name": "CHIROPRACTOR"
+    },
+    {
+      "name": "CLINICAL LIPIDOLOGY"
+    },
+    {
+      "name": "CLINICAL NURSE SPECIALIST COMMUNITY HEALTH/PUBLIC HEALTH"
+    },
+    {
+      "name": "CMG"
+    },
+    {
+      "name": "COURTESY PEDIATRIC SURGERY"
+    },
+    {
+      "name": "COURTESY UROLOGY"
+    },
+    {
+      "name": "CRITICAL CARE"
+    },
+    {
+      "name": "CRITICAL CARE MEDICINE"
+    },
+    {
+      "name": "CYTOGENE GENE"
+    },
+    {
+      "name": "DENTAL PROVIDERS"
+    },
+    {
+      "name": "DENTISTRY"
+    },
+    {
+      "name": "DERMATOLOGY"
+    },
+    {
+      "name": "DIABETES & METABOLISM"
+    },
+    {
+      "name": "DIAGNOSTIC RADIOLOGY"
+    },
+    {
+      "name": "DIETICIAN"
+    },
+    {
+      "name": "DIPLOMATE AMERICAN BOARD OF SURGERY"
+    },
+    {
+      "name": "ELECTROPHYSIOLOGY, CARDIOVASCULAR DISEASE, INTERNA"
+    },
+    {
+      "name": "EM/URGENT CARE PHYSICIAN ASS!."
+    },
+    {
+      "name": "EM/URGENT CARE PHYSICIAN ASST"
+    },
+    {
+      "name": "EM/URGENT CARE PHYSICIAN ASST."
+    },
+    {
+      "name": "EMERGENCY"
+    },
+    {
+      "name": "EMERGENCY MEDICINE"
+    },
+    {
+      "name": "EMERGENCY MEDICINE, FAMILY MEDICINE"
+    },
+    {
+      "name": "EMFURGENT CARE PHYSICIAN ASS!."
+    },
+    {
+      "name": "EMFURGENT CARE PHYSICIAN ASST."
+    },
+    {
+      "name": "EMIURGENT CARE PHYSICIAN ASST."
+    },
+    {
+      "name": "EMLURGENT CARE PHYSICIAN ASST"
+    },
+    {
+      "name": "ENDOCRIN, DIABETES & METAB."
+    },
+    {
+      "name": "ENDOCRINOLOGY"
+    },
+    {
+      "name": "ENDOCRINOLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "EYE & VISION SERVICES PROVIDERS"
+    },
+    {
+      "name": "EYE AND VISION SERVICES PROVIDERS"
+    },
+    {
+      "name": "FAMILY MEDICINE"
+    },
+    {
+      "name": "FAMILY MEDICINE PEDIATRICS"
+    },
+    {
+      "name": "FAMILY MEDICINE, INTERNAL MEDICINE"
+    },
+    {
+      "name": "FAMILY MEDICINEFAST TRACKLURGENT CARE"
+    },
+    {
+      "name": "FAMILY NURSE PRACTITIONER"
+    },
+    {
+      "name": "FAMILY NURSE PRACTITIONET"
+    },
+    {
+      "name": "FAMILY NURSE PRACTITONER"
+    },
+    {
+      "name": "FAMILY PRACTICE"
+    },
+    {
+      "name": "FAST TRACKLURGENT CARE"
+    },
+    {
+      "name": "FOOT & ANKLE SURGERY"
+    },
+    {
+      "name": "GASTROENTEROLOGY"
+    },
+    {
+      "name": "GASTROENTEROLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "GASTROENTEROLOGYLRITERNA! MEDICINE"
+    },
+    {
+      "name": "GENERAL PRACTICE"
+    },
+    {
+      "name": "GENERAL SURGERY"
+    },
+    {
+      "name": "GENERAL SURGERY, SURGICAL CRITICAL CARE"
+    },
+    {
+      "name": "GENERICA"
+    },
+    {
+      "name": "GENETIC COUNSELOR"
+    },
+    {
+      "name": "GERIATRIC MEDICINE"
+    },
+    {
+      "name": "GERIATRICS"
+    },
+    {
+      "name": "GYNECOLOGIC ONCOLOGY"
+    },
+    {
+      "name": "GYNECOLOGY"
+    },
+    {
+      "name": "GYNECOLOGY ONCOLOGY, OBSTETRICS/GYNECOLOGY"
+    },
+    {
+      "name": "HAND SURGEON"
+    },
+    {
+      "name": "HEMATOLOGY"
+    },
+    {
+      "name": "HEMATOLOGY/ONCOLOGY"
+    },
+    {
+      "name": "HEMATOLOGY/ONCOLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "HEPATOLOGY"
+    },
+    {
+      "name": "HOMEOPATHY"
+    },
+    {
+      "name": "HOSPICE & PALLIATIVE MEDICINE"
+    },
+    {
+      "name": "HOSPITALIST"
+    },
+    {
+      "name": "INFECTIOUS DISEASE"
+    },
+    {
+      "name": "INFECTIOUS DISEASE MEDICINE"
+    },
+    {
+      "name": "INFECTIOUS DISEASE, INTERNAL MEDICINE"
+    },
+    {
+      "name": "INFECTIOUS DISEASES"
+    },
+    {
+      "name": "INFECTIOUS DISEASES INTERNAL MEDICINE"
+    },
+    {
+      "name": "INFECTIOUS DISEASESINTERNAL MEDICINE"
+    },
+    {
+      "name": "INTERNAL MEDICINE"
+    },
+    {
+      "name": "INTERNAL MEDICINE & ENDOCRINOLOGY"
+    },
+    {
+      "name": "INTERNAL MEDICINE / ENDOCRINOLOGY"
+    },
+    {
+      "name": "INTERNAL MEDICINE BOARD CERTIFIED"
+    },
+    {
+      "name": "INTERNAL MEDICINE, CARDIOLOGY"
+    },
+    {
+      "name": "INTERNAL MEDICINE, CARDIOVASCULAR DISEASE"
+    },
+    {
+      "name": "INTERNAL MEDICINE, HYPERTEN"
+    },
+    {
+      "name": "INTERNAL MEDICINE, NEPHROLOGY"
+    },
+    {
+      "name": "INTERNAL MEDICINE, PEDIATRICS"
+    },
+    {
+      "name": "INTERNAL MEDICINE, PULMONARY MEDICINE"
+    },
+    {
+      "name": "INTERVENTIONAL CARDIOLOGY"
+    },
+    {
+      "name": "INTERVENTIONAL NEURORADIOLOGY"
+    },
+    {
+      "name": "INTERVENTIONAL PAIN MANAGEMENT"
+    },
+    {
+      "name": "LEGAL MEDICINE"
+    },
+    {
+      "name": "LPS DESIGNATED PERSONNEL"
+    },
+    {
+      "name": "MARRIAGE & FAMILY THERAPIST"
+    },
+    {
+      "name": "MATERNAL & FETAL MEDICINE"
+    },
+    {
+      "name": "MEDICAL GENETICS"
+    },
+    {
+      "name": "MEDICAL ONCOLOGY"
+    },
+    {
+      "name": "NEONATOLOGY"
+    },
+    {
+      "name": "NEONATOLOGY' PEDIATRICS"
+    },
+    {
+      "name": "NEONATOLOGY, PEDIATRICS"
+    },
+    {
+      "name": "NEONATOLOGYPEDIATRICS"
+    },
+    {
+      "name": "NEPHROLOGY"
+    },
+    {
+      "name": "NEPHROLOGY INTERNAL MEDICINE"
+    },
+    {
+      "name": "NEPHROLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "NEPHROLOGY/INTERNAL MEDICINE"
+    },
+    {
+      "name": "NEPHROLOGYINTERNAL MEDICINE"
+    },
+    {
+      "name": "NEURO RADIOLOGY"
+    },
+    {
+      "name": "NEUROINTERVENTIONAL, NEUROLOGY"
+    },
+    {
+      "name": "NEUROLOGICAL SURGERY"
+    },
+    {
+      "name": "NEUROLOGY"
+    },
+    {
+      "name": "NEUROLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "NEUROMUSCULOSKELETAL MEDICINE"
+    },
+    {
+      "name": "NEURORADIOLOGY"
+    },
+    {
+      "name": "NEUROSURGERY"
+    },
+    {
+      "name": "NTERNAL MEDICINE"
+    },
+    {
+      "name": "NUCLEAR CARDIOLOGY"
+    },
+    {
+      "name": "NUCLEAR MEDICINE"
+    },
+    {
+      "name": "NURSE ANESTHETIST"
+    },
+    {
+      "name": "NURSE MIDWIFE"
+    },
+    {
+      "name": "NURSE PRACTITIONER"
+    },
+    {
+      "name": "NURSE PRACTITIONER GERONTOLOGY"
+    },
+    {
+      "name": "OB/GYN"
+    },
+    {
+      "name": "OB/GYN PHYSICIAN ASSISTANT"
+    },
+    {
+      "name": "OB/GYN SURGERY, ROBOTIC"
+    },
+    {
+      "name": "OBSTETRICS"
+    },
+    {
+      "name": "OBSTETRICS/GYNECOLOGY"
+    },
+    {
+      "name": "OBSTETRICS/GYNECOLOGY, FAMILY MEDICINE"
+    },
+    {
+      "name": "OCCUPATIONAL MEDICINE"
+    },
+    {
+      "name": "ONCOLOGY"
+    },
+    {
+      "name": "ONCOLOGY/HEMATOLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "OPHTHALMOLOGY"
+    },
+    {
+      "name": "OPHTHAMOLOGY"
+    },
+    {
+      "name": "OPTHALMOLOGY"
+    },
+    {
+      "name": "ORAL & MAXILLOFACIAL SURGERY"
+    },
+    {
+      "name": "ORAL SURGERY"
+    },
+    {
+      "name": "ORAL SURGICAL ASSISTANT"
+    },
+    {
+      "name": "ORAL/MAXILLOFACIAL SURGERY"
+    },
+    {
+      "name": "ORAL/MAXILLOFACIAL SURGERY, PLASTIC SURGERY"
+    },
+    {
+      "name": "ORALLMAXILLOFACIAJ SURGERY"
+    },
+    {
+      "name": "ORALLMAXILLOFACIAL SURGERY"
+    },
+    {
+      "name": "ORTHOPAEDIC SURGERY"
+    },
+    {
+      "name": "ORTHOPEDIC SURGERY"
+    },
+    {
+      "name": "ORTHOPEDIC SURGERY, HAND ORTHOPEDIC"
+    },
+    {
+      "name": "ORTHOPEDIC SURGERY, SPINE ORTHOPEDIC"
+    },
+    {
+      "name": "OSTEOPATHIC MANIPULATIVE MEDICINE"
+    },
+    {
+      "name": "OTHER SERVICE PROVIDERS"
+    },
+    {
+      "name": "OTOLARYNGOLOGY"
+    },
+    {
+      "name": "PAIN MANAGEMENT"
+    },
+    {
+      "name": "PALLIATIVE CARE FAMILY MEDICINE"
+    },
+    {
+      "name": "PATHOLOGY"
+    },
+    {
+      "name": "PATHOLOGY, CYTOPATHOLOGY"
+    },
+    {
+      "name": "PATHOLOGY-CYTOPATHOLOGY"
+    },
+    {
+      "name": "PEDIATRIC CARDIOLOGY"
+    },
+    {
+      "name": "PEDIATRIC CARDIOLOGY PEDIATRICS"
+    },
+    {
+      "name": "PEDIATRIC CARDIOLOGY, PEDIATRICS"
+    },
+    {
+      "name": "PEDIATRIC ENDOCRINOLOGY"
+    },
+    {
+      "name": "PEDIATRIC ENDOCRINOLOGY, PEDIATRICS"
+    },
+    {
+      "name": "PEDIATRIC GASTROENTEROLOGY"
+    },
+    {
+      "name": "PEDIATRIC INFECTIOUS DISEASE, PEDIATRICS"
+    },
+    {
+      "name": "PEDIATRIC NEUROLOGY"
+    },
+    {
+      "name": "PEDIATRIC ONCOLOGY"
+    },
+    {
+      "name": "PEDIATRIC OPHTHALMOLOGY"
+    },
+    {
+      "name": "PEDIATRICS"
+    },
+    {
+      "name": "PEDIATRICS, GENETICS"
+    },
+    {
+      "name": "PEDIATRICS, PEDIATRIC PULMONOLOGY"
+    },
+    {
+      "name": "PEDIATRICSPEDIATRIC GASTROENTEROLOGY"
+    },
+    {
+      "name": "PERINATOLOGY"
+    },
+    {
+      "name": "PHARMACY SERVICE PROVIDERS"
+    },
+    {
+      "name": "PHYSICAL MEDICINE & REHABILITATION"
+    },
+    {
+      "name": "PHYSICAL MEDICINE & REHABILITATION, PULMONARY MEDI"
+    },
+    {
+      "name": "PHYSICAL MEDICINE/REHAB"
+    },
+    {
+      "name": "PHYSICAL MEDICINELREHAB"
+    },
+    {
+      "name": "PHYSICAL THERAPIST"
+    },
+    {
+      "name": "PHYSICIAL ASSISTANT"
+    },
+    {
+      "name": "PHYSICIAN"
+    },
+    {
+      "name": "PHYSICIAN ASSISTANT"
+    },
+    {
+      "name": "PHYSICIAN MEDICINE & REHABILLITATION"
+    },
+    {
+      "name": "PHY_1"
+    },
+    {
+      "name": "PLASTIC & RECONSTRUCTIVE SURGERY"
+    },
+    {
+      "name": "PLASTIC SURGERY"
+    },
+    {
+      "name": "PLASTIC SURGERY, GENERAL SURGERY"
+    },
+    {
+      "name": "PLASTIC SURGERY/HAND SURGERY"
+    },
+    {
+      "name": "PODIATRIC SURGERY"
+    },
+    {
+      "name": "PODIATRY"
+    },
+    {
+      "name": "PREVENTIVE MEDICINE"
+    },
+    {
+      "name": "PRIMARY CARE"
+    },
+    {
+      "name": "PROCEDURAL DERMATOLOGY"
+    },
+    {
+      "name": "PROVISIONAL"
+    },
+    {
+      "name": "PROVISIONAL ANESTHESIA"
+    },
+    {
+      "name": "PROVISIONAL INTERNAL MEDICINE"
+    },
+    {
+      "name": "PROVISIONAL NEONATOLOGY"
+    },
+    {
+      "name": "PROVISIONAL OPHTHALMOLOGY"
+    },
+    {
+      "name": "PROVISIONAL PEDIATRIC"
+    },
+    {
+      "name": "PROVISIONAL PEDIATRIC CARDIOLOGY"
+    },
+    {
+      "name": "PROVISIONAL SURGERY, PODIATRIC"
+    },
+    {
+      "name": "PSYCHIATRY"
+    },
+    {
+      "name": "PSYCHIATRY & NEUROLOGY"
+    },
+    {
+      "name": "PSYCHIATRY PSYCHIATRY"
+    },
+    {
+      "name": "PSYCHOLOGY"
+    },
+    {
+      "name": "PUBLIC HEALTH & GENERAL PREVENTIVE MEDICINE"
+    },
+    {
+      "name": "PULMONARY"
+    },
+    {
+      "name": "PULMONARY / CRITICAL CARE"
+    },
+    {
+      "name": "PULMONARY DISEASE"
+    },
+    {
+      "name": "PULMONARY MEDICINE"
+    },
+    {
+      "name": "PULMONARY MEDICINE, INTERNAL MEDICINE"
+    },
+    {
+      "name": "PULMONARY MEDICINECRITICAL CARE MEDICINE"
+    },
+    {
+      "name": "PULMONARY MEDICINEINTERNAL MEDICINE"
+    },
+    {
+      "name": "PULMONOLOGY"
+    },
+    {
+      "name": "RADIATION ONCOLOGY"
+    },
+    {
+      "name": "RADIOLOGY"
+    },
+    {
+      "name": "RADIOLOGY BODY IMAGING"
+    },
+    {
+      "name": "RADIOLOGY-DIAGNOSTIC"
+    },
+    {
+      "name": "RADIOLOGY-INTERVENTIONAL"
+    },
+    {
+      "name": "RADIOLOGY-NEUROLOGY"
+    },
+    {
+      "name": "RADIOLOGY-NUCLEAR"
+    },
+    {
+      "name": "RADIOLOGY-TELEMEDICINE"
+    },
+    {
+      "name": "REDLANDS"
+    },
+    {
+      "name": "REGISTERED NURSE"
+    },
+    {
+      "name": "REGISTERED NURSE COMMUNITY HEALTH"
+    },
+    {
+      "name": "REHABILITATION"
+    },
+    {
+      "name": "REPRODUCTIVE ENDOCRINOLOGY"
+    },
+    {
+      "name": "REPRODUCTIVE ENDOCRINOLOGY (FERTILITY)"
+    },
+    {
+      "name": "REPRODUCTIVE ENDOCRINOLOGY (FERTILITY) OB/GYN, REP"
+    },
+    {
+      "name": "RESPIRATORY, DEVELOPMENTAL, REHABILITATIVE & RES"
+    },
+    {
+      "name": "RHEUMATOLOGY"
+    },
+    {
+      "name": "RHEUMATOLOGY, ALLERGY/IMMUNOLOGY"
+    },
+    {
+      "name": "RHEUMATOLOGY, INTERNAL MEDICINE"
+    },
+    {
+      "name": "RHEUMATOLOGYINTERNAL MEDICINE"
+    },
+    {
+      "name": "SINGLE SPECIALTY GROUP"
+    },
+    {
+      "name": "SLEEP MEDICINE"
+    },
+    {
+      "name": "SPECIALIST"
+    },
+    {
+      "name": "SPORTS MEDICINE"
+    },
+    {
+      "name": "SPP NURSE PRACTITIONER"
+    },
+    {
+      "name": "SPP PHYSICIAN ASSISTANT"
+    },
+    {
+      "name": "STUDENT IN AN ORGANIZED HEALTH CARE EDUCATION/TRAI"
+    },
+    {
+      "name": "SURGERY"
+    },
+    {
+      "name": "SURGERY, CARDIOTHORACIC"
+    },
+    {
+      "name": "SURGERY, GENERAL"
+    },
+    {
+      "name": "SURGERY, PODIATRIC"
+    },
+    {
+      "name": "SURGERY-GENERAL"
+    },
+    {
+      "name": "SURGERY-VASCULAR"
+    },
+    {
+      "name": "SURGICAL ASSIST ONLY"
+    },
+    {
+      "name": "SURGICAL ONCOLOGY"
+    },
+    {
+      "name": "TECHNICIAN"
+    },
+    {
+      "name": "TELEMEDICINE"
+    },
+    {
+      "name": "TELERADIO1OGY"
+    },
+    {
+      "name": "TELERADIOLOGY"
+    },
+    {
+      "name": "THORACIC SURGERY"
+    },
+    {
+      "name": "TRAUMA SURGERY"
+    },
+    {
+      "name": "UROLOGY"
+    },
+    {
+      "name": "UROLOGY, GENERAL SURGERY"
+    },
+    {
+      "name": "UROLOGY, PEDIATRIC UROLOGY"
+    },
+    {
+      "name": "VASCULAR SURGERY"
+    },
+    {
+      "name": "VASCULAR SURGERY & GENERAL SURGERY"
+    },
+    {
+      "name": "VASCULAR SURGERY, GENERAL SURGERY"
+    },
+    {
+      "name": "VITREO-RETINAL OPHTHALMOLOGY"
+    },
+    {
+      "name": "VITREO-RETINAL, OPHTHALMOLOGY"
+    },
+    {
+      "name": "X-RAY"
+    }
+  ]
+}

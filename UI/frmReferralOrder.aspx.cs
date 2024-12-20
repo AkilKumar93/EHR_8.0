@@ -18,7 +18,7 @@ using Acurus.Capella.Core.DTO;
 using System.IO;
 using System.Drawing;
 using System.Globalization;
-
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -295,14 +295,29 @@ namespace Acurus.Capella.UI
         private void LoadComboBoxValues()
         {
             IList<StaticLookup> LookupList = new List<StaticLookup>();
-            XDocument xmlSpeciality = XDocument.Load(Server.MapPath(@"ConfigXML\Speciality.xml"));
-            cboSpecialty.Items.Add(new RadComboBoxItem("", "0"));
-            foreach (XElement elements in xmlSpeciality.Descendants("specialitylist"))
+
+            //Jira CAP-2786
+            //XDocument xmlSpeciality = XDocument.Load(Server.MapPath(@"ConfigXML\Speciality.xml"));
+            //cboSpecialty.Items.Add(new RadComboBoxItem("", "0"));
+            //foreach (XElement elements in xmlSpeciality.Descendants("specialitylist"))
+            //{
+            //    foreach (XElement SpecialityElement in elements.Elements())
+            //    {
+            //        string xmlValue = SpecialityElement.Attribute("name").Value;
+            //        cboSpecialty.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+            //    }
+            //}
+
+            //Jira CAP-2786
+            SpecialityList specialityList = new SpecialityList();
+            specialityList = ConfigureBase<SpecialityList>.ReadJson("Speciality.json");
+
+            if (specialityList != null && specialityList.speciality != null) 
             {
-                foreach (XElement SpecialityElement in elements.Elements())
+                cboSpecialty.Items.Add(new RadComboBoxItem("", "0"));
+                foreach (Speciality speciality in specialityList.speciality)
                 {
-                    string xmlValue = SpecialityElement.Attribute("name").Value;
-                    cboSpecialty.Items.Add(new RadComboBoxItem(xmlValue, xmlValue));
+                    cboSpecialty.Items.Add(new RadComboBoxItem(speciality.name, speciality.name));
                 }
             }
 
@@ -318,7 +333,7 @@ namespace Acurus.Capella.UI
             //        lstComboItem.ToolTip = xmlValue;
             //        cboFacilityName.Items.Add(lstComboItem);
             //    }
-                
+
             //}
             IList<FacilityLibrary> facilityList = ApplicationObject.facilityLibraryList;
             cboFacilityName.Items.Add(new RadComboBoxItem("", "0"));
