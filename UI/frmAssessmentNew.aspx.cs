@@ -17,6 +17,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Linq;
+using Acurus.Capella.Core.DTOJson;
 using System.Xml.Serialization;
 using MySql.Data.MySqlClient;
 using System.Threading;
@@ -842,7 +843,7 @@ namespace Acurus.Capella.UI
                 //BugID:53007 
                 if (bSuggestIcds)
                     ListAssessment = ListAssessment.Concat(ListVitalsProblemList).ToList();
-                    
+
                 if (!bSuggestIcds)
                 {
                     strICDDesc = new List<string>();
@@ -856,7 +857,7 @@ namespace Acurus.Capella.UI
                         var assessmentListToDelete = new List<Assessment>();
                         foreach (var item in copyListVitalsProblemList)
                         {
-                            if(!ListAssessment.Any(x=>x.ICDCode == item.ICDCode))
+                            if (!ListAssessment.Any(x => x.ICDCode == item.ICDCode))
                             {
                                 var vitalLookUpType = assesmentVitals.FirstOrDefault(x => x.ICD_10 == item.ICDCode);
                                 var assesmentLookUpType = assesmentVitals.FirstOrDefault(x => ListAssessment.Any(y => y.ICDCode == x.ICD_10) && x.Field_Name == vitalLookUpType.Field_Name);
@@ -893,9 +894,9 @@ namespace Acurus.Capella.UI
                         var assessmentListToDelete = new List<Assessment>();
                         foreach (var item in copyListVitalsProblemList)
                         {
-                            var lstFieldType = assesmentVitals.FirstOrDefault(x=> x.ICD_10 == item);
+                            var lstFieldType = assesmentVitals.FirstOrDefault(x => x.ICD_10 == item);
                             var assessmentLookUpType = assesmentVitals.FirstOrDefault(x => ListAssessment.Any(y => y.ICDCode == x.ICD_10) && x.Field_Name == (lstFieldType?.Field_Name ?? ""));
-                            if ((lstFieldType?.Field_Name??"") == (assessmentLookUpType?.Field_Name ?? ""))
+                            if ((lstFieldType?.Field_Name ?? "") == (assessmentLookUpType?.Field_Name ?? ""))
                             {
                                 var oldAssementVital = ListAssessment.FirstOrDefault(x => x.ICDCode == assessmentLookUpType.ICD_10 && x.ICDCode != item);
                                 //CAP-2158
@@ -1516,7 +1517,7 @@ namespace Acurus.Capella.UI
             AllICD_9Manager objAllICDMgrGetICD = new AllICD_9Manager();
 
             EandMCodingICDManager objeandm = new EandMCodingICDManager();
-            eandmicd= objeandm.GetEandMcodingICDListbyEncounterID(ClientSession.EncounterId);
+            eandmicd = objeandm.GetEandMcodingICDListbyEncounterID(ClientSession.EncounterId);
             //Cap - 1280
             IList<EandMCodingICD> iEandMICDList = new List<EandMCodingICD>();
             iEandMICDList = (from m in eandmicd where m.Source != "ASSESSMENT" select m).ToList<EandMCodingICD>();
@@ -1575,27 +1576,27 @@ namespace Acurus.Capella.UI
 
                 if (!(lstStatus_Assessment.Contains(lstass[k].Assessment_Status)))
                 {
-                EandMCodingICD obj = new EandMCodingICD();
-                obj.ICD = lstass[k].ICD;
-                obj.ICD_Description = lstass[k].ICD_Description;
-                obj.Is_Delete = "N";
-                obj.Human_ID = lstass[k].Human_ID;
-                obj.Encounter_ID = lstass[k].Encounter_ID;
-                obj.Source = "ASSESSMENT";
-                if (lstass[k].Primary_Diagnosis.ToUpper() == "Y")
-                {
-                    obj.ICD_Category = "Primary";
-                }
-                else
-                {
-                    obj.ICD_Category = "None";
-                }
+                    EandMCodingICD obj = new EandMCodingICD();
+                    obj.ICD = lstass[k].ICD;
+                    obj.ICD_Description = lstass[k].ICD_Description;
+                    obj.Is_Delete = "N";
+                    obj.Human_ID = lstass[k].Human_ID;
+                    obj.Encounter_ID = lstass[k].Encounter_ID;
+                    obj.Source = "ASSESSMENT";
+                    if (lstass[k].Primary_Diagnosis.ToUpper() == "Y")
+                    {
+                        obj.ICD_Category = "Primary";
+                    }
+                    else
+                    {
+                        obj.ICD_Category = "None";
+                    }
 
-                obj.Sequence = "";
-                obj.Created_By = ClientSession.UserName;
-                obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
-                eanmicdoverallicd.Add(obj);
-                // break;
+                    obj.Sequence = "";
+                    obj.Created_By = ClientSession.UserName;
+                    obj.Created_Date_And_Time = UtilityManager.ConvertToUniversal();
+                    eanmicdoverallicd.Add(obj);
+                    // break;
                 }
 
 
@@ -1691,8 +1692,8 @@ namespace Acurus.Capella.UI
             }
 
             int SEQ = 2;
-           
-            if (flag==1)
+
+            if (flag == 1)
             {
                 SEQ = 2;
             }
@@ -1764,7 +1765,7 @@ namespace Acurus.Capella.UI
                         probListToAdd.ToArray<ProblemList>(), probListToUpdate.ToArray<ProblemList>(),
                        probListIdToDelete.ToArray<ProblemList>(), string.Empty,
                        objGeneralNotes, SaveTreatmentPlan, ClientSession.UserName, ClientSession.EncounterId, ClientSession.HumanId,
-                       ClientSession.PhysicianId, sMacraICDChkList, sIs_Assessment_CopyPrevious, sLocalTime, ClientSession.LegalOrg, eandmicdinsert,eandmicddelete);
+                       ClientSession.PhysicianId, sMacraICDChkList, sIs_Assessment_CopyPrevious, sLocalTime, ClientSession.LegalOrg, eandmicdinsert, eandmicddelete);
 
 
             //FillAssessment assessmentLoadList = objAssessmentManager.BatchOperationsToAssessment(assementInsertList.ToArray<Assessment>(),
@@ -2636,22 +2637,45 @@ namespace Acurus.Capella.UI
             if (ilstInsurancePlan.Count > 0)
             {
                 Boolean bCarrier = false;
-                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\Insurance_Plan.xml"))
-                {
-                    XDocument xmlFacility = XDocument.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Insurance_Plan.xml");
 
-                    for (int i = 0; i < ilstInsurancePlan.Count; i++)
+                //Jira cap - 2772 - XML to Json
+                //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\Insurance_Plan.xml"))
+                //{
+                //    XDocument xmlFacility = XDocument.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Insurance_Plan.xml");
+
+                //    for (int i = 0; i < ilstInsurancePlan.Count; i++)
+                //    {
+                //        IEnumerable<XElement> xmlFac = xmlFacility.Element("InsurancePlanList")
+                //        .Elements("insuranceplan").Where(aa => aa.Attribute("insurance_plan_id").Value.ToString() == ilstInsurancePlan[i].ToString() && aa.Attribute("active").Value.ToString().ToUpper() == "Y" && aa.Attribute("carrier_id").Value.ToString().ToUpper() == sMedicareID);
+                //        if (xmlFac != null && xmlFac.Count() > 0)
+                //        {
+                //            bCarrier = true;
+                //            sInsurance_Plan_ID = xmlFac.Attributes("carrier_id").First().Value.ToString();
+                //            break;
+                //        }
+                //    }
+                //}
+
+                List<Insurance_Plan> ilistInsurancePlan = new List<Insurance_Plan>();
+                Insurance_PlanList ilistInsurance_PlanList = new Insurance_PlanList();
+
+                ilistInsurance_PlanList = ConfigureBase<Insurance_PlanList>.ReadJson("Insurance_Plan.json");
+                if (ilistInsurance_PlanList != null)
+                {
+                    ilistInsurancePlan = ilistInsurance_PlanList.InsurancePlan;
+                }
+                for (int i = 0; i < ilstInsurancePlan.Count; i++)
+                {
+                    List<Insurance_Plan> newlist = ilistInsurancePlan.Where(a => a.insurance_plan_id == ilstInsurancePlan[i] && a.active == "Y" && a.carrier_id == sMedicareID).ToList();
+                    if (newlist != null && newlist.Count() > 0)
                     {
-                        IEnumerable<XElement> xmlFac = xmlFacility.Element("InsurancePlanList")
-                        .Elements("insuranceplan").Where(aa => aa.Attribute("insurance_plan_id").Value.ToString() == ilstInsurancePlan[i].ToString() && aa.Attribute("active").Value.ToString().ToUpper() == "Y" && aa.Attribute("carrier_id").Value.ToString().ToUpper() == sMedicareID);
-                        if (xmlFac != null && xmlFac.Count() > 0)
-                        {
-                            bCarrier = true;
-                            sInsurance_Plan_ID = xmlFac.Attributes("carrier_id").First().Value.ToString();
-                            break;
-                        }
+                        bCarrier = true;
+                        sInsurance_Plan_ID = newlist[0].carrier_id;
+                        break;
                     }
                 }
+
+
                 if (bCarrier)
                 {
                     sOutPut += "~" + "sCarrierID" + ":" + sInsurance_Plan_ID;
@@ -2850,7 +2874,7 @@ namespace Acurus.Capella.UI
             bool bSuggestProblemIcds = false;
             string jsons = "";
 
-            assessmentLoadList = objAssessmentManager.LoadProblemList(ClientSession.EncounterId, ClientSession.HumanId,"load");
+            assessmentLoadList = objAssessmentManager.LoadProblemList(ClientSession.EncounterId, ClientSession.HumanId, "load");
             //CAP-1671
             //if (assessmentLoadList.Assessment != null && assessmentLoadList.Assessment.Count() > 0)
             //{

@@ -375,7 +375,6 @@
     <Content Include="bin\TimePicker.dll" />
     <Content Include="bin\VsWebSite.Interop.dll" />
     <Content Include="bin\X12_Envelope.dll" />
-    <Content Include="ConfigXML\Insurance_Plan.xml" />
     <Content Include="ConfigXML\LoginMessage.json" />
     <Content Include="CSS\bootstrap-icons.css" />
     <Content Include="CSS\bootstrap.min.css" />
@@ -2009,7 +2008,6 @@
   <ItemGroup>
     <Content Include="bin\Ionic.Zip.Reduced.dll" />
     <Content Include="CarePlan.html" />
-    <Content Include="ConfigXML\AssessmentVitalsLookup.xml" />
     <Content Include="ConfigXML\Facility_Library.xml" />
     <Content Include="ConfigXML\icd_9_10_mapping.xml" />
     <Content Include="ConfigXML\LabList.xml" />
@@ -2439,6 +2437,8 @@
     <Content Include="ConfigXML\Speciality.json" />
     <Content Include="ConfigXML\Doctype.json" />
     <Content Include="ConfigXML\QuestionnaireTab_Lookup.json" />
+    <Content Include="ConfigXML\AssessmentVitalsLookup.json" />
+    <Content Include="ConfigXML\Insurance_Plan.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />
