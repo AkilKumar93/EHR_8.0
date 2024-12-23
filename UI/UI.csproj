@@ -2010,7 +2010,6 @@
     <Content Include="bin\Ionic.Zip.Reduced.dll" />
     <Content Include="CarePlan.html" />
     <Content Include="ConfigXML\AssessmentVitalsLookup.xml" />
-    <Content Include="ConfigXML\Doctype.xml" />
     <Content Include="ConfigXML\Facility_Library.xml" />
     <Content Include="ConfigXML\icd_9_10_mapping.xml" />
     <Content Include="ConfigXML\LabList.xml" />
@@ -2019,8 +2018,6 @@
     <Content Include="ConfigXML\PhysicianAddressDetails.xml" />
     <Content Include="ConfigXML\PhysicianFacilityMapping.xml" />
     <Content Include="ConfigXML\PhysicianSpecificBodyImageTemplates.xml" />
-    <Content Include="ConfigXML\pqri.xml" />
-    <Content Include="ConfigXML\QuestionnaireTab_Lookup.xml" />
     <Content Include="ConfigXML\staticlookup.xml" />
     <Content Include="ConfigXML\User.xml" />
     <Content Include="ConfigXML\Vaccine_Procedure_Mapping.xml" />
@@ -2440,6 +2437,8 @@
     <Content Include="ConfigXML\PhysicianReviewProtocols.json" />
     <Content Include="ConfigXML\Room_in_lookup.json" />
     <Content Include="ConfigXML\Speciality.json" />
+    <Content Include="ConfigXML\Doctype.json" />
+    <Content Include="ConfigXML\QuestionnaireTab_Lookup.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />

@@ -168,7 +168,6 @@
     <Content Include="bin\Telerik.Web.Design.dll" />
     <Content Include="bin\Telerik.Web.UI.dll" />
     <Content Include="bin\Telerik.Web.UI.Skins.dll" />
-    <Content Include="ConfigXML\Doctype.xml" />
     <Content Include="ConfigXML\Facility_Library.xml" />
     <Content Include="ConfigXML\PhysicianAddressDetails.xml" />
     <Content Include="ConfigXML\PhysicianFacilityMapping.xml" />
@@ -691,6 +690,7 @@
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830041343_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830042622_SummaryOfCare.pdf" />
     <Content Include="Documents\mz5zm3drzbgplxqlsrd4bzdp\Summary Of Care\20220830\CheckAAA_Acurus__1904 N OG AVE_582783_878005_20220830043158_SummaryOfCare.pdf" />
+    <Content Include="ConfigXML\Doctype.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Service References\PatientPortalServiceReference\PatientPortalWebService.wsdl" />
   </ItemGroup>

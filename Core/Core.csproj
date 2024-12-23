@@ -339,11 +339,13 @@
     <Compile Include="DomainObjects\WorkFlow.cs" />
     <Compile Include="DomainObjects\WorkFlowTypeMaster.cs" />
     <Compile Include="DomainObjects\workset_proc_alloc.cs" />
+    <Compile Include="DTOJson\Doctype.cs" />
     <Compile Include="DTOJson\Dynamic_Screen.cs" />
     <Compile Include="DTOJson\ImmztnRegistry_LookupList.cs" />
     <Compile Include="DTOJson\machine_technician.cs" />
     <Compile Include="DTOJson\PhysicianReviewProtocols.cs" />
     <Compile Include="DTOJson\Physician_POV.cs" />
+    <Compile Include="DTOJson\QuestionnaireTab_Lookup.cs" />
     <Compile Include="DTOJson\Room_in_lookup.cs" />
     <Compile Include="DTOJson\Speciality.cs" />
     <Compile Include="DTO\ABIResultsDTO.cs" />
