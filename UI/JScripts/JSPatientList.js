@@ -381,10 +381,10 @@ function LoadPatientList() {
         ordering: true,
         autoWidth: false,
         order: [],
-        pageLength: 15,
+        pageLength: 30,
         language: {
             search: "",
-            searchPlaceholder: "Search by Patient Name",
+            searchPlaceholder: "Search by Patient Name or Acct # or Member ID",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">',
@@ -449,8 +449,8 @@ function LoadPatientList() {
                 type: 'date',
                 sWidth: '6%'
             },
-            { data: 'Patient_Account_Number', searchable: false, sWidth: '5%' },
-            { data: 'Member ID', searchable: false, sWidth: '7%' },
+            { data: 'Patient_Account_Number', sWidth: '5%' },
+            { data: 'Member ID', sWidth: '7%' },
             {
                 data: 'DOS', render: function (data, type, row) {
                     return ConvertDate(data.replace("T", " "));
@@ -486,6 +486,7 @@ function LoadPatientList() {
         'float': 'left',
         'text-align': 'left',
         'margin-left': '30px',
+        'font-size': '13px',
     });
 
     $('#PatientTable_info').css({
@@ -510,12 +511,39 @@ function LoadPatientList() {
 
 function viewSummary(encounterId, humanId) {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-    var sPath = `frmSummaryNew.aspx?IsPatientList=Y&EncounterID=${encounterId}&HumanID=${humanId}&TabMode=true`;
-    $(top.window.document).find('#ProcessModal').modal({ backdrop: 'static', keyboard: false }, 'show');
-    //$(top.window.document).find("#mdldlg")[0].style.width = "1050px";
-    $(top.window.document).find("#ProcessModal")[0].style.width = "";
-    $(top.window.document).find('#ProcessFrame')[0].contentDocument.location.href = sPath;
-    $(top.window.document).find("#ModalTitle")[0].textContent = "Summary";
+
+    $.ajax({
+        type: "POST",
+        url: "frmPatientList.aspx/ViewSummary",
+        data: JSON.stringify({
+            "humanId": humanId,
+            "encounterId": encounterId,
+        }),
+        contentType: "application/json;charset=utd-8",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            var sPath = `frmSummaryNew.aspx?IsPatientList=Y&EncounterID=${encounterId}&HumanID=${humanId}&TabMode=true`;
+            $(top.window.document).find('#ProcessModal').modal({ backdrop: 'static', keyboard: false }, 'show');
+            //$(top.window.document).find("#mdldlg")[0].style.width = "1050px";
+            $(top.window.document).find("#ProcessModal")[0].style.width = "";
+            $(top.window.document).find('#ProcessFrame')[0].contentDocument.location.href = sPath;
+            $(top.window.document).find("#ModalTitle")[0].textContent = "Summary";
+        },
+        error: function OnError(xhr) {
+            AutoSaveUnsuccessful();
+            if (xhr.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else {
+                var log = JSON.parse(xhr.responseText);
+                console.log(log);
+                window.location = "ErrorPage.aspx?Message=" + log.Message + "|$|" + log.StackTrace;;
+
+            }
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        }
+
+    });
 }
 
 function Decompress(data) {
@@ -533,11 +561,10 @@ function Decompress(data) {
 }
 
 function DOBConvert(DOB) {
-    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var SplitDOB = DOB.split('-');
     if (SplitDOB[1].substring(0, 1) == "0")
         SplitDOB[1] = SplitDOB[1].slice(-1);
-    return SplitDOB[2] + "-" + monthNames[parseInt(SplitDOB[1]) - 1] + "-" + SplitDOB[0];
+    return SplitDOB[0] + "-" + (SplitDOB[1]).toString().padStart(2, '0') + "-" + SplitDOB[2];
 }
 
 function ConvertDate(utcDate) {
@@ -545,10 +572,11 @@ function ConvertDate(utcDate) {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var now = new Date(utcDate + ' UTC');
     var then = '';
+    var month = (now.getMonth() + 1).toString().padStart(2, '0'); 
     if (utcDate == '0001-01-01 00:00:00')
         then = '01-01-0001';
     else
-        then = ('0' + now.getDate().format("dd")).slice(-2) + '-' + monthNames[now.getMonth()] + '-' + now.getFullYear();
+        then = (now.getFullYear() + '-' + month + '-' + now.getDate().format("dd").slice(-2).toString().padStart(2, '0'));
     var hours = now.getHours();
     var minutes = now.getMinutes();
     var ampm = hours >= 12 ? 'PM' : 'AM';

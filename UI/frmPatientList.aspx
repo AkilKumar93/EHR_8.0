@@ -224,7 +224,7 @@ table.dataTable > thead > tr > td {
     display: none;
 }
 .dataTables_filter input {
-    width: 330px !important;
+    width: 335px !important;
 }
 .dataTables_wrapper th {
     padding: 8px !important;
@@ -239,6 +239,10 @@ table.dataTable > thead > tr > td {
         padding-top: 3px !important;
         padding-bottom: 3px !important;
 }
+.dataTables_info{
+    font: 12px / 16px "segoe ui", arial, sans-serif;
+}
+
     </style>
     <link href="CSS/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
@@ -340,7 +344,7 @@ table.dataTable > thead > tr > td {
             <div style="margin-top: 15px; margin-left: -11px;">
                 <table style="width: 100%">
                     <tr>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblPayerName" class="MandLabelstyle" runat="server" Text="Pri. Carrier*" Style="font-size: 15px; font-weight: 400; font-family: inherit;margin-left:13px;"></asp:Label>
                         </td>
 
@@ -351,7 +355,7 @@ table.dataTable > thead > tr > td {
                             <%-- OnSelectedIndexChanged="ddlPayerName_SelectedIndexChanged"--%>
                         </td>
 
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblPlan" class="MandLabelstyle" runat="server" Text="Pri. Plan*" Style="font-size: 15px; font-weight: 400; font-family: inherit;"></asp:Label>
                         </td>
 
@@ -361,7 +365,7 @@ table.dataTable > thead > tr > td {
                         </td>
 
 
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblMemberId" runat="server" Text="Member ID" Style="font-size: 15px; font-weight: 400; font-family: inherit; white-space: nowrap;"></asp:Label>
                         </td>
 
@@ -380,21 +384,21 @@ table.dataTable > thead > tr > td {
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblLastName" runat="server" Text="Pt. Last Name" Style="font-size: 15px; margin-left: 13px; font-weight: 400; font-family: inherit; white-space: nowrap;"></asp:Label>
                         </td>
 
                         <td style="width: 18%">
                             <input type="text" id="txtPatientLastName" class="form-control" runat="server" maxlength="50" style="width: 74%; border-color: black; height: 23px; margin-left: 15px;"/>
                         </td>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblFirstName" runat="server" Text="Pt. First Name" Style="font-size: 15px; margin-left: 0px; font-weight: 400; font-family: inherit; white-space: nowrap;"></asp:Label>
                         </td>
 
                         <td style="width: 18%">
                             <input type="text" id="txtPatientFirstName" class="form-control" runat="server" maxlength="50" style="width: 73%; border-color: black; height: 23px; margin-left: 11px;"/>
                         </td>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblDOB" runat="server" Text="DOB(Format: 01-Jan-1987)" Style="font-size: 15px; font-weight: 400; font-family: inherit;"></asp:Label>
                         </td>
 
@@ -440,7 +444,7 @@ table.dataTable > thead > tr > td {
 
                     </tr>
                     <tr>
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblPatientAccNo" runat="server" Text="Pt. Acc. #" onkeypress="return isNumberKey(event)" Style="font-size: 15px; margin-left: 13px; font-weight: 400; font-family: inherit; white-space: nowrap;"></asp:Label>
                         </td>
 
@@ -448,7 +452,7 @@ table.dataTable > thead > tr > td {
                             <input type="text" id="txtPatientAccNo" class="form-control" runat="server" maxlength="10" style="width: 74%; border-color: black; height: 23px; margin-left: 15px;" onkeypress="return isNumberKey(this);" />
                         </td>
 
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblFromDOS" class="MandLabelstyle" runat="server" Text="DOS - From*" Style="font-size: 15px; font-weight: 400; font-family: inherit; white-space: nowrap; "></asp:Label>
                         </td>
 
@@ -490,7 +494,7 @@ table.dataTable > thead > tr > td {
                         </td>
                         
 
-                        <td style="width: 8%">
+                        <td style="width: 8%;font-family: initial;">
                             <asp:Label ID="lblToDOS" class="MandLabelstyle" runat="server" Text="DOS - To*" Style="font-size: 15px; font-weight: 400; font-family: inherit; white-space: nowrap; margin-left: 0px;"></asp:Label>
                         </td>
 

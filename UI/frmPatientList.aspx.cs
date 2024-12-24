@@ -404,6 +404,18 @@ namespace Acurus.Capella.UI
             return result;
         }
 
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static object ViewSummary(string humanId, string encounterId)
+        {
+            if (!string.IsNullOrEmpty(humanId))
+            {
+                ClientSession.HumanId = Convert.ToUInt64(humanId);
+            }
+            ClientSession.EncounterId = Convert.ToUInt64(encounterId);
+            return "";
+        }
+
         protected void btnClear_Click(object sender, EventArgs e)
         {
             ddlPayerName.SelectedIndex = 0;
@@ -538,6 +550,16 @@ namespace Acurus.Capella.UI
             }
 
             dtNew = ((DataTable)Session["PatientListGrid"]).Copy();
+            for (int iCount = 0; iCount < dtNew.Rows.Count; iCount++)
+            {
+                DateTime dtTime = Convert.ToDateTime(dtNew.Rows[iCount]["DOS"].ToString());
+                string strDate = UtilityManager.ConvertToLocal(dtTime).ToString("yyyy-MM-dd hh:mm tt"); //dd-MMM-yyyy hh:mm tt");
+                dtNew.Rows[iCount]["DOS"] = strDate;
+            }
+            dtNew.Columns["Patient_Account_Number"].ColumnName = "Pt. Acc. #";
+            dtNew.Columns["Provider_Name"].ColumnName = "Enc. Provider";
+            dtNew.Columns["Payer"].ColumnName = "Pri. Carrier";
+            dtNew.Columns["Plan_Name"].ColumnName = "Pri. Plan";
 
             dsreport.Tables.Add(dtNew);
             
