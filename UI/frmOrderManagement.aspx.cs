@@ -2114,6 +2114,7 @@ namespace Acurus.Capella.UI
             string cboOrderType = searchData["cboOrderType"];
             string cboOrderStatus = searchData["cboOrderStatus"];
             string sFacilityName = searchData["sFacilityName"];
+            uint labItem = Convert.ToUInt32(searchData["labItem"]);
 
             DateTime fromdate = UtilityManager.ConvertToUniversal(DateTime.MinValue);
             if (searchData["fromdate"] != "")
@@ -2142,10 +2143,7 @@ namespace Acurus.Capella.UI
             {
                 tagProviderName = Convert.ToUInt32(searchData["tagProviderName"]);
             }
-
-            uint labItem = 0;
-
-
+                       
             IList<FillOrdersManagementDTO> SearchFillOrderManagement = new List<FillOrdersManagementDTO>();
             OrdersManager objOrderManagementMngr = new OrdersManager();
             SearchFillOrderManagement = objOrderManagementMngr.SearchOrder(cboOrderType, cboOrderStatus, sFacilityName, 0, fromdate, todate, Convert.ToUInt64(sHumanID), tagProviderName, labItem, Convert.ToUInt64(0), 0, 0);
@@ -2174,6 +2172,7 @@ namespace Acurus.Capella.UI
             string cboOrderType = searchData["cboOrderType"];
             string cboOrderStatus = searchData["cboOrderStatus"];
             string sFacilityName = searchData["sFacilityName"];
+            uint labItem = Convert.ToUInt32(searchData["labItem"]);
 
             DateTime fromdate = UtilityManager.ConvertToUniversal(DateTime.MinValue);
             if (searchData["fromdate"] != "")
@@ -2202,8 +2201,6 @@ namespace Acurus.Capella.UI
             {
                 tagProviderName = Convert.ToUInt32(searchData["tagProviderName"]);
             }
-
-            uint labItem = 0;
 
             IList<FillOrdersManagementDTO> SearchImmunizationList;
             ImmunizationManager objImmunizationMngr = new ImmunizationManager();
@@ -2234,6 +2231,7 @@ namespace Acurus.Capella.UI
             string cboOrderType = searchData["cboOrderType"];
             string cboOrderStatus = searchData["cboOrderStatus"];
             string sFacilityName = searchData["sFacilityName"];
+            uint labItem = Convert.ToUInt32(searchData["labItem"]);
 
             DateTime fromdate = UtilityManager.ConvertToUniversal(DateTime.MinValue);
             if (searchData["fromdate"] != "")
@@ -2262,11 +2260,7 @@ namespace Acurus.Capella.UI
             {
                 tagProviderName = Convert.ToUInt32(searchData["tagProviderName"]);
             }
-
-            uint labItem = 0;
-
-
-
+                       
             IList<FillOrdersManagementDTO> SearchReferralOrderList;
             ReferralOrderManager objReferralOrder = new ReferralOrderManager();
             SearchReferralOrderList = objReferralOrder.SearchReferralOrder(0, fromdate, todate, Convert.ToUInt64(sHumanID), Convert.ToUInt64(tagProviderName), 0, 0, cboOrderType, cboOrderStatus, sFacilityName);
@@ -2296,6 +2290,7 @@ namespace Acurus.Capella.UI
             string cboOrderType = searchData["cboOrderType"];
             string cboOrderStatus = searchData["cboOrderStatus"];
             string sFacilityName = searchData["sFacilityName"];
+            uint labItem = Convert.ToUInt32(searchData["labItem"]);
 
             DateTime fromdate = UtilityManager.ConvertToUniversal(DateTime.MinValue);
             if (searchData["fromdate"] != "")
@@ -2324,10 +2319,6 @@ namespace Acurus.Capella.UI
             {
                 tagProviderName = Convert.ToUInt32(searchData["tagProviderName"]);
             }
-
-            uint labItem = 0;
-
-
 
             IList<FillOrdersManagementDTO> SearchOtherProcedureList;
             InHouseProcedureManager objProcedureMngr = new InHouseProcedureManager();
