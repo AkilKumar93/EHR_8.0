@@ -8,6 +8,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Reflection;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -18,36 +19,62 @@ namespace Acurus.Capella.UI
             if (!IsPostBack)
             {
 
-                string sLookupReasonnotPerformedXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                if (File.Exists(sLookupReasonnotPerformedXmlFilePath) == true)
+                //string sLookupReasonnotPerformedXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                //if (File.Exists(sLookupReasonnotPerformedXmlFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(sLookupReasonnotPerformedXmlFilePath);
+                //    itemDoc.Load(XmlText);
+                //    XmlText.Close();
+
+                //    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("FlowSheetList");
+                //    if (xmlNodeList != null && xmlNodeList.Count > 0)
+                //    {
+                //        Dictionary<string, string> dictFlowSheet = new Dictionary<string, string>();
+                //        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                //        {
+                //            //cboFlowSheetType.Items.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+                //            dictFlowSheet.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[0].Value);
+                //        }
+
+                //        cboFlowSheetType.DataSource = dictFlowSheet;
+                //        cboFlowSheetType.DataTextField = "Key";
+                //        cboFlowSheetType.DataValueField = "Value";
+                //        cboFlowSheetType.DataBind();
+                //    }
+                //    //Get Flow sheet period list from ststiclookup XML
+                //    XmlNodeList xmlNodePeriodList = itemDoc.GetElementsByTagName("FlowSheetPeriodList");
+                //    if (xmlNodePeriodList != null && xmlNodePeriodList.Count > 0)
+                //    {
+                //        for (int j = 0; j < xmlNodePeriodList[0].ChildNodes.Count; j++)
+                //        {
+                //            cboFlowSheetPeriod.Items.Add(xmlNodePeriodList[0].ChildNodes[j].Attributes[0].Value);
+                //        }
+                //    }
+                //}
+                //CAP-2787
+                StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+                if (staticLookupList != null)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(sLookupReasonnotPerformedXmlFilePath);
-                    itemDoc.Load(XmlText);
-                    XmlText.Close();
-                  
-                    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("FlowSheetList");
-                    if (xmlNodeList != null && xmlNodeList.Count > 0)
+                    var flowSheetList = staticLookupList.FlowSheetList.ToList();
+                    if (flowSheetList != null)
                     {
                         Dictionary<string, string> dictFlowSheet = new Dictionary<string, string>();
-                        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                        foreach (var flowSheet in flowSheetList)
                         {
-                            //cboFlowSheetType.Items.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
-                            dictFlowSheet.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[0].Value);
+                              dictFlowSheet.Add(flowSheet.value,flowSheet.Field_Name);
                         }
-
-                        cboFlowSheetType.DataSource = dictFlowSheet;
+                        cboFlowSheetType.DataSource = flowSheetList;
                         cboFlowSheetType.DataTextField = "Key";
                         cboFlowSheetType.DataValueField = "Value";
                         cboFlowSheetType.DataBind();
                     }
-                    //Get Flow sheet period list from ststiclookup XML
-                    XmlNodeList xmlNodePeriodList = itemDoc.GetElementsByTagName("FlowSheetPeriodList");
-                    if (xmlNodePeriodList != null && xmlNodePeriodList.Count > 0)
+                    var flowSheetPeriodList = staticLookupList.FlowSheetPeriodList.ToList();
+                    if (flowSheetPeriodList != null)
                     {
-                        for (int j = 0; j < xmlNodePeriodList[0].ChildNodes.Count; j++)
+                        foreach (var flowSheetPeriod in flowSheetPeriodList)
                         {
-                            cboFlowSheetPeriod.Items.Add(xmlNodePeriodList[0].ChildNodes[j].Attributes[0].Value);
+                            cboFlowSheetPeriod.Items.Add(flowSheetPeriod.value);
                         }
                     }
                 }

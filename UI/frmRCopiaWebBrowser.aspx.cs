@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Web.Services;
 using System.IO;
 using System.Xml;
+using Acurus.Capella.Core.DTOJson;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace Acurus.Capella.UI
 {
@@ -109,23 +111,40 @@ namespace Acurus.Capella.UI
                 //        cboCurrentMedicationDocumented.Items.Add(lstMedicationDocumented);
                 //    }
                 //}
-                string sLookupReasonnotPerformedXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                if (File.Exists(sLookupReasonnotPerformedXmlFilePath) == true)
+                //string sLookupReasonnotPerformedXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                //if (File.Exists(sLookupReasonnotPerformedXmlFilePath) == true)
+                //{
+                //    XmlDocument itemDoc = new XmlDocument();
+                //    XmlTextReader XmlText = new XmlTextReader(sLookupReasonnotPerformedXmlFilePath);
+                //    itemDoc.Load(XmlText);
+                //    XmlText.Close();
+                //    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("MedicationReasonNotPerformedList");
+                //    if (xmlNodeList != null && xmlNodeList.Count > 0)
+                //    {
+                //        cboCurrentMedicationDocumented.Items.Add("");
+                //        ListItem lstMedicationDocumented = null;
+                //        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                //        {
+                //            lstMedicationDocumented = new ListItem();
+                //            lstMedicationDocumented.Text = xmlNodeList[0].ChildNodes[j].Attributes["Value"].Value.ToString();
+                //            lstMedicationDocumented.Value = xmlNodeList[0].ChildNodes[j].Attributes["Description"].Value.ToString();
+                //            cboCurrentMedicationDocumented.Items.Add(lstMedicationDocumented);
+                //        }
+                //    }
+                //}
+                //CAP-2787
+                StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+                var medicationReasonNotPerformedList = staticLookupList.MedicationReasonNotPerformedList.ToList();
+                if (medicationReasonNotPerformedList != null)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(sLookupReasonnotPerformedXmlFilePath);
-                    itemDoc.Load(XmlText);
-                    XmlText.Close();
-                    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("MedicationReasonNotPerformedList");
-                    if (xmlNodeList != null && xmlNodeList.Count > 0)
+                    cboCurrentMedicationDocumented.Items.Add("");
+                    ListItem lstMedicationDocumented = null;
+                    foreach (var medicationReasonNotPerformed in medicationReasonNotPerformedList)
                     {
-                        cboCurrentMedicationDocumented.Items.Add("");
-                        ListItem lstMedicationDocumented = null;
-                        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                        if (medicationReasonNotPerformed != null)
                         {
-                            lstMedicationDocumented = new ListItem();
-                            lstMedicationDocumented.Text = xmlNodeList[0].ChildNodes[j].Attributes["Value"].Value.ToString();
-                            lstMedicationDocumented.Value = xmlNodeList[0].ChildNodes[j].Attributes["Description"].Value.ToString();
+                            lstMedicationDocumented.Text = medicationReasonNotPerformed.value;
+                            lstMedicationDocumented.Value = medicationReasonNotPerformed.Description;
                             cboCurrentMedicationDocumented.Items.Add(lstMedicationDocumented);
                         }
                     }
@@ -492,26 +511,47 @@ namespace Acurus.Capella.UI
         {
             btnsave.Disabled = false;
 
+            //if (chkCurrentMedicationDocumented.Checked == false)
+            //{
+            //    cboCurrentMedicationDocumented.Items.Clear();
+            //    string sLookupReasonnotPerformedXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //    if (File.Exists(sLookupReasonnotPerformedXmlFilePath) == true)
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader XmlText = new XmlTextReader(sLookupReasonnotPerformedXmlFilePath);
+            //        itemDoc.Load(XmlText);
+            //        XmlText.Close();
+            //        XmlNodeList xmlNodeList1 = itemDoc.GetElementsByTagName("MedicationReasonNotPerformedList");
+            //        if (xmlNodeList1 != null && xmlNodeList1.Count > 0)
+            //        {
+            //            cboCurrentMedicationDocumented.Items.Add("");
+            //            ListItem lstMedicationDocumented = null;
+            //            for (int j = 0; j < xmlNodeList1[0].ChildNodes.Count; j++)
+            //            {
+            //                lstMedicationDocumented = new ListItem();
+            //                lstMedicationDocumented.Text = xmlNodeList1[0].ChildNodes[j].Attributes["Value"].Value.ToString();
+            //                lstMedicationDocumented.Value = xmlNodeList1[0].ChildNodes[j].Attributes["Description"].Value.ToString();
+            //                cboCurrentMedicationDocumented.Items.Add(lstMedicationDocumented);
+            //            }
+            //        }
+            //    }
+            //}
+            //CAP-2787
             if (chkCurrentMedicationDocumented.Checked == false)
             {
                 cboCurrentMedicationDocumented.Items.Clear();
-                string sLookupReasonnotPerformedXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                if (File.Exists(sLookupReasonnotPerformedXmlFilePath) == true)
+                StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+                var medicationReasonNotPerformedList = staticLookupList.MedicationReasonNotPerformedList.ToList();
+                if (medicationReasonNotPerformedList != null)
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader XmlText = new XmlTextReader(sLookupReasonnotPerformedXmlFilePath);
-                    itemDoc.Load(XmlText);
-                    XmlText.Close();
-                    XmlNodeList xmlNodeList1 = itemDoc.GetElementsByTagName("MedicationReasonNotPerformedList");
-                    if (xmlNodeList1 != null && xmlNodeList1.Count > 0)
+                    cboCurrentMedicationDocumented.Items.Add("");
+                    ListItem lstMedicationDocumented = null;
+                    foreach (var medicationReasonNotPerformed in medicationReasonNotPerformedList)
                     {
-                        cboCurrentMedicationDocumented.Items.Add("");
-                        ListItem lstMedicationDocumented = null;
-                        for (int j = 0; j < xmlNodeList1[0].ChildNodes.Count; j++)
+                        if (medicationReasonNotPerformed != null)
                         {
-                            lstMedicationDocumented = new ListItem();
-                            lstMedicationDocumented.Text = xmlNodeList1[0].ChildNodes[j].Attributes["Value"].Value.ToString();
-                            lstMedicationDocumented.Value = xmlNodeList1[0].ChildNodes[j].Attributes["Description"].Value.ToString();
+                            lstMedicationDocumented.Text = medicationReasonNotPerformed.value.ToString();
+                            lstMedicationDocumented.Value = medicationReasonNotPerformed.Description.ToString();
                             cboCurrentMedicationDocumented.Items.Add(lstMedicationDocumented);
                         }
                     }

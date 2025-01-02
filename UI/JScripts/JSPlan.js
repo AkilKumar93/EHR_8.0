@@ -180,14 +180,12 @@ function LoadDocuments() {
 
 
     // bug Id:57266
-
-    $.get("ConfigXML/PhysicianFacilityMapping.xml", {}, function (xml) {
-        $("PhyList", xml).each(function (i) {
-            $(this).find("Facility").each(function (l) {
-                if ($(this).attr("name").toUpperCase().indexOf("SURGERY-") >= 0) {
-                    $(this).find('Physician').each(function (k) {
-                        if ($(this).attr('username') == physician_Name) {
-
+    //CAP-2781
+    $.get("ConfigXML/PhysicianFacilityMapping.json", {}, function (xml) {
+        xml.PhysicianFacility.each(function (i) {
+                if (i.name.toUpperCase().indexOf("SURGERY-") >= 0) {
+                    $(this).Physician.each(function (k) {
+                        if (k.username == physician_Name) {
                             $('#chkSurgeryDeclaration').attr("disabled", false);
                         }
 
@@ -200,13 +198,11 @@ function LoadDocuments() {
                         }
                     });
                 }
-            });
         });
     });
 
     //CAP-285 - null handling for current process variable
     if ((currentprocess ?? "").toUpperCase() != "SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "AKIDO_SCRIBE_PROCESS" && (currentprocess ?? "").toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "SCRIBE_CORRECTION" && (currentprocess ?? "").toUpperCase() != "DICTATION_REVIEW" && (currentprocess ?? "").toUpperCase() != "CODER_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "PROVIDER_PROCESS" && (currentprocess ?? "").toUpperCase() != "TECHNICIAN_PROCESS" && (currentprocess ?? "").toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && (currentprocess ?? "").toUpperCase() != "TRANSCRIPT_PROCESS" && (currentprocess ?? "").toUpperCase() != "TRANSCRIPT_QC_PROCESS" && (currentprocess ?? "").toUpperCase() != "AKIDO_SCRIBE_QC_PROCESS") {//CMG Ancilliary
-        debugger;
         $('#btnPrint')[0].disabled = true;
         $('#btnClearall')[0].disabled = true;
         $('#btnCopyPreviousEncounter')[0].disabled = true;

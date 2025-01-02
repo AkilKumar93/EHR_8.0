@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Net;
 using System.Security.Authentication;
+using Acurus.Capella.Core.DTOJson;
 //using Acurus.Capella.Proxy.LookupTables;
 //using Acurus.Capella.Proxy;
 
@@ -8710,26 +8711,58 @@ namespace Acurus.Capella.UI
                     {
                         ClinicalSummary.HospitalizationHistory[0].To_Date = "01-" + ClinicalSummary.HospitalizationHistory[0].To_Date;
                     }
+                //if (ClinicalSummary.HospitalizationHistory[0].To_Date != "" && ClinicalSummary.HospitalizationHistory[0].To_Date != "Current")
+                //{
+                //    string sCode = string.Empty;
+                //    string sEmergency = string.Empty;
+                //    if (ClinicalSummary.HospitalizationHistory[0].Hospitalization_Notes != string.Empty)
+                //    {
+                //        string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                //        if (File.Exists(sLookupXmlFilePath) == true)
+                //        {
+                //            XmlDocument itemDoc = new XmlDocument();
+                //            XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
+                //            itemDoc.Load(XmlText);
+                //            XmlText.Close();
+                //            XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("HospitalizationHistoryList");
+                //            if (xmlNodeList != null && xmlNodeList.Count > 0)
+                //            {
+                //                for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                //                {
+                //                    if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value.ToString() == ClinicalSummary.HospitalizationHistory[0].Hospitalization_Notes)
+                //                        sCode = xmlNodeList[0].ChildNodes[j].Attributes[1].Value.ToString();
+                //                }
+                //            }
+                //        }
+                //    }
+
+                //    if (objFacility.Taxonomy_Code == "261QE0002X")
+                //    {
+                //        sEmergency = "E";
+                //    }
+                //    else
+                //        sEmergency = "O";
+
+
+
+                //    sMyHL7 += "PV1|1|" + sEmergency + "|||||||||||||||||" + objHuman.Medical_Record_Number + "_001^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR|||||||||||||||||" + sCode + "||||||||" + objEncounter.Date_of_Service.ToString("yyyyMMddhhmm") + "|" + Convert.ToDateTime(ClinicalSummary.HospitalizationHistory[0].To_Date).ToString("yyyyMMddhhmm") + Environment.NewLine;
+                //}
+                //CAP-2787
                 if (ClinicalSummary.HospitalizationHistory[0].To_Date != "" && ClinicalSummary.HospitalizationHistory[0].To_Date != "Current")
                 {
                     string sCode = string.Empty;
                     string sEmergency = string.Empty;
-                    if (ClinicalSummary.HospitalizationHistory[0].Hospitalization_Notes != string.Empty)
+                    StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+                    if (staticLookupList != null)
                     {
-                        string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                        if (File.Exists(sLookupXmlFilePath) == true)
+                        var hospitalizationHistoryList = staticLookupList.HospitalizationHistoryList.ToList();
+                        if (hospitalizationHistoryList != null)
                         {
-                            XmlDocument itemDoc = new XmlDocument();
-                            XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
-                            itemDoc.Load(XmlText);
-                            XmlText.Close();
-                            XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("HospitalizationHistoryList");
-                            if (xmlNodeList != null && xmlNodeList.Count > 0)
+                            foreach (var hospitalizationHistory in hospitalizationHistoryList)
                             {
-                                for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                                if (hospitalizationHistory != null && hospitalizationHistory.Field_Name == ClinicalSummary.HospitalizationHistory[0].Hospitalization_Notes)
                                 {
-                                    if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value.ToString() == ClinicalSummary.HospitalizationHistory[0].Hospitalization_Notes)
-                                        sCode = xmlNodeList[0].ChildNodes[j].Attributes[1].Value.ToString();
+                                    sCode = hospitalizationHistory.value;
                                 }
                             }
                         }
@@ -8747,17 +8780,17 @@ namespace Acurus.Capella.UI
                     sMyHL7 += "PV1|1|" + sEmergency + "|||||||||||||||||" + objHuman.Medical_Record_Number + "_001^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR|||||||||||||||||" + sCode + "||||||||" + objEncounter.Date_of_Service.ToString("yyyyMMddhhmm") + "|" + Convert.ToDateTime(ClinicalSummary.HospitalizationHistory[0].To_Date).ToString("yyyyMMddhhmm") + Environment.NewLine;
                 }
 
-                //if (objFacility.Taxonomy_Code == "261QE0002X")
-                //{
-                //    if (objHuman.Patient_Status == "DECEASED")
-                //        sMyHL7 += "PV1|1|E|||||||||||||||||" + objHuman.Medical_Record_Number + "_001^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR|||||||||||||||||20||||||||" + objEncounter.Date_of_Service.ToString("yyyyMMddhhmm") + "|" + Convert.ToDateTime(ClinicalSummary.HospitalizationHistory[0].To_Date).ToString("yyyyMMddhhmm") + Environment.NewLine;
-                //    else 
-                //        sMyHL7 += "PV1|1|E|||||||||||||||||" + objHuman.Medical_Record_Number + "_001^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR|||||||||||||||||01||||||||" + objEncounter.Date_of_Service.ToString("yyyyMMddhhmm") + "|" + Convert.ToDateTime(ClinicalSummary.HospitalizationHistory[0].To_Date).ToString("yyyyMMddhhmm") + Environment.NewLine;
-                //}
-                //else
-                //{
-                //    sMyHL7 += "PV1|1|O|||||||||||||||||" + objHuman.Medical_Record_Number + "_001^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR|||||||||||||||||01||||||||" + objEncounter.Date_of_Service.ToString("yyyyMMddhhmm") + "|" + Convert.ToDateTime(ClinicalSummary.HospitalizationHistory[0].To_Date).ToString("yyyyMMddhhmm") + Environment.NewLine;
-                //}
+                if (objFacility.Taxonomy_Code == "261QE0002X")
+                {
+                    if (objHuman.Patient_Status == "DECEASED")
+                        sMyHL7 += "PV1|1|E|||||||||||||||||" + objHuman.Medical_Record_Number + "_001^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR|||||||||||||||||20||||||||" + objEncounter.Date_of_Service.ToString("yyyyMMddhhmm") + "|" + Convert.ToDateTime(ClinicalSummary.HospitalizationHistory[0].To_Date).ToString("yyyyMMddhhmm") + Environment.NewLine;
+                    else
+                        sMyHL7 += "PV1|1|E|||||||||||||||||" + objHuman.Medical_Record_Number + "_001^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR|||||||||||||||||01||||||||" + objEncounter.Date_of_Service.ToString("yyyyMMddhhmm") + "|" + Convert.ToDateTime(ClinicalSummary.HospitalizationHistory[0].To_Date).ToString("yyyyMMddhhmm") + Environment.NewLine;
+                }
+                else
+                {
+                    sMyHL7 += "PV1|1|O|||||||||||||||||" + objHuman.Medical_Record_Number + "_001^^^" + FacilityName + "&" + objFacility.Fac_NPI + "&NPI^MR|||||||||||||||||01||||||||" + objEncounter.Date_of_Service.ToString("yyyyMMddhhmm") + "|" + Convert.ToDateTime(ClinicalSummary.HospitalizationHistory[0].To_Date).ToString("yyyyMMddhhmm") + Environment.NewLine;
+                }
 
             }
             else

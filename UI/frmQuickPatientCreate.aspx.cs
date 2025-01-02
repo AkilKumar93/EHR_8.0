@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 using System.Text;
 using MySql.Data.MySqlClient;
 using DocumentFormat.OpenXml.ExtendedProperties;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -731,30 +732,52 @@ namespace Acurus.Capella.UI
 
             cboHumanType.Items.Clear();
             cboPatientSuffix.Items.Clear();
-            string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(sLookupXmlFilePath) == true)
+            //string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(sLookupXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+            //    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("DemographicsList");
+            //    if (xmlNodeList != null && xmlNodeList.Count > 0)
+            //    {
+            //        Dictionary<string, string> dictPaitentSuffix = new Dictionary<string, string>();
+            //        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+            //        {
+            //            if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value == "PATIENT SUFFIX")
+            //                dictPaitentSuffix.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+            //        }
+
+            //        cboPatientSuffix.DataSource = dictPaitentSuffix;
+            //        cboPatientSuffix.DataTextField = "Key";
+            //        cboPatientSuffix.DataValueField = "Value";
+            //        cboPatientSuffix.DataBind();
+            //    }
+
+
+
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-                XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("DemographicsList");
-                if (xmlNodeList != null && xmlNodeList.Count > 0)
+                var demographicsLists = staticLookupList.DemographicsList.ToList();
+                if (demographicsLists != null)
                 {
                     Dictionary<string, string> dictPaitentSuffix = new Dictionary<string, string>();
-                    for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                    foreach (var demographic in demographicsLists)
                     {
-                        if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value == "PATIENT SUFFIX")
-                            dictPaitentSuffix.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+                        if (demographic != null && demographic.Field_Name == "PATIENT SUFFIX")
+                        {
+                            dictPaitentSuffix.Add(demographic.value, demographic.value);
+                        }
                     }
-
                     cboPatientSuffix.DataSource = dictPaitentSuffix;
                     cboPatientSuffix.DataTextField = "Key";
                     cboPatientSuffix.DataValueField = "Value";
                     cboPatientSuffix.DataBind();
                 }
-
-
 
             }
             if (HUMANTYPEStaticLst != null && HUMANTYPEStaticLst.Count > 0)

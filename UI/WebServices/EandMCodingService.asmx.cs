@@ -2408,20 +2408,35 @@ namespace Acurus.Capella.UI.WebServices
                 if (tobacco_CarePlan != null && Convert.ToString(tobacco_CarePlan.Id) != "0")
                 {
                     #region Static_Lookup
-                    string strXmlFilePath_StaticLp = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                    //string strXmlFilePath_StaticLp = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                    //IDictionary<string, string> idic = new Dictionary<string, string>();
+                    //if (File.Exists(strXmlFilePath_StaticLp) == true)
+                    //{
+                    //    XDocument xdoc = XDocument.Load(strXmlFilePath_StaticLp);
+                    //    IEnumerable<XElement> Xele = xdoc.Descendants("root").Descendants("FollowupList").Elements("Followup").Where(x => x.Attribute("Field_Name").Value.ToString() == "FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION");
+                    //    foreach (XElement ele in Xele)
+                    //    {
+                    //        if (ICPtobacco_CodesList.IndexOf(ele.Attribute("Description").Value.ToString()) > -1)
+                    //        {
+                    //            idic.Add(ele.Attribute("Description").Value.ToString().Trim(), ele.Attribute("Value").Value.ToString().Trim());
+                    //        }
+                    //    }
+                    //}
+                    //CAP-2878
+                    StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
                     IDictionary<string, string> idic = new Dictionary<string, string>();
-                    if (File.Exists(strXmlFilePath_StaticLp) == true)
+                    var bulkExportSchedulerlist = staticLookupList.FollowupList.Where(followup => followup.Field_Name == "FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION");
+                    if (bulkExportSchedulerlist != null)
                     {
-                        XDocument xdoc = XDocument.Load(strXmlFilePath_StaticLp);
-                        IEnumerable<XElement> Xele = xdoc.Descendants("root").Descendants("FollowupList").Elements("Followup").Where(x => x.Attribute("Field_Name").Value.ToString() == "FOLLOWUP FOR PREVENTIVE CARE AND SCREENING: TOBACCO USE: SCREENING AND CESSATION INTERVENTION");
-                        foreach (XElement ele in Xele)
+                        foreach (var bulkExportScheduler in bulkExportSchedulerlist)
                         {
-                            if (ICPtobacco_CodesList.IndexOf(ele.Attribute("Description").Value.ToString()) > -1)
+                            if (ICPtobacco_CodesList.IndexOf(bulkExportScheduler.Description.ToString()) > -1)
                             {
-                                idic.Add(ele.Attribute("Description").Value.ToString().Trim(), ele.Attribute("Value").Value.ToString().Trim());
+                                idic.Add(bulkExportScheduler.Description.Trim(), bulkExportScheduler.value.Trim());
                             }
                         }
                     }
+
                     #endregion
                     foreach (string s in CPT_ICPDelcode)
                     {

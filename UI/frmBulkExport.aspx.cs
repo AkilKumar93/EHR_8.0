@@ -18,8 +18,7 @@ using Telerik.Web.UI;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Configuration;
-
-
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -76,30 +75,48 @@ namespace Acurus.Capella.UI
                     rdschedular.Items.Clear();
                     // rdschedular.Items.Add(new RadComboBoxItem("One Time"));
 
-                    string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                    if (File.Exists(strXmlFilePath) == true)
+                    //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                    //if (File.Exists(strXmlFilePath) == true)
+                    //{
+                    //    XmlDocument itemDoc = new XmlDocument();
+                    //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+                    //    //XmlNodeList xmlTagName = null;
+                    //    itemDoc.Load(XmlText);
+                    //    XmlText.Close();
+
+                    //    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("BulkExportSchedulerpath");
+                    //    if (xmlNodeList != null && xmlNodeList.Count > 0)
+                    //    {
+                    //        Dictionary<string, string> dictBulkExport = new Dictionary<string, string>();
+                    //        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                    //        {
+                    //            dictBulkExport.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+                    //        }
+
+                    //        cboDestination.DataSource = dictBulkExport;
+                    //        cboDestination.DataTextField = "Key";
+                    //        cboDestination.DataValueField = "Value";
+                    //        cboDestination.DataBind();
+                    //    }
+
+                    //}
+                    //CAP-2787
+                    StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+                    var bulkExportSchedulerlist = staticLookupList.BulkExportSchedulerpath.ToList();
+                    if (bulkExportSchedulerlist != null && bulkExportSchedulerlist.Count > 0)
                     {
-                        XmlDocument itemDoc = new XmlDocument();
-                        XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                        //XmlNodeList xmlTagName = null;
-                        itemDoc.Load(XmlText);
-                        XmlText.Close();
-
-                        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("BulkExportSchedulerpath");
-                        if (xmlNodeList != null && xmlNodeList.Count > 0)
+                        Dictionary<string, string> dictBulkExport = new Dictionary<string, string>();
+                        foreach (var bulkExportScheduler in bulkExportSchedulerlist)
                         {
-                            Dictionary<string, string> dictBulkExport = new Dictionary<string, string>();
-                            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                            if (bulkExportScheduler != null)
                             {
-                                dictBulkExport.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+                               dictBulkExport.Add(bulkExportScheduler.Description, bulkExportScheduler.Description);
                             }
-
-                            cboDestination.DataSource = dictBulkExport;
-                            cboDestination.DataTextField = "Key";
-                            cboDestination.DataValueField = "Value";
-                            cboDestination.DataBind();
                         }
-
+                        cboDestination.DataSource = dictBulkExport;
+                        cboDestination.DataTextField = "Key";
+                        cboDestination.DataValueField = "Value";
+                        cboDestination.DataBind();
                     }
                 }
 

@@ -64,22 +64,36 @@ namespace Acurus.Capella.UI
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Browse Load", "alert('" + BrowseLoad.Message + "');", true);
                 }
             }
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+            //    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("ErrorFileNamesList");
+            //    if (xmlNodeList.Count > 0)
+            //    {
+            //        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+            //        {
+            //            ilstFile.Add(xmlNodeList[0].ChildNodes[j].InnerText);
+            //        }
+            //    }
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
             {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(strXmlFilePath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-                XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("ErrorFileNamesList");
-                if (xmlNodeList.Count > 0)
+                var errorFileNamesList = staticLookupList.ErrorFileNamesList.ToList();
+                if (errorFileNamesList != null && errorFileNamesList.Count > 0)
                 {
-                    for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                    foreach (var errorFileNames in errorFileNamesList)
                     {
-                        ilstFile.Add(xmlNodeList[0].ChildNodes[j].InnerText);
+                        ilstFile.Add(errorFileNames);
                     }
                 }
             }
+            
             lnkActiveHistory.Attributes.Add("onclick", "return ActivityHistoryClick();");
             if (ConfigurationSettings.AppSettings["Is_Cerner"] != null && ConfigurationSettings.AppSettings["Is_Cerner"].ToString().ToUpper() == "Y")
             {

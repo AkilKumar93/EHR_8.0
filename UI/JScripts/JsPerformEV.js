@@ -1271,15 +1271,16 @@ function returnToParent(args) {
 }
 function LoadServiceType() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    //CAP-2787
     $.ajax({
         type: "GET",
-        url: "ConfigXML/staticlookup.xml",
-        dataType: "xml",
+        url: "ConfigXML/staticlookup.json",
+        dataType: "json",
         async: false,
         success: function (xml) {
 
             var content = "";
-            var servicetypecnt = $(xml).find('ServiceType').length;
+            var servicetypecnt = xml.ServiceTypeList.length;
             if (parseInt(servicetypecnt) > 0) {
                 var fixedlength = parseInt(servicetypecnt) % 20;
                 var columnscount = 3;
@@ -1301,8 +1302,8 @@ function LoadServiceType() {
                     else
                         content = content + "<tr style='border: 1px dotted;'>"
                     for (var j = 0; j < columnscount; j++) {
-                        if ($(xml).find('ServiceType')[parseInt(i) + parseInt(j)] != undefined) {
-                            content = content + "<td style='width:5%'><input code='" + $(xml).find('ServiceType')[parseInt(i) + parseInt(j)].attributes[1].nodeValue + "'type='checkbox' id='chk" + $(xml).find('ServiceType')[parseInt(i) + parseInt(j)].attributes[1].nodeValue + "' onclick='EnableSave(this);checkboxchange(this);'/></td><td  id='td" + $(xml).find('ServiceType')[parseInt(i) + parseInt(j)].attributes[1].nodeValue + "'style='width:" + typewidth + "%'>" + $(xml).find('ServiceType')[parseInt(i) + parseInt(j)].attributes[0].nodeValue + "</td>";
+                        if (xml.ServiceTypeList[parseInt(i) + parseInt(j)] != undefined) {
+                            content = content + "<td style='width:5%'><input code='" + xml.ServiceTypeList[parseInt(i) + parseInt(j)].code + "'type='checkbox' id='chk" + xml.ServiceTypeList[parseInt(i) + parseInt(j)].code + "' onclick='EnableSave(this);checkboxchange(this);'/></td><td  id='td" + xml.ServiceTypeList[parseInt(i) + parseInt(j)].code + "'style='width:" + typewidth + "%'>" + xml.ServiceTypeList[parseInt(i) + parseInt(j)].type + "</td>";
                             if (j == columnscount - 1)
                                 content = content + "</tr>"
                         }
@@ -1321,16 +1322,17 @@ function LoadServiceType() {
 
                 if (localStorage.getItem("Servicetypecodecount") != null &&
                     localStorage.getItem("Servicetypecodecount") > 1 && localStorage.getItem("NaicCode") != null && localStorage.getItem("NaicCode") != "") {
+                    //CAP-2787
                     $.ajax({
                         type: "GET",
-                        url: "ConfigXML/staticlookup.xml",
-                        dataType: "xml",
+                        url: "ConfigXML/staticlookup.json",
+                        dataType: "json",
                         async: false,
                         cache: false,
                         success: function (xml) {
 
 
-                            var ServiceTypeSelectionList = xml.getElementsByTagName("ServiceTypeSelection");
+                            var ServiceTypeSelectionList = xml.ServiceTypeSelectionList;
 
 
                             for (var i = 0; i < ServiceTypeSelectionList.length; i++) {
@@ -1369,16 +1371,17 @@ function LoadServiceType() {
 
 function checkboxchange(e) {
     if (localStorage.getItem("Servicetypecodecount") != null && localStorage.getItem("Servicetypecodecount") > 1 && e.id.indexOf('chk' + localStorage.getItem("ServiceTypeCode")) >= 0) {
+        //CAP-2787
         $.ajax({
             type: "GET",
-            url: "ConfigXML/staticlookup.xml",
-            dataType: "xml",
+            url: "ConfigXML/staticlookup.json",
+            dataType: "json",
             async: false,
             cache: false,
             success: function (xml) {
 
 
-                var ServiceTypeSelectionList = xml.getElementsByTagName("ServiceTypeSelection");
+                var ServiceTypeSelectionList = xml.ServiceTypeSelectionList;
 
 
 

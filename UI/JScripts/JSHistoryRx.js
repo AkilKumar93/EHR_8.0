@@ -452,8 +452,8 @@ function loadRx_History() {
     });
     $.ajax({
         type: "GET",
-        url: "ConfigXML/staticlookup.xml",
-        dataType: "xml",
+        url: "ConfigXML/staticlookup.json",
+        dataType: "json",
         success: function (xml) {
             $("#selquantity").append("<option> </option>");
             $("#selfrequency").append("<option> </option>");
@@ -464,36 +464,36 @@ function loadRx_History() {
             $("#selTotQuantity").append("<option> </option>");
             $("#selDayssupply").append("<option> </option>");
 
-            $(xml).find('RxHistory').each(function () {
+            $(xml.RxHistoryList).each(function () {
 
-                if ($(this)[0].attributes[0].nodeValue == "RxHistory_Quantity") {
-                    $("#selquantity").append("<option value='" + $(this)[0].attributes[1].nodeValue + "'>" + $(this)[0].attributes[1].nodeValue + "</option>");
-                    $("#selTotQuantity").append("<option value='" + $(this)[0].attributes[1].nodeValue + "'>" + $(this)[0].attributes[1].nodeValue + "</option>");
+                if ($(this)[0].Field_Name == "RxHistory_Quantity") {
+                    $("#selquantity").append("<option value='" + $(this)[0].value + "'>" + $(this)[0].value + "</option>");
+                    $("#selTotQuantity").append("<option value='" + $(this)[0].value + "'>" + $(this)[0].value + "</option>");
                 }
 
 
                 else if ($(this)[0].attributes[0].nodeValue == "RxHistory_Frequency") {
-                    $("#selfrequency").append("<option value='" + $(this)[0].attributes[2].nodeValue + "'>" + $(this)[0].attributes[1].nodeValue + "</option>");
+                    $("#selfrequency").append("<option value='" + $(this)[0].Description + "'>" + $(this)[0].value + "</option>");
                 }
 
 
                 else if ($(this)[0].attributes[0].nodeValue == "RxHistory_Direction") {
-                    $("#selDirection").append("<option value='" + $(this)[0].attributes[1].nodeValue + "'>" + $(this)[0].attributes[1].nodeValue + "</option>");
+                    $("#selDirection").append("<option value='" + $(this)[0].value + "'>" + $(this)[0].value + "</option>");
                 }
                 else if ($(this)[0].attributes[0].nodeValue == "RxHistory_Days_Supply") {
-                    $("#selDayssupply").append("<option value='" + $(this)[0].attributes[1].nodeValue + "'>" + $(this)[0].attributes[1].nodeValue + "</option>");
+                    $("#selDayssupply").append("<option value='" + $(this)[0].value + "'>" + $(this)[0].value + "</option>");
                 }
 
                 else if ($(this)[0].attributes[0].nodeValue == "RxHistory_Refills") {
-                    $("#selrefill").append("<option value='" + $(this)[0].attributes[1].nodeValue + "'>" + $(this)[0].attributes[1].nodeValue + "</option>");
+                    $("#selrefill").append("<option value='" + $(this)[0].value + "'>" + $(this)[0].value + "</option>");
                 }
 
                 else if ($(this)[0].attributes[0].nodeValue == "RxHistory_Direction_to_Pharmacist") {
-                    $("#selPharmacist").append("<option value='" + $(this)[0].attributes[1].nodeValue + "'>" + $(this)[0].attributes[1].nodeValue + "</option>");
+                    $("#selPharmacist").append("<option value='" + $(this)[0].value + "'>" + $(this)[0].value + "</option>");
                 }
 
                 else if ($(this)[0].attributes[0].nodeValue == "RxHistory_Route_Admistration") {
-                    $("#selRouteOAdministration").append("<option value='" + $(this)[0].attributes[1].nodeValue + "'>" + $(this)[0].attributes[1].nodeValue + "</option>");
+                    $("#selRouteOAdministration").append("<option value='" + $(this)[0].value + "'>" + $(this)[0].value + "</option>");
                 }
             });
 

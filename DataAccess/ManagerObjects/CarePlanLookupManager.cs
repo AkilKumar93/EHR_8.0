@@ -10,7 +10,7 @@ using System.Collections;
 using Acurus.Capella.Core.DTO;
 using System.Xml;
 using System.IO;
-
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -298,22 +298,41 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         //PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss");
                                         PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss tt");
                                         //For bug Id 55648
+                                        //if (PlanDto.Status == "Pre-Hypertensive" || PlanDto.Status == "First Hypertensive" || PlanDto.Status == "Second Hypertensive")
+                                        //{
+                                        //    string strFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+                                        //    if (File.Exists(strFilePath) == true)
+                                        //    {
+                                        //        XmlDocument xmldoc = new XmlDocument();
+                                        //        XmlTextReader xmltext = new XmlTextReader(strFilePath);
+                                        //        xmldoc.Load(xmltext);
+                                        //        XmlNodeList xmlNodelst = xmldoc.GetElementsByTagName("FollowupForBPStatusList");
+                                        //        if (xmlNodelst != null && PlanDto.Care_Plan_Notes.Trim() == "")
+                                        //        {
+                                        //            PlanDto.Care_Plan_Notes = xmlNodelst[0].InnerText; //For git Id 1594 
+                                        //        }
+
+                                        //    }
+                                        //}
+                                        //CAP-2787
                                         if (PlanDto.Status == "Pre-Hypertensive" || PlanDto.Status == "First Hypertensive" || PlanDto.Status == "Second Hypertensive")
                                         {
-                                            string strFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                                            if (File.Exists(strFilePath) == true)
-                                            {
-                                                XmlDocument xmldoc = new XmlDocument();
-                                                XmlTextReader xmltext = new XmlTextReader(strFilePath);
-                                                xmldoc.Load(xmltext);
-                                                XmlNodeList xmlNodelst = xmldoc.GetElementsByTagName("FollowupForBPStatusList");
-                                                if (xmlNodelst != null && PlanDto.Care_Plan_Notes.Trim() == "")
-                                                {
-                                                    PlanDto.Care_Plan_Notes = xmlNodelst[0].InnerText; //For git Id 1594 
-                                                }
+                                            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
 
+                                            if (staticLookupList != null)
+                                            {
+                                                var followupForBPStatusList = staticLookupList?.FollowupForBPStatusList?.FollowupForBPStatus??"";
+
+                                                if (followupForBPStatusList != null)
+                                                {
+                                                    if (string.IsNullOrWhiteSpace(PlanDto.Care_Plan_Notes))
+                                                    {
+                                                        PlanDto.Care_Plan_Notes = followupForBPStatusList;
+                                                    }
+                                                }
                                             }
                                         }
+
                                         //End For bug Id 55648
                                         //if (Value.Contains("/"))
                                         //{
@@ -342,7 +361,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         if (Value.Split(',').Length > 1)
                                             PlanDto.Status = Value.Split(',')[1];
                                         //Jira CAP-1771
-                                       // PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss");
+                                        // PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss");
                                         PlanDto.Plan_Date = Convert.ToDateTime(Convert.ToString(((object[])ires)[1])).ToString("yyyy-MMM-dd hh:mm:ss tt");
 
                                     }
@@ -438,10 +457,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 }
                             }
                             else if (((object[])ires).Count() > 3)
-                            {                               
-                                    PlanDto.Status = "Yes";
-                                    PlanDto.Plan_Date = Convert.ToString(((object[])ires)[1]);
-                                    PlanDto.Status_Value = ((object[])ires)[2].ToString();
+                            {
+                                PlanDto.Status = "Yes";
+                                PlanDto.Plan_Date = Convert.ToString(((object[])ires)[1]);
+                                PlanDto.Status_Value = ((object[])ires)[2].ToString();
                             }
                             else
                             {
@@ -450,7 +469,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     PlanDto.Status = Convert.ToString(((object[])ires)[1]);
                                     PlanDto.Plan_Date = Convert.ToString(((object[])ires)[2]);
                                 }
-                               
+
                                 else
                                 {
                                     PlanDto.Status = "Yes";

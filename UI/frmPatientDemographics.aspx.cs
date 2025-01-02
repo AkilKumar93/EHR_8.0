@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading;
 using MySql.Data.MySqlClient;
 using System.Web.Services;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -2312,45 +2313,86 @@ namespace Acurus.Capella.UI
 
 
 
-            string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(sLookupXmlFilePath) == true)
-            {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-                XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("DemographicsList");
-                if (xmlNodeList != null && xmlNodeList.Count > 0)
-                {
-                    Dictionary<string, string> dictSEXUALORIENTATION = new Dictionary<string, string>();
-                    Dictionary<string, string> dictGenderIdentity = new Dictionary<string, string>();
-                    Dictionary<string, string> dictPaitentSuffix = new Dictionary<string, string>();
-                    for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
-                    {
+            //string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(sLookupXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+            //    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("DemographicsList");
+            //    if (xmlNodeList != null && xmlNodeList.Count > 0)
+            //    {
+            //        Dictionary<string, string> dictSEXUALORIENTATION = new Dictionary<string, string>();
+            //        Dictionary<string, string> dictGenderIdentity = new Dictionary<string, string>();
+            //        Dictionary<string, string> dictPaitentSuffix = new Dictionary<string, string>();
+            //        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+            //        {
 
-                        if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value == "SEXUAL ORIENTATION")
-                            dictSEXUALORIENTATION.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
-                        else if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value == "GENDER IDENTITY")
-                            dictGenderIdentity.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
-                        else if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value == "PATIENT SUFFIX")
-                            dictPaitentSuffix.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+            //            if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value == "SEXUAL ORIENTATION")
+            //                dictSEXUALORIENTATION.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+            //            else if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value == "GENDER IDENTITY")
+            //                dictGenderIdentity.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+            //            else if (xmlNodeList[0].ChildNodes[j].Attributes[0].Value == "PATIENT SUFFIX")
+            //                dictPaitentSuffix.Add(xmlNodeList[0].ChildNodes[j].Attributes[1].Value, xmlNodeList[0].ChildNodes[j].Attributes[1].Value);
+            //        }
+
+            //        ddlSexualOrientation.DataSource = dictSEXUALORIENTATION;
+            //        ddlSexualOrientation.DataTextField = "Key";
+            //        ddlSexualOrientation.DataValueField = "Value";
+            //        ddlSexualOrientation.DataBind();
+
+            //        ddlGenderIdentity.DataSource = dictGenderIdentity;
+            //        ddlGenderIdentity.DataTextField = "Key";
+            //        ddlGenderIdentity.DataValueField = "Value";
+            //        ddlGenderIdentity.DataBind();
+
+            //        ddlSuffix.DataSource = dictPaitentSuffix;
+            //        ddlSuffix.DataTextField = "Key";
+            //        ddlSuffix.DataValueField = "Value";
+            //        ddlSuffix.DataBind();
+            //    }
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            var demographicsList = staticLookupList.DemographicsList.ToList();
+            if (demographicsList != null)
+            {
+                Dictionary<string, string> dictSEXUALORIENTATION = new Dictionary<string, string>();
+                Dictionary<string, string> dictGenderIdentity = new Dictionary<string, string>();
+                Dictionary<string, string> dictPaitentSuffix = new Dictionary<string, string>();
+
+                foreach (var demographics in demographicsList)
+                {
+                    if (demographics.value == "SEXUAL ORIENTATION")
+                    {
+                        dictSEXUALORIENTATION.Add(demographics.value, demographics.value);
                     }
 
-                    ddlSexualOrientation.DataSource = dictSEXUALORIENTATION;
-                    ddlSexualOrientation.DataTextField = "Key";
-                    ddlSexualOrientation.DataValueField = "Value";
-                    ddlSexualOrientation.DataBind();
+                    if (demographics.value == "GENDER IDENTITY")
+                    {
+                        dictGenderIdentity.Add(demographics.value, demographics.value);
+                    }
 
-                    ddlGenderIdentity.DataSource = dictGenderIdentity;
-                    ddlGenderIdentity.DataTextField = "Key";
-                    ddlGenderIdentity.DataValueField = "Value";
-                    ddlGenderIdentity.DataBind();
-
-                    ddlSuffix.DataSource = dictPaitentSuffix;
-                    ddlSuffix.DataTextField = "Key";
-                    ddlSuffix.DataValueField = "Value";
-                    ddlSuffix.DataBind();
+                    if (demographics.value == "PATIENT SUFFIX")
+                    {
+                        dictPaitentSuffix.Add(demographics.value, demographics.value);
+                    }
                 }
+                ddlSexualOrientation.DataSource = dictSEXUALORIENTATION;
+                ddlSexualOrientation.DataTextField = "Key";
+                ddlSexualOrientation.DataValueField = "Value";
+                ddlSexualOrientation.DataBind();
+
+                ddlGenderIdentity.DataSource = dictGenderIdentity;
+                ddlGenderIdentity.DataTextField = "Key";
+                ddlGenderIdentity.DataValueField = "Value";
+                ddlGenderIdentity.DataBind();
+
+                ddlSuffix.DataSource = dictPaitentSuffix;
+                ddlSuffix.DataTextField = "Key";
+                ddlSuffix.DataValueField = "Value";
+                ddlSuffix.DataBind();
             }
         }
 

@@ -5456,18 +5456,21 @@ namespace Acurus.Capella.UI
 
             if (SourceType == "FAX")
             {
-                XmlDocument xmldoc = new XmlDocument();
+                //CAP-2787
+                //XmlDocument xmldoc = new XmlDocument();
                 //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-                if (File.Exists(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml")) == true)
+                if (File.Exists(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.json")) == true)
                 {
-                    xmldoc.Load(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml"));
-                    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("FaxFolderNameList");
-                    if (xmlFacilityList.Count > 0)
+                    //xmldoc.Load(Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml"));
+                    StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+                    //XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("FaxFolderNameList");
+                    var lstFaxFolderList = staticLookupList.FaxFolderNameList;
+                    if ((lstFaxFolderList?.Count??0) > 0)
                     {
-                        foreach (XmlNode xNode in xmlFacilityList[0].ChildNodes)
+                        foreach (var faxFolderList in lstFaxFolderList)
                         {
                             System.Web.UI.WebControls.ListItem cboItem = new System.Web.UI.WebControls.ListItem();
-                            cboItem.Text = xNode.Attributes.GetNamedItem("FolderName").Value;
+                            cboItem.Text = faxFolderList.FolderName;
                             this.ddSelectedFacility.Items.Add(cboItem);
                         }
                     }

@@ -22,6 +22,7 @@ using System.Xml.Serialization;
 using MySql.Data.MySqlClient;
 using System.Threading;
 using System.Configuration;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -123,38 +124,81 @@ namespace Acurus.Capella.UI
             IList<string> Statuslst = new List<string>();
             XmlDocument xml_doc = new XmlDocument();
             bool Default_Ass_Status = false;
-            if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
+            //if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
+            //{
+            //    xml_doc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml");
+            //    XmlNodeList xml_nodelst = xml_doc.GetElementsByTagName("AssessmentStatus");
+            //    if (xml_nodelst != null && xml_nodelst.Count > 0)
+            //    {
+            //        foreach (XmlNode xml_node in xml_nodelst)
+            //        {
+            //            if (xml_node.Attributes.GetNamedItem("is_required").Value.ToUpper() == "YES")
+            //                Statuslst.Add(xml_node.Attributes.GetNamedItem("value").Value);
+            //        }
+            //    }
+
+            //    XmlNodeList xml_nodeSetDefault = xml_doc.GetElementsByTagName("AssessmentStatusDefaulted");
+            //    if (xml_nodeSetDefault != null && xml_nodeSetDefault.Count > 0)
+            //    {
+            //        if (xml_nodeSetDefault[0].Attributes.GetNamedItem("value").Value.ToUpper() == "YES")
+            //            Default_Ass_Status = true;
+            //    }
+            //    if (Default_Ass_Status)
+            //    {
+            //        XmlNodeList xml_nodelstDefaultStatus = xml_doc.GetElementsByTagName("AssessmentStatusDefault");
+            //        if (xml_nodelstDefaultStatus != null && xml_nodelstDefaultStatus.Count > 0)
+            //        {
+            //            foreach (XmlNode xml_node in xml_nodelstDefaultStatus)
+            //            {
+            //                DefaultStatusList.Add(xml_node.Attributes.GetNamedItem("Name").Value, xml_node.Attributes.GetNamedItem("value").Value);
+            //            }
+            //        }
+            //    }
+            //    HttpContext.Current.Session["DefaultStatusList"] = DefaultStatusList;
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
             {
-                xml_doc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml");
-                XmlNodeList xml_nodelst = xml_doc.GetElementsByTagName("AssessmentStatus");
-                if (xml_nodelst != null && xml_nodelst.Count > 0)
+                var assessmentStatusList = staticLookupList.AssessmentStatusList.Where(x => x.is_required.Equals("YES", StringComparison.OrdinalIgnoreCase)).ToList();
+
+                if (assessmentStatusList != null && assessmentStatusList.Any())
                 {
-                    foreach (XmlNode xml_node in xml_nodelst)
+                    foreach (var assessmentStatus in assessmentStatusList)
                     {
-                        if (xml_node.Attributes.GetNamedItem("is_required").Value.ToUpper() == "YES")
-                            Statuslst.Add(xml_node.Attributes.GetNamedItem("value").Value);
+                        if (assessmentStatus != null && assessmentStatus.is_required.ToUpper() == "YES")
+                        {
+                            Statuslst.Add(assessmentStatus.value);
+                        }
                     }
                 }
 
-                XmlNodeList xml_nodeSetDefault = xml_doc.GetElementsByTagName("AssessmentStatusDefaulted");
-                if (xml_nodeSetDefault != null && xml_nodeSetDefault.Count > 0)
+                var assessmentStatusDefaultedList = staticLookupList.AssessmentStatusDefaulted;
+                if (assessmentStatusDefaultedList != null)
                 {
-                    if (xml_nodeSetDefault[0].Attributes.GetNamedItem("value").Value.ToUpper() == "YES")
-                        Default_Ass_Status = true;
-                }
-                if (Default_Ass_Status)
-                {
-                    XmlNodeList xml_nodelstDefaultStatus = xml_doc.GetElementsByTagName("AssessmentStatusDefault");
-                    if (xml_nodelstDefaultStatus != null && xml_nodelstDefaultStatus.Count > 0)
+                    foreach (var assessmentStatusDefaulted in assessmentStatusDefaultedList.value)
                     {
-                        foreach (XmlNode xml_node in xml_nodelstDefaultStatus)
+                        if (assessmentStatusDefaulted.ToString().ToUpper() == "YES")
                         {
-                            DefaultStatusList.Add(xml_node.Attributes.GetNamedItem("Name").Value, xml_node.Attributes.GetNamedItem("value").Value);
+                            Default_Ass_Status = true;
+                        }
+                    }
+                    if (Default_Ass_Status)
+                    {
+                        var assessmentStatusDefaultLists = staticLookupList.AssessmentStatusDefaultList.ToList();
+                        if (assessmentStatusDefaultLists != null)
+                        {
+                            foreach (var assessmentStatus in assessmentStatusDefaultLists)
+                            {
+                                DefaultStatusList.Add(assessmentStatus.Name, assessmentStatus.value);
+
+                            }
                         }
                     }
                 }
                 HttpContext.Current.Session["DefaultStatusList"] = DefaultStatusList;
             }
+
             #endregion
 
             string Ass_Status = string.Empty, Other_Status = string.Empty;
@@ -2931,35 +2975,76 @@ namespace Acurus.Capella.UI
             //{
             //    bSuggestProblemIcds = true;
             //}
+            //if (bSuggestProblemIcds == false)
+            //{
+            //    if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
+            //    {
+            //        xml_doc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml");
+            //        XmlNodeList xml_nodelst = xml_doc.GetElementsByTagName("AssessmentStatus");
+            //        if (xml_nodelst != null && xml_nodelst.Count > 0)
+            //        {
+            //            foreach (XmlNode xml_node in xml_nodelst)
+            //            {
+            //                if (xml_node.Attributes.GetNamedItem("is_required").Value.ToUpper() == "YES")
+            //                    Statuslst.Add(xml_node.Attributes.GetNamedItem("value").Value);
+            //            }
+            //        }
+
+            //        XmlNodeList xml_nodeSetDefault = xml_doc.GetElementsByTagName("AssessmentStatusDefaulted");
+            //        if (xml_nodeSetDefault != null && xml_nodeSetDefault.Count > 0)
+            //        {
+            //            if (xml_nodeSetDefault[0].Attributes.GetNamedItem("value").Value.ToUpper() == "YES")
+            //                Default_Ass_Status = true;
+            //        }
+            //        if (Default_Ass_Status)
+            //        {
+            //            XmlNodeList xml_nodelstDefaultStatus = xml_doc.GetElementsByTagName("AssessmentStatusDefault");
+            //            if (xml_nodelstDefaultStatus != null && xml_nodelstDefaultStatus.Count > 0)
+            //            {
+            //                foreach (XmlNode xml_node in xml_nodelstDefaultStatus)
+            //                {
+            //                    DefaultStatusList.Add(xml_node.Attributes.GetNamedItem("Name").Value, xml_node.Attributes.GetNamedItem("value").Value);
+            //                }
+            //            }
+            //        }
+            //        HttpContext.Current.Session["DefaultStatusList"] = DefaultStatusList;
+            //    }
+            //CAP-2787
             if (bSuggestProblemIcds == false)
             {
-                if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml"))
+                StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+                var assessmentStatusList = staticLookupList.AssessmentStatusList.ToList();
+                if (assessmentStatusList != null)
                 {
-                    xml_doc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\staticlookup.xml");
-                    XmlNodeList xml_nodelst = xml_doc.GetElementsByTagName("AssessmentStatus");
-                    if (xml_nodelst != null && xml_nodelst.Count > 0)
+                    ListItem lstMedicationDocumented = null;
+                    foreach (var assessmentStatus in assessmentStatusList)
                     {
-                        foreach (XmlNode xml_node in xml_nodelst)
+                        if (assessmentStatus.is_required.ToUpper() == "YES")
                         {
-                            if (xml_node.Attributes.GetNamedItem("is_required").Value.ToUpper() == "YES")
-                                Statuslst.Add(xml_node.Attributes.GetNamedItem("value").Value);
+                            Statuslst.Add(assessmentStatus.value);
                         }
                     }
 
-                    XmlNodeList xml_nodeSetDefault = xml_doc.GetElementsByTagName("AssessmentStatusDefaulted");
-                    if (xml_nodeSetDefault != null && xml_nodeSetDefault.Count > 0)
+                    var assessmentStatusDefaultedList = staticLookupList.AssessmentStatusDefaulted;
+                    if (assessmentStatusDefaultedList != null)
                     {
-                        if (xml_nodeSetDefault[0].Attributes.GetNamedItem("value").Value.ToUpper() == "YES")
-                            Default_Ass_Status = true;
-                    }
-                    if (Default_Ass_Status)
-                    {
-                        XmlNodeList xml_nodelstDefaultStatus = xml_doc.GetElementsByTagName("AssessmentStatusDefault");
-                        if (xml_nodelstDefaultStatus != null && xml_nodelstDefaultStatus.Count > 0)
+                        foreach (var assessmentStatusDefaulted in assessmentStatusDefaultedList.value)
                         {
-                            foreach (XmlNode xml_node in xml_nodelstDefaultStatus)
+                            if (assessmentStatusDefaulted.ToString().ToUpper() == "YES")
                             {
-                                DefaultStatusList.Add(xml_node.Attributes.GetNamedItem("Name").Value, xml_node.Attributes.GetNamedItem("value").Value);
+                                Default_Ass_Status = true;
+                            }
+                        }
+                        if (Default_Ass_Status)
+                        {
+                            var assessmentStatusDefaultLists = staticLookupList.AssessmentStatusDefaultList.ToList();
+                            if (assessmentStatusDefaultLists != null )
+                            {
+                                foreach (var assessmentStatus in assessmentStatusDefaultLists)
+                                {
+                                    DefaultStatusList.Add(assessmentStatus.Name, assessmentStatus.value);
+
+                                }
                             }
                         }
                     }

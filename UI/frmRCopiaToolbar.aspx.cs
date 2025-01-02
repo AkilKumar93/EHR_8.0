@@ -212,7 +212,7 @@ namespace Acurus.Capella.UI
                     if (matchingAddress != null)
                     {
                         emailId = matchingAddress?.Physician_EMail ?? string.Empty;
-            }
+                    }
                 }
 
             }
@@ -1739,32 +1739,94 @@ namespace Acurus.Capella.UI
                 }
             }
             IList<VitalsRanges> VitalsRangesList = new List<VitalsRanges>();
-            string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(sLookupXmlFilePath) == true)
-            {
-                XmlDocument itemDoc = new XmlDocument();
-                XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
-                itemDoc.Load(XmlText);
-                XmlText.Close();
-                XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("FlowSheetList");
+            //string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(sLookupXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+            //    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("FlowSheetList");
 
-                if (xmlNodeList != null && xmlNodeList.Count > 0)
+            //    if (xmlNodeList != null && xmlNodeList.Count > 0)
+            //    {
+            //        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+            //        {
+            //            if (FieldName.ToUpper() == xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value.ToUpper().ToString())
+            //            {
+            //                XmlNode xNode = xmlNodeList[0].ChildNodes[j];
+            //                xDisplayFormat = xNode.Attributes.GetNamedItem("xDisplayFormat").Value;
+            //                xDisplayText = xNode.Attributes.GetNamedItem("xDisplayText").Value;
+            //                yDisplayFormat = xNode.Attributes.GetNamedItem("Ydisplayformat").Value;
+            //                yDisplayText = xNode.Attributes.GetNamedItem("YDisplayText").Value;
+            //                ValueSets = Convert.ToInt32(xNode.Attributes.GetNamedItem("ValueSets").Value);
+            //            }
+            //        }
+            //    }
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            var flowSheetList = staticLookupList.FlowSheetList.ToList();
+            if (flowSheetList != null && flowSheetList.Count() > 0)
+            {
+                foreach (var flowSheet in flowSheetList)
                 {
-                    for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                    if (FieldName.ToUpper() == flowSheet.Field_Name.ToUpper().ToString())
                     {
-                        if (FieldName.ToUpper() == xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value.ToUpper().ToString())
+                        xDisplayFormat = flowSheet.xDisplayFormat;
+                        xDisplayText = flowSheet.xDisplayText;
+                        yDisplayFormat = flowSheet.Ydisplayformat;
+                        yDisplayText = flowSheet.YDisplayText;
+                        ValueSets = Convert.ToInt32(flowSheet.valueSets);
+                    }
+                }
+            }
+            //string sLookupXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(sLookupXmlFilePath) == true)
+            //{
+            //    XmlDocument itemDoc = new XmlDocument();
+            //    XmlTextReader XmlText = new XmlTextReader(sLookupXmlFilePath);
+            //    itemDoc.Load(XmlText);
+            //    XmlText.Close();
+            //    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("FlowSheetList");
+
+            //    if (xmlNodeList != null && xmlNodeList.Count > 0)
+            //    {
+            //        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+            //        {
+            //            if (FieldName.ToUpper() == xmlNodeList[0].ChildNodes[j].Attributes.GetNamedItem("Field_Name").Value.ToUpper().ToString())
+            //            {
+            //                XmlNode xNode = xmlNodeList[0].ChildNodes[j];
+            //                xDisplayFormat = xNode.Attributes.GetNamedItem("xDisplayFormat").Value;
+            //                xDisplayText = xNode.Attributes.GetNamedItem("xDisplayText").Value;
+            //                yDisplayFormat = xNode.Attributes.GetNamedItem("Ydisplayformat").Value;
+            //                yDisplayText = xNode.Attributes.GetNamedItem("YDisplayText").Value;
+            //                ValueSets = Convert.ToInt32(xNode.Attributes.GetNamedItem("ValueSets").Value);
+            //            }
+            //        }
+            //    }
+            //}
+            //CAP-2787
+            staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
+            {
+                flowSheetList = staticLookupList.FlowSheetList.ToList();
+
+                if (flowSheetList != null)
+                {
+                    foreach (var flowSheet in flowSheetList)
+                    {
+                        if (FieldName.ToUpper() == flowSheet.Field_Name.ToUpper().ToString())
                         {
-                            XmlNode xNode = xmlNodeList[0].ChildNodes[j];
-                            xDisplayFormat = xNode.Attributes.GetNamedItem("xDisplayFormat").Value;
-                            xDisplayText = xNode.Attributes.GetNamedItem("xDisplayText").Value;
-                            yDisplayFormat = xNode.Attributes.GetNamedItem("Ydisplayformat").Value;
-                            yDisplayText = xNode.Attributes.GetNamedItem("YDisplayText").Value;
-                            ValueSets = Convert.ToInt32(xNode.Attributes.GetNamedItem("ValueSets").Value);
+                            xDisplayFormat = flowSheet.xDisplayFormat;
+                            xDisplayText = flowSheet.xDisplayText;
+                            yDisplayFormat = flowSheet.Ydisplayformat;
+                            yDisplayText = flowSheet.YDisplayText;
+                            ValueSets = Convert.ToInt32(flowSheet.valueSets);
                         }
                     }
                 }
             }
-
 
             string xAxisDetails = string.Empty;
             string yAaxisDetails = string.Empty;
