@@ -414,12 +414,12 @@ function Load() {
                 {
                     data: '', render: function (data, type, row) {
                         return "<td style='width:2%'><input type = 'image' name='grdPrintEReq' id='grdPrintEReq' src = '/Resources/PrintReq.png' class= 'loaderClass'  style = 'border-width:0px;'/></td>";
-                    }, sClass: 'TableCellBorder', searchable: false
+                    }, sClass: 'TableCellBorder text-align-center', searchable: false
                 },
                 {
                     data: '', render: function (data, type, row) {
                         return "<td style='width:2%'><input type = 'image' name='grdViewResult' id ='grdViewResult' src = '/Resources/Down.bmp' class= 'loaderClass'  style = 'border-width:0px;'/></td>";
-                    }, sClass: 'TableCellBorder', searchable: false
+                    }, sClass: 'TableCellBorder text-align-center', searchable: false
                 },
                 { data: 'Encounter_ID', sClass: "hide_column", searchable: false },
                 { data: 'Physician_ID', sClass: "hide_column", searchable: false },
@@ -800,7 +800,7 @@ function Load() {
                 {
                     data: '', render: function (data, type, row) {
                         return "<td style='width:2%'><input type = 'image' name = 'grdPrintEReq' id = 'grdPrintEReq' src = '/Resources/PrintReq.png' class= 'loaderClass'  style = 'border-width:0px;'/></td>";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all text-align-center', searchable: false
                 },
                 { data: 'Group_ID', sClass: "hide_column", searchable: false },
             ],
@@ -1093,7 +1093,7 @@ function Load() {
                 {
                     data: '', render: function (data, type, row) {
                         return "<td style='width:2%'><input type = 'image' name = 'grdPrintEReq' id = 'grdPrintEReq' src = '/Resources/PrintReq.png' class= 'loaderClass'  style = 'border-width:0px;'/></td>";
-                    }, sClass: 'TableCellBorder word-break-all', searchable: false
+                    }, sClass: 'TableCellBorder word-break-all text-align-center', searchable: false
                 },
                 { data: 'Group_ID', sClass: "hide_column", searchable: false },
             ],
