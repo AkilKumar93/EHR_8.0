@@ -22,6 +22,7 @@ using System.Text;
 using System.ComponentModel;
 using System.IO;
 using System.Web.Hosting;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -122,12 +123,30 @@ namespace Acurus.Capella.UI
 
             //objPhysician = phyMngr.GetphysiciannameByPhyID(ClientSession.PhysicianId)[0];
             //For BugID:37284 
-            XDocument xmlPhysician = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
-            ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == ClientSession.PhysicianId.ToString());
-            if (ilstPhysician != null && ilstPhysician.Count() > 0)
+            //XDocument xmlPhysician = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == ClientSession.PhysicianId.ToString());
+            //if (ilstPhysician != null && ilstPhysician.Count() > 0)
+            //{
+            //    PhyName = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();// +" " + ilstPhysician.Attributes("suffix").First().Value.ToString();
+            //}
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = new PhysicianFacilityMappingList();
+            physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+
+            if (physicianFacilityMappingList != null && physicianFacilityMappingList.PhysicianFacility != null)
             {
-                PhyName = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();// +" " + ilstPhysician.Attributes("suffix").First().Value.ToString();
+                var physician = physicianFacilityMappingList.PhysicianFacility.Select(x=> x.Physician.FirstOrDefault(y => y.ID == ClientSession.PhysicianId.ToString())).FirstOrDefault();
+                if (physician != null)
+                {
+
+                    PhyName = (physician.prefix ?? "") + " " +
+                              (physician.firstname ?? "") + " " +
+                              (physician.middlename ?? "") + " " +
+                              (physician.lastname ?? "");
+
+                }
             }
+
             //End
             //if (objPhysician != null)
             //{

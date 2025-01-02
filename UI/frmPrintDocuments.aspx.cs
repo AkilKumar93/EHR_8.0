@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Xml;
 using System.Text.RegularExpressions;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -447,36 +448,41 @@ namespace Acurus.Capella.UI
                 chkSurgeryDeclaration.Visible = false;
                 ProceedwithSurgeryasPlanned.Visible = false;
                 XDocument xmlDocumentType = null;
-                if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
-                    xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+                //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
+                //    xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\
+                //    PhysicianFacilityMapping.xml"));
                 //ListItem liDropdown = null;
                 IList<ListItem> liComboItems = new List<ListItem>();
-                foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+                //CAP-2781
+                PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+                if (physicianFacilityMappingList != null)
                 {
-                    string xmlValue = elements.Attribute("name").Value;
-                    if (ClientSession.FacilityName != null)
+                    foreach (var facility in physicianFacilityMappingList.PhysicianFacility)
                     {
-                        if (xmlValue.ToUpper().StartsWith("SURGERY-") == true)
+                        string xmlValue = facility.name;
+                        if (ClientSession.FacilityName != null)
                         {
-                            foreach (XElement phyItems in elements.Elements())
+                            if (xmlValue.ToUpper().StartsWith("SURGERY-") == true)
                             {
-                                string phyName = string.Empty;
-                                string username = string.Empty;
-                                string phyID = string.Empty;
-
-                                if (phyItems.Attribute("username").Value != null)
-                                    username = phyItems.Attribute("username").Value;
-
-                                if (username == ClientSession.UserName)
+                                foreach (var phyItems in facility.Physician)
                                 {
-                                    chkSurgeryDeclaration.Visible = true;
-                                    ProceedwithSurgeryasPlanned.Visible = true;
+                                    string phyName = string.Empty;
+                                    string username = string.Empty;
+                                    string phyID = string.Empty;
+
+                                    if (phyItems.username != null)
+                                        username = phyItems.username;
+
+                                    if (username == ClientSession.UserName)
+                                    {
+                                        chkSurgeryDeclaration.Visible = true;
+                                        ProceedwithSurgeryasPlanned.Visible = true;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
 
                 if (ClientSession.UserCurrentProcess.Trim().ToUpper() == "PROVIDER_REVIEW" || ClientSession.UserCurrentProcess.Trim().ToUpper() == "PROVIDER_REVIEW_2")
                 {

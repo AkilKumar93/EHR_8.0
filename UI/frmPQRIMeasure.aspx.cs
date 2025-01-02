@@ -4892,7 +4892,7 @@ namespace Acurus.Capella.UI
         //            lst[0].InnerText = sClientName;
 
         //            //id extension filled //id root="2.16.840.1.113883.4.6"
-        //            //  xmlReqNode[1].ParentNode.ChildNodes[2].Attributes[1].Value = lstfacility[0].Fac_NPI;
+        // xmlReqNode[1].ParentNode.ChildNodes[2].Attributes[1].Value = lstfacility[0].Fac_NPI;
 
         //            // <id root="2.16.840.1.113883.4.2"
         //            //xmlReqNode[1].ChildNodes[1].Attributes[1].Value = sClientTin;
@@ -5791,7 +5791,7 @@ namespace Acurus.Capella.UI
                     xmlReqNode[4].InnerText = ClientSession.PhysicainDetails[0].PhyZip;
                     xmlReqNode[5].InnerText = HumanLst.ZipCode;
 
-
+                    //CAP-1824
                     xmlReqNode = xmlDoc.GetElementsByTagName("telecom");
                     if (HumanLst.Work_Phone_No.Trim() != "" && HumanLst.Work_Phone_No.Trim() != "0")
                     {
@@ -5800,8 +5800,22 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        xmlReqNode[0].Attributes[1].Value = HumanLst.Home_Phone_No;
-                        xmlReqNode[6].Attributes[1].Value = HumanLst.Home_Phone_No;
+                        if (HumanLst.Home_Phone_No == "")
+                        {
+                            XmlAttribute xmlNullraceCode = null;
+                            xmlNullraceCode = xmlDoc.CreateAttribute("nullFlavor");
+                            xmlNullraceCode.Value = "UNK";
+                            xmlReqNode[0].Attributes.Append(xmlNullraceCode);
+
+                            xmlNullraceCode = xmlDoc.CreateAttribute("nullFlavor");
+                            xmlNullraceCode.Value = "UNK";
+                            xmlReqNode[6].Attributes.Append(xmlNullraceCode);
+                        }
+                        else
+                        {
+                            xmlReqNode[0].Attributes[1].Value = HumanLst.Home_Phone_No;
+                            xmlReqNode[6].Attributes[1].Value = HumanLst.Home_Phone_No;
+                        }
                     }
                     xmlReqNode[1].Attributes[1].Value = ClientSession.PhysicainDetails[0].PhyTelephone;
                     xmlReqNode[2].Attributes[1].Value = ClientSession.PhysicainDetails[0].PhyTelephone;
@@ -5891,16 +5905,69 @@ namespace Acurus.Capella.UI
                         xmlReqNode[0].Attributes.Append(xAttribute);
                     }
 
-                    xmlReqNode = xmlDoc.GetElementsByTagName("raceCode");
-                    xmlReqNode[0].Attributes[0].Value = HumanLst.Race_No;
+                    //CAP-1824
+                    if (HumanLst.Race_No == "0" || HumanLst.Race_No == "Decline to specify" ||
+                        HumanLst.Race_No == "Patient Refuses to answer" ||
+                        HumanLst.Race_No == "Prefer not to say" ||
+                        HumanLst.Race_No == "Race Not Indicated" ||
+                        HumanLst.Race_No == "Unknown/Undetermined")
+                    {
+                        xmlReqNode = xmlDoc.GetElementsByTagName("raceCode");
+                        XmlAttribute xmlNullraceCode = null;
+                        xmlNullraceCode = xmlDoc.CreateAttribute("nullFlavor");
+                        xmlNullraceCode.Value = "UNK";
+                        xmlReqNode[0].Attributes.Append(xmlNullraceCode);
+                    }
+                    else
+                    {
+                        xmlReqNode = xmlDoc.GetElementsByTagName("raceCode");
+                        xmlReqNode[0].Attributes[0].Value = HumanLst.Race_No;
+                    }
                     xmlReqNode[0].Attributes[1].Value = HumanLst.Race;
-
+                    //CAP-1824
                     xmlReqNode = xmlDoc.GetElementsByTagName("ethnicGroupCode");
-                    xmlReqNode[0].Attributes[0].Value = Convert.ToString(HumanLst.Ethnicity_No);
-                    xmlReqNode[0].Attributes[1].Value = HumanLst.Ethnicity;
+                    if(HumanLst.Ethnicity_No.ToString() == "Decline to specify" ||
+                        HumanLst.Ethnicity_No.ToString() == "Patient Refuses to answer" ||
+                        HumanLst.Ethnicity_No.ToString() == "Prefer not to say" ||
+                        HumanLst.Ethnicity_No.ToString() == "Ethnicity Not Indicated" ||
+                        HumanLst.Ethnicity_No.ToString() == "Unknown") 
+                    {
+                        xmlReqNode = xmlDoc.GetElementsByTagName("ethnicGroupCode");
+                        XmlAttribute xmlNullethnicGroupCode = null;
+                        xmlNullethnicGroupCode = xmlDoc.CreateAttribute("nullFlavor");
+                        xmlNullethnicGroupCode.Value = "UNK";
+                        xmlReqNode[0].Attributes.Append(xmlNullethnicGroupCode);
+                    }
+                    else 
+                    {
+                        xmlReqNode[0].Attributes[0].Value = Convert.ToString(HumanLst.Ethnicity_No);
+                    }
+                        xmlReqNode[0].Attributes[1].Value = HumanLst.Ethnicity;
 
-                    //xmlReqNode = xmlDoc.GetElementsByTagName("languageCode");
-                    //xmlReqNode[1].Attributes[0].Value = HumanLst.Preferred_Language;
+
+
+                    //CAP-1824
+                    if (HumanLst.Preferred_Language == "Preferred Language not indicated" ||
+                        HumanLst.Preferred_Language == "Decline to specify" ||
+                        HumanLst.Preferred_Language == "Patient Refuses to answer" || 
+                        HumanLst.Preferred_Language == "Unknown" ||
+                        HumanLst.Preferred_Language == "Uncoded languages" ||
+                        HumanLst.Preferred_Language == "Undetermined" ||
+                        HumanLst.Preferred_Language == "Multiple languages" ||
+                        HumanLst.Preferred_Language == "Artificial languages")
+                    {
+                        xmlReqNode = xmlDoc.GetElementsByTagName("languageCode");
+                        XmlAttribute xmlNulllanguageCode = null;
+                        xmlNulllanguageCode = xmlDoc.CreateAttribute("nullFlavor");
+                        xmlNulllanguageCode.Value = "UNK";
+                        xmlReqNode[1].Attributes.Append(xmlNulllanguageCode);
+
+                    }
+                    else
+                    {
+                        xmlReqNode = xmlDoc.GetElementsByTagName("languageCode");
+                        xmlReqNode[1].Attributes[0].Value = HumanLst.Preferred_Language;
+                    }
 
                     //Physician
                     xmlReqNode = xmlDoc.GetElementsByTagName("time");

@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System.Web.Services;
 using System.Globalization;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -101,68 +102,72 @@ namespace Acurus.Capella.UI
         {
             List<string> lstDetails = new List<string>();
 
-            XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
-
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            //XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
-                string xmlValue = elements.Attribute("name").Value;
-
-                foreach (XElement phyItems in elements.Elements())
+                foreach (var facility in physicianFacilityMappingList.PhysicianFacility)
                 {
-                    string phyName = string.Empty;
+                    string xmlValue = facility.name;
 
-                    //string userName = phyItems.Attribute("username").Value;
-                    string prefix = phyItems.Attribute("prefix").Value;
-                    string firstName = phyItems.Attribute("firstname").Value;
-                    string middleName = phyItems.Attribute("middlename").Value;
-                    string lastName = phyItems.Attribute("lastname").Value;
-                    string suffix = phyItems.Attribute("suffix").Value;
-                    string physicianId = phyItems.Attribute("ID").Value;
-
-                    //Old Code
-                    //if (prefix != "")
-                    //{
-                    //    phyName += prefix + " ";
-                    //}
-                    //if (firstName != "")
-                    //{
-                    //    phyName += firstName + " ";
-                    //}
-                    //if (middleName != "")
-                    //{
-                    //    phyName += middleName + " ";
-                    //}
-                    //if (lastName != "")
-                    //{
-                    //    phyName += lastName + " ";
-                    //}
-                    //if (suffix != "")
-                    //{
-                    //    phyName += suffix;
-                    //}
-                    //Gitlab# 2485 - Physician Name Display Change
-                    if (lastName != String.Empty)
-                        phyName += lastName;
-                    if (firstName != String.Empty)
+                    foreach (var phyItems in facility.Physician)
                     {
-                        if (phyName != String.Empty)
-                            phyName += "," + firstName;
-                        else
-                            phyName += firstName;
-                    }
-                    if (middleName != String.Empty)
-                        phyName += " " + middleName;
-                    if (suffix != String.Empty)
-                        phyName += "," + suffix;
+                        string phyName = string.Empty;
 
-                    if ((string.IsNullOrEmpty(facilityName) || string.Compare(facilityName, xmlValue, true) == 0) && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
-                    {
-                        if (phyName != string.Empty)
+                        //string userName = phyItems.Attribute("username").Value;
+                        string prefix = phyItems.prefix;
+                        string firstName = phyItems.firstname;
+                        string middleName = phyItems.middlename;
+                        string lastName = phyItems.lastname;
+                        string suffix = phyItems.suffix;
+                        string physicianId = phyItems.ID;
+
+                        //Old Code
+                        //if (prefix != "")
+                        //{
+                        //    phyName += prefix + " ";
+                        //}
+                        //if (firstName != "")
+                        //{
+                        //    phyName += firstName + " ";
+                        //}
+                        //if (middleName != "")
+                        //{
+                        //    phyName += middleName + " ";
+                        //}
+                        //if (lastName != "")
+                        //{
+                        //    phyName += lastName + " ";
+                        //}
+                        //if (suffix != "")
+                        //{
+                        //    phyName += suffix;
+                        //}
+                        //Gitlab# 2485 - Physician Name Display Change
+                        if (lastName != String.Empty)
+                            phyName += lastName;
+                        if (firstName != String.Empty)
                         {
-                            //Old Code
-                            //lstDetails.Add(userName + " - " + phyName + "~" + physicianId);
-                            //Gitlab# 2485 - Physician Name Display Change
-                            lstDetails.Add(phyName + "~" + physicianId);
+                            if (phyName != String.Empty)
+                                phyName += "," + firstName;
+                            else
+                                phyName += firstName;
+                        }
+                        if (middleName != String.Empty)
+                            phyName += " " + middleName;
+                        if (suffix != String.Empty)
+                            phyName += "," + suffix;
+
+                        if ((string.IsNullOrEmpty(facilityName) || string.Compare(facilityName, xmlValue, true) == 0) && phyItems.Legal_Org == ClientSession.LegalOrg)
+                        {
+                            if (phyName != string.Empty)
+                            {
+                                //Old Code
+                                //lstDetails.Add(userName + " - " + phyName + "~" + physicianId);
+                                //Gitlab# 2485 - Physician Name Display Change
+                                lstDetails.Add(phyName + "~" + physicianId);
+                            }
                         }
                     }
                 }

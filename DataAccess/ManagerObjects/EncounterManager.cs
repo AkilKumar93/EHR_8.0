@@ -17,6 +17,7 @@ using System.Xml.Linq;
 using System.Threading;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -1483,52 +1484,50 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             #endregion
             #region Physician Info from Config_XML
-            string strPhysician_XmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+            //string strPhysician_XmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
             if (EncProviderId != 0)
             {
-                if (File.Exists(strPhysician_XmlFilePath))
-                {
-                    XmlDocument xmldoc = new XmlDocument();
-                    XmlTextReader xmlTextReader = new XmlTextReader(strPhysician_XmlFilePath);
-                    xmldoc.Load(xmlTextReader);
-                    xmlTextReader.Close();
-                    try
-                    {
-                        XmlElement xmlElemnt = xmldoc.DocumentElement;
-                        XmlNode xmlPhysicianNode = null;
-                        xmlPhysicianNode = xmlElemnt.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID=" + EncProviderId.ToString() + "]");
-                        if (xmlPhysicianNode != null)
-                        {
-                            string Physician_Last_Name = xmlPhysicianNode.Attributes.GetNamedItem("lastname").Value.ToString();
-                            string Physician_First_Name = xmlPhysicianNode.Attributes.GetNamedItem("firstname").Value.ToString();
-                            string Physician_Middle_Name = xmlPhysicianNode.Attributes.GetNamedItem("middlename").Value.ToString();
-                            string Physician_Suffix = xmlPhysicianNode.Attributes.GetNamedItem("suffix").Value.ToString();
-                            objPatPane.Assigned_Physician_User_Name = xmlPhysicianNode.Attributes.GetNamedItem("username").Value.ToString();
-                            objPatPane.Assigned_Physician = xmlPhysicianNode.Attributes.GetNamedItem("prefix").Value.ToString() + " " +
-                                                            Physician_First_Name + " " + Physician_Middle_Name +
-                                                            " " + Physician_Last_Name + " " + Physician_Suffix;
-                        }
-                        else
-                        {
-                            //CAP-2328
-                            UserManager userManager = new UserManager();
-                            IList<User> lstUser = userManager.getUserByPHYID(EncProviderId);
-                            if (lstUser != null && lstUser.Any())
-                            {
-                                PhysicianManager physicianManager = new PhysicianManager();
-                                IList<PhysicianLibrary> lstPhysician = new List<PhysicianLibrary>();
-                                lstPhysician = physicianManager.GetphysiciannameByPhyID(EncProviderId);
-                                if(lstPhysician != null && lstPhysician.Any())
-                                {
-                                    objPatPane.Assigned_Physician_User_Name = lstUser[0].user_name;
-                                    objPatPane.Assigned_Physician = lstPhysician[0].PhyPrefix + " " + lstPhysician[0].PhyFirstName + " " + lstPhysician[0].PhyMiddleName + " " + lstPhysician[0].PhyLastName + " " + lstPhysician[0].PhySuffix;
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
+                //if (File.Exists(strPhysician_XmlFilePath))
+                //{
+                //XmlDocument xmldoc = new XmlDocument();
+                //XmlTextReader xmlTextReader = new XmlTextReader(strPhysician_XmlFilePath);
+                //xmldoc.Load(xmlTextReader);
+                //xmlTextReader.Close();
+                //try
+                //{
+                //    XmlElement xmlElemnt = xmldoc.DocumentElement;
+                //    XmlNode xmlPhysicianNode = null;
+                //    xmlPhysicianNode = xmlElemnt.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID=" + EncProviderId.ToString() + "]");
+                //    if (xmlPhysicianNode != null)
+                //    {
+                //        string Physician_Last_Name = xmlPhysicianNode.Attributes.GetNamedItem("lastname").Value.ToString();
+                //        string Physician_First_Name = xmlPhysicianNode.Attributes.GetNamedItem("firstname").Value.ToString();
+                //        string Physician_Middle_Name = xmlPhysicianNode.Attributes.GetNamedItem("middlename").Value.ToString();
+                //        string Physician_Suffix = xmlPhysicianNode.Attributes.GetNamedItem("suffix").Value.ToString();
+                //        objPatPane.Assigned_Physician_User_Name = xmlPhysicianNode.Attributes.GetNamedItem("username").Value.ToString();
+                //        objPatPane.Assigned_Physician = xmlPhysicianNode.Attributes.GetNamedItem("prefix").Value.ToString() + " " +
+                //                                        Physician_First_Name + " " + Physician_Middle_Name +
+                //                                        " " + Physician_Last_Name + " " + Physician_Suffix;
+                //    }
+                //}
+                //catch (Exception e)
+                //{
 
+                //}
+                //}
+                //CAP-2781
+                PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+                if (physicianFacilityMappingList != null)
+                {
+                    var physicanList = physicianFacilityMappingList.PhysicianFacility.Select(x => x.Physician.FirstOrDefault(y => y.ID == EncProviderId.ToString())).FirstOrDefault();
+                    if (physicanList != null)
+                    {
+                        string Physician_Last_Name = physicanList.lastname;
+                        string Physician_First_Name = physicanList.firstname;
+                        string Physician_Middle_Name = physicanList.middlename;
+                        string Physician_Suffix = physicanList.suffix;
+                        objPatPane.Assigned_Physician_User_Name = physicanList.username;
+                        objPatPane.Assigned_Physician = physicanList.prefix + " " + physicanList.firstname + " " + physicanList.middlename + " " + physicanList.lastname + " " + physicanList.suffix;
                     }
                 }
             }
@@ -9992,17 +9991,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     if (xmlAgenode != null)
                         xmlAgenode[0].ParentNode.RemoveChild(xmlAgenode[0]);
 
-                    IEnumerable<XElement> ilstPhysician = null;
+                    //IEnumerable<XElement> ilstPhysician = null;
                     XmlNodeList xmlMember_ID = XMLObj.itemDoc.GetElementsByTagName("Encounter_Provider_Name");
 
-                    string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
-                    XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
-                    ilstPhysician = xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == SaveEncounter[0].Encounter_Provider_ID.ToString());
-                    if (ilstPhysician != null && ilstPhysician.Count() > 0)
+                    //string sPhysicianFacilityXmlPath = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\ConfigXML\\PhysicianFacilityMapping.xml";
+                    //XDocument xmlPhysician = XDocument.Load(sPhysicianFacilityXmlPath);
+                    //CAP-2781
+                    PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+                    if (physicianFacilityMappingList != null)
                     {
-                        //CAP-2150
-                        //xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();
-                        xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString() + " " + ilstPhysician.Attributes("suffix").First().Value.ToString();
+                        var ilstPhysician = physicianFacilityMappingList.PhysicianFacility.Select(x => x.Physician.FirstOrDefault(y => y.ID == SaveEncounter[0].Encounter_Provider_ID.ToString())).FirstOrDefault();//xmlPhysician.Element("ROOT").Element("PhyList").Elements("Facility").Elements("Physician").Where(aa => aa.Attribute("ID").Value.ToString() == SaveEncounter[0].Encounter_Provider_ID.ToString());
+                        if (ilstPhysician != null)
+                        {
+                            //CAP-2150
+                            //xmlMember_ID[0].InnerText = ilstPhysician.Attributes("prefix").First().Value.ToString() + " " + ilstPhysician.Attributes("firstname").First().Value.ToString() + " " + ilstPhysician.Attributes("middlename").First().Value.ToString() + " " + ilstPhysician.Attributes("lastname").First().Value.ToString();
+                            xmlMember_ID[0].InnerText = ilstPhysician.prefix + " " + ilstPhysician.firstname + " " + ilstPhysician.middlename + " " + ilstPhysician.lastname + " " + ilstPhysician.suffix;
+                        }
                     }
 
                     string sPhysicianid = SaveEncounter[0].Encounter_Provider_ID.ToString();
@@ -10021,7 +10025,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             var physicianAddress = physicianAddressDetailsList.PhysicianAddress.FirstOrDefault(x=>x.Physician_Library_ID == sPhysicianid);
 
                             if(physicianAddress != null)
-                        {
+                            {
                                 xmlPhysicianAddress[0].Attributes[0].Value = physicianAddress.Physician_Address1;
                                 xmlPhysicianAddress[0].Attributes[1].Value = physicianAddress.Physician_Address2;
                                 xmlPhysicianAddress[0].Attributes[2].Value = physicianAddress.Physician_City;

@@ -898,7 +898,7 @@ namespace Acurus.Capella.UI
                                     else
                                     {
                                         EncounterManager encMngr = new EncounterManager();
-                                        IList<Encounter> encList = encMngr.GetEncounterByEncounterID(item.Encounter_ID);
+                                        IList<Encounter> encList = encMngr.GetEncounterByEncounterIDIncludeArchive(item.Encounter_ID);
                                         if (encList.Count > 0)
                                         {
                                             if (encList[0].Order_Submit_ID == 0)
@@ -2385,99 +2385,25 @@ namespace Acurus.Capella.UI
             //string sDefPhyID = ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"];
             cboPhysician.Items.Clear();
             /* Code Block to populate physician list */
-            XDocument xmlDocumentType = null;
-            if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
-                xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //XDocument xmlDocumentType = null;
+            //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
+            //    xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.jsonn");
             ListItem liDropdown = null;
             IList<ListItem> liComboItems = new List<ListItem>();
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            if (physicianFacilityMappingList != null)
             {
-                //string xmlValue = elements.Attribute("name").Value;
-                if (ddSelectedFacility.Text.ToUpper() != null)
+                foreach (var facility in physicianFacilityMappingList.PhysicianFacility)
                 {
-                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
-                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                    if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                    //string xmlValue = elements.Attribute("name").Value;
+                    if (ddSelectedFacility.Text.ToUpper() != null)
                     {
-                        foreach (XElement phyItems in elements.Elements())
+                        var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == facility.name select f;
+                        IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                        if (facility.name.ToUpper() == ddSelectedFacility.Text.ToUpper() && ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
                         {
-                            //Old Code
-                            //StringBuilder phyName = new StringBuilder();
-                            //StringBuilder username = new StringBuilder();
-                            //StringBuilder prefix = new StringBuilder();
-                            //StringBuilder firstname = new StringBuilder();
-                            //StringBuilder middlename = new StringBuilder();
-                            //StringBuilder lastname = new StringBuilder();
-                            //StringBuilder suffix = new StringBuilder();
-                            //StringBuilder phyID = new StringBuilder();
-
-                            //if (phyItems.Attribute("username").Value != null)
-                            //    username.Append(phyItems.Attribute("username").Value);
-                            //if (phyItems.Attribute("prefix").Value != null)
-                            //    prefix.Append(phyItems.Attribute("prefix").Value);
-                            //if (phyItems.Attribute("firstname").Value != null)
-                            //    firstname.Append(phyItems.Attribute("firstname").Value);
-                            //if (phyItems.Attribute("middlename").Value != null)
-                            //    middlename.Append(phyItems.Attribute("middlename").Value);
-                            //if (phyItems.Attribute("lastname").Value != null)
-                            //    lastname.Append(phyItems.Attribute("lastname").Value);
-                            //if (phyItems.Attribute("suffix").Value != null)
-                            //    suffix.Append(phyItems.Attribute("suffix").Value);
-                            ////if (phyItems.Attribute("phyID").Value != null)
-                            //// phyID = phyItems.Attribute("phyID").Value;
-                            //if (phyItems.Attribute("ID").Value != null)
-                            //    phyID.Append(phyItems.Attribute("ID").Value);
-
-                            //if (prefix.Length != 0)
-                            //{
-                            //    phyName.Append(prefix.ToString());
-                            //}
-                            //if (firstname.Length != 0)
-                            //{
-                            //    phyName.Append(firstname.ToString());
-                            //}
-                            //if (middlename.Length != 0)
-                            //{
-                            //    phyName.Append(middlename.ToString());
-                            //}
-                            //if (lastname.Length != 0)
-                            //{
-                            //    phyName.Append(lastname.ToString());
-                            //}
-                            //if (suffix.Length != 0)
-                            //{
-                            //    phyName.Append(suffix.ToString());
-                            //}
-                            //Gitlab# 2485 - Physician Name Display Change
-                            string phyName = String.Empty;
-                            if (phyItems.Attribute("lastname").Value != String.Empty)
-                                phyName += phyItems.Attribute("lastname").Value;
-                            if (phyItems.Attribute("firstname").Value != String.Empty)
-                            {
-                                if (phyName != String.Empty)
-                                    phyName += "," + phyItems.Attribute("firstname").Value;
-                                else
-                                    phyName += phyItems.Attribute("firstname").Value;
-                            }
-                            if (phyItems.Attribute("middlename").Value != String.Empty)
-                                phyName += " " + phyItems.Attribute("middlename").Value;
-                            if (phyItems.Attribute("suffix").Value != String.Empty)
-                                phyName += "," + phyItems.Attribute("suffix").Value;
-
-                            liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
-                            liDropdown.Attributes.Add("default", "true");
-                            liComboItems.Add(liDropdown);
-
-                        }
-
-                    }
-                    else
-                    {
-                        var vfacAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
-                        IList<FacilityLibrary> lstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
-                        if (lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y" && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
-                        {
-                            foreach (XElement phyItems in elements.Elements())
+                            foreach (var phyItems in facility.Physician)
                             {
                                 //Old Code
                                 //StringBuilder phyName = new StringBuilder();
@@ -2528,28 +2454,107 @@ namespace Acurus.Capella.UI
                                 //}
                                 //Gitlab# 2485 - Physician Name Display Change
                                 string phyName = String.Empty;
-                                if (phyItems.Attribute("lastname").Value != String.Empty)
-                                    phyName += phyItems.Attribute("lastname").Value;
-                                if (phyItems.Attribute("firstname").Value != String.Empty)
+                                if (phyItems.lastname != String.Empty)
+                                    phyName += phyItems.lastname;
+                                if (phyItems.firstname != String.Empty)
                                 {
                                     if (phyName != String.Empty)
-                                        phyName += "," + phyItems.Attribute("firstname").Value;
+                                        phyName += "," + phyItems.firstname;
                                     else
-                                        phyName += phyItems.Attribute("firstname").Value;
+                                        phyName += phyItems.firstname;
                                 }
-                                if (phyItems.Attribute("middlename").Value != String.Empty)
-                                    phyName += " " + phyItems.Attribute("middlename").Value;
-                                if (phyItems.Attribute("suffix").Value != String.Empty)
-                                    phyName += "," + phyItems.Attribute("suffix").Value;
+                                if (phyItems.middlename != String.Empty)
+                                    phyName += " " + phyItems.middlename;
+                                if (phyItems.suffix != String.Empty)
+                                    phyName += "," + phyItems.suffix;
 
-
-                                liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
-                                if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.Attribute("ID").Value)
-                                    liDropdown.Attributes.Add("default", "true");
-                                else
-                                    liDropdown.Attributes.Add("default", "false");
-                                liDropdown.Attributes.CssStyle.Add("display", "none");
+                                liDropdown = new ListItem(phyName, phyItems.ID);
+                                liDropdown.Attributes.Add("default", "true");
                                 liComboItems.Add(liDropdown);
+
+                            }
+
+                        }
+                        else
+                        {
+                            var vfacAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == facility.name select f;
+                            IList<FacilityLibrary> lstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
+                            if (lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y" && facility.Legal_Org == ClientSession.LegalOrg)// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                            {
+                                foreach (var phyItems in facility.Physician)
+                                {
+                                    //Old Code
+                                    //StringBuilder phyName = new StringBuilder();
+                                    //StringBuilder username = new StringBuilder();
+                                    //StringBuilder prefix = new StringBuilder();
+                                    //StringBuilder firstname = new StringBuilder();
+                                    //StringBuilder middlename = new StringBuilder();
+                                    //StringBuilder lastname = new StringBuilder();
+                                    //StringBuilder suffix = new StringBuilder();
+                                    //StringBuilder phyID = new StringBuilder();
+
+                                    //if (phyItems.Attribute("username").Value != null)
+                                    //    username.Append(phyItems.Attribute("username").Value);
+                                    //if (phyItems.Attribute("prefix").Value != null)
+                                    //    prefix.Append(phyItems.Attribute("prefix").Value);
+                                    //if (phyItems.Attribute("firstname").Value != null)
+                                    //    firstname.Append(phyItems.Attribute("firstname").Value);
+                                    //if (phyItems.Attribute("middlename").Value != null)
+                                    //    middlename.Append(phyItems.Attribute("middlename").Value);
+                                    //if (phyItems.Attribute("lastname").Value != null)
+                                    //    lastname.Append(phyItems.Attribute("lastname").Value);
+                                    //if (phyItems.Attribute("suffix").Value != null)
+                                    //    suffix.Append(phyItems.Attribute("suffix").Value);
+                                    ////if (phyItems.Attribute("phyID").Value != null)
+                                    //// phyID = phyItems.Attribute("phyID").Value;
+                                    //if (phyItems.Attribute("ID").Value != null)
+                                    //    phyID.Append(phyItems.Attribute("ID").Value);
+
+                                    //if (prefix.Length != 0)
+                                    //{
+                                    //    phyName.Append(prefix.ToString());
+                                    //}
+                                    //if (firstname.Length != 0)
+                                    //{
+                                    //    phyName.Append(firstname.ToString());
+                                    //}
+                                    //if (middlename.Length != 0)
+                                    //{
+                                    //    phyName.Append(middlename.ToString());
+                                    //}
+                                    //if (lastname.Length != 0)
+                                    //{
+                                    //    phyName.Append(lastname.ToString());
+                                    //}
+                                    //if (suffix.Length != 0)
+                                    //{
+                                    //    phyName.Append(suffix.ToString());
+                                    //}
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    string phyName = String.Empty;
+                                    if (phyItems.lastname != String.Empty)
+                                        phyName += phyItems.lastname;
+                                    if (phyItems.firstname != String.Empty)
+                                    {
+                                        if (phyName != String.Empty)
+                                            phyName += "," + phyItems.firstname;
+                                        else
+                                            phyName += phyItems.firstname;
+                                    }
+                                    if (phyItems.middlename != String.Empty)
+                                        phyName += " " + phyItems.middlename;
+                                    if (phyItems.suffix != String.Empty)
+                                        phyName += "," + phyItems.suffix;
+
+
+                                    liDropdown = new ListItem(phyName, phyItems.ID);
+                                    if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.ID)
+                                        liDropdown.Attributes.Add("default", "true");
+                                    else
+                                        liDropdown.Attributes.Add("default", "false");
+                                    liDropdown.Attributes.CssStyle.Add("display", "none");
+                                    liComboItems.Add(liDropdown);
+                                }
                             }
                         }
                     }
@@ -2569,109 +2574,29 @@ namespace Acurus.Capella.UI
             cboOrderPhysician.Items.Clear();
             /* Code Block to populate physician list */
             XDocument xmlDocumentType = null;
-            if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
-                xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
+            //xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
             ListItem liDropdown = null;
             IList<ListItem> liComboItems = new List<ListItem>();
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
-            {
-                //string xmlValue = elements.Attribute("name").Value;
-                if (ddSelectedFacility.Text.ToUpper() != null)
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null) { 
+                foreach (var facility in physicianFacilityMappingList.PhysicianFacility)
                 {
-                    //if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
-                    //{
-                    var vfacAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
-                    IList<FacilityLibrary> lstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
-                    //Cap - 1119
-                    //if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
-                    if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y" && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+                    //string xmlValue = elements.Attribute("name").Value;
+                    if (ddSelectedFacility.Text.ToUpper() != null)
                     {
-                        foreach (XElement phyItems in elements.Elements())
-                        {
-                            //Old Code 
-                            //StringBuilder phyName = new StringBuilder();
-                            //StringBuilder username = new StringBuilder();
-                            //StringBuilder prefix = new StringBuilder();
-                            //StringBuilder firstname = new StringBuilder();
-                            //StringBuilder middlename = new StringBuilder();
-                            //StringBuilder lastname = new StringBuilder();
-                            //StringBuilder suffix = new StringBuilder();
-                            //StringBuilder phyID = new StringBuilder();
-
-                            //if (phyItems.Attribute("username").Value != null)
-                            //    username.Append(phyItems.Attribute("username").Value);
-                            //if (phyItems.Attribute("prefix").Value != null)
-                            //    prefix.Append(phyItems.Attribute("prefix").Value);
-                            //if (phyItems.Attribute("firstname").Value != null)
-                            //    firstname.Append(phyItems.Attribute("firstname").Value);
-                            //if (phyItems.Attribute("middlename").Value != null)
-                            //    middlename.Append(phyItems.Attribute("middlename").Value);
-                            //if (phyItems.Attribute("lastname").Value != null)
-                            //    lastname.Append(phyItems.Attribute("lastname").Value);
-                            //if (phyItems.Attribute("suffix").Value != null)
-                            //    suffix.Append(phyItems.Attribute("suffix").Value);
-                            ////if (phyItems.Attribute("phyID").Value != null)
-                            //// phyID = phyItems.Attribute("phyID").Value;
-                            //if (phyItems.Attribute("ID").Value != null)
-                            //    phyID.Append(phyItems.Attribute("ID").Value);
-
-                            //if (prefix.Length != 0)
-                            //{
-                            //    phyName.Append(prefix.ToString());
-                            //}
-                            //if (firstname.Length != 0)
-                            //{
-                            //    phyName.Append(firstname.ToString());
-                            //}
-                            //if (middlename.Length != 0)
-                            //{
-                            //    phyName.Append(middlename.ToString());
-                            //}
-                            //if (lastname.Length != 0)
-                            //{
-                            //    phyName.Append(lastname.ToString());
-                            //}
-                            //if (suffix.Length != 0)
-                            //{
-                            //    phyName.Append(suffix.ToString());
-                            //}
-
-                            //Gitlab# 2485 - Physician Name Display Change
-                            string phyName = String.Empty;
-                            if (phyItems.Attribute("lastname").Value != String.Empty)
-                                phyName += phyItems.Attribute("lastname").Value;
-                            if (phyItems.Attribute("firstname").Value != String.Empty)
-                            {
-                                if (phyName != String.Empty)
-                                    phyName += "," + phyItems.Attribute("firstname").Value;
-                                else
-                                    phyName += phyItems.Attribute("firstname").Value;
-                            }
-                            if (phyItems.Attribute("middlename").Value != String.Empty)
-                                phyName += " " + phyItems.Attribute("middlename").Value;
-                            if (phyItems.Attribute("suffix").Value != String.Empty)
-                                phyName += "," + phyItems.Attribute("suffix").Value;
-
-
-
-                            liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
-                            liDropdown.Attributes.Add("default", "true");
-                            liComboItems.Add(liDropdown);
-
-                        }
-
-                    }
-                    else
-                    {
-                        //if (elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                        //if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
                         //{
-                        var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
-                        IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                        if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y" && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                        var vfacAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == facility.name select f;
+                        IList<FacilityLibrary> lstFacAncillary = vfacAncillary.ToList<FacilityLibrary>();
+                        //Cap - 1119
+                        //if (elements.Attribute("name").Value.ToUpper() == ddSelectedFacility.Text.ToUpper() && lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y")// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                        if (facility.name.ToUpper() == ddSelectedFacility.Text.ToUpper() && lstFacAncillary.Count > 0 && lstFacAncillary[0].Is_Ancillary != "Y" && facility.Legal_Org == ClientSession.LegalOrg)
                         {
-                            foreach (XElement phyItems in elements.Elements())
+                            foreach (var phyItems in facility.Physician)
                             {
-                                //Old Code
+                                //Old Code 
                                 //StringBuilder phyName = new StringBuilder();
                                 //StringBuilder username = new StringBuilder();
                                 //StringBuilder prefix = new StringBuilder();
@@ -2721,32 +2646,116 @@ namespace Acurus.Capella.UI
 
                                 //Gitlab# 2485 - Physician Name Display Change
                                 string phyName = String.Empty;
-                                if (phyItems.Attribute("lastname").Value != String.Empty)
-                                    phyName += phyItems.Attribute("lastname").Value;
-                                if (phyItems.Attribute("firstname").Value != String.Empty)
+                                if (phyItems.lastname != String.Empty)
+                                    phyName += phyItems.lastname;
+                                if (phyItems.firstname != String.Empty)
                                 {
                                     if (phyName != String.Empty)
-                                        phyName += "," + phyItems.Attribute("firstname").Value;
+                                        phyName += "," + phyItems.firstname;
                                     else
-                                        phyName += phyItems.Attribute("firstname").Value;
+                                        phyName += phyItems.firstname;
                                 }
-                                if (phyItems.Attribute("middlename").Value != String.Empty)
-                                    phyName += " " + phyItems.Attribute("middlename").Value;
-                                if (phyItems.Attribute("suffix").Value != String.Empty)
-                                    phyName += "," + phyItems.Attribute("suffix").Value;
+                                if (phyItems.middlename != String.Empty)
+                                    phyName += " " + phyItems.middlename;
+                                if (phyItems.suffix != String.Empty)
+                                    phyName += "," + phyItems.suffix;
 
-                                liDropdown = new ListItem(phyName, phyItems.Attribute("ID").Value);
-                                if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.Attribute("ID").Value)
-                                    liDropdown.Attributes.Add("default", "true");
-                                else
-                                    liDropdown.Attributes.Add("default", "false");
-                                liDropdown.Attributes.CssStyle.Add("display", "none");
+
+
+                                liDropdown = new ListItem(phyName, phyItems.ID);
+                                liDropdown.Attributes.Add("default", "true");
                                 liComboItems.Add(liDropdown);
 
                             }
+
+                        }
+                        else
+                        {
+                            //if (elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                            //{
+                            var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == facility.name select f;
+                            IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                            if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y" && facility.Legal_Org == ClientSession.LegalOrg)// && elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                            {
+                                foreach (var phyItems in facility.Physician)
+                                {
+                                    //Old Code
+                                    //StringBuilder phyName = new StringBuilder();
+                                    //StringBuilder username = new StringBuilder();
+                                    //StringBuilder prefix = new StringBuilder();
+                                    //StringBuilder firstname = new StringBuilder();
+                                    //StringBuilder middlename = new StringBuilder();
+                                    //StringBuilder lastname = new StringBuilder();
+                                    //StringBuilder suffix = new StringBuilder();
+                                    //StringBuilder phyID = new StringBuilder();
+
+                                    //if (phyItems.Attribute("username").Value != null)
+                                    //    username.Append(phyItems.Attribute("username").Value);
+                                    //if (phyItems.Attribute("prefix").Value != null)
+                                    //    prefix.Append(phyItems.Attribute("prefix").Value);
+                                    //if (phyItems.Attribute("firstname").Value != null)
+                                    //    firstname.Append(phyItems.Attribute("firstname").Value);
+                                    //if (phyItems.Attribute("middlename").Value != null)
+                                    //    middlename.Append(phyItems.Attribute("middlename").Value);
+                                    //if (phyItems.Attribute("lastname").Value != null)
+                                    //    lastname.Append(phyItems.Attribute("lastname").Value);
+                                    //if (phyItems.Attribute("suffix").Value != null)
+                                    //    suffix.Append(phyItems.Attribute("suffix").Value);
+                                    ////if (phyItems.Attribute("phyID").Value != null)
+                                    //// phyID = phyItems.Attribute("phyID").Value;
+                                    //if (phyItems.Attribute("ID").Value != null)
+                                    //    phyID.Append(phyItems.Attribute("ID").Value);
+
+                                    //if (prefix.Length != 0)
+                                    //{
+                                    //    phyName.Append(prefix.ToString());
+                                    //}
+                                    //if (firstname.Length != 0)
+                                    //{
+                                    //    phyName.Append(firstname.ToString());
+                                    //}
+                                    //if (middlename.Length != 0)
+                                    //{
+                                    //    phyName.Append(middlename.ToString());
+                                    //}
+                                    //if (lastname.Length != 0)
+                                    //{
+                                    //    phyName.Append(lastname.ToString());
+                                    //}
+                                    //if (suffix.Length != 0)
+                                    //{
+                                    //    phyName.Append(suffix.ToString());
+                                    //}
+
+                                    //Gitlab# 2485 - Physician Name Display Change
+                                    string phyName = String.Empty;
+                                    if (phyItems.lastname != String.Empty)
+                                        phyName += phyItems.lastname;
+                                    if (phyItems.firstname != String.Empty)
+                                    {
+                                        if (phyName != String.Empty)
+                                            phyName += "," + phyItems.firstname;
+                                        else
+                                            phyName += phyItems.firstname;
+                                    }
+                                    if (phyItems.middlename != String.Empty)
+                                        phyName += " " + phyItems.middlename;
+                                    if (phyItems.suffix != String.Empty)
+                                        phyName += "," + phyItems.suffix;
+
+                                    liDropdown = new ListItem(phyName, phyItems.ID);
+                                    if (ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"] == phyItems.ID)
+                                        liDropdown.Attributes.Add("default", "true");
+                                    else
+                                        liDropdown.Attributes.Add("default", "false");
+                                    liDropdown.Attributes.CssStyle.Add("display", "none");
+                                    liComboItems.Add(liDropdown);
+
+                                }
+                            }
                         }
                     }
-                }
+                } 
             }
             IList<ListItem> sortlst = liComboItems.OrderByDescending(x => x.Attributes["default"]).ToList();
             sortlst = sortlst.OrderBy(x => x.Text).Distinct().ToList();
@@ -4536,20 +4545,26 @@ namespace Acurus.Capella.UI
 
         public void updateOrderObjects()
         {
-            XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
             IDictionary<ulong, string> phyuserNameIDMap = new Dictionary<ulong, string>();
-
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements().Elements())
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
-                //string username = elements.Attribute("username").Value;
-                // string phyID = elements.Attribute("ID").Value;
-                try
+                foreach (var facility in physicianFacilityMappingList.PhysicianFacility)
                 {
-                    phyuserNameIDMap.Add(Convert.ToUInt32(elements.Attribute("ID").Value), elements.Attribute("username").Value);
+                    foreach (var phyItems in facility.Physician)
+                    {
+                        //string username = elements.Attribute("username").Value;
+                        // string phyID = elements.Attribute("ID").Value;
+                        try
+                        {
+                            phyuserNameIDMap.Add(Convert.ToUInt32(phyItems.ID), phyItems.username);
+                        }
+                        catch { }
+                    }
+
                 }
-                catch { }
-
-
             }
 
             Session.Add("usernameIDMap", phyuserNameIDMap);
@@ -5831,72 +5846,77 @@ namespace Acurus.Capella.UI
         {
             cboPhysician.Items.Clear();
             XDocument xmlDocumentType = null;
-            if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
-                xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
+            //    xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //CAP-2781
             ListItem liDropdown = null;
             IList<ListItem> liComboItems = new List<ListItem>();
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
-                //if (elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
-                //{
-                //Cap - 1343
-                //var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg select f;
-                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                foreach (var facility in physicianFacilityMappingList.PhysicianFacility)
                 {
-                    foreach (XElement phyItems in elements.Elements())
+                    //if (elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                    //{
+                    //Cap - 1343
+                    //var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
+                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == facility.name && facility.Legal_Org == ClientSession.LegalOrg select f;
+                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
                     {
-                        StringBuilder phyName = new StringBuilder();
-                        StringBuilder username = new StringBuilder();
-                        StringBuilder prefix = new StringBuilder();
-                        StringBuilder firstname = new StringBuilder();
-                        StringBuilder middlename = new StringBuilder();
-                        StringBuilder lastname = new StringBuilder();
-                        StringBuilder suffix = new StringBuilder();
-                        StringBuilder phyID = new StringBuilder();
-                        if (phyItems.Attribute("username").Value != null)
-                            username.Append(phyItems.Attribute("username").Value);
-                        if (phyItems.Attribute("prefix").Value != null)
-                            prefix.Append(phyItems.Attribute("prefix").Value);
-                        if (phyItems.Attribute("firstname").Value != null)
-                            firstname.Append(phyItems.Attribute("firstname").Value);
-                        if (phyItems.Attribute("middlename").Value != null)
-                            middlename.Append(phyItems.Attribute("middlename").Value);
-                        if (phyItems.Attribute("lastname").Value != null)
-                            lastname.Append(phyItems.Attribute("lastname").Value);
-                        if (phyItems.Attribute("suffix").Value != null)
-                            suffix.Append(phyItems.Attribute("suffix").Value);
-                        //if (phyItems.Attribute("phyID").Value != null)
-                        // phyID = phyItems.Attribute("phyID").Value;
-                        if (phyItems.Attribute("ID").Value != null)
-                            phyID.Append(phyItems.Attribute("ID").Value);
+                        foreach (var phyItems in facility.Physician)
+                        {
+                            StringBuilder phyName = new StringBuilder();
+                            StringBuilder username = new StringBuilder();
+                            StringBuilder prefix = new StringBuilder();
+                            StringBuilder firstname = new StringBuilder();
+                            StringBuilder middlename = new StringBuilder();
+                            StringBuilder lastname = new StringBuilder();
+                            StringBuilder suffix = new StringBuilder();
+                            StringBuilder phyID = new StringBuilder();
+                            if (phyItems.username != null)
+                                username.Append(phyItems.username);
+                            if (phyItems.prefix != null)
+                                prefix.Append(phyItems.prefix);
+                            if (phyItems.firstname != null)
+                                firstname.Append(phyItems.firstname);
+                            if (phyItems.middlename != null)
+                                middlename.Append(phyItems.middlename);
+                            if (phyItems.lastname != null)
+                                lastname.Append(phyItems.lastname);
+                            if (phyItems.suffix != null)
+                                suffix.Append(phyItems.suffix);
+                            //if (phyItems.Attribute("phyID").Value != null)
+                            // phyID = phyItems.Attribute("phyID").Value;
+                            if (phyItems.ID != null)
+                                phyID.Append(phyItems.ID);
 
-                        if (prefix.Length != 0)
-                        {
-                            phyName.Append(prefix.ToString());
-                        }
-                        if (firstname.Length != 0)
-                        {
-                            phyName.Append(firstname.ToString());
-                        }
-                        if (middlename.Length != 0)
-                        {
-                            phyName.Append(middlename.ToString());
-                        }
-                        if (lastname.Length != 0)
-                        {
-                            phyName.Append(lastname.ToString());
-                        }
-                        if (suffix.Length != 0)
-                        {
-                            phyName.Append(suffix.ToString());
-                        }
-                        if (username.Length != 0)
-                        {
-                            liDropdown = new ListItem(username.ToString() + "-" + phyName.ToString(), phyID.ToString());
-                            liDropdown.Attributes.Add("default", "true");
-                            liComboItems.Add(liDropdown);
+                            if (prefix.Length != 0)
+                            {
+                                phyName.Append(prefix.ToString());
+                            }
+                            if (firstname.Length != 0)
+                            {
+                                phyName.Append(firstname.ToString());
+                            }
+                            if (middlename.Length != 0)
+                            {
+                                phyName.Append(middlename.ToString());
+                            }
+                            if (lastname.Length != 0)
+                            {
+                                phyName.Append(lastname.ToString());
+                            }
+                            if (suffix.Length != 0)
+                            {
+                                phyName.Append(suffix.ToString());
+                            }
+                            if (username.Length != 0)
+                            {
+                                liDropdown = new ListItem(username.ToString() + "-" + phyName.ToString(), phyID.ToString());
+                                liDropdown.Attributes.Add("default", "true");
+                                liComboItems.Add(liDropdown);
+                            }
                         }
                     }
                 }
@@ -5913,76 +5933,81 @@ namespace Acurus.Capella.UI
         {
             cboOrderPhysician.Items.Clear();
             XDocument xmlDocumentType = null;
-            if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
-                xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //if (File.Exists(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml")))
+            //    xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
             ListItem liDropdown = null;
             IList<ListItem> liComboItems = new List<ListItem>();
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
-                //if (elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
-                //{
-                //Cap - 1119
-                //var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg select f;
-                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+                foreach (var facility in physicianFacilityMappingList.PhysicianFacility)
                 {
-                    foreach (XElement phyItems in elements.Elements())
+                    //if (elements.Attribute("name").Value.ToUpper() != ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
+                    //{
+                    //Cap - 1119
+                    //var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == elements.Attribute("name").Value select f;
+                    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == facility.name && facility.Legal_Org == ClientSession.LegalOrg select f;
+                    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
                     {
-                        StringBuilder phyName = new StringBuilder();
-                        StringBuilder username = new StringBuilder();
-                        StringBuilder prefix = new StringBuilder();
-                        StringBuilder firstname = new StringBuilder();
-                        StringBuilder middlename = new StringBuilder();
-                        StringBuilder lastname = new StringBuilder();
-                        StringBuilder suffix = new StringBuilder();
-                        StringBuilder phyID = new StringBuilder();
-                        if (phyItems.Attribute("username").Value != null)
-                            username.Append(phyItems.Attribute("username").Value);
-                        if (phyItems.Attribute("prefix").Value != null)
-                            prefix.Append(phyItems.Attribute("prefix").Value);
-                        if (phyItems.Attribute("firstname").Value != null)
-                            firstname.Append(phyItems.Attribute("firstname").Value);
-                        if (phyItems.Attribute("middlename").Value != null)
-                            middlename.Append(phyItems.Attribute("middlename").Value);
-                        if (phyItems.Attribute("lastname").Value != null)
-                            lastname.Append(phyItems.Attribute("lastname").Value);
-                        if (phyItems.Attribute("suffix").Value != null)
-                            suffix.Append(phyItems.Attribute("suffix").Value);
-                        //if (phyItems.Attribute("phyID").Value != null)
-                        // phyID = phyItems.Attribute("phyID").Value;
-                        if (phyItems.Attribute("ID").Value != null)
-                            phyID.Append(phyItems.Attribute("ID").Value);
+                        foreach (var phyItems in facility.Physician)
+                        {
+                            StringBuilder phyName = new StringBuilder();
+                            StringBuilder username = new StringBuilder();
+                            StringBuilder prefix = new StringBuilder();
+                            StringBuilder firstname = new StringBuilder();
+                            StringBuilder middlename = new StringBuilder();
+                            StringBuilder lastname = new StringBuilder();
+                            StringBuilder suffix = new StringBuilder();
+                            StringBuilder phyID = new StringBuilder();
+                            if (phyItems.username != null)
+                                username.Append(phyItems.username);
+                            if (phyItems.prefix != null)
+                                prefix.Append(phyItems.prefix);
+                            if (phyItems.firstname != null)
+                                firstname.Append(phyItems.firstname);
+                            if (phyItems.middlename != null)
+                                middlename.Append(phyItems.middlename);
+                            if (phyItems.lastname != null)
+                                lastname.Append(phyItems.lastname);
+                            if (phyItems.suffix != null)
+                                suffix.Append(phyItems.suffix);
+                            //if (phyItems.Attribute("phyID").Value != null)
+                            // phyID = phyItems.Attribute("phyID").Value;
+                            if (phyItems.ID != null)
+                                phyID.Append(phyItems.ID);
 
-                        if (prefix.Length != 0)
-                        {
-                            phyName.Append(prefix.ToString());
-                        }
-                        if (firstname.Length != 0)
-                        {
-                            phyName.Append(firstname.ToString());
-                        }
-                        if (middlename.Length != 0)
-                        {
-                            phyName.Append(middlename.ToString());
-                        }
-                        if (lastname.Length != 0)
-                        {
-                            phyName.Append(lastname.ToString());
-                        }
-                        if (suffix.Length != 0)
-                        {
-                            phyName.Append(suffix.ToString());
-                        }
-                        if (username.Length != 0)
-                        {
-                            liDropdown = new ListItem(username.ToString() + "-" + phyName.ToString(), phyID.ToString());
-                            liDropdown.Attributes.Add("default", "true");
-                            liComboItems.Add(liDropdown);
+                            if (prefix.Length != 0)
+                            {
+                                phyName.Append(prefix.ToString());
+                            }
+                            if (firstname.Length != 0)
+                            {
+                                phyName.Append(firstname.ToString());
+                            }
+                            if (middlename.Length != 0)
+                            {
+                                phyName.Append(middlename.ToString());
+                            }
+                            if (lastname.Length != 0)
+                            {
+                                phyName.Append(lastname.ToString());
+                            }
+                            if (suffix.Length != 0)
+                            {
+                                phyName.Append(suffix.ToString());
+                            }
+                            if (username.Length != 0)
+                            {
+                                liDropdown = new ListItem(username.ToString() + "-" + phyName.ToString(), phyID.ToString());
+                                liDropdown.Attributes.Add("default", "true");
+                                liComboItems.Add(liDropdown);
+                            }
                         }
                     }
-                }
 
+                }
             }
             IList<ListItem> sortlst = liComboItems.OrderByDescending(x => x.Attributes["default"]).ToList();
             sortlst = sortlst.OrderBy(x => x.Text).Distinct().ToList();

@@ -7732,16 +7732,35 @@ namespace Acurus.Capella.UI
             //logger.Debug("GetPhysicianDetailsByPhyID method called to retrieve physician details fromk 2 XMLs using Physician_ID");
             PhysicianLibrary objPhyLib = new PhysicianLibrary();
             XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
                 //logger.Debug("Reading PhysicianFacilityMapping.xml");
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
-                XmlNode nodeMatchingPhysician = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID='" + physician_id + "']");
-                if (nodeMatchingPhysician == null)
+                //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
+                // XmlNode nodeMatchingPhysician = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID='" + physician_id + "']");
+                var physicianList = physicianFacilityMappingList.PhysicianFacility.Select(x => new { physician = x.Physician.FirstOrDefault(y => y.ID == ClientSession.PhysicianId.ToString()), name = x.name }).FirstOrDefault();
+
+                //if (nodeMatchingPhysician == null)
+                if (physicianList?.physician == null)
                 {
                     //logger.Debug("XML tag '/ROOT/PhyList/Facility/Physician[@ID='" + physician_id + "']' not found");
-                    nodeMatchingPhysician = xmldoc.SelectSingleNode("/ROOT/UnMappedPhyList/Physician[@ID='" + physician_id + "']");
+                    var unmappedPhysician = physicianFacilityMappingList.UnmappedPhysician.FirstOrDefault(x => x.ID == physician_id.ToString()); //xmldoc.SelectSingleNode("/ROOT/UnMappedPhyList/Physician[@ID='" + physician_id + "']");
+                    if (unmappedPhysician != null) 
+                    {
+                        physicianList.physician.prefix = unmappedPhysician.prefix;
+                        physicianList.physician.firstname = unmappedPhysician.firstname;
+                        physicianList.physician.middlename = unmappedPhysician.middlename;
+                        physicianList.physician.lastname = unmappedPhysician.lastname;
+                        physicianList.physician.suffix = unmappedPhysician.suffix;
+                        physicianList.physician.username = unmappedPhysician.username;
+                        physicianList.physician.ID = unmappedPhysician.ID;
+                        physicianList.physician.status = unmappedPhysician.status;
+                        physicianList.physician.npi = unmappedPhysician.npi;
+                        physicianList.physician.machine_technician_id = unmappedPhysician.machine_technician_id;
+                        physicianList.physician.Legal_Org = unmappedPhysician.Legal_Org;
+                    }
+
                     //if (nodeMatchingPhysician != null)
                     //logger.Debug("XML tag '/ROOT/UnMappedPhyList/Physician[@ID='" + physician_id + "']' found");
                     //else
@@ -7749,17 +7768,17 @@ namespace Acurus.Capella.UI
                 }
                 //else
                 //logger.Debug("XML tag '/ROOT/PhyList/Facility/Physician[@ID='" + physician_id + "']' found");
-                if (nodeMatchingPhysician != null)
+                if (physicianList?.physician != null)
                 {
                     objPhyLib = new PhysicianLibrary();
-                    objPhyLib.PhyPrefix = nodeMatchingPhysician.Attributes["prefix"].Value.ToString();
-                    objPhyLib.PhyFirstName = nodeMatchingPhysician.Attributes["firstname"].Value.ToString();
-                    objPhyLib.PhyMiddleName = nodeMatchingPhysician.Attributes["middlename"].Value.ToString();
-                    objPhyLib.PhyLastName = nodeMatchingPhysician.Attributes["lastname"].Value.ToString();
-                    objPhyLib.PhySuffix = nodeMatchingPhysician.Attributes["suffix"].Value.ToString();
+                    objPhyLib.PhyPrefix = physicianList.physician.prefix;
+                    objPhyLib.PhyFirstName = physicianList.physician.firstname;
+                    objPhyLib.PhyMiddleName = physicianList.physician.middlename;
+                    objPhyLib.PhyLastName = physicianList.physician.lastname;
+                    objPhyLib.PhySuffix = physicianList.physician.suffix;
                     try
                     {
-                        objPhyLib.PhyId = Convert.ToUInt32(nodeMatchingPhysician.Attributes["ID"].Value.ToString());
+                        objPhyLib.PhyId = Convert.ToUInt32(physicianList.physician.ID);
                     }
                     catch (Exception exp)
                     {
@@ -7768,16 +7787,16 @@ namespace Acurus.Capella.UI
                     }
                     try
                     {
-                        objPhyLib.Id = Convert.ToUInt32(nodeMatchingPhysician.Attributes["ID"].Value.ToString());
+                        objPhyLib.Id = Convert.ToUInt32(physicianList.physician.ID);
                     }
                     catch (Exception exp)
                     {
                         //logger.Debug("Conversion of Physician_ID of value '" + nodeMatchingPhysician.Attributes["ID"].Value.ToString() + "' to UInt threw an error.", exp);
                         throw (exp);
                     }
-                    objPhyLib.Is_Active = nodeMatchingPhysician.Attributes["status"].Value.ToString();
-                    if (nodeMatchingPhysician.ParentNode.Attributes["name"] != null)
-                        objPhyLib.PhyNotes = nodeMatchingPhysician.ParentNode.Attributes["name"].Value.ToString();//used for the purpose of facility in this form alone.
+                    objPhyLib.Is_Active = physicianList.physician.status;
+                    if (physicianList.name != null)
+                        objPhyLib.PhyNotes = physicianList.name;//physician.ParentNode.Attributes["name"].Value.ToString();//used for the purpose of facility in this form alone.
                 }
                 //XmlDocument xmldoc1 = new XmlDocument();
                 //string strXmlFilePath1 = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianAddressDetails.xml");
@@ -7822,7 +7841,7 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            return objPhyLib;
+                return objPhyLib;
         }
         //BugID:53106
         private int GetPhysicianLibIDByTechID(int MachineTechID)

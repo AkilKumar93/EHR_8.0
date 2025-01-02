@@ -23,6 +23,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Reflection;
 using iTextSharp.text;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -471,23 +472,26 @@ namespace Acurus.Capella.UI
             {
 
                 PhysicianLibrary objPhyLib = null;
-                XmlDocument xmldoc = new XmlDocument();
-                string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
-                if (File.Exists(strXmlFilePath) == true)
+                //XmlDocument xmldoc = new XmlDocument();
+                //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+                //CAP-2781
+                PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+                if (physicianFacilityMappingList != null)
                 {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
-                    XmlNode nodeMatchingPhysician = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID='" + ClientSession.PhysicianId.ToString() + "']");
-                    if (nodeMatchingPhysician != null)
+                    //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
+                    //XmlNode nodeMatchingPhysician = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID='" + ClientSession.PhysicianId.ToString() + "']");
+                    var matchingPhysician = physicianFacilityMappingList.PhysicianFacility.Select(phy => phy.Physician.FirstOrDefault(x => x.ID == ClientSession.PhysicianId.ToString())).FirstOrDefault();
+                    if (matchingPhysician != null)
                     {
                         objPhyLib = new PhysicianLibrary();
-                        objPhyLib.PhyPrefix = nodeMatchingPhysician.Attributes["prefix"].Value.ToString();
-                        objPhyLib.PhyFirstName = nodeMatchingPhysician.Attributes["firstname"].Value.ToString();
-                        objPhyLib.PhyMiddleName = nodeMatchingPhysician.Attributes["middlename"].Value.ToString();
-                        objPhyLib.PhyLastName = nodeMatchingPhysician.Attributes["lastname"].Value.ToString();
-                        objPhyLib.PhySuffix = nodeMatchingPhysician.Attributes["suffix"].Value.ToString();
-                        objPhyLib.PhyId = Convert.ToUInt32(nodeMatchingPhysician.Attributes["ID"].Value.ToString());
-                        objPhyLib.Id = Convert.ToUInt32(nodeMatchingPhysician.Attributes["ID"].Value.ToString());
-                        objPhyLib.Is_Active = nodeMatchingPhysician.Attributes["status"].Value.ToString();
+                        objPhyLib.PhyPrefix = matchingPhysician.prefix;
+                        objPhyLib.PhyFirstName = matchingPhysician.firstname;
+                        objPhyLib.PhyMiddleName = matchingPhysician.middlename;
+                        objPhyLib.PhyLastName = matchingPhysician.lastname;
+                        objPhyLib.PhySuffix = matchingPhysician.suffix;
+                        objPhyLib.PhyId = Convert.ToUInt32(matchingPhysician.ID);
+                        objPhyLib.Id = Convert.ToUInt32(matchingPhysician.ID);
+                        objPhyLib.Is_Active = matchingPhysician.status;
                     }
                 }
 

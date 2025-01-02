@@ -2827,15 +2827,18 @@ namespace Acurus.Capella.UI
             IList<string> PhyIDs = new List<string>();
             PhyIDs = PhysicianList.Select(a => Convert.ToString(a.Id)).ToList<string>();
             XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
             string sDefaultPhysicians = "";
-            if (File.Exists(strXmlFilePath) == true)
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
+                //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
 
-                XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + ddlFacilityName.SelectedItem.Text.Trim() + "']");
-                if (nodeMatchingFacility != null)
-                    sDefaultPhysicians = nodeMatchingFacility.Attributes["default-physician-id"].Value.ToString();
+                //XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + ddlFacilityName.SelectedItem.Text.Trim() + "']");
+                var sMatchingFacility = physicianFacilityMappingList.PhysicianFacility.FirstOrDefault(x => x.name == ddlFacilityName.SelectedItem.Text.Trim());
+                if (sMatchingFacility != null)
+                    sDefaultPhysicians = sMatchingFacility.defaultphysicianid;
             }
             if (ClientSession.UserRole.ToUpper() == "PHYSICIAN" && PhyIDs.IndexOf(Convert.ToString(ClientSession.PhysicianId)) != -1)//BugID:45156
             {

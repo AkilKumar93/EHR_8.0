@@ -4178,15 +4178,18 @@ namespace Acurus.Capella.UI
                 }
 
                 XmlDocument xmldoc = new XmlDocument();
-                string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+                //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+                //CAP-2781
                 string sDefaultPhysicians = "";
-                if (File.Exists(strXmlFilePath) == true)
+                PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+                if (physicianFacilityMappingList != null)
                 {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
+                    //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
 
-                    XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + cboFacilityName.SelectedItem.Text.Trim() + "']");
-                    if (nodeMatchingFacility != null)
-                        sDefaultPhysicians = nodeMatchingFacility.Attributes["default-physician-id"].Value.ToString();
+                    //XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + cboFacilityName.SelectedItem.Text.Trim() + "']");
+                    var matchingFacility = physicianFacilityMappingList.PhysicianFacility.FirstOrDefault(x=> x.name == cboFacilityName.SelectedItem.Text.Trim());
+                    if (matchingFacility != null)
+                        sDefaultPhysicians = matchingFacility.defaultphysicianid;
                 }
                 string[] lstDefaultPhysicians = sDefaultPhysicians.Split(',');
 

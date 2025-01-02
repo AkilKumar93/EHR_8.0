@@ -21,6 +21,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Reflection;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -3061,21 +3062,24 @@ namespace Acurus.Capella.UI
         public PhysicianLibrary GetPhysicianDetailsFromXml(ulong PhyID) {
             PhysicianLibrary objPhysician = new PhysicianLibrary();
             XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
-                XmlNode nodeMatchingPhysician = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID='" + hdnPhyID.Value.Trim() + "']");
-                if (nodeMatchingPhysician != null)
+                //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
+                //XmlNode nodeMatchingPhysician = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility/Physician[@ID='" + hdnPhyID.Value.Trim() + "']");
+                var matchingPhysician = physicianFacilityMappingList.PhysicianFacility.Select(x=> x.Physician.FirstOrDefault(y=>y.ID == hdnPhyID.Value.Trim())).FirstOrDefault();
+                if (matchingPhysician != null)
                 {
-                    objPhysician.PhyPrefix = nodeMatchingPhysician.Attributes["prefix"].Value.ToString();
-                    objPhysician.PhyFirstName = nodeMatchingPhysician.Attributes["firstname"].Value.ToString();
-                    objPhysician.PhyMiddleName = nodeMatchingPhysician.Attributes["middlename"].Value.ToString();
-                    objPhysician.PhyLastName = nodeMatchingPhysician.Attributes["lastname"].Value.ToString();
-                    objPhysician.PhySuffix = nodeMatchingPhysician.Attributes["suffix"].Value.ToString();
-                    objPhysician.PhyId = Convert.ToUInt32(nodeMatchingPhysician.Attributes["ID"].Value.ToString());
-                    objPhysician.Id = Convert.ToUInt32(nodeMatchingPhysician.Attributes["ID"].Value.ToString());
-                    objPhysician.PhyNPI = nodeMatchingPhysician.Attributes["npi"].Value.ToString();
+                    objPhysician.PhyPrefix = matchingPhysician.prefix;
+                    objPhysician.PhyFirstName = matchingPhysician.firstname;
+                    objPhysician.PhyMiddleName = matchingPhysician.middlename;
+                    objPhysician.PhyLastName = matchingPhysician.lastname;
+                    objPhysician.PhySuffix = matchingPhysician.suffix;
+                    objPhysician.PhyId = Convert.ToUInt32(matchingPhysician.ID);
+                    objPhysician.Id = Convert.ToUInt32(matchingPhysician.ID);
+                    objPhysician.PhyNPI = matchingPhysician.npi;
                 }
             }
             return objPhysician;

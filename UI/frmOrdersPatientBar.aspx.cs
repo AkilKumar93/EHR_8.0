@@ -200,26 +200,30 @@ namespace Acurus.Capella.UI
         IList<PhysicianLibrary> GetPhysicianList(string sFacility)
         {
             IList<PhysicianLibrary> lstPhysician=new List<PhysicianLibrary>();
-            XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(xmlDocumentType.CreateReader());
-            XmlNodeList lstNodes;
-            if(sFacility!=string.Empty)
-                lstNodes = xmlDoc.SelectNodes("/ROOT/PhyList/Facility[@name='" + sFacility + "']/Physician");
+            //XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //XmlDocument xmlDoc = new XmlDocument();
+            //xmlDoc.Load(xmlDocumentType.CreateReader());
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null) { }
+            List<PhysicianList> lstNodes;
+            if (sFacility != string.Empty)
+                //lstNodes = xmlDoc.SelectNodes("/ROOT/PhyList/Facility[@name='" + sFacility + "']/Physician");
+                lstNodes = physicianFacilityMappingList.PhysicianFacility.Where(x => x.name == sFacility).SelectMany(y => y.Physician).ToList();
             else
-                lstNodes = xmlDoc.SelectNodes("/ROOT/PhyList/Facility/Physician");
-            foreach (XmlNode itemNode in lstNodes)
+                lstNodes = physicianFacilityMappingList.PhysicianFacility.SelectMany(x=>x.Physician).ToList();
+            foreach (var itemNode in lstNodes)
             {
                 PhysicianLibrary objPhy = new PhysicianLibrary();
-                objPhy.PhyPrefix = itemNode.Attributes["prefix"].Value.ToString();
-                objPhy.PhyFirstName = itemNode.Attributes["firstname"].Value.ToString();
-                objPhy.PhyMiddleName = itemNode.Attributes["middlename"].Value.ToString();
-                objPhy.PhyLastName = itemNode.Attributes["lastname"].Value.ToString();
-                objPhy.Category = itemNode.Attributes["username"].Value.ToString();//Temporarily Used to Store UserName
-                objPhy.PhySuffix = itemNode.Attributes["suffix"].Value.ToString();
-                objPhy.Id = ulong.Parse(itemNode.Attributes["ID"].Value.ToString());
+                objPhy.PhyPrefix = itemNode.prefix;
+                objPhy.PhyFirstName = itemNode.firstname;
+                objPhy.PhyMiddleName = itemNode.middlename;
+                objPhy.PhyLastName = itemNode.lastname;
+                objPhy.Category = itemNode.username;//Temporarily Used to Store UserName
+                objPhy.PhySuffix = itemNode.suffix;
+                objPhy.Id = ulong.Parse(itemNode.ID);
                 //GitLab # 2364 - Enabled Menu level Order for Ancillary FO
-                if (objPhy.Category != string.Empty && itemNode.Attributes["machine_technician_id"].Value.ToString() == "0")
+                if (objPhy.Category != string.Empty && itemNode.machine_technician_id == "0")
                 {
                     lstPhysician.Add(objPhy);
                 }

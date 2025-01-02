@@ -28,7 +28,7 @@ using Ionic.Zip;
 using System.Web.UI.WebControls;
 using Newtonsoft.Json;
 using System.Globalization;
-
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -350,22 +350,27 @@ namespace Acurus.Capella.UI
             cboPhysicianName.Items.Clear();
             /* Code Block to populate physician list */
             // bool showAll = true;
-            XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
+            //XDocument xmlDocumentType = XDocument.Load(Server.MapPath(@"ConfigXML\PhysicianFacilityMapping.xml"));
             //  StaticLookup objStatics = null;
             ListItem liDropdown = null;
             IList<string> PhyASStIDlist = new List<string>();
             IList<string> PhyIDList = new List<string>();
             int i = 0;
 
-            foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList").Elements())
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
-                //PhyASStIDlist.Add(elements.Attribute("ID").Value);
-                //i++;
-                PhyASStIDlist.Add(elements.Attribute("ID").Value);
-                if (elements.Attribute("ID").Value.ToString() == ClientSession.PhysicianId.ToString())
+                foreach (var phyAssistantList in physicianFacilityMappingList.PhysicianAssistant)
                 {
-                    PhyIDlist.Add(elements.Attribute("Physician_ID").Value);
-                    i++;
+                    //PhyASStIDlist.Add(elements.Attribute("ID").Value);
+                    //i++;
+                    PhyASStIDlist.Add(phyAssistantList.ID);
+                    if (phyAssistantList.ID == ClientSession.PhysicianId.ToString())
+                    {
+                        PhyIDlist.Add(phyAssistantList.Physician_ID);
+                        i++;
+                    }
                 }
             }
 
@@ -546,13 +551,14 @@ namespace Acurus.Capella.UI
             //    }
             //}
             {
-                foreach (XElement elements in xmlDocumentType.Elements("ROOT").Elements("PhyList").Elements())
+                //CAP-2781
+                foreach (var facility in physicianFacilityMappingList.PhysicianFacility)
                 {
-                    string xmlValue = elements.Attribute("name").Value;
+                    string xmlValue = facility.name;
                     // if (xmlValue != string.Empty && xmlValue.ToUpper() == ClientSession.FacilityName.ToUpper())
-                    if (elements.Attribute("Legal_Org") != null && xmlValue != string.Empty && sFacility_Name != "" && xmlValue.ToUpper() == sFacility_Name.ToUpper() && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+                    if (facility.Legal_Org != null && xmlValue != string.Empty && sFacility_Name != "" && xmlValue.ToUpper() == sFacility_Name.ToUpper() && facility.Legal_Org == ClientSession.LegalOrg)
                     {
-                        foreach (XElement phyItems in elements.Elements())
+                        foreach (var physician in facility.Physician)
                         {
                             string phyName = string.Empty;
                             string username = string.Empty;
@@ -563,20 +569,20 @@ namespace Acurus.Capella.UI
                             string suffix = string.Empty;
                             string phyID = string.Empty;
 
-                            if (phyItems.Attribute("username").Value != null)
-                                username = phyItems.Attribute("username").Value;
-                            if (phyItems.Attribute("prefix").Value != null)
-                                prefix = phyItems.Attribute("prefix").Value;
-                            if (phyItems.Attribute("firstname").Value != null)
-                                firstname = phyItems.Attribute("firstname").Value;
-                            if (phyItems.Attribute("middlename").Value != null)
-                                middlename = phyItems.Attribute("middlename").Value;
-                            if (phyItems.Attribute("lastname").Value != null)
-                                lastname = phyItems.Attribute("lastname").Value;
-                            if (phyItems.Attribute("suffix").Value != null)
-                                suffix = phyItems.Attribute("suffix").Value;
-                            if (phyItems.Attribute("ID").Value != null)
-                                phyID = phyItems.Attribute("ID").Value;
+                            if (physician.username != null)
+                                username = physician.username;
+                            if (physician.prefix != null)
+                                prefix = physician.prefix;
+                            if (physician.firstname != null)
+                                firstname = physician.firstname;
+                            if (physician.middlename != null)
+                                middlename = physician.middlename;
+                            if (physician.lastname != null)
+                                lastname = physician.lastname;
+                            if (physician.suffix != null)
+                                suffix = physician.suffix;
+                            if (physician.ID != null)
+                                phyID = physician.ID;
 
                             //old code
                             //if (prefix != "")
@@ -646,9 +652,9 @@ namespace Acurus.Capella.UI
                             }
                         }
                     }
-                    else if (elements.Attribute("Legal_Org") != null && elements.Attribute("Legal_Org").Value == ClientSession.LegalOrg)
+                    else if (facility.Legal_Org != null && facility.Legal_Org == ClientSession.LegalOrg)
                     {
-                        foreach (XElement phyItems in elements.Elements())
+                        foreach (var physician in facility.Physician)
                         {
                             string phyName = string.Empty;
                             string username = string.Empty;
@@ -659,20 +665,20 @@ namespace Acurus.Capella.UI
                             string suffix = string.Empty;
                             string phyID = string.Empty;
 
-                            if (phyItems.Attribute("username").Value != null)
-                                username = phyItems.Attribute("username").Value;
-                            if (phyItems.Attribute("prefix").Value != null)
-                                prefix = phyItems.Attribute("prefix").Value;
-                            if (phyItems.Attribute("firstname").Value != null)
-                                firstname = phyItems.Attribute("firstname").Value;
-                            if (phyItems.Attribute("middlename").Value != null)
-                                middlename = phyItems.Attribute("middlename").Value;
-                            if (phyItems.Attribute("lastname").Value != null)
-                                lastname = phyItems.Attribute("lastname").Value;
-                            if (phyItems.Attribute("suffix").Value != null)
-                                suffix = phyItems.Attribute("suffix").Value;
-                            if (phyItems.Attribute("ID").Value != null)
-                                phyID = phyItems.Attribute("ID").Value;
+                            if (physician.username != null)
+                                username = physician.username;
+                            if (physician.prefix != null)
+                                prefix = physician.prefix;
+                            if (physician.firstname != null)
+                                firstname = physician.firstname;
+                            if (physician.middlename != null)
+                                middlename = physician.middlename;
+                            if (physician.lastname != null)
+                                lastname = physician.lastname;
+                            if (physician.suffix != null)
+                                suffix = physician.suffix;
+                            if (physician.ID != null)
+                                phyID = physician.ID;
 
                             //old code
                             //if (prefix != "")
@@ -756,17 +762,17 @@ namespace Acurus.Capella.UI
             {
                 if (ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT" && ClientSession.UserCurrentProcess == "PROVIDER_PROCESS")
                 {
-                    IEnumerable<XElement> MapFacilityPhysician = (from x in xmlDocumentType.Elements("ROOT").Elements("PhyAsstList")
-                                                               .Elements("PhysicianAssistant")
-                                                                  where x.Attribute("ID").Value == ClientSession.PhysicianId.ToString()
+                    IEnumerable<PhysicianAssistant> MapFacilityPhysician = (from x in physicianFacilityMappingList.PhysicianAssistant
+                                                                  where x.ID == ClientSession.PhysicianId.ToString()
                                                                   select x);
                     if (MapFacilityPhysician.Count() > 0)
                     {
                         ulong uDefaultPhysicianID = 0;
                         //foreach (XElement phyItems in MapFacilityPhysician.Elements())
-                        foreach (XElement phyItems in MapFacilityPhysician)
+                        //CAP-2781
+                        foreach (var phyItems in MapFacilityPhysician)
                         {
-                            uDefaultPhysicianID = phyItems.Attribute("Default_Physician").Value != "" ? (Convert.ToUInt32(phyItems.Attribute("Default_Physician").Value)) : (0);
+                            uDefaultPhysicianID = phyItems.Default_Physician != "" ? (Convert.ToUInt32(phyItems.Default_Physician)) : (0);
                         }
                         ListItem SelectedPhysician = (cboPhysicianName.Items.FindByValue(uDefaultPhysicianID.ToString()));
                         if (SelectedPhysician != null)

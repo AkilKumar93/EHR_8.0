@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using MySql.Data.MySqlClient;
 using System.Threading;
 using System.Diagnostics;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.PatientPortal
 {
@@ -1278,23 +1279,88 @@ namespace Acurus.Capella.PatientPortal
 
 
             //BugID:54697__ Removed Clientsession variable "VitalLimitLookup".Instead read from XML in Read Mode.
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader xmltxtReader = new XmlTextReader(fs);
+            //        itemDoc.Load(xmltxtReader);
+            //        xmltxtReader.Close();
+            //        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("VitalList");
+            //        if (xmlNodeList.Count > 0)
+            //        {
+            //            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+            //            {
+            //                objStaticLookup = new StaticLookup();
+            //                objStaticLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes[1].Value;
+            //                objStaticLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes[2].Value;
+            //                iFieldLookupList.Add(objStaticLookup);
+            //            }
+            //        }
+            //    }
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
             {
-                using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                string filePath = staticLookupList.ToString();
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    XmlDocument itemDoc = new XmlDocument();
-                    XmlTextReader xmltxtReader = new XmlTextReader(fs);
-                    itemDoc.Load(xmltxtReader);
-                    xmltxtReader.Close();
-                    XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("VitalList");
-                    if (xmlNodeList.Count > 0)
+                    var vitalList = staticLookupList.VitalList?.ToList();
+                    if (vitalList != null && vitalList.Count > 0)
                     {
-                        for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+                        foreach (var vital in vitalList)
                         {
-                            objStaticLookup = new StaticLookup();
-                            objStaticLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes[1].Value;
-                            objStaticLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes[2].Value;
+                            objStaticLookup.Value = vital.value;
+                            objStaticLookup.Description = vital.Description;
+
+                            iFieldLookupList.Add(objStaticLookup);
+                        }
+                    }
+                }
+            }
+
+
+
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //    {
+            //        XmlDocument itemDoc = new XmlDocument();
+            //        XmlTextReader xmltxtReader = new XmlTextReader(fs);
+            //        itemDoc.Load(xmltxtReader);
+            //        xmltxtReader.Close();
+            //        XmlNodeList xmlNodeList = itemDoc.GetElementsByTagName("VitalList");
+            //        if (xmlNodeList.Count > 0)
+            //        {
+            //            for (int j = 0; j < xmlNodeList[0].ChildNodes.Count; j++)
+            //            {
+            //                objStaticLookup = new StaticLookup();
+            //                objStaticLookup.Value = xmlNodeList[0].ChildNodes[j].Attributes[1].Value;
+            //                objStaticLookup.Description = xmlNodeList[0].ChildNodes[j].Attributes[2].Value;
+            //                iFieldLookupList.Add(objStaticLookup);
+            //            }
+            //        }
+            //    }
+            //}
+            //CAP-2787
+            staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
+            {
+                string filePath = staticLookupList.ToString();
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    var vitalList = staticLookupList.VitalList?.ToList();
+                    if (vitalList != null && vitalList.Count > 0)
+                    {
+                        foreach (var vital in vitalList)
+                        {
+                            objStaticLookup.Value = vital.value;
+                            objStaticLookup.Description = vital.Description;
+
                             iFieldLookupList.Add(objStaticLookup);
                         }
                     }
@@ -2137,36 +2203,42 @@ namespace Acurus.Capella.PatientPortal
 
             PhysicianLibrary CurrentPhysician = new PhysicianLibrary();
 
-            XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //XmlDocument xmldoc = new XmlDocument();
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
+            //CAP-2781
+            PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+            if (physicianFacilityMappingList != null)
             {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
+                //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
                 if (facility_name.Trim() == string.Empty)
                 {
-                    XmlNodeList xmlPhysicianList = xmldoc.SelectNodes("/ROOT/PhyList/Facility/Physician");
+                    //XmlNodeList xmlPhysicianList = xmldoc.SelectNodes("/ROOT/PhyList/Facility/Physician");
+                    var lstFacilities = physicianFacilityMappingList.PhysicianFacility.ToList();
                     IList<PhysicianLibrary> lstMachineTech = new List<PhysicianLibrary>();
-                    if (xmlPhysicianList.Count > 0)
+                    if (lstFacilities.Count > 0)
                     {
-                        foreach (XmlNode Physician_details in xmlPhysicianList)
+                        foreach (var facility in lstFacilities)
                         {
-                            if (Physician_details != null)
+                            foreach (var Physician_details in facility.Physician)
                             {
-                                CurrentPhysician = new PhysicianLibrary();
-                                CurrentPhysician.PhyPrefix = Physician_details.Attributes["prefix"].Value.ToString();
-                                CurrentPhysician.PhyFirstName = Physician_details.Attributes["firstname"].Value.ToString();
-                                CurrentPhysician.PhyMiddleName = Physician_details.Attributes["middlename"].Value.ToString();
-                                CurrentPhysician.PhyLastName = Physician_details.Attributes["lastname"].Value.ToString();
-                                CurrentPhysician.PhySuffix = Physician_details.Attributes["suffix"].Value.ToString();
-                                CurrentPhysician.PhyId = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
-                                CurrentPhysician.Id = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
-                                CurrentPhysician.Is_Active = Physician_details.Attributes["status"].Value.ToString();
-                                CurrentPhysician.PhyUserName = Physician_details.Attributes["username"].Value.ToString();
-                                CurrentPhysician.PhyColor = Physician_details.Attributes["machine_technician_id"].Value.ToString();//assinged tech ID
-                                if (CurrentPhysician.PhyColor != "0")
-                                    lstMachineTech.Add(CurrentPhysician);
-                                else
-                                    AllPhysicians.Add(CurrentPhysician);
+                                if (Physician_details != null)
+                                {
+                                    CurrentPhysician = new PhysicianLibrary();
+                                    CurrentPhysician.PhyPrefix = Physician_details.prefix;
+                                    CurrentPhysician.PhyFirstName = Physician_details.firstname;
+                                    CurrentPhysician.PhyMiddleName = Physician_details.middlename;
+                                    CurrentPhysician.PhyLastName = Physician_details.lastname ;
+                                    CurrentPhysician.PhySuffix = Physician_details.suffix;
+                                    CurrentPhysician.PhyId = Convert.ToUInt32(Physician_details.ID);
+                                    CurrentPhysician.Id = Convert.ToUInt32(Physician_details.ID);
+                                    CurrentPhysician.Is_Active = Physician_details.status;
+                                    CurrentPhysician.PhyUserName = Physician_details.username;
+                                    CurrentPhysician.PhyColor = Physician_details.machine_technician_id;//assinged tech ID
+                                    if (CurrentPhysician.PhyColor != "0")
+                                        lstMachineTech.Add(CurrentPhysician);
+                                    else
+                                        AllPhysicians.Add(CurrentPhysician);
+                                }
                             }
                         }
                     }
@@ -2178,31 +2250,32 @@ namespace Acurus.Capella.PatientPortal
                 }
                 else
                 {
-                    XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + facility_name.Trim() + "']");
+                    //XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + facility_name.Trim() + "']");
+                    var facilityDetails = physicianFacilityMappingList.PhysicianFacility.FirstOrDefault(x => x.name == facility_name.Trim());
                     string sDefaultPhysicians = "";
-                    if (nodeMatchingFacility != null)
+                    if (facilityDetails != null)
                     {
-                        sDefaultPhysicians = nodeMatchingFacility.Attributes["default-physician-id"].Value.ToString();
+                        sDefaultPhysicians = facilityDetails.defaultphysicianid;
                     }
                     string[] lstDefaultPhysicians = sDefaultPhysicians.Split(',');
-                    XmlNodeList xmlPhysicianList = nodeMatchingFacility != null ? nodeMatchingFacility.ChildNodes : (null);
-                    if (xmlPhysicianList != null && xmlPhysicianList.Count > 0)
+                    //XmlNodeList xmlPhysicianList = facilityDetails != null ? facilityDetails.ChildNodes : (null);
+                    if (facilityDetails != null && facilityDetails.Physician.Count > 0)
                     {
-                        foreach (XmlNode Physician_details in xmlPhysicianList)
+                        foreach (var Physician_details in facilityDetails.Physician)
                         {
                             if (Physician_details != null)
                             {
                                 CurrentPhysician = new PhysicianLibrary();
-                                CurrentPhysician.PhyPrefix = Physician_details.Attributes["prefix"].Value.ToString();
-                                CurrentPhysician.PhyFirstName = Physician_details.Attributes["firstname"].Value.ToString();
-                                CurrentPhysician.PhyMiddleName = Physician_details.Attributes["middlename"].Value.ToString();
-                                CurrentPhysician.PhyLastName = Physician_details.Attributes["lastname"].Value.ToString();
-                                CurrentPhysician.PhySuffix = Physician_details.Attributes["suffix"].Value.ToString();
-                                CurrentPhysician.PhyId = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
-                                CurrentPhysician.Id = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
-                                CurrentPhysician.Is_Active = Physician_details.Attributes["status"].Value.ToString();
-                                CurrentPhysician.PhyUserName = Physician_details.Attributes["username"].Value.ToString();
-                                CurrentPhysician.PhyColor = Physician_details.Attributes["machine_technician_id"].Value.ToString();//assinged tech ID
+                                CurrentPhysician.PhyPrefix = Physician_details.prefix;
+                                CurrentPhysician.PhyFirstName = Physician_details.firstname;
+                                CurrentPhysician.PhyMiddleName = Physician_details.middlename;
+                                CurrentPhysician.PhyLastName = Physician_details.lastname;
+                                CurrentPhysician.PhySuffix = Physician_details.suffix;
+                                CurrentPhysician.PhyId = Convert.ToUInt32(Physician_details.ID);
+                                CurrentPhysician.Id = Convert.ToUInt32(Physician_details.ID);
+                                CurrentPhysician.Is_Active = Physician_details.status;
+                                CurrentPhysician.PhyUserName = Physician_details.username;
+                                CurrentPhysician.PhyColor = Physician_details.machine_technician_id;
                                 if (lstDefaultPhysicians.Count() > 0 && lstDefaultPhysicians[0].Trim() != string.Empty)
                                 {
                                     if (CurrentPhysician.PhyId == Convert.ToUInt64(lstDefaultPhysicians[0]))
@@ -2231,21 +2304,27 @@ namespace Acurus.Capella.PatientPortal
                 string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\PhysicianFacilityMapping.xml");
                 if (File.Exists(strXmlFilePath) == true)
                 {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
+                    //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "PhysicianFacilityMapping" + ".xml");
 
-                    XmlNodeList nodeMatchingPhysicians = xmldoc.SelectNodes("/ROOT/PhyList/Facility/Physician[@ID='" + physician_id.Trim() + "']");
-                    if (nodeMatchingPhysicians != null && nodeMatchingPhysicians.Count > 0)
+                    //XmlNodeList nodeMatchingPhysicians = xmldoc.SelectNodes("/ROOT/PhyList/Facility/Physician[@ID='" + physician_id.Trim() + "']");
+                    //CAP-2781
+                    PhysicianFacilityMappingList physicianFacilityMappingList = ConfigureBase<PhysicianFacilityMappingList>.ReadJson("PhysicianFacilityMapping.json");
+                    if (physicianFacilityMappingList != null)
                     {
-                        foreach (XmlNode Physician_details in nodeMatchingPhysicians)
+                        var lstPhysician = physicianFacilityMappingList.PhysicianFacility.Select(x => new { physician = x.Physician.FirstOrDefault(y => y.ID == physician_id.Trim()), name = x.name, defaultphysicianid = x.defaultphysicianid }) ;
+                        if (lstPhysician != null)
                         {
-                            if (Physician_details != null)
+                            foreach (var Physician_details in lstPhysician)
                             {
-                                CurrentFacilityForPhysician = new MapFacilityPhysician();
-                                CurrentFacilityForPhysician.Facility_Name = Physician_details.ParentNode.Attributes["name"].Value.ToString();
-                                CurrentFacilityForPhysician.Phy_Rec_ID = Convert.ToUInt32(Physician_details.Attributes["ID"].Value.ToString());
-                                string[] default_physician_ids = Physician_details.ParentNode.Attributes["default-physician-id"].Value.ToString().Split(',');
-                                CurrentFacilityForPhysician.Sort_Order = default_physician_ids.Any(item => item == Physician_details.Attributes["ID"].Value) ? Convert.ToUInt32(1) : Convert.ToUInt32(0);
-                                MappedFacilitiesForPhysician.Add(CurrentFacilityForPhysician);
+                                if (Physician_details != null)
+                                {
+                                    CurrentFacilityForPhysician = new MapFacilityPhysician();
+                                    CurrentFacilityForPhysician.Facility_Name = Physician_details.name;
+                                    CurrentFacilityForPhysician.Phy_Rec_ID = Convert.ToUInt32(Physician_details.physician.ID);
+                                    string[] default_physician_ids = Physician_details.defaultphysicianid.ToString().Split(',');
+                                    CurrentFacilityForPhysician.Sort_Order = default_physician_ids.Any(item => item == Physician_details.physician.ID) ? Convert.ToUInt32(1) : Convert.ToUInt32(0);
+                                    MappedFacilitiesForPhysician.Add(CurrentFacilityForPhysician);
+                                }
                             }
                         }
                     }
@@ -2324,32 +2403,66 @@ namespace Acurus.Capella.PatientPortal
             IList<string> ilstItem = sEnteredItem.Split(',').Select(i => i.TrimStart().ToString()).ToList<string>();
 
 
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //    string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //    if (File.Exists(strXmlFilePath) == true)
+            //    {
+            //        XDocument xmlSnomed = XDocument.Load(strXmlFilePath);
+            //        IEnumerable<XElement> xmlSnomedCode = null;
+            //        try
+            //        {
+            //            if (ilstItem.Count > 0)
+            //            {
+            //                for (int i = 0; i < ilstItem.Count; i++)
+            //                {
+            //                    //                     xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup)
+            //                    //.Elements(sReasonOrFollowup.Replace("List"," ").Trim()).Where(xx => xx.Attribute("Field_Name").Value == sFieldName.ToUpper() && xx.Attribute("Value").Value.ToUpper() == ilstItem[i].ToString().ToUpper());
+            //                    xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup)
+            //.Elements(sReasonOrFollowup.Replace("List", " ").Trim()).Where(xx => xx.Attribute("Field_Name").Value.ToUpper().Contains(sFieldName.ToUpper()) && xx.Attribute("Value").Value.ToUpper() == ilstItem[i].ToString().ToUpper());
+            //                    if (xmlSnomedCode != null && xmlSnomedCode.Count() > 0)
+            //                    {
+            //                        if (sSnomed == string.Empty)
+            //                            sSnomed = xmlSnomedCode.Attributes("Description").First().Value.ToString();
+            //                        else
+            //                            sSnomed += "," + xmlSnomedCode.Attributes("Description").First().Value.ToString();
+            //                    }
+            //                }
+            //            }
+            //        }
+
+            //        catch (Exception)
+            //        {
+            //            sSnomed = string.Empty;
+            //        }
+            //    }
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
             {
-                XDocument xmlSnomed = XDocument.Load(strXmlFilePath);
-                IEnumerable<XElement> xmlSnomedCode = null;
                 try
                 {
                     if (ilstItem.Count > 0)
                     {
                         for (int i = 0; i < ilstItem.Count; i++)
                         {
-                            //                     xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup)
-                            //.Elements(sReasonOrFollowup.Replace("List"," ").Trim()).Where(xx => xx.Attribute("Field_Name").Value == sFieldName.ToUpper() && xx.Attribute("Value").Value.ToUpper() == ilstItem[i].ToString().ToUpper());
-                            xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup)
-        .Elements(sReasonOrFollowup.Replace("List", " ").Trim()).Where(xx => xx.Attribute("Field_Name").Value.ToUpper().Contains(sFieldName.ToUpper()) && xx.Attribute("Value").Value.ToUpper() == ilstItem[i].ToString().ToUpper());
-                            if (xmlSnomedCode != null && xmlSnomedCode.Count() > 0)
+                            var matchingItems = staticLookupList.FollowupList
+                            .Where(item => item.Description.ToUpper() == ilstItem[i].ToString().ToUpper())
+                            .ToList();
+
+                            foreach (var match in matchingItems)
                             {
-                                if (sSnomed == string.Empty)
-                                    sSnomed = xmlSnomedCode.Attributes("Description").First().Value.ToString();
+                                if (string.IsNullOrEmpty(sSnomed))
+                                {
+                                    sSnomed = $"{match.Description}";
+                                }
                                 else
-                                    sSnomed += "," + xmlSnomedCode.Attributes("Description").First().Value.ToString();
+                                {
+                                    sSnomed += $",{match.Description}";
+                                }
                             }
+
                         }
                     }
                 }
-
                 catch (Exception)
                 {
                     sSnomed = string.Empty;
@@ -2367,32 +2480,66 @@ namespace Acurus.Capella.PatientPortal
             IList<string> ilstItem = sEnteredItem.Split(',').Select(i => i.TrimStart().ToString()).ToList<string>();
 
 
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //    string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //    if (File.Exists(strXmlFilePath) == true)
+            //    {
+            //        XDocument xmlSnomed = XDocument.Load(strXmlFilePath);
+            //        IEnumerable<XElement> xmlSnomedCode = null;
+            //        try
+            //        {
+            //            if (ilstItem.Count > 0)
+            //            {
+            //                for (int i = 0; i < ilstItem.Count; i++)
+            //                {
+            //                    //                     xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup)
+            //                    //.Elements(sReasonOrFollowup.Replace("List"," ").Trim()).Where(xx => xx.Attribute("Field_Name").Value == sFieldName.ToUpper() && xx.Attribute("Value").Value.ToUpper() == ilstItem[i].ToString().ToUpper());
+            //                    xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup)
+            //.Elements(sReasonOrFollowup.Replace("List", " ").Trim()).Where(xx => xx.Attribute("Field_Name").Value.ToUpper().Contains(sFieldName.ToUpper()) && ilstItem[i].ToString().ToUpper().Contains(xx.Attribute("Value").Value.ToUpper()));
+            //                    if (xmlSnomedCode != null && xmlSnomedCode.Count() > 0)
+            //                    {
+            //                        if (sSnomed == string.Empty)
+            //                            sSnomed = xmlSnomedCode.Attributes("Description").First().Value.ToString();
+            //                        else
+            //                            sSnomed += "," + xmlSnomedCode.Attributes("Description").First().Value.ToString();
+            //                    }
+            //                }
+            //            }
+            //        }
+
+            //        catch (Exception)
+            //        {
+            //            sSnomed = string.Empty;
+            //        }
+            //    }
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
             {
-                XDocument xmlSnomed = XDocument.Load(strXmlFilePath);
-                IEnumerable<XElement> xmlSnomedCode = null;
                 try
                 {
                     if (ilstItem.Count > 0)
                     {
                         for (int i = 0; i < ilstItem.Count; i++)
                         {
-                            //                     xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup)
-                            //.Elements(sReasonOrFollowup.Replace("List"," ").Trim()).Where(xx => xx.Attribute("Field_Name").Value == sFieldName.ToUpper() && xx.Attribute("Value").Value.ToUpper() == ilstItem[i].ToString().ToUpper());
-                            xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup)
-        .Elements(sReasonOrFollowup.Replace("List", " ").Trim()).Where(xx => xx.Attribute("Field_Name").Value.ToUpper().Contains(sFieldName.ToUpper()) && ilstItem[i].ToString().ToUpper().Contains(xx.Attribute("Value").Value.ToUpper()));
-                            if (xmlSnomedCode != null && xmlSnomedCode.Count() > 0)
+                            var matchingItems = staticLookupList.FollowupList
+                            .Where(item => item.Description.ToUpper() == ilstItem[i].ToString().ToUpper())
+                            .ToList();
+
+                            foreach (var match in matchingItems)
                             {
-                                if (sSnomed == string.Empty)
-                                    sSnomed = xmlSnomedCode.Attributes("Description").First().Value.ToString();
+                                if (string.IsNullOrEmpty(sSnomed))
+                                {
+                                    sSnomed = $"{match.Description}";
+                                }
                                 else
-                                    sSnomed += "," + xmlSnomedCode.Attributes("Description").First().Value.ToString();
+                                {
+                                    sSnomed += $",{match.Description}";
+                                }
                             }
+
                         }
                     }
                 }
-
                 catch (Exception)
                 {
                     sSnomed = string.Empty;
@@ -2409,29 +2556,63 @@ namespace Acurus.Capella.PatientPortal
             IList<string> ilstItem = sSnomedCode.Split(',').Select(i => i.TrimStart().ToString()).ToList<string>();
 
 
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XDocument xmlSnomed = XDocument.Load(strXmlFilePath);
+            //    IEnumerable<XElement> xmlSnomedCode = null;
+            //    try
+            //    {
+            //        if (ilstItem.Count > 0)
+            //        {
+            //            for (int i = 0; i < ilstItem.Count; i++)
+            //            {
+            //                xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup).Elements(sReasonOrFollowup.Replace("List", " ").Trim()).Where(xx => xx.Attribute("Description").Value.ToUpper() == ilstItem[i].ToString().ToUpper());
+            //                if (xmlSnomedCode != null && xmlSnomedCode.Count() > 0)
+            //                {
+            //                    if (sValue == string.Empty)
+            //                        sValue = xmlSnomedCode.Attributes("Description").First().Value.ToString() + "~" + xmlSnomedCode.Attributes("Value").First().Value.ToString();
+            //                    else
+            //                        sValue += "," + xmlSnomedCode.Attributes("Description").First().Value.ToString() + "~" + xmlSnomedCode.Attributes("Value").First().Value.ToString();
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //    catch (Exception)
+            //    {
+            //        sValue = string.Empty;
+            //    }
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            if (staticLookupList != null)
             {
-                XDocument xmlSnomed = XDocument.Load(strXmlFilePath);
-                IEnumerable<XElement> xmlSnomedCode = null;
                 try
                 {
                     if (ilstItem.Count > 0)
                     {
                         for (int i = 0; i < ilstItem.Count; i++)
                         {
-                            xmlSnomedCode = xmlSnomed.Element("root").Element(sReasonOrFollowup).Elements(sReasonOrFollowup.Replace("List", " ").Trim()).Where(xx => xx.Attribute("Description").Value.ToUpper() == ilstItem[i].ToString().ToUpper());
-                            if (xmlSnomedCode != null && xmlSnomedCode.Count() > 0)
+                            var matchingItems = staticLookupList.FollowupList
+                            .Where(item => item.Description.ToUpper() == ilstItem[i].ToString().ToUpper())
+                            .ToList();
+
+                            foreach (var match in matchingItems)
                             {
-                                if (sValue == string.Empty)
-                                    sValue = xmlSnomedCode.Attributes("Description").First().Value.ToString() + "~" + xmlSnomedCode.Attributes("Value").First().Value.ToString();
+                                if (string.IsNullOrEmpty(sValue))
+                                {
+                                    sValue = $"{match.Description}";
+                                }
                                 else
-                                    sValue += "," + xmlSnomedCode.Attributes("Description").First().Value.ToString() + "~" + xmlSnomedCode.Attributes("Value").First().Value.ToString();
+                                {
+                                    sValue += $",{match.Description}";
+                                }
                             }
+
                         }
                     }
                 }
-
                 catch (Exception)
                 {
                     sValue = string.Empty;
@@ -2445,21 +2626,36 @@ namespace Acurus.Capella.PatientPortal
         {
 
             string sSnomedCode = string.Empty;
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument xDoc = new XmlDocument();
+            //    xDoc.Load(strXmlFilePath);
+            //    XmlNodeList node = xDoc.GetElementsByTagName("procedurecodelist");
+            //    foreach (XmlNode xNode in node[0].ChildNodes)
+            //    {
+            //        if (xNode.Attributes.GetNamedItem("code").Value == sCPT)
+            //        {
+            //            sSnomedCode = xNode.Attributes.GetNamedItem("snomedcode").Value;
+            //            break;
+            //        }
+            //    }
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            var procedurecodelist = staticLookupList.procedurecodelist.ToList();
+            if (procedurecodelist != null)
             {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.Load(strXmlFilePath);
-                XmlNodeList node = xDoc.GetElementsByTagName("procedurecodelist");
-                foreach (XmlNode xNode in node[0].ChildNodes)
+                foreach (var procedurecode in procedurecodelist)
                 {
-                    if (xNode.Attributes.GetNamedItem("code").Value == sCPT)
+                    if (procedurecode.Code == sCPT)
                     {
-                        sSnomedCode = xNode.Attributes.GetNamedItem("snomedcode").Value;
+                        sSnomedCode = procedurecode.snomedcode;
                         break;
                     }
                 }
             }
+
             return sSnomedCode;
         }
 
@@ -2469,17 +2665,31 @@ namespace Acurus.Capella.PatientPortal
         {
 
             string sSnomedCode = string.Empty;
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    XmlDocument xDoc = new XmlDocument();
+            //    xDoc.Load(strXmlFilePath);
+            //    XmlNodeList node = xDoc.GetElementsByTagName("cptsnomedList");
+            //    foreach (XmlNode xNode in node[0].ChildNodes)
+            //    {
+            //        if (xNode.Attributes.GetNamedItem("cpt").Value == sCPT)
+            //        {
+            //            sSnomedCode = xNode.Attributes.GetNamedItem("snomedcode").Value;
+            //            break;
+            //        }
+            //    }
+            //}
+            //CAP-2787
+            StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
+            var procedurecodelist = staticLookupList.cptsnomedList.ToList();
+            if (procedurecodelist != null)
             {
-                XmlDocument xDoc = new XmlDocument();
-                xDoc.Load(strXmlFilePath);
-                XmlNodeList node = xDoc.GetElementsByTagName("cptsnomedList");
-                foreach (XmlNode xNode in node[0].ChildNodes)
+                foreach (var procedurecode in procedurecodelist)
                 {
-                    if (xNode.Attributes.GetNamedItem("cpt").Value == sCPT)
+                    if (procedurecode.snomedcode == sCPT)
                     {
-                        sSnomedCode = xNode.Attributes.GetNamedItem("snomedcode").Value;
+                        sSnomedCode = procedurecode.snomedcode;
                         break;
                     }
                 }

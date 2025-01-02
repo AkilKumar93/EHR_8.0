@@ -824,11 +824,240 @@ function LoadPhysicianList(Control) {
         //PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].text.split('-')[0];
         PhysicianName = $("#cboPhysician")[0].options[$("#cboPhysician")[0].selectedIndex].name;
     }
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function () {
-        if (request.readyState == 4) {
-            var xml = request.responseXML;
-            var FacilityList = xml.getElementsByTagName("Facility");
+    //var request = new XMLHttpRequest();
+    //request.onreadystatechange = function () {
+    //    if (request.readyState == 4) {
+    //        var xml = request.responseXML;
+    //        var FacilityList = xml.getElementsByTagName("Facility");
+    //        var FacilityRole = window.parent.parent.parent.theForm.ctl00_C5POBody_hdnFacilityRole.value;
+    //        var cookies = document.cookie.split(';');
+    //        var CLegalOrg = "";
+    //        for (var l = 0; l < cookies.length; l++) {
+    //            if (cookies[l].indexOf("CLegalOrg") > -1)
+    //                CLegalOrg = cookies[l].split("=")[1];
+    //        }
+    //        if (FacilityRole != "") {
+    //            if (FacilityRole.split('&')[1] != "" && (FacilityRole.split('&')[1].toUpperCase() == "PHYSICIAN" || FacilityRole.split('&')[1].toUpperCase() == "PHYSICIAN ASSISTANT")) {
+    //                $("#lblSelectPhysician")[0].disabled = true;
+    //                $("#cboPhysician")[0].disabled = true;
+    //                $("#lblShowAllPhysician")[0].disabled = true;
+    //                $("#chkShowAllPhysician")[0].disabled = true;
+    //                $("#cboPhysician").addClass('nonEditabletxtbox');
+    //                if (FacilityRole.split('&')[0] != "" && FacilityRole.split('&')[2] != "") {
+    //                    for (var i = 0; i < FacilityList.length; i++) {
+    //                        if (FacilityList[i].getAttribute("name") == FacilityRole.split('&')[0]) {
+
+    //                            document.getElementById("cboPhysician").options.length = 0;
+    //                            var PhyEmptyOption = document.createElement("option");
+    //                            PhyEmptyOption.text = "";
+    //                            PhyEmptyOption.value = "0";
+    //                            $("#cboPhysician")[0].options.add(PhyEmptyOption);
+    //                            var PhyList = FacilityList[i].children;
+    //                            for (var j = 0; j < PhyList.length; j++) {
+    //                                if (PhyList[j].getAttribute("username") != "" && PhyList[j].getAttribute("username").toUpperCase() == FacilityRole.split('&')[2] && PhyList[j].getAttribute("Legal_Org").toUpperCase() == CLegalOrg.toUpperCase()) {
+    //                                    var PhyOption = document.createElement("option");
+    //                                    //Old Code
+    //                                    //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+    //                                    //PhyOption.text = PhyName;
+    //                                    //Gitlab# 2485 - Physician Name Display Change
+    //                                    var PhyName = "";
+    //                                    if (PhyList[j].getAttribute("lastname") != "")
+    //                                        PhyName += PhyList[j].getAttribute("lastname");
+    //                                    if (PhyList[j].getAttribute("firstname") != "") {
+    //                                        if (PhyName != "")
+    //                                            PhyName += "," + PhyList[j].getAttribute("firstname");
+    //                                        else
+    //                                            PhyName += PhyList[j].getAttribute("firstname");
+    //                                    }
+    //                                    if (PhyList[j].getAttribute("middlename") != "")
+    //                                        PhyName += " " + PhyList[j].getAttribute("middlename");
+    //                                    if (PhyList[j].getAttribute("suffix") != "")
+    //                                        PhyName += "," + PhyList[j].getAttribute("suffix");
+    //                                    PhyOption.text = PhyName;
+    //                                    PhyOption.value = PhyList[j].getAttribute("ID");
+    //                                    //Cap - 927
+    //                                    PhyOption.name = PhyList[j].getAttribute("username");
+    //                                    document.getElementById("cboPhysician").options.add(PhyOption);
+    //                                    break;
+    //                                }
+
+    //                            }
+    //                            break;
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            else {
+    //                if (Control != undefined && Control.checked == true) {
+    //                    var chkphysician = new Array();
+    //                    document.getElementById("cboPhysician").options.length = 0;
+    //                    var PhyEmptyOption = document.createElement("option");
+    //                    PhyEmptyOption.text = "";
+    //                    PhyEmptyOption.value = "0";
+    //                    $("#cboPhysician")[0].options.add(PhyEmptyOption);
+    //                    for (var i = 0; i < FacilityList.length; i++) {
+    //                        var PhyList = FacilityList[i].children;
+    //                        for (var j = 0; j < PhyList.length; j++) {
+    //                            if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
+    //                                var PhyOption = document.createElement("option");
+    //                                //Old Code
+    //                                //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+    //                                //PhyOption.text = PhyName;
+    //                                //Gitlab# 2485 - Physician Name Display Change
+    //                                var PhyName = "";
+    //                                if (PhyList[j].getAttribute("lastname") != "")
+    //                                    PhyName += PhyList[j].getAttribute("lastname");
+    //                                if (PhyList[j].getAttribute("firstname") != "") {
+    //                                    if (PhyName != "")
+    //                                        PhyName += "," + PhyList[j].getAttribute("firstname");
+    //                                    else
+    //                                        PhyName += PhyList[j].getAttribute("firstname");
+    //                                }
+    //                                if (PhyList[j].getAttribute("middlename") != "")
+    //                                    PhyName += " " + PhyList[j].getAttribute("middlename");
+    //                                if (PhyList[j].getAttribute("suffix") != "")
+    //                                    PhyName += "," + PhyList[j].getAttribute("suffix");
+    //                                PhyOption.text = PhyName;
+    //                                PhyOption.value = PhyList[j].getAttribute("ID");
+    //                                //Cap - 927
+    //                                PhyOption.name = PhyList[j].getAttribute("username");
+    //                                if (chkphysician.indexOf(PhyName.toUpperCase()) <= -1) {
+    //                                    chkphysician.push(PhyName.toUpperCase());
+    //                                    document.getElementById("cboPhysician").options.add(PhyOption);
+    //                                }
+    //                            }
+    //                        }
+
+    //                    }
+    //                }
+    //                else {
+    //                    var FacilityRole = window.parent.parent.parent.theForm.ctl00_C5POBody_hdnFacilityRole.value;
+    //                    if (FacilityRole.split('&')[0] != "") {
+    //                        for (var i = 0; i < FacilityList.length; i++) {
+    //                            if (FacilityList[i].getAttribute("name") == FacilityRole.split('&')[0]) {
+    //                                document.getElementById("cboPhysician").options.length = 0;
+    //                                var PhyEmptyOption = document.createElement("option");
+    //                                PhyEmptyOption.text = "";
+    //                                PhyEmptyOption.value = "0";
+    //                                $("#cboPhysician")[0].options.add(PhyEmptyOption);
+    //                                var PhyList = FacilityList[i].children;
+    //                                for (var j = 0; j < PhyList.length; j++) {
+    //                                    if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
+    //                                        var PhyOption = document.createElement("option");
+    //                                        //Old Code
+    //                                        //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+    //                                        //PhyOption.text = PhyName;
+    //                                        //Gitlab# 2485 - Physician Name Display Change
+    //                                        var PhyName = "";
+    //                                        if (PhyList[j].getAttribute("lastname") != "")
+    //                                            PhyName += PhyList[j].getAttribute("lastname");
+    //                                        if (PhyList[j].getAttribute("firstname") != "") {
+    //                                            if (PhyName != "")
+    //                                                PhyName += "," + PhyList[j].getAttribute("firstname");
+    //                                            else
+    //                                                PhyName += PhyList[j].getAttribute("firstname");
+    //                                        }
+    //                                        if (PhyList[j].getAttribute("middlename") != "")
+    //                                            PhyName += " " + PhyList[j].getAttribute("middlename");
+    //                                        if (PhyList[j].getAttribute("suffix") != "")
+    //                                            PhyName += "," + PhyList[j].getAttribute("suffix");
+    //                                        PhyOption.text = PhyName;
+    //                                        PhyOption.value = PhyList[j].getAttribute("ID");
+    //                                        //Cap - 927
+    //                                        PhyOption.name = PhyList[j].getAttribute("username");
+    //                                        document.getElementById("cboPhysician").options.add(PhyOption);
+    //                                    }
+    //                                }
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        if ($("#cboPhysician")[0].disabled == true)
+    //            PhysicianName = FacilityRole.split('&')[3].toUpperCase();
+    //        if (PhysicianName != "") {
+    //            $('#cboPhysician option').each(function () {
+    //                //Old Code
+    //                //if (this.text.indexOf(PhysicianName) > -1) {
+    //                //    option = this;
+    //                //    option.selected = true;
+    //                //}
+    //                //Gitlab# 2485 - Physician Name Display Change
+    //                if (this.value.indexOf(PhysicianName) > -1) {
+    //                    option = this;
+    //                    option.selected = true;
+    //                }
+    //            });
+    //        }
+    //        if (FacilityRole.split('&')[1] != "" && (FacilityRole.split('&')[1].toUpperCase() == "PHYSICIAN" || FacilityRole.split('&')[1].toUpperCase() == "PHYSICIAN ASSISTANT")) {
+    //            if ($("#cboPhysician")[0].value == "0" || ($("#cboPhysician")[0].selectedOptions.length > 0 && $("#cboPhysician")[0].selectedOptions[0].text == "")) {
+    //                document.getElementById("cboPhysician").options.length = 0;
+    //                $("#chkShowAllPhysician")[0].checked = true;
+    //                var PhyEmptyOption = document.createElement("option");
+    //                PhyEmptyOption.text = "";
+    //                PhyEmptyOption.value = "0";
+    //                $("#cboPhysician")[0].options.add(PhyEmptyOption);
+    //                for (var i = 0; i < FacilityList.length; i++) {
+    //                    var PhyList = FacilityList[i].children;
+    //                    for (var j = 0; j < PhyList.length; j++) {
+    //                        if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
+    //                            var PhyOption = document.createElement("option");
+    //                            //Old Code
+    //                            //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
+    //                            //PhyOption.text = PhyName;
+    //                            //Gitlab# 2485 - Physician Name Display Change
+    //                            var PhyName = "";
+    //                            if (PhyList[j].getAttribute("lastname") != "")
+    //                                PhyName += PhyList[j].getAttribute("lastname");
+    //                            if (PhyList[j].getAttribute("firstname") != "") {
+    //                                if (PhyName != "")
+    //                                    PhyName += "," + PhyList[j].getAttribute("firstname");
+    //                                else
+    //                                    PhyName += PhyList[j].getAttribute("firstname");
+    //                            }
+    //                            if (PhyList[j].getAttribute("middlename") != "")
+    //                                PhyName += " " + PhyList[j].getAttribute("middlename");
+    //                            if (PhyList[j].getAttribute("suffix") != "")
+    //                                PhyName += "," + PhyList[j].getAttribute("suffix");
+    //                            PhyOption.text = PhyName;
+    //                            PhyOption.value = PhyList[j].getAttribute("ID");
+    //                            //Cap - 927
+    //                            PhyOption.name = PhyList[j].getAttribute("username");
+    //                            document.getElementById("cboPhysician").options.add(PhyOption);
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            if ($("#cboPhysician")[0].disabled == true)
+    //                PhysicianName = FacilityRole.split('&')[3].toUpperCase();
+    //            if (PhysicianName != "") {
+    //                $('#cboPhysician option').each(function () {
+    //                    //Old Code
+    //                    //if (this.text.indexOf(PhysicianName) > -1) {
+    //                    //    option = this;
+    //                    //    option.selected = true;
+    //                    //}
+    //                    //Gitlab# 2485 - Physician Name Display Change
+    //                    if (this.value.indexOf(PhysicianName) > -1) {
+    //                        option = this;
+    //                        option.selected = true;
+    //                    }
+    //                });
+    //            }
+    //        }
+    //    }
+    //};
+    //request.open("GET", "ConfigXML/PhysicianFacilityMapping.xml", false);
+    //request.send();
+
+    //CAP-2781
+    $.ajax({
+        type: "GET",
+        url: "ConfigXML/PhysicianFacilityMapping.json",
+        dataType: "json",
+        success: function (xml) {
+            var FacilityList = xml.PhysicianFacility;
             var FacilityRole = window.parent.parent.parent.theForm.ctl00_C5POBody_hdnFacilityRole.value;
             var cookies = document.cookie.split(';');
             var CLegalOrg = "";
@@ -845,38 +1074,34 @@ function LoadPhysicianList(Control) {
                     $("#cboPhysician").addClass('nonEditabletxtbox');
                     if (FacilityRole.split('&')[0] != "" && FacilityRole.split('&')[2] != "") {
                         for (var i = 0; i < FacilityList.length; i++) {
-                            if (FacilityList[i].getAttribute("name") == FacilityRole.split('&')[0]) {
+                            if (FacilityList[i].name == FacilityRole.split('&')[0]) {
 
                                 document.getElementById("cboPhysician").options.length = 0;
                                 var PhyEmptyOption = document.createElement("option");
                                 PhyEmptyOption.text = "";
                                 PhyEmptyOption.value = "0";
                                 $("#cboPhysician")[0].options.add(PhyEmptyOption);
-                                var PhyList = FacilityList[i].children;
+                                var PhyList = FacilityList[i].Physician;
                                 for (var j = 0; j < PhyList.length; j++) {
-                                    if (PhyList[j].getAttribute("username") != "" && PhyList[j].getAttribute("username").toUpperCase() == FacilityRole.split('&')[2] && PhyList[j].getAttribute("Legal_Org").toUpperCase() == CLegalOrg.toUpperCase()) {
+                                    if (PhyList[j].username != "" && PhyList[j].username.toUpperCase() == FacilityRole.split('&')[2] && PhyList[j].Legal_Org.toUpperCase() == CLegalOrg.toUpperCase()) {
                                         var PhyOption = document.createElement("option");
-                                        //Old Code
-                                        //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
-                                        //PhyOption.text = PhyName;
-                                        //Gitlab# 2485 - Physician Name Display Change
                                         var PhyName = "";
-                                        if (PhyList[j].getAttribute("lastname") != "")
-                                            PhyName += PhyList[j].getAttribute("lastname");
-                                        if (PhyList[j].getAttribute("firstname") != "") {
+                                        if (PhyList[j].lastname != "")
+                                            PhyName += PhyList[j].lastname;
+                                        if (PhyList[j].firstname != "") {
                                             if (PhyName != "")
-                                                PhyName += "," + PhyList[j].getAttribute("firstname");
+                                                PhyName += "," + PhyList[j].firstname;
                                             else
-                                                PhyName += PhyList[j].getAttribute("firstname");
+                                                PhyName += PhyList[j].firstname;
                                         }
-                                        if (PhyList[j].getAttribute("middlename") != "")
-                                            PhyName += " " + PhyList[j].getAttribute("middlename");
-                                        if (PhyList[j].getAttribute("suffix") != "")
-                                            PhyName += "," + PhyList[j].getAttribute("suffix");
+                                        if (PhyList[j].middlename != "")
+                                            PhyName += " " + PhyList[j].middlename;
+                                        if (PhyList[j].suffix != "")
+                                            PhyName += "," + PhyList[j].suffix;
                                         PhyOption.text = PhyName;
-                                        PhyOption.value = PhyList[j].getAttribute("ID");
+                                        PhyOption.value = PhyList[j].ID;
                                         //Cap - 927
-                                        PhyOption.name = PhyList[j].getAttribute("username");
+                                        PhyOption.name = PhyList[j].username;
                                         document.getElementById("cboPhysician").options.add(PhyOption);
                                         break;
                                     }
@@ -896,31 +1121,31 @@ function LoadPhysicianList(Control) {
                         PhyEmptyOption.value = "0";
                         $("#cboPhysician")[0].options.add(PhyEmptyOption);
                         for (var i = 0; i < FacilityList.length; i++) {
-                            var PhyList = FacilityList[i].children;
+                            var PhyList = FacilityList[i].Physician;
                             for (var j = 0; j < PhyList.length; j++) {
-                                if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
+                                if (PhyList[j].username != "" && CLegalOrg.toUpperCase() == PhyList[j].Legal_Org.toUpperCase()) {
                                     var PhyOption = document.createElement("option");
                                     //Old Code
                                     //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
                                     //PhyOption.text = PhyName;
                                     //Gitlab# 2485 - Physician Name Display Change
                                     var PhyName = "";
-                                    if (PhyList[j].getAttribute("lastname") != "")
-                                        PhyName += PhyList[j].getAttribute("lastname");
-                                    if (PhyList[j].getAttribute("firstname") != "") {
+                                    if (PhyList[j].lastname != "")
+                                        PhyName += PhyList[j].lastname;
+                                    if (PhyList[j].firstname != "") {
                                         if (PhyName != "")
-                                            PhyName += "," + PhyList[j].getAttribute("firstname");
+                                            PhyName += "," + PhyList[j].firstname;
                                         else
-                                            PhyName += PhyList[j].getAttribute("firstname");
+                                            PhyName += PhyList[j].firstname;
                                     }
-                                    if (PhyList[j].getAttribute("middlename") != "")
-                                        PhyName += " " + PhyList[j].getAttribute("middlename");
-                                    if (PhyList[j].getAttribute("suffix") != "")
-                                        PhyName += "," + PhyList[j].getAttribute("suffix");
+                                    if (PhyList[j].middlename != "")
+                                        PhyName += " " + PhyList[j].middlename;
+                                    if (PhyList[j].suffix != "")
+                                        PhyName += "," + PhyList[j].suffix;
                                     PhyOption.text = PhyName;
-                                    PhyOption.value = PhyList[j].getAttribute("ID");
+                                    PhyOption.value = PhyList[j].ID;
                                     //Cap - 927
-                                    PhyOption.name = PhyList[j].getAttribute("username");
+                                    PhyOption.name = PhyList[j].username;
                                     if (chkphysician.indexOf(PhyName.toUpperCase()) <= -1) {
                                         chkphysician.push(PhyName.toUpperCase());
                                         document.getElementById("cboPhysician").options.add(PhyOption);
@@ -934,37 +1159,37 @@ function LoadPhysicianList(Control) {
                         var FacilityRole = window.parent.parent.parent.theForm.ctl00_C5POBody_hdnFacilityRole.value;
                         if (FacilityRole.split('&')[0] != "") {
                             for (var i = 0; i < FacilityList.length; i++) {
-                                if (FacilityList[i].getAttribute("name") == FacilityRole.split('&')[0]) {
+                                if (FacilityList[i].name == FacilityRole.split('&')[0]) {
                                     document.getElementById("cboPhysician").options.length = 0;
                                     var PhyEmptyOption = document.createElement("option");
                                     PhyEmptyOption.text = "";
                                     PhyEmptyOption.value = "0";
                                     $("#cboPhysician")[0].options.add(PhyEmptyOption);
-                                    var PhyList = FacilityList[i].children;
+                                    var PhyList = FacilityList[i].Physician;
                                     for (var j = 0; j < PhyList.length; j++) {
-                                        if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
+                                        if (PhyList[j].username != "" && CLegalOrg.toUpperCase() == PhyList[j].Legal_Org.toUpperCase()) {
                                             var PhyOption = document.createElement("option");
                                             //Old Code
                                             //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
                                             //PhyOption.text = PhyName;
                                             //Gitlab# 2485 - Physician Name Display Change
                                             var PhyName = "";
-                                            if (PhyList[j].getAttribute("lastname") != "")
-                                                PhyName += PhyList[j].getAttribute("lastname");
-                                            if (PhyList[j].getAttribute("firstname") != "") {
+                                            if (PhyList[j].lastname != "")
+                                                PhyName += PhyList[j].lastname;
+                                            if (PhyList[j].firstname != "") {
                                                 if (PhyName != "")
-                                                    PhyName += "," + PhyList[j].getAttribute("firstname");
+                                                    PhyName += "," + PhyList[j].firstname;
                                                 else
-                                                    PhyName += PhyList[j].getAttribute("firstname");
+                                                    PhyName += PhyList[j].firstname;
                                             }
-                                            if (PhyList[j].getAttribute("middlename") != "")
-                                                PhyName += " " + PhyList[j].getAttribute("middlename");
-                                            if (PhyList[j].getAttribute("suffix") != "")
-                                                PhyName += "," + PhyList[j].getAttribute("suffix");
+                                            if (PhyList[j].middlename != "")
+                                                PhyName += " " + PhyList[j].middlename;
+                                            if (PhyList[j].suffix != "")
+                                                PhyName += "," + PhyList[j].suffix;
                                             PhyOption.text = PhyName;
-                                            PhyOption.value = PhyList[j].getAttribute("ID");
+                                            PhyOption.value = PhyList[j].ID;
                                             //Cap - 927
-                                            PhyOption.name = PhyList[j].getAttribute("username");
+                                            PhyOption.name = PhyList[j].username;
                                             document.getElementById("cboPhysician").options.add(PhyOption);
                                         }
                                     }
@@ -999,31 +1224,31 @@ function LoadPhysicianList(Control) {
                     PhyEmptyOption.value = "0";
                     $("#cboPhysician")[0].options.add(PhyEmptyOption);
                     for (var i = 0; i < FacilityList.length; i++) {
-                        var PhyList = FacilityList[i].children;
+                        var PhyList = FacilityList[i].Physician;
                         for (var j = 0; j < PhyList.length; j++) {
-                            if (PhyList[j].getAttribute("username") != "" && CLegalOrg.toUpperCase() == PhyList[j].getAttribute("Legal_Org").toUpperCase()) {
+                            if (PhyList[j].username != "" && CLegalOrg.toUpperCase() == PhyList[j].Legal_Org.toUpperCase()) {
                                 var PhyOption = document.createElement("option");
                                 //Old Code
                                 //var PhyName = PhyList[j].getAttribute("username") + "-" + PhyList[j].getAttribute("prefix") + " " + PhyList[j].getAttribute("firstname") + " " + PhyList[j].getAttribute("middlename") + " " + PhyList[j].getAttribute("lastname") + " " + PhyList[j].getAttribute("suffix");
                                 //PhyOption.text = PhyName;
                                 //Gitlab# 2485 - Physician Name Display Change
                                 var PhyName = "";
-                                if (PhyList[j].getAttribute("lastname") != "")
-                                    PhyName += PhyList[j].getAttribute("lastname");
-                                if (PhyList[j].getAttribute("firstname") != "") {
+                                if (PhyList[j].lastname != "")
+                                    PhyName += PhyList[j].lastname;
+                                if (PhyList[j].firstname != "") {
                                     if (PhyName != "")
-                                        PhyName += "," + PhyList[j].getAttribute("firstname");
+                                        PhyName += "," + PhyList[j].firstname;
                                     else
-                                        PhyName += PhyList[j].getAttribute("firstname");
+                                        PhyName += PhyList[j].firstname;
                                 }
-                                if (PhyList[j].getAttribute("middlename") != "")
-                                    PhyName += " " + PhyList[j].getAttribute("middlename");
-                                if (PhyList[j].getAttribute("suffix") != "")
-                                    PhyName += "," + PhyList[j].getAttribute("suffix");
+                                if (PhyList[j].middlename != "")
+                                    PhyName += " " + PhyList[j].middlename;
+                                if (PhyList[j].suffix != "")
+                                    PhyName += "," + PhyList[j].suffix;
                                 PhyOption.text = PhyName;
-                                PhyOption.value = PhyList[j].getAttribute("ID");
+                                PhyOption.value = PhyList[j].ID;
                                 //Cap - 927
-                                PhyOption.name = PhyList[j].getAttribute("username");
+                                PhyOption.name = PhyList[j].username;
                                 document.getElementById("cboPhysician").options.add(PhyOption);
                             }
                         }
@@ -1046,10 +1271,23 @@ function LoadPhysicianList(Control) {
                     });
                 }
             }
+        },
+        error: function OnError(xhr) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (xhr.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else {
+                var log = JSON.parse(xhr.responseText);
+
+                console.log(log);
+                alert("USER MESSAGE:\n" +
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
+                return false;
+            }
         }
-    };
-    request.open("GET", "ConfigXML/PhysicianFacilityMapping.xml", false);
-    request.send();
+    });
+
     var sel = $('#cboPhysician');
     var selected = sel.val(); // cache selected value, before reordering
     var opts_list = sel.find('option');
