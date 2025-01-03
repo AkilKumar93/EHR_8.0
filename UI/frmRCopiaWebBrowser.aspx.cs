@@ -143,6 +143,7 @@ namespace Acurus.Capella.UI
                     {
                         if (medicationReasonNotPerformed != null)
                         {
+                            lstMedicationDocumented = new ListItem();
                             lstMedicationDocumented.Text = medicationReasonNotPerformed.value;
                             lstMedicationDocumented.Value = medicationReasonNotPerformed.Description;
                             cboCurrentMedicationDocumented.Items.Add(lstMedicationDocumented);
@@ -550,6 +551,7 @@ namespace Acurus.Capella.UI
                     {
                         if (medicationReasonNotPerformed != null)
                         {
+                            lstMedicationDocumented = new ListItem();
                             lstMedicationDocumented.Text = medicationReasonNotPerformed.value.ToString();
                             lstMedicationDocumented.Value = medicationReasonNotPerformed.Description.ToString();
                             cboCurrentMedicationDocumented.Items.Add(lstMedicationDocumented);
