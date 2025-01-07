@@ -1424,7 +1424,7 @@ namespace Acurus.Capella.UI
                                     if (physicianAddressDetailsList != null)
 
                                     {
-                                        foreach (var physician in physicianAddressDetailsList.PhysicianAddress)
+                                        foreach (var physician in physicianAddressDetailsList.PhysicianAddress.Where(x=> x.Physician_Library_ID == filteredData.Physician_Library_ID))
                                         {
                                             string phyName = string.Empty;
                                             string prefix = physician.Physician_prefix ?? string.Empty;
