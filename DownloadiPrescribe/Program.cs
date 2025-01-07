@@ -374,17 +374,19 @@ namespace DownloadiPrescribe
                                         insertordersubmitList.Add(objOrdersSubmit);
 
 
-                                        Orders objOrder = new Orders();
-                                        objOrder.Lab_Procedure = "Paper Order";
-                                        objOrder.Human_ID = objHuman.Id;
-                                        objOrder.Created_By = "ImageResultsAgent";
-                                        objOrder.Created_Date_And_Time = DateTime.UtcNow;
+                                        Orders objOrder = new Orders
+                                        {
+                                            Lab_Procedure = "Paper Order",
+                                            Human_ID = objHuman.Id,
+                                            Created_By = "ImageResultsAgent",
+                                            Created_Date_And_Time = DateTime.UtcNow
+                                        };
                                         insertOrderList.Add(objOrder);
 
                                         ulOrderSubmitId = ordersManager.InsertDummyOrder(insertordersubmitList, insertOrderList, "DIAGNOSTIC ORDER", sFacility, string.Empty);
 
                                         Scan scan = new Scan();
-                                        scan.Scanned_File_Path = sImported_StudiesFilePath + "//" + sFile;
+                                        scan.Scanned_File_Path = sImported_StudiesFilePath + "\\" + sFile;
                                         scan.Scanned_Date = Convert.ToDateTime(DateTime.ParseExact(sFile.Split('_')[3].ToUpper().Replace(".PDF", ""), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd"));
                                         scan.Facility_Name = sFacility;
                                         scan.No_of_Pages = 1;
@@ -402,7 +404,7 @@ namespace DownloadiPrescribe
                                         scan_Index.Document_Type = "Results";
                                         scan_Index.Document_Sub_Type = "ECHO";
                                         scan_Index.Order_ID = ulOrderSubmitId;
-                                        scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "//" + sFile;
+                                        scan_Index.Indexed_File_Path = sImported_StudiesFilePath + "\\" + sFile;
                                         scan_Index.Page_Selected = "1";
                                         scan_Index.Created_By = "ImageResultsAgent";
                                         scan_Index.Created_Date_And_Time = DateTime.UtcNow;
