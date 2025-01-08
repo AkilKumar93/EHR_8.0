@@ -23,6 +23,8 @@ using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
 using DYMO.DLS.Runtime;
 using Acurus.Capella.Core.DTOJson;
+using System.Text;
+using System.IO.Compression;
 
 namespace Acurus.Capella.UI.WebServices
 {
@@ -395,7 +397,9 @@ namespace Acurus.Capella.UI.WebServices
                 HttpContext.Current.Session["SuggCPTList"] = ProcedureList;
 
                 HttpContext.Current.Session["EnablePriRbtn"] = EnablePriRbtn;
-                return JsonConvert.SerializeObject(result);
+                //CAP-2597
+                string jsonResult = Compress(JsonConvert.SerializeObject(result));
+                return jsonResult;
             }
             else
             {
@@ -410,7 +414,9 @@ namespace Acurus.Capella.UI.WebServices
                     HttpContext.Current.Session["EandMICDList"] = eandmDTO.EandMCodingICDList;
                 HttpContext.Current.Session["EnablePriRbtn"] = EnablePriRbtn;
                 HttpContext.Current.Session["SuggCPTList"] = ProcedureList;
-                return JsonConvert.SerializeObject(result);
+                //CAP-2597
+                string jsonResult = Compress(JsonConvert.SerializeObject(result));
+                return jsonResult;
             }
 
 
@@ -2648,6 +2654,25 @@ namespace Acurus.Capella.UI.WebServices
                 }
             }
             return sGCodeCheck + "~" + sAlert;
+        }
+
+        //CAP-2597
+        private static string Compress(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
+
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    gzipStream.Write(inputBytes, 0, inputBytes.Length);
+                }
+                return Convert.ToBase64String(outputStream.ToArray());
+            }
         }
     }
 }

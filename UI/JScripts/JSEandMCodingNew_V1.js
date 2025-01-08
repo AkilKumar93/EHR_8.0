@@ -95,8 +95,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
         $("span[mand=Yes]").each(function () {
             $(this).html($(this).html().replace("*", "<span class='manredforstar'>*</span>"));
         });
-        var str = response.d;
-        var test = JSON.parse(str);
+        //CAP-2597
+        var test = Decompress(response.d);
         $scope.Modifiers1 = JSON.parse(test.ModifierList);
         $scope.Modifiers2 = JSON.parse(test.ModifierList);
         $scope.Modifiers3 = JSON.parse(test.ModifierList);
@@ -3831,4 +3831,18 @@ window.addEventListener("contextmenu",
 function followupKeypress() {
     event.preventDefault();
 
+}
+//CAP-2597
+function Decompress(data) {
+    // Decode the Base64 string
+    const binaryString = window.atob(data);
+    // Convert binary string to byte array
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    // Use pako to decompress the byte array
+    const decompressed = pako.inflate(bytes, { to: 'string' });
+    return JSON.parse(decompressed);
 }
