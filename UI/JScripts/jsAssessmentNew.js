@@ -365,8 +365,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             "X-Requested-With": "XMLHttpRequest"
         }
     }).success(function (response, status, headers, config) {
-        var str = response.d;
-        var test12 = JSON.parse(str);
+        //CAP-2598
+        var test12 = Decompress(response.d);
 
         $scope.AssessmentTable = test12.AssessmentList;
 
@@ -464,7 +464,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         }).success(function (response, status, headers, config) {
             { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
 
-            var test = JSON.parse(response.d);
+            //CAP-2598
+            var test = Decompress(response.d);
 
             var table = $('#tblCurrICDs');
             table.find('tr').each(function (rowIndex, r) {
@@ -1731,7 +1732,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                 "X-Requested-With": "XMLHttpRequest"
             }
         }).success(function (response) {
-            var obj = response.d;
+            //CAP-2598
+            var obj = Decompress(response.d);
 
             if (obj.indexOf("Message-") > -1) {
                 DisplayErrorMessage(obj.split('-')[1]);
@@ -3161,4 +3163,18 @@ function removeDuplicates(inputArray) {
         outputArray.push(i);
     }
     return outputArray;
+}
+//CAP-2598
+function Decompress(data) {
+    // Decode the Base64 string
+    const binaryString = window.atob(data);
+    // Convert binary string to byte array
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    // Use pako to decompress the byte array
+    const decompressed = pako.inflate(bytes, { to: 'string' });
+    return JSON.parse(decompressed);
 }

@@ -23,6 +23,8 @@ using MySql.Data.MySqlClient;
 using System.Threading;
 using System.Configuration;
 using Acurus.Capella.Core.DTOJson;
+using System.Text;
+using System.IO.Compression;
 
 namespace Acurus.Capella.UI
 {
@@ -1056,7 +1058,9 @@ namespace Acurus.Capella.UI
                 }
             }
 
-            return jsons;
+            //CAP-2598
+            string jsonResult = Compress(jsons);
+            return jsonResult;
         }
 
 
@@ -2511,8 +2515,9 @@ namespace Acurus.Capella.UI
             string json = new JavaScriptSerializer().Serialize(ListColor);
 
             sColorCoding = "{\"ColorCoding\" :" + json + "}";
-
-            return sColorCoding;
+            //CAP-2598
+            string jsonResult = Compress(sColorCoding);
+            return jsonResult;
         }
 
 
@@ -3276,7 +3281,24 @@ namespace Acurus.Capella.UI
             return jsons;
         }
 
+        //CAP-2598
+        private static string Compress(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return string.Empty;
+            }
 
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    gzipStream.Write(inputBytes, 0, inputBytes.Length);
+                }
+                return Convert.ToBase64String(outputStream.ToArray());
+            }
+        }
 
 
     }

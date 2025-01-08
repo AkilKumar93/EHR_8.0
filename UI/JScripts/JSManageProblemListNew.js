@@ -1067,7 +1067,8 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
         }).success(function (response, status, headers, config) {
 
 
-            var test = JSON.parse(response.d);
+            //CAP-2598
+            var test = Decompress(response.d);
 
             var table = $('#tblProblemList');
             table.find('tr').each(function (rowIndex, r) {
