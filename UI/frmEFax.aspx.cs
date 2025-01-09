@@ -256,25 +256,49 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-                    XDocument xmlFacility = XDocument.Load(HttpContext.Current.Server.MapPath(@"ConfigXML\Facility_Library.xml"));
-                    IEnumerable<XElement> xmlFac;
-                    if (objEncounter != null)
-                    {
-                        xmlFac = xmlFacility.Element("FacilityList")
-                          .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == objEncounter.Facility_Name);
+                    //Cap - 2769 - XML to JSON
+                    //XDocument xmlFacility = XDocument.Load(HttpContext.Current.Server.MapPath(@"ConfigXML\Facility_Library.xml"));
+                    //IEnumerable<XElement> xmlFac;
+                    //if (objEncounter != null)
+                    //{
+                    //    xmlFac = xmlFacility.Element("FacilityList")
+                    //      .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == objEncounter.Facility_Name);
 
-                    }
-                    else
-                    {
-                        xmlFac = xmlFacility.Element("FacilityList")
-                          .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == ClientSession.FacilityName);
+                    //}
+                    //else
+                    //{
+                    //    xmlFac = xmlFacility.Element("FacilityList")
+                    //      .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == ClientSession.FacilityName);
 
-                    }
+                    //}
 
-                    if (xmlFac != null && xmlFac.Count() > 0)
+                    //if (xmlFac != null && xmlFac.Count() > 0)
+                    //{
+                    //    if (xmlFac.Attributes("Facility_Fax") != null)
+                    //        SenderMaskFax = xmlFac.Attributes("Facility_Fax").First().Value.ToString().Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+                    //}
+
+                    IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+                    Facility_Library ilistFacility_Library = new Facility_Library();
+                    ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+                    if (ilistFacility_Library != null)
                     {
-                        if (xmlFac.Attributes("Facility_Fax") != null)
-                            SenderMaskFax = xmlFac.Attributes("Facility_Fax").First().Value.ToString().Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+                        if (objEncounter != null)
+                        {
+                            ilistFacilityList = ilistFacility_Library.FacilityList.Where(a => a.Name == objEncounter.Facility_Name).ToList();
+                        }
+                        else
+                        {
+                            ilistFacilityList = ilistFacility_Library.FacilityList.Where(a => a.Name == ClientSession.FacilityName).ToList();
+                        }
+
+                        if ((ilistFacilityList?.Count ?? .0) > 0)
+                        {
+                            if (ilistFacilityList[0].Facility_Fax != null)
+                            {
+                                SenderMaskFax = ilistFacilityList[0].Facility_Fax.ToString().Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+                            }
+                        }
                     }
                 }
             }
@@ -283,13 +307,29 @@ namespace Acurus.Capella.UI
             {
                 if (sIsConsultation != "Y")
                 {
-                    XDocument xmlFacility = XDocument.Load(HttpContext.Current.Server.MapPath(@"ConfigXML\Facility_Library.xml"));
-                    IEnumerable<XElement> xmlFac = xmlFacility.Element("FacilityList")
-                        .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == ClientSession.FacilityName);
-                    if (xmlFac != null && xmlFac.Count() > 0)
+                    //Cap - 2739 - XML to JSON
+                    //XDocument xmlFacility = XDocument.Load(HttpContext.Current.Server.MapPath(@"ConfigXML\Facility_Library.xml"));
+                    //IEnumerable<XElement> xmlFac = xmlFacility.Element("FacilityList")
+                    //    .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == ClientSession.FacilityName);
+                    //if (xmlFac != null && xmlFac.Count() > 0)
+                    //{
+                    //    if (xmlFac.Attributes("Facility_Fax") != null)
+                    //        SenderMaskFax = xmlFac.Attributes("Facility_Fax").First().Value.ToString().Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+                    //}
+
+                    IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+                    Facility_Library ilistFacility_Library = new Facility_Library();
+                    ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+                    if (ilistFacility_Library != null)
                     {
-                        if (xmlFac.Attributes("Facility_Fax") != null)
-                            SenderMaskFax = xmlFac.Attributes("Facility_Fax").First().Value.ToString().Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+                        ilistFacilityList = ilistFacility_Library.FacilityList.Where(a => a.Name == ClientSession.FacilityName).ToList();
+                    }
+                    if ((ilistFacilityList?.Count ?? .0) > 0)
+                    {
+                        if (ilistFacilityList[0].Facility_Fax != null)
+                        {
+                            SenderMaskFax = ilistFacilityList[0].Facility_Fax.ToString().Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+                        }
                     }
                 }
             }

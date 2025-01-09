@@ -110,11 +110,20 @@ namespace Acurus.Capella.UI.WebServices
             {
                 var Specialty = staticLookupList?.SpecialtyList?.Select(x => new { Specialty = x.value ?? "" });
                 var Category = staticLookupList?.CategoryList?.Select(x => new { Category = x.value ?? "" });
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-                XmlNodeList xmlPhysicianAddressList = xmldoc.GetElementsByTagName("FacilityList");
-                var PhysicianFacilityList = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
-                var FacilityName = from p in PhysicianFacilityList.ChildNodes.OfType<XmlElement>() select new { FacilityName = (p.Attributes["Name"] != null ? p.Attributes["Name"].Value : string.Empty) };
+                //Jira cap - 2769 - XML to JSON
+                //xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
+                //XmlNodeList xmlPhysicianAddressList = xmldoc.GetElementsByTagName("FacilityList");
+                //var PhysicianFacilityList = xmlPhysicianAddressList.Cast<XmlNode>().AsEnumerable().ElementAtOrDefault(0);
+                //var FacilityName = from p in PhysicianFacilityList.ChildNodes.OfType<XmlElement>() select new { FacilityName = (p.Attributes["Name"] != null ? p.Attributes["Name"].Value : string.Empty) };
 
+                IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+                Facility_Library ilistFacility_Library = new Facility_Library();
+                ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+                if (ilistFacility_Library != null)
+                {
+                    ilistFacilityList = ilistFacility_Library.FacilityList;
+                }
+                var FacilityName = from p in ilistFacilityList select new { FacilityName = (p.Name != null ? p.Name : string.Empty) };
                 var result = new { SpecialtyList = Specialty, CategoryList = Category, FacilityNameList = FacilityName };
                 return JsonConvert.SerializeObject(result);
             }

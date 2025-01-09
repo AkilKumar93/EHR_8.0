@@ -2166,34 +2166,59 @@ namespace Acurus.Capella.PatientPortal
         {
             IList<FacilityLibrary> AllFacilities = new List<FacilityLibrary>();
             FacilityLibrary CurrentFacility = new FacilityLibrary();
+            //Cap - 2769 - XML to JSON
+            //XmlDocument xmldoc = new XmlDocument();
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
+            //    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
+            //    if (xmlFacilityList.Count > 0)
+            //    {
+            //        foreach (XmlNode facility_details in xmlFacilityList)
+            //        {
+            //            if (facility_details != null)
+            //            {
+            //                CurrentFacility = new FacilityLibrary();
+            //                CurrentFacility.Fac_Name = facility_details.Attributes["Name"].Value.ToString();
+            //                CurrentFacility.Start_Time = facility_details.Attributes["Start_Time"].Value.ToString();
+            //                CurrentFacility.End_Time = facility_details.Attributes["End_Time"].Value.ToString();
+            //                CurrentFacility.Slot_Length = Convert.ToInt16(facility_details.Attributes["Slot_Length"].Value.ToString());
+            //                CurrentFacility.Fac_Address1 = facility_details.Attributes["Primary_IP"].Value.ToString();
+            //                CurrentFacility.Fac_Address2 = facility_details.Attributes["Secondary_IP"].Value.ToString();
+            //                CurrentFacility.Fac_NPI = facility_details.Attributes["Facility_NPI"].Value.ToString();
+            //                CurrentFacility.Taxonomy_Code = facility_details.Attributes["Taxonomy_Code"].Value.ToString();
+            //                CurrentFacility.Taxonomy_Description = facility_details.Attributes["Taxonomy_Description"].Value.ToString();
+            //                AllFacilities.Add(CurrentFacility);
+            //            }
+            //        }
+            //    }
+            //}
 
-            XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+            Facility_Library ilistFacility_Library = new Facility_Library();
+            ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+            if (ilistFacility_Library != null)
             {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-                XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
-                if (xmlFacilityList.Count > 0)
+                ilistFacilityList = ilistFacility_Library.FacilityList;
+            }
+            if ((ilistFacilityList?.Count ?? 0) > 0)
                 {
-                    foreach (XmlNode facility_details in xmlFacilityList)
+                for (int i = 0; i < ilistFacilityList.Count; i++)
                     {
-                        if (facility_details != null)
-                        {
                             CurrentFacility = new FacilityLibrary();
-                            CurrentFacility.Fac_Name = facility_details.Attributes["Name"].Value.ToString();
-                            CurrentFacility.Start_Time = facility_details.Attributes["Start_Time"].Value.ToString();
-                            CurrentFacility.End_Time = facility_details.Attributes["End_Time"].Value.ToString();
-                            CurrentFacility.Slot_Length = Convert.ToInt16(facility_details.Attributes["Slot_Length"].Value.ToString());
-                            CurrentFacility.Fac_Address1 = facility_details.Attributes["Primary_IP"].Value.ToString();
-                            CurrentFacility.Fac_Address2 = facility_details.Attributes["Secondary_IP"].Value.ToString();
-                            CurrentFacility.Fac_NPI = facility_details.Attributes["Facility_NPI"].Value.ToString();
-                            CurrentFacility.Taxonomy_Code = facility_details.Attributes["Taxonomy_Code"].Value.ToString();
-                            CurrentFacility.Taxonomy_Description = facility_details.Attributes["Taxonomy_Description"].Value.ToString();
+                    CurrentFacility.Fac_Name = ilistFacilityList[i].Name.ToString();
+                    CurrentFacility.Start_Time = ilistFacilityList[i].Start_Time.ToString();
+                    CurrentFacility.End_Time = ilistFacilityList[i].End_Time.ToString();
+                    CurrentFacility.Slot_Length = Convert.ToInt16(ilistFacilityList[i].Slot_Length.ToString());
+                    CurrentFacility.Fac_Address1 = ilistFacilityList[i].Primary_IP.ToString();
+                    CurrentFacility.Fac_Address2 = ilistFacilityList[i].Secondary_IP.ToString();
+                    CurrentFacility.Fac_NPI = ilistFacilityList[i].Facility_NPI.ToString();
+                    CurrentFacility.Taxonomy_Code = ilistFacilityList[i].Taxonomy_Code.ToString();
+                    CurrentFacility.Taxonomy_Description = ilistFacilityList[i].Taxonomy_Description.ToString();
                             AllFacilities.Add(CurrentFacility);
                         }
                     }
-                }
-            }
             return AllFacilities.OrderBy(item => item.Fac_Name).ToList<FacilityLibrary>();
         }
 

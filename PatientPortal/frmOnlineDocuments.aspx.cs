@@ -1369,18 +1369,32 @@ namespace Acurus.Capella.PatientPortal
                 //For Patient portal there is no facility to get the Close_type from workflow ,So get any facility from config Xml
 
                 string facility = string.Empty;
-                XmlDocument xmldoc = new XmlDocument();
-                string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
-                if (File.Exists(strXmlFilePath) == true)
-                {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-                    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
-                    if (xmlFacilityList.Count > 0)
-                    {
-                        facility = xmlFacilityList[0].Attributes["Name"].Value.ToString();
+                //Cap - 2769 - XML to Json
+                //XmlDocument xmldoc = new XmlDocument();
+                //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
+                //    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
+                //    if (xmlFacilityList.Count > 0)
+                //    {
+                //        facility = xmlFacilityList[0].Attributes["Name"].Value.ToString();
 
-                    }
+                //    }
+                //}
+
+                IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+                Facility_Library ilistFacility_Library = new Facility_Library();
+                ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+                if (ilistFacility_Library != null)
+                {
+                    ilistFacilityList = ilistFacility_Library.FacilityList;
                 }
+                if ((ilistFacilityList?.Count ?? 0) > 0)
+                {
+                    facility = ilistFacilityList[0].Name.ToString();
+                }
+
 
                 DateTime dtScanReceivedDate = Convert.ToDateTime(dtpScannedDate.Value);
                 //Save Scan_Index_Conversion table, Scan table ,WorkFlow table 
