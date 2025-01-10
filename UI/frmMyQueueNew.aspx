@@ -123,7 +123,10 @@ table.dataTable > thead > tr > td {
     background-repeat: no-repeat;
         padding-left: 26px !important;
 }
-
+        
+        #EncounterTable thead {
+            visibility:collapse;
+        }
     </style>
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="CSS/fontawesomenew.css" rel="stylesheet" />

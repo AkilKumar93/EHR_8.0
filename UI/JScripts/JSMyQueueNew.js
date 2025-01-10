@@ -1099,6 +1099,8 @@ function LoadMyEncounter(ajaxUrl) {
         lengthChange: false,
         searching: true,
         processing: false,
+        scrollCollapse: true,
+        scrollY: '420px',
         ordering: true,
         autoWidth: false,
         order: [],
@@ -1585,7 +1587,7 @@ function LoadMyTask() {
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
-    <table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'>
+    <table id="EncounterTable" class='table table-bordered Gridbodystyle' style=''>
     <thead class='header' style='border: 0px;width:96.7%;'>
     <tr class='header' >
     <th style='border: 1px solid #909090;text-align: center;width:6%'>Priority</th>
@@ -1617,6 +1619,8 @@ function LoadMyTask() {
         lengthChange: false,
         searching: true,
         processing: false,
+        scrollCollapse: true,
+        scrollY: '420px',
         ordering: true,
         autowidth: false,
         order: [],
@@ -1667,13 +1671,13 @@ function LoadMyTask() {
             }
         },
         columns: [
-            { data: 'Priority', searchable: false },
-            { data: 'Human_ID' },
+            { data: 'Priority', searchable: false, sWidth:'6%' },
+            { data: 'Human_ID', sWidth: '7%' },
             {
                 data: 'Last_Name', render: function (data, type, row) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
                 },
-                sClass: 'word-break-all'
+                sClass: 'word-break-all', sWidth: '10%'
             },
             {
                 data: 'Msg_Date_And_Time', render: function (data, type, row) {
@@ -1682,7 +1686,7 @@ function LoadMyTask() {
                     else
                         return ConvertDate(row.Msg_Date_And_Time.replace("T", " ")).split(' ')[0];
                 }, searchable: false,
-                type: 'date'
+                type: 'date', sWidth: '11%'
             },
             {
                 data: 'Message_Description', render: function (data, type, row) {
@@ -1693,10 +1697,10 @@ function LoadMyTask() {
                         titleval = "";
                     }
                     return `<span title="${titleval}">${row.Message_Description}</span>`;
-                }, searchable: false
+                }, searchable: false, sWidth: '11%'
             },
-            { data: 'Assigned_To', searchable: false },
-            { data: 'Created_By', searchable: false },
+            { data: 'Assigned_To', searchable: false, sWidth: '11%' },
+            { data: 'Created_By', searchable: false, sWidth: '11%' },
             {
                 data: 'Modified_Date_Time', render: function (data, type, row) {
                     if (row.Modified_Date_Time == "0001-01-01T00:00:00" || !$("#chkMyTask14")[0].checked)
@@ -1704,7 +1708,7 @@ function LoadMyTask() {
                     else
                         return ConvertDate(row.Modified_Date_Time.replace("T", " "));
                 }, searchable: false,
-                type: 'date'
+                type: 'date', sWidth: '11%'
             },
             { data: 'Message_ID', sClass: "hide_column", searchable: false },
             { data: 'Version', sClass: "hide_column", searchable: false },
@@ -1724,7 +1728,7 @@ function LoadMyTask() {
     $('#EncounterTable_info').css({
         'min-width': '180px'
     });
-
+   
     //$('#EncounterTable_filter input').unbind();
 
     $('#EncounterTable tbody').on('dblclick', 'tr', function () {
@@ -1794,6 +1798,8 @@ function loadMyorder() {
         serverSide: false,
         lengthChange: false,
         searching: true,
+        scrollCollapse: true,
+        scrollY: '420px',
         processing: false,
         ordering: true,
         autoWidth: false,
@@ -1847,23 +1853,23 @@ function loadMyorder() {
                     return ConvertDate(data.replace("T", " "));
                 },
                 searchable: false,
-                type: 'date'
+                type: 'date', sWidth:'9%'
             },
             { data: 'Test_Date', searchable: false, sClass: 'hide_column' },
-            { data: 'Human_ID' },
-            { data: 'External_Account_Number', searchable: false },
+            { data: 'Human_ID', sWidth: '6%' },
+            { data: 'External_Account_Number', searchable: false, sWidth: '6%' },
             {
                 data: 'Last_Name', render: function (data, type, row) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
                 },
-                sClass: 'word-break-all'
+                sClass: 'word-break-all', sWidth: '10%'
             },
             {
                 data: 'DOB', render: function (data, type, row) {
                     return DOBConvert(data.replace("T00:00:00", ""))
                 },
                 searchable: false,
-                type: 'date'
+                type: 'date', sWidth: '8%'
             },
             {
                 data: 'Reason_For_Referral', render: function (data, type, row) {
@@ -1898,10 +1904,10 @@ function loadMyorder() {
                     }
                     return description;
                 },
-                searchable: false
+                searchable: false, sWidth: '10%'
             },
-            { data: 'PhyName', searchable: false },
-            { data: 'Current_Process', searchable: false, sClass: 'process-word-wrap' },
+            { data: 'PhyName', searchable: false, sWidth: '10%' },
+            { data: 'Current_Process', searchable: false, sClass: 'process-word-wrap', sWidth: '10%' },
             {
                 data: 'Referred_to', render: function (data, type, row) {
                     var referredTo = "";
@@ -1919,7 +1925,7 @@ function loadMyorder() {
                     }
                     return referredTo;
                 },
-                searchable: false
+                searchable: false, sWidth: '10%'
             },
             { data: 'Lab_Loc_Name', sClass: 'hide_column', searchable: false },
             { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
@@ -1932,8 +1938,8 @@ function loadMyorder() {
             { data: 'Referred_to_Facility', sClass: 'hide_column', searchable: false },
             { data: 'ResultMasterID', sClass: 'hide_column', searchable: false },
             { data: 'File_Reference_No', sClass: 'hide_column', searchable: false },
-            { data: 'Is_Narrative', searchable: false },
-            { data: 'Is_Abnormal', render: function (data, type, row) { if (data != "") { return data.toUpperCase(); } else { return "NO"; } }, searchable: false },
+            { data: 'Is_Narrative', searchable: false, sWidth: '10%' },
+            { data: 'Is_Abnormal', render: function (data, type, row) { if (data != "") { return data.toUpperCase(); } else { return "NO"; } }, searchable: false, sWidth: '4%' },
         ],
         createdRow: function (row, data, dataIndex) {
             if (data.Is_Abnormal == "Yes") {
@@ -2091,12 +2097,14 @@ function loadMyscan() {
     //    }
     //});
     $('#MyQTable').empty();
-    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
+    $("#MyQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style=''><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width:16%'>File Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>No of Pages</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Scan Date</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Facility Name</th><th style='border: 1px solid #909090;text-align: center;width:16%'>Current Process</th><th style='border: 1px solid #909090;display:none;'>Scan_ID</th><th style='border: 1px solid #909090;display:none;'>Human_ID</th></tr></thead></table>");
 
     var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
         lengthChange: false,
         searching: true,
+        scrollCollapse: true,
+        scrollY: '420px',
         processing: false,
         ordering: true,
         autowidth: false,
@@ -2251,6 +2259,8 @@ function loadMyprescription() {
         serverSide: false,
         lengthChange: false,
         searching: true,
+        scrollCollapse: true,
+        scrollY: '420px',
         processing: false,
         ordering: true,
         autoWidth: false,
@@ -2305,24 +2315,24 @@ function loadMyprescription() {
                     return ConvertDate(data.replace("T", " "));
                 },
                 searchable: false,
-                type: 'date'
+                type: 'date', sWidth:'20%'
             },
-            { data: 'Human_ID' },
-            { data: 'External_Account_Number', searchable: false },
+            { data: 'Human_ID', sWidth: '6%' },
+            { data: 'External_Account_Number', searchable: false, sWidth: '7%' },
             {
                 data: 'Last_Name', render: function (data, type, row) {
                     return row.Last_Name + "," + row.First_Name + " " + row.MI;
                 },
-                sClass: 'word-break-all'
+                sClass: 'word-break-all', sWidth: '20%'
             },
             {
                 data: 'DOB', render: function (data, type, row) {
                     return DOBConvert(data.replace("T00:00:00", ""))
                 },
                 searchable: false,
-                type: 'date'
+                type: 'date', sWidth: '20%'
             },
-            { data: 'Current_Process', searchable: false, sClass: 'process-word-wrap' },
+            { data: 'Current_Process', searchable: false, sClass: 'process-word-wrap', sWidth: '20%' },
             { data: 'Encounter_ID', sClass: 'hide_column', searchable: false },
             { data: 'Prescription_Id', sClass: 'hide_column', searchable: false },
             { data: 'EHR_Obj_Type', sClass: 'hide_column', searchable: false },
@@ -2452,6 +2462,8 @@ function loadMyAmendment() {
         serverSide: false,
         lengthChange: false,
         searching: true,
+        scrollCollapse: true,
+        scrollY: '420px',
         processing: false,
         ordering: true,
         autowidth: false,
@@ -2692,6 +2704,8 @@ function LoadGeneralEncounter(ajaxUrl) {
         serverSide: false,
         lengthChange: false,
         searching: true,
+        scrollCollapse: true,
+        scrollY: '413px',
         processing: false,
         ordering: true,
         autoWidth: false,
@@ -2912,6 +2926,8 @@ function loadTask() {
             serverSide: false,
             lengthChange: false,
             searching: true,
+            scrollCollapse: true,
+            scrollY: '410px',
             processing: false,
             ordering: true,
             autoWidth: false,
@@ -2968,15 +2984,15 @@ function loadTask() {
                         return " <td style='width:5%'><input type = 'checkbox' class='myQChkbx' onclick = 'checkboxclick(this)' /></td >";
                     },
                     searchable: false,
-                    orderable: false
+                    orderable: false, sWidth:'1%'
                 },
-                { data: 'Priority', searchable: false },
-                { data: 'Human_ID' },
+                { data: 'Priority', searchable: false, sWidth: '7%' },
+                { data: 'Human_ID', sWidth: '5%' },
                 {
                     data: 'Last_Name', render: function (data, type, row) {
                         return row.Last_Name + "," + row.First_Name + " " + row.MI;
                     },
-                    sClass: 'word-break-all'
+                    sClass: 'word-break-all', sWidth: '7%'
                 },
                 {
                     data: 'Msg_Date_And_Time', render: function (data, type, row) {
@@ -2985,7 +3001,7 @@ function loadTask() {
                         else
                             return ConvertDate(row.Msg_Date_And_Time.replace("T", " ")).split(' ')[0];
                     }, searchable: false,
-                    type: 'date'
+                    type: 'date', sWidth: '7%'
                 },
                 {
                     data: 'Message_Description', render: function (data, type, row) {
@@ -2996,10 +3012,10 @@ function loadTask() {
                             titleval = "";
                         }
                         return `<span title="${titleval}">${row.Message_Description}</span>`;
-                    }, searchable: false
+                    }, searchable: false, sWidth: '8%'
                 },
-                { data: 'Facility_Name', searchable: false },
-                { data: 'Created_By', searchable: false },
+                { data: 'Facility_Name', searchable: false, sWidth: '7%' },
+                { data: 'Created_By', searchable: false, sWidth: '7%' },
                 { data: 'Message_ID', sClass: "hide_column", searchable: false },
             ],
             initComplete: function (settings, json) {
@@ -3225,13 +3241,15 @@ function loadorder() {
 
     }
     $('#GeneralQTable').empty();
-    $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style='table-layout: fixed;'><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 3%;'>Select<input type='checkbox' class='GenQChkbxAll'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;width:10%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;;width:10%'>Acct. #</th><th style='border: 1px solid #909090;;width:10%'>Ext. Acct. #</th><th style='border: 1px solid #909090;;width:10%'>Patient Name</th><th style='border: 1px solid #909090;;width:10%'>Patient DOB</th><th style='border: 1px solid #909090;;width:10%'>Description</th><th style='border: 1px solid #909090;;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;;width:10%'>Current Process</th><th style='border: 1px solid #909090;;width:10%'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none;'>Referred to Facility</th></tr></thead></table>");
+    $("#GeneralQTable").append("<table id=EncounterTable class='table table-bordered Gridbodystyle' ' style=''><thead class='header' style='border: 0px;width:96.7%;'><tr class='header' ><th style='border: 1px solid #909090;text-align: center;width: 3%;'>Select<input type='checkbox' class='GenQChkbxAll'  onclick='selectAll(this)'/></th><th style='border: 1px solid #909090;width:10%'>Order Date</th><th style='border: 1px solid #909090;display:none;'>Test Date</th><th style='border: 1px solid #909090;;width:10%'>Acct. #</th><th style='border: 1px solid #909090;;width:10%'>Ext. Acct. #</th><th style='border: 1px solid #909090;;width:10%'>Patient Name</th><th style='border: 1px solid #909090;;width:10%'>Patient DOB</th><th style='border: 1px solid #909090;;width:10%'>Description</th><th style='border: 1px solid #909090;;width:10%'>Ordering Physician</th><th style='border: 1px solid #909090;;width:10%'>Current Process</th><th style='border: 1px solid #909090;;width:10%'>Lab</th><th style='border: 1px solid #909090;display:none;'>Lab Location</th><th style='border: 1px solid #909090;display:none;'>Encounter_ID</th><th style='border: 1px solid #909090;display:none;'>Physician_ID</th><th style='border: 1px solid #909090;display:none;'>Order_ID</th><th style='border: 1px solid #909090;display:none;'>ObjType</th><th style='border: 1px solid #909090;display:none;'>LabID</th><th style='border: 1px solid #909090;display:none;'>LocationID</th><th style='border: 1px solid #909090;display:none;'>Order_Submit_ID</th><th style='border: 1px solid #909090;display:none;'>Referred to Facility</th></tr></thead></table>");
 
 
     var dataTable = new DataTable('#EncounterTable', {
         serverSide: false,
         lengthChange: false,
         searching: true,
+        scrollCollapse: true,
+        scrollY: '395px',
         processing: false,
         ordering: true,
         autowidth: false,
@@ -3472,6 +3490,8 @@ function loadamend() {
             serverSide: false,
             lengthChange: false,
             searching: true,
+            scrollCollapse: true,
+            scrollY: '420px',
             processing: false,
             ordering: true,
             autoWidth: false,
@@ -3523,7 +3543,7 @@ function loadamend() {
                         return " <td style='width:3%'><input type = 'checkbox' onclick = 'checkboxclick(this)' /></td >";
                     }, 
                     searchable: false,
-                    orderable: false
+                    orderable: false, sWidth:'3%'
                 },
                 {
                     data: 'Appt_Date_Time', render: function (data, type, row) {
@@ -3532,7 +3552,7 @@ function loadamend() {
                         else
                             return ConvertDate(row.Appt_Date_Time.replace("T", " "));
                     }, searchable: false,
-                    type: 'date'
+                    type: 'date', sWidth: '9%'
                 },
                 {
                     data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
@@ -3541,17 +3561,17 @@ function loadamend() {
                         else
                             return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
                     }, searchable: false,
-                    type: 'date'
+                    type: 'date', sWidth: '9%'
                 },
-                { data: 'Human_ID' },
-                { data: 'External_Account_Number', searchable: false },
+                { data: 'Human_ID', sWidth: '6%' },
+                { data: 'External_Account_Number', searchable: false, sWidth: '7%' },
                 {
                     data: 'Last_Name', render: function (data, type, row) {
                         return row.Last_Name + "," + row.First_Name + " " + row.MI;
                     },
-                    sClass: 'word-break-all'
+                    sClass: 'word-break-all', sWidth: '9%'
                 },
-                { data: 'Current_Process', searchable: false },
+                { data: 'Current_Process', searchable: false, sWidth: '9%' },
                 {
                     data: 'Addendum_Created_Date_Time', render: function (data, type, row) {
                         if (row.Addendum_Created_Date_Time == "0001-01-01T00:00:00")
@@ -3559,10 +3579,10 @@ function loadamend() {
                         else
                             return ConvertDate(row.Addendum_Created_Date_Time.replace("T", " "));
                     }, searchable: false,
-                    type: 'date'
+                    type: 'date', sWidth: '9%'
                 },
-                { data: 'Addendum_Created_By', searchable: false },
-                { data: 'Addendum_Signed_By', searchable: false },
+                { data: 'Addendum_Created_By', searchable: false, sWidth: '9%' },
+                { data: 'Addendum_Signed_By', searchable: false, sWidth: '9%' },
                 { data: 'Encounter_ID', sClass: "hide_column", searchable: false },
                 { data: 'Physician_ID', sClass: "hide_column", searchable: false },
                 { data: 'EHR_Obj_Type', sClass: "hide_column", searchable: false },
