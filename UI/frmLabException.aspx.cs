@@ -18,6 +18,7 @@ using System.Text;
 using Acurus.Capella.UI;
 using System.Xml;
 using Telerik.Web.UI;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -107,18 +108,39 @@ namespace Acurus.Capella.UI
                 string labIdList = string.Empty;
 
                 //BugID:46054
-                XmlDocument xmldocUser = new XmlDocument();
-                xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "LabList" + ".xml");
-                XmlNodeList xmlLabList = xmldocUser.GetElementsByTagName("Lab");
+                //XmlDocument xmldocUser = new XmlDocument();
+                //xmldocUser.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "LabList" + ".xml");
+                //XmlNodeList xmlLabList = xmldocUser.GetElementsByTagName("Lab");
+                //int count = 0;
+                //cboLabName.Items.Add(new RadComboBoxItem(""));
+                //cboLabName.Items[count].Value = "0";
+                //foreach (XmlNode item in xmlLabList)
+                //{
+                //    cboLabName.Items.Add(new RadComboBoxItem(item.Attributes.GetNamedItem("name").Value.ToString()));
+                //    count++;
+                //    cboLabName.Items[count].Value = item.Attributes.GetNamedItem("id").Value;
+                //}
+
+                //CAP-2862
+                Lablist objlablist = new Lablist();
+                objlablist = ConfigureBase<Lablist>.ReadJson("LabList.json");
+                List<Labs> listLabList = new List<Labs>();
+                listLabList = objlablist.Lab.ToList();
                 int count = 0;
                 cboLabName.Items.Add(new RadComboBoxItem(""));
                 cboLabName.Items[count].Value = "0";
-                foreach (XmlNode item in xmlLabList)
+                if (listLabList != null && listLabList.Count > 0)
                 {
-                    cboLabName.Items.Add(new RadComboBoxItem(item.Attributes.GetNamedItem("name").Value.ToString()));
-                    count++;
-                    cboLabName.Items[count].Value = item.Attributes.GetNamedItem("id").Value;
+                    foreach (Labs objlab in listLabList)
+                    {
+                        cboLabName.Items.Add(new RadComboBoxItem(objlab.name.ToString()));
+                        cboLabName.Items[count].Value = objlab.id;
+                        count++;
+                    }
                 }
+
+
+
                 StaticLookupManager sm = new StaticLookupManager();
                 IList<StaticLookup> Errorlst = sm.getStaticLookupByFieldName("ERROR_CODE");
                 cboErrorReason.Items.Add(new RadComboBoxItem(""));
