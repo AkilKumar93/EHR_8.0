@@ -30,6 +30,7 @@ using Telerik.Web.UI.Skins;
 using Acurus.Capella.UI.Extensions;
 using User = Acurus.Capella.Core.DomainObjects.User;
 using System.Collections.Specialized;
+using Acurus.Capella.Core.DTOJson;
 
 namespace Acurus.Capella.UI
 {
@@ -98,29 +99,58 @@ namespace Acurus.Capella.UI
 
             XmlDocument xmldoc = new XmlDocument();
 
-            string strXmlFilePath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
-            if (File.Exists(strXmlFilePath) == true)
-            {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-                XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
+            //Jira cap - 2769 - XML to JSON
+            //XmlDocument xmldoc = new XmlDocument();
 
-                if (xmlFacilityList.Count > 0)
+            //string strXmlFilePath = System.IO.Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
+            //    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
+
+            //    if (xmlFacilityList.Count > 0)
+            //    {
+            //        foreach (XmlNode item in xmlFacilityList)
+            //        {
+            //            if (item != null && item.Attributes.GetNamedItem("Legal_Org").Value == legal_org)
+            //                cboFacilityName.Items.Add(item.Attributes[0].Value);
+            //        }
+            //        //CAP-2197
+            //        if (!string.IsNullOrWhiteSpace(ClientSession.EmailAddress) && !isPageLoad)
+            //        {
+            //            var userDetails = UserMngr.GetUserDetailsByEmailAddressAndLegalOrg(ClientSession.EmailAddress, legal_org);
+            //            cboFacilityName.Value = (userDetails?.Count??0) > 0 ? userDetails[0]?.Default_Facility?? ClientSession.FacilityName : ClientSession.FacilityName;
+            //        }
+            //        else
+            //        {
+            //            cboFacilityName.Value = ClientSession.FacilityName;
+            //        }
+            //    }
+            //}
+
+            IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+            Facility_Library ilistFacility_Library = new Facility_Library();
+            ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+            if (ilistFacility_Library != null)
+            {
+                ilistFacilityList = ilistFacility_Library.FacilityList;
+            }
+            if ((ilistFacilityList?.Count ?? 0) > 0)
+            {
+                for (int i = 0; i < ilistFacilityList.Count; i++)
                 {
-                    foreach (XmlNode item in xmlFacilityList)
-                    {
-                        if (item != null && item.Attributes.GetNamedItem("Legal_Org").Value == legal_org)
-                            cboFacilityName.Items.Add(item.Attributes[0].Value);
-                    }
-                    //CAP-2197
-                    if (!string.IsNullOrWhiteSpace(ClientSession.EmailAddress) && !isPageLoad)
-                    {
-                        var userDetails = UserMngr.GetUserDetailsByEmailAddressAndLegalOrg(ClientSession.EmailAddress, legal_org);
-                        cboFacilityName.Value = (userDetails?.Count??0) > 0 ? userDetails[0]?.Default_Facility?? ClientSession.FacilityName : ClientSession.FacilityName;
-                    }
-                    else
-                    {
-                        cboFacilityName.Value = ClientSession.FacilityName;
-                    }
+                    if (ilistFacilityList[i].Legal_Org == legal_org)
+                        cboFacilityName.Items.Add(ilistFacilityList[i].Name);
+                }
+                //CAP-2197
+                if (!string.IsNullOrWhiteSpace(ClientSession.EmailAddress) && !isPageLoad)
+                {
+                    var userDetails = UserMngr.GetUserDetailsByEmailAddressAndLegalOrg(ClientSession.EmailAddress, legal_org);
+                    cboFacilityName.Value = (userDetails?.Count ?? 0) > 0 ? userDetails[0]?.Default_Facility ?? ClientSession.FacilityName : ClientSession.FacilityName;
+                }
+                else
+                {
+                    cboFacilityName.Value = ClientSession.FacilityName;
                 }
             }
         }

@@ -1144,15 +1144,27 @@ namespace Acurus.Capella.UI
             //{
             //    LookUpPerRequest.Add("FacilityCity", facilityList[0].Fac_City);
             //}
+            //Cap - 2769 - XML to JSON
+            //XDocument xmlFacility = XDocument.Load(Server.MapPath(@"ConfigXML\Facility_Library.xml"));
 
-            XDocument xmlFacility = XDocument.Load(Server.MapPath(@"ConfigXML\Facility_Library.xml"));
+            //IEnumerable<XElement> xmlFac = xmlFacility.Element("FacilityList")
+            //    .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == ClientSession.FacilityName);
+            ////.OrderBy(s => (string)s.Attribute("City"));
+            //if (xmlFac != null && xmlFac.Count() > 0)
+            //{
+            //    LookUpPerRequest.Add("FacilityCity", xmlFac.Attributes("City").First().Value.ToString());
+            //}
 
-            IEnumerable<XElement> xmlFac = xmlFacility.Element("FacilityList")
-                .Elements("Facility").Where(aa => aa.Attribute("Name").Value.ToString() == ClientSession.FacilityName);
-            //.OrderBy(s => (string)s.Attribute("City"));
-            if (xmlFac != null && xmlFac.Count() > 0)
+            IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+            Facility_Library ilistFacility_Library = new Facility_Library();
+            ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+            if (ilistFacility_Library != null)
             {
-                LookUpPerRequest.Add("FacilityCity", xmlFac.Attributes("City").First().Value.ToString());
+                ilistFacilityList = ilistFacility_Library.FacilityList.Where(a => a.Name == ClientSession.FacilityName).ToList();
+            }
+            if ((ilistFacilityList?.Count ?? 0) > 0)
+            {
+                LookUpPerRequest.Add("FacilityCity", ilistFacilityList[0].City.ToString());
             }
 
             //IList<StaticLookup> CMGLabNameStaticLookupList = objStaticLookupManager.getStaticLookupByFieldName("CMG LAB NAME");

@@ -543,11 +543,18 @@ function RelationChange() {
 }
 function FacilityLoad() {
     var markers = null;
-    $.get("Facility_Library.xml", {}, function (xml) {
+    //Cap - 2769 - XML to Json
+    //$.get("Facility_Library.xml", {}, function (xml) {
+    //    $('Facility', xml).each(function (i) {
+    //        markers = $(this);
+    //    });
+    //});
+
+    $.get("Facility_Library.json", {}, function (xml) {
         $('Facility', xml).each(function (i) {
             markers = $(this);
         });
-    });
+    }); 
 }
 var Facility = "";
 function FacilityChange(sender) {
@@ -902,14 +909,23 @@ $(document).ready(function () {
                     if (cookies[l].indexOf("CLegalOrg") > -1)
                         CLegalOrg = cookies[l].split("=")[1];
                 }
-                $.get("ConfigXML/Facility_Library.xml", {}, function (xml) {
-                    $("FacilityList", xml).each(function (i) {
-                        $(this).find("Facility").each(function (l) {
-                            if (CLegalOrg.toUpperCase() == $(this).attr("Legal_Org").toUpperCase()) {
-                                $('#ddlFacilityName').append("<option value=''>" + $(this).attr("Name") + "</option>");
+                //Cap - 2769 - XML to JSON
+                //$.get("ConfigXML/Facility_Library.xml", {}, function (xml) {
+                //    $("FacilityList", xml).each(function (i) {
+                //        $(this).find("Facility").each(function (l) {
+                //            if (CLegalOrg.toUpperCase() == $(this).attr("Legal_Org").toUpperCase()) {
+                //                $('#ddlFacilityName').append("<option value=''>" + $(this).attr("Name") + "</option>");
+                //            }
+                //        });
+                //    });
+                $.get("ConfigXML/Facility_Library.json", {}, function (jsonobject) {
+                    if (jsonobject != undefined && jsonobject != null) {
+                        for (var l = 1; l < jsonobject.FacilityList.length; l++) {
+                            if (CLegalOrg.toUpperCase() == jsonobject.FacilityList[l].Legal_Org.toUpperCase()) {
+                                $('#ddlFacilityName').append("<option value=''>" + jsonobject.FacilityList[l].Name + "</option>");
                             }
-                        });
-                    });
+                        }
+                    }
                     var vFacilityNames = sessionStorage.getItem('sFacility');
                     var vddlFacilityName = $("[id*='ddlFacilityName']")[0].options;
                     if (vddlFacilityName.length > 0) {

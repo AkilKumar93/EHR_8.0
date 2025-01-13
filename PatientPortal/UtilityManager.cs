@@ -2166,32 +2166,57 @@ namespace Acurus.Capella.PatientPortal
         {
             IList<FacilityLibrary> AllFacilities = new List<FacilityLibrary>();
             FacilityLibrary CurrentFacility = new FacilityLibrary();
+            //Cap - 2769 - XML to JSON
+            //XmlDocument xmldoc = new XmlDocument();
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
+            //    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
+            //    if (xmlFacilityList.Count > 0)
+            //    {
+            //        foreach (XmlNode facility_details in xmlFacilityList)
+            //        {
+            //            if (facility_details != null)
+            //            {
+            //                CurrentFacility = new FacilityLibrary();
+            //                CurrentFacility.Fac_Name = facility_details.Attributes["Name"].Value.ToString();
+            //                CurrentFacility.Start_Time = facility_details.Attributes["Start_Time"].Value.ToString();
+            //                CurrentFacility.End_Time = facility_details.Attributes["End_Time"].Value.ToString();
+            //                CurrentFacility.Slot_Length = Convert.ToInt16(facility_details.Attributes["Slot_Length"].Value.ToString());
+            //                CurrentFacility.Fac_Address1 = facility_details.Attributes["Primary_IP"].Value.ToString();
+            //                CurrentFacility.Fac_Address2 = facility_details.Attributes["Secondary_IP"].Value.ToString();
+            //                CurrentFacility.Fac_NPI = facility_details.Attributes["Facility_NPI"].Value.ToString();
+            //                CurrentFacility.Taxonomy_Code = facility_details.Attributes["Taxonomy_Code"].Value.ToString();
+            //                CurrentFacility.Taxonomy_Description = facility_details.Attributes["Taxonomy_Description"].Value.ToString();
+            //                AllFacilities.Add(CurrentFacility);
+            //            }
+            //        }
+            //    }
+            //}
 
-            XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
-            if (File.Exists(strXmlFilePath) == true)
+            IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+            Facility_Library ilistFacility_Library = new Facility_Library();
+            ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+            if (ilistFacility_Library != null)
             {
-                xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-                XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
-                if (xmlFacilityList.Count > 0)
+                ilistFacilityList = ilistFacility_Library.FacilityList;
+            }
+            if ((ilistFacilityList?.Count ?? 0) > 0)
+            {
+                for (int i = 0; i < ilistFacilityList.Count; i++)
                 {
-                    foreach (XmlNode facility_details in xmlFacilityList)
-                    {
-                        if (facility_details != null)
-                        {
-                            CurrentFacility = new FacilityLibrary();
-                            CurrentFacility.Fac_Name = facility_details.Attributes["Name"].Value.ToString();
-                            CurrentFacility.Start_Time = facility_details.Attributes["Start_Time"].Value.ToString();
-                            CurrentFacility.End_Time = facility_details.Attributes["End_Time"].Value.ToString();
-                            CurrentFacility.Slot_Length = Convert.ToInt16(facility_details.Attributes["Slot_Length"].Value.ToString());
-                            CurrentFacility.Fac_Address1 = facility_details.Attributes["Primary_IP"].Value.ToString();
-                            CurrentFacility.Fac_Address2 = facility_details.Attributes["Secondary_IP"].Value.ToString();
-                            CurrentFacility.Fac_NPI = facility_details.Attributes["Facility_NPI"].Value.ToString();
-                            CurrentFacility.Taxonomy_Code = facility_details.Attributes["Taxonomy_Code"].Value.ToString();
-                            CurrentFacility.Taxonomy_Description = facility_details.Attributes["Taxonomy_Description"].Value.ToString();
-                            AllFacilities.Add(CurrentFacility);
-                        }
-                    }
+                    CurrentFacility = new FacilityLibrary();
+                    CurrentFacility.Fac_Name = ilistFacilityList[i].Name.ToString();
+                    CurrentFacility.Start_Time = ilistFacilityList[i].Start_Time.ToString();
+                    CurrentFacility.End_Time = ilistFacilityList[i].End_Time.ToString();
+                    CurrentFacility.Slot_Length = Convert.ToInt16(ilistFacilityList[i].Slot_Length.ToString());
+                    CurrentFacility.Fac_Address1 = ilistFacilityList[i].Primary_IP.ToString();
+                    CurrentFacility.Fac_Address2 = ilistFacilityList[i].Secondary_IP.ToString();
+                    CurrentFacility.Fac_NPI = ilistFacilityList[i].Facility_NPI.ToString();
+                    CurrentFacility.Taxonomy_Code = ilistFacilityList[i].Taxonomy_Code.ToString();
+                    CurrentFacility.Taxonomy_Description = ilistFacilityList[i].Taxonomy_Description.ToString();
+                    AllFacilities.Add(CurrentFacility);
                 }
             }
             return AllFacilities.OrderBy(item => item.Fac_Name).ToList<FacilityLibrary>();
@@ -3082,83 +3107,186 @@ namespace Acurus.Capella.PatientPortal
         }
         private static void FillLookupList()
         {
+            // Cap - 2776 - XML to JSON
+            //XmlDocument xmldoc = new XmlDocument();
+            //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\LookupList_CCDAErrors.xml");
 
-            XmlDocument xmldoc = new XmlDocument();
-            string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\LookupList_CCDAErrors.xml");
+            //if (File.Exists(strXmlFilePath) == true)
+            //{
+            //    xmldoc.Load(strXmlFilePath);
+            //    XmlNodeList xmlCodesList = xmldoc.GetElementsByTagName("CodeList");
+            //    if (xmlCodesList != null && xmlCodesList.Count > 0 && xmlCodesList[0].ChildNodes != null && xmlCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlCodesList[0].ChildNodes)
+            //        {
+            //            InValidCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlValueCodesList = xmldoc.GetElementsByTagName("ValueCodeList");
+            //    if (xmlValueCodesList != null && xmlValueCodesList.Count > 0 && xmlValueCodesList[0].ChildNodes != null && xmlValueCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlValueCodesList[0].ChildNodes)
+            //        {
+            //            InValidValueCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlRouteCodesList = xmldoc.GetElementsByTagName("RouteCodeList");
+            //    if (xmlRouteCodesList != null && xmlRouteCodesList.Count > 0 && xmlRouteCodesList[0].ChildNodes != null && xmlRouteCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlRouteCodesList[0].ChildNodes)
+            //        {
+            //            InValidRouteCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlUnitList = xmldoc.GetElementsByTagName("UnitList");
+            //    if (xmlUnitList != null && xmlUnitList.Count > 0 && xmlUnitList[0].ChildNodes != null && xmlUnitList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlUnitList[0].ChildNodes)
+            //        {
+            //            InValidUnitList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlConfidCodesList = xmldoc.GetElementsByTagName("ConfidentialityCodeList");
+            //    if (xmlConfidCodesList != null && xmlConfidCodesList.Count > 0 && xmlConfidCodesList[0].ChildNodes != null && xmlConfidCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlConfidCodesList[0].ChildNodes)
+            //        {
+            //            ValidConfidentialityCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlLangCodesList = xmldoc.GetElementsByTagName("LanguageCodeList");
+            //    if (xmlLangCodesList != null && xmlLangCodesList.Count > 0 && xmlLangCodesList[0].ChildNodes != null && xmlLangCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlLangCodesList[0].ChildNodes)
+            //        {
+            //            ValidLanguageCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlAdminCodesList = xmldoc.GetElementsByTagName("AdministrativeGenderCodeList");
+            //    if (xmlAdminCodesList != null && xmlAdminCodesList.Count > 0 && xmlAdminCodesList[0].ChildNodes != null && xmlAdminCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlAdminCodesList[0].ChildNodes)
+            //        {
+            //            ValidAdministrativeGenderCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlRaceCodesList = xmldoc.GetElementsByTagName("RaceCodeList");
+            //    if (xmlRaceCodesList != null && xmlRaceCodesList.Count > 0 && xmlRaceCodesList[0].ChildNodes != null && xmlRaceCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlRaceCodesList[0].ChildNodes)
+            //        {
+            //            ValidRaceCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //    XmlNodeList xmlEthnicGroupCodesList = xmldoc.GetElementsByTagName("EthnicGroupCodeList");
+            //    if (xmlEthnicGroupCodesList != null && xmlEthnicGroupCodesList.Count > 0 && xmlEthnicGroupCodesList[0].ChildNodes != null && xmlEthnicGroupCodesList[0].ChildNodes.Count > 0)
+            //    {
+            //        foreach (XmlNode CodeNode in xmlEthnicGroupCodesList[0].ChildNodes)
+            //        {
+            //            ValidEthnicGroupCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+            //        }
+            //    }
+            //}
 
-            if (File.Exists(strXmlFilePath) == true)
+            LookupList_CCDAErrors ilistLookupList_CCDAErrors = ConfigureBase<LookupList_CCDAErrors>.ReadJson("LookupList_CCDAErrors.json");
+
+            if (ilistLookupList_CCDAErrors != null && ilistLookupList_CCDAErrors.InvalidList != null)
             {
-                xmldoc.Load(strXmlFilePath);
-                XmlNodeList xmlCodesList = xmldoc.GetElementsByTagName("CodeList");
-                if (xmlCodesList != null && xmlCodesList.Count > 0 && xmlCodesList[0].ChildNodes != null && xmlCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.InvalidList.CodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.InvalidList.CodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        InValidCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            InValidCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlValueCodesList = xmldoc.GetElementsByTagName("ValueCodeList");
-                if (xmlValueCodesList != null && xmlValueCodesList.Count > 0 && xmlValueCodesList[0].ChildNodes != null && xmlValueCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.InvalidList.ValueCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlValueCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.InvalidList.ValueCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        InValidValueCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            InValidValueCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlRouteCodesList = xmldoc.GetElementsByTagName("RouteCodeList");
-                if (xmlRouteCodesList != null && xmlRouteCodesList.Count > 0 && xmlRouteCodesList[0].ChildNodes != null && xmlRouteCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.InvalidList.RouteCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlRouteCodesList[0].ChildNodes)
+                    string Getcodelist = ilistLookupList_CCDAErrors.InvalidList.RouteCodeList.Code.value;
+                    InValidRouteCodeList.Add(Getcodelist);
+                }
+                if (ilistLookupList_CCDAErrors.InvalidList.ValueCodeList != null)
+                {
+                    List<Units> GetUnits = ilistLookupList_CCDAErrors.InvalidList.UnitList.Unit;
+                    if (GetUnits.Count > 0)
                     {
-                        InValidRouteCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < GetUnits.Count; i++)
+                        {
+                            InValidUnitList.Add(GetUnits[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlUnitList = xmldoc.GetElementsByTagName("UnitList");
-                if (xmlUnitList != null && xmlUnitList.Count > 0 && xmlUnitList[0].ChildNodes != null && xmlUnitList[0].ChildNodes.Count > 0)
+            }
+            if (ilistLookupList_CCDAErrors != null && ilistLookupList_CCDAErrors.ValidList != null)
+            {
+                if (ilistLookupList_CCDAErrors.ValidList.ConfidentialityCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlUnitList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.ConfidentialityCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        InValidUnitList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidConfidentialityCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlConfidCodesList = xmldoc.GetElementsByTagName("ConfidentialityCodeList");
-                if (xmlConfidCodesList != null && xmlConfidCodesList.Count > 0 && xmlConfidCodesList[0].ChildNodes != null && xmlConfidCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.ValidList.LanguageCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlConfidCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.LanguageCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        ValidConfidentialityCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidLanguageCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlLangCodesList = xmldoc.GetElementsByTagName("LanguageCodeList");
-                if (xmlLangCodesList != null && xmlLangCodesList.Count > 0 && xmlLangCodesList[0].ChildNodes != null && xmlLangCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.ValidList.AdministrativeGenderCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlLangCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.AdministrativeGenderCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        ValidLanguageCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidAdministrativeGenderCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlAdminCodesList = xmldoc.GetElementsByTagName("AdministrativeGenderCodeList");
-                if (xmlAdminCodesList != null && xmlAdminCodesList.Count > 0 && xmlAdminCodesList[0].ChildNodes != null && xmlAdminCodesList[0].ChildNodes.Count > 0)
+                if (ilistLookupList_CCDAErrors.ValidList.RaceCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlAdminCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.RaceCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        ValidAdministrativeGenderCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidRaceCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
-                XmlNodeList xmlRaceCodesList = xmldoc.GetElementsByTagName("RaceCodeList");
-                if (xmlRaceCodesList != null && xmlRaceCodesList.Count > 0 && xmlRaceCodesList[0].ChildNodes != null && xmlRaceCodesList[0].ChildNodes.Count > 0)
+
+                if (ilistLookupList_CCDAErrors.ValidList.EthnicGroupCodeList != null)
                 {
-                    foreach (XmlNode CodeNode in xmlRaceCodesList[0].ChildNodes)
+                    List<Code> Getcodelist = ilistLookupList_CCDAErrors.ValidList.EthnicGroupCodeList.Code;
+                    if (Getcodelist.Count > 0)
                     {
-                        ValidRaceCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
-                    }
-                }
-                XmlNodeList xmlEthnicGroupCodesList = xmldoc.GetElementsByTagName("EthnicGroupCodeList");
-                if (xmlEthnicGroupCodesList != null && xmlEthnicGroupCodesList.Count > 0 && xmlEthnicGroupCodesList[0].ChildNodes != null && xmlEthnicGroupCodesList[0].ChildNodes.Count > 0)
-                {
-                    foreach (XmlNode CodeNode in xmlEthnicGroupCodesList[0].ChildNodes)
-                    {
-                        ValidEthnicGroupCodeList.Add(CodeNode.Attributes.GetNamedItem("value").Value.ToString());
+                        for (int i = 0; i < Getcodelist.Count; i++)
+                        {
+                            ValidEthnicGroupCodeList.Add(Getcodelist[i].value);
+                        }
                     }
                 }
             }
@@ -3262,6 +3390,7 @@ namespace Acurus.Capella.PatientPortal
                         //        if (itemDoc.GetElementsByTagName("HumanList")[0] != null)
                         //        {
                         //            if (result.ToUpper().Contains("MEMBER"))
+                        //            {
                         //            {
                         //                sExternalAccNo = itemDoc.GetElementsByTagName("HumanList")[0].ChildNodes[0].Attributes.GetNamedItem("Patient_Account_External").Value.ToString();
                         //                NotesName = NotesName.Replace("[" + result + "]", sExternalAccNo);

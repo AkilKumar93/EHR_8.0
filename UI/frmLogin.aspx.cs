@@ -157,32 +157,53 @@ namespace Acurus.Capella.UI
                 if (filteredData != null)
                 {
                     sLegalOrg = filteredData.Legal_Org;
+                    //Jira cap - 2769 - XML to JSON
+                    //string strXmlFacFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
+                    //if (File.Exists(strXmlFacFilePath) == true)
+                    //{
+                    //    xmldocFac.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
 
-                    string strXmlFacFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
-                    if (File.Exists(strXmlFacFilePath) == true)
+                    //    XmlNodeList xmlFacList = xmldocFac.GetElementsByTagName("Facility");
+
+                    //    if (xmlFacList.Count > 0)
+                    //    {
+                    //        foreach (XmlNode itemFac in xmlFacList)
+                    //        {
+                    //            if (sLegalOrg.ToUpper() == itemFac.Attributes.GetNamedItem("Legal_Org").Value.ToUpper())
+                    //            {
+                    //                if (itemFac.Attributes.GetNamedItem("Name").Value.ToUpper() == filteredData.Default_Facility.ToUpper())
+                    //                {
+                    //                    //sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value.ToUpper();
+                    //                    sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value;
+                    //                }
+                    //                // FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value.ToUpper());
+                    //                FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value);
+                    //            }
+                    //        }
+                    //    }
+                    //}
+
+                    IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+                    Facility_Library ilistFacility_Library = new Facility_Library();
+                    ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+                    if (ilistFacility_Library != null)
                     {
-                        xmldocFac.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-
-                        XmlNodeList xmlFacList = xmldocFac.GetElementsByTagName("Facility");
-
-                        if (xmlFacList.Count > 0)
+                        ilistFacilityList = ilistFacility_Library.FacilityList;
+                    }
+                    if ((ilistFacilityList?.Count ?? 0) > 0)
+                    {
+                        for (int i = 0; i < ilistFacilityList.Count; i++)
                         {
-                            foreach (XmlNode itemFac in xmlFacList)
+                            if (sLegalOrg.ToUpper() == ilistFacilityList[i].Legal_Org.ToUpper())
                             {
-                                if (sLegalOrg.ToUpper() == itemFac.Attributes.GetNamedItem("Legal_Org").Value.ToUpper())
+                                if (ilistFacilityList[i].Name.ToUpper() == filteredData.Default_Facility.ToUpper())
                                 {
-                                    if (itemFac.Attributes.GetNamedItem("Name").Value.ToUpper() == filteredData.Default_Facility.ToUpper())
-                                    {
-                                        //sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value.ToUpper();
-                                        sFacilityName = itemFac.Attributes.GetNamedItem("Name").Value;
-                                    }
-                                    // FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value.ToUpper());
-                                    FacList.Add(itemFac.Attributes.GetNamedItem("Name").Value);
+                                    sFacilityName = ilistFacilityList[i].Name;
                                 }
+                                FacList.Add(ilistFacilityList[i].Name);
                             }
                         }
                     }
-
                     //Added by Srividhya on 21-Nov-2015                            
                     ClientSession.FacilityName = sFacilityName;
                 }

@@ -73,25 +73,45 @@ namespace Acurus.Capella.UI
                 FacilityManager objFacilityMngr = new FacilityManager();
                 //IList<FacilityLibrary> FacilityList = objFacilityMngr.GetFacilityList();
 
+                //Cap - 2769 - XML to JSON
+                //XmlDocument xmldoc = new XmlDocument();
 
-                XmlDocument xmldoc = new XmlDocument();
+                //string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
+                //if (File.Exists(strXmlFilePath) == true)
+                //{
+                //    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
+                //    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
+                //    cboFacilityName.Items.Add(new RadComboBoxItem("ALL"));
+                //    if (xmlFacilityList.Count > 0)
+                //    {
+                //        foreach (XmlNode item in xmlFacilityList)
+                //        {
+                //            if (item != null && item.Attributes.GetNamedItem("Legal_Org").Value == ClientSession.LegalOrg)
+                //                cboFacilityName.Items.Add(new RadComboBoxItem(item.Attributes[0].Value));
+                //            //Cap - 534
+                //            //if (item != null && ClientSession.FacilityName == item.Attributes[0].Value)                              
+                //            //cboFacilityName.SelectedIndex = cboFacilityName.Items.FindItemIndexByText(item.Attributes[0].Value);                           
+                //        }
+                //    }
+                //}
 
-                string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\Facility_Library.xml");
-                if (File.Exists(strXmlFilePath) == true)
+                IList<FacilityList> ilistFacilityList = new List<FacilityList>();
+                Facility_Library ilistFacility_Library = new Facility_Library();
+                ilistFacility_Library = ConfigureBase<Facility_Library>.ReadJson("Facility_Library.json");
+                if (ilistFacility_Library != null)
                 {
-                    xmldoc.Load(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + "Facility_Library" + ".xml");
-                    XmlNodeList xmlFacilityList = xmldoc.GetElementsByTagName("Facility");
-                    cboFacilityName.Items.Add(new RadComboBoxItem("ALL"));
-                    if (xmlFacilityList.Count > 0)
+                    ilistFacilityList = ilistFacility_Library.FacilityList;
+                }
+                cboFacilityName.Items.Add(new RadComboBoxItem("ALL"));
+                if ((ilistFacilityList?.Count ?? 0) > 0)
+                {
+                    for (int i = 0; i < ilistFacilityList.Count; i++)
                     {
-                        foreach (XmlNode item in xmlFacilityList)
+                        if (ilistFacilityList[i].Legal_Org == ClientSession.LegalOrg)
                         {
-                            if (item != null && item.Attributes.GetNamedItem("Legal_Org").Value == ClientSession.LegalOrg)
-                                cboFacilityName.Items.Add(new RadComboBoxItem(item.Attributes[0].Value));
-                            //Cap - 534
-                            //if (item != null && ClientSession.FacilityName == item.Attributes[0].Value)                              
-                            //cboFacilityName.SelectedIndex = cboFacilityName.Items.FindItemIndexByText(item.Attributes[0].Value);                           
+                            cboFacilityName.Items.Add(new RadComboBoxItem(ilistFacilityList[i].Name));
                         }
+
                     }
                 }
 
