@@ -2469,7 +2469,7 @@ namespace Acurus.Capella.PatientPortal
                     {
                         for (int i = 0; i < ilstItem.Count; i++)
                         {
-                            var matchingItems = staticLookupList.FollowupList
+                            var matchingItems = staticLookupList.MammogramTypeList
                             .Where(item => item.Description.ToUpper() == ilstItem[i].ToString().ToUpper())
                             .ToList();
 
