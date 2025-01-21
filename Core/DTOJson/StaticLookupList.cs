@@ -173,7 +173,7 @@ namespace Acurus.Capella.Core.DTOJson
 
             StaticLookUpList = new StaticLookUplst();
             HelpMenuList = new HelpMenuList();
-            FollowupForBPStatusList = new FollowupForBPStatusList();            FaxFolderNameList = new List<FaxFolderNameList>();
+            FollowupForBPStatusList = new FollowupForBPStatusList();            FaxFolderNameList = new List<FaxFolderNameList>();            FollowupReasonnotperformedList = new List<FollowupReasonnotperformedList>();
         }
         public List<VitalList> VitalList { get; set; }
         public List<ReasonNotPerformedList> ReasonNotPerformedList { get; set; }
@@ -201,6 +201,8 @@ namespace Acurus.Capella.Core.DTOJson
         public List<ServiceTypeList> ServiceTypeList { get; set; }
         public List<ServiceTypeSelectionList> ServiceTypeSelectionList { get; set; }
         public List<FaxFolderNameList> FaxFolderNameList { get; set; }
+        //CAP-2869
+        public List<FollowupReasonnotperformedList> FollowupReasonnotperformedList { get; set; }
         public HelpMenuList HelpMenuList { get; set; }
     }
 
@@ -261,5 +263,12 @@ namespace Acurus.Capella.Core.DTOJson
         public string Description { get; set; }
     }
 
-
+    public class FollowupReasonnotperformedList
+    {
+        public string Field_Name { get; set; }
+        public string Value { get; set; }
+        public string Description { get; set; }
+        public string Sort_Order { get; set; }
+        public string Default_Value { get; set; }
+    }
 }

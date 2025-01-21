@@ -6731,5 +6731,35 @@
       "Name": "Cash Price List",
       "ReferenceLink": "Documents\\User_Manual\\Cash Price List.pdf"
     }
-  }
+  },
+  "FollowupReasonnotperformedList": [
+      {
+        "Field_Name": "FOLLOWUP_REASON_NOT_PERFORMED FOR BMI",
+        "Value": "Procedure contraindicated",
+        "Description": "183932001",
+        "Sort_Order": "1",
+        "Default_Value": "N"
+      },
+      {
+        "Field_Name": "FOLLOWUP_REASON_NOT_PERFORMED FOR BMI",
+        "Value": "Medical contraindication",
+        "Description": "397745006",
+        "Sort_Order": "2",
+        "Default_Value": "N"
+      },
+      {
+        "Field_Name": "FOLLOWUP_REASON_NOT_PERFORMED FOR BMI",
+        "Value": "Treatment not tolerated",
+        "Description": "407563006",
+        "Sort_Order": "3",
+        "Default_Value": "N"
+      },
+      {
+        "Field_Name": "FOLLOWUP_REASON_NOT_PERFORMED FOR BMI",
+        "Value": "Procedure not indicated",
+        "Description": "428119001",
+        "Sort_Order": "4",
+        "Default_Value": "N"
+      }
+    ]
 }

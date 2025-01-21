@@ -3266,7 +3266,7 @@ namespace Acurus.Capella.UI
             IList<StaticLookup> iFieldLookupList = new List<StaticLookup>();
             IList<string> ilstItem = sEnteredItem.Split(',').Select(i => i.TrimStart().ToString()).ToList<string>();
 
-
+            #region XML code
             //    string strXmlFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath, "ConfigXML\\staticlookup.xml");
             //    if (File.Exists(strXmlFilePath) == true)
             //    {
@@ -3297,6 +3297,8 @@ namespace Acurus.Capella.UI
             //            sSnomed = string.Empty;
             //        }
             //    }
+            #endregion
+
             //CAP-2787
             StaticLookupList staticLookupList = ConfigureBase<StaticLookupList>.ReadJson("staticlookup.json");
             if (staticLookupList != null)
@@ -3305,24 +3307,90 @@ namespace Acurus.Capella.UI
                 {
                     if (ilstItem.Count > 0)
                     {
+
                         for (int i = 0; i < ilstItem.Count; i++)
                         {
-                            var matchingItems = staticLookupList.FollowupList
-                            .Where(item => item.Description.ToUpper() == ilstItem[i].ToString().ToUpper())
-                            .ToList();
+                            //CAP-2869
+                            switch (sReasonOrFollowup){
+                                case "MammogramTypeList":
+                                    var MammogramType = staticLookupList.MammogramTypeList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper());
 
-                            foreach (var match in matchingItems)
-                            {
-                                if (string.IsNullOrEmpty(sSnomed))
-                                {
-                                    sSnomed = $"{match.Description}";
-                                }
-                                else
-                                {
-                                    sSnomed += $",{match.Description}";
-                                }
+                                    if (MammogramType != null)
+                                    {
+                                        if (string.IsNullOrEmpty(sSnomed))
+                                        {
+                                            sSnomed = $"{MammogramType.Description}";
+                                        }
+                                        else
+                                        {
+                                            sSnomed += $",{MammogramType.Description}";
+                                        }
+                                    }
+
+                                    break;
+                                case "FoodAllergySnomedList":
+                                    var FoodAllergySnomed = staticLookupList.FoodAllergySnomedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper());
+
+                                    if (FoodAllergySnomed != null)
+                                    {
+                                        if (string.IsNullOrEmpty(sSnomed))
+                                        {
+                                            sSnomed = $"{FoodAllergySnomed.Description}";
+                                        }
+                                        else
+                                        {
+                                            sSnomed += $",{FoodAllergySnomed.Description}";
+                                        }
+                                    }
+                                    break;
+                                case "ReasonNotPerformedList":
+                                    var ReasonNotPerformed = staticLookupList.ReasonNotPerformedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper());
+
+                                    if (ReasonNotPerformed != null)
+                                    {
+                                        if (string.IsNullOrEmpty(sSnomed))
+                                        {
+                                            sSnomed = $"{ReasonNotPerformed.Description}";
+                                        }
+                                        else
+                                        {
+                                            sSnomed += $",{ReasonNotPerformed.Description}";
+                                        }
+                                    }
+                                    break;
+                                case "FollowupList":
+                                    var Followup = staticLookupList.FollowupList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper());
+
+                                    if (Followup != null)
+                                    {
+                                        if (string.IsNullOrEmpty(sSnomed))
+                                        {
+                                            sSnomed = $"{Followup.Description}";
+                                        }
+                                        else
+                                        {
+                                            sSnomed += $",{Followup.Description}";
+                                        }
+                                    }
+                                    break;
+                                case "FollowupReasonnotperformedList":
+                                    var FollowupReasonnotperformed = staticLookupList.FollowupReasonnotperformedList.FirstOrDefault(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.Value.ToUpper() == ilstItem[i].ToString().ToUpper());
+
+                                    if (FollowupReasonnotperformed != null)
+                                    {
+                                        if (string.IsNullOrEmpty(sSnomed))
+                                        {
+                                            sSnomed = $"{FollowupReasonnotperformed.Description}";
+                                        }
+                                        else
+                                        {
+                                            sSnomed += $",{FollowupReasonnotperformed.Description}";
+                                        }
+                                    }
+                                    break;
+
+
                             }
-
                         }
                     }
                 }
@@ -3384,8 +3452,8 @@ namespace Acurus.Capella.UI
                     {
                         for (int i = 0; i < ilstItem.Count; i++)
                         {
-                            var matchingItems = staticLookupList.FollowupList
-                            .Where(item => item.Description.ToUpper() == ilstItem[i].ToString().ToUpper())
+                            var matchingItems = staticLookupList.ReasonNotPerformedList
+                            .Where(item => item.Field_Name.ToUpper().Contains(sFieldName.ToUpper()) && item.value.ToUpper() == ilstItem[i].ToString().ToUpper())
                             .ToList();
 
                             foreach (var match in matchingItems)
