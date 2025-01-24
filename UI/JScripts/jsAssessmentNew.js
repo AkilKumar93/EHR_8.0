@@ -1743,13 +1743,15 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
                 obj = Decompress(response.d);
             }
 
-            if (obj.indexOf("Message-") > -1) {
-                DisplayErrorMessage(obj.split('-')[1]);
+            var isMessageText = obj.toString();
+
+            if (isMessageText.indexOf("Message-") > -1) {
+                DisplayErrorMessage(obj.toString().split('-')[1]);
                 $scope.SaveEnableDisable(true);
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             }
             else {
-                var objAssessmentDTO = JSON.parse(obj);
+                var objAssessmentDTO = obj;
 
                 $scope.AssessmentTable = objAssessmentDTO.AssessmentList;
                 $scope.orderByField = ['-IsPrimary', 'ICDCode'];
