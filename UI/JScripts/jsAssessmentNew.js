@@ -1734,7 +1734,14 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             }
         }).success(function (response) {
             //CAP-2598
-            var obj = Decompress(response.d);
+            var obj;
+            if (response.d == "Session Expired" || response.d == "Message-210010" || response.d == "Message-210016" || response.d == "Message-170014") {
+                obj = response.d;
+            }
+            else
+            {
+                obj = Decompress(response.d);
+            }
 
             if (obj.indexOf("Message-") > -1) {
                 DisplayErrorMessage(obj.split('-')[1]);
