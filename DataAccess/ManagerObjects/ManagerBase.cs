@@ -2404,6 +2404,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         string TransactionType;
                         string TransactionBy;
                         string Transaction_Date_Time;
+
+                        if (NHibernateSessionUtility.Instance.MyAuditLogList.Any(x => x == null))
+                        {
+                            //CAP-2698,CAP-2891
+                            string methodName = MethodBase.GetCurrentMethod().Name;
+
+                            var auditLogData = new StringBuilder();
+
+                            for(var i=0; i < NHibernateSessionUtility.Instance.MyAuditLogList.Count; i++)
+                            {
+                                if (NHibernateSessionUtility.Instance.MyAuditLogList[i] == null)
+                                {
+                                    auditLogData.AppendLine("null");
+                                }
+                                else
+                                {
+                                    var aLog = NHibernateSessionUtility.Instance.MyAuditLogList[i];
+                                    
+                                    auditLogData.AppendLine($"EntityName: {aLog.Entity_Name} EntityId: {aLog.Entity_Id} HumanId: {aLog.Human_ID} PropertyName: {aLog.Attribute} Current Value: {aLog.New_Value} Previous Value: {aLog.Old_Value}"); ;
+                                }
+                            }
+                            AuditInterceptor.AuditLogErrorMessege(methodName, "Audit Log NULL Entry Found", auditLogData.ToString());
+                            NHibernateSessionUtility.Instance.MyAuditLogList = NHibernateSessionUtility.Instance.MyAuditLogList.Where(x => x != null).ToList();
+                        }
+
                         if (NHibernateSessionUtility.Instance.MyAuditLogList != null && NHibernateSessionUtility.Instance.MyAuditLogList.Count > 0)
                         {
                             string[] lstHumanID = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Human_ID.ToString()).ToArray();
@@ -2460,6 +2485,33 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     string TransactionType;
                     string TransactionBy;
                     string Transaction_Date_Time;
+
+                    //CAP-2698
+                    if (NHibernateSessionUtility.Instance.MyAuditLogList.Any(x => x == null))
+                    {
+                        //CAP-2698,CAP-2891
+                        string methodName = MethodBase.GetCurrentMethod().Name;
+
+                        var auditLogData = new StringBuilder();
+
+                        for (var i = 0; i < NHibernateSessionUtility.Instance.MyAuditLogList.Count; i++)
+                        {
+                            if (NHibernateSessionUtility.Instance.MyAuditLogList[i] == null)
+                            {
+                                auditLogData.AppendLine("null");
+                            }
+                            else
+                            {
+                                var aLog = NHibernateSessionUtility.Instance.MyAuditLogList[i];
+
+                                auditLogData.AppendLine($"EntityName: {aLog.Entity_Name} EntityId: {aLog.Entity_Id} HumanId: {aLog.Human_ID} PropertyName: {aLog.Attribute} Current Value: {aLog.New_Value} Previous Value: {aLog.Old_Value}"); ;
+                            }
+                        }
+
+                        AuditInterceptor.AuditLogErrorMessege(methodName, "Audit Log NULL Entry Found", auditLogData.ToString());
+                        NHibernateSessionUtility.Instance.MyAuditLogList = NHibernateSessionUtility.Instance.MyAuditLogList.Where(x => x != null).ToList();
+                    }
+
                     if (NHibernateSessionUtility.Instance.MyAuditLogList != null && NHibernateSessionUtility.Instance.MyAuditLogList.Count > 0)
                     {
                         string[] lstHumanID = NHibernateSessionUtility.Instance.MyAuditLogList.Select(a => a.Human_ID.ToString()).ToArray();
@@ -3300,12 +3352,33 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         newaudit.Human_ID = Convert.ToInt32(saveList[i].GetType().GetProperty("Id").GetValue(saveList[i], null).ToString());
                                     newaudit.Transaction_By = saveList[i].GetType().GetProperty("Created_By").GetValue(saveList[i], null).ToString();
                                     newaudit.Transaction_Date_And_Time = saveList[i].GetType().GetProperty("Created_Date_And_Time") == null ? Convert.ToDateTime(saveList[i].GetType().GetProperty("Created_Date_and_Time").GetValue(saveList[i], null).ToString()) : Convert.ToDateTime(saveList[i].GetType().GetProperty("Created_Date_And_Time").GetValue(saveList[i], null).ToString());
+
+                                    //CAP-2891
+                                    if (newaudit == null)
+                                    {
+                                        string methodName = MethodBase.GetCurrentMethod().Name;
+
+                                        var human_Id = 0;
+                                        var entity_Id = Convert.ToUInt64(saveList[i].GetType().GetProperty("Id").GetValue(saveList[i], null).ToString());
+
+                                        if ((saveList[i].GetType().GetProperty("Human_ID") != null || saveList[i].GetType().GetProperty("Human_Id") != null))
+                                            human_Id = saveList[i].GetType().GetProperty("Human_ID") == null ? Convert.ToInt32(saveList[i].GetType().GetProperty("Human_Id").GetValue(saveList[i], null).ToString()) : Convert.ToInt32(saveList[i].GetType().GetProperty("Human_ID").GetValue(saveList[i], null).ToString());
+                                        if (table_name.Equals("Acurus.Capella.Core.DomainObjects.Human"))
+                                            human_Id = Convert.ToInt32(saveList[i].GetType().GetProperty("Id").GetValue(saveList[i], null).ToString());
+
+                                        var lineNumber = $"EntityName: {table_name} EntityId: {entity_Id} HumanId: {human_Id} PropertyName: {prop.Name} Current Value: {string.Empty} Previous Value: {prop.GetValue(saveList[i], null).ToString()}";
+
+                                        AuditInterceptor.AuditLogErrorMessege(methodName, "Audit Log null entry", lineNumber);
+                                    }
+                                    else 
+                                    { 
                                     NHibernateSessionUtility.Instance.MyAuditLogList.Add(newaudit);
                                 }
                             }
                         }
                     }
                 }
+            }
             }
 
             /* if (DeleteList != null && DeleteList.Count > 0)

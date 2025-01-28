@@ -493,6 +493,9 @@ using Acurus.Capella.Core;
 using Acurus.Capella.Core.DomainObjects;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
+using System.Configuration;
+using System.Reflection;
 
 //Added by Selvaraman - for AuditTrail
 namespace Acurus.Capella.DataAccess
@@ -567,9 +570,30 @@ namespace Acurus.Capella.DataAccess
                     {
                         //throw new Exception("Cannot identify Human_ID for Audit Trail");
                     }
-
                     //AuditLogList.Add(audit);
+
+                    //CAP-2891
+                    if (audit == null)
+                    {
+                        string methodName = MethodBase.GetCurrentMethod().Name;
+
+                        var data = new StringBuilder();
+                        for (int index = 0; index < propertyNames.Length; index++)
+                        {
+                            var propertyName = propertyNames.Length > index ? propertyNames[index] : "";
+                            var currentStateValue = state.Length > index ? state[index] : "";
+
+                            data.AppendLine($"property name: {propertyName}, current value: {currentStateValue}");
+
+                        }
+
+                        string lineNo = $"Entity: {entity} Id: {id} LogData: {data.ToString()}";
+                        AuditLogErrorMessege(methodName, "Audit Log null entry", lineNo);
+                    }
+                    else
+                    {
                     NHibernateSessionUtility.Instance.MyAuditLogList.Add(audit);
+                }
                 }
 
                 //    }
@@ -674,8 +698,33 @@ namespace Acurus.Capella.DataAccess
                                 //throw new Exception("Cannot identify Human_ID for Audit Trail");
                             }
                             //AuditLogList.Add(audit);
+
+                            audit = null;
+
+                            //CAP-2891
+                            if (audit == null)
+                            {
+                                var data = new StringBuilder();
+                                for(int index = 0; index < propertyNames.Length; index++)
+                                {
+                                    var propertyName = propertyNames.Length > index ? propertyNames[index] : "";
+                                    var currentStateValue = currentState.Length > index ? currentState[index] : "";
+                                    var previousStateValue = previousState.Length > index ? previousState[index] : "";
+
+                                    data.AppendLine($"property name: {propertyName}, current value: {currentStateValue}, previous value: {previousStateValue}");
+
+                                }
+
+                                string methodName = MethodBase.GetCurrentMethod().Name;
+                                string lineNo = $"Entity: {entity} Id: {id} LogData: {data.ToString()}";
+                                AuditLogErrorMessege(methodName, "Audit Log null entry", lineNo);
+                            }
+                            else
+                            {
                             NHibernateSessionUtility.Instance.MyAuditLogList.Add(audit);
                         }
+
+                    }
 
                     }
                     //auditLogManager.AppendToAuditLog(AuditLogList, NHibernateSessionUtility.Instance.MACAddress);
@@ -689,6 +738,38 @@ namespace Acurus.Capella.DataAccess
             else
             {
                 return false;
+            }
+        }
+
+        //CAP-2891
+        public static void AuditLogErrorMessege(string methodName, string logMessage = "", string lineNumber = "")
+        {
+            var version = ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+            string[] server = version.Split('|');
+            string serverno = "";
+            if (server.Length > 1)
+                serverno = server[1].Trim();
+
+            string insertQuery = "insert into stats_apperrorlog values(0,'" + logMessage + ", Method Name: " + methodName + "','" + serverno + "','" + DateTime.Now + "','','0','0','0','" + lineNumber + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+
+            string ConnectionData;
+            ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(ConnectionData))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+                {
+                    cmd.Connection = con;
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    catch
+                    {
+                    }
+                }
             }
         }
 

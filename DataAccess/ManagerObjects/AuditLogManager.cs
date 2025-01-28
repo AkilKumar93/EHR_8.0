@@ -9,8 +9,7 @@ using System.Data;
 using System.Linq;
 using Acurus.Capella.Core.DTO;
 using Acurus.Capella.Core;
-
-
+using System.Reflection;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -168,9 +167,23 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //}
 
             ///Jira CAP-333 - newcode
+
+         
             foreach (AuditLog auditlog in AuditLogList)
             {
+                //CAP-2891
+                if (auditlog == null)
+                {
+                    string methodName = MethodBase.GetCurrentMethod().Name;
+
+                    var lineNo = $"";
+
+                    AuditInterceptor.AuditLogErrorMessege(methodName, "Audit Log null entry", lineNo);
+                }
+                else
+                {
                 NHibernateSessionUtility.Instance.MyAuditLogList.Add(auditlog);
+            }
             }
             WebservicetriggerUsingDirectTransaction();
 
@@ -194,7 +207,21 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             //AuditLList.Add(aLog);
             //AppendToAuditLog(AuditLList, string.Empty);
             //Jira CAP-333 - newCode
+
+            //CAP-2891
+            if (aLog == null)
+            {
+                string methodName = MethodBase.GetCurrentMethod().Name;
+
+                var lineNo = $"";// EntityName: {aLog.Entity_Name} EntityId: {aLog.Entity_Id} HumanId: {aLog.Human_ID} PropertyName: {aLog.Attribute} Current Value: {aLog.New_Value} Previous Value: {aLog.Old_Value}";
+
+                AuditInterceptor.AuditLogErrorMessege(methodName, "Audit Log null entry", lineNo);
+            }
+            else
+            {
             NHibernateSessionUtility.Instance.MyAuditLogList.Add(aLog);
+            }
+
             WebservicetriggerUsingDirectTransaction();
         }
         #endregion
