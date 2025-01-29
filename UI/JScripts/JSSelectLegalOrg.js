@@ -1,7 +1,7 @@
 ﻿function changeReload() {   
-    //CAP-1911
-    //window.parent.location.href = window.parent.location.href;
-    window.parent.parent.location.reload();
+    //CAP-1911, CAP-2896
+    var url = window.parent.location.href.replace(/#$/, "");
+    window.parent.location.href = url;
 }
 //CAP-2007
 function cboLegalOrg_SelectedIndexChanged(sender, args) {

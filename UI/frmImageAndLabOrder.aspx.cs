@@ -3501,26 +3501,24 @@ namespace Acurus.Capella.UI
             {
                 RadWindowImportResult.VisibleOnPageLoad = false;
                 Session["IsSaved"] = "false";
-                //CAP-1983
-                //if (IsEditable && cboLab.Items[cboLab.SelectedIndex].Text.Trim() != string.Empty && Convert.ToUInt64(cboLab.Items[cboLab.SelectedIndex].Value) == 32)
-                if (IsEditable && cboLab.Items[cboLab.SelectedIndex].Text.Trim() != string.Empty)
+                if (IsEditable && cboLab.Items[cboLab.SelectedIndex].Text.Trim() != string.Empty && Convert.ToUInt64(cboLab.Items[cboLab.SelectedIndex].Value) == 32)
                 {
                     SetCollectionDateMand(true);
-                    if (chkSpecimenInHouse.Checked == true && chkMoveToMA.Checked == true)
-                    {
+                    //if (chkSpecimenInHouse.Checked == true && chkMoveToMA.Checked == true)
+                    //{
 
-                    }
-                    else if (dtpCollectionDate.Value == string.Empty)
-                    {
-                        hdnImportResult.Value = "true";
-                        IsCollectionDate = true;
+                    //}
+                    //else if (dtpCollectionDate.Value == string.Empty)
+                    //{
+                    //    hdnImportResult.Value = "true";
+                    //    IsCollectionDate = true;
 
-                        //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('115040'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    //    //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, "DisplayErrorMessage('115040'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
 
-                        ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('115040');top.window.document.getElementById('ctl00_Loading').style.display = 'none';", true);
+                    //    ScriptManager.RegisterStartupScript(this, this.Page.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('115040');top.window.document.getElementById('ctl00_Loading').style.display = 'none';", true);
 
-                        return;
-                    }
+                    //    return;
+                    //}
                 }
 
                 if (ValidateSave())
