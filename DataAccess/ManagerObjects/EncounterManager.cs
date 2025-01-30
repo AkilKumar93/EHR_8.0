@@ -28,7 +28,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<Encounter> GetEncounterByEncounterIDIncludeArchive(ulong EncounterID);
         IList<Encounter> GetAllEncounterList();
         //ulong CreateEncounter(Encounter EncounterRecord, WFObject wfObjectRecord, string MACAddress, object[] IsCMGOrders);
-        IList<Encounter> UpdateEncounter(Encounter EncounterRecord, string MACAddress, object[] IsCMGOrders);
+        IList<Encounter> UpdateEncounter(Encounter EncounterRecord, string MACAddress, object[] IsCMGOrders, bool bIsUpdateinBlob = true);
         FillPatientChart LoadPatientChart(ulong ulHumanID, ulong ulEncounterId, DateTime LocalDate, string MACAddress, string UserName, bool bLoad, ulong ulAddendumId, string strObjTpe, bool bIncludeArchive);
         IList<PatientPane> FillPatientPane(ulong Humanid, ulong Encounterid, string MACAddress, string UserName, bool bLoad);
         //Added by Chithra on 11-Mar-2015 to include Archived Encounter table in query.
@@ -577,13 +577,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //}
         //prabu 14/04/10
 
-        public IList<Encounter> UpdateEncounter(Encounter EncounterRecord, string MACAddress, object[] IsCMGOrders)
+        public IList<Encounter> UpdateEncounter(Encounter EncounterRecord, string MACAddress, object[] IsCMGOrders, bool bIsUpdateinBlob = true)
         {
             IList<Encounter> EncList = null;
             IList<Encounter> EncListupdate = new List<Encounter>();
             EncListupdate.Add(EncounterRecord);
             //SaveUpdateDeleteWithTransaction(ref EncList, EncListupdate, null, MACAddress);
-            SaveUpdateDelete_DBAndXML_WithTransaction(ref EncList, ref EncListupdate, null, MACAddress, true, true, EncounterRecord.Id, string.Empty);
+            SaveUpdateDelete_DBAndXML_WithTransaction(ref EncList, ref EncListupdate, null, MACAddress, bIsUpdateinBlob, true, EncounterRecord.Id, string.Empty);
             //Added for CMG Lab
             if (Convert.ToBoolean(IsCMGOrders[0]))
             {
@@ -18063,7 +18063,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
         }
 
         //Jira #CAP-706 - new Method-SaveandMoveAkidoEncounter
-        public void SaveandMoveAkidoEncounter(IList<Encounter> ilstUpdateEncounter)
+        public void SaveandMoveAkidoEncounter(IList<Encounter> ilstUpdateEncounter, bool bIsUpdateinBlob = true)
         {
             ISession MySession = Session.GetISession();
             ITransaction trans = null;
@@ -18077,7 +18077,7 @@ AND E.ENCOUNTER_PROVIDER_SIGNED_DATE<>'0001-01-01 00:00:00'
             {
                 trans = MySession.BeginTransaction();
 
-                iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref lstsaveencounter, ref ilstUpdateEncounter, null, MySession, String.Empty, true, false, ilstUpdateEncounter[0].Id, string.Empty, ref XMLObj);
+                iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref lstsaveencounter, ref ilstUpdateEncounter, null, MySession, String.Empty, bIsUpdateinBlob, false, ilstUpdateEncounter[0].Id, string.Empty, ref XMLObj);
                 wfObjectManager.MoveToNextProcess(ilstUpdateEncounter[0].Id, "ENCOUNTER", 1, "UNKNOWN", System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Today), string.Empty, null, MySession);
 
                 //if bResult = false then, the deadlock is occured 

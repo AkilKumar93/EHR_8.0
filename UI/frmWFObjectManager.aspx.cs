@@ -705,13 +705,28 @@ namespace Acurus.Capella.UI
                     //        }
                     //    }
                     //}
-                    encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" });
 
+                    //Jira CAP-2887
+                    //encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" });
                     XmlDocument itemDoc = new XmlDocument();
                     string sXMLContent = String.Empty;
                     EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
                     Encounter_Blob objEncounterblob = null;
+                    bool bIsUpdateinBlob = true;
                     IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(enc.Id);
+                    if (ilstEncounterBlob.Count == 0)
+                    {
+                        bIsUpdateinBlob = false;
+                    }
+                    encProxy.UpdateEncounter(enc, string.Empty, new object[] { "false" }, bIsUpdateinBlob);
+
+                    //Jira CAP-2887
+                    //XmlDocument itemDoc = new XmlDocument();
+                    //string sXMLContent = String.Empty;
+                    //EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                    //Encounter_Blob objEncounterblob = null;
+                    //IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(enc.Id);
+                    ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(enc.Id);
                     if (ilstEncounterBlob.Count > 0)
                     {
                         objEncounterblob = ilstEncounterBlob[0];
@@ -1269,7 +1284,17 @@ namespace Acurus.Capella.UI
                             ilstUpdateEncounter[0].Modified_By = ClientSession.UserName;
                             ilstUpdateEncounter[0].Modified_Date_and_Time = UtilityManager.ConvertToUniversal(); ;
 
-                            objEncounter.SaveandMoveAkidoEncounter(ilstUpdateEncounter);
+                            //Jira CAP-2887
+                            EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                            bool bIsUpdateinBlob = true;
+                            IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(ilstUpdateEncounter.FirstOrDefault().Id);
+                            if (ilstEncounterBlob.Count == 0)
+                            {
+                                bIsUpdateinBlob = false;
+                            }
+                            //Jira CAP-2887
+                            // objEncounter.SaveandMoveAkidoEncounter(ilstUpdateEncounter);
+                            objEncounter.SaveandMoveAkidoEncounter(ilstUpdateEncounter, bIsUpdateinBlob);
                         }
                     }
                 }
