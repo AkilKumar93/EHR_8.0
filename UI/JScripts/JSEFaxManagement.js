@@ -1,4 +1,5 @@
-﻿
+﻿var intProviderlen = -1;
+var arrProvider = [];
 var intPatientlen = -1;
 var arrPatient = [];
 var getDate = new Date();
@@ -28,7 +29,7 @@ $(document).ready(function () {
 function SetTabelHeader() {
     window.setTimeout(function () {
         $("#divEFAXManagement")[0].innerHTML = "";
-        $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acc#</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'>FAX Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'>FAX Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender FAX #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient FAX #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>FAX Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'>FAX Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'>FAX Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
+        $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acc#</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'> Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
         var datatable = new DataTable('#EFaxManagementTable', {
             serverSide: false,
             lengthChange: false,
@@ -42,7 +43,7 @@ function SetTabelHeader() {
             pageLength: 30,
             language: {
                 search: "",
-                searchPlaceholder: "Search by Ecounter ID or Sent By or Reason",
+                searchPlaceholder: "Search by Encounter ID or Sent By or Reason",
                 infoFiltered: ""
             },
             dom: '<"top"ipf>rt<"bottom"l><"clear">',
@@ -129,7 +130,7 @@ function ValidateDate(fromDate, toDate) {
     //Always To date grater then or Equal the From date
 
     if (objFromDate > objToDate)  {
-        alert("Please select From Date and To date Correctly.");
+        alert("From date can not be greater than To date.");
         return false;
     }
 
@@ -152,7 +153,7 @@ function EFaxManagementload() {
     var FromDate = document.getElementById("dtFaxSentDateFrom").value;
     var ToDate = document.getElementById("dtFaxSentDateTo").value;
 
-    $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acc#</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'>FAX Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'>FAX Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender FAX #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient FAX #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>FAX Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'>FAX Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'>FAX Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
+    $("#divEFAXManagement").append("<table id='EFaxManagementTable' class='table table-bordered Gridbodystyle' style='table-layout: fixed;'><thead class='header' style='border: 0px;'><tr class='header'><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Encounter ID</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'>Patient Acc#</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Patient Name</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sender Name</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sender Facility</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Sender Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 17%;'>Recipient Name</th><th style='border: 1px solid #909090;text-align: center;width: 9%;'>Recipient Fax #</th><th style='border: 1px solid #909090;text-align: center;width: 15%;'>Subject</th><th style='border: 1px solid #909090;text-align: center;width: 10%;'> Status</th><th style='border: 1px solid #909090;text-align: center;width: 11%;'>Reason</th><th style='border: 1px solid #909090;text-align: center;width: 18%;'> Sent Date</th><th style='border: 1px solid #909090;text-align: center;width: 13%;'> Sent By</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>View</th><th style='border: 1px solid #909090;text-align: center;width: 7%;'>Retry</th></tr></thead><tbody style='word-wrap: break-word;'/></table>");
     var datatable = new DataTable('#EFaxManagementTable', {
         serverSide: false,
         lengthChange: false,
@@ -166,7 +167,7 @@ function EFaxManagementload() {
         pageLength: 30,
         language: {
             search: "",
-            searchPlaceholder: "Search by Ecounter ID or Sent By or Reason",
+            searchPlaceholder: "Search by Encounter ID or Sent By or Reason",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">',
@@ -218,9 +219,7 @@ function EFaxManagementload() {
             {
                 data: 'Human_ID', searchable: false, sWidth: '10%' },
             {
-                data: '', render: function (data, type, row) {
-                    return ""
-                }, searchable: false, sWidth: '11%' },
+                data: 'Patient_Name', searchable: false, sWidth: '11%' },
             {
                 data: 'Fax_Sender_Name', sWidth: '18%'
             },
@@ -255,10 +254,10 @@ function EFaxManagementload() {
             {
                 data: "", render: function (data, type, row) {
                     if (row.Fax_File_Path == '' && row.Fax_Sent_File_Path == '') {
-                        return "<i onclick='CloseOutboxImage(" + row.Id + ");' title='View' class='glyphicon glyphicon-eye-open'></i>"
+                        return "<i onclick='CloseOutboxImage(" + row.Activity_Log_ID + ");' title='View' class='glyphicon glyphicon-eye-open'></i>"
                     }
                     else {
-                        return "<i onclick='OpenViewerforEFoxoutBox(" + row.Id + ");' title='View' class='glyphicon glyphicon-eye-open'></i>"
+                        return "<i onclick='OpenViewerforEFoxoutBox(" + row.Activity_Log_ID + ");' title='View' class='glyphicon glyphicon-eye-open'></i>"
                     }
 
                 }, searchable: false, sWidth: '6%', sClass: "text-align-center"
@@ -266,7 +265,7 @@ function EFaxManagementload() {
             {
                 data: "", render: function (data, type, row) {
                     if (row.Fax_Status.toUpperCase() == "FAILED") {
-                        return "<i onclick='funRetryForEfaxManagement(" + row.Id + ");' class='glyphicon glyphicon-refresh'/>"
+                        return "<i onclick='funRetryForEfaxManagement(" + row.Activity_Log_ID + ");' class='glyphicon glyphicon-refresh'/>"
                     }
                     else { return "<i></i>"; }
                 }, searchable: false, sWidth: '6%', sClass: "text-align-center"
@@ -341,6 +340,10 @@ function cleartextbox(ctrl) {
         document.getElementById("txtRecipientName").disabled = false;
         document.getElementById("txtRecipientName").value = "";
         document.getElementById("txtRecipientName").title = "";
+        var txtProviderSearch = document.getElementById("txtRecipientName");
+        txtProviderSearch.attributes['data-phy-id'].value = "0";
+        txtProviderSearch.attributes['data-phy-details'].value = "";
+        txtProviderSearch.attributes['data-category'].value = "";
     }
     else if (ctrl.id == "imgClearFaxSenderNameText") {
         document.getElementById("txtFaxSenderName").disabled = false;
@@ -358,6 +361,11 @@ function clearAll() {
     document.getElementById("txtRecipientName").disabled = false;
     document.getElementById("txtRecipientName").value = "";
     document.getElementById("txtRecipientName").title = "";
+    var txtProviderSearch = document.getElementById("txtRecipientName");
+    txtProviderSearch.attributes['data-phy-id'].value ="0";
+    txtProviderSearch.attributes['data-phy-details'].value = "";
+    txtProviderSearch.attributes['data-category'].value = "";
+
 
     document.getElementById("txtFaxSenderName").disabled = false;
     document.getElementById("txtFaxSenderName").value = "";
@@ -541,183 +549,358 @@ var bBool = false;
 var bcheck = true;
 var intAssigntoLength = -1;
 function SetAutoSearchRecipientName() {
-    var a = "a";
-    a = "v";
+
+    //OldCode{
+    //var a = "a";
+    //a = "v";
+    //$("#txtRecipientName").autocomplete({
+    //    source: function (request, response) {
+    //        if (intAssigntoLength == 0 && bcheck && bBool == false) {
+    //            arrAssignto = [];
+    //            bBool = true;
+    //            var sUserRole = "";
+    //            var sUrl = "";
+    //            $.ajax({
+    //                type: "POST",
+    //                contentType: "application/json; charset=utf-8",
+    //                url: "frmPatientCommunication.aspx/SearchAssigned",
+    //                data: JSON.stringify({
+    //                    "sUserName": document.getElementById("txtRecipientName").value.slice(0, 3),
+    //                    "sUserRole": sUserRole,
+    //                }),
+    //                dataType: "json",
+    //                async: true,
+    //                success: function (data) {
+    //                    var jsonData = $.parseJSON(data.d);
+    //                    //Jira CAP-2140
+    //                    arrAssignto = jsonData.AssignedTo;
+    //                    jsonData.AssignedTo = jsonData.AssignedTo.slice(0, 100);
+    //                    //Jira CAP-2140 End
+    //                    if (jsonData.AssignedTo.length == 0) {
+    //                        jsonData.AssignedTo.push('No matches found.')
+    //                        response($.map(jsonData, function (item) {
+    //                            return {
+    //                                label: item
+
+    //                            }
+    //                        }));
+    //                    }
+    //                    else {
+    //                        if (arrAssignto.length != 0) {
+    //                            var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
+    //                            results = results.slice(0, 100);
+    //                            if (results.length == 0) {
+    //                                results.push('No matches found.')
+    //                                response($.map(results, function (item) {
+    //                                    return {
+    //                                        label: item
+    //                                    }
+    //                                }));
+    //                            }
+    //                            else {
+    //                                response($.map(results, function (item) {
+    //                                    return {
+    //                                        label: item.split('|')[1],
+    //                                        val: item.split('|')[0]
+    //                                    }
+    //                                }));
+    //                            }
+    //                        }
+    //                        else {
+    //                            response($.map(jsonData.AssignedTo, function (item) {
+    //                                //arrAssignto.push(item);
+    //                                return {
+    //                                    label: item.split('|')[1],
+    //                                    val: item.split('|')[0]
+    //                                }
+    //                            }));
+    //                        }
+    //                    }
+
+    //                    $("#txtRecipientName").focus();
+    //                    if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //                },
+    //                error: function OnError(xhr) {
+    //                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //                    if (xhr.status == 999)
+    //                        window.location = "/frmSessionExpired.aspx";
+    //                    else {
+    //                        var log = JSON.parse(xhr.responseText);
+    //                        console.log(log);
+    //                        alert("USER MESSAGE:\n" +
+    //                            ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+    //                            "Message: " + log.Message);
+    //                    }
+    //                }
+
+    //            });
+
+    //        }
+    //        if ($("#txtRecipientName").val().length > 2) {
+    //            if (arrAssignto.length != 0) {
+    //                var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
+    //                results = results.slice(0, 100);
+    //                if (results.length == 0) {
+    //                    results.push('No matches found.')
+    //                    response($.map(results, function (item) {
+    //                        return {
+    //                            label: item
+    //                        }
+    //                    }));
+    //                }
+    //                else {
+    //                    response($.map(results, function (item) {
+    //                        return {
+    //                            label: item.split('|')[1],
+    //                            val: item.split('|')[0]
+    //                        }
+    //                    }));
+    //                }
+    //            }
+    //        }
+    //    },
+    //    minlength: 2,
+    //    multiple: true,
+    //    mustMatch: false,
+    //    open: function () {
+    //        $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtRecipientName').width());
+    //        $('.ui-autocomplete.ui-menu.ui-widget').find('li').css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" });
+    //        $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+    //        $(".ui-autocomplete").find('a:contains("No matches found.")').on("click", function (e) {
+    //            e.preventDefault();
+    //            e.stopImmediatePropagation();
+    //        });
+    //    },
+    //    select: function (event, ui) {
+    //        event.preventDefault();
+
+    //        if (ui.item.label != "No matches found.") {
+    //            bBool = false;
+    //            document.getElementById("txtRecipientName").value = ui.item.label;
+    //            document.getElementById("txtRecipientName").attributes["val"] = ui.item.val;
+    //            document.getElementById("txtRecipientName").title = ui.item.label;
+    //            document.getElementById("txtRecipientName").disabled = true;
+                
+    //        }
+    //        else {
+    //            $('#txtRecipientName').val("");
+    //            bBool = false;
+    //        }
+    //    }
+    //}).on("paste", function (e) {
+    //    intAssigntoLength = -1;
+    //    arrAssignto = [];
+    //    $(".ui-autocomplete").hide();
+    //}).on("keydown", function (e) {
+    //    if (e.which == 8) {
+    //        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        if ($("#txtRecipientName").val().length <= 3)
+    //            bBool = false;
+    //        else
+    //            bBool = true;
+    //        $("#txtRecipientName").focus();
+    //        bcheck = false;
+    //    }
+    //    else if (e.which == 46) {
+    //        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        bBool = false;
+    //        bcheck = false;
+    //    }
+    //    else {
+    //        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        bcheck = true;
+    //    }
+
+    //}).on("input", function (e) {
+    //    if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //    if ($("#txtRecipientName").val().length >= 3) {
+    //        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    //        if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    //        intAssigntoLength = 0;
+    //    }
+    //    else if ($("#txtRecipientName").val().length != 0 && intAssigntoLength != -1) {
+    //        intAssigntoLength = intAssigntoLength + 1;
+    //    }
+    //    if ($("#txtRecipientName").val().length < 2) {
+    //        intAssigntoLength = -1;
+    //        arrAssignto = [];
+    //        $(".ui-autocomplete").hide();
+    //        bBool = false;
+    //    }
+    //});
+    //}OldCode End
+
+    $('#txtRecipientName').keydown(
+        function (event) {
+            if (event.which == '13') {
+                event.preventDefault();
+            }
+        });
+
+
     $("#txtRecipientName").autocomplete({
         source: function (request, response) {
-            if (intAssigntoLength == 0 && bcheck && bBool == false) {
-                arrAssignto = [];
-                bBool = true;
-                var sUserRole = "";
-                var sUrl = "";
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: "frmPatientCommunication.aspx/SearchAssigned",
-                    data: JSON.stringify({
-                        "sUserName": document.getElementById("txtRecipientName").value.slice(0, 3),
-                        "sUserRole": sUserRole,
-                    }),
-                    dataType: "json",
-                    async: true,
-                    success: function (data) {
-                        var jsonData = $.parseJSON(data.d);
-                        //Jira CAP-2140
-                        arrAssignto = jsonData.AssignedTo;
-                        jsonData.AssignedTo = jsonData.AssignedTo.slice(0, 100);
-                        //Jira CAP-2140 End
-                        if (jsonData.AssignedTo.length == 0) {
-                            jsonData.AssignedTo.push('No matches found.')
-                            response($.map(jsonData, function (item) {
-                                return {
-                                    label: item
+            if ($("#txtRecipientName").val().trim().length > 2) {
+                if (intProviderlen == 0) {
 
-                                }
-                            }));
-                        }
-                        else {
-                            if (arrAssignto.length != 0) {
-                                var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
-                                results = results.slice(0, 100);
-                                if (results.length == 0) {
-                                    results.push('No matches found.')
-                                    response($.map(results, function (item) {
-                                        return {
-                                            label: item
-                                        }
-                                    }));
-                                }
-                                else {
-                                    response($.map(results, function (item) {
-                                        return {
-                                            label: item.split('|')[1],
-                                            val: item.split('|')[0]
-                                        }
-                                    }));
-                                }
+                    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                    this.element.on("keydown", PreventTyping);
+                    arrProvider = [];
+                    var strkeyWords = $("#txtRecipientName").val().split(' ');
+                    var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+                    var WSData;
+
+
+                    var vurl = "";
+                    //var test = $("input:radio[name='chkProvider1']:checked").val()
+                    //if (test == "Provider") {
+                        WSData = {
+                            text_searched: strkeyWords[0],
+                        };
+                        vurl = "./frmFindReferralPhysician.aspx/GetProviderDetailsFaxByTokens"
+                    //}
+                    //else if (test == "Patient") {
+                    //    WSData = {
+                    //        text_searched: strkeyWords[0],
+                    //        account_status: "ACTIVE",
+                    //        patient_status: "ALIVE",
+                    //        human_type: "REGULAR"
+                    //    };
+                    //    vurl = "./frmFindPatient.aspx/GetPatientDetailsByTokens"
+                    //}
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: vurl,
+                        data: JSON.stringify(WSData),
+                        dataType: "json",
+                        success: function (data) {
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                            $("#txtRecipientName").off("keydown", PreventTyping);
+                            var jsonData = $.parseJSON(data.d);
+                            if (jsonData.Error != undefined) {
+                                alert(jsonData.Error);
+                                return;
                             }
-                            else {
-                                response($.map(jsonData.AssignedTo, function (item) {
-                                    //arrAssignto.push(item);
+
+                            if (jsonData.Result != undefined) {
+                                var no_matches = [];
+                                no_matches.push(jsonData.Result);
+                                response($.map(no_matches, function (item) {
                                     return {
-                                        label: item.split('|')[1],
-                                        val: item.split('|')[0]
+                                        label: item,
+                                        val: "0"
                                     }
                                 }));
                             }
+                            else {
+                                var results;
+                                if (bMoreThanOneKeyword)
+                                    results = FilterFax(jsonData.Matching_Result, request.term);
+                                else
+                                    results = jsonData.Matching_Result;
+
+                                arrProvider = jsonData.Matching_Result;
+                                response($.map(results, function (item) {
+                                    return {
+                                        label: item.label,
+                                        val: JSON.stringify(item.value),
+                                        value: item.value.ulPhyId
+                                    }
+                                }));
+                            }
+                        },
+                        error: function OnError(xhr) {
+                            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                            if (xhr.status == 999)
+                                window.location = "/frmSessionExpired.aspx";
+                            else {
+                                var log = JSON.parse(xhr.responseText);
+                                console.log(log);
+                                alert("USER MESSAGE:\n" +
+                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                    "Message: " + log.Message);
+                            }
                         }
 
-                        $("#txtRecipientName").focus();
-                        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                    },
-                    error: function OnError(xhr) {
-                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                        if (xhr.status == 999)
-                            window.location = "/frmSessionExpired.aspx";
-                        else {
-                            var log = JSON.parse(xhr.responseText);
-                            console.log(log);
-                            alert("USER MESSAGE:\n" +
-                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                "Message: " + log.Message);
+                    });
+                }
+                else if (intProviderlen != -1) {
+
+                    var results = FilterFax(arrProvider, request.term);
+                    response($.map(results, function (item) {
+                        return {
+                            label: item.label,
+                            val: JSON.stringify(item.value),
+                            value: item.value.ulPhyId
                         }
-                    }
-
-                });
-
-            }
-            if ($("#txtRecipientName").val().length > 2) {
-                if (arrAssignto.length != 0) {
-                    var results = FilterWithdelimiter(arrAssignto, request.term, "|", 1);
-                    results = results.slice(0, 100);
-                    if (results.length == 0) {
-                        results.push('No matches found.')
-                        response($.map(results, function (item) {
-                            return {
-                                label: item
-                            }
-                        }));
-                    }
-                    else {
-                        response($.map(results, function (item) {
-                            return {
-                                label: item.split('|')[1],
-                                val: item.split('|')[0]
-                            }
-                        }));
-                    }
+                    }));
                 }
             }
         },
-        minlength: 2,
+        minlength: 0,
         multiple: true,
         mustMatch: false,
+        select: function (event, ui) {
+            event.preventDefault();
+            var ProviderDetails = JSON.parse(ui.item.val);
+            var txtProviderSearch = document.getElementById("txtRecipientName");
+
+            txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
+            txtProviderSearch.attributes['data-phy-details'].value = JSON.stringify(ProviderDetails);
+            txtProviderSearch.attributes['data-category'].value = ProviderDetails.sCategory;
+            txtProviderSearch.value = ui.item.label;
+            txtProviderSearch.title = ui.item.label;
+            document.getElementById("txtRecipientName").disabled = true;
+        },
         open: function () {
             $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtRecipientName').width());
             $('.ui-autocomplete.ui-menu.ui-widget').find('li').css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" });
             $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+            $('#txtRecipientName').focus();
             $(".ui-autocomplete").find('a:contains("No matches found.")').on("click", function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
             });
         },
-        select: function (event, ui) {
-            event.preventDefault();
-
-            if (ui.item.label != "No matches found.") {
-                bBool = false;
-                document.getElementById("txtRecipientName").value = ui.item.label;
-                document.getElementById("txtRecipientName").attributes["val"] = ui.item.val;
-                document.getElementById("txtRecipientName").title = ui.item.label;
-                document.getElementById("txtRecipientName").disabled = true;
-                
-            }
-            else {
-                $('#txtRecipientName').val("");
-                bBool = false;
-            }
-        }
+        focus: function () { return false; }
     }).on("paste", function (e) {
-        intAssigntoLength = -1;
-        arrAssignto = [];
+        intProviderlen = -1;
+        arrProvider = [];
         $(".ui-autocomplete").hide();
-    }).on("keydown", function (e) {
-        if (e.which == 8) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if ($("#txtRecipientName").val().length <= 3)
-                bBool = false;
-            else
-                bBool = true;
-            $("#txtRecipientName").focus();
-            bcheck = false;
-        }
-        else if (e.which == 46) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            bBool = false;
-            bcheck = false;
+    }).on("input", function (e) {
+        $("#txtRecipientName").css("color", "black").attr({ "data-phy-id": "0", "data-phy-details": "","data-category":"" });
+        if ($("#txtRecipientName").val().length == 0) {
+            intProviderlen = -1;
+            arrProvider = [];
+            $(".ui-autocomplete").hide();
         }
         else {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            bcheck = true;
+            intProviderlen = 0;
         }
 
-    }).on("input", function (e) {
-        if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        if ($("#txtRecipientName").val().length >= 3) {
-            if (jQuery(top.window.parent.parent.parent.parent.parent.parent.document.body).find('#resultLoading').css('display') == 'block') { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            if (!bBool) { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-            intAssigntoLength = 0;
-        }
-        else if ($("#txtRecipientName").val().length != 0 && intAssigntoLength != -1) {
-            intAssigntoLength = intAssigntoLength + 1;
-        }
-        if ($("#txtRecipientName").val().length < 2) {
-            intAssigntoLength = -1;
-            arrAssignto = [];
-            $(".ui-autocomplete").hide();
-            bBool = false;
-        }
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        if (item.label != "No matches found.")
+            return $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .append(item.label)
+                .appendTo(ul);
+        else
+            return $("<li>")
+                .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                .addClass("disabled")
+                .append(item.label)
+                .appendTo(ul).on("click", function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                });
+    };
+    $("#txtRecipientName").keypress(function (e) {
+        if (e.keyCode == 64)
+            return false;
     });
+    
 
 }
 var arrFaxSenderName = [];
@@ -1099,6 +1282,26 @@ function Filter(array, terms) {
         for (var i = 1; i < arrayOfTerms.length; i++) {
             resultant = $.grep(first_resultant, function (item) {
                 return item.label.toLowerCase().indexOf(arrayOfTerms[i].toLowerCase()) > -1;
+            });
+            first_resultant = resultant;
+        }
+        return first_resultant;
+    }
+    else {
+        return array;
+    }
+}
+function FilterFax(array, terms) {
+    arrayOfTerms = terms.split(" ");
+    if (arrayOfTerms.length > 1 && arrayOfTerms[1].trim() != "") {
+        var first_resultant = array;
+        var resultant;
+        for (var i = 1; i < arrayOfTerms.length; i++) {
+            resultant = $.grep(first_resultant, function (item) {
+                if (item.label != undefined)
+                    return item.label.toUpperCase().indexOf(arrayOfTerms[i].toString().toUpperCase()) > -1;
+                else if (item != undefined)
+                    return item.toUpperCase().indexOf(arrayOfTerms[i].toString().toUpperCase()) > -1;
             });
             first_resultant = resultant;
         }

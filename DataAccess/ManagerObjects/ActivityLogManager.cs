@@ -9,6 +9,8 @@ using NHibernate;
 using NHibernate.Criterion;
 using System.Data;
 using System.IO;
+using System.Web.Security;
+using System.Xml.Linq;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -23,7 +25,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<ActivityLog> GetActivityByActivityTypeandSubject(string ActivityType, string Subject);
         IList<ActivityLog> GetFaxActivityTypeByStatus();
         IList<ActivityLog> GetFaxActivity(string ActivityLogId);
-        IList<ActivityLog> GetActivityLogForEFaxManagement(List<string> ActivityType, ulong uHumanID, string sFaxStatus, string sRecipiantName, string sSenderName, string sFromDate, string sToDate);
+        IList<object> GetActivityLogForEFaxManagement(List<string> ActivityType, ulong uHumanID, string sFaxStatus, string sRecipiantName, string sSenderName, string sFromDate, string sToDate, string sLegal_Org);
     }
 
 
@@ -245,12 +247,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
             return ilstActivitylog;
         }
-        public IList<ActivityLog> GetActivityLogForEFaxManagement(List<string> ActivityType ,ulong uHumanID,string sFaxStatus, string sRecipiantName, string sSenderName, string sFromDate, string sToDate)
+        public IList<object> GetActivityLogForEFaxManagement(List<string> ActivityType, ulong uHumanID, string sFaxStatus, string sRecipiantName, string sSenderName, string sFromDate, string sToDate, string sLegal_Org)
         {
-            IList<ActivityLog> ilstActivitylog = new List<ActivityLog>();
+            IList<object> objlistActivityManagementlst = new List<object>();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                string query = "Select a.* from activity_log a where a.Activity_Type in (" + string.Join(",", ActivityType.ToArray()) + ") and date(a.Activity_Date_And_Time) between'" + sFromDate + "' and '" + sToDate + "'" + ((sFaxStatus == "ALL") ? "" : "and a.Fax_Status='" + sFaxStatus + "'");
+                //string query = "Select a.* from activity_log a where a.Activity_Type in (" + string.Join(",", ActivityType.ToArray()) + ") and date(a.Activity_Date_And_Time) between'" + sFromDate + "' and '" + sToDate + "'" + ((sFaxStatus == "ALL") ? "" : "and a.Fax_Status='" + sFaxStatus + "'");
+                string query = "select a.Activity_Log_ID, a.Human_ID, a.Encounter_ID, a.Activity_Type, a.Activity_Date_And_Time, a.Sent_To, a.Subject, a.Message, a.From_Address, a.Role, a.Encrypted_Message, a.Activity_By, a.Fax_Sender_Name, a.Fax_Recipient_Name, a.Fax_Sender_Company, a.Fax_Recipient_Company, a.Fax_Sender_Number, a.Fax_Recipient_Number, a.Fax_File_Path, a.Fax_Status, a.Fax_Recipient_Category, a.Fax_Priority, a.Fax_Cover_Page_Template_Name, a.Error_Description, a.Is_Pdf_Moved, a.Group_ID, a.Fax_Sent_File_Path,ifnull(CONCAT(H.Prefix,' ',H.First_Name,' ',H.MI,' ',H.Last_Name,' ',H.Suffix),'') as Patient_Name,ifnull(H.Legal_Org,'') as Legal_Org from activity_log a  left join human H on (a.human_id= H.human_id) where a.Activity_Type in (" + string.Join(",", ActivityType.ToArray()) + ") and date(a.Activity_Date_And_Time) between'" + sFromDate + "' and '" + sToDate + "'" + ((sFaxStatus == "ALL") ? "" : "and a.Fax_Status='" + sFaxStatus + "'") + " and H.Legal_Org='" + sLegal_Org + "'";
                 if (uHumanID != 0)
                 {
                     query = query + "and a.Human_ID = '" + uHumanID + "'";
@@ -258,11 +261,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 if (sRecipiantName != "" && sRecipiantName.Split(',').Length <= 1)
                 {
-                    query = query + "and a.Fax_Recipient_Name like'%"+ sRecipiantName.Split(',')[0] + "%'";
+                    query = query + "and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[0] + "%'";
                 }
                 if (sRecipiantName != "" && sRecipiantName.Split(',').Length > 1)
                 {
-                    query = query + "and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[0] + "%' and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[1].Replace(".","") + "%'";
+                    query = query + "and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[0] + "%' and a.Fax_Recipient_Name like'%" + sRecipiantName.Split(',')[1].Replace(".", "") + "%'";
                 }
 
                 //SenderName
@@ -275,12 +278,84 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     query = query + "and a.Fax_Sender_Name like'%" + sSenderName.Split(',')[0] + "%' and a.Fax_Sender_Name like'%" + sSenderName.Split(',')[1].Replace(".", "") + "%'";
                 }
 
-                ISQLQuery sql = iMySession.CreateSQLQuery(query).AddEntity("a", typeof(ActivityLog));
-                ilstActivitylog = sql.List<ActivityLog>();
+                ISQLQuery sql1 = iMySession.CreateSQLQuery(query);
+                var listActivityManagement = new
+                {
+                    Activity_Log_ID = string.Empty,
+                    Human_ID = string.Empty,
+                    Encounter_ID = string.Empty,
+                    Activity_Type = string.Empty,
+                    Activity_Date_And_Time = string.Empty,
+                    Sent_To = string.Empty,
+                    Subject = string.Empty,
+                    Message = string.Empty,
+                    From_Address = string.Empty,
+                    Role = string.Empty,
+                    Encrypted_Message = string.Empty,
+                    Activity_By = string.Empty,
+                    Fax_Sender_Name = string.Empty,
+                    Fax_Recipient_Name = string.Empty,
+                    Fax_Sender_Company = string.Empty,
+                    Fax_Recipient_Company = string.Empty,
+                    Fax_Sender_Number = string.Empty,
+                    Fax_Recipient_Number = string.Empty,
+                    Fax_File_Path = string.Empty,
+                    Fax_Status = string.Empty,
+                    Fax_Recipient_Category = string.Empty,
+                    Fax_Priority = string.Empty,
+                    Fax_Cover_Page_Template_Name = string.Empty,
+                    Error_Description = string.Empty,
+                    Is_Pdf_Moved = string.Empty,
+                    Group_ID = string.Empty,
+                    Fax_Sent_File_Path = string.Empty,
+                    Patient_Name = string.Empty,
+                    Legal_Org = string.Empty
+                };
+
+
+                foreach (object[] oj in sql1.List())
+                {
+                    listActivityManagement = new
+                    {
+                        Activity_Log_ID = oj[0].ToString(),
+                        Human_ID = oj[1].ToString(),
+                        Encounter_ID = oj[2].ToString(),
+                        Activity_Type = oj[3].ToString(),
+                        Activity_Date_And_Time = oj[4].ToString(),
+                        Sent_To = oj[5].ToString(),
+                        Subject = oj[6].ToString(),
+                        Message = oj[7].ToString(),
+                        From_Address = oj[8].ToString(),
+                        Role = oj[9].ToString(),
+                        Encrypted_Message = oj[10].ToString(),
+                        Activity_By = oj[11].ToString(),
+                        Fax_Sender_Name = oj[12].ToString(),
+                        Fax_Recipient_Name = oj[13].ToString(),
+                        Fax_Sender_Company = oj[14].ToString(),
+                        Fax_Recipient_Company = oj[15].ToString(),
+                        Fax_Sender_Number = oj[16].ToString(),
+                        Fax_Recipient_Number = oj[17].ToString(),
+                        Fax_File_Path = oj[18].ToString(),
+                        Fax_Status = oj[19].ToString(),
+                        Fax_Recipient_Category = oj[20].ToString(),
+                        Fax_Priority = oj[21].ToString(),
+                        Fax_Cover_Page_Template_Name = oj[22].ToString(),
+                        Error_Description = oj[23].ToString(),
+                        Is_Pdf_Moved = oj[24].ToString(),
+                        Group_ID = oj[25].ToString(),
+                        Fax_Sent_File_Path = oj[26].ToString(),
+                        Patient_Name = oj[27].ToString(),
+                        Legal_Org = oj[28].ToString()
+                    };
+                    objlistActivityManagementlst.Add(listActivityManagement);
+                }
                 iMySession.Close();
+
+
             }
-            return ilstActivitylog;
+            return objlistActivityManagementlst;
         }
+        
         public IList<ActivityLog> CheckActivityExists(List<string> ActivityType,List<ulong> Encounter)
         {
             IList<ActivityLog> ilstActivitylog = new List<ActivityLog>();

@@ -896,7 +896,8 @@ namespace Acurus.Capella.UI
             IList<ActivityLog> ActivityLogList = new List<ActivityLog>();
             List<string> ActivityType = new List<string>();
             ActivityLogManager ActivitylogMngr = new ActivityLogManager();
-            IList<ActivityLog> ActivityLogTempList = new List<ActivityLog>();
+            //IList<ActivityLog> ActivityLogTempList = new List<ActivityLog>();
+            IList<object> ActivityLogTempList = new List<object>();
             ActivityType.Add("\"EFax\"");
             string extra_search = HttpContext.Current.Request.Params["extra_search"];
             var searchData = JsonConvert.DeserializeObject<Dictionary<string, string>>(extra_search);
@@ -911,11 +912,12 @@ namespace Acurus.Capella.UI
             {
                 ulHumanID = Convert.ToUInt64(sHumanId);
             }
-            ActivityLogTempList = ActivitylogMngr.GetActivityLogForEFaxManagement(ActivityType, ulHumanID, FaxStatus, sRecipiantName, sSenderName,Convert.ToDateTime(sFromDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(sToDate).ToString("yyyy-MM-dd"));
-            ActivityLogList = ActivityLogTempList.OrderByDescending(a => a.Activity_Date_And_Time).ToList();
+            //ActivityLogTempList = ActivitylogMngr.GetActivityLogForEFaxManagement(ActivityType, ulHumanID, FaxStatus, sRecipiantName, sSenderName,Convert.ToDateTime(sFromDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(sToDate).ToString("yyyy-MM-dd"));
+            ActivityLogTempList = ActivitylogMngr.GetActivityLogForEFaxManagement(ActivityType, ulHumanID, FaxStatus, sRecipiantName, sSenderName,Convert.ToDateTime(sFromDate).ToString("yyyy-MM-dd"), Convert.ToDateTime(sToDate).ToString("yyyy-MM-dd"), ClientSession.LegalOrg);
+            //ActivityLogList = ActivityLogTempList.OrderByDescending(a => a.Activity_Date_And_Time).ToList();
             var resultNew = new
             {
-                data = Compress(JsonConvert.SerializeObject(ActivityLogList)),
+                data = Compress(JsonConvert.SerializeObject(ActivityLogTempList)),
             };
             return resultNew;
         }

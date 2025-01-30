@@ -809,7 +809,7 @@ function OpenModal(data) {
     }
     else if (itemValue == "EFaxManagement") {
         $(top.window.document).find("#TabFaxManagement").modal({ backdrop: "static", keyboard: false }, 'show');
-        $(top.window.document).find("#TabModalEFaxManagementTitle")[0].textContent = "E-FAX Management";
+        $(top.window.document).find("#TabModalEFaxManagementTitle")[0].textContent = "eFax Management";
         $(top.window.document).find("#TabmdldlgEFaxManagement")[0].style.width = "1170px";
         $(top.window.document).find("#TabmdldlgEFaxManagement")[0].style.height = "675px";
         $(top.window.document).find("#TabmdldlgEFaxManagement")[0].style.position = "";
