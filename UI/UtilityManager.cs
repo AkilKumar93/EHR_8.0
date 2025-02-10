@@ -5836,13 +5836,15 @@ namespace Acurus.Capella.UI
                                     }
 
                                 }
-
+                                //CAP-2906
+                                ilstResult.Add((object)ilstEntity);
                             }
                             else
                             {
                                 ilstResult.Add(null);
                             }
-                            ilstResult.Add((object)ilstEntity);
+                            //CAP-2906
+                            //ilstResult.Add((object)ilstEntity);
                         }
                         else
                         {
