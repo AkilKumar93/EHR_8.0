@@ -6442,6 +6442,8 @@ namespace Acurus.Capella.UI
             sStatus = "";
             sExMessage = "";
             string bIsAkidoEncounter = "false";
+            string IsAkidoNoteURLVersion = System.Configuration.ConfigurationSettings.AppSettings["IsAkidoNoteStatusURLVersion"].ToString();
+            string sUri = string.Empty;
             //Jira CAP-1379
             int iRetryCount = 0;
 
@@ -6450,7 +6452,19 @@ namespace Acurus.Capella.UI
             {
                 iRetryCount = iRetryCount + 1;
 
-                var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
+                //Jira CAP-2435
+                //var myUri = new Uri(System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID));
+
+                if (IsAkidoNoteURLVersion.ToUpper() == "V1")
+                {
+                    sUri = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaEncounterID]", sEncounterID);
+                }
+                else if (IsAkidoNoteURLVersion.ToUpper() == "V2")
+                {
+                    sUri = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURL"].ToString().Replace("[CapellaResourceID]", sEncounterID).Replace("[CapellaResourceType]", "capella_encounter_id");
+                 
+                }
+                var myUri = new Uri(sUri);
                 string AccessToken = System.Configuration.ConfigurationSettings.AppSettings["AkidoNoteStatusURLToken"].ToString();
                 var myWebRequest = WebRequest.Create(myUri);
                 var myHttpWebRequest = (HttpWebRequest)myWebRequest;
@@ -6466,14 +6480,27 @@ namespace Acurus.Capella.UI
                 responseStream.Close();
                 myWebResponse.Close();
 
+                //Jira CAP-2435 - End
+
                 if (json.ToString() != "[]")
                 {
-                    bIsAkidoEncounter = "true";
-                    //Jira CAP-1990
-                    string sPJason = json.Substring(1, json.Length - 2);
-                    var jsonObject = JObject.Parse(sPJason);
-                    sStatus = (string)jsonObject["status"];
+                    //Jira CAP-2435
+                    //bIsAkidoEncounter = "true";
+                    ////Jira CAP-1990
+                    //string sPJason = json.Substring(1, json.Length - 2);
+                    //var jsonObject = JObject.Parse(sPJason);
+                    //sStatus = (string)jsonObject["status"];
 
+                    json = "{\"Capella\":" + json + "}";
+                    var jsonObject = JObject.Parse(json);
+                    IList<JToken> listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
+
+                    if (listJson.Count > 0)
+                    {
+                        bIsAkidoEncounter = "true";
+                        sStatus = (string)listJson.FirstOrDefault()["status"].ToString();
+                    }
+                    //Jira CAP-2435 - End
                 }
             }
             catch (Exception ex)
