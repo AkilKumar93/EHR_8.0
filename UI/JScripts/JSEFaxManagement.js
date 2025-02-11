@@ -95,7 +95,7 @@ function ValidateDate(fromDate, toDate) {
     var objFromDate = new Date(fromDate);
     var finalFromdate = "";
     if (objFromDate != "Invalid Date") {
-        finalFromdate = objFromDate.getFullYear() + "-" + objFromDate.toLocaleString('default', { month: 'short' }) + "-" + ((objFromDate.getDate().toString().length == 1) ? "0" + objFromDate.getDate() : objFromDate.getDate());
+        finalFromdate = ((objFromDate.getDate().toString().length == 1) ? "0" + objFromDate.getDate() : objFromDate.getDate()) + "-" + objFromDate.toLocaleString('default', { month: 'short' }) + "-" + objFromDate.getFullYear() ;
         if (fromDate.toUpperCase() != finalFromdate.toUpperCase())  {
             alert("Please select a valide date");
             return false;
@@ -110,7 +110,7 @@ function ValidateDate(fromDate, toDate) {
     var objToDate = new Date(toDate);
     var finalTodate = "";
     if (objToDate != "Invalid Date") {
-        finalTodate = objToDate.getFullYear() + "-" + objToDate.toLocaleString('default', { month: 'short' }) + "-" + ((objToDate.getDate().toString().length == 1) ? "0" + objToDate.getDate() : objToDate.getDate());
+        finalTodate = ((objToDate.getDate().toString().length == 1) ? "0" + objToDate.getDate() : objToDate.getDate()) + "-" + objToDate.toLocaleString('default', { month: 'short' }) + "-" + objToDate.getFullYear();
         if (toDate.toUpperCase() != finalTodate.toUpperCase()) {
             alert("Please select a valide date");
             return false;
