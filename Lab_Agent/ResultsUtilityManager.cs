@@ -185,6 +185,7 @@ namespace Acurus.Capella.LabAgent
                                             else
                                             {
                                                 File.Move(fi.FullName, unsendAkidoResultDirectory + "\\" + fi.Name);
+                                                continue;
                                             }
                                         }
                                     }
