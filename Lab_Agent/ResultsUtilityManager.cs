@@ -123,6 +123,7 @@ namespace Acurus.Capella.LabAgent
                             {
                                 bool isAkidoResult = false;
                                 bool isCapellaResult = false;
+                                List<int> indexToBeRemoved = new List<int>();
                                 for (int k = 0; k < myResults.Count; k++)
                                 {
                                     var segmentname1 = string.Empty;
@@ -145,25 +146,25 @@ namespace Acurus.Capella.LabAgent
                                             {
                                                 isAkidoResult = !isAkidoResult ? segments1[2].Contains("AKIDO") : isAkidoResult;
                                                 isCapellaResult = !isCapellaResult ? segments1[2].Contains("ACUR") : isCapellaResult;
+
+                                                if (segments1[2].Contains("AKIDO") && !indexToBeRemoved.Any(x => x == k))
+                                                {
+                                                    indexToBeRemoved.Add(k);
+                                                }
                                             }
 
                                             if (segmentname1.ToUpper() == "OBR")// && !isAkidoResult)
                                             {
                                                 isAkidoResult = !isAkidoResult ? segments1[2].Contains("AKIDO") : isAkidoResult;
                                                 isCapellaResult = !isCapellaResult ? segments1[2].Contains("ACUR") : isCapellaResult;
-                                            }
 
-                                            //if (isAkidoResult)
-                                            //{
-                                            //    break;
-                                            //}
+                                                if (segments1[2].Contains("AKIDO") && !indexToBeRemoved.Any(x=> x == k))
+                                                {
+                                                    indexToBeRemoved.Add(k);
+                                                }
+                                            }
                                         }
                                     }
-
-                                    //if (isAkidoResult)
-                                    //{
-                                    //    break;
-                                    //}
                                 }
 
                                 try
@@ -194,10 +195,17 @@ namespace Acurus.Capella.LabAgent
                                 {
 
                                 }
+
+                                #region Remove AKIDO MSH
+
+                                for (int i = indexToBeRemoved.Count - 1; i >= 0; i--)
+                                {
+                                    myResults.RemoveAt(indexToBeRemoved[i]);
+                                }
+
+                                #endregion
                             }
                             #endregion
-
-                            //continue;
 
                             for (int k = 0; k < myResults.Count; k++)
                             {
