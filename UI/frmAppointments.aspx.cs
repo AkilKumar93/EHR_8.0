@@ -1291,7 +1291,7 @@ namespace Acurus.Capella.UI
                 {
                     //Jira CAP-2956
                     bool bIsWriteinBlob = false;
-                    if (lstencounter.FirstOrDefault().Date_of_Service.ToString().Contains("0001-01-01"))
+                    if (lstencounter.FirstOrDefault().Date_of_Service.ToString("yyyy-MM-dd").Contains("0001-01-01"))
                     {
                         bIsWriteinBlob = false;
                     }
