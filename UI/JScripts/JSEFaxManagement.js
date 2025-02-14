@@ -4,7 +4,7 @@ var intPatientlen = -1;
 var arrPatient = [];
 var getDate = new Date();
 var beforeOneMonthFromCurrentDate = new Date();
-beforeOneMonthFromCurrentDate.setMonth(beforeOneMonthFromCurrentDate.getMonth() - 1);
+beforeOneMonthFromCurrentDate.setDate(beforeOneMonthFromCurrentDate.getDate() - 30);
 var beforedate = beforeOneMonthFromCurrentDate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + "-" + beforeOneMonthFromCurrentDate.toLocaleString('default', { month: 'short' })
     + "-" + beforeOneMonthFromCurrentDate.getFullYear();
 
@@ -223,7 +223,7 @@ function EFaxManagementload() {
             {
                 data: 'Patient_Name', searchable: false, sWidth: '11%' },
             {
-                data: 'Fax_Sender_Name', sWidth: '18%'
+                data: 'Fax_Sender_Name', searchable: false, sWidth: '18%'
             },
             {
                 data: 'Fax_Sender_Company', render: function (data, type, row) {
@@ -506,7 +506,7 @@ function ExportToExcel() {
 
         var nowdate = new Date();
         $(divtag).table2excel({
-            filename: "EFax_Search_Report_" + nowdate.getFullYear() + (nowdate.getMonth() + 1)
+            filename: "EFax_Search_Report_" + nowdate.getFullYear() + (nowdate.getMonth() + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
                 + nowdate.getDate().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
                 + nowdate.getHours().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
                 + nowdate.getMinutes().toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false }) + " "
