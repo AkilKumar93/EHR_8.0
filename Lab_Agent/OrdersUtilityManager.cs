@@ -271,18 +271,19 @@ namespace Acurus.Capella.LabAgent
 
                         if (File.Exists(sAkidoOrderCheckSend) == false)
                         {
-                            os.ORDER_MESSAGE = GetBytesFromFileReturnString(filepathQuest + "\\" + sAkidoOrderFileName);
+                            string akidoOrderFilePath = filepathQuest + "\\" + sAkidoOrderFileName;
+                            os.ORDER_MESSAGE = GetBytesFromFileReturnString(akidoOrderFilePath);
                             string ContentToBeWritenInHL7File = os.FormatedHl7File();
-                            File.WriteAllText(sAkidoOrderFileName, ContentToBeWritenInHL7File);
+                            File.WriteAllText(akidoOrderFilePath, ContentToBeWritenInHL7File);
 
-                            os.ORDER_MESSAGE = GetBytesFromFileReturnString(sAkidoOrderFileName);
+                            os.ORDER_MESSAGE = GetBytesFromFileReturnString(akidoOrderFilePath);
                             if (sQuestService != null && sQuestService.ToString().ToUpper() == "PRODUCTION")
                             {
-                                object[] objWebResult = os.sendOrder(true, false, sAkidoOrderFileName);
+                                object[] objWebResult = os.sendOrder(true, false, akidoOrderFilePath);
                                 Console.WriteLine(objWebResult[0].ToString());
                                 if (objWebResult[0].ToString() == "SUCCESS")
                                 {
-                                    File.Move(sAkidoOrderFileName, filepathQuest + "\\Send" + sAkidoOrderFileName.Substring(filepathQuest.Length));
+                                    File.Move(akidoOrderFilePath, filepathQuest + "\\Send" + sAkidoOrderFileName.Substring(filepathQuest.Length));
 
                                 }
                                 else
