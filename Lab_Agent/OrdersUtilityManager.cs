@@ -643,6 +643,35 @@ namespace Acurus.Capella.LabAgent
             try
             {
                 // Ensure the destination directory exists
+                if (!Directory.Exists(filepathLabCorp))
+                {
+                    Directory.CreateDirectory(filepathLabCorp);
+                }
+
+                if (!Directory.Exists(filepathUnsendAkidoOrdersLabCorp))
+                {
+                    Directory.CreateDirectory(filepathUnsendAkidoOrdersLabCorp);
+                }
+
+                // Get all files from the source directory
+                string[] labcorpfiles = Directory.GetFiles(filepathUnsendAkidoOrdersLabCorp);
+
+                // Move each file to the destination directory
+                foreach (string filePath in labcorpfiles)
+                {
+                    // Get the file name
+                    string fileName = Path.GetFileName(filePath);
+
+                    // Create the destination file path
+                    string destFilePath = Path.Combine(filepathLabCorp, fileName);
+
+                    // Move the file
+                    File.Move(filePath, destFilePath);
+                }
+
+                Console.WriteLine("Akido Lab Corp Orders moved for send.");
+
+                // Ensure the destination directory exists
                 if (!Directory.Exists(filepathQuest))
                 {
                     Directory.CreateDirectory(filepathQuest);
@@ -671,34 +700,6 @@ namespace Acurus.Capella.LabAgent
 
                 Console.WriteLine("Akido Quest Orders moved for send.");
 
-                // Ensure the destination directory exists
-                if (!Directory.Exists(filepathLabCorp))
-                {
-                    Directory.CreateDirectory(filepathLabCorp);
-                }
-
-                if (!Directory.Exists(filepathUnsendAkidoOrdersLabCorp))
-                {
-                    Directory.CreateDirectory(filepathUnsendAkidoOrdersLabCorp);
-                }
-
-                // Get all files from the source directory
-                string[] labcorpfiles = Directory.GetFiles(filepathUnsendAkidoOrdersLabCorp);
-
-                // Move each file to the destination directory
-                foreach (string filePath in labcorpfiles)
-                {
-                    // Get the file name
-                    string fileName = Path.GetFileName(filePath);
-
-                    // Create the destination file path
-                    string destFilePath = Path.Combine(filepathLabCorp, fileName);
-
-                    // Move the file
-                    File.Move(filePath, destFilePath);
-                }
-
-                Console.WriteLine("Akido Lab Corp Orders moved for send.");
             }
             catch (Exception ex)
             {
