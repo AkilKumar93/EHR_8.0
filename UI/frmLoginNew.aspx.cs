@@ -217,7 +217,6 @@ namespace Acurus.Capella.UI
                      @"}";
                 request.AddStringBody(body, DataFormat.Json);
                 RestResponse response = client.ExecuteAsync(request).Result;
-                return;
                 if (response.IsSuccessStatusCode)
                 {
                     OktaUserResponseModel result = JsonConvert.DeserializeObject<OktaUserResponseModel>(response.Content);
@@ -252,12 +251,12 @@ namespace Acurus.Capella.UI
                             }
                             else
                             {
-                                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                                //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                             }
                         }
                         else
                         {
-                            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
+                            //this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), string.Empty, "DisplayErrorMessage('010001');", true);
                         }
                     }
                     else
