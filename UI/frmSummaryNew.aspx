@@ -173,8 +173,11 @@
         <script>     
             //Jira CAP-1379
             window.onload = function () {
-                // Hide loading overlay        
-                window.parent.document.getElementById('WaitingMessage').style.display = 'none';
+                // Hide loading overlay  
+                //Cap - 2984
+                if (window?.parent?.document?.getElementById('WaitingMessage') != undefined) {
+                    window.parent.document.getElementById('WaitingMessage').style.display = 'none';
+                }
                 // Show main content       
                 if (window?.parent?.document?.getElementById('Summaryframe') != undefined) {
                     window.parent.document.getElementById('Summaryframe').style.display = 'block';

@@ -246,7 +246,7 @@ table.dataTable > thead > tr > td {
     </style>
     <link href="CSS/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="CSS/jquery.dataTables.min.css" rel="stylesheet" />
-     <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
+     <link href="CSS/style.css" rel="stylesheet" type="text/css" />
        
         <link href="CSS/jquery-ui.min.css" rel="stylesheet" />
           <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
