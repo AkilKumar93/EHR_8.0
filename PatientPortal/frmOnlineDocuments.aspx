@@ -137,21 +137,12 @@
             <!--Certain Files are marked as static files, no need to implement the VersionConfiguration Technology in the pages-->
             <script src="JScripts/jquery.datetimepicker.js" type="text/javascript"></script>
             <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
-            <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>"  type="text/javascript"></script>
-            <script src="Jscripts/bootstrap.min.js"  type="text/javascript"></script>
-            <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript" defer="defer"></script>
-            <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
-            <script src="JScripts/JSOnlineDocuments.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>            
-            <script type="text/javascript" src="JScripts/Lazyload.js"></script>
-
-
-            <%--<script src="JScripts/jquery.datetimepicker.js" type="text/javascript"></script>
-            <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
+            <script src="JScripts/jquery-ui.min1.10.2.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSModalWindow.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript" defer="defer"></script>
             <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="JScripts/JSOnlineDocuments.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
             <script src="Jscripts/bootstrap.min.js"></script>
-            <script type="text/javascript" src="JScripts/Lazyload.js"></script>--%>
+            <script type="text/javascript" src="JScripts/Lazyload.js"></script>
         </asp:PlaceHolder>
     </form>
 </body>
