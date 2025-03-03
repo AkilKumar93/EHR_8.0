@@ -2362,16 +2362,12 @@ $("#tabStripEncounter_tbSummary").click(function () {
 function autoSaveAndMoveToNextProcess(sender) {
     const intervalId = setInterval(function () {
         const isSaveCompleted = localStorage.getItem("IsSaveCompleted");
-        console.log(`IsSaveCompleted = ${isSaveCompleted} | SaveUnsuccessful = ${localStorage.getItem("SaveUnsuccessful")}`);
-        console.log("START");
         if (isSaveCompleted === "true" || isSaveCompleted == true) {
-            console.log("STOP-1");
             clearInterval(intervalId);
             setTimeout(function () {
                 __doPostBack(sender.id, 'OnClick');
             }, 500);
         } else if (localStorage.getItem("SaveUnsuccessful") == "true") {
-            console.log("STOP-2");
             clearInterval(intervalId);
             localStorage.setItem("SaveUnsuccessful", "false");
         }
