@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acurus.Capella.PatientPortal {
-    
-    
-    public partial class frmOnlineDocuments {
-        
+namespace Acurus.Capella.PatientPortal
+{
+
+
+    public partial class frmOnlineDocuments
+    {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
         /// WindowMngr control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindowManager WindowMngr;
-        
+
         /// <summary>
         /// MessageWindow control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadWindow MessageWindow;
-        
+
         /// <summary>
         /// divLoading control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divLoading;
-        
+
         /// <summary>
         /// Panel2 control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel2;
-        
+
         /// <summary>
         /// Label1 control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label1;
-        
+
         /// <summary>
         /// pnlScanDoc control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlScanDoc;
-        
+
         /// <summary>
         /// dtpScannedDate control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText dtpScannedDate;
-        
+
         /// <summary>
         /// chckShowOldFiles control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chckShowOldFiles;
-        
+
         /// <summary>
         /// txtSelectedFacility control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtSelectedFacility;
-        
+
         /// <summary>
         /// btnFindDocuments control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnFindDocuments;
-        
+
         /// <summary>
         /// pnlBrowseDoc control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlBrowseDoc;
-        
+
         /// <summary>
         /// fileupload control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload fileupload;
-        
+
         /// <summary>
         /// btnUpload control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnUpload;
-        
+
         /// <summary>
         /// uplValidator control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator uplValidator;
-        
+
         /// <summary>
         /// DocumentType control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl DocumentType;
-        
+
         /// <summary>
         /// cboDocumentType control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList cboDocumentType;
-        
+
         /// <summary>
         /// SubDocumentType control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl SubDocumentType;
-        
+
         /// <summary>
         /// cboDocumentSubType control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList cboDocumentSubType;
-        
+
         /// <summary>
         /// fileThumbs control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl fileThumbs;
-        
+
         /// <summary>
         /// bigImage control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl bigImage;
-        
+
         /// <summary>
         /// bigImg control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage bigImg;
-        
+
         /// <summary>
         /// bigImagePDF control.
         /// </summary>
@@ -218,7 +220,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl bigImagePDF;
-        
+
         /// <summary>
         /// bigImgPDF control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlIframe bigImgPDF;
-        
+
         /// <summary>
         /// currentPage control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText currentPage;
-        
+
         /// <summary>
         /// totalPages control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText totalPages;
-        
+
         /// <summary>
         /// btnSaveOnline control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSaveOnline;
-        
+
         /// <summary>
         /// btnIndex control.
         /// </summary>
@@ -263,7 +265,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnIndex;
-        
+
         /// <summary>
         /// btnClearAll control.
         /// </summary>
@@ -272,7 +274,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnClearAll;
-        
+
         /// <summary>
         /// btnClose control.
         /// </summary>
@@ -281,7 +283,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnClose;
-        
+
         /// <summary>
         /// hdnNo control.
         /// </summary>
@@ -290,7 +292,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnNo;
-        
+
         /// <summary>
         /// hdnfilepath control.
         /// </summary>
@@ -299,7 +301,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnfilepath;
-        
+
         /// <summary>
         /// hdnFiles control.
         /// </summary>
@@ -308,7 +310,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnFiles;
-        
+
         /// <summary>
         /// hdnSelecteFile control.
         /// </summary>
@@ -317,7 +319,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnSelecteFile;
-        
+
         /// <summary>
         /// RadScriptManager1 control.
         /// </summary>
@@ -326,7 +328,7 @@ namespace Acurus.Capella.PatientPortal {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadScriptManager RadScriptManager1;
-        
+
         /// <summary>
         /// PlaceHolder1 control.
         /// </summary>
