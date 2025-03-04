@@ -1440,9 +1440,6 @@ function tabAutoSave(CurrentTab, sender) {
         event.preventDefault();
         bCancel = true;
         sessionStorage.setItem("EncAutoSave", "true");
-        //CAP-2678
-        localStorage.setItem("IsSaveCompleted", false);
-        autoSaveAndMoveToNextProcess(sender);
         if (CurTab[0].innerText == "CC / HPI") {
             $('.clsIframe').contents()[0].all.namedItem('btnAdd').click();
             //$(dvdialog).dialog("close");
@@ -2070,11 +2067,9 @@ function SummaryXMlAlert() {
 }
 
 function disableAutoSave() {
-    if (localStorage.getItem("SaveUnsuccessful") != "true") {
-        localStorage.setItem("bSave", "true");
-        sessionStorage.setItem("bCCSave", "false");//BugID:48506
-        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
-    }
+    localStorage.setItem("bSave", "true");
+    sessionStorage.setItem("bCCSave", "false");//BugID:48506
+    window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
 }
 function enableAutoSave() {
     localStorage.setItem("bSave", "false");
@@ -2357,20 +2352,3 @@ $("#tabStripEncounter_tbSummary").click(function () {
         document.getElementById('Summaryframe').style.display = 'none';
     }
 });
-
-//CAP-2678
-function autoSaveAndMoveToNextProcess(sender) {
-    const intervalId = setInterval(function () {
-        const isSaveCompleted = localStorage.getItem("IsSaveCompleted");
-        if (isSaveCompleted === "true" || isSaveCompleted == true) {
-            clearInterval(intervalId);
-            setTimeout(function () {
-                __doPostBack(sender.id, 'OnClick');
-            }, 500);
-        } else if (localStorage.getItem("SaveUnsuccessful") == "true") {
-            clearInterval(intervalId);
-            localStorage.setItem("SaveUnsuccessful", "false");
-        }
-        localStorage.setItem("IsSaveCompleted", false);
-    }, 500);
-}

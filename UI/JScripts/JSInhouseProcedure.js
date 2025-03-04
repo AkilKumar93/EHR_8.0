@@ -408,8 +408,6 @@ function Savedsuccessfully() {
     localStorage.setItem("bSave", "true");
     Order_AfterAutoSave();
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-    //CAP-2678
-    localStorage.setItem("IsSaveCompleted", true);
 }
 
 

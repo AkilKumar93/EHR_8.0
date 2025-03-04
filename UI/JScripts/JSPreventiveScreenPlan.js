@@ -474,8 +474,6 @@ function SavePreventiveScreenPlan() {
             savedSuccessfully();
             AutoSaveSuccessful();
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-            //CAP-2678
-            localStorage.setItem("IsSaveCompleted", true);
         },
         error: function OnError(xhr) {
             AutoSaveUnsuccessful();

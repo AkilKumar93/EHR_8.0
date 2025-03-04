@@ -505,6 +505,4 @@ function SavedSuccessfully() {
     localStorage.setItem("bSave", "true");
     PFSH_AfterAutoSave();
     DisplayErrorMessage('180015');
-    //CAP-2678
-    localStorage.setItem("IsSaveCompleted", true);
 }

@@ -186,8 +186,6 @@ function SavedSuccessfully() {
         window.parent.theForm.hdnSaveEnable.value = false;
     PFSH_AfterAutoSave();
     DisplayErrorMessage('295001');
-    //CAP-2678
-    localStorage.setItem("IsSaveCompleted", true);
 }
 function ShowLoadingWaitCursor() {
     EnableSave();

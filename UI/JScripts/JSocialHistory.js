@@ -314,8 +314,6 @@ function SavedSuccessfully() {
     else
         window.parent.theForm.hdnSaveEnable.value = false;
     PFSH_AfterAutoSave();
-    //CAP-2678
-    localStorage.setItem("IsSaveCompleted", true);
 }
 
 function HideAllControls() {

@@ -1112,7 +1112,6 @@ function SaveUnsuccessful() {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null || window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
     localStorage.setItem("bSave", "false");
-    localStorage.setItem("SaveUnsuccessful", "true");
     Exam_AfterAutoSave();
 }
 function Exam_AfterAutoSave() {
@@ -1445,7 +1444,6 @@ function PFSH_AfterAutoSave() {
 function PFSH_SaveUnsuccessful() {
     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
     localStorage.setItem("bSave", "false");
-    localStorage.setItem("SaveUnsuccessful", "true");
     PFSH_AfterAutoSave();
 }
 
@@ -1484,7 +1482,6 @@ function Order_SaveUnsuccessful() {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null || window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
     localStorage.setItem("bSave", "false");
-    localStorage.setItem("SaveUnsuccessful", "true");
     Order_AfterAutoSave();
 }
 
@@ -1493,7 +1490,6 @@ function AutoSaveUnsuccessful() {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null || window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
     localStorage.setItem("bSave", "false");
-    localStorage.setItem("SaveUnsuccessful", "true");
     Encounter_AfterAutoSave();
 }
 function AutoSaveSuccessful() {

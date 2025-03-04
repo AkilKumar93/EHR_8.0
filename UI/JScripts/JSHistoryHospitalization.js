@@ -422,8 +422,6 @@ function SavedSuccessfully() {
     $('#lstReasonForHospitalization').find('li').addClass('Editabletxtbox');
     $("[id*=pbDropdown]").addClass('pbDropdownBackground');
     $("textarea").addClass('Editabletxtbox');
-    //CAP-2678
-    localStorage.setItem("IsSaveCompleted", true);
 }
 
 function ChangeReadmitted() {

@@ -973,8 +973,6 @@ function vitalsAutoSaveSuccessful() {
         sessionStorage.removeItem('VitalsAutoSave');
         AutoSaveSuccessful();
     }
-    //CAP-2678
-    localStorage.setItem("IsSaveCompleted", true);
 }
 function convertDate(inputFormat) {
     var d = new Date(inputFormat);

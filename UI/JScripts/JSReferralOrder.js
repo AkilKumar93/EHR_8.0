@@ -517,8 +517,6 @@ function Autosave() {
      {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}
     DisplayErrorMessage('720001');
     Order_AfterAutoSave();
-    //CAP-2678
-    localStorage.setItem("IsSaveCompleted", true);
 }
 
 function btnMoveToNextProcess_Clicked(sender, args) {

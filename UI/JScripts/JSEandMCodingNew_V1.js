@@ -3486,8 +3486,6 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                     isclosemodal = 0;
                     self.close();
                 }
-                //CAP-2678
-                localStorage.setItem("IsSaveCompleted", true);
                 return;
             })
                 .error(function (error, status, headers, config) {

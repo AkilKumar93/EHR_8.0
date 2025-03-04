@@ -2089,8 +2089,6 @@ function LabOrder_SavedSuccessfully() {
     Order_AfterAutoSave();
     checksdates();
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-    //CAP-2678
-    localStorage.setItem("IsSaveCompleted", true);
 }
 
 
