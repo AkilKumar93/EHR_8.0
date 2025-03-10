@@ -261,7 +261,7 @@ function btnSave_Clicked(sender, args) {
         sender.set_autoPostBack(false);
     }
     else if (document.getElementById("chkYesTobaccoUseandExposure") != null && (document.getElementById("chkYesTobaccoUseandExposure").checked == false && document.getElementById("chkNoTobaccoUseandExposure").checked == false && document.getElementById("lblTobaccoUseandExposure").getAttribute("class") == "MandLabelstyle" && document.getElementById("DLCTobaccoUseandExposure_txtDLC") != null && document.getElementById("DLCTobaccoUseandExposure_txtDLC").value == "")) {    //added by Shilpa for Reason_Not_Performed cbo
-            PFSH_SaveUnsuccessful();
+        PFSH_SaveUnsuccessful();
             DisplayErrorMessage('180020');
             top.window.document.getElementById('ctl00_Loading').style.display = 'none';
             { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -314,6 +314,8 @@ function SavedSuccessfully() {
     else
         window.parent.theForm.hdnSaveEnable.value = false;
     PFSH_AfterAutoSave();
+    //CAP-2678
+    localStorage.setItem('IsSaveCompleted', true);
 }
 
 function HideAllControls() {

@@ -343,7 +343,7 @@ function UploadImage_FileUploading(sender, args) {
 
 function UploadImage_FileUploadRemoved(sender, args) {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined) {
-        window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
+        //window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "false";
     }
 }
 function testmethod() {
@@ -369,6 +369,8 @@ function SavedSuccessfully() {
     DisplayErrorMessage('270001');
     window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
     SavedSuccessfully_NowProceed(screen_name);
+    //CAP-2678
+    localStorage.setItem('IsSaveCompleted', true);
 }
 var IsMove = false;
 function MoveToNextProcess(sender, args) {

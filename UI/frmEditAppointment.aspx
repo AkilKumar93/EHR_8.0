@@ -315,6 +315,11 @@
         #ddlReasonCode.element.style {
             background-color: lightgray !important;
         }
+
+        #cboOrder_DropDown > div {
+            height:auto !important;
+            max-height:150px !important;
+        }
     </style>
     <%--<link href="CSS/ElementStyles.css" rel="stylesheet" type="text/css" /> --%>
       <link href="CSS/CommonStyle.css" rel="stylesheet" type="text/css" />
