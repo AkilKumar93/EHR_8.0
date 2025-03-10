@@ -2402,7 +2402,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
         if (bcolorcoding) {
             //CAP-2431 & CAP-2873
             var data1 = DisplayErrorMessage('220016');
-            if (!data1) {
+            if (data1 == undefined) {
+                return "false";
+            } else if (data1 == false) {
                 //CAP-2230
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 localStorage.setItem("Assauto", "N");
@@ -2488,6 +2490,8 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
             if (test.IsAssessmentRAFUpdate == "Y") {
                 RAFRefreshCLick();
             }
+            //CAP-2678
+            localStorage.setItem('IsSaveCompleted', true);
         })
             .error(function (error, status, headers, config) {
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
