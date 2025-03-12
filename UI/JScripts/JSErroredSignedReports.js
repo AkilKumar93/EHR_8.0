@@ -73,6 +73,7 @@ function deletefiles(filePath) {
                 }
                 else {
                     alert("The selected file has been successfully deleted.");
+                    OnLoadGrid();
                 }
             },
             error: function OnError(xhr) {
