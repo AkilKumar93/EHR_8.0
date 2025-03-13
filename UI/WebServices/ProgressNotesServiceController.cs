@@ -92,9 +92,15 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "FILES")
                 {
-                    string fileManagementIndexQury = "SELECT File_Management_Index_ID FROM file_management_index WHERE Human_ID = {0} AND Is_Delete != 'Y' AND DATE(Created_Date_And_Time) >= '{1}' AND DATE(Created_Date_And_Time) <= '{2}';";
+                    //Jira CAP-3057
+                    //string fileManagementIndexQury = "SELECT File_Management_Index_ID FROM file_management_index WHERE Human_ID = {0} AND Is_Delete != 'Y' AND DATE(Created_Date_And_Time) >= '{1}' AND DATE(Created_Date_And_Time) <= '{2}';";
 
-                    DataSet result = DBConnector.ReadData(string.Format(fileManagementIndexQury, sHumanID, thresholdDate, releaseDate));
+                    //DataSet result = DBConnector.ReadData(string.Format(fileManagementIndexQury, sHumanID, thresholdDate, releaseDate));
+
+                    string fileManagementIndexQury = "SELECT File_Management_Index_ID FROM file_management_index WHERE Human_ID = {0} AND Is_Delete != 'Y';";
+
+                    DataSet result = DBConnector.ReadData(string.Format(fileManagementIndexQury, sHumanID));
+
 
                     if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                     {
@@ -127,9 +133,14 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 if (string.IsNullOrEmpty(sCategory) || sCategory.ToUpper() == "LABRESULTS")
                 {
-                    string resultMasterQury = "SELECT Result_Master_ID FROM result_master WHERE Matching_Patient_ID = {0} and File_Name != '' AND DATE(Created_Date_And_Time) >= '{1}' AND DATE(Created_Date_And_Time) <= '{2}';";
+                    //Jira CAP-3057
+                    //string resultMasterQury = "SELECT Result_Master_ID FROM result_master WHERE Matching_Patient_ID = {0} and File_Name != '' AND DATE(Created_Date_And_Time) >= '{1}' AND DATE(Created_Date_And_Time) <= '{2}';";
 
-                    DataSet result = DBConnector.ReadData(string.Format(resultMasterQury, sHumanID, thresholdDate, releaseDate));
+                    //DataSet result = DBConnector.ReadData(string.Format(resultMasterQury, sHumanID, thresholdDate, releaseDate));
+
+                    string resultMasterQury = "SELECT Result_Master_ID FROM result_master WHERE Matching_Patient_ID = {0} and File_Name != '';";
+
+                    DataSet result = DBConnector.ReadData(string.Format(resultMasterQury, sHumanID));
 
                     if (result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
                     {
