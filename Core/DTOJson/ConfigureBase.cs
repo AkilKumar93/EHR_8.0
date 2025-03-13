@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace Acurus.Capella.Core.DTOJson
@@ -14,7 +15,24 @@ namespace Acurus.Capella.Core.DTOJson
         {
             if (File.Exists(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + sFileName))
             {
-                var str = System.IO.File.ReadAllText(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + sFileName);
+                //CAP-2945
+                //var str = System.IO.File.ReadAllText(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + sFileName);
+                var str = string.Empty;
+                using (FileStream fs = File.OpenRead(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + sFileName))
+                {
+                    using (StreamReader reader = new StreamReader(fs))
+                    {
+                        var stringBuilder = new StringBuilder();
+                        char[] buffer = new char[16384];
+                        int bytesRead;
+                        while ((bytesRead = reader.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            stringBuilder.Append(buffer, 0, bytesRead);
+                        }
+
+                        str = stringBuilder.ToString();
+                    }
+                }
                 return JsonConvert.DeserializeObject<T>(str);
             }
             return JsonConvert.DeserializeObject<T>(string.Empty);
