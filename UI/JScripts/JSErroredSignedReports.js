@@ -109,6 +109,7 @@ function OnLoadGrid() {
             var firstFileName = "";
             var firstFilePath = "";
             if (objdata?.length ?? 0 > 0) {
+                $('#lblFileCount').text(objdata.length);
                 for (var i = 0; i < objdata.length; i++) {
                     firstFileName = objdata[i].split('\\').pop();
                     firstFilePath = objdata[i];

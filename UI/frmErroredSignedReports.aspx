@@ -93,13 +93,14 @@
                     <asp:UpdatePanel ID="updateImages" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <div class="panel panelborderbox" style="height: 620px; width: 575px; float: left; clear: none;margin-bottom: 10px !important;">
-                                <div class="divgroupstyle" style="height: 21px!important">File(s)</div>
-                                <div id="fileThumbs" runat="server" style="height: 156px; width: 575px; overflow-y: auto;" enableviewstate="true">
+                                <div class="divgroupstyle" style="height: 21px!important">Errored Signed Report(s)</div>
+                                <div id="fileThumbs" runat="server" style="height: 576px; width: 575px; overflow-y: auto;" enableviewstate="true">
                                     <table id="tblFiles" class="table table-bordered Gridbodystyle" style="width: 99.7%">
                                         <tbody id="tbFilesBody" class="Gridbodystyle">
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="divgroupstyle" style="height: 21px!important">No. of File(s): <label id="lblFileCount">0</label> </div>
                             </div>
                             <div class="panel panelborderbox" style="height: 620px; width: 575px; float: left; clear: none; margin-left: 10px;margin-bottom: 10px !important;">
                                 <div class="divgroupstyle" style="height: 21px!important">Preview</div>
