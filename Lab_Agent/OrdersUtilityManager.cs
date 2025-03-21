@@ -283,7 +283,8 @@ namespace Acurus.Capella.LabAgent
                                 Console.WriteLine(objWebResult[0].ToString());
                                 if (objWebResult[0].ToString() == "SUCCESS")
                                 {
-                                    File.Move(akidoOrderFilePath, filepathQuest + "\\Send" + sAkidoOrderFileName.Substring(filepathQuest.Length));
+                                    //CAP-3079
+                                    File.Move(akidoOrderFilePath, filepathQuest + "\\Send" + akidoOrderFilePath.Substring(filepathQuest.Length));
 
                                 }
                                 else
