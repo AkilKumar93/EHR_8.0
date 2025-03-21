@@ -2365,6 +2365,8 @@ function autoSaveAndMoveToNextProcess(sender) {
         if (isSaveCompleted === "true" || isSaveCompleted == true) {
             clearInterval(intervalId);
             setTimeout(function () {
+                //CAP-3055
+                localStorage.setItem("MovetofromEandM", "True");
                 __doPostBack(sender.id, 'OnClick');
             }, 500);
         } else if (localStorage.getItem('SaveUnsuccessful') == "true") {
