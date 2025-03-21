@@ -1285,6 +1285,8 @@ namespace Acurus.Capella.UI
 
         protected void btnMove_Click(object sender, EventArgs e)
         {
+            //CAP-3064
+            btnPhysiciancorrection.Disabled = hdnPhysiciancorrectionDisabled.Value == "true";
             //bool stat = false;
             bool enableNotifAlert = false; ;
             ScriptManager.RegisterStartupScript(this, typeof(frmEncounter), "WaitCursor", "{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}", true);

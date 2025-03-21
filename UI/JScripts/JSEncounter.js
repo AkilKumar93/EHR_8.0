@@ -1069,9 +1069,12 @@ function OpenNotification_Before_MovetoNextProcess() {
 }
 
 function IsSaveEnabled(sender) {
-    localStorage.setItem("MovetofromEandM", "True");
     var bsave = localStorage.getItem("bSave");
     var val = localStorage.getItem("CCAndEandMAutosave");
+    //CAP-3064
+    if ($("#btnPhysiciancorrection").prop("disabled")) {
+        $('#hdnPhysiciancorrectionDisabled').val(true);
+    }
     if (bsave == "false") {
         var CurrentTab = $("ul#myTabs li.active a");
         if (localStorage.getItem("PrevSubTab") != null && localStorage.getItem("PrevSubTab") != undefined && localStorage.getItem("PrevSubTab") != "") {

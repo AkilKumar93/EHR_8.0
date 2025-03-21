@@ -437,6 +437,7 @@
         <asp:HiddenField ID="hdnProvRev" runat="server" />
         <asp:HiddenField ID="hdnScreen" runat="server" /><%--//CAP-1511--%>
         <asp:HiddenField ID="hdnSubScreen" runat="server" /><%--//CAP-1511--%>
+        <asp:HiddenField ID="hdnPhysiciancorrectionDisabled" runat="server" />
         <asp:HiddenField ID="hdnEncounterIDSummary" runat="server" EnableViewState="false" />
         <asp:UpdatePanel ID="upPanle" runat="server">
             <ContentTemplate>
