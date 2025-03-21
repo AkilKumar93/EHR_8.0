@@ -74,6 +74,9 @@ function deletefiles(filePath) {
                 else {
                     alert("The selected file has been successfully deleted.");
                     OnLoadGrid();
+                    //CAP-3066
+                    $('#imgControls').css("display", "block");
+                    $('#imgholder,#bigImagePDF,#PDFholder').css("display", "none");
                 }
             },
             error: function OnError(xhr) {
