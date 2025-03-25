@@ -3319,7 +3319,8 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
                 if (icdcount) {
 
                     if (!alert('Please select at least one ICD')) {
-
+                        //CAP-3055
+                        localStorage.setItem('SaveUnsuccessful', 'true');
                         localStorage.setItem("bSave", "true");
                         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = false;
                         localStorage.setItem("CCAndEandMAutosave", "true");

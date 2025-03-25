@@ -1069,9 +1069,12 @@ function OpenNotification_Before_MovetoNextProcess() {
 }
 
 function IsSaveEnabled(sender) {
-    localStorage.setItem("MovetofromEandM", "True");
     var bsave = localStorage.getItem("bSave");
     var val = localStorage.getItem("CCAndEandMAutosave");
+    //CAP-3064
+    if ($("#btnPhysiciancorrection").prop("disabled")) {
+        $('#hdnPhysiciancorrectionDisabled').val(true);
+    }
     if (bsave == "false") {
         var CurrentTab = $("ul#myTabs li.active a");
         if (localStorage.getItem("PrevSubTab") != null && localStorage.getItem("PrevSubTab") != undefined && localStorage.getItem("PrevSubTab") != "") {
@@ -1440,6 +1443,8 @@ function tabAutoSave(CurrentTab, sender) {
         event.preventDefault();
         bCancel = true;
         sessionStorage.setItem("EncAutoSave", "true");
+        //CAP-3065
+        localStorage.setItem("SaveUnsuccessful", "false");
         //CAP-2678
         localStorage.setItem('IsSaveCompleted', false);
         autoSaveAndMoveToNextProcess(sender);
@@ -2365,6 +2370,8 @@ function autoSaveAndMoveToNextProcess(sender) {
         if (isSaveCompleted === "true" || isSaveCompleted == true) {
             clearInterval(intervalId);
             setTimeout(function () {
+                //CAP-3055
+                localStorage.setItem("MovetofromEandM", "True");
                 __doPostBack(sender.id, 'OnClick');
             }, 500);
         } else if (localStorage.getItem('SaveUnsuccessful') == "true") {
