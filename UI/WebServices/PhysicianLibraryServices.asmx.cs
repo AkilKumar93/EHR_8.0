@@ -1224,8 +1224,8 @@ namespace Acurus.Capella.UI.WebServices
                             newAddress.Physician_Library_ID = objPhy.Id.ToString();
 
                             string updatedAddressContent = JsonConvert.SerializeObject(addressList);
-
-                            ConfigureBase<PhysicianAddressDetailsList>.SaveJson("PhysicianAddressDetails.json", updatedAddressContent);
+                            //Cap - 3103
+                            //ConfigureBase<PhysicianAddressDetailsList>.SaveJson("PhysicianAddressDetails.json", updatedAddressContent);
                         }
                     }
                     catch (Exception ex)

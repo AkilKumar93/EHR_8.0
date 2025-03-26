@@ -484,7 +484,8 @@ namespace Acurus.Capella.UI
                     addressList.PhysicianAddress.Add(newAddress);
 
                     var updatedAddressContent = JsonConvert.SerializeObject(addressList);
-                    ConfigureBase<PhysicianAddressDetailsList>.SaveJson("PhysicianAddressDetails.json", updatedAddressContent);
+                    //Cap - 3103
+                    //ConfigureBase<PhysicianAddressDetailsList>.SaveJson("PhysicianAddressDetails.json", updatedAddressContent);
                 }
                 #endregion
                 #region Save into PhysicianFacilityMapping.xml
