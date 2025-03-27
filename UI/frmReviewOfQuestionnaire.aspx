@@ -80,24 +80,29 @@
                                         <td style="width: 75%">
                                             <asp:CheckBox ID="chkAllOtherSystemsNormal" runat="server" CssClass="Editabletxtbox" Text="All other systems are Negative except for the problems presented." />
                                         </td>
+                                        <td align="center">
+
+                                <input type="button" runat="server" class="btn aspresizedbluebutton" id="btnCopyPrevious" accesskey="p" value="Copy Previous Screening"
+                                    onclick="if (!btnCopyPrevious_Clicked()) return;" onserverclick="btnCopyPrevious_Click" />
+                            </td>
                                         <td style="width: 6%;" align="right">
-                                            <telerik:RadButton ID="btnSave" runat="server" Text="Save" Width="80px" OnClick="btnSave_Click"
-                                                OnClientClicked="SaveEnabled" AccessKey="s" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 60px; text-align: center" CssClass="greenbutton">
+                                            <telerik:RadButton ID="btnSave" runat="server" Text="Save" Width="80px" Height="25px" OnClick="btnSave_Click"
+                                                OnClientClicked="SaveEnabled" AccessKey="s" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 60px; text-align: center;padding:3px 12px !important;" CssClass="greenbutton">
                                                 <ContentTemplate>
                                                     <span class="underline">S</span>ave
                                                 </ContentTemplate>
                                             </telerik:RadButton>
                                         </td>
                                         <td style="width: 6%;" align="left">
-                                            <telerik:RadButton ID="btnClearAll" AutoPostBack="false" CssClass="redbutton" runat="server" Text="Clear All"
-                                                EnableViewState="false" OnClientClicked="ClearAllRoq" AccessKey="c" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 80px; text-align: center">
+                                            <telerik:RadButton ID="btnClearAll" AutoPostBack="false" CssClass="redbutton" runat="server" Text="Clear All"  Height="25px"
+                                                EnableViewState="false" OnClientClicked="ClearAllRoq" AccessKey="c" Style="-moz-border-radius: 3px; -webkit-border-radius: 3px; width: 80px; text-align: center;padding:3px 12px !important;">
                                                 <ContentTemplate>
                                                     <span class="underline">C</span>lear All                                             
                                                 </ContentTemplate>
                                             </telerik:RadButton>
                                         </td>
                                         <td align="center" style="width: 6%;">
-                                            <telerik:RadButton ID="btnPrint" runat="server" CssClass="bluebutton" Text="Print" Width="80px" OnClientClicked="btnPrint_Clicked" Style="position: relative; -moz-border-radius: 3px; -webkit-border-radius: 3px;">
+                                            <telerik:RadButton ID="btnPrint" runat="server" CssClass="bluebutton" Text="Print" Width="80px"  Height="25px" OnClientClicked="btnPrint_Clicked" Style="position: relative; -moz-border-radius: 3px; -webkit-border-radius: 3px;padding:3px 12px !important;">
                                                 <ContentTemplate>
                                                     <span class="underline">P</span>rint		
                                                 </ContentTemplate>
@@ -129,6 +134,7 @@
             </asp:Panel>
         </div>--%>
         </telerik:RadAjaxPanel>
+        <asp:HiddenField ID="HdnCopyButton" runat="server" Value="false" />
         <input id="Hidden1" type="hidden" enableviewstate="false" runat="server" />
         <input id="hdnPrint" type="hidden" enableviewstate="false" runat="server" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
