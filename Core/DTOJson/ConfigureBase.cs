@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Acurus.Capella.Core.DomainObjects;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,23 +19,30 @@ namespace Acurus.Capella.Core.DTOJson
             {
                 //CAP-2945
                 //var str = System.IO.File.ReadAllText(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + sFileName);
-                var str = string.Empty;
+                //var str = string.Empty;
                 using (FileStream fs = File.OpenRead(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + sFileName))
                 {
-                    using (StreamReader reader = new StreamReader(fs))
-                    {
-                        var stringBuilder = new StringBuilder();
-                        char[] buffer = new char[16384];
-                        int bytesRead;
-                        while ((bytesRead = reader.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            stringBuilder.Append(buffer, 0, bytesRead);
-                        }
+                    //using (StreamReader reader = new StreamReader(fs))
+                    //{
+                    //    var stringBuilder = new StringBuilder();
+                    //    char[] buffer = new char[16384];
+                    //    int bytesRead;
+                    //    while ((bytesRead = reader.Read(buffer, 0, buffer.Length)) > 0)
+                    //    {
+                    //        stringBuilder.Append(buffer, 0, bytesRead);
+                    //    }
+                    //    str = stringBuilder.ToString();
+                    //}
 
-                        str = stringBuilder.ToString();
+
+                    using (StreamReader reader = new StreamReader(fs))
+                    using (JsonTextReader jsonReader = new JsonTextReader(reader))
+                    {
+                        JsonSerializer serializer = new JsonSerializer();
+                        return serializer.Deserialize<T>(jsonReader);
                     }
                 }
-                return JsonConvert.DeserializeObject<T>(str);
+                //return JsonConvert.DeserializeObject<T>(str);
             }
             return JsonConvert.DeserializeObject<T>(string.Empty);
         }
