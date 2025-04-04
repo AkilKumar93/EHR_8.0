@@ -6393,26 +6393,67 @@ namespace Acurus.Capella.UI
             string sTransformedValue = string.Empty;
             StringBuilder sbSplitUp = new StringBuilder();
             XmlDocument xmlDoc = new XmlDocument();
+            XmlDocument xmlRemoveDoc = new XmlDocument();
             string sHumanAndEncounterXml = sb.ToString();
             xmlDoc.LoadXml(sHumanAndEncounterXml);
             string sXmlHeader = sHumanAndEncounterXml.Substring(0, sHumanAndEncounterXml.LastIndexOf("?>") + 2);
+            XmlNode xmlFinalNode = null;
+            XmlNodeList XMLNode = null;
             for (int iCount = 0; iCount < ilstxsltTransform.Count; iCount++)
             {
                 aryTagName = ilstxsltTransform[iCount].TagNames.Split(',');
                 sbSplitUp.Clear();
                 sbSplitUp.Append(sXmlHeader + "<notes><Modules>");
+                if (ilstxsltTransform[iCount].AddAndModifyTags != "")
+                {
+                    xmlRemoveDoc.LoadXml(ilstxsltTransform[iCount].AddAndModifyTags);
+                }
+                else
+                {
+                    xmlRemoveDoc = new XmlDocument();
+                }
+
+
                 for (int iYCount = 0; iYCount < aryTagName.Count(); iYCount++)
                 {
-                    foreach(XmlNode xmlNode in xmlDoc.GetElementsByTagName(aryTagName[iYCount]))
+                    XMLNode = xmlDoc.GetElementsByTagName(aryTagName[iYCount]);
+                    foreach (XmlNode xmlNode in XMLNode)
                     {
-                        sbSplitUp.Append(xmlNode.OuterXml);
+                        xmlFinalNode = xmlNode.CloneNode(true);
+
+                        //Appending modified Nodes - Start
+                        XmlNodeList RemoveXMLNode = xmlRemoveDoc.GetElementsByTagName(aryTagName[iYCount]);
+                        if (RemoveXMLNode.Count > 0)
+                        {
+                            foreach (XmlAttribute removeXMLAttr in RemoveXMLNode[0].Attributes)
+                            {
+                                xmlFinalNode.FirstChild.Attributes.GetNamedItem(removeXMLAttr.Name).Value = removeXMLAttr.Value;
+                            }
+                        }
+                        //Appending modified Nodes - End
+
+                        sbSplitUp.Append(xmlFinalNode.OuterXml);
                     }
                     
                 }
+
+                //Appending extra Tags
+                if (xmlRemoveDoc.SelectSingleNode("AddAndModifyTags")?.ChildNodes != null)
+                {
+                    foreach (XmlNode EmptyXmlNodes in xmlRemoveDoc.SelectSingleNode("AddAndModifyTags")?.ChildNodes)
+                    {
+                        if (EmptyXmlNodes.Attributes.Count == 0)
+                        {
+                            sbSplitUp.Append(EmptyXmlNodes.OuterXml);
+                        }
+                    }
+                }
+
                 sbSplitUp.Append("</Modules></notes>");
                 XmlReader xmlr = XmlReader.Create(new StringReader(sbSplitUp.ToString()));
                 if (bIsSummary)
                 {
+                    //Summary
                     sTransformedValue = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
                     if (sTransformedData != string.Empty)
                     {
@@ -6423,7 +6464,7 @@ namespace Acurus.Capella.UI
                 }
                 else
                 {
-
+                    //PDF
                 }
             }
             return sTransformedData;
