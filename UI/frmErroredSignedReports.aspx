@@ -58,6 +58,25 @@
             border-radius: 10px;
             opacity: 0.8;
         }
+        .date-sort{
+            cursor: pointer;
+            }
+        .date-sort:after{
+            top: 5%;
+            content: "▲" / "";
+            font-size: 10px;
+            position: absolute;
+            right: 51.5%;
+            opacity:1;
+        }
+        .date-sort:before{
+            top: 6.4%;
+            content: "▼" / "";
+            font-size: 10px;
+            position: absolute;
+            right: 51.5%;
+            opacity:1;
+        }
     </style>
 </head>
 
@@ -96,6 +115,11 @@
                                 <div class="divgroupstyle" style="height: 21px!important">Errored Signed Report(s)</div>
                                 <div id="fileThumbs" runat="server" style="height: 576px; width: 575px; overflow-y: auto;" enableviewstate="true">
                                     <table id="tblFiles" class="table table-bordered Gridbodystyle" style="width: 99.7%">
+                                        <tr>
+                                            <th>Del.</th>
+                                            <th>File(s)</th>
+                                            <th class="date-sort" id="divCreatedDateAndTime" data-sort-order="ASC">Created Date and Time</th>
+                                        </tr>
                                         <tbody id="tbFilesBody" class="Gridbodystyle">
                                         </tbody>
                                     </table>
