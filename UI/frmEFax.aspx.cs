@@ -455,7 +455,8 @@ namespace Acurus.Capella.UI
                     bool bCreateDirectory = ftpImageProcess.CreateDirectory(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, out string sCheckFileNotFoundException);
                     if (sCheckFileNotFoundException != "" && sCheckFileNotFoundException.Contains("CheckFileNotFoundException"))
                     {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1] + "\");", true);
+                        //CAP-3111
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundException.Split('~')[1].Replace("\\", "/") + "\");", true);
                         return;
                     }
                     if (bCreateDirectory)
@@ -520,7 +521,8 @@ namespace Acurus.Capella.UI
                                 sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat, out string sCheckFileNotFoundExceptions);
                                 if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
                                 {
-                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    //CAP-3111
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1].Replace("\\", "/") + "\");", true);
                                     return;
                                 }
                                 // string sFilePath = sFacilityPath + sStoringFormat;
@@ -596,7 +598,8 @@ namespace Acurus.Capella.UI
                                 ftpImageProcess.DownloadFromImageServer(HumanId, ftpServerIPre, ftpUserNamere, ftpPasswordre, Path.GetFileName(hdnfilePath.Value), sLocalPath, out string sCheckFileNotFoundExc);
                                 if (sCheckFileNotFoundExc != "" && sCheckFileNotFoundExc.Contains("CheckFileNotFoundException"))
                                 {
-                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExc.Split('~')[1] + "\");", true);
+                                    //CAP-3111
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExc.Split('~')[1].Replace("\\", "/") + "\");", true);
                                     return;
                                 }
                                 if (Path.GetExtension(hdnfilePath.Value).ToUpper() == ".PNG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".GIF" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".JPG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".JPEG" || Path.GetExtension(hdnfilePath.Value).ToUpper() == ".BMP")
@@ -641,7 +644,8 @@ namespace Acurus.Capella.UI
                                 sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, pdffilepath, sStoringFormat, out string sCheckFileNotFoundExceptions);
                                 if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
                                 {
-                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    //CAP-3111
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1].Replace("\\", "/") + "\");", true);
                                     return;
                                 }
                                 // string sFilePath = sFacilityPath + sStoringFormat;
@@ -665,7 +669,8 @@ namespace Acurus.Capella.UI
                                 sFTPAddress = ftpImageProcess.UploadToImageServer(sDestinationFTPPath, ftpServerIP, ftpUserID, ftpPassword, SelectedFilePath, sStoringFormat, out string sCheckFileNotFoundExceptions);
                                 if (sCheckFileNotFoundExceptions != "" && sCheckFileNotFoundExceptions.Contains("CheckFileNotFoundException"))
                                 {
-                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1] + "\");", true);
+                                    //CAP-3111
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Key", "alert(\"" + sCheckFileNotFoundExceptions.Split('~')[1].Replace("\\", "/") + "\");", true);
                                     return;
                                 }
                                 //  sFilePath = sFacilityPath + sStoringFormat;
