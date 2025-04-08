@@ -2023,8 +2023,8 @@ namespace Acurus.Capella.UI
             {
                 List = from h in iStaticlookuplist orderby h.Sort_Order select h;
             }
-
-            ddlAccountStatus.Items.Add("");
+            //Cap - 3121
+           //ddlAccountStatus.Items.Add("");
             if (List != null)
             {
                 foreach (var i in List)
@@ -4565,7 +4565,7 @@ namespace Acurus.Capella.UI
                     //dtpGuarantorDOB.SelectedDate = humanlist[0].Birth_Date;//.ToString("dd-MMM-yyyy");
                     dtpGuarantorDOB.Text = humanlist[0].Birth_Date.ToString("dd-MMM-yyyy");
 
-                }
+                }                
             }
         }
 
