@@ -58,6 +58,25 @@
             border-radius: 10px;
             opacity: 0.8;
         }
+        .date-sort{
+            cursor: pointer;
+            }
+        .date-sort:after{
+            top: 2%;
+            content: "▲" / "";
+            font-size: 10px;
+            position: absolute;
+            right: 51.5%;
+            opacity:0.4;
+        }
+        .date-sort:before{
+            top: 3.4%;
+            content: "▼" / "";
+            font-size: 10px;
+            position: absolute;
+            right: 51.5%;
+            opacity:0.4;
+        }
     </style>
 </head>
 
@@ -93,9 +112,14 @@
                     <asp:UpdatePanel ID="updateImages" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <div class="panel panelborderbox" style="height: 620px; width: 575px; float: left; clear: none;margin-bottom: 10px !important;">
-                                <div class="divgroupstyle" style="height: 21px!important">Errored Signed Report(s)</div>
-                                <div id="fileThumbs" runat="server" style="height: 576px; width: 575px; overflow-y: auto;" enableviewstate="true">
+                                <%--<div class="divgroupstyle" style="height: 21px!important">Errored Signed Report(s)</div>--%>
+                                <div id="fileThumbs" runat="server" style="height: 597px; width: 575px; overflow-y: auto;" enableviewstate="true">
                                     <table id="tblFiles" class="table table-bordered Gridbodystyle" style="width: 99.7%">
+                                        <tr>
+                                            <th class="table-th-style">Del.</th>
+                                            <th class="table-th-style">File Name</th>
+                                            <th class="table-th-style" id="divCreatedDateAndTime" data-sort-order="DESC" style="cursor: pointer;">Created Date and Time</th>
+                                        </tr>
                                         <tbody id="tbFilesBody" class="Gridbodystyle">
                                         </tbody>
                                     </table>

@@ -80,7 +80,7 @@ namespace Acurus.Capella.UI
         }
 
         [WebMethod(EnableSession = true)]
-        public static string LoadGrid()
+        public static string LoadGrid(string sortOrder = "ASC")
         {
             if (ClientSession.UserName == string.Empty)
             {
@@ -90,12 +90,28 @@ namespace Acurus.Capella.UI
                 return "Session Expired";
             }
 
-            IList<string> lstDocuments = new List<string>();
-            
+            List<(string, string)> lstDocuments = new List<(string, string)>();
             string path = ConfigurationManager.AppSettings["ErroredFilePath_Local"];
             if (Directory.Exists(path))
             {
-                lstDocuments = Directory.GetFiles(path).ToList();
+                var files = Directory.GetFiles(path).ToList();
+                //CAP-3115
+                List<(string, DateTime)> documents = new List<(string, DateTime)>();
+                foreach (var file in files)
+                {
+                    DateTime creationTime = File.GetCreationTime(file);
+                    documents.Add((file, creationTime));
+                }
+
+                if (sortOrder == "ASC")
+                { documents = documents.OrderBy(a => a.Item2).ToList(); }
+                else
+                { documents = documents.OrderByDescending(a => a.Item2).ToList(); }
+
+                foreach (var file in documents)
+                {
+                    lstDocuments.Add((file.Item1, file.Item2.ToString("yyyy-MMM-dd hh:mm tt")));
+                }
             }
             return JsonConvert.SerializeObject(lstDocuments);
         }

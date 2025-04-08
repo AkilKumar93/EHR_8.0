@@ -24,7 +24,7 @@
         e += 90, $("#rotateright").rotate(e)
     }), $("#_imgBig").css("opacity", "1");
 
-    OnLoadGrid();
+    OnLoadGrid("ASC");
 });
 
 function viewImage(e) {
@@ -73,7 +73,7 @@ function deletefiles(filePath) {
                 }
                 else {
                     alert("The selected file has been successfully deleted.");
-                    OnLoadGrid();
+                    OnLoadGrid("ASC");
                     //CAP-3066
                     $('#imgControls').css("display", "block");
                     $('#imgholder,#bigImagePDF,#PDFholder').css("display", "none");
@@ -95,11 +95,22 @@ function deletefiles(filePath) {
     return false;
 }
 
-function OnLoadGrid() {
+$("#divCreatedDateAndTime").click(function () {
+    var sortOrder = $(this).attr('data-sort-order');
+    if (sortOrder == "ASC") {
+        $(this).attr('data-sort-order', 'DESC');
+    } else {
+        $(this).attr('data-sort-order', 'ASC');
+    }
+    OnLoadGrid(sortOrder);
+});
+
+function OnLoadGrid(sortOrder) {
     $.ajax({
         type: "POST",
         async: true,
-        url: "frmErroredSignedReports.aspx/LoadGrid",
+        url: `frmErroredSignedReports.aspx/LoadGrid`,
+        data: '{sortOrder: "' + sortOrder + '" }',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
@@ -108,32 +119,27 @@ function OnLoadGrid() {
             var tabContents = "";
             var objdata = $.parseJSON(data.d);
             var vdelete = "<td></td>";
-            $("#tblFiles tr").empty();
+            var createdDate = "<td></td>";
             var firstFileName = "";
             var firstFilePath = "";
             if (objdata?.length ?? 0 > 0) {
                 $('#lblFileCount').text(objdata.length);
                 for (var i = 0; i < objdata.length; i++) {
-                    firstFileName = objdata[i].split('\\').pop();
-                    firstFilePath = objdata[i];
+                    firstFileName = objdata[i].Item1.split('\\').pop();
+                    firstFilePath = objdata[i].Item1;
                     firstFilePath = firstFilePath.split("\\").join("/");
 
                     vdelete = `<td title='Delete' style='width: 3%;'><img style='width: 12px;' src='Resources/Delete-Blue.png' onclick="deletefiles('${firstFilePath}');" /></td>`;
-                    tabContents = tabContents + `<tr style='cursor: pointer;'>${vdelete}<td style='width: 97%' onclick="GridOpenFile('${firstFileName}','${firstFilePath}',this);">${firstFileName}</td><td style='display:none'>${firstFilePath}</td></tr>`;
-                    //if (i == 0) {
-                    //    tabContents = `<tr style='cursor: pointer;' class='highlight'>${vdelete}<td style='width: 97%' onclick="GridOpenFile('${firstFileName}','${firstFilePath}',this);">${firstFileName}</td><td style='display:none'>${firstFilePath}</td></tr>`;
-                    //}
-                    //else {
-                    //    tabContents = tabContents + `<tr style='cursor: pointer;'>${vdelete}<td style='width: 97%' onclick="GridOpenFile('${firstFileName}','${firstFilePath}',this);">${firstFileName}</td><td style='display:none'>${firstFilePath}</td></tr>`;
-                    //}
+                    createdDate = `<td title='Created Date and Time' style='width: 30%;'>${objdata[i].Item2}</td>`;
+                    tabContents = tabContents + `<tr style='cursor: pointer;'>${vdelete}<td style='width: 67%' onclick="GridOpenFile('${firstFileName}','${firstFilePath}',this);">${firstFileName}</td><td style='display:none'>${firstFilePath}</td>${createdDate}</tr>`;
                 }
             }
             if (tabContents == "") {
                 tabContents = "<tr style='color:red'><td colspan='2'></td></tr>";
-                $("#tbFilesBody").append(tabContents);
+                $("#tbFilesBody").html(tabContents);
             }
             else {
-                $("#tbFilesBody").append(tabContents);
+                $("#tbFilesBody").html(tabContents);
                 //GridOpenFile(firstFileName, firstFilePath, "");
             }
         },
