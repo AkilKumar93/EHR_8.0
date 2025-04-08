@@ -2023,8 +2023,8 @@ namespace Acurus.Capella.UI
             {
                 List = from h in iStaticlookuplist orderby h.Sort_Order select h;
             }
-
-            ddlAccountStatus.Items.Add("");
+            //Cap - 3121
+           //ddlAccountStatus.Items.Add("");
             if (List != null)
             {
                 foreach (var i in List)
@@ -4536,35 +4536,38 @@ namespace Acurus.Capella.UI
                 humanlist = HumanMngr.GetPatientDetailsUsingPatientInformattion(Convert.ToUInt64(hdnGuarantorID.Value));
                 if (humanlist.Count > 0 && humanlist != null)
                 {
-                    txtGuarantorFirstName.Text = humanlist[0].First_Name;
-                    txtGuarantorCity.Text = humanlist[0].City;
-                    txtGuarantorLastName.Text = humanlist[0].Last_Name;
-                    txtGuarantorMiddleName.Text = humanlist[0].MI;
-                    //txtGuarantorAddress.Text = humanlist[0].Street_Address1 + humanlist[0].Street_Address2;
-                    txtGuarantorAddress.Text = humanlist[0].Street_Address1;
-                    txtGuarantorAddressLine2.Text = humanlist[0].Street_Address2;
-                    for (int i = 0; i < ddlGuarantorSex.Items.Count; i++)
+                    if (humanlist[0].Account_Status == "Active")
                     {
-                        if (Convert.ToString(ddlGuarantorSex.Items[i].Value).ToUpper() == humanlist[0].Sex.ToUpper())
+                        txtGuarantorFirstName.Text = humanlist[0].First_Name;
+                        txtGuarantorCity.Text = humanlist[0].City;
+                        txtGuarantorLastName.Text = humanlist[0].Last_Name;
+                        txtGuarantorMiddleName.Text = humanlist[0].MI;
+                        //txtGuarantorAddress.Text = humanlist[0].Street_Address1 + humanlist[0].Street_Address2;
+                        txtGuarantorAddress.Text = humanlist[0].Street_Address1;
+                        txtGuarantorAddressLine2.Text = humanlist[0].Street_Address2;
+                        for (int i = 0; i < ddlGuarantorSex.Items.Count; i++)
                         {
-                            ddlGuarantorSex.SelectedIndex = i;
-                            hdnGuarantorSex.Value = humanlist[0].Sex;
+                            if (Convert.ToString(ddlGuarantorSex.Items[i].Value).ToUpper() == humanlist[0].Sex.ToUpper())
+                            {
+                                ddlGuarantorSex.SelectedIndex = i;
+                                hdnGuarantorSex.Value = humanlist[0].Sex;
+                            }
                         }
-                    }
-                    for (int i = 0; i < ddlGuarantorState.Items.Count; i++)
-                    {
-                        if (Convert.ToString(ddlGuarantorState.Items[i].Value).ToUpper() == humanlist[0].State.ToUpper())
+                        for (int i = 0; i < ddlGuarantorState.Items.Count; i++)
                         {
-                            ddlGuarantorState.SelectedIndex = i;
-                            hdnGuarantorState.Value = humanlist[0].State;
+                            if (Convert.ToString(ddlGuarantorState.Items[i].Value).ToUpper() == humanlist[0].State.ToUpper())
+                            {
+                                ddlGuarantorState.SelectedIndex = i;
+                                hdnGuarantorState.Value = humanlist[0].State;
+                            }
                         }
-                    }
-                    msktxtGuarantorCellNo.Text = humanlist[0].Cell_Phone_Number;
-                    msktxtGuarantorHomeNo.Text = humanlist[0].Home_Phone_No;
-                    msktxtGuarantorZipCode.Text = humanlist[0].Guarantor_Zip_Code;
-                    //dtpGuarantorDOB.SelectedDate = humanlist[0].Birth_Date;//.ToString("dd-MMM-yyyy");
-                    dtpGuarantorDOB.Text = humanlist[0].Birth_Date.ToString("dd-MMM-yyyy");
+                        msktxtGuarantorCellNo.Text = humanlist[0].Cell_Phone_Number;
+                        msktxtGuarantorHomeNo.Text = humanlist[0].Home_Phone_No;
+                        msktxtGuarantorZipCode.Text = humanlist[0].Guarantor_Zip_Code;
+                        //dtpGuarantorDOB.SelectedDate = humanlist[0].Birth_Date;//.ToString("dd-MMM-yyyy");
+                        dtpGuarantorDOB.Text = humanlist[0].Birth_Date.ToString("dd-MMM-yyyy");
 
+                    }
                 }
             }
         }
