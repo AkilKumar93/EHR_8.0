@@ -4536,39 +4536,36 @@ namespace Acurus.Capella.UI
                 humanlist = HumanMngr.GetPatientDetailsUsingPatientInformattion(Convert.ToUInt64(hdnGuarantorID.Value));
                 if (humanlist.Count > 0 && humanlist != null)
                 {
-                    if (humanlist[0].Account_Status == "Active")
+                    txtGuarantorFirstName.Text = humanlist[0].First_Name;
+                    txtGuarantorCity.Text = humanlist[0].City;
+                    txtGuarantorLastName.Text = humanlist[0].Last_Name;
+                    txtGuarantorMiddleName.Text = humanlist[0].MI;
+                    //txtGuarantorAddress.Text = humanlist[0].Street_Address1 + humanlist[0].Street_Address2;
+                    txtGuarantorAddress.Text = humanlist[0].Street_Address1;
+                    txtGuarantorAddressLine2.Text = humanlist[0].Street_Address2;
+                    for (int i = 0; i < ddlGuarantorSex.Items.Count; i++)
                     {
-                        txtGuarantorFirstName.Text = humanlist[0].First_Name;
-                        txtGuarantorCity.Text = humanlist[0].City;
-                        txtGuarantorLastName.Text = humanlist[0].Last_Name;
-                        txtGuarantorMiddleName.Text = humanlist[0].MI;
-                        //txtGuarantorAddress.Text = humanlist[0].Street_Address1 + humanlist[0].Street_Address2;
-                        txtGuarantorAddress.Text = humanlist[0].Street_Address1;
-                        txtGuarantorAddressLine2.Text = humanlist[0].Street_Address2;
-                        for (int i = 0; i < ddlGuarantorSex.Items.Count; i++)
+                        if (Convert.ToString(ddlGuarantorSex.Items[i].Value).ToUpper() == humanlist[0].Sex.ToUpper())
                         {
-                            if (Convert.ToString(ddlGuarantorSex.Items[i].Value).ToUpper() == humanlist[0].Sex.ToUpper())
-                            {
-                                ddlGuarantorSex.SelectedIndex = i;
-                                hdnGuarantorSex.Value = humanlist[0].Sex;
-                            }
+                            ddlGuarantorSex.SelectedIndex = i;
+                            hdnGuarantorSex.Value = humanlist[0].Sex;
                         }
-                        for (int i = 0; i < ddlGuarantorState.Items.Count; i++)
-                        {
-                            if (Convert.ToString(ddlGuarantorState.Items[i].Value).ToUpper() == humanlist[0].State.ToUpper())
-                            {
-                                ddlGuarantorState.SelectedIndex = i;
-                                hdnGuarantorState.Value = humanlist[0].State;
-                            }
-                        }
-                        msktxtGuarantorCellNo.Text = humanlist[0].Cell_Phone_Number;
-                        msktxtGuarantorHomeNo.Text = humanlist[0].Home_Phone_No;
-                        msktxtGuarantorZipCode.Text = humanlist[0].Guarantor_Zip_Code;
-                        //dtpGuarantorDOB.SelectedDate = humanlist[0].Birth_Date;//.ToString("dd-MMM-yyyy");
-                        dtpGuarantorDOB.Text = humanlist[0].Birth_Date.ToString("dd-MMM-yyyy");
-
                     }
-                }
+                    for (int i = 0; i < ddlGuarantorState.Items.Count; i++)
+                    {
+                        if (Convert.ToString(ddlGuarantorState.Items[i].Value).ToUpper() == humanlist[0].State.ToUpper())
+                        {
+                            ddlGuarantorState.SelectedIndex = i;
+                            hdnGuarantorState.Value = humanlist[0].State;
+                        }
+                    }
+                    msktxtGuarantorCellNo.Text = humanlist[0].Cell_Phone_Number;
+                    msktxtGuarantorHomeNo.Text = humanlist[0].Home_Phone_No;
+                    msktxtGuarantorZipCode.Text = humanlist[0].Guarantor_Zip_Code;
+                    //dtpGuarantorDOB.SelectedDate = humanlist[0].Birth_Date;//.ToString("dd-MMM-yyyy");
+                    dtpGuarantorDOB.Text = humanlist[0].Birth_Date.ToString("dd-MMM-yyyy");
+
+                }                
             }
         }
 
