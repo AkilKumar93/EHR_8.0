@@ -1337,7 +1337,8 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                             }
 
                         }
-
+                        //Cap - 2436
+                        $("#chkNoKnownActiveProblem")[0].checked = false;
                         $('#txtICD10').val("");
                     }, error: function OnError(xhr) {
                         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
@@ -1638,6 +1639,15 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                     $scope.ProblemListTable.splice(i, 1);
                 }
             }
+
+            //Cap - 2436
+            if ($scope.ProblemListTable.length == 1) {
+                if ($scope.ProblemListTable[0].ICDCode == "0000")
+                {
+                    $("#chkNoKnownActiveProblem")[0].checked = true;
+                }
+            }
+
             $scope.SaveEnableDisable(false);
             $scope.ColorCoding();
         }
