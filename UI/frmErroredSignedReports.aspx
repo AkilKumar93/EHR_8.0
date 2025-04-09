@@ -8,7 +8,9 @@
     <title>View Errored Signed Reports</title>
     <base target="_self" />
     <link href="CSS/ScanningAndIndexing.css" rel="stylesheet" />
-    <link href="CSS/CommonStyle.css?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" rel="stylesheet" type="text/css" />
+    <asp:PlaceHolder ID="PlaceHolder2" runat="server">
+        <link href="CSS/CommonStyle.css?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" rel="stylesheet" type="text/css" />
+    </asp:PlaceHolder>
     <link href="CSS/font-awesome.4.4.0.css" rel="stylesheet" />
 
     <style>
