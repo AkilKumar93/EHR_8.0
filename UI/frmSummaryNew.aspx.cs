@@ -988,7 +988,7 @@ namespace Acurus.Capella.UI
                 //StringBuilder htmlOutput = new StringBuilder();
                 //TextWriter htmlWriter = new StringWriter(htmlOutput);
 
-                XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
+                //XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
 
                 //XslCompiledTransform objXSLTransform = new XslCompiledTransform();
                 //XsltSettings settingsxsl = new XsltSettings(true, false);
