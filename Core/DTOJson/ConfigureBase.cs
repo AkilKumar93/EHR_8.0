@@ -19,34 +19,34 @@ namespace Acurus.Capella.Core.DTOJson
             {
                 //CAP-2945
                 //var str = System.IO.File.ReadAllText(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + sFileName);
-                var str = string.Empty;
+                //var str = string.Empty;
                 using (FileStream fs = File.OpenRead(System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "ConfigXML\\" + sFileName))
                 {
-                    string readJsonVersion = ConfigurationManager.AppSettings["ReadJsonVersion"];
-                    if (readJsonVersion == "V1")
+                    //string readJsonVersion = ConfigurationManager.AppSettings["ReadJsonVersion"];
+                    //if (readJsonVersion == "V1")
+                    //{
+                    //    using (StreamReader reader = new StreamReader(fs))
+                    //    {
+                    //        var stringBuilder = new StringBuilder();
+                    //        char[] buffer = new char[16384];
+                    //        int bytesRead;
+                    //        while ((bytesRead = reader.Read(buffer, 0, buffer.Length)) > 0)
+                    //        {
+                    //            stringBuilder.Append(buffer, 0, bytesRead);
+                    //        }
+                    //        str = stringBuilder.ToString();
+                    //    }
+                    //    return JsonConvert.DeserializeObject<T>(str);
+                    //}
+                    //else if (readJsonVersion == "V2")
+                    //{
+                    using (StreamReader reader = new StreamReader(fs))
+                    using (JsonTextReader jsonReader = new JsonTextReader(reader))
                     {
-                        using (StreamReader reader = new StreamReader(fs))
-                        {
-                            var stringBuilder = new StringBuilder();
-                            char[] buffer = new char[16384];
-                            int bytesRead;
-                            while ((bytesRead = reader.Read(buffer, 0, buffer.Length)) > 0)
-                            {
-                                stringBuilder.Append(buffer, 0, bytesRead);
-                            }
-                            str = stringBuilder.ToString();
-                        }
-                        return JsonConvert.DeserializeObject<T>(str);
+                        JsonSerializer serializer = new JsonSerializer();
+                        return serializer.Deserialize<T>(jsonReader);
                     }
-                    else if (readJsonVersion == "V2")
-                    {
-                        using (StreamReader reader = new StreamReader(fs))
-                        using (JsonTextReader jsonReader = new JsonTextReader(reader))
-                        {
-                            JsonSerializer serializer = new JsonSerializer();
-                            return serializer.Deserialize<T>(jsonReader);
-                        }
-                    }
+                    //}
                 }
             }
             return JsonConvert.DeserializeObject<T>(string.Empty);
