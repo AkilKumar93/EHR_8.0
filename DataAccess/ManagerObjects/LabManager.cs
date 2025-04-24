@@ -10,6 +10,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         IList<Lab> GetLabDetails(string LabType);
         IList<Lab> GetLabList();
+        IList<Lab> GetlabName();
     }
 
 
@@ -50,7 +51,18 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             return GetAll();
         }
-
+        public IList<Lab> GetlabName()
+        {
+            IList<Lab> ilstlab = new List<Lab>();
+            using (ISession mySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                //ISQLQuery sqlquery = mySession.CreateSQLQuery("select * from lab l inner join lab_settings s on (l.lab_id=s.lab_id)").AddEntity("l", typeof(Lab));
+                ISQLQuery sqlquery = mySession.CreateSQLQuery("select l.* from lab l, lab_settings s where l.lab_id=s.lab_id").AddEntity("l", typeof(Lab));
+                ilstlab = sqlquery.List<Lab>();
+                mySession.Close();
+            }
+            return ilstlab;
+        }
         #endregion
 
 
