@@ -990,13 +990,17 @@ namespace Acurus.Capella.UI
 
         public void LoadSurgeryName()
         {
-            lstSurgeryName.Items.Clear();
-            Session["FieldLookupList"] = objUserLookupManager.GetFieldLookupList(PhysicianId, "SURGERY NAME", "Value").ToArray();
-            IList<FieldLookup> lstFieldLookup = (IList<FieldLookup>)Session["FieldLookupList"];
-            if (lstFieldLookup != null)
+            //CAP-2979
+            if (PhysicianId > 0)
             {
-                for (int i = 0; i < lstFieldLookup.Count; i++)
-                    lstSurgeryName.Items.Add(new RadListBoxItem(lstFieldLookup[i].Value));
+                lstSurgeryName.Items.Clear();
+                Session["FieldLookupList"] = objUserLookupManager.GetFieldLookupList(PhysicianId, "SURGERY NAME", "Value").ToArray();
+                IList<FieldLookup> lstFieldLookup = (IList<FieldLookup>)Session["FieldLookupList"];
+                if (lstFieldLookup != null)
+                {
+                    for (int i = 0; i < lstFieldLookup.Count; i++)
+                        lstSurgeryName.Items.Add(new RadListBoxItem(lstFieldLookup[i].Value));
+                }
             }
         }
 
