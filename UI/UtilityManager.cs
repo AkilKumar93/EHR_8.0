@@ -6514,7 +6514,7 @@ namespace Acurus.Capella.UI
 
                         sbSplitUp.Append(xmlFinalNode.OuterXml);
                     }
-                    
+
                 }
 
                 //Appending extra Tags
@@ -6543,7 +6543,7 @@ namespace Acurus.Capella.UI
                     sbSplitUp.Append(sbDummyTag);
                 }
 
-                    sbSplitUp.Append("</Modules></notes>");
+                sbSplitUp.Append("</Modules></notes>");
                 XmlReader xmlr = XmlReader.Create(new StringReader(sbSplitUp.ToString()));
                 if (bIsSummary)
                 {
@@ -6551,7 +6551,11 @@ namespace Acurus.Capella.UI
                     sTransformedValue = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
                     if (sTransformedData != string.Empty)
                     {
-                        sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf("</div><br><br>") + 14),"");
+                        sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf("</style>") + "</style>".Length), "");
+                    }
+                    else
+                    {
+                        sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "");
                     }
 
                     sTransformedData = sTransformedData + sTransformedValue;
@@ -6565,7 +6569,13 @@ namespace Acurus.Capella.UI
                         objXSLTransform.Transform(xmlr, null, htmlWriter);
                         sTransformedValue = htmlWriter.ToString();
                     }
-                    
+
+
+                    if (sNotesType.ToUpper() == "CONSULTATION NOTE")
+                    {
+                        sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.LastIndexOf("</p>") + 4), "");
+                    }
+
                     if (sTransformedData != string.Empty)
                     {
                         if (sNotesType == "")
@@ -6576,6 +6586,12 @@ namespace Acurus.Capella.UI
                         {
                             sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf("</table>") + 8), "");
                         }
+                        else if (sNotesType.ToUpper() == "CONSULTATION NOTE")
+                        {
+                            string sRemoveheader = "CONSULTATION NOTE</b></p>";
+                            sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf(sRemoveheader) + sRemoveheader.Length), "");
+                        }
+
                     }
 
                     sTransformedData = sTransformedData + sTransformedValue;

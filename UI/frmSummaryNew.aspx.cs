@@ -4926,7 +4926,7 @@ margin:0in 0in 0in 9in;
 
             //Jira #CAP-344 - NewCode
             string htmlString = string.Empty;
-            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log, "CONSULTATION NOTE");
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             //  string htmlString = System.IO.File.ReadAllText(outputDocument);
 
@@ -5685,7 +5685,7 @@ margin:0in 0in 0in 9in;
             //ds = null;
             //Jira #CAP-344 - NewCode
             string htmlString = string.Empty;
-            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log);
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, sGroup_ID_Log, "CONSULTATION NOTE");
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
             //  string htmlString = System.IO.File.ReadAllText(outputDocument);
 
