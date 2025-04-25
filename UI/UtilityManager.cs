@@ -6481,7 +6481,7 @@ namespace Acurus.Capella.UI
 
             for (int iCount = 0; iCount < ilstxsltTransform.Count; iCount++)
             {
-                aryTagName = (ilstxsltTransform[iCount].TagNames + "," + ilstxsltTransform[iCount].CommanTags).Split(',');
+                aryTagName = ilstxsltTransform[iCount].TagNames.Split(',');
                 sbSplitUp.Clear();
                 sbSplitUp.Append(sXmlHeader + "<notes><Modules>");
                 if (ilstxsltTransform[iCount].AddAndModifyTags != "")
@@ -6537,7 +6537,10 @@ namespace Acurus.Capella.UI
                     StringBuilder sbDummyTag = new StringBuilder();
                     foreach (string sDummyTag in aryDummyTags)
                     {
-                        sbDummyTag.Append("<" + sDummyTag + "></" + sDummyTag + ">");
+                        if (!aryTagName.Contains(sDummyTag))
+                        {
+                            sbDummyTag.Append("<" + sDummyTag + "></" + sDummyTag + ">");
+                        }
                     }
 
                     sbSplitUp.Append(sbDummyTag);
