@@ -750,11 +750,13 @@ namespace Acurus.Capella.UI.WebServices.API
 
         private string GenerateJson(string sSection, string sType)
         {
-            string[] heading = { "<br />" };
+            string[] heading = { "</b><br />" };
+            string[] Case2heading = { "<br />" };
             string[] PlanTag = { "<plan>" };
             string[] subtab = { "<subtab>" };
             string[] section = { "<i>" };
             string[] AmendmentSplit = { "<AddendumDelimiter />" };
+            string[] AmendmentFillTagSplit = { "<AddendumDelimiter></AddendumDelimiter>" };
             switch (sType)
             {
                 case "1":
@@ -768,6 +770,10 @@ namespace Acurus.Capella.UI.WebServices.API
                         if (PlanTagcontent[0].Contains("Amendment Notes"))
                         {
                             ilstsection = PlanTagcontent[0].Split(AmendmentSplit, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+                            if (ilstsection.Count == 1)
+                            {
+                                ilstsection = PlanTagcontent[0].Split(AmendmentFillTagSplit, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+                            }
                         }
                         else
                         {
@@ -799,7 +805,7 @@ namespace Acurus.Capella.UI.WebServices.API
                             if (i == 0 && sectopns[i].Contains("<b>"))
                             {
                                 //Key
-                                sFormationJson = "\"" + sectopns[i].Replace("<b>", "").Replace("</b>", "").Replace(":", "") + "\"" + ":[";
+                                sFormationJson = "\"" + sectopns[i].Replace("<b>", "").Replace("</b>", "").Replace(":", "").Replace("<br />", "") + "\"" + ":[";
                             }
                             //Below condition for Amendment
                             else if (sectopns[0].Replace("<b>", "").Replace("</b>", "").Replace(":", "") == "Amendment Notes")
@@ -985,7 +991,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                 {
                                     if (sSectioniteams[iSectionCount] != "<br />" && sSectioniteams[iSectionCount] != "<br /><b>" && sSectioniteams[iSectionCount] != "<b>")
                                     {
-                                        string[] iSectionValuesplit = sSectioniteams[iSectionCount].Split(heading, System.StringSplitOptions.RemoveEmptyEntries);
+                                        string[] iSectionValuesplit = sSectioniteams[iSectionCount].Split(Case2heading, System.StringSplitOptions.RemoveEmptyEntries);
                                         sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty) ? "," : "");
                                         for (int iSectionValueCount = 0; iSectionValueCount < iSectionValuesplit.Length; iSectionValueCount++)
                                         {
