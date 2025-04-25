@@ -998,14 +998,14 @@ namespace Acurus.Capella.UI
                 //ltlDownloadFrame.Text = htmlWriter.ToString();
 
                 //Jira CAP-3092
-                if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
-                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V1")
+                if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersionForSummary"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersionForSummary"].ToString().ToUpper() == "V1")
                 {
                     XmlReader xmlr = XmlReader.Create(new StringReader(sb.ToString()));
                     ltlDownloadFrame.Text = UtilityManager.PrintSummaryUsingXSLT(strTransformSource, xmlr).ToString();
                 }
-                else if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"] != null
-                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersion"].ToString().ToUpper() == "V2")
+                else if (System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersionForSummary"] != null
+                    && System.Configuration.ConfigurationSettings.AppSettings["XsltTransformVersionForSummary"].ToString().ToUpper() == "V2")
                 {
                     UtilityManager utlMngr = new UtilityManager();
                     ltlDownloadFrame.Text = utlMngr.SplitXsltTransform(sb, strTransformSource, true);
