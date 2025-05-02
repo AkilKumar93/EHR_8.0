@@ -543,7 +543,7 @@ namespace Acurus.Capella.UI
             //ds = null;
             //Jira #CAP-344 - NewCode
             string htmlString = string.Empty;
-            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, string.Empty, "WELLNESSNOTES");
+            htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, string.Empty, sNotesName);
             System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
 
 

@@ -6538,7 +6538,7 @@ namespace Acurus.Capella.UI
                     }
                 }
 
-                if (sNotesType.ToUpper() == "WELLNESSNOTES")
+                if (sNotesType.ToUpper() == "WELLNESS NOTES")
                 {
                     ilstOtherxsltTransform = ilstxsltTransform.Where(x => x.SplitOrder != ilstxsltTransform[iCount].SplitOrder).Select(x => x.TagNames).ToList();
                     string sDummyTags = string.Join(",", ilstOtherxsltTransform);
@@ -6567,7 +6567,7 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "");
+                        sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "").Replace("</div></html>", "");
                     }
 
                     sTransformedData = sTransformedData + sTransformedValue;
@@ -6583,10 +6583,10 @@ namespace Acurus.Capella.UI
                     }
 
 
-                    if (sNotesType.ToUpper() == "CONSULTATION NOTE")
-                    {
-                        sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.LastIndexOf("</p>") + 4), "");
-                    }
+                    //if (sNotesType.ToUpper() == "CONSULTATION NOTE")
+                    //{
+                    //    sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.LastIndexOf("</p>") + 4), "");
+                    //}
 
                     if (sTransformedData != string.Empty)
                     {
@@ -6594,7 +6594,7 @@ namespace Acurus.Capella.UI
                         {
                             sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf("</p>") + 4), "");
                         }
-                        else if (sNotesType.ToUpper() == "WELLNESSNOTES")
+                        else if (sNotesType.ToUpper() == "WELLNESS NOTES" || sNotesType.ToUpper() == "CARE NOTE" || sNotesType.ToUpper() == "TREATMENT NOTES")
                         {
                             sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.IndexOf("</table>") + 8), "");
                         }
@@ -6605,10 +6605,60 @@ namespace Acurus.Capella.UI
                         }
 
                     }
+                    else
+                    {
+                        sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "").Replace("</div></html>","");
+                    }
 
                     sTransformedData = sTransformedData + sTransformedValue;
+
+                    
+
+
                 }
             }
+
+            //Sorting the Sections
+            if (bIsSummary == false)
+            {
+                sTransformedData = SortingSections(sTransformedData, "//div[@class='grid-container']", "sortorder", true, (sNotesType == "WELLNESS NOTES"));
+            }
+
+            return sTransformedData;
+        }
+
+        public string SortingSections(string sTransformedData, string sRootTag, string sSortingAttributeName, bool IsAssending, bool IsLineBrakeForEachSections)
+        {
+            XmlDocument xmlDoForSort = new XmlDocument();
+            string sSortOrder = string.Empty;
+            string sNoSortOrder = string.Empty;
+
+            string sSort = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + sTransformedData.Replace("<br>", "<br/>").Replace("&nbsp;", "").Replace("&bull;", "").Replace("&amp;", "").Replace("</td colspan=\"5\">", "</td>").Replace("</tr style=\"font-size:9pt\">", "</tr>");
+            xmlDoForSort.LoadXml(sSort);
+            IList<XmlNode> SortOrderTags = new List<XmlNode>();
+            if (IsAssending)
+            {
+                SortOrderTags = xmlDoForSort.SelectSingleNode(sRootTag).Cast<XmlNode>().Where(x => x.Attributes[sSortingAttributeName] != null).OrderBy(y => Convert.ToUInt64(y.Attributes[sSortingAttributeName].Value)).ToList();
+
+            }
+            else
+            {
+                SortOrderTags = xmlDoForSort.SelectSingleNode(sRootTag).Cast<XmlNode>().Where(x => x.Attributes[sSortingAttributeName] != null).OrderByDescending(y => Convert.ToUInt64(y.Attributes[sSortingAttributeName].Value)).ToList();
+            }
+            IList<XmlNode> NoSortOrderTags = xmlDoForSort.SelectSingleNode(sRootTag).Cast<XmlNode>().Where(x => x.Attributes[sSortingAttributeName] == null && x.OuterXml != "<br />" && x.OuterXml != "<br/>" && x.OuterXml != "<br>").ToList();
+            if (IsLineBrakeForEachSections)
+            {
+                sSortOrder = string.Join("<br/>", SortOrderTags.Select(node => node.OuterXml));
+                sNoSortOrder = string.Join("<br/>", NoSortOrderTags.Select(node => node.OuterXml));
+            }
+            else
+            {
+                sSortOrder = string.Join("", SortOrderTags.Select(node => node.OuterXml));
+                sNoSortOrder = string.Join("", NoSortOrderTags.Select(node => node.OuterXml));
+            }
+            xmlDoForSort.SelectSingleNode(sRootTag).InnerXml = sSortOrder + sNoSortOrder;
+            sTransformedData = xmlDoForSort.LastChild.OuterXml;
+
             return sTransformedData;
         }
         public Boolean LoadBlobHumanXML(ulong ulHumanID, ulong ulEncounterID, IList<Encounter_Blob> ilstEncounterBlob, string sTabMode, out string sXMLHumanDoc, string sIsPhone_Encounter = "N")
