@@ -314,12 +314,36 @@ function OpenModal(data) {
     }
     //CAP-Change Legal Org
     else if (itemValue == "Change Legal Org") {
-        var obj = new Array();
-        //CAP-2007
-        var isShowLegalOrg = document.getElementById(GetClientId("hdnCheckLegalOrg"))?.value ?? "";
-        var popupHeight = (isShowLegalOrg == "Y") ? 234 : 176;
-        var Result = openModal("frmSelectLegalOrg.aspx", popupHeight, 600, obj, "ctl00_FacilityModel");
-        return false;
+        //CAP-3131
+        $.ajax({
+            type: "GET",
+            url: "frmSelectLegalOrg.aspx/CheckSessionExpired",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.d == "") {
+                    var obj = new Array();
+                    //CAP-2007
+                    var isShowLegalOrg = document.getElementById(GetClientId("hdnCheckLegalOrg"))?.value ?? "";
+                    var popupHeight = (isShowLegalOrg == "Y") ? 234 : 176;
+                    var Result = openModal("frmSelectLegalOrg.aspx", popupHeight, 600, obj, "ctl00_FacilityModel");
+                    return false;
+                } else {
+                    window.location = "/frmSessionExpired.aspx";
+                }
+            },
+            error: function OnError(xhr) {
+                if (xhr.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
+                else {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+            }
+        });
     }
     else if (itemValue == "Find Patient") {
         StartLoadingImage();

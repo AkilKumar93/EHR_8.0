@@ -31,6 +31,7 @@ using Acurus.Capella.UI.Extensions;
 using User = Acurus.Capella.Core.DomainObjects.User;
 using System.Collections.Specialized;
 using Acurus.Capella.Core.DTOJson;
+using System.Web.Script.Services;
 
 namespace Acurus.Capella.UI
 {
@@ -170,6 +171,12 @@ namespace Acurus.Capella.UI
 
         protected void btnOk_Click(object sender, EventArgs e)
         {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+            }
             string isChangeLegalOrg = ConfigurationManager.AppSettings["IsChangeLegalOrg"];
             //CAP-2007
             if (isChangeLegalOrg.Equals("Y", StringComparison.InvariantCultureIgnoreCase) && cboLegalOrg.SelectedItem.Text != ClientSession.LegalOrg)
@@ -221,6 +228,12 @@ namespace Acurus.Capella.UI
         }
         protected void btnClose_Click(object sender, EventArgs e)
         {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+            }
             ClientScript.RegisterStartupScript(this.GetType(), "SelectLegalOrg", "RadWindowClose();", true);
         }
         //CAP-2007
@@ -1031,6 +1044,20 @@ namespace Acurus.Capella.UI
                 UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "LandingintoEHR : End", DateTime.Now, shdnGroupId, "frmLogin");
             }
             return string.Empty;
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(UseHttpGet = true)]
+        public static string CheckSessionExpired()
+        {
+            if (ClientSession.UserName == string.Empty)
+            {
+                HttpContext.Current.Response.StatusCode = 999;
+                HttpContext.Current.Response.Status = "999 Session Expired";
+                HttpContext.Current.Response.StatusDescription = "frmSessionExpired.aspx";
+                return "Session Expired";
+            }
+            return "";
         }
     }
 }
