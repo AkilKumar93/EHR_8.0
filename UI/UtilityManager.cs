@@ -6582,12 +6582,6 @@ namespace Acurus.Capella.UI
                         sTransformedValue = htmlWriter.ToString();
                     }
 
-
-                    //if (sNotesType.ToUpper() == "CONSULTATION NOTE")
-                    //{
-                    //    sTransformedValue = sTransformedValue.Replace(sTransformedValue.Substring(0, sTransformedValue.LastIndexOf("</p>") + 4), "");
-                    //}
-
                     if (sTransformedData != string.Empty)
                     {
                         if (sNotesType == "")
@@ -6607,7 +6601,14 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "").Replace("</div></html>","");
+                        if (sNotesType.ToUpper() == "CONSULTATION NOTE")
+                        {
+                            string sRomoveFooter = sTransformedValue.Substring(sTransformedValue.LastIndexOf("<p"));
+                            sRomoveFooter = sRomoveFooter.Substring(0, sRomoveFooter.IndexOf("</p>") + "</p>".Length);
+
+                            sTransformedValue = sTransformedValue.Replace(sRomoveFooter, "");
+                        }
+                        sTransformedValue = sTransformedValue.Replace("</div>\r\n</html>", "").Replace("</div></html>", "");
                     }
 
                     sTransformedData = sTransformedData + sTransformedValue;
@@ -6622,8 +6623,10 @@ namespace Acurus.Capella.UI
             if (bIsSummary == false)
             {
                 sTransformedData = SortingSections(sTransformedData, "//div[@class='grid-container']", "sortorder", true, (sNotesType == "WELLNESS NOTES"));
+                sTransformedData = sTransformedData.Replace("<SecondSection>", "").Replace("</SecondSection>", "").Replace("<html>", "").Replace("<div class=\"grid-container\">", "")
+                .Replace("</div>\r\n</html>", "").Replace("</div></html>", "").Replace("</html>", "");
             }
-            sTransformedData = sTransformedData.Replace("<SecondSection>", "").Replace("</SecondSection>", "");
+            
             return sTransformedData;
         }
 
