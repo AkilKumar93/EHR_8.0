@@ -6636,7 +6636,7 @@ namespace Acurus.Capella.UI
             string sSortOrder = string.Empty;
             string sNoSortOrder = string.Empty;
 
-            string sSort = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + sTransformedData.Replace("<br>", "<br/>").Replace("&nbsp;", "").Replace("&bull;", "").Replace("&amp;", "").Replace("</td colspan=\"5\">", "</td>").Replace("</tr style=\"font-size:9pt\">", "</tr>");
+            string sSort = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + sTransformedData.Replace("<br>", "<br/>").Replace("&nbsp;", "#nbsp#").Replace("&bull;", "#bull#").Replace("&amp;", "#amp#").Replace("</td colspan=\"5\">", "</td>").Replace("</tr style=\"font-size:9pt\">", "</tr>");
             xmlDoForSort.LoadXml(sSort);
             IList<XmlNode> SortOrderTags = new List<XmlNode>();
             if (IsAssending)
@@ -6660,7 +6660,7 @@ namespace Acurus.Capella.UI
                 sNoSortOrder = string.Join("", NoSortOrderTags.Select(node => node.OuterXml));
             }
             xmlDoForSort.SelectSingleNode(sRootTag).InnerXml = sSortOrder + sNoSortOrder;
-            sTransformedData = xmlDoForSort.LastChild.OuterXml;
+            sTransformedData = xmlDoForSort.LastChild.OuterXml.Replace("#nbsp#", "&nbsp;").Replace("#bull#", "&bull;").Replace("#amp#", "&amp;");
 
             return sTransformedData;
         }
