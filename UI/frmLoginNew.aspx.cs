@@ -241,7 +241,8 @@ namespace Acurus.Capella.UI
                             login = objLoginDTO.User;
                             //!objLoginDTO.Any(x => x.Is_Direct_Login.Equals("y", StringComparison.InvariantCultureIgnoreCase))
                             //if (objLoginDTO.User.Count > 0 && objLoginDTO.User.Any(x => x.Is_Direct_Login.Equals("Y", StringComparison.InvariantCultureIgnoreCase)))
-                            if (objLoginDTO.User.Count > 0)
+                            //CAP - 3185
+                            if (objLoginDTO.User.Count > 0 && !login[0].Is_EMail_Login_Mandatory.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 //ClientSession.UserName = login[0].user_name;
                                 //ClientSession.EmailAddress = login[0].EMail_Address;
@@ -279,7 +280,8 @@ namespace Acurus.Capella.UI
                 {
                     login = objLoginDTO.User;
                     //if (objLoginDTO.User.Count > 0 && objLoginDTO.User.Any(x => x.Is_Direct_Login.Equals("Y", StringComparison.InvariantCultureIgnoreCase)))
-                    if (objLoginDTO.User.Count > 0)
+                    //CAP - 3185
+                    if (objLoginDTO.User.Count > 0 && !login[0].Is_EMail_Login_Mandatory.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
                     {
                         //ClientSession.UserName = login[0].user_name;
                         //ClientSession.EmailAddress = login[0].EMail_Address;
