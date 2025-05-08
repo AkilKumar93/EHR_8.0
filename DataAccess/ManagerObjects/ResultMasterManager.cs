@@ -46,6 +46,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         ulong SaveResultMasterforSummary(IList<ResultMaster> lstresultmaster);
         ResultMaster SaveResultMasterItem(ResultMaster objResultMaster, ulong ulFileManagementIndexID);
         void SaveResultMasterforDeleteFiles(IList<ResultMaster> lstResMasterUpdate);
+        IList<ResultMaster> GetResultMasterByFileName(string fileName);
     }
 
     public partial class ResultMasterManager : ManagerBase<ResultMaster, ulong>, IResultMasterManager
@@ -3496,23 +3497,24 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 sql.SetParameter("Firstname", sFirstname.Replace("'", "''"));
                 sql.SetParameter("Lastname", sLastname.Replace("'", "''"));
                 sql.SetParameter("Dob", sDob);
-                // sql.SetParameter("Sex", sSex);
+            // sql.SetParameter("Sex", sSex);
 
-                //CAP-2901
-                if (sql.List<object>().Count != 0)
+            //CAP-2901
+            IList<object> ilstHuman = sql.List<object>();
+            if (ilstHuman.Count != 0)
+            {
+                var objHuman = ilstHuman.FirstOrDefault();
+                if (objHuman != null)
                 {
-                    var objHuman = sql.List<object>().FirstOrDefault();
-                    if (objHuman != null)
-                {
-                        ulong.TryParse(objHuman.ToString(), out ulHumanId);
-                    }
-                    //if (objHuman.Count > 1)
-                    //{
-                    //    objHuman = objHuman.Where(a => a.Account_Status.ToUpper() == "ACTIVE").ToList<Human>();
-                    //    if (objHuman.Count > 0)
-                    //        ulHumanId = objHuman[0].Id;
-                    //}
+                    ulong.TryParse(objHuman.ToString(), out ulHumanId);
                 }
+                //if (objHuman.Count > 1)
+                //{
+                //    objHuman = objHuman.Where(a => a.Account_Status.ToUpper() == "ACTIVE").ToList<Human>();
+                //    if (objHuman.Count > 0)
+                //        ulHumanId = objHuman[0].Id;
+                //}
+            }
             //CAP-2901
             //    iMySession.Close();
             //}
@@ -4677,6 +4679,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         {
             IList<ResultMaster> lstResMasnull = null;
             SaveUpdateDelete_DBAndXML_WithTransaction(ref lstResMasnull, ref lstResMasterUpdate, null, string.Empty, false, false, 0, string.Empty);
+        }
+
+        public IList<ResultMaster> GetResultMasterByFileName(string fileName)
+        {
+            IList<ResultMaster> ilstResultMaster = new List<ResultMaster>();
+            ICriteria crit = session.GetISession().CreateCriteria(typeof(ResultMaster)).Add(Expression.Eq("File_Name", fileName));
+            ilstResultMaster = crit.List<ResultMaster>();
+
+            return ilstResultMaster;
         }
 
     }
