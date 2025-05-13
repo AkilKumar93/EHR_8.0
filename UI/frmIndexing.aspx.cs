@@ -1054,7 +1054,9 @@ namespace Acurus.Capella.UI
 
                         }
                         if (cboOrderPhysician.Items.FindByValue(cboStandingOrders.SelectedItem.Value.Split('|')[0]) != null)
-                            cboOrderPhysician.SelectedValue = cboStandingOrders.SelectedItem.Value.Split('|')[0];
+                        { cboOrderPhysician.SelectedValue = cboStandingOrders.SelectedItem.Value.Split('|')[0]; }
+                        else if (cboOrderPhysician.Enabled) //CAP-2832
+                        { cboOrderPhysician.SelectedValue = ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"]; }
 
                         if (cboLab.Items.FindByValue(cboStandingOrders.SelectedItem.Value.Split('|')[1]) != null)
                             cboLab.SelectedValue = cboStandingOrders.SelectedItem.Value.Split('|')[1];
@@ -5789,21 +5791,28 @@ namespace Acurus.Capella.UI
                 {
                     if (Path.GetExtension(filename).ToLower() == ".pdf")
                     {
-                        using (FileStream fs = new FileStream(sFullPath.ToString(), FileMode.Open, FileAccess.Read))
+                        //CAP-3246
+                        using (iText.Kernel.Pdf.PdfReader reader = new iText.Kernel.Pdf.PdfReader(sFullPath.ToString()))
+                        using (iText.Kernel.Pdf.PdfDocument pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader))
                         {
-                            StreamReader sr = new StreamReader(fs);
-                            // string pdf = sr.ReadToEnd();
-                            Regex rx = new Regex(@"/Type\s*/Page[^s]");
-                            MatchCollection match = rx.Matches(sr.ReadToEnd());
-                            pageCount = match.Count;
-                            if (pageCount == 0)
-                            {
-                                PdfReader pdfReader = new PdfReader(sFullPath.ToString());
-                                pageCount = pdfReader.NumberOfPages;
-                            }
-                            fs.Close();
-                            fs.Dispose();
+                            pageCount = pdfDoc.GetNumberOfPages();
                         }
+
+                        //using (FileStream fs = new FileStream(sFullPath.ToString(), FileMode.Open, FileAccess.Read))
+                        //{
+                        //    StreamReader sr = new StreamReader(fs);
+                        //    // string pdf = sr.ReadToEnd();
+                        //    Regex rx = new Regex(@"/Type\s*/Page[^s]");
+                        //    MatchCollection match = rx.Matches(sr.ReadToEnd());
+                        //    pageCount = match.Count;
+                        //    if (pageCount == 0)
+                        //    {
+                        //        PdfReader pdfReader = new PdfReader(sFullPath.ToString());
+                        //        pageCount = pdfReader.NumberOfPages;
+                        //    }
+                        //    fs.Close();
+                        //    fs.Dispose();
+                        //}
                     }
                     else
                     {
