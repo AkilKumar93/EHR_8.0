@@ -5791,28 +5791,21 @@ namespace Acurus.Capella.UI
                 {
                     if (Path.GetExtension(filename).ToLower() == ".pdf")
                     {
-                        //CAP-3246
-                        using (iText.Kernel.Pdf.PdfReader reader = new iText.Kernel.Pdf.PdfReader(sFullPath.ToString()))
-                        using (iText.Kernel.Pdf.PdfDocument pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader))
+                        using (FileStream fs = new FileStream(sFullPath.ToString(), FileMode.Open, FileAccess.Read))
                         {
-                            pageCount = pdfDoc.GetNumberOfPages();
+                            StreamReader sr = new StreamReader(fs);
+                            // string pdf = sr.ReadToEnd();
+                            Regex rx = new Regex(@"/Type\s*/Page[^s]");
+                            MatchCollection match = rx.Matches(sr.ReadToEnd());
+                            pageCount = match.Count;
+                            if (pageCount == 0)
+                            {
+                                PdfReader pdfReader = new PdfReader(sFullPath.ToString());
+                                pageCount = pdfReader.NumberOfPages;
+                            }
+                            fs.Close();
+                            fs.Dispose();
                         }
-
-                        //using (FileStream fs = new FileStream(sFullPath.ToString(), FileMode.Open, FileAccess.Read))
-                        //{
-                        //    StreamReader sr = new StreamReader(fs);
-                        //    // string pdf = sr.ReadToEnd();
-                        //    Regex rx = new Regex(@"/Type\s*/Page[^s]");
-                        //    MatchCollection match = rx.Matches(sr.ReadToEnd());
-                        //    pageCount = match.Count;
-                        //    if (pageCount == 0)
-                        //    {
-                        //        PdfReader pdfReader = new PdfReader(sFullPath.ToString());
-                        //        pageCount = pdfReader.NumberOfPages;
-                        //    }
-                        //    fs.Close();
-                        //    fs.Dispose();
-                        //}
                     }
                     else
                     {
