@@ -5791,21 +5791,24 @@ namespace Acurus.Capella.UI
                 {
                     if (Path.GetExtension(filename).ToLower() == ".pdf")
                     {
-                        using (FileStream fs = new FileStream(sFullPath.ToString(), FileMode.Open, FileAccess.Read))
-                        {
-                            StreamReader sr = new StreamReader(fs);
-                            // string pdf = sr.ReadToEnd();
-                            Regex rx = new Regex(@"/Type\s*/Page[^s]");
-                            MatchCollection match = rx.Matches(sr.ReadToEnd());
-                            pageCount = match.Count;
-                            if (pageCount == 0)
-                            {
-                                PdfReader pdfReader = new PdfReader(sFullPath.ToString());
-                                pageCount = pdfReader.NumberOfPages;
-                            }
-                            fs.Close();
-                            fs.Dispose();
-                        }
+                        //CAP-3246
+                        //using (FileStream fs = new FileStream(sFullPath.ToString(), FileMode.Open, FileAccess.Read))
+                        //{
+                        //    StreamReader sr = new StreamReader(fs);
+                        //    // string pdf = sr.ReadToEnd();
+                        //    Regex rx = new Regex(@"/Type\s*/Page[^s]");
+                        //    MatchCollection match = rx.Matches(sr.ReadToEnd());
+                        //    pageCount = match.Count;
+                        //    if (pageCount == 0)
+                        //    {
+                        //        PdfReader pdfReader = new PdfReader(sFullPath.ToString());
+                        //        pageCount = pdfReader.NumberOfPages;
+                        //    }
+                        //    fs.Close();
+                        //    fs.Dispose();
+                        //}
+                        PdfReader pdfReader = new PdfReader(sFullPath.ToString());
+                        pageCount = pdfReader.NumberOfPages;
                     }
                     else
                     {
@@ -5817,9 +5820,9 @@ namespace Acurus.Capella.UI
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
-
+                throw e;
             }
 
             return pageCount.ToString();
