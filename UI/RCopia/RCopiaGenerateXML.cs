@@ -367,6 +367,26 @@ namespace Acurus.Capella.UI.RCopia
             string xmlOutput = System.Text.Encoding.UTF8.GetString(buffer);
             return xmlOutput;
         }
+        //CAP-2651
+        public string CreateGetNotificationCountXMLForAkido(string sLegalOrg, string RCopiaUserName)
+        {
+            FillRequiredInfo("get_notification_count", sLegalOrg);
+            xmlWriter.WriteElementString("ReturnPrescriptionIDs", "y");
+            xmlWriter.WriteStartElement("Provider");
+            xmlWriter.WriteElementString("Username", RCopiaUserName);
+            //xmlWriter.WriteElementString("Username", "");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteElementString("Type", "all");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndDocument();
+            xmlWriter.Flush();
+            Byte[] buffer = new Byte[ms.Length];
+            buffer.DefaultIfEmpty();
+            buffer = ms.ToArray();
+            string xmlOutput = System.Text.Encoding.UTF8.GetString(buffer);
+            return xmlOutput;
+        }
 
         public string CreateGetURLXML(string sLegalOrg)
         {

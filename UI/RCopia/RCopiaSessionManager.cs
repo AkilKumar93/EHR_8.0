@@ -1356,6 +1356,472 @@ namespace Acurus.Capella.UI.RCopia
             }
             return null;
         }
+        //CAP-2651
+        public string HttpPostForAkido(string uri, int iAttempt, string UserName)
+        {
+            const SslProtocols _Tls12 = (SslProtocols)0x00000C00;
+            const SecurityProtocolType Tls12 = (SecurityProtocolType)_Tls12;
+            ServicePointManager.SecurityProtocol = Tls12;
+
+            string sUriURL = string.Empty;
+            string sUriReq = string.Empty;
+            XmlDocument xmldoce = new XmlDocument();
+
+            if (uri.Contains("http") == true)
+            {
+                string[] uriObj = uri.Split(new[] { "?xml=" }, StringSplitOptions.None);
+                if (uriObj.Length > 1)
+                {
+                    sUriURL = uriObj[0]; // +"?xml=";
+                    sUriReq = "xml=" + uriObj[1];
+
+                    //Added the below code for CAP-1366 as we need to load the XMLdocInput for logging into RCopiaErrorLog file.
+                    try
+                    {
+                        string sRemovetag = uriObj[1].Substring(uriObj[1].IndexOf("﻿<?") - 1, uriObj[1].IndexOf("﻿?>") + 2);
+                        string sXml = uriObj[1].Replace(sRemovetag, "");
+                        sXml = sXml.Replace("\r", "").Replace("\n", "").Trim();
+                        xmldoce.LoadXml(sXml);
+                    }
+                    catch { }
+                }
+                else
+                {
+                    return string.Empty;
+                }
+
+                //sUriReq = sUriReq.Replace("<>", "&lt;&gt;");
+                sUriReq = sUriReq.Replace("%", "%25");
+                //sUriReq = sUriReq.Replace("<", "%3C");
+                //sUriReq = sUriReq.Replace(">", "%3E");
+                ////sUriReq = sUriReq.Replace("&", "&amp;");
+                //sUriReq = sUriReq.Replace("#", "%23");
+                //sUriReq = sUriReq.Replace("{", "%7B");
+                //sUriReq = sUriReq.Replace("}", "%7D");
+                //sUriReq = sUriReq.Replace("|", "%7C");
+                //sUriReq = sUriReq.Replace("^", "%5E");
+                //sUriReq = sUriReq.Replace("~", "%7E");
+                //sUriReq = sUriReq.Replace("[", "%5B");
+                //sUriReq = sUriReq.Replace("]", "%5D");
+                //sUriReq = sUriReq.Replace("`", "%60");
+                //sUriReq = sUriReq.Replace(";", "%3B");
+                //sUriReq = sUriReq.Replace("/", "%2F");
+                //sUriReq = sUriReq.Replace("?", "%3F");
+                //sUriReq = sUriReq.Replace(":", "%3A");
+                //sUriReq = sUriReq.Replace("@", "%40");
+                //sUriReq = sUriReq.Replace("=", "%3D");
+                //sUriReq = sUriReq.Replace("&", "%26");
+                //sUriReq = sUriReq.Replace("$", "%24");
+
+                //Commented for CAP-1366 as the input uri is wrongly changed in the below code. Input URI itself is correct and it should not be changed.
+                //uri = sUriURL + sUriReq;
+            }
+            //Commented for CAP-1366 as the input uri is wrongly changed in the below code.
+            //if (iAttempt == 1 && uri.Contains("http") == false)
+            //{
+            //    if (uri.Contains("<Command>send_") == true)
+            //    {
+            //        uri = UploadAddress + "?xml=" + uri;
+            //    }
+            //    else if (uri.Contains("<Command>update_") == true)
+            //    {
+            //        uri = DownloadAddress + "?xml=" + uri;
+            //    }
+            //    else
+            //    {
+            //        uri = UploadAddress + "?xml=" + uri;
+            //    }
+            //}
+
+
+            //Replace Escape Codes - Refer http://www.december.com/html/spec/esccodes.html
+            //uri = uri.Replace("<", "%3C");
+            //uri = uri.Replace(">", "%3E");
+            //uri = uri.Replace("#", "%23");
+            //uri = uri.Replace("%", "%25");
+            //uri = uri.Replace("{", "%7B");
+            //uri = uri.Replace("}", "%7D");
+            //uri = uri.Replace("|", "%7C");
+            //uri = uri.Replace("^", "%5E");
+            //uri = uri.Replace("~", "%7E");
+            //Page page = new Page();
+            //uri = uri.Replace("[", "%5B");
+            //uri = uri.Replace("]", "%5D");
+            //uri = uri.Replace("`", "%60");
+            //uri = uri.Replace(";", "%3B");
+            //uri = uri.Replace("/", "%2F");
+            //uri = uri.Replace("?", "%3F");
+            //uri = uri.Replace(":", "%3A");
+            //uri = uri.Replace("@", "%40");
+            //uri = uri.Replace("=", "%3D");
+            //uri = uri.Replace("&", "%26");
+            //uri = uri.Replace("$", "%24");
+
+            // parameters: name1=value1&name2=value2	
+            WebRequest webRequest;
+            try
+            {
+                webRequest = WebRequest.Create(sUriURL); //uri);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            //string ProxyString = 
+            //   System.Configuration.ConfigurationManager.AppSettings
+            //   [GetConfigKey("proxy")];
+            //webRequest.Proxy = new WebProxy (ProxyString, true);
+            //Commenting out above required change to App.Config
+            webRequest.ContentType = "application/x-www-form-urlencoded";
+            webRequest.Method = "POST";
+            webRequest.UseDefaultCredentials = true;
+
+            //byte[] bytes = Encoding.ASCII.GetBytes (parameters);
+            Stream os = null;
+            try
+            {
+                // send the Post
+                //webRequest.ContentLength = bytes.Length;   //Count bytes to send
+                //os = webRequest.GetRequestStream();
+                //os.Write (bytes, 0, bytes.Length);         //Send it
+
+                byte[] bytes = Encoding.UTF8.GetBytes(sUriReq);
+                webRequest.ContentLength = bytes.Length;
+
+                os = webRequest.GetRequestStream();
+
+                os.Write(bytes, 0, bytes.Length);
+
+            }
+            catch (WebException ex)
+            {
+                WriteRCopiaLog(ex.Message, iAttempt, UserName, xmldoce, "UI.HttpPost.Request.WebException");
+
+                //string sLog1 = string.Empty;
+                //sLog1 = ex.Message + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString();
+
+                //if (sRCopiaLog != string.Empty)
+                //{
+                //    TextWriter tx = new StreamWriter(sRCopiaLog, true);
+                //    tx.WriteLine(sLog1);
+                //    tx.Close();
+                //    tx.Dispose();
+                //}
+
+                //MessageBox.Show(ex.Message, "HttpPost: Request error",
+                //   MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                //New Code - to Proceed only with the Capella transactions and ignore the RCopia transaction, if the request fails
+                //Changes made to let the capella production go
+                //Need to remove the following one line - if go for RCopia Certification
+                //Start
+                // return string.Empty;
+                //End
+
+                if (iAttempt < 3)
+                {
+                    ////string sLog = string.Empty;
+                    //try
+                    //{
+                    //    //Commented for CAP-1366 as the XML Document is wrongly loaded in the below code and it gave "data at root level 1' error
+                    //    //XmlDocument xmldoc = new XmlDocument();
+
+                    //    //if (uri.Contains("<Command>send_") == true)
+                    //    //{
+                    //    //    if (UploadAddress.Contains("?xml=") == false)
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(UploadAddress + "?xml=", ""));
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(UploadAddress, ""));
+                    //    //    }
+                    //    //}
+                    //    //else if (uri.Contains("<Command>update_") == true)
+                    //    //{
+                    //    //    if (UploadAddress.Contains("?xml=") == false)
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(DownloadAddress + "?xml=", ""));
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(DownloadAddress, ""));
+                    //    //    }
+                    //    //}
+                    //    //else
+                    //    //{
+                    //    //    if (UploadAddress.Contains("?xml=") == false)
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(UploadAddress + "?xml=", ""));
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(UploadAddress, ""));
+                    //    //    }
+                    //    //}
+
+                    //    //if (UploadAddress.Contains("?xml=") == false)
+                    //    //{
+                    //    //    xmldoc.LoadXml(uri.Replace(UploadAddress + "?xml=", ""));
+                    //    //}
+                    //    //else
+                    //    //{
+                    //    //    xmldoc.LoadXml(uri.Replace(UploadAddress, ""));
+                    //    //}
+                    //}
+                    //catch (Exception ex1)
+                    //{
+                    //    sLog = ex1.Message + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString();
+                    //}
+                    //if (sRCopiaLog != string.Empty)
+                    //{
+                    //    TextWriter tx1 = new StreamWriter(sRCopiaLog, true);
+                    //    tx1.WriteLine(sLog);
+                    //    tx1.Close();
+                    //    tx1.Dispose();
+                    //}
+                    iAttempt = iAttempt + 1;
+                    //System.Threading.Thread.Sleep(new TimeSpan(0, 0, 30));
+                    System.Threading.Thread.Sleep(new TimeSpan(0, 0, 2));
+                    string sCheckError = HttpPostForAkido(uri, iAttempt, UserName);
+                    if (sCheckError.Contains("HttpPostError Request Error"))
+                    {
+                        return sCheckError;
+                    }
+                }
+                else
+                {
+                    return "HttpPostError Request Error : " + DateTime.Now.ToString() + "<br/> <br/> " + ex.Message;
+                }
+            }
+            catch (Exception e)
+            {
+                WriteRCopiaLog(e.Message, iAttempt, UserName, xmldoce, "UI.HttpPost.Request.Exception");
+                //string sLogNew = e.Message + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString();
+                //if (sRCopiaLog != string.Empty)
+                //{
+                //    TextWriter tx1 = new StreamWriter(sRCopiaLog, true);
+                //    tx1.WriteLine(sLogNew);
+                //    tx1.Close();
+                //    tx1.Dispose();
+                //}
+                ////MessageBox.Show(e.InnerException.ToString());
+
+                if (iAttempt < 3)
+                {
+                    //string sLog = string.Empty;
+                    //try
+                    //{
+                    //    //XmlDocument xmldoc = new XmlDocument();
+                    //    //if (uri.Contains("<Command>send_") == true)
+                    //    //{
+                    //    //    if (UploadAddress.Contains("?xml=") == false)
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(UploadAddress + "?xml=", ""));
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(UploadAddress, ""));
+                    //    //    }
+                    //    //}
+                    //    //else if (uri.Contains("<Command>update_") == true)
+                    //    //{
+                    //    //    if (UploadAddress.Contains("?xml=") == false)
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(DownloadAddress + "?xml=", ""));
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(DownloadAddress, ""));
+                    //    //    }
+                    //    //}
+                    //    //else
+                    //    //{
+                    //    //    if (UploadAddress.Contains("?xml=") == false)
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(UploadAddress + "?xml=", ""));
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        xmldoc.LoadXml(uri.Replace(UploadAddress, ""));
+                    //    //    }
+                    //    //}
+
+                    //    //xmldoc.LoadXml(uri.Replace(UploadAddress + "?xml=", ""));
+                    //    if (xmldoce.InnerXml != string.Empty)
+                    //    {
+                    //        XmlNodeList xmllist = xmldoce.GetElementsByTagName("Command");
+                    //        if (xmllist != null && xmllist.Count > 0)
+                    //        {
+                    //            sLog = xmllist[0].InnerText + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString() + " for record ";
+                    //            xmllist = xmldoce.GetElementsByTagName("ExternalID");
+                    //            if (xmllist != null && xmllist.Count > 0)
+                    //            {
+                    //                sLog = sLog + xmllist[1].InnerText;
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    //catch
+                    //{
+                    //    sLog = e.Message + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString();
+                    //}
+                    //if (sRCopiaLog != string.Empty)
+                    //{
+                    //    TextWriter tx = new StreamWriter(sRCopiaLog, true);
+                    //    tx.WriteLine(sLog);
+                    //    tx.Close();
+                    //    tx.Dispose();
+                    //}
+                    iAttempt = iAttempt + 1;
+                    //System.Threading.Thread.Sleep(new TimeSpan(0, 0, 30));
+                    System.Threading.Thread.Sleep(new TimeSpan(0, 0, 2));
+                    string sCheckError = HttpPostForAkido(uri, iAttempt, UserName);
+                    if (sCheckError.Contains("HttpPostError Request Error"))
+                    {
+                        return sCheckError;
+                    }
+
+                }
+                else
+                {
+                    return "HttpPostError Request Error : " + DateTime.Now.ToString() + "<br/> <br/>" + e.Message;
+                    //HttpPost(uri, 5);
+                }
+            }
+            finally
+            {
+                if (os != null)
+                {
+                    os.Close();
+                }
+            }
+
+            try
+            { // get the response
+
+                WebResponse webResponse = webRequest.GetResponse();
+                if (webResponse == null)
+                { return null; }
+                StreamReader sr = new StreamReader(webResponse.GetResponseStream());
+                //MessageBox.Show(sr.ReadToEnd());
+                string sResult = sr.ReadToEnd().Trim();
+
+                if (sResult.Contains("<Error>") == true)
+                {
+                    XmlDocument xmldoc = new XmlDocument();
+                    xmldoc.LoadXml(sResult);
+                    XmlNodeList xmllist = xmldoc.GetElementsByTagName("Error");
+                    //MessageBox.Show(xmllist[0].InnerText);
+                    string sLog = string.Empty;
+                    if (xmllist != null && xmllist.Count > 0)
+                    {
+                        WriteRCopiaLog(xmllist[0].InnerText, iAttempt, UserName, xmldoce, "UI.HttpPost.Response.RCopiaError");
+                        //xmllist = xmldoc.GetElementsByTagName("Command");
+                        //if (xmllist != null && xmllist.Count > 0)
+                        //{
+                        //    sLog = sLog + " - Error at : " + xmllist[0].InnerText;
+                        //}
+                        //if (sRCopiaLog != string.Empty)
+                        //{
+                        //    TextWriter tx = new StreamWriter(sRCopiaLog, true);
+
+                        //    if (sLog.Contains("get_notification_count") == true)
+                        //    {
+                        //        sLog = sLog + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString() + " for User Name is ";
+                        //        if (UserName != null && UserName != string.Empty)
+                        //        {
+                        //            sLog = sLog + UserName;
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        sLog = sLog + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString() + " for record ";
+                        //        xmllist = xmldoc.GetElementsByTagName("ExternalID");
+                        //        if (xmllist != null && xmllist.Count > 0)
+                        //        {
+                        //            sLog = sLog + xmllist[0].InnerText;
+                        //        }
+                        //    }
+
+                        //    tx.WriteLine(sLog);
+                        //    tx.Close();
+                        //    tx.Dispose();
+                        //}
+                    }
+                    return sResult;
+                }
+                else
+                {
+                    //if (page.Application != null && page.Session != null && page.Session["sRocpiaValue"] != null && page.Session["sRocpiaValue"].ToString().ToUpper() == "INACTIVE")
+                    //{
+                    //    XmlDocument xmldoc = new XmlDocument();
+                    //    xmldoc.LoadXml(sResult);
+                    //    XmlNodeList xmllist = xmldoc.GetElementsByTagName("RcopiaID");
+                    //    if (xmllist != null)
+                    //    {
+                    //        xmllist.OfType<XmlElement>().ToList().ForEach(a =>
+                    //        {
+                    //            for (int i = 0; i < a.ChildNodes.Count; i++)
+                    //            {
+                    //                if (a.ChildNodes[i].InnerText != "")
+                    //                    page.Session["sRCOPIAID"] = a.ChildNodes[i].InnerText;
+                    //            }
+                    //        });
+                    //    }
+                    //}
+                    return sResult;
+                }
+            }
+            catch (WebException ex)
+            {
+                //string sLog = string.Empty;
+                //if (sRCopiaLog != string.Empty)
+                //{
+                //    TextWriter tx = new StreamWriter(sRCopiaLog, true);
+                //    sLog = ex.Message + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString();
+                //    tx.WriteLine(sLog);
+                //    tx.Close();
+                //    tx.Dispose();
+                //}
+                WriteRCopiaLog(ex.Message, iAttempt, UserName, xmldoce, "UI.HttpPost.Response.WebException");
+                if (iAttempt < 3)
+                {
+                    iAttempt = iAttempt + 1;
+                    System.Threading.Thread.Sleep(new TimeSpan(0, 0, 0));
+
+                    string sCheckError = HttpPostForAkido(uri, iAttempt, UserName);
+                    if (sCheckError.Contains("HttpPostError Response Error"))
+                    {
+                        return sCheckError;
+                    }
+                }
+                else
+                {
+                    //HttpPost(uri, 5);
+                    return "HttpPostError Response Error : " + DateTime.Now.ToString() + "<br/> <br/>" + ex.Message;
+                }
+
+                //MessageBox.Show(ex.Message, "HttpPost: Response error",
+                //   MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex1)
+            {
+                //string sLog = string.Empty;
+                //if (sRCopiaLog != string.Empty)
+                //{
+                //    TextWriter tx = new StreamWriter(sRCopiaLog, true);
+                //    sLog = ex1.Message + " attempt " + iAttempt + " failed at " + DateTime.Now.ToString();
+                //    tx.WriteLine(sLog);
+                //    tx.Close();
+                //    tx.Dispose();
+                //}
+                WriteRCopiaLog(ex1.Message, iAttempt, UserName, xmldoce, "UI.HttpPost.Response.Exception");
+                //MessageBox.Show(e.InnerException.ToString());
+                return "HttpPostError Response Error : " + DateTime.Now.ToString() + "<br/> <br/>" + ex1.Message;
+            }
+            return null;
+        }
 
         //Jira CAP-1372
         public void WriteRCopiaLog(string sMessage, int iAttempt, string sUserName, XmlDocument xmlDoc, string sTraceLine)

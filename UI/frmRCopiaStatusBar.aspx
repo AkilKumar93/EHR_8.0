@@ -39,6 +39,8 @@
                 <span>Pending Rx: <span id="lblPendingRx">0</span></span>
             </div>
         </div>
+        <input type="hidden" runat="server" id="hdnEmail"/>
+        <input type="hidden" runat="server" id="hdnLegalOrg"/>
     </form>
     <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
     <script src="JScripts/JSErrorMessage.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella-","") %>" type="text/javascript"></script>
@@ -48,10 +50,18 @@
         });
 
         function LoadRcopiaRxCount() {
+            var email = $('#hdnEmail').val();
+            var legalOrg = $('#hdnLegalOrg').val();
+            var url = "frmRCopiaToolbar.aspx/LoadRCopiaNotification";
+            var data = '';
+            if (email) {
+                url = "frmRCopiaStatusBar.aspx/LoadRCopiaNotification";
+                data = '{email: "' + email + '",legalOrg: "' + legalOrg + '"}';
+            }
             $.ajax({
                 type: "POST",
-                url: "frmRCopiaToolbar.aspx/LoadRCopiaNotification",
-                data: '',
+                url: url,
+                data: data,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 beforeSend: function () {

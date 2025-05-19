@@ -818,7 +818,124 @@ namespace Acurus.Capella.UI.RCopia
             }
             #endregion
         }
+        //CAP-2651
+        public void ReadXMLResponseForAkido(string XMLResponse, out IList<Rcopia_NotificationDTO> ilstNotification, string UserName, string FacilityName)
+        {
+            ilstNotification = new List<Rcopia_NotificationDTO>();
 
+            if (XMLResponse == null)
+            {
+                return;
+            }
+
+            if (XMLResponse == string.Empty)
+            {
+                return;
+            }
+
+            CmdElementText = string.Empty;
+            #region Responsexml
+            string XMLFileName = string.Empty;
+
+            XmlDocument XMLDoc = new XmlDocument();
+            XMLDoc.LoadXml(XMLResponse);
+
+            XmlNodeList xmlReqNode = XMLDoc.GetElementsByTagName("Command");
+            CmdElementText = ((XmlElement)xmlReqNode[0]).InnerText;
+
+            XmlNodeList nodeList = XMLDoc.GetElementsByTagName("Response");
+            XmlElement SubElement = null;
+            ilstPatient.Clear();
+            ilstMedication.Clear();
+            ilstAllergy.Clear();
+            ilstProblem.Clear();
+            ilstRcopiaPrescription.Clear();
+
+
+
+            if (CmdElementText != string.Empty)
+            {
+                #region Read_ResponseXML Classes
+
+                foreach (XmlElement Element in nodeList)
+                {
+                    for (int i = 0; i < Element.ChildNodes.Count; i++)
+                    {
+                        XmlElement xmlLastUpdateTime = (XmlElement)Element.ChildNodes[i];
+                        InsertintoProperties(xmlLastUpdateTime, xmlLastUpdateTime.Name);
+                        if (Element.ChildNodes[i].Name == "MedicationList" || Element.ChildNodes[i].Name == "AllergyList" || Element.ChildNodes[i].Name == "ProblemList" || Element.ChildNodes[i].Name == "PatientList" || Element.ChildNodes[i].Name == "PrescriptionList" || Element.ChildNodes[i].Name == "NotificationCountList")
+                        {
+                            XmlNodeList nodeList3 = Element.GetElementsByTagName(Element.ChildNodes[i].Name);
+                            for (int k = 0; k < nodeList3[0].ChildNodes.Count; k++)
+                            {
+                                XmlElement xmlnode = (XmlElement)nodeList3[0].ChildNodes[k];
+                                if (xmlnode.Name == "Medication" || xmlnode.Name == "Allergy" || xmlnode.Name == "Problem" || xmlnode.Name == "Patient" || xmlnode.Name == "Prescription" || xmlnode.Name == "NotificationCount")
+                                {
+                                    if (CmdElementText.ToUpper() == "UPDATE_MEDICATION")
+                                        ObjMedication = new Rcopia_Medication();
+                                    else if (CmdElementText.ToUpper() == "UPDATE_ALLERGY")
+                                        objAllergy = new Rcopia_Allergy();
+                                    else if (CmdElementText.ToUpper() == "UPDATE_PROBLEM")
+                                        objProbList = new ProblemList();
+                                    else if (CmdElementText.ToUpper() == "UPDATE_PATIENT")
+                                        objPatient = new Human();
+                                    else if (CmdElementText.ToUpper() == "UPDATE_PRESCRIPTION")
+                                        objPrescription = new Rcopia_Prescription_List();
+                                    else if (CmdElementText.ToUpper() == "GET_NOTIFICATION_COUNT")
+                                        objrcopnotification = new Rcopia_NotificationDTO();
+                                    for (int m = 0; m < xmlnode.ChildNodes.Count; m++)
+                                    {
+                                        SubElement = (XmlElement)xmlnode.ChildNodes[m];
+                                        InsertintoProperties(SubElement, SubElement.Name);
+                                        if (SubElement.Name == "Sig" || SubElement.Name == "Patient" || SubElement.Name == "Status" || SubElement.Name == "Allergen" || SubElement.Name == "ProblemList" || SubElement.Name == "Pharmacy")
+                                        {
+                                            for (int c = 0; c < SubElement.ChildNodes.Count; c++)
+                                            {
+                                                XmlElement ParentElement = (XmlElement)SubElement.ChildNodes[c];
+                                                InsertintoProperties(ParentElement, ParentElement.Name);
+                                                if (ParentElement.Name == "Drug" || ParentElement.Name == "Problem")
+                                                {
+                                                    for (int b = 0; b < ParentElement.ChildNodes.Count; b++)
+                                                    {
+                                                        XmlElement DrugElement = (XmlElement)ParentElement.ChildNodes[b];
+                                                        InsertintoProperties(DrugElement, DrugElement.Name);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (CmdElementText.ToUpper() == "UPDATE_ALLERGY")
+                                        ilstAllergy.Add(objAllergy);
+                                    else if (CmdElementText.ToUpper() == "UPDATE_MEDICATION")
+                                        ilstMedication.Add(ObjMedication);
+                                    else if (CmdElementText.ToUpper() == "UPDATE_PROBLEM")
+                                        ilstProblem.Add(objProbList);
+                                    else if (CmdElementText.ToUpper() == "UPDATE_PATIENT")
+                                        ilstPatient.Add(objPatient);
+                                    else if (CmdElementText.ToUpper() == "UPDATE_PRESCRIPTION")
+                                        ilstRcopiaPrescription.Add(objPrescription);
+                                    else if (CmdElementText.ToUpper() == "GET_NOTIFICATION_COUNT")
+                                        ilstNotification.Add(objrcopnotification);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (CmdElementText.ToUpper() == "UPDATE_MEDICATION" && ilstMedication.Count > 0)
+                    objRcopProxy.InsertOrUpdateMedication(ilstMedication.ToArray<Rcopia_Medication>(), UserName, string.Empty, DateTime.UtcNow, FacilityName, 0);
+                else if (CmdElementText.ToUpper() == "UPDATE_ALLERGY" && ilstAllergy.Count > 0)
+                    objAllergyMngr.InsertOrUpdateAllergy(ilstAllergy.ToArray<Rcopia_Allergy>(), UserName, string.Empty, DateTime.UtcNow);
+                else if (CmdElementText.ToUpper() == "UPDATE_PROBLEM" && ilstProblem.Count > 0)
+                    objProbListProxy.InsertOrUpdateProblemList(ilstProblem.ToArray<ProblemList>(), string.Empty, DateTime.UtcNow);
+                else if (CmdElementText.ToUpper() == "UPDATE_PRESCRIPTION" && ilstRcopiaPrescription.Count > 0)
+                    objPrescMngr.InsertOrUpdatePrescription_List(ilstRcopiaPrescription.ToArray<Rcopia_Prescription_List>(), UserName, string.Empty, DateTime.UtcNow);
+                else if (CmdElementText.ToUpper() == "UPDATE_PATIENT" && ilstPatient.Count > 0)
+                    objHumanMngr.InsertOrUpdateHumanByRcopia(ilstPatient.ToArray<Human>(), string.Empty);
+                #endregion
+            }
+            #endregion
+        }
 
         public void InsertintoProperties(XmlElement Element, string sElementText)
         {
