@@ -102,6 +102,12 @@
                 opacity: 0.5;
                 pointer-events: none;
             }
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 1000 !important;
+        }
     </style>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="~/CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
