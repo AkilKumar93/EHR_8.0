@@ -119,7 +119,8 @@ namespace Acurus.Capella.UI
                 //rbtnAllResults.Checked = true;
                 cboUnmatchProvider.Enabled = false;
                 chkUnmatchedProvider.Enabled = false;
-                btnFindPatient.Enabled = false;
+                //CAP - 3207
+                //btnFindPatient.Enabled = false;
                 btnMatchOrders.Enabled = false;
                 string labIdList = string.Empty;
 
@@ -215,13 +216,38 @@ namespace Acurus.Capella.UI
             }
             else
             {
+                //CAP - 3207
+                //if (Request.Form["__EVENTTARGET"] != null)
+                //{
+                //    if (Request.Form["__EVENTTARGET"] == "grdUnassignedResults")
+                //        FillPatientandOutstandingorders();
+                //    else if (Request.Form["__EVENTTARGET"].Contains("chk"))
+                //    {
+                //        btnFindPatient.Enabled = false;
+                //        btnMatchOrders.Enabled = false;
+                //        if (cboUnmatchProvider.Enabled == false)
+                //        {
+                //            cboUnmatchProvider.Enabled = false;
+                //            chkUnmatchedProvider.Enabled = false;
+                //            cboUnmatchProvider.SelectedIndex = 0;
+                //        }
+                //        grdUnassignedResults.DataSource = null;
+                //        chkNoOrders.Checked = false;
+                //    }
+                //}
+
+
                 if (Request.Form["__EVENTTARGET"] != null)
                 {
+                    string sAutosearch = string.Empty;
                     if (Request.Form["__EVENTTARGET"] == "grdUnassignedResults")
+                    {
                         FillPatientandOutstandingorders();
+                    }
                     else if (Request.Form["__EVENTTARGET"].Contains("chk"))
                     {
-                        btnFindPatient.Enabled = false;
+                        //CAP - 3207
+                        //btnFindPatient.Enabled = false;
                         btnMatchOrders.Enabled = false;
                         if (cboUnmatchProvider.Enabled == false)
                         {
@@ -232,6 +258,14 @@ namespace Acurus.Capella.UI
                         grdUnassignedResults.DataSource = null;
                         chkNoOrders.Checked = false;
                     }
+
+                    string eventTarget = Request["__EVENTTARGET"];
+                    if (eventTarget == "ctl00$ContentPlaceHolder1$InvisibleButton")
+                    {
+                        sAutosearch = "Y";
+                        InvisibleButton_Click(this, EventArgs.Empty);
+                    }
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "labpatientsearch", "setpatientsearch('" + sAutosearch + "');", true);
                 }
             }
 
@@ -246,7 +280,8 @@ namespace Acurus.Capella.UI
             IList<string> FieldValue = new List<string>();
             string sCriteria = string.Empty;
             string NPINumbers = string.Empty;
-            btnFindPatient.Enabled = false;
+            //CAP - 3207
+            //btnFindPatient.Enabled = false;
             btnMatchOrders.Enabled = false;
             cboUnmatchProvider.Enabled = false;
             chkUnmatchedProvider.Enabled = false;
@@ -423,10 +458,11 @@ namespace Acurus.Capella.UI
             DataTable dtClear = new DataTable();
             grdOutstandingOrders.DataSource = dtClear;
             grdOutstandingOrders.DataBind();
-            txtPatientName.Text = string.Empty;
-            txtAccountNumber.Text = string.Empty;
-            txtDOB.Text = string.Empty;
-            txtGender.Text = string.Empty;
+            //CAP - 3207
+            //txtPatientName.Text = string.Empty;
+            //txtAccountNumber.Text = string.Empty;
+            //txtDOB.Text = string.Empty;
+            //txtGender.Text = string.Empty;
 
         }
 
@@ -561,7 +597,11 @@ namespace Acurus.Capella.UI
         public void FillPatientandOutstandingorders()
         {
             bool cboCheck = false;
-            btnFindPatient.Enabled = true;
+            //CAP - 3207
+            //btnFindPatient.Enabled = true;
+            bool vFindPatientenabled =true;
+            string sPatientname = string.Empty;
+            //vFindPatientenabled = true;
             btnMatchOrders.Enabled = true;
             if (Session["FillOrderException"] != null)
             {
@@ -628,10 +668,13 @@ namespace Acurus.Capella.UI
                         {
                             if (ResultLabExecptionList.Count > 0)
                             {
-                                txtPatientName.Text = ResultLabExecptionList[0].Last_Name_In_Capella + " " + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella;
-                                txtAccountNumber.Text = ResultLabExecptionList[0].Human_Id_In_Capella.ToString();
-                                txtDOB.Text = ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy");
-                                txtGender.Text = ResultLabExecptionList[0].Sex_In_Capella;
+                                //CAP - 3207
+                                //txtPatientName.Text = ResultLabExecptionList[0].Last_Name_In_Capella + " " + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella;
+                                //txtAccountNumber.Text = ResultLabExecptionList[0].Human_Id_In_Capella.ToString();
+                                //txtDOB.Text = ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy");
+                                //txtGender.Text = ResultLabExecptionList[0].Sex_In_Capella;
+                                //sPatientname = (ResultLabExecptionList[0].Last_Name_In_Capella + " " + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella + " | "+ ResultLabExecptionList[0].Human_Id_In_Capella.ToString() + " | " + ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy") + " | "+ ResultLabExecptionList[0].Sex_In_Capella);
+                                sPatientname = (ResultLabExecptionList[0].Last_Name_In_Capella + "," + ResultLabExecptionList[0].First_Name_In_Capella + " " + ResultLabExecptionList[0].MI_In_Capella + " | DOB: " + ResultLabExecptionList[0].DOB_In_Capella.ToString("dd-MMM-yyyy") + " | " + ResultLabExecptionList[0].Sex_In_Capella + " | ACC#: " + ResultLabExecptionList[0].Human_Id_In_Capella.ToString() + " | EX.ACC#: " + ResultLabExecptionList[0].Patient_Account_External.ToString() + " | ADDR: " + ResultLabExecptionList[0].Street_Address1.ToString() + " | Ph: " + ResultLabExecptionList[0].Home_Phone_No.ToString() + " | PATIENT TYPE: " + ResultLabExecptionList[0].Human_Type.ToString());
                                 FillOutstandingOrdersGrid(ResultLabExecptionList[0].OrdersList);
                                 if (Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[6].Text.ToString()) != 0)
                                 {
@@ -641,18 +684,22 @@ namespace Acurus.Capella.UI
                                 {
                                     grdOutstandingOrders.ClientSettings.Selecting.AllowRowSelect = true;
                                 }
-
-                                btnFindPatient.Enabled = false;
+                                //CAP - 3207
+                                //btnFindPatient.Enabled = false;
                             }
                         }
 
                     }
                     else
+                    {
                         Clear();
+                        vFindPatientenabled = false;
+                    }
                 }
             }
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            //CAP - 3207
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "SearchLab", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}FindPatientenabled('" + vFindPatientenabled + "','" + sPatientname + "')", true);
 
         }
         protected void SearchClick_Click(object sender, EventArgs e)
@@ -673,13 +720,15 @@ namespace Acurus.Capella.UI
                 IList<Human> objHuman = objHumanProxy.GetPatientDetailsUsingPatientInformattion(HumanID);
                 if (objHuman != null && objHuman.Count > 0)
                 {
-                    txtPatientName.Text = objHuman[0].Last_Name + "," + objHuman[0].First_Name + "  " + objHuman[0].MI;
-                    txtAccountNumber.Text = objHuman[0].Id.ToString();
-                    txtDOB.Text = objHuman[0].Birth_Date.ToString("dd-MMM-yyyy");
-                    txtGender.Text = objHuman[0].Sex;
+                    //CAP - 3207
+                    //txtPatientName.Text = objHuman[0].Last_Name + "," + objHuman[0].First_Name + "  " + objHuman[0].MI;
+                    //txtAccountNumber.Text = objHuman[0].Id.ToString();
+                    //txtDOB.Text = objHuman[0].Birth_Date.ToString("dd-MMM-yyyy");
+                    //txtGender.Text = objHuman[0].Sex;
                 }
-
-                IList<Orders> listOrders = orderProxy.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "RESULT_PROCESS", Convert.ToUInt64(txtAccountNumber.Text));
+                //CAP - 3207
+                //IList<Orders> listOrders = orderProxy.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "RESULT_PROCESS", Convert.ToUInt64(txtAccountNumber.Text));
+                IList<Orders> listOrders = orderProxy.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "RESULT_PROCESS", Convert.ToUInt64(HumanID));
                 if (listOrders != null)
                     FillOutstandingOrdersGrid(listOrders);
                 if (grdUnassignedResults.SelectedItems.Count > 0)
@@ -786,17 +835,20 @@ namespace Acurus.Capella.UI
 
         protected void btnMatchOrders_Click(object sender, EventArgs e)
         {
+            ulong HumanID = 0;
+            if (hdnHumanID.Value != null && hdnHumanID.Value != string.Empty)
+                HumanID = Convert.ToUInt64(hdnHumanID.Value);
             bool bCheck = false;
             string NPINumbers = string.Empty;
 
             ulong ulAutoPhysID = Convert.ToUInt64(System.Configuration.ConfigurationManager.AppSettings["DefaultPhysicianIDIndexing"]);
+            //CAP - 3207
+            //if (txtPatientName.Text == "" && txtAccountNumber.Text == "")
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100013');", true);
+            //    return;
 
-            if (txtPatientName.Text == "" && txtAccountNumber.Text == "")
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100013');", true);
-                return;
-
-            }
+            //}
             if (grdUnassignedResults.SelectedItems.Count > 0)
             {
                 if (cboUnmatchProvider.Text != "")
@@ -887,15 +939,17 @@ namespace Acurus.Capella.UI
                     else
                         Order_Submit_ID = Convert.ToUInt64(grdOutstandingOrders.SelectedItems[0].Cells[6].Text.ToString());
 
-
-                    resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(txtAccountNumber.Text), NPINumbers, string.Empty);
+                    //CAP-3207
+                    //resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(txtAccountNumber.Text), NPINumbers, string.Empty);
+                    resultmasterMngr.UpdateResultMasterAndWf_Object(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Order_Submit_ID, Convert.ToUInt64(HumanID), NPINumbers, string.Empty);
                     btnSearch_Click(new object(), new EventArgs());
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);                    
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010'); FindPatientenabled('Success','');", true);                   
                 }
                 else
                 {
                     //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}DisplayErrorMessage('7100016');", true);
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100016'); {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "{sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();DisplayErrorMessage('7100016');} ", true);
 
                     return;
                 }
@@ -906,9 +960,12 @@ namespace Acurus.Capella.UI
                 //{
                 //if (grdUnassignedResults.SelectedItems.Count > 0)
                 //{
-                resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(txtAccountNumber.Text), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
+                //CAP-3207
+                //resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(txtAccountNumber.Text), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
+                resultmasterMngr.UpdateResultMasterListForLab(Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[21].Text.ToString()), Convert.ToUInt64(HumanID), Convert.ToUInt64(grdUnassignedResults.SelectedItems[0].Cells[16].Text.ToString()), Convert.ToUInt32(grdUnassignedResults.SelectedItems[0].Cells[18].Text.ToString()), NPINumbers, bCheck, string.Empty, ulAutoPhysID);
                 btnSearch_Click(new object(), new EventArgs());
-                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), string.Empty, "DisplayErrorMessage('7100010'); FindPatientenabled('Success','');", true);               
                 //}
                 //}
             }
@@ -975,7 +1032,8 @@ namespace Acurus.Capella.UI
             {
                 if (grdUnassignedResults.SelectedItems.Count == 0)
                 {
-                    btnFindPatient.Enabled = false;
+                    //CAP-3207
+                    //btnFindPatient.Enabled = false;
                     btnMatchOrders.Enabled = false;
                 }
                 ulong resultID = Convert.ToUInt64(e.Item.Cells[21].Text);

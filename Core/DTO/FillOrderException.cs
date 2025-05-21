@@ -47,6 +47,11 @@ namespace Acurus.Capella.Core.DTO
         string _Specimen = string.Empty;
         string _Ordering_Provider_NPI = string.Empty;
         string _Is_Abnormal = string.Empty;
+        //CAP-3207
+        string _Patient_Account_External = string.Empty;
+        string _Human_Type = string.Empty;
+        string _Home_Phone_No = string.Empty;
+        string _Street_Address1 = string.Empty;
 
         [DataMember]
         public virtual bool IsTotalCount
@@ -259,8 +264,31 @@ namespace Acurus.Capella.Core.DTO
             get { return _Is_Abnormal; }
             set { _Is_Abnormal = value; }
         }
-        
 
+        [DataMember]
+        public virtual string Patient_Account_External
+        {
+            get { return _Patient_Account_External; }
+            set { _Patient_Account_External = value; }
+        }
+        [DataMember]
+        public virtual string Human_Type
+        {
+            get { return _Human_Type; }
+            set { _Human_Type = value; }
+        }
+        [DataMember]
+        public virtual string Home_Phone_No
+        {
+            get { return _Home_Phone_No; }
+            set { _Home_Phone_No = value; }
+        }
+        [DataMember]
+        public virtual string Street_Address1
+        {
+            get { return _Street_Address1; }
+            set { _Street_Address1 = value; }
+        }
 
     }
 }

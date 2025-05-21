@@ -4398,6 +4398,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             objFillOrderException.DOB_In_Capella = objHuman.Birth_Date;
                             objFillOrderException.Sex_In_Capella = objHuman.Sex;
                             objFillOrderException.Human_Id_In_Capella = objHuman.Id;
+                            //CAP-3207
+                            objFillOrderException.Street_Address1 = objHuman.Street_Address1;
+                            objFillOrderException.Human_Type = objHuman.Human_Type;
+                            objFillOrderException.Home_Phone_No = objHuman.Home_Phone_No;
+                            objFillOrderException.Patient_Account_External = objHuman.Patient_Account_External;
                             OrdersManager orderMngr = new OrdersManager();
                             objFillOrderException.OrdersList = orderMngr.GetLabProcedureBy_ObjectType_And_CurrentProcess_And_HumanId("DIAGNOSTIC ORDER", "RESULT_PROCESS", objFillOrderException.Matching_Patient_ID);
 

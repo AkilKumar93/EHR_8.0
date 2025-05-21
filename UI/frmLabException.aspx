@@ -69,7 +69,41 @@
         #cboCategory{
             /*padding-left:20px!important;*/
         }
+        .patient-search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between elements */
+            width: 100%;
+            max-width: 1200px;
+            /*margin: 0 auto;*/ /* Center the whole thing */
+            /*padding: 10px;*/
+        }
+
+        .patient-label {
+            min-width: 100px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .patient-input {
+            flex: 1; /* Takes up remaining space */
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .clear-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+            .clear-icon.disabled {
+                opacity: 0.5;
+                pointer-events: none;
+            }
     </style>
+    <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="~/CSS/CommonStyle.css" rel="Stylesheet" type="text/css" />
 </head>
 <body onload="LabExcepLoad();">
@@ -336,7 +370,7 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <%--<tr>
                                         <td style="width: 100%;">
                                             <asp:Panel ID="Panel2" runat="server" Font-Names="Times New Roman" Font-Size="Small"
                                                 Font-Bold="true" GroupingText="Patient Information" CssClass="LabelStyleBold">
@@ -397,6 +431,38 @@
                                                     </tr>
                                                 </table>
                                             </asp:Panel>
+                                        </td>
+                                    </tr>--%>
+                                    <tr>
+                                        <td style="width: 100%;">
+                                           <%-- <asp:ScriptManager ID="ScriptManager1" runat="server" />--%>
+
+                                           <telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server">
+                                                    <asp:Panel ID="Panel2" runat="server" Font-Names="Times New Roman" Font-Size="Small"
+                                                        Font-Bold="true" GroupingText="Patient Information" CssClass="LabelStyleBold">
+
+                                                        <div class="patient-search-container">
+                                                            <label for="txtPatientSearch" class="patient-label">Patient Name</label>
+
+                                                            <input
+                                                                type="text"
+                                                                id="txtPatientSearch"
+                                                                data-human-id="0"
+                                                                data-human-details=""
+                                                                placeholder="Type minimum 3 characters of Last or First or Middle name or DOB as dd-MMM-yyyy or Acc# or Ext.Acc # or MR # or SSN and follow it by a space.."
+                                                                class="patient-input" disabled />
+
+                                                            <img
+                                                                id="imgClearPatientText"
+                                                                src="Resources/Delete-Blue.png"
+                                                                alt="X"
+                                                                title="Click to clear the text field."
+                                                                class="clear-icon" disabled/>
+                                                        </div>
+                                                    </asp:Panel>
+                                              
+                                        </telerik:RadAjaxPanel>
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -480,7 +546,7 @@
                         </td>
                     </tr>
                 </table>
-                <telerik:RadScriptManager EnableViewState="false" ID="RadScriptManager1" runat="server">
+                <telerik:RadScriptManager EnableViewState="false" ID="RadScriptManager1" runat="server" >
                     <Scripts>
                         <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js"></asp:ScriptReference>
                         <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js"></asp:ScriptReference>
@@ -506,6 +572,9 @@
         <asp:Button ID="InvisibleButton" runat="server" CssClass="displayNone" OnClick="InvisibleButton_Click" />
         <asp:Button ID="SearchClick" runat="server" CssClass="displayNone" OnClick="SearchClick_Click" />
         <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+            <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>
+
+            <script src="JScripts/jquery-ui.min1.11.4.js" type="text/javascript"></script>
 
             <script src="JScripts/JSOrderException.js?version=<%=ConfigurationManager.AppSettings["VersionConfiguration"].ToString().Replace("Capella - ","") %>" type="text/javascript"></script>
 
