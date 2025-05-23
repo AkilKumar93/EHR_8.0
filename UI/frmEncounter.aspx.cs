@@ -69,7 +69,7 @@ namespace Acurus.Capella.UI
         string ChildTabName = string.Empty;
         string SourceOfInformation = string.Empty;
         string sContent = string.Empty;
-        string sPhysicianUserName = string.Empty;
+        public string sPhysicianUserName = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -1509,6 +1509,24 @@ namespace Acurus.Capella.UI
                 {
                     //EncProviderID = 0;//Bug Id 53137                   
                     EncProviderID = Convert.ToUInt32(EncRecord.Encounter_Provider_ID);
+                    //Cap - 3009
+                    UserList objUser = new UserList();
+                    var ilstUserList = ConfigureBase<UserList>.ReadJson("User.json");
+                    if (ilstUserList?.User != null)
+                    {
+                        objUser.User = ilstUserList.User;
+
+                        if (objUser.User != null && objUser.User.Count() > 0)
+                        {
+                            var vuser = objUser.User.Where(a => a.Physician_Library_ID == EncProviderID.ToString()).ToList();
+
+                            if(vuser != null && vuser.Count > 0)
+                            {
+                                sPhysicianUserName = vuser[0].User_Name;
+                            }
+                        }
+                    }
+
                 }
             }
 
