@@ -4474,6 +4474,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<PhysicianLibrary> Phylst = phyMngr.GetPhysicianByNPI(PhysicianNPI);
             UserManager userMngr = new UserManager();
             IList<User> userList = new List<User>();
+            //Jira CAP-3251
+            ulong ulMatchingPhysicianId = 0;
             if (Phylst.Count > 0)
                 userList = userMngr.GetUserbyPhysicianLibraryID(Phylst[0].Id);
             string Current_Owner = "";
@@ -4483,11 +4485,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 if (ResultList.Count > 0)
                 {
                     Current_Owner = ResultList[0].user_name;
+                    //Jira CAP-3251
+                    ulMatchingPhysicianId = ResultList[0].Physician_Library_ID;
                 }
                 else
                 {
                     userList = userMngr.GetUserbyPhysicianLibraryID(ulAutoPhyID);
                     Current_Owner = userList[0].user_name;
+                    //Jira CAP-3251
+                    ulMatchingPhysicianId = ulAutoPhyID;
                 }
             }
             ResultMaster objResultMaster = GetById(ResultMasterID);
@@ -4496,6 +4502,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 objResultMaster.Matching_Patient_Id = Human_ID;
                 objResultMaster.Modified_By = Current_Owner;
                 objResultMaster.Modified_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                //Jira CAP-3251
+                if (objResultMaster.Matching_Physician_Id == 0)
+                {
+                    objResultMaster.Matching_Physician_Id = ulMatchingPhysicianId;
+                }
             }
             IList<ResultMaster> ilstSaveList = new List<ResultMaster>();
             IList<ResultMaster> ilstUpdateList = new List<ResultMaster>();
@@ -4614,6 +4625,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 objResultMaster.Order_ID = order_Submit_ID;
                 objResultMaster.Modified_By = Current_Owner;
                 objResultMaster.Modified_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                //Jira CAP-3251
+                if (objResultMaster.Matching_Physician_Id == 0)
+                {
+                    objResultMaster.Matching_Physician_Id = ResultList.FirstOrDefault().Physician_Library_ID;
+                }
             }
             IList<ResultMaster> ilstSaveList = new List<ResultMaster>();
             IList<ResultMaster> ilstUpdateList = new List<ResultMaster>();
