@@ -181,4 +181,309 @@ function btnMatchOrders_Clicked(sender,args)
 	function LabExcepLoad() {
 	    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 	}
-	
+
+Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function (sender, args) {
+    initializeAutocomplete();
+});
+
+$(document).ready(function () {
+
+    initializeAutocomplete();
+});
+var intPatientlen = -1;
+function initializeAutocomplete() {
+    var curleft = curtop = 0;
+    var current_element = document.getElementById('txtPatientSearch');
+    if (current_element == null) {
+        current_element = document.getElementById('txtProviderSearch');
+        curtop = 5;
+    }
+    window.setTimeout(function () {
+        $('#txtPatientSearch').focus();
+    }, 50);
+
+    if (current_element && current_element.offsetParent) {
+        do {
+            curleft += current_element.offsetLeft;
+            curtop += current_element.offsetTop;
+        } while (current_element = current_element.offsetParent);
+    }
+    $("#imgClearPatientText").css({
+        "cursor": "pointer",
+        "width": "20px",
+        "height": "20px"
+    }).on("click", function () {
+        $('#txtPatientSearch').val('').focus();
+        $("#txtPatientSearch").css("color", "black").attr({ "data-human-id": "0", "data-human-details": "" });
+        intPatientlen = -1;
+        arrPatient = [];
+        $(".ui-autocomplete").hide();
+        sessionStorage.setItem("valuepatientsearch", "");
+        sessionStorage.setItem("labelpatientsearch", "")
+        $("#imgClearPatientText").removeClass("disabled");
+        $('#txtPatientSearch').prop('disabled', false);
+    });
+    if ($("#txtPatientSearch").length) {
+        $("#txtPatientSearch").autocomplete({
+            source: function (request, response) {
+                if ($("#txtPatientSearch").val().trim().length > 2) {
+                    if (intPatientlen == 0) {
+                        UI_Time_Start = new Date();
+                        //{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+                        StartLoadingImage();
+                        this.element.on("keydown", PreventTyping);
+                        arrPatient = [];
+                        var strkeyWords = $("#txtPatientSearch").val().split(' ');
+                        var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
+                        var account_status = "ACTIVE";
+                        var patient_status = "ALIVE";
+                        var patient_type = "REGULAR";
+                        var WSData = {
+                            text_searched: strkeyWords[0],
+                            account_status: account_status,
+                            patient_status: patient_status,
+                            human_type: patient_type
+                        };
+
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: "./frmFindPatient.aspx/GetPatientDetailsByTokens",
+                            data: JSON.stringify(WSData),
+                            dataType: "json",
+                            success: function (data) {
+                                // { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                                StopLoadingImage();
+                                $("#txtPatientSearch").off("keydown", PreventTyping);
+                                var jsonData = $.parseJSON(data.d);
+                                if (jsonData.Error != undefined) {
+                                    alert(jsonData.Error);
+                                    return;
+                                }
+                                if (jsonData.Time_Taken != undefined)
+                                    LogTimeString(jsonData.Time_Taken);
+                                if (jsonData.Result != undefined) {
+                                    var no_matches = [];
+                                    no_matches.push(jsonData.Result);
+                                    response($.map(no_matches, function (item) {
+                                        return {
+                                            label: item,
+                                            val: "0"
+                                        }
+                                    }));
+                                }
+                                else {
+                                    var results;
+                                    if (bMoreThanOneKeyword)
+                                        results = Filter(jsonData.Matching_Result, request.term);
+                                    else
+                                        results = jsonData.Matching_Result;
+
+                                    arrPatient = jsonData.Matching_Result;
+                                    response($.map(results, function (item) {
+                                        return {
+                                            label: item.label,
+                                            val: JSON.stringify(item.value),
+                                            value: item.value.HumanId
+                                        }
+                                    }));
+                                }
+                            },
+                            error: function OnError(xhr) {
+                                //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                                StopLoadingImage();
+                                if (xhr.status == 999)
+                                    window.location = xhr.statusText;
+                                else {
+                                    var log = JSON.parse(xhr.responseText);
+                                    console.log(log);
+                                    alert("USER MESSAGE:\n" + xhr.status + "-" + xhr.statusText +
+                                        ". \nCannot process request. Please Login again and retry. If issue persists, Please contact Support.\n\nEXCEPTION DETAILS: \nException Type" +
+                                        log.ExceptionType + " \nMessage: " + log.Message);
+                                }
+                            }
+
+                        });
+                    }
+                    else if (intPatientlen != -1) {
+
+                        var results = Filter(arrPatient, request.term);
+                        response($.map(results, function (item) {
+                            return {
+                                label: item.label,
+                                val: JSON.stringify(item.value),
+                                value: item.value.HumanId
+                            }
+                        }));
+                    }
+                }
+            },
+            minlength: 0,
+            multiple: true,
+            mustMatch: false,
+            select: PatientSelected,
+            open: function () {
+                $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtPatientSearch').width());
+                $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
+                $('#txtPatientSearch').focus();
+            },
+            focus: function () {
+                return false;
+            }
+        }).on("paste", function (e) {
+            intPatientlen = -1;
+            arrPatient = [];
+            $(".ui-autocomplete").hide();
+        }).on("input", function (e) {
+            $("#txtPatientSearch").css("color", "black").attr({ "data-human-id": "0", "data-human-details": "" });
+            if ($("#txtPatientSearch").val().charAt(e.currentTarget.value.length - 1) == " ") {
+                if (e.currentTarget.value.split(" ").length > 2)
+                    intPatientlen = intPatientlen + 1;
+                else
+                    intPatientlen = 0;
+            }
+            else {
+                if ($("#txtPatientSearch").val().length != 0 && intPatientlen != -1) {
+                    intPatientlen = intPatientlen + 1;
+                }
+
+                if ($("#txtPatientSearch").val().length == 0 || $("#txtPatientSearch").val().indexOf(" ") == -1) {
+                    intPatientlen = -1;
+                    arrPatient = [];
+                    $(".ui-autocomplete").hide();
+                }
+            }
+        })
+
+        $("#txtPatientSearch").data("ui-autocomplete")._renderItem = function (ul, item) {
+            if (item.label != "No matches found.") {
+                var HumanDetails = $.parseJSON(item.val);
+                var list_item = $("<li>")
+                    .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                    .append(item.label)
+                    .appendTo(ul);
+                if (HumanDetails.Account_Status.toUpperCase() == "INACTIVE")
+                    list_item.addClass("inactive");
+                if (HumanDetails.Status.toUpperCase() == "DECEASED")
+                    list_item.addClass("deceased");
+                return list_item;
+            }
+            else
+                return $("<li>")
+                    .attr({ "data-value": item.value, "data-val": item.val }).css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" })
+                    .addClass("disabled")
+                    .append(item.label)
+                    .appendTo(ul).on("click", function (e) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    });
+        };
+    }
+}
+function LogTimeString(time_string) {
+    UI_Time_Stop = new Date();
+
+    var WS_Time = parseFloat(time_string.split(';')[0].split(':')[1].replace('s', ''));
+    var DB_Time = parseFloat(time_string.split(';')[1].split(':')[1].replace('s', ''));
+    var UI_Time = ((UI_Time_Stop.getTime() - UI_Time_Start.getTime()) / 1000) - WS_Time - DB_Time;
+    console.log(time_string + " UI_Time :" + UI_Time + "s; Total_Time :" + (WS_Time + DB_Time + UI_Time).toString() + "s;");
+
+}
+
+function PreventTyping(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+}
+
+function PatientSelected(event, ui) {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    $(document).on("click", PreventTyping).on("keydown", PreventTyping).css('cursor', 'wait');
+    var txtPatientSearch = document.getElementById("txtPatientSearch");
+
+    var WSData = {
+        HumanID: ui.item.value,
+        FullDetails: ui.item.label
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "./frmFindPatient.aspx/GetHumanDetails",
+        data: JSON.stringify(WSData),
+        dataType: "json",
+        success: function (data) {
+            var SelectedPatient = JSON.parse(data.d);
+            var HumanDetails = SelectedPatient.HumanDetails;
+            var txtPatientSearch = document.getElementById('txtPatientSearch');
+            txtPatientSearch.value = SelectedPatient.DisplayString;
+            txtPatientSearch.attributes['data-human-details'].value = JSON.stringify(HumanDetails);
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            $(document).off("click", PreventTyping).off("keydown", PreventTyping).css('cursor', 'default');
+        }
+    });
+    txtPatientSearch.value = ui.item.label;
+    txtPatientSearch.attributes['data-human-id'].value = ui.item.value;//HumanDetails.HumanId;
+    document.getElementById('hdnHumanID').value = ui.item.value;
+
+    debugger;
+    //document.getElementById('hdnpatientsearch').value = ui.item.label;
+    //document.getElementById('InvisibleButton').click();   
+    sessionStorage.setItem("valuepatientsearch", ui.item.value);
+    sessionStorage.setItem("labelpatientsearch", ui.item.label);
+    __doPostBack('ctl00$ContentPlaceHolder1$InvisibleButton', '');
+    return false;
+}
+
+function setpatientsearch(sAutosearch) {
+    var txtPatientSearch = document.getElementById('txtPatientSearch');
+    debugger;
+    if (sessionStorage.getItem("labelpatientsearch") != undefined && sessionStorage.getItem("labelpatientsearch") != "") {
+        txtPatientSearch.value = sessionStorage.getItem("labelpatientsearch");
+        txtPatientSearch.attributes['data-human-id'].value = sessionStorage.getItem("valuepatientsearch");
+        if (sAutosearch == "Y") {
+            $('#txtPatientSearch').prop('disabled', false);
+            //$('#imgClearPatientText').prop('disabled', false);
+            $("#imgClearPatientText").removeClass("disabled");
+        }
+    }
+    else {
+        txtPatientSearch.value = "";
+        txtPatientSearch.attributes['data-human-id'].value = "";
+    }
+}
+function FindPatientenabled(val, sPatientname) {
+    var txtPatientSearch = document.getElementById('txtPatientSearch');
+    debugger;
+    if (val == "True") {
+        $('#txtPatientSearch').prop('disabled', true);
+        //$('#imgClearPatientText').prop('disabled', true);
+        $("#imgClearPatientText").addClass("disabled");
+        txtPatientSearch.value = sPatientname;
+        txtPatientSearch.attributes['data-human-id'].value = sPatientname;
+        $('#txtPatientSearch').focus();
+        sessionStorage.setItem("valuepatientsearch", sPatientname);
+        sessionStorage.setItem("labelpatientsearch", sPatientname);
+    }
+    else if (val == "Success") {
+        
+        $('#txtPatientSearch').prop('disabled', true);
+        $("#imgClearPatientText").addClass("disabled");
+        sessionStorage.setItem("valuepatientsearch", "");
+        sessionStorage.setItem("labelpatientsearch", "");
+        txtPatientSearch.value = "";
+        txtPatientSearch.attributes['data-human-id'].value = "";
+        sessionStorage.setItem('StartLoading', 'false');
+        
+    }
+    else {
+        debugger;
+        $('#txtPatientSearch').prop('disabled', false);
+        //$('#imgClearPatientText').prop('disabled', false);
+        $("#imgClearPatientText").removeClass("disabled");
+        sessionStorage.setItem("valuepatientsearch", "");
+        sessionStorage.setItem("labelpatientsearch", "");
+        txtPatientSearch.value = sPatientname;
+        txtPatientSearch.attributes['data-human-id'].value = sPatientname;
+    }
+
+}

@@ -69,6 +69,8 @@ namespace Acurus.Capella.UI
         string ChildTabName = string.Empty;
         string SourceOfInformation = string.Empty;
         string sContent = string.Empty;
+        string sPhysicianUserName = string.Empty;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             MessageWindow.Visible = false;
@@ -213,7 +215,12 @@ namespace Acurus.Capella.UI
                 //iMySelectedNode = (PatientPaneDetails.Count > 0 ? ((PatientPaneDetails.Select((item, index) => new { Obj = item, Index = index }).Count() > 0) ? (PatientPaneDetails.Select((item, index) => new { Obj = item, Index = index }).First(a => a.Obj.Encounter_ID == ClientSession.EncounterId).Index) : 0) : 0);
                 // sMySentToRCopia = Request["sMySentToRCopia"];//For Bug ID 74727
                 if (PatientPaneDetails != null && PatientPaneDetails.Count > 0)
+                {
                     ClientSession.PhysicianUserName = PatientPaneDetails[iMySelectedNode].Assigned_Physician_User_Name;
+                    //Cap - 3009
+                    sPhysicianUserName = PatientPaneDetails[iMySelectedNode].Assigned_Physician_User_Name;
+                }
+                    
 
                 node = iMySelectedNode;
                 ViewState["Node"] = node;
@@ -1483,6 +1490,8 @@ namespace Acurus.Capella.UI
                 {
                     EncProviderID = Convert.ToUInt32(hdnLocalPhy.Value.Split('~')[0]);
                     ClientSession.PhysicianUserName = hdnLocalPhy.Value.Split('~')[1];
+                    //Cap - 3009
+                    sPhysicianUserName = hdnLocalPhy.Value.Split('~')[1];
                 }
             }
             else
@@ -1493,6 +1502,8 @@ namespace Acurus.Capella.UI
                 {
                     EncProviderID = Convert.ToUInt32(hdnLocalPhy.Value.Split('~')[0]);
                     ClientSession.PhysicianUserName = hdnLocalPhy.Value.Split('~')[1];
+                    //Cap - 3009
+                    sPhysicianUserName = hdnLocalPhy.Value.Split('~')[1];
                 }
                 else
                 {
@@ -1639,8 +1650,11 @@ namespace Acurus.Capella.UI
                     if (ClientSession.FillEncounterandWFObject.DocumentationWFRecord.Current_Process.ToUpper() == "SCRIBE_REVIEW_CORRECTION")
                         objMoveVerifyDTO = objEncounterManager.PerformMovetoProvider(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, ClientSession.FillEncounterandWFObject.EncounterWFRecord, ClientSession.FillEncounterandWFObject.EncRecord, IsPatientDiscussed, IsDiscussedBy, bAcoUpdate, sRole, "UNKNOWN", string.Empty);
                     else
-                        objMoveVerifyDTO = objEncounterManager.PerformMovetoProvider(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, ClientSession.FillEncounterandWFObject.EncounterWFRecord, ClientSession.FillEncounterandWFObject.EncRecord, IsPatientDiscussed, IsDiscussedBy, bAcoUpdate, sRole, ClientSession.PhysicianUserName, string.Empty);
-
+                    {
+                        //Cap - 3009
+                        //objMoveVerifyDTO = objEncounterManager.PerformMovetoProvider(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, ClientSession.FillEncounterandWFObject.EncounterWFRecord, ClientSession.FillEncounterandWFObject.EncRecord, IsPatientDiscussed, IsDiscussedBy, bAcoUpdate, sRole, ClientSession.PhysicianUserName, string.Empty);
+                        objMoveVerifyDTO = objEncounterManager.PerformMovetoProvider(ClientSession.EncounterId, EncProviderID, ClientSession.HumanId, UtilityManager.ConvertToLocal(dtLocalTime), ClientSession.FacilityName, ClientSession.UserName, VerifyPFSH, Source, If_Source_Of_Information_Others, ClientSession.UserCurrentProcess, string.Empty, btnMove.Value, bDuplicateCheck, ClientSession.UserRole, "btnMove", bMovetoReview, hdnACOValidated.Value, ClientSession.FillEncounterandWFObject.EncounterWFRecord, ClientSession.FillEncounterandWFObject.EncRecord, IsPatientDiscussed, IsDiscussedBy, bAcoUpdate, sRole, sPhysicianUserName, string.Empty);
+                    }
 
                 }
                 else if (btnMove.Value.ToUpper() == "MOVE TO NEXT PROCESS" || ClientSession.FillEncounterandWFObject.DocumentationWFRecord.Current_Process.ToUpper() == "PROVIDER_PROCESS")
