@@ -89,8 +89,9 @@
             flex: 1; /* Takes up remaining space */
             padding: 6px;
             font-size: 13px;
-            border: 1px solid #ccc;
+            border: 1.5px solid #ccc;
             border-radius: 4px;
+            outline: none;
         }
 
         .clear-icon {

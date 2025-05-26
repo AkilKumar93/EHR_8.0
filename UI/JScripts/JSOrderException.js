@@ -200,7 +200,7 @@ function initializeAutocomplete() {
         curtop = 5;
     }
     window.setTimeout(function () {
-        $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
+        $('#txtPatientSearch').focus();        
     }, 50);
 
     if (current_element && current_element.offsetParent) {
@@ -214,8 +214,7 @@ function initializeAutocomplete() {
         "width": "20px",
         "height": "20px"
     }).on("click", function () {
-        $('#txtPatientSearch').val('').focus();
-        $('#txtPatientSearch')[0].setSelectionRange(0, 0);
+        $('#txtPatientSearch').val('').focus();        
         $("#txtPatientSearch").css("color", "black").attr({ "data-human-id": "0", "data-human-details": "" });
         intPatientlen = -1;
         arrPatient = [];
@@ -326,8 +325,7 @@ function initializeAutocomplete() {
             select: PatientSelected,
             open: function () {
                 $('.ui-autocomplete.ui-menu.ui-widget').width($('#txtPatientSearch').width());
-                $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
-                $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
+                $('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");               
             },
             focus: function () {
                 return false;
@@ -445,9 +443,7 @@ function setpatientsearch(sAutosearch) {
         if (sAutosearch == "Y") {
             $('#txtPatientSearch').prop('disabled', false);
             //$('#imgClearPatientText').prop('disabled', false);
-            $("#imgClearPatientText").removeClass("disabled");
-            //txtPatientSearch.focus();
-            //txtPatientSearch.setSelectionRange(0, 0);
+            $("#imgClearPatientText").removeClass("disabled");           
             $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
             $('#txtPatientSearch').focus()[0].scrollLeft = 0;
         }
@@ -465,8 +461,7 @@ function FindPatientenabled(val, sPatientname) {
         //$('#imgClearPatientText').prop('disabled', true);
         $("#imgClearPatientText").addClass("disabled");
         txtPatientSearch.value = sPatientname;
-        txtPatientSearch.attributes['data-human-id'].value = sPatientname;
-        $('#txtPatientSearch').focus()[0].setSelectionRange(0, 0);
+        txtPatientSearch.attributes['data-human-id'].value = sPatientname;        
         sessionStorage.setItem("valuepatientsearch", sPatientname);
         sessionStorage.setItem("labelpatientsearch", sPatientname);
     }
