@@ -3543,6 +3543,10 @@ namespace Acurus.Capella.UI
                 {
                     IList<scan_index> scan_index_lst = new List<scan_index>();
                     scan_index_lst = (IList<scan_index>)Session["IndexList"];
+                    //CAP-3286
+                    if (scan_index_lst != null && scan_index_lst.Count > 0)
+                    { scan_index_lst = scan_index_lst.Where(a => a.Human_ID == ClientSession.HumanId).ToList(); }
+
                     if (scan_index_lst != null && scan_index_lst.Count > 0)
                     {
                         int[] sortIndexNum = new int[scan_index_lst.Count];
