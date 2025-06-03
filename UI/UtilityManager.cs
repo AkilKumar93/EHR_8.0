@@ -5682,176 +5682,147 @@ namespace Acurus.Capella.UI
             }
 
         }
-
+        //CAP-3258, CAP-3303
         public static IList<object> ReadBlob(ulong EntityID, IList<string> ilstTagName, string sMyXMLType = "")
         {
-
-
-            string sXMLType = "";
-
-            IList<object> ilstResult = new List<object>();
-
-            if (EntityID == 0)
+            var readBlobVersion = ConfigurationSettings.AppSettings["ReadBlobVersion"] ?? "";
+            if (readBlobVersion == "V2")
             {
-                return ilstResult;
-            }
+                var resultList = new List<object>();
 
-            IList<object> ilstEntity = new List<object>();
-            XmlDocument xmlDoc = new XmlDocument();
-            string sXMLContent = string.Empty;
-            IList<MapXMLBlob> ilstXMLBlob = new List<MapXMLBlob>();
-            ilstXMLBlob = ApplicationObject.ilstMapXMLBlob.Where(a => a.XML_Tag_Name == ilstTagName[0].ToString()).ToList();
-            if (ilstXMLBlob.Count > 0)
-            {
-                if (sMyXMLType != string.Empty)
+                if (EntityID == 0 || ilstTagName == null || ilstTagName.Count == 0)
+                    return resultList;
+
+                var ilstXMLBlob = ApplicationObject.ilstMapXMLBlob
+                    .Where(a => a.XML_Tag_Name == ilstTagName[0])
+                    .ToList();
+
+                if (ilstXMLBlob.Count == 0)
+                    throw new Exception("XML Tag Name is not found in the lookup table");
+
+                string xmlType = string.IsNullOrEmpty(sMyXMLType) ? ilstXMLBlob[0].Table_Name : sMyXMLType;
+                string xmlContent = string.Empty;
+
+                // Load XML content from blob based on type
+                if (xmlType == "Blob_Human")
                 {
-                    sXMLType = sMyXMLType;
+                    var humanBlob = new HumanBlobManager().GetHumanBlob(EntityID)?.FirstOrDefault();
+                    if (humanBlob == null || humanBlob.Human_XML == null || humanBlob.Human_XML.Length == 0)
+                        throw new Exception("Human XML is not found");
+
+                    xmlContent = Encoding.UTF8.GetString(humanBlob.Human_XML);
+                }
+                else if (xmlType == "Blob_Encounter")
+                {
+                    var encounterBlob = new EncounterBlobManager().GetEncounterBlob(EntityID)?.FirstOrDefault();
+                    if (encounterBlob == null || encounterBlob.Encounter_XML == null || encounterBlob.Encounter_XML.Length == 0)
+                        throw new Exception("Encounter XML is not found");
+
+                    xmlContent = Encoding.UTF8.GetString(encounterBlob.Encounter_XML);
                 }
                 else
                 {
-                    sXMLType = ilstXMLBlob[0].Table_Name;
-                }
-                if (sXMLType == "Blob_Human")
-                {
-                    HumanBlobManager HumanBlobMngr = new HumanBlobManager();
-                    IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
-                    if (ilstHumanBlob.Count > 0)
-                    {
-                        try
-                        {
-                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
-                            if (sXMLContent.Substring(0, 1) != "<")
-                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                            xmlDoc.LoadXml(sXMLContent);
-                        }
-                        catch
-                        {
-                            throw new Exception("Human XML is invalid");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Human XML is not found");
-                    }
-
-                }
-                else if (sXMLType == "Blob_Encounter")
-                {
-                    EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
-                    IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(EntityID);
-                    if (ilstEncounterBlob.Count > 0)
-                    {
-                        try
-                        {
-                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
-                            if (sXMLContent.Substring(0, 1) != "<")
-                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
-                            xmlDoc.LoadXml(sXMLContent);
-                        }
-                        catch
-                        {
-                            throw new Exception("Encounter XML is invalid");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Encounter XML is not found");
-                    }
+                    throw new Exception("Unsupported XML Type");
                 }
 
+                if (!xmlContent.StartsWith("<"))
+                    xmlContent = xmlContent.Substring(1);
+
+                var xmlDoc = new XmlDocument();
+                try
+                {
+                    xmlDoc.LoadXml(xmlContent);
+                }
+                catch
+                {
+                    throw new Exception(xmlType + " XML is invalid");
+                }
 
                 try
                 {
-                    XmlNodeList xmlTagName = null;
-
-                    for (int iInputTagCount = 0; iInputTagCount < ilstTagName.Count; iInputTagCount++)
+                    foreach (var tag in ilstTagName)
                     {
-                        ilstEntity = new List<object>();
-                        if (xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount]) != null && xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount]).Count > 0)
+                        var nodeList = xmlDoc.GetElementsByTagName(tag);
+                        if (nodeList == null || nodeList.Count == 0)
                         {
-                            xmlTagName = xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount])[0].ChildNodes;
-                            if (xmlTagName.Count > 0)
+                            resultList.Add(null);
+                            continue;
+                        }
+
+                        var childNodes = nodeList[0].ChildNodes;
+                        if (childNodes == null || childNodes.Count == 0)
+                        {
+                            resultList.Add(null);
+                            continue;
+                        }
+
+                        var entityList = new List<object>();
+
+                        foreach (XmlNode node in childNodes)
+                        {
+                            object entity = null;
+
+                            if (node.Name == "Human")
                             {
-                                ilstEntity = new List<object>();
-                                for (int iXMLTagCount = 0; iXMLTagCount < xmlTagName.Count; iXMLTagCount++)
-                                {
-                                    string TagName = xmlTagName[iXMLTagCount].Name;
-                                    IEnumerable<PropertyInfo> propInfo = null;
-                                    object objEntity = null;
-
-                                    if (TagName == "Human")
-                                    {
-                                        Human objHuman = new Human();
-                                        objEntity = (object)objHuman;
-                                    }
-                                    else if (TagName == "Orders")
-                                    {
-                                        Orders objOrders = new Orders();
-                                        objEntity = (object)objOrders;
-                                    }
-                                    else
-                                    {
-                                        XmlSerializer xmlserializer = FillSerializer(TagName);//new XmlSerializer(typeof(ImmunizationHistory));
-                                        objEntity = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[iXMLTagCount])) as object;
-                                    }
-
-                                    if (objEntity != null)
-                                    {
-                                        propInfo = from obji in ((object)objEntity).GetType().GetProperties() select obji;
-
-                                        for (int iAttributeCount = 0; iAttributeCount < xmlTagName[iXMLTagCount].Attributes.Count; iAttributeCount++)
-                                        {
-                                            XmlNode nodevalue = xmlTagName[iXMLTagCount].Attributes[iAttributeCount];
-                                            {
-                                                foreach (PropertyInfo property in propInfo)
-                                                {
-                                                    if (property.Name == nodevalue.Name)
-                                                    {
-                                                        if (property.PropertyType.Name.ToUpper() == "UINT64")
-                                                        {
-                                                            ulong ulongValue = 0;
-                                                            bool isNumber = ulong.TryParse(nodevalue.Value, out ulongValue);
-                                                            if (isNumber == true)
-                                                            {
-                                                                property.SetValue(objEntity, Convert.ToUInt64(nodevalue.Value), null);
-                                                            }
-                                                        }
-                                                        else if (property.PropertyType.Name.ToUpper() == "STRING")
-                                                            property.SetValue(objEntity, Convert.ToString(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DATETIME")
-                                                            property.SetValue(objEntity, Convert.ToDateTime(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "INT32")
-                                                            property.SetValue(objEntity, Convert.ToInt32(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
-                                                            property.SetValue(objEntity, Convert.ToDecimal(nodevalue.Value), null);
-                                                        else if (property.PropertyType.Name.ToUpper() == "DOUBLE")
-                                                            property.SetValue(objEntity, Convert.ToDouble(nodevalue.Value), null);
-                                                        else
-                                                            property.SetValue(objEntity, nodevalue.Value, null);
-                                                    }
-                                                }
-                                            }
-
-                                        }
-                                        ilstEntity.Add(objEntity);
-                                    }
-
-                                }
-                                //CAP-2906
-                                ilstResult.Add((object)ilstEntity);
+                                entity = new Human();
+                            }
+                            else if (node.Name == "Orders")
+                            {
+                                entity = new Orders();
                             }
                             else
                             {
-                                ilstResult.Add(null);
+                                var serializer = FillSerializer(node.Name);
+                                entity = serializer.Deserialize(new XmlNodeReader(node));
                             }
-                            //CAP-2906
-                            //ilstResult.Add((object)ilstEntity);
-                        }
-                        else
-                        {
-                            ilstResult.Add(null);
-                        }
 
+                            if (entity != null && node.Attributes != null)
+                            {
+                                var properties = entity.GetType().GetProperties();
+
+                                foreach (XmlAttribute attr in node.Attributes)
+                                {
+                                    var prop = properties.FirstOrDefault(p => p.Name == attr.Name && p.CanWrite);
+                                    if (prop == null) continue;
+
+                                    string typeName = prop.PropertyType.Name.ToUpper();
+                                    object value = null;
+
+                                    if (typeName == "UINT64")
+                                    {
+                                        if (ulong.TryParse(attr.Value, out ulong ul)) value = ul;
+                                    }
+                                    else if (typeName == "STRING")
+                                    {
+                                        value = attr.Value;
+                                    }
+                                    else if (typeName == "DATETIME")
+                                    {
+                                        if (DateTime.TryParse(attr.Value, out DateTime dt)) value = dt;
+                                    }
+                                    else if (typeName == "INT32")
+                                    {
+                                        if (int.TryParse(attr.Value, out int i)) value = i;
+                                    }
+                                    else if (typeName == "DECIMAL")
+                                    {
+                                        if (decimal.TryParse(attr.Value, out decimal d)) value = d;
+                                    }
+                                    else if (typeName == "DOUBLE")
+                                    {
+                                        if (double.TryParse(attr.Value, out double dbl)) value = dbl;
+                                    }
+                                    else
+                                    { value = attr.Value; }
+
+                                    if (value != null)
+                                    { prop.SetValue(entity, value, null); }
+                                }
+                            }
+                            if (entity != null)
+                                entityList.Add(entity);
+                        }
+                        resultList.Add(entityList);
                     }
                 }
                 catch (Exception ex)
@@ -5859,13 +5830,190 @@ namespace Acurus.Capella.UI
                     //CAP-1942
                     throw new Exception(ex.Message + " " + ex.StackTrace, ex);
                 }
+                return resultList;
             }
             else
             {
-                throw new Exception("XML Tag Name is not found in the lookup table");
-            }
+                string sXMLType = "";
 
-            return ilstResult;
+                IList<object> ilstResult = new List<object>();
+
+                if (EntityID == 0)
+                {
+                    return ilstResult;
+                }
+
+                IList<object> ilstEntity = new List<object>();
+                XmlDocument xmlDoc = new XmlDocument();
+                string sXMLContent = string.Empty;
+                IList<MapXMLBlob> ilstXMLBlob = new List<MapXMLBlob>();
+                ilstXMLBlob = ApplicationObject.ilstMapXMLBlob.Where(a => a.XML_Tag_Name == ilstTagName[0].ToString()).ToList();
+                if (ilstXMLBlob.Count > 0)
+                {
+                    if (sMyXMLType != string.Empty)
+                    {
+                        sXMLType = sMyXMLType;
+                    }
+                    else
+                    {
+                        sXMLType = ilstXMLBlob[0].Table_Name;
+                    }
+                    if (sXMLType == "Blob_Human")
+                    {
+                        HumanBlobManager HumanBlobMngr = new HumanBlobManager();
+                        IList<Human_Blob> ilstHumanBlob = HumanBlobMngr.GetHumanBlob(EntityID);
+                        if (ilstHumanBlob.Count > 0)
+                        {
+                            try
+                            {
+                                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                                if (sXMLContent.Substring(0, 1) != "<")
+                                    sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                                xmlDoc.LoadXml(sXMLContent);
+                            }
+                            catch
+                            {
+                                throw new Exception("Human XML is invalid");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Human XML is not found");
+                        }
+
+                    }
+                    else if (sXMLType == "Blob_Encounter")
+                    {
+                        EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+                        IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(EntityID);
+                        if (ilstEncounterBlob.Count > 0)
+                        {
+                            try
+                            {
+                                sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                                if (sXMLContent.Substring(0, 1) != "<")
+                                    sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                                xmlDoc.LoadXml(sXMLContent);
+                            }
+                            catch
+                            {
+                                throw new Exception("Encounter XML is invalid");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Encounter XML is not found");
+                        }
+                    }
+
+
+                    try
+                    {
+                        XmlNodeList xmlTagName = null;
+
+                        for (int iInputTagCount = 0; iInputTagCount < ilstTagName.Count; iInputTagCount++)
+                        {
+                            ilstEntity = new List<object>();
+                            if (xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount]) != null && xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount]).Count > 0)
+                            {
+                                xmlTagName = xmlDoc.GetElementsByTagName(ilstTagName[iInputTagCount])[0].ChildNodes;
+                                if (xmlTagName.Count > 0)
+                                {
+                                    ilstEntity = new List<object>();
+                                    for (int iXMLTagCount = 0; iXMLTagCount < xmlTagName.Count; iXMLTagCount++)
+                                    {
+                                        string TagName = xmlTagName[iXMLTagCount].Name;
+                                        IEnumerable<PropertyInfo> propInfo = null;
+                                        object objEntity = null;
+
+                                        if (TagName == "Human")
+                                        {
+                                            Human objHuman = new Human();
+                                            objEntity = (object)objHuman;
+                                        }
+                                        else if (TagName == "Orders")
+                                        {
+                                            Orders objOrders = new Orders();
+                                            objEntity = (object)objOrders;
+                                        }
+                                        else
+                                        {
+                                            XmlSerializer xmlserializer = FillSerializer(TagName);//new XmlSerializer(typeof(ImmunizationHistory));
+                                            objEntity = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[iXMLTagCount])) as object;
+                                        }
+
+                                        if (objEntity != null)
+                                        {
+                                            propInfo = from obji in ((object)objEntity).GetType().GetProperties() select obji;
+
+                                            for (int iAttributeCount = 0; iAttributeCount < xmlTagName[iXMLTagCount].Attributes.Count; iAttributeCount++)
+                                            {
+                                                XmlNode nodevalue = xmlTagName[iXMLTagCount].Attributes[iAttributeCount];
+                                                {
+                                                    foreach (PropertyInfo property in propInfo)
+                                                    {
+                                                        if (property.Name == nodevalue.Name)
+                                                        {
+                                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+                                                            {
+                                                                ulong ulongValue = 0;
+                                                                bool isNumber = ulong.TryParse(nodevalue.Value, out ulongValue);
+                                                                if (isNumber == true)
+                                                                {
+                                                                    property.SetValue(objEntity, Convert.ToUInt64(nodevalue.Value), null);
+                                                                }
+                                                            }
+                                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+                                                                property.SetValue(objEntity, Convert.ToString(nodevalue.Value), null);
+                                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+                                                                property.SetValue(objEntity, Convert.ToDateTime(nodevalue.Value), null);
+                                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+                                                                property.SetValue(objEntity, Convert.ToInt32(nodevalue.Value), null);
+                                                            else if (property.PropertyType.Name.ToUpper() == "DECIMAL")
+                                                                property.SetValue(objEntity, Convert.ToDecimal(nodevalue.Value), null);
+                                                            else if (property.PropertyType.Name.ToUpper() == "DOUBLE")
+                                                                property.SetValue(objEntity, Convert.ToDouble(nodevalue.Value), null);
+                                                            else
+                                                                property.SetValue(objEntity, nodevalue.Value, null);
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                            ilstEntity.Add(objEntity);
+                                        }
+
+                                    }
+                                    //CAP-2906
+                                    ilstResult.Add((object)ilstEntity);
+                                }
+                                else
+                                {
+                                    ilstResult.Add(null);
+                                }
+                                //CAP-2906
+                                //ilstResult.Add((object)ilstEntity);
+                            }
+                            else
+                            {
+                                ilstResult.Add(null);
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //CAP-1942
+                        throw new Exception(ex.Message + " " + ex.StackTrace, ex);
+                    }
+                }
+                else
+                {
+                    throw new Exception("XML Tag Name is not found in the lookup table");
+                }
+
+                return ilstResult;
+            }
         }
 
         public static XmlSerializer FillSerializer(string sEntityName)
