@@ -3,6 +3,7 @@ using Acurus.Capella.Core.DTOJson;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -39,9 +40,24 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Category is not valid. Cannot load Capella history data." });
                 }
+                //CAP-3112
+                if (!CapellaTaskManager.TryStartTask(sHumanID))
+                {
+                    return Json(new { HumanID = sHumanID, status = "InProgress", ErrorDescription = "Request is already InProgress." });
+                }
 
-                //Task.Run(() => GenerateCapellaHistoryData(sHumanID,sCategory));
-                Task.Run(() => GenerateCapellaHistoryData(sHumanID, bIsForce, sCategory));
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        //GenerateCapellaHistoryData(sHumanID,sCategory);
+                        GenerateCapellaHistoryData(sHumanID, bIsForce, sCategory);
+                    }
+                    finally
+                    {
+                        CapellaTaskManager.EndTask(sHumanID);
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -1378,6 +1394,21 @@ namespace Acurus.Capella.UI.WebServices.API
                 throw;
             }
             return result;
+        }
+    }
+    //CAP-3112
+    public static class CapellaTaskManager
+    {
+        private static readonly ConcurrentDictionary<string, object> _runningTasks = new ConcurrentDictionary<string, object>();
+
+        public static bool TryStartTask(string humanId)
+        {
+            return _runningTasks.TryAdd(humanId, null);
+        }
+
+        public static void EndTask(string humanId)
+        {
+            _runningTasks.TryRemove(humanId, out _);
         }
     }
 }
