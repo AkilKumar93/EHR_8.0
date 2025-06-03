@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -95,7 +96,118 @@ namespace Acurus.Capella.UI
                     this.Page.Title = Request["Title"].ToString();
                 SecurityServiceUtility obj = new SecurityServiceUtility();
                 obj.ApplyUserPermissions(this.Page);
+                //CAP-3233
+                hdnShowSearchNPI.Value = System.Configuration.ConfigurationSettings.AppSettings["ProviderLibraryVersion"];
             }
         }
+
+        //CAP-3233
+        [System.Web.Services.WebMethod(EnableSession = true)]
+        public static string SearchNPI(string url)
+        {
+            string resultData = string.Empty;
+            List<SearchNPIResult> searchNpiResult = new List<SearchNPIResult>();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = client.GetAsync(url).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = response.Content.ReadAsStringAsync().Result;
+                        NPIResponse result = JsonConvert.DeserializeObject<NPIResponse>(json);
+                        if (result != null && result.result_count > 0)
+                        {
+                            foreach (var item1 in result.results)
+                            {
+                                string taxonomies = item1?.taxonomies?.Count > 0 ? item1?.taxonomies[0]?.desc : "";
+                                foreach (var item2 in item1.addresses)
+                                {
+                                    string postal_code = item2.postal_code;
+                                    if (postal_code.Length > 5)
+                                    {
+                                        postal_code = postal_code.Substring(0, 5) + "-" + postal_code.Substring(5);
+                                    }
+
+                                    searchNpiResult.Add(new SearchNPIResult()
+                                    {
+                                        number = item1.number,
+                                        telephone_number = item2.telephone_number == null || item2.telephone_number == "null" ? "" : item2.telephone_number,
+                                        address_1 = item2.address_1,
+                                        city = item2.city,
+                                        state = item2.state,
+                                        postal_code = postal_code,
+                                        middle_name = item1?.basic?.middle_name ?? "",
+                                        specialty = taxonomies,
+                                        full_address = string.Format("{0}, {1}, {2} {3}", item2.address_1, item2.city, item2.state, item2.postal_code)
+                                    });
+                                }
+                            }
+                            searchNpiResult = searchNpiResult.GroupBy(x => new
+                            {
+                                x.number,
+                                x.telephone_number,
+                                x.address_1,
+                                x.city,
+                                x.state,
+                                x.postal_code,
+                                x.middle_name,
+                                x.specialty,
+                                x.full_address
+                            }).Select(g => g.First()).ToList();
+
+                            resultData = JsonConvert.SerializeObject(searchNpiResult);
+                        }
+                    }
+                }
+                catch { }
+            }
+            return resultData;
+        }
+    }
+    public class NPIResponse
+    {
+        public int result_count { get; set; }
+        public List<NPIResult> results { get; set; }
+    }
+
+    public class NPIResult
+    {
+        public string number { get; set; }
+        public List<AddressesResult> addresses { get; set; }
+        public BasicResult basic { get; set; }
+        public List<TaxonomiesResult> taxonomies { get; set; }
+    }
+
+    public class AddressesResult
+    {
+        public string address_1 { get; set; }
+        public string telephone_number { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
+        public string postal_code { get; set; }
+    }
+
+    public class BasicResult
+    {
+        public string middle_name { get; set; }
+    }
+
+    public class TaxonomiesResult
+    {
+        public string desc { get; set; }
+    }
+
+    public class SearchNPIResult
+    {
+        public string number { get; set; }
+        public string middle_name { get; set; }
+        public string telephone_number { get; set; }
+        public string address_1 { get; set; }
+        public string full_address { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
+        public string postal_code { get; set; }
+        public string specialty { get; set; }
     }
 }
