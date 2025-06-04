@@ -10,9 +10,11 @@ $(document).ready(function () {
 
     //CAP-1450
     setTimeout(function () {
-        $("#txtFax")?.mask("(999)999-9999", { placeholder: "(___)___-____" });
-        $("#txtPhone")?.mask("(999)999-9999", { placeholder: "(___)___-____" });
+        $("#txtFax")?.mask("(999) 999-9999", { placeholder: "(___) ___-____" });
+        $("#txtPhone")?.mask("(999) 999-9999", { placeholder: "(___) ___-____" });
         $('#txtZip')?.mask("99999-9999", { placeholder: "_____-____" });
+        //CAP-3233
+        $('#txtSearchZip')?.mask("99999-9999", { placeholder: "_____-____" });
     }, 2000);
 
     if (IsEFax == "true") {
@@ -182,7 +184,7 @@ $(document).ready(function () {
         //}
    // }
    //Jira CAP-2030 - End
-    ddlCategory_Change();
+    ddlCategory_Change(false);
 
     //Jira CAP-2030 - Start
     ////Jira CAP-2014
@@ -1102,13 +1104,34 @@ function scrolify(tblAsJQueryObject, height) {
         }
     }
 }
-function ddlCategory_Change() {
+//CAP-3233
+var previousCategory = "";
+var newCategory = "";
+$('#ddlCategory').on('focus', function () {
+    previousCategory = $(this).val();
+});
+
+function ddlCategory_Change(isClear) {
+    //CAP-3233
+    if (isClear == true || isClear == undefined) {
+        var msgRes = DisplayErrorMessage('1011173');
+        if (msgRes == undefined || msgRes == false) {
+            newCategory = $('#ddlCategory').val();
+            $('#ddlCategory').val(previousCategory);
+            return false;
+        } else if (msgRes == true) {
+            $('#ddlCategory').val(newCategory);
+            clear(true);
+        }
+    }
     //CAP-1676
     $("#ddlPrefix").prop("disabled", false);
     $("#txtLastName").prop("disabled", false);
     $("#txtMI").prop("disabled", false);
     $("#txtFirstName").prop("disabled", false);
     $("#txtSuffix").prop("disabled", false);
+    //CAP-3233
+    $("#txtNPI,#txtAddressLine1,#txtCity,#txtState,#txtZip,#txtPhone").prop("disabled", false);
 
     var lblFirstName = document.getElementById('lblFirstName');
     var lblLastName = document.getElementById('lblLastName');
@@ -1151,6 +1174,8 @@ function ddlCategory_Change() {
         $("#ddlPhysicianType")[0].disabled = false;
         DisableorEnableFacility(false);
         DisableorEnableSpecialities(false);
+        //CAP-3233
+        setSearchNpiStyle(false);
     }
     else if ($("#ddlCategory")[0].value.toUpperCase().split(" (PHYSICIAN / PA / NP)")[0] == "NON CAPELLA USER(PHYSICIAN)") {
         if (lblFirstName.innerText != "First Name*") {
@@ -1182,6 +1207,8 @@ function ddlCategory_Change() {
         $("#ddlPhysicianType")[0].disabled = true;
         DisableorEnableFacility(true);
         DisableorEnableSpecialities(false);
+        //CAP-3233
+        setSearchNpiStyle(true);
     }
     else if ($("#ddlCategory")[0].value == "ORGANIZATION") {
         lblFirstName.innerText = lblFirstName.innerText.replace('*', ' ').trim();
@@ -1213,6 +1240,8 @@ function ddlCategory_Change() {
         $("#ddlPhysicianType")[0].disabled = true;
         DisableorEnableFacility(true);
         DisableorEnableSpecialities(true);
+        //CAP-3233
+        setSearchNpiStyle(false);
     }
     else {
         lblCompany.innerText = lblCompany.innerText.replace('*', ' ').trim();
@@ -1240,6 +1269,8 @@ function ddlCategory_Change() {
         $("#ddlPhysicianType")[0].disabled = true;
         DisableorEnableFacility(true);
         DisableorEnableSpecialities(true);
+        //CAP-3233
+        setSearchNpiStyle(false);
     }
 }
 
@@ -1311,7 +1342,7 @@ function Aftersave() {
     $('#lgndFacilityName').addClass('legendschedulerborderPhysician');
     $('#lgndFacilityName').removeClass('legendschedulerborderPhysicianNonMand');
     DisableorEnableFacility(false);
-    ddlCategory_Change();
+    ddlCategory_Change(false);
     document.getElementById('btnSave').innerText = "Add";
     document.getElementById('btnClearAll').innerText = "Clear All";
     return false;
@@ -1339,7 +1370,7 @@ function ClearAll() {
     }
 
 }
-function clear() {
+function clear(isClear) {
     $("#ddlPrefix")[0].selectedIndex = 0;
     $("#ddlPhysicianType")[0].selectedIndex = 0;
     $("#txtLastName")[0].value = '';
@@ -1376,6 +1407,8 @@ function clear() {
     else {
         sCategory = "NON CAPELLA USER(Physician)";
         $("#ddlPhysicianType")[0].disabled = false;
+        //CAP-3233
+        ClearNPISearch();
     }
     for (var x = 0; x < select.length - 1 ; x++) {
         if (select.options[x].text.toUpperCase().split(" (PHYSICIAN / PA / NP)")[0] == sCategory)
@@ -1388,7 +1421,9 @@ function clear() {
     DisableorEnableFacility(false);
     document.getElementById('btnSave').innerText = "Add";
     document.getElementById('btnClearAll').innerText = "Clear All";
-    ddlCategory_Change();
+    if (isClear != true) {
+        ddlCategory_Change(false);
+    }
 }
 
 function Update(item) {
@@ -1423,7 +1458,7 @@ function Update(item) {
     $('#divFacility input:checked').each(function () {
         ($(this))[0].checked = false;
     });
-    ddlCategory_Change();
+    ddlCategory_Change(false);
     var specialties = Specialty.split(',');
     $('#divSpecialities input:checkbox').each(function () {
         var x = $(this).attr("id").replace('&', '').replace('.', '').replace(',', '').replace(/\s/g, '');
@@ -1535,4 +1570,121 @@ function formatName(input) {
         }
     }
     input.value = words.join(' ');
+}
+
+//CAP-3233
+$("#btnSearchNpi").click(function () {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    var searchFirstName = $('#txtSearchFirstName').val();
+    var searchLastName = $('#txtSearchLastName').val();
+    var searchZip = $('#txtSearchZip').val();
+    var searchSpecialty = $('#txtSearchSpecialty').val();
+    var searchNpi = $('#txtSearchNpi').val();
+
+    if (searchLastName == "") {
+        DisplayErrorMessage('1011167');
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+
+    if (searchFirstName == "") {
+        DisplayErrorMessage('1011165');
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+        return false;
+    }
+
+    var url = `https://npiregistry.cms.hhs.gov/api/?number=${searchNpi}&taxonomy_description=${searchSpecialty}&first_name=${searchFirstName}&last_name=${searchLastName}&postal_code=${searchZip}&version=2.1`;
+
+    $.ajax({
+        type: "POST",
+        url: "frmPhysicianLibray.aspx/SearchNPI",
+        data: '{url: "' + url + '"}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            var npiResultHtml = "";
+            var result = data?.d;
+            if (result) {
+                result = JSON.parse(result);
+                for (var i = 0; i < result.length; i++) {
+                    npiResultHtml += `<tr>
+                                    <td style="text-align: left; padding: 5px;">${searchFirstName} ${result[i].middle_name} ${searchLastName}</td>
+                                    <td style="text-align: left; padding: 5px;">${result[i].full_address}</td>
+                                    <td style="text-align: center; padding: 5px;">${result[i].telephone_number}</td>
+                                    <td style="text-align: center; padding: 5px;">${result[i].specialty}</td>
+                                    <td style="text-align: center; padding: 5px;">${result[i].number}</td>
+                                    <td style="text-align: center; padding: 5px;"><a style="text-decoration: none;cursor: pointer;" onclick="SelectNpi('${searchFirstName}', '${searchLastName}','${result[i].number}','${result[i].address_1}','${result[i].city}','${result[i].state}','${result[i].postal_code}','${result[i].telephone_number}','${result[i].middle_name}')">Select</a></td>
+                                </tr>`;
+                }
+            } else {
+                npiResultHtml = `<tr><td colspan="6" style="text-align: center;padding: 7px;">No Record Found.</td></tr>`;
+            }
+            $('#tbodyNpiResult').html(npiResultHtml);
+        },
+        error: function OnError(xhr) {
+            { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            if (xhr.status == 999)
+                window.location = "/frmSessionExpired.aspx";
+            else {
+                var log = JSON.parse(xhr.responseText);
+                console.log(log);
+                alert("USER MESSAGE:\n" +
+                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                    "Message: " + log.Message);
+            }
+        }
+    });
+});
+//CAP-3233
+function SelectNpi(firstName, lastName, number, address_1, city, state, postal_code, telephone_number, middle_name) {
+    $('#txtFirstName').val(firstName);
+    $('#txtMI').val(middle_name);
+    $('#txtLastName').val(lastName);
+    $('#txtNPI').val(number);
+    $('#txtAddressLine1').val(address_1);
+    $('#txtCity').val(city);
+    $('#txtState').val(state);
+    $('#txtZip').val(postal_code);
+    if (telephone_number) {
+        telephone_number = telephone_number.replace(/\D/g, '');
+        $("#txtPhone").val(telephone_number).trigger('input');
+    }
+}
+//CAP-3233
+function ClearNPISearch() {
+    if ($('#hdnShowSearchNPI').val() == "V2") {
+        $('#txtSearchFirstName').val('');
+        $('#txtSearchLastName').val('');
+        $('#txtSearchZip').val('');
+        $('#txtSearchSpecialty').val('');
+        $('#txtSearchNpi').val('');
+        $('#tbodyNpiResult').html(`<tr><td colspan="6" style="text-align: center;padding: 7px;">No Record Found.</td></tr>`);
+    }
+}
+//CAP-3233
+function setSearchNpiStyle(displaySearchNpi) {
+    if (displaySearchNpi && $('#hdnShowSearchNPI').val() == "V2") {
+        $('#tdSearchNpi').css("display", "");
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "1000px";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "635px";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.marginLeft = "18%";
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "550px";
+
+        $("#txtFirstName").prop("disabled", true);
+        $("#txtMI").prop("disabled", true);
+        $("#txtLastName").prop("disabled", true);
+        $("#txtNPI").prop("disabled", true);
+        $("#txtAddressLine1").prop("disabled", true);
+        $("#txtCity").prop("disabled", true);
+        $("#txtState").prop("disabled", true);
+        $("#txtZip").prop("disabled", true);
+        $("#txtPhone").prop("disabled", true);
+    } else {
+        $('#tdSearchNpi').css("display", "none");
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.width = "850px";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.height = "440px";
+        $(top.window.document).find("#TabmdldlgPhysicianLibrary")[0].style.marginLeft = "27%";
+        $(top.window.document).find("#TabPhysicianLibraryFrame")[0].style.height = "275px";
+    }
 }

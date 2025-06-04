@@ -3,6 +3,7 @@ using Acurus.Capella.Core.DTOJson;
 using Acurus.Capella.DataAccess.ManagerObjects;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -39,9 +40,24 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Category is not valid. Cannot load Capella history data." });
                 }
+                //CAP-3112
+                if (!CapellaTaskManager.TryStartTask(sHumanID, ""))
+                {
+                    return Json(new { HumanID = sHumanID, status = "InProgress", ErrorDescription = "Request is already InProgress." });
+                }
 
-                //Task.Run(() => GenerateCapellaHistoryData(sHumanID,sCategory));
-                Task.Run(() => GenerateCapellaHistoryData(sHumanID, bIsForce, sCategory));
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        //GenerateCapellaHistoryData(sHumanID,sCategory);
+                        GenerateCapellaHistoryData(sHumanID, bIsForce, sCategory);
+                    }
+                    finally
+                    {
+                        CapellaTaskManager.EndTask(sHumanID, "");
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -200,6 +216,13 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "EncounterID is not valid. Cannot generate progress note." });
                 }
+
+                //CAP-3112
+                if (!CapellaTaskManager.TryStartTask("", sEncounterID))
+                {
+                    return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "InProgress", ErrorDescription = "Request is already InProgress." });
+                }
+
                 //string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION' UNION ALL SELECT enc.Encounter_ID, wf.Current_Process FROM encounter_arc enc JOIN wf_object_arc wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
 
                 string encounterByHumanIDQury = "SELECT enc.Encounter_ID, wf.Current_Process,enc.Encounter_Provider_Signed_Date FROM encounter enc JOIN wf_object wf ON enc.Encounter_ID = wf.Obj_System_Id WHERE enc.Encounter_ID = " + sEncounterID + " AND wf.Obj_Type = 'DOCUMENTATION';";
@@ -230,7 +253,18 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "Encounter is not Signed in Capella. Cannot generate progress note." });
                 }
-                Task.Run(() => { GenerateJsonNotes(sHumanID, sEncounterID, transactionBy, transactionDateTime); });
+                //CAP-3112
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        GenerateJsonNotes(sHumanID, sEncounterID, transactionBy, transactionDateTime);
+                    }
+                    finally
+                    {
+                        CapellaTaskManager.EndTask("", sEncounterID);
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -1378,6 +1412,37 @@ namespace Acurus.Capella.UI.WebServices.API
                 throw;
             }
             return result;
+        }
+    }
+    //CAP-3112
+    public static class CapellaTaskManager
+    {
+        private static readonly ConcurrentDictionary<string, object> _runningTasks = new ConcurrentDictionary<string, object>();
+        private static readonly ConcurrentDictionary<string, object> _runningTasksForEncounter = new ConcurrentDictionary<string, object>();
+
+        public static bool TryStartTask(string humanId, string encounterId)
+        {
+            if (!string.IsNullOrEmpty(humanId))
+            {
+                return _runningTasks.TryAdd(humanId, null);
+            }
+            else if (!string.IsNullOrEmpty(encounterId))
+            {
+                return _runningTasksForEncounter.TryAdd(encounterId, null);
+            }
+            return true;
+        }
+
+        public static void EndTask(string humanId, string encounterId)
+        {
+            if (!string.IsNullOrEmpty(humanId))
+            {
+                _runningTasks.TryRemove(humanId, out _);
+            }
+            else if (!string.IsNullOrEmpty(encounterId))
+            {
+                _runningTasksForEncounter.TryRemove(encounterId, out _);
+            }
         }
     }
 }

@@ -63,7 +63,69 @@
                     <tr>
                         <td style="width: 15%; padding-bottom: 0.5%"><span class="MandLabelstyle">Category*</span></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
-                            <select class="Editabletxtbox" name="Category" id="ddlCategory" style="width: 96%" onchange="ddlCategory_Change()" runat="server"></select></td>
+                            <select class="Editabletxtbox" name="Category" id="ddlCategory" style="width: 96%" onchange="ddlCategory_Change(true)" runat="server"></select></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" id="tdSearchNpi">
+                                <fieldset class="scheduler-border" style="margin-top: 10px ! IMPORTANT;">
+                                    <legend class="scheduler-border LabelStyleBold" style="width: 10%; border-bottom: none; margin-bottom: 10px;">NPI Search</legend>
+                                    <table>
+                                        <tr>
+                                            <td style="width: 35%;">
+                                                <span id="lblSearchLastName" class="MandLabelstyle">Last Name*</span>
+                                                <input type="text" id="txtSearchLastName" maxlength="50" style="width: 60%; text-transform: capitalize;" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" oninput="formatName(this)" />
+                                            </td>
+                                            <td style="width: 35%;">
+                                                <span id="lblSearchFirstName" class="MandLabelstyle">First Name*</span>
+                                                <input type="text" id="txtSearchFirstName" maxlength="50" style="width: 60%; text-transform: capitalize;" value="" onkeypress="AvoidSpecailCharacter(event)" class="Editabletxtbox" oninput="formatName(this)" />
+                                            </td>
+                                            <td style="width: 30%;">
+                                                <label class="Editabletxtbox">Zip</label>
+                                                <input type="text" id="txtSearchZip" placeholder="_____-____" maxlength="11" style="width: 60%" value="" class="Editabletxtbox" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 40%;">
+                                                <label class="Editabletxtbox" style="margin-right: 15px; margin-top: 10px;">Specialty</label>
+                                                <input type="text" id="txtSearchSpecialty" maxlength="50" style="width: 60%" value="" class="Editabletxtbox" />
+                                            </td>
+                                            <td style="width: 40%;">
+                                                <label class="Editabletxtbox" style="margin-right: 47px; margin-top: 10px;">NPI</label>
+                                                <input type="text" id="txtSearchNpi" onkeypress="if(!isNumberKey(event)) return false;" maxlength="10" style="width: 60%" value="" class="Editabletxtbox" />
+                                            </td>
+                                            <td style="width: 20%;">
+                                                <button type="button" id="btnSearchNpi" style="width: 43%; margin-top: 10px;" class="aspgreenbutton">Search</button>
+                                                <button type="button" id="btnClearNPISearch" style="margin-left: 15px; margin-top: 10px; width: 43%;" onclick="ClearNPISearch();" class="aspredbutton" runat="server">Clear</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <div style="max-height: 270px;overflow-y: auto;margin-top: 20px;padding-bottom: 1px">
+                                                    <table border="1" style="width: 100%;">
+                                                        <tr class="Gridheaderstyle" style="position: sticky;top: 0;">
+                                                            <th style="text-align: center; padding: 5px; width: 15%;">Name</th>
+                                                            <th style="text-align: center; padding: 5px; width: 35%;">Address</th>
+                                                            <th style="text-align: center; padding: 5px; width: 15%;">Phone</th>
+                                                            <th style="text-align: center; padding: 5px; width: 15%;">Specialty</th>
+                                                            <th style="text-align: center; padding: 5px; width: 10%;">NPI</th>
+                                                            <th style="text-align: center; padding: 5px; width: 10%;">Select</th>
+                                                        </tr>
+                                                        <tbody id="tbodyNpiResult">
+                                                            <tr><td colspan="6" style="text-align: center;padding: 7px;">No Record Found.</td></tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </fieldset>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
                         <td style="width: 15%; padding-bottom: 0.5%">
                             <label class="Editabletxtbox" style="display: none;">Physician Type</label></td>
                         <td style="width: 35%; padding-bottom: 0.5%">
@@ -246,6 +308,7 @@
         </div>
         <input type="hidden" style="display: none;" id="hdnPhysicianId" value="" runat="server"/>
         <input type="hidden" style="display: none;" id="hdnPhysicanCategory" value="" runat="server"/>
+        <input type="hidden" id="hdnShowSearchNPI" runat="server"/>
          <button type="button" id="btnClose" style="display: none;" class="btn btn-default" onclick="closewindow();" data-dismiss="modal"></button>
         <script type="text/javascript">
             var JSFiles = ["JScripts/JSErrorMessage.js", "JScripts/JSMask.Min.js", "JScripts/JSPhysicianLibrary.js", "JScripts/JSAvoidRightClick.js", "JScripts/JSCustomDLC.js"];
