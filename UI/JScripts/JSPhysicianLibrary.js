@@ -774,13 +774,13 @@ function AddProvider() {
                 {
                     var vProviderName =  $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value;
                 }
-                        var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
-                        //Jira Cap - 1989
-                        //var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
-                        //var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
-                        //    + "ADDR: " + $("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
-                        //    + $("#txtState")[0].value + "," + $("#txtZip")[0].value
-                        //    + "|" + "PH:" + $("#txtPhone")[0].value + "FAX:" + $("#txtFax")[0].value;
+                var vPhyNmae = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + $("#txtSuffix")[0].value;
+                //Jira Cap - 1989
+                //var vFullName = $("#ddlPrefix")[0].value + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + " " + $("#txtLastName")[0].value + "(" + $("#txtSuffix")[0].value + ")";
+                //var PCP_PhyDetails = objdata.split("|")[1] + "&" + vProviderName + "&" + vPhyNmae + "&" + $("#txtNPI")[0].value + "&" + vFullName + "|" + "NPI:" + $("#txtNPI")[0].value + "|" + Specialtylist + "|" + "FACILITY:" + FacilityList + "|"
+                //    + "ADDR: " + $("#txtAddressLine1")[0].value + "," + $("#txtAddressLine2")[0].value + "," + $("#txtCity")[0].value + ","
+                //    + $("#txtState")[0].value + "," + $("#txtZip")[0].value
+                //    + "|" + "PH:" + $("#txtPhone")[0].value + "FAX:" + $("#txtFax")[0].value;
                 if ($('#ddlCategory')[0].value != 'ORGANIZATION') {
                     if ($("#ddlPrefix")[0].value != '') {
                         var vFullName = $("#ddlPrefix")[0].value + ". " + $("#txtFirstName")[0].value + " " + document.getElementById("txtMI").value + ", " + $("#txtLastName")[0].value ;
@@ -805,7 +805,7 @@ function AddProvider() {
                         + " | " + "Phone No:" + $("#txtPhone")[0].value + " | Fax No:" + $("#txtFax")[0].value + "&" + $('#ddlCategory')[0].value;
                 }
 
-                        localStorage.setItem("PhyDetails", PCP_PhyDetails);
+                localStorage.setItem("PhyDetails", PCP_PhyDetails);
                 //    }
                 //}
                 Aftersave();
@@ -830,7 +830,7 @@ function AddProvider() {
                         localStorage.setItem("PhyDetails", PCP_PhyDetails);
                         Add('Y');
                         //{ sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                      
+
                         $("#btnClose").click();
                         return;
                     }
@@ -850,7 +850,7 @@ function AddProvider() {
                         + objdata[i].Physician_Fax + " | " + objdata[i].Physician_Telephone;
 
                     localStorage.setItem("PhyDetails", PCP_PhyDetails);
-                   
+
                 }
                 if (vgrd != "none") {
                     //Jira CAP-2030 - Start
@@ -1591,6 +1591,10 @@ $("#btnSearchNpi").click(function () {
         DisplayErrorMessage('1011165');
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
         return false;
+    }
+    //CAP-3329
+    if (searchZip) {
+        searchZip = searchZip.replace(/-/g, '');
     }
 
     var url = `https://npiregistry.cms.hhs.gov/api/?number=${searchNpi}&taxonomy_description=${searchSpecialty}&first_name=${searchFirstName}&last_name=${searchLastName}&postal_code=${searchZip}&version=2.1`;
