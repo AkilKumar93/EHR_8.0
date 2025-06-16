@@ -198,6 +198,8 @@ $(document).ready(function () {
         $(".ui-autocomplete").hide();
         txtProviderSearch.attributes['data-phy-id'].value = '';
         txtProviderSearch.attributes['data-phy-details'].value = '';
+        //CAP-3330
+        document.getElementById('hdnEditPhysicianId').value = 0;
         document.getElementById('btnOk').disabled = true;
         document.getElementById("txtProviderSearch").disabled = false;
     });
@@ -350,8 +352,8 @@ function EditProviderDetails() {
     var ProviderText = document.getElementById("txtProviderSearch").value;
 
     var Category = document.getElementById("hdnCategory").value;
-
-    if (EditPhyId == '' || ProviderText == '') {
+    //CAP-3330
+    if (EditPhyId == '' || EditPhyId == '0' || ProviderText == '') {
         DisplayErrorMessage('380060');
     }
     else if (Category != "NON CAPELLA USER(Physician)" && Category != "NON CAPELLA USER" && Category != "ORGANIZATION") {
