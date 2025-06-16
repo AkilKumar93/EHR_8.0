@@ -1614,12 +1614,14 @@ $("#btnSearchNpi").click(function () {
         searchZip = searchZip.replace(/-/g, '');
     }
 
-    var url = `https://npiregistry.cms.hhs.gov/api/?number=${searchNpi}&taxonomy_description=${searchSpecialty}&first_name=${searchFirstName}&last_name=${searchLastName}&postal_code=${searchZip}&version=2.1`;
+    //CAP-3328, CAP-3341
+    //var url = `https://npiregistry.cms.hhs.gov/api/?number=${searchNpi}&taxonomy_description=${searchSpecialty}&first_name=${searchFirstName}&last_name=${searchLastName}&postal_code=${searchZip}&version=2.1`;
+    var url = `https://npiregistry.cms.hhs.gov/api/?number=${searchNpi}&first_name=${searchFirstName}&last_name=${searchLastName}&postal_code=${searchZip}&version=2.1`;
 
     $.ajax({
         type: "POST",
         url: "frmPhysicianLibray.aspx/SearchNPI",
-        data: '{url: "' + url + '"}',
+        data: '{url: "' + url + '", specialty: "' + searchSpecialty + '", searchZip: "' + searchZip + '"}',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
@@ -1635,7 +1637,7 @@ $("#btnSearchNpi").click(function () {
                                     <td style="text-align: center; padding: 5px;">${result[i].telephone_number}</td>
                                     <td style="text-align: center; padding: 5px;">${result[i].specialty}</td>
                                     <td style="text-align: center; padding: 5px;">${result[i].number}</td>
-                                    <td style="text-align: center; padding: 5px;"><a style="text-decoration: none;cursor: pointer;" onclick="SelectNpi('${searchFirstName}', '${searchLastName}','${result[i].number}','${result[i].address_1}','${result[i].city}','${result[i].state}','${result[i].postal_code}','${result[i].telephone_number}','${result[i].middle_name}')">Select</a></td>
+                                    <td style="text-align: center; padding: 5px;"><a style="text-decoration: none;cursor: pointer;" onclick="SelectNpi('${searchFirstName}', '${searchLastName}','${result[i].number}','${result[i].address_1}','${result[i].city}','${result[i].state}','${result[i].postal_code}','${result[i].telephone_number}','${result[i].middle_name}','${result[i].specialty}')">Select</a></td>
                                 </tr>`;
                 }
             } else {
@@ -1658,7 +1660,7 @@ $("#btnSearchNpi").click(function () {
     });
 });
 //CAP-3233
-function SelectNpi(firstName, lastName, number, address_1, city, state, postal_code, telephone_number, middle_name) {
+function SelectNpi(firstName, lastName, number, address_1, city, state, postal_code, telephone_number, middle_name, specialty) {
     $('#txtFirstName').val(firstName);
     $('#txtMI').val(middle_name);
     $('#txtLastName').val(lastName);
@@ -1667,6 +1669,7 @@ function SelectNpi(firstName, lastName, number, address_1, city, state, postal_c
     $('#txtCity').val(city);
     $('#txtState').val(state);
     $('#txtZip').val(postal_code);
+    $('#hdnSpecialty').val(specialty);
     if (telephone_number) {
         telephone_number = telephone_number.replace(/\D/g, '');
         $("#txtPhone").val(telephone_number).trigger('input');

@@ -103,7 +103,7 @@ namespace Acurus.Capella.UI
 
         //CAP-3233
         [System.Web.Services.WebMethod(EnableSession = true)]
-        public static string SearchNPI(string url)
+        public static string SearchNPI(string url, string specialty, string searchZip)
         {
             string resultData = string.Empty;
             List<SearchNPIResult> searchNpiResult = new List<SearchNPIResult>();
@@ -118,10 +118,24 @@ namespace Acurus.Capella.UI
                         NPIResponse result = JsonConvert.DeserializeObject<NPIResponse>(json);
                         if (result != null && result.result_count > 0)
                         {
-                            foreach (var item1 in result.results)
+                            //CAP-3328
+                            List<NPIResult> newResults = result.results;
+                            if (!string.IsNullOrEmpty(specialty))
                             {
+                                specialty = specialty.Trim().ToLower();
+                                newResults = result.results.Where(a => a.taxonomies.Any(x => x.desc.ToLower().Contains(specialty))).ToList();
+                            }
+                            foreach (var item1 in newResults)
+                            {
+                                //CAP-3341
+                                List<AddressesResult> newAddresses = item1.addresses;
+                                if (!string.IsNullOrEmpty(searchZip))
+                                {
+                                    newAddresses = item1.addresses.Where(x => x.postal_code == searchZip).ToList();
+                                }
+
                                 string taxonomies = item1?.taxonomies?.Count > 0 ? item1?.taxonomies[0]?.desc : "";
-                                foreach (var item2 in item1.addresses)
+                                foreach (var item2 in newAddresses)
                                 {
                                     string postal_code = item2.postal_code;
                                     if (postal_code.Length > 5)
