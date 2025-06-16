@@ -1120,8 +1120,25 @@ function ddlCategory_Change(isClear) {
             $('#ddlCategory').val(previousCategory);
             return false;
         } else if (msgRes == true) {
+            //CAP-3326
             $('#ddlCategory').val(newCategory);
-            clear(true);
+            $("#ddlPrefix")[0].selectedIndex = 0;
+            $("#ddlPhysicianType")[0].selectedIndex = 0;
+            $("#txtLastName")[0].value = '';
+            $("#txtMI")[0].value = '';
+            $("#txtFirstName")[0].value = '';
+            $("#txtSuffix")[0].value = '';
+            $("#txtNPI")[0].value = '';
+            $("#txtCompany")[0].value = '';
+            $("#txtAddressLine1")[0].value = '';
+            $("#txtAddressLine2")[0].value = '';
+            $("#txtCity")[0].value = '';
+            $("#txtState")[0].value = '';
+            $("#txtZip")[0].value = '';
+            $("#txtPhone")[0].value = '';
+            $("#txtFax")[0].value = '';
+            $("#txtEmail")[0].value = '';
+            ClearNPISearch();
         }
     }
     //CAP-1676
