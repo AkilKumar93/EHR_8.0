@@ -514,7 +514,10 @@ namespace Acurus.Capella.UI
             doc.Add(new Paragraph("\n"));
 
             doc.Add(new Paragraph("Client:", reducedFont));
-            doc.Add(new Paragraph(System.Configuration.ConfigurationSettings.AppSettings["ClientName"], normalFont));
+            //CAP-3308
+            //doc.Add(new Paragraph(System.Configuration.ConfigurationSettings.AppSettings["ClientName"], normalFont));
+            string clientName = facilityList.FirstOrDefault(a => a.Fac_Name == (ordList[0]?.OrdersSubmit?.Facility_Name ?? ""))?.Lab_Client_Information ?? "";
+            doc.Add(new Paragraph(clientName, normalFont));
 
             doc.Add(new Paragraph("\n"));
             string City = string.Empty;
@@ -916,7 +919,10 @@ namespace Acurus.Capella.UI
 
             LabLocationManager objLabLocationManager = new LabLocationManager();
 
-            Paragraph par = new Paragraph(System.Configuration.ConfigurationSettings.AppSettings["ClientName"], onlyBoldFont);
+            //CAP-3308
+            //Paragraph par = new Paragraph(System.Configuration.ConfigurationSettings.AppSettings["ClientName"], onlyBoldFont);
+            string clientName = facilityList.FirstOrDefault(a => a.Fac_Name == (ordList[0]?.OrdersSubmit?.Facility_Name ?? ""))?.Lab_Client_Information ?? "";
+            Paragraph par = new Paragraph(clientName, onlyBoldFont);
             par.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
             doc.Add(par);
 
