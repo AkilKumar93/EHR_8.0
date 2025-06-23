@@ -978,6 +978,18 @@ namespace Acurus.Capella.UI
             {
                 dir.Create();
             }
+            //CAP-3287
+            if (Request["type"] != null && Request["type"].ToString() == "Result Upload")
+            {
+                FileManagementDTO ObjFileDto = objfilemanger.LoadFileIndex_and_ViewResult(ClientSession.EncounterId, ClientSession.HumanId, OrderSubmit_ID, "ORDER,SCAN", IsCmg);
+                IList<FileManagementIndex> file_exam_lst = ObjFileDto.FileManagementList;
+                FindFileIndex(file_exam_lst);
+            }
+            else
+            {
+                IList<FileManagementIndex> file_exam_lst = objfilemanger.GetIndexedListByHumanId(ClientSession.HumanId, "Exam");
+                FindFileIndex(file_exam_lst);
+            }
 
             if (Session["NumberCount"] != null)
             {
