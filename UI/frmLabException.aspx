@@ -116,7 +116,6 @@ table.dataTable > thead > tr > th,
 table.dataTable > thead > tr > td {
     padding-right: 10px !important;
     }
-
 .text-align-center{
     text-align:center;
 }
@@ -128,7 +127,7 @@ table.dataTable > thead > tr > td {
     display: none;
 }
 .dataTables_filter input {
-    width: 330px !important;
+    width: 355px !important;
 }
 .dataTables_wrapper th {
     padding: 8px !important;
@@ -514,8 +513,7 @@ table.dataTable > thead > tr > td {
                                                         Font-Bold="true" GroupingText="Patient Information" CssClass="LabelStyleBold">
 
                                                         <div class="patient-search-container">
-                                                            <label for="txtPatientSearch" class="patient-label">Patient Name</label>
-
+                                                            <asp:Label ID="lblPatientSearch" Font-Bold="false" runat="server" Text="Patient Name" CssClass="spanstyle"></asp:Label>
                                                             <input
                                                                 type="text"
                                                                 id="txtPatientSearch"
@@ -539,17 +537,17 @@ table.dataTable > thead > tr > td {
                                     </tr>
                                     <tr>
                                         <td style="width: 100%;" valign="top">
-                                            <asp:Panel ID="Panel3" runat="server" Font-Names="Times New Roman" Font-Size="Small"
+                                           <%-- <asp:Panel ID="Panel3" runat="server" Font-Names="Times New Roman" Font-Size="Small"
                                                 GroupingText="Order Details" CssClass="LabelStyleBold">
                                                 <table style="width: 100%; height: 230px">
                                                     <%--<tr>
                                                         <td valign="top" style="width: 100%; height: 30px">
                                                             <asp:Label ID="Label5" runat="server" Text="Outstanding Order(s)" CssClass="Editabletxtbox"></asp:Label>
                                                         </td>
-                                                    </tr>--%>
+                                                    </tr>
                                                    
                                                     <tr>
-                                                        <td> 
+                                                        <td> --%>
                                                             <asp:Panel ID="grdPanel" runat="server" Font-Names="Times New Roman" Font-Size="Small"
                                 GroupingText="Outstanding Order(s)" Font-Bold="true" CssClass="LabelStyleBold">
                                  <div class="col-md-12 rowspace" style="height: 85%; width: 100%; padding: 0px;" id="scrollID">
@@ -603,10 +601,10 @@ table.dataTable > thead > tr > td {
                                                     </tr>
                                                 </table>
                                             </asp:Panel>
-                                        </td>
+                                        <%--</td>
                                     </tr>
                                 </table>
-                            </asp:Panel>
+                            </asp:Panel>--%>
                         </td>
                     </tr>
                     <tr>

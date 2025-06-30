@@ -131,6 +131,8 @@ function check() {
 function checkOnclcik() {
     var table = new DataTable('#OutstandingTable');
     table.$('tr.highlight').removeClass('highlight');
+    $('#OutstandingTable_filter').hide();    
+    $('#OutstandingTable_paginate').hide(); 
     GridOutstandingSelect = true;
 
 }
@@ -176,7 +178,7 @@ function btnSearch_Clicked(sender, args) {
 }
 //Jira Cap - 3206
 function btnMatchOrders_Clicked(sender, args) {
-    var NPINumbers;
+    var NPINumbers='';
     var HumanID = document.getElementById("hdnHumanID").value;
     var chkNoOrders = document.getElementById("chkNoOrders").checked;
     Order_Submit_ID = OrderSubmitID;
@@ -341,7 +343,7 @@ $(document).ready(function () {
     </table>`);
     initializeAutocomplete();
     chkUnmatchedProvider_CheckedChanged();
-    chkProviderNameChecked();
+    //chkProviderNameChecked();
     document.getElementById("chkUnmatchedProvider").disabled = true
     $find("cboUnmatchProvider").disable();
     $find("btnMatchOrders").set_enabled(false);
@@ -852,7 +854,7 @@ function Load() {
         pageLength: 15,
         language: {
             search: "",
-            searchPlaceholder: "Search by Name or Acct. # or Procedure",
+            searchPlaceholder: "Search by Name or Acct. # or Result Message Date",
             infoFiltered: ""
         },
         dom: '<"top"ipf>rt<"bottom"l><"clear">', // Counter (i) and Pagination (p) at the top
@@ -920,7 +922,7 @@ function Load() {
 
             { data: 'Order_ID', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '4% !important' },
             { data: 'Specimen', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '7% !important' },
-            { data: 'Lab_Procedure', sClass: 'TableCellBorder word-break-all', sWidth: '16% !important' },
+            { data: 'Lab_Procedure', sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '16% !important' },
             {
                 data: 'Reason_Code', render: function (data, type, row) {
                     return row.Reason_Code + "-" + row.Reason_Description;
@@ -933,7 +935,7 @@ function Load() {
                         return "";
                     else
                         return parseCustomDate(row.Result_Received_Date_And_Time.replace("T", " "));
-                }, sClass: 'TableCellBorder word-break-all', searchable: false, sWidth: '5% !important',
+                }, sClass: 'TableCellBorder word-break-all',  sWidth: '5% !important',
                 type: 'date'
             },
 
@@ -974,8 +976,13 @@ function Load() {
         'margin-left': '30px',
     });
 
+    $('#EncounterTable_paginate').css({
+        'font-weight': 'normal'
+    }); 
+
     $('#EncounterTable_info').css({
-        'min-width': '180px'
+        'min-width': '180px',
+        'font-weight': 'normal'
     });
 
 
@@ -996,7 +1003,6 @@ function Load() {
         MatchingPatientID = 0;
     });
     dataTable.on("click", '#grdViewResult', function () {
-        dataTable.$('tr.highlight').removeClass('highlight');
         var datavalue = dataTable.row($(this).parents('tr')).data();
         var ResultMasterIDVal = datavalue.Result_Master_ID;
         Result(ResultMasterIDVal);
@@ -1017,6 +1023,10 @@ function Load() {
         $('#txtPatientSearch').prop('disabled', false);
         
         document.getElementById('chkNoOrders').checked = false;
+
+        var table = new DataTable('#OutstandingTable');
+        table.clear().draw();
+        table.destroy();
 
         GridToSelect = false;
         grdUnassignedSelected = true;
@@ -1042,12 +1052,8 @@ function Load() {
                     var cboCheck = false;
                     if (objdata.length > 0) {
                         if (objdata[0].Reason_Code != "ACUR_LAB_05" || objdata[0].Reason_Code != "ACUR_LAB_06") {
-
-                            if (cboProviderName.options[cboProviderName.selectedIndex].text == "ALL") {
-
-                                var combo = window.$find("cboUnmatchProvider");
-
-
+                            var combo = window.$find("cboUnmatchProvider");
+                            if (cboProviderName.options[cboProviderName.selectedIndex].text == "ALL") {   
                                 for (let i = 0; i < combo.get_items().get_count(); i++) {
                                     if (data.OrderingProviderNPI == "") {
                                         break;
@@ -1171,7 +1177,7 @@ function Load() {
                                         if (row.Created_Date_And_Time == "0001-01-01T00:00:00")
                                             return "";
                                         else
-                                            return ConvertDate(row.Created_Date_And_Time.replace("T", " ")).split(' ')[0];
+                                            return DOBConvert(row.Created_Date_And_Time.replace("T", " ").split(' ')[0]);
                                     }, sClass: 'TableCellBorder', searchable: false, sWidth: '6% !important',
                                     type: 'date'
                                 },
