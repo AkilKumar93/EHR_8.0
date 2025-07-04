@@ -384,6 +384,9 @@ function initializeAutocomplete() {
         $("#imgClearPatientText").removeClass("disabled");
         $('#txtPatientSearch').prop('disabled', false);
         document.getElementById("hdnHumanID").value = 0;
+        var table = new DataTable('#OutstandingTable');
+        table.clear().draw();
+        table.destroy();
     });
     if ($("#txtPatientSearch").length) {
         $("#txtPatientSearch").autocomplete({
