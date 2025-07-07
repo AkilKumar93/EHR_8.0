@@ -4,7 +4,7 @@
 <urn:submitSingleMessage>
 <urn:username>SF-008625</urn:username>
 <urn:password>Qbe3iQzm</urn:password>
-<urn:facilityID>CAIR</urn:facilityID>
+<urn:facilityID>DE-009105</urn:facilityID>
 <urn:hl7Message>
 <![CDATA[ImmunizationHL7Content
 ]]>
