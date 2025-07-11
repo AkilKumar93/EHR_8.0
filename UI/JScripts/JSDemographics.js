@@ -1942,6 +1942,10 @@ $(document).ready(function () {
     if (rpatient.val() == '1') {
         debugger;
         $("#ctl00_C5POBody_txtSelectinsured").prop("disabled", true);
+        //Cap - 3373
+        document.getElementById('imginsuredText').display = "none";
+        document.getElementById('imginsuredText').style.visibility = "hidden";
+        document.getElementById('ctl00_C5POBody_btnaddins').disabled = true;
     }
 
 });
