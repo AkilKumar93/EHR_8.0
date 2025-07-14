@@ -381,7 +381,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     //Jira #CAP-115
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                     xmlEncounterDoc.LoadXml(sXMLEncounterDoc);
-                    sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
+                    sIsPhoneEncounter = (xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes.GetNamedItem("Is_Phone_Encounter")?.Value.ToUpper())?? "N";
                 }
 
                 //sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
@@ -1092,10 +1092,48 @@ namespace Acurus.Capella.UI.WebServices.API
                                                 }
                                                 else
                                                 {
+                                                    //Jira CAP-3421
+                                                    if (iSectionValuesplit[iSectionValueCount].Contains("<table"))
+                                                    {
+                                                        iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("<b>", "").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "").Replace("\r\n", "").Replace("\n", "").Replace("\t", "").Replace('"', '\"');
+                                                        XmlDocument xmlDocumentForTable = new XmlDocument();
+                                                        xmlDocumentForTable.LoadXml("<?xml version=\"1.0\" encoding=\"utf-8\"?> <content>" + iSectionValuesplit[iSectionValueCount] + "</content>");
+                                                        string sRowContent = string.Empty;
+                                                        string sInnerContent = string.Empty;
+                                                        string sTableContent = string.Empty;
+
+                                                        for (int iCountX = 1; iCountX < xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes.Count; iCountX++)
+                                                        {
+                                                            //Row
+                                                            int iTagCount = xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes.Count;
+                                                            sRowContent = string.Empty;
+                                                            sInnerContent = string.Empty;
+                                                            for (int iCountY = 1; iCountY < iTagCount - 2; iCountY++)
+                                                            {
+                                                                sInnerContent = sInnerContent + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iCountY].InnerText.TrimStart().TrimEnd() + " ";
+                                                            }
+                                                            if ((xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes.Count - 1) == iCountX)
+                                                            {
+                                                                sRowContent = "{\"Total Score\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 1].InnerText + "\"}";
+                                                            }
+                                                            else
+                                                            {
+                                                                sRowContent = "{\"MinLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[0].InnerText +
+                                                                "\",\"Range\":\"" + sInnerContent.TrimEnd() +
+                                                                "\",\"MaxLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 2].InnerText +
+                                                                "\",\"Score\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 1].InnerText + "\"}";
+                                                            }
+                                                            sTableContent = sTableContent + ((sTableContent != string.Empty) ? "," + sRowContent : sRowContent);
+                                                        }
+                                                        sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + sTableContent;
+                                                    }
+                                                    else
+                                                    {
                                                     //Jira CAP-2608
                                                     //iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "");
                                                     iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "").Replace('"', '\"');
                                                     sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
+                                                }
                                                 }
 
                                             }
