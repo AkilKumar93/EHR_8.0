@@ -863,6 +863,7 @@ namespace Acurus.Capella.UI.WebServices.API
                             sHumanXMLContent = sHumanXMLContent.Substring(1, sHumanXMLContent.Length - 1);
                         xmlDoc.LoadXml(sHumanXMLContent);
                         sResultHuman = "Success";
+                        sStatus = "Success";
                     }
                     catch
                     {
