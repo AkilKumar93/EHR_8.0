@@ -444,8 +444,9 @@ function LoadDocuments() {
             }
 
             $('#txtPlan')[0].value = Plan;
-            if (ChkboxDocument_Checked)
-
+            if (ChkboxDocument_Checked) {
+                // CAP-3410: Applying the sanity check to prevent null or undefined related exceptions.
+                currentprocess = (currentprocess ?? "");
                 if (currentprocess.toUpperCase() != "SCRIBE_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_PROCESS" && currentprocess.toUpperCase() != "SCRIBE_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "SCRIBE_CORRECTION" && currentprocess.toUpperCase() != "DICTATION_REVIEW" && currentprocess.toUpperCase() != "CODER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "PROVIDER_PROCESS" && currentprocess.toUpperCase() != "TECHNICIAN_PROCESS" && currentprocess.toUpperCase() != "PROVIDER_REVIEW_CORRECTION" && currentprocess.toUpperCase() != "TRANSCRIPT_PROCESS" && currentprocess.toUpperCase() != "TRANSCRIPT_QC_PROCESS" && currentprocess.toUpperCase() != "AKIDO_SCRIBE_QC_PROCESS") {//CMG Ancilliary
                     $("a").attr('disabled', true);
                     $("a").attr('onclick', false);
@@ -457,6 +458,8 @@ function LoadDocuments() {
                     }
 
                 }
+            }
+
             if ($("#idplan0") != undefined && $("#idplan0") != null) {
                 $("#idplan0").focus();
             }

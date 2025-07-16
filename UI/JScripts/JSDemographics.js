@@ -3425,59 +3425,69 @@ $("#ctl00_C5POBody_txtPlanSearch").data("ui-autocomplete")._renderItem = functio
 
 function ProviderSelected(event, ui) {
     AutoSave();
-    var ProviderDetails = JSON.parse(ui.item.val);
 
-    var vLableVal;
-    if (JSON.parse(ui.item.val).sPhySuffix != '') {
-        vLableVal = JSON.parse(ui.item.val).sPhyshortName + "(" + JSON.parse(ui.item.val).sPhySuffix + ")" + " | " +
-            "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
-            "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
-            "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
-            JSON.parse(ui.item.val).sPhyCity + "," +
-            JSON.parse(ui.item.val).sPhyState + " " +
-            JSON.parse(ui.item.val).sPhyZip + " | " +
-            "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
-            "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
+    // CAP-3410 or CAP-3413: Applying the sanity check to prevent the undefined or null reference exceptions, and considering the JSON validation check, for appropriate parsing, and prevent the invalid JSON parsing related exception.
+    if (ui?.item?.val != null && ui.item?.val != undefined) {
+
+        if (isValidJSON(ui.item.val)) {
+            var ProviderDetails = JSON.parse(ui.item.val);
+
+            var vLableVal;
+            if (ProviderDetails.sPhySuffix != '') {
+                vLableVal = ProviderDetails.sPhyshortName + "(" + ProviderDetails.sPhySuffix + ")" + " | " +
+                    "NPI:" + ProviderDetails.sPhyNPI + " | " +
+                    "Facility:" + ProviderDetails.sPhyFacility + " | " +
+                    "Address: " + ProviderDetails.sPhyAddress + ", " +
+                    ProviderDetails.sPhyCity + "," +
+                    ProviderDetails.sPhyState + " " +
+                    ProviderDetails.sPhyZip + " | " +
+                    "Phone No:" + ProviderDetails.sPhyPhone + " | " +
+                    "Fax No:" + ProviderDetails.sPhyFax;
+            }
+            else {
+                vLableVal = ProviderDetails.sPhyshortName + " | " +
+                    "NPI:" + ProviderDetails.sPhyNPI + " | " +
+                    "Facility:" + ProviderDetails.sPhyFacility + " | " +
+                    "Address: " + ProviderDetails.sPhyAddress + ", " +
+                    ProviderDetails.sPhyCity + "," +
+                    ProviderDetails.sPhyState + " " +
+                    ProviderDetails.sPhyZip + " | " +
+                    "Phone No:" + ProviderDetails.sPhyPhone + " | " +
+                    "Fax No:" + ProviderDetails.sPhyFax;
+            }
+
+            var txtProviderSearch = document.getElementById("ctl00_C5POBody_txtProviderSearch");
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
+            //Cap - 2026
+            document.getElementById("ctl00_C5POBody_hdnCategory").value = ProviderDetails.sCategory;
+            document.getElementById("ctl00_C5POBody_hdnProviderId").value = ProviderDetails.ulPhyId;
+
+            txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
+            txtProviderSearch.attributes['data-phy-details'].value = ProviderDetails.sPhyName;
+            txtProviderSearch.attributes['data-phy-gridname'].value = ProviderDetails.sPhyshortName;
+            txtProviderSearch.attributes['data-phy-npi'].value = ProviderDetails.sPhyNPI;
+            txtProviderSearch.attributes['data-phy-Category'].value = ProviderDetails.sCategory;
+            //txtProviderSearch.value = ui.item.label;
+            txtProviderSearch.value = vLableVal;
+            var provider = "";
+
+            provider = ProviderDetails.ulPhyId + "|" +
+                ProviderDetails.sPhyName + "|" +
+                ProviderDetails.sPhyshortName + "|" +
+                ProviderDetails.sPhyNPI + "|" +
+                ProviderDetails.sPhySpecialty + "|" +
+                ProviderDetails.sPhyFacility + "|" +
+                ProviderDetails.sPhyAddress + "|" +
+                ProviderDetails.sPhyFax + "|" +
+                ProviderDetails.sPhyPhone
+
+            document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
+        }
+        else {
+            alert(`USER MESSAGE: Cannot process request. Please login again and retry. \nEXCEPTION DETAILS:\nMessage: ${ui.item.val}`);
+        }
     }
-    else {
-        vLableVal = JSON.parse(ui.item.val).sPhyshortName + " | " +
-            "NPI:" + JSON.parse(ui.item.val).sPhyNPI + " | " +
-            "Facility:" + JSON.parse(ui.item.val).sPhyFacility + " | " +
-            "Address: " + JSON.parse(ui.item.val).sPhyAddress + ", " +
-            JSON.parse(ui.item.val).sPhyCity + "," +
-            JSON.parse(ui.item.val).sPhyState + " " +
-            JSON.parse(ui.item.val).sPhyZip + " | " +
-            "Phone No:" + JSON.parse(ui.item.val).sPhyPhone + " | " +
-            "Fax No:" + JSON.parse(ui.item.val).sPhyFax;
-    }
-
-    var txtProviderSearch = document.getElementById("ctl00_C5POBody_txtProviderSearch");
-    document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
-    document.getElementById('ctl00_C5POBody_txtProviderSearch').style.backgroundColor = "#BFDBFF";
-    //Cap - 2026
-    document.getElementById("ctl00_C5POBody_hdnCategory").value = ProviderDetails.sCategory;
-    document.getElementById("ctl00_C5POBody_hdnProviderId").value = ProviderDetails.ulPhyId;
-
-    txtProviderSearch.attributes['data-phy-id'].value = ProviderDetails.ulPhyId;
-    txtProviderSearch.attributes['data-phy-details'].value = ProviderDetails.sPhyName;
-    txtProviderSearch.attributes['data-phy-gridname'].value = ProviderDetails.sPhyshortName;
-    txtProviderSearch.attributes['data-phy-npi'].value = ProviderDetails.sPhyNPI;
-    txtProviderSearch.attributes['data-phy-Category'].value = ProviderDetails.sCategory;
-    //txtProviderSearch.value = ui.item.label;
-    txtProviderSearch.value = vLableVal;
-    var provider = "";
-
-    provider = JSON.parse(ui.item.val).ulPhyId + "|" +
-        JSON.parse(ui.item.val).sPhyName + "|" +
-        JSON.parse(ui.item.val).sPhyshortName + "|" +
-        JSON.parse(ui.item.val).sPhyNPI + "|" +
-        JSON.parse(ui.item.val).sPhySpecialty + "|" +
-        JSON.parse(ui.item.val).sPhyFacility + "|" +
-        JSON.parse(ui.item.val).sPhyAddress + "|" +
-        JSON.parse(ui.item.val).sPhyFax + "|" +
-        JSON.parse(ui.item.val).sPhyPhone
-
-    document.getElementById('ctl00_C5POBody_txtProviderSearch').disabled = true;
 
     return false;
 }
