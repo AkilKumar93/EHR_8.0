@@ -312,6 +312,8 @@ namespace Acurus.Capella.UI.WebServices.API
 
         private void GenerateJsonNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
         {
+        lnGenerateJsonNotes:
+
             IList<Blob_Progress_Note> ilstBlob_Progress_Note = new List<Blob_Progress_Note>();
             BlobProgressNoteManager BlobProgressNoteMngr = new BlobProgressNoteManager();
             EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
@@ -381,11 +383,11 @@ namespace Acurus.Capella.UI.WebServices.API
                     //Jira #CAP-115
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
                     xmlEncounterDoc.LoadXml(sXMLEncounterDoc);
-                    sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
+                    sIsPhoneEncounter = (xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter")?.Attributes.GetNamedItem("Is_Phone_Encounter")?.Value.ToUpper()) ?? "N";
                 }
 
                 //sIsPhoneEncounter = xmlEncounterDoc.SelectSingleNode("notes/Modules/EncounterList/Encounter").Attributes.GetNamedItem("Is_Phone_Encounter").Value.ToUpper();
-                
+
                 //string objectSystemIdQry = "SELECT Current_Process FROM WF_Object WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION' UNION ALL SELECT Current_Process FROM WF_Object_arc WHERE Obj_System_Id = {0} AND Obj_Type = 'DOCUMENTATION';";
                 //DataSet ObjectSystemResult = DBConnector.ReadData(string.Format(objectSystemIdQry, sEncounterID));
                 //WFObject DocumentationWfObject = new WFObject();
@@ -439,7 +441,7 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 string WordOutputName = sEncounterID + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".html";
                 string outputDocument = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], WordOutputName);
-                
+
                 string htmlString = string.Empty;
                 htmlString = UtilityManager.PrintPDFUsingXSLT(sXMLEncounterDoc, sXMLHumanDoc, xsltFile, outputDocument, "");
                 System.IO.FileInfo file = new System.IO.FileInfo(outputDocument);
@@ -758,7 +760,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     strSignedAt = Convert.ToDateTime(strSignedAt).ToString("o");
                 }
-                
+
                 sFinalOutPut = sFinalOutPut + sFooterNode
                                     + "{\"" + "text" + "\":\"" + (sFooter?.Trim() ?? "") + "\"," +
                                     "\"" + "signedBy" + "\":\"" + (strSignedBy?.Trim() ?? "") + "\"," +
@@ -769,7 +771,7 @@ namespace Acurus.Capella.UI.WebServices.API
                                     "\"" + "ReviewedProviderID" + "\":\"" + (strProviderUserId ?? "") + "\"," +
                                     "\"" + "signedAt" + "\":\"" + (strSignedAt?.Trim() ?? "") + "\"}]";
 
-                sFinalOutPut = sFinalOutPut.Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "").Replace("</subtab>","").Replace("<subtab />", "") + "}";
+                sFinalOutPut = sFinalOutPut.Replace("<plan />", "").Replace("</plan>", "").Replace("<br />", "").Replace("<br/>", "").Replace("</subtab>", "").Replace("<subtab />", "") + "}";
                 //}
 
 
@@ -806,28 +808,96 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             catch (Exception eex)
             {
-                try
+                string sStatus = string.Empty;
+                sStatus = RegenerateXML(eex, sHumanID, sEncounterID);
+                if (sStatus == "Success")
                 {
-                    ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
-                    ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
-                    ilstBlob_Progress_Note[0].Progress_Note_Json = null;
-                    ilstBlob_Progress_Note[0].Status = "Error";
-                    ilstBlob_Progress_Note[0].Error_Description = "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
-                    if (isModified)
-                    {
-                        ilstBlob_Progress_Note[0].Modified_By = "";
-                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
-                    }
-                    else
-                    {
-                        ilstBlob_Progress_Note[0].Created_By = "";
-                        ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
-                    }
-                    BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
-                    throw new Exception("Error : " + eex?.Message);
+                    goto lnGenerateJsonNotes;
                 }
-                catch { throw new Exception("Error : " + eex?.Message); }
+                else if (sStatus != "Time Out")
+                {
+
+                    try
+                    {
+                        ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
+                        ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
+                        ilstBlob_Progress_Note[0].Progress_Note_Json = null;
+                        ilstBlob_Progress_Note[0].Status = "Error";
+                        ilstBlob_Progress_Note[0].Error_Description = (sStatus != "") ? "Error : " + sStatus : "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
+                        if (isModified)
+                        {
+                            ilstBlob_Progress_Note[0].Modified_By = "";
+                            ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
+                        }
+                        else
+                        {
+                            ilstBlob_Progress_Note[0].Created_By = "";
+                            ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
+                        }
+                        BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                        throw new Exception("Error : " + eex?.Message);
+                    }
+                    catch { throw new Exception("Error : " + eex?.Message); }
+                }
             }
+        }
+        public string RegenerateXML(Exception ex, string sHumanID, string sEncounterID)
+        {
+            string sStatus = string.Empty;
+            string sEncounterStatus = string.Empty;
+            if ((ex.Message.ToLower().Contains("there is an unclosed literal string") == true || ex.Message.ToLower().Contains("root element is missing") == true || ex.Message.ToLower().Contains("unexpected end of file") == true || ex.Message.ToLower().Contains("is an unexpected token") == true))
+            {
+
+                string sResultHuman = string.Empty;
+                string sResultEncounter = string.Empty;
+                EncounterBlobManager EncounterBlobMngr = new EncounterBlobManager();
+
+                IList<Encounter_Blob> ilstEncounterBlob = EncounterBlobMngr.GetEncounterBlob(Convert.ToUInt64(sEncounterID));
+
+                if (ilstEncounterBlob.Count > 0)
+                {
+                    //HumanXML
+                    string sHumanXMLContent = string.Empty;
+                    XmlDocument xmlDoc = new XmlDocument();
+                    try
+                    {
+                        sHumanXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
+                        if (sHumanXMLContent.Substring(0, 1) != "<")
+                            sHumanXMLContent = sHumanXMLContent.Substring(1, sHumanXMLContent.Length - 1);
+                        xmlDoc.LoadXml(sHumanXMLContent);
+                        sResultHuman = "Success";
+                        sStatus = "Success";
+                    }
+                    catch
+                    {
+                        sResultHuman = "Failure";
+                        sStatus = UtilityManager.GenerateXMLForCDC(sHumanID, "HUMAN", sHumanID, sEncounterID);
+                    }
+
+                    if (sStatus == "Success")
+                    {
+                        //EncounterXML
+                        string sXMLContent = string.Empty;
+                        xmlDoc = new XmlDocument();
+                        try
+                        {
+                            sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                            if (sXMLContent.Substring(0, 1) != "<")
+                                sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
+                            xmlDoc.LoadXml(sXMLContent);
+                            sResultEncounter = "Success";
+                        }
+                        catch
+                        {
+                            sResultEncounter = "Failure";
+                            sStatus = UtilityManager.GenerateXMLForCDC(sEncounterID, "ENCOUNTER", sHumanID, sEncounterID);
+                        }
+                    }
+                }
+                
+            }
+            return sStatus;
+
         }
         public string ReplaceFirst(string input, string search, string replacement)
         {
@@ -1092,10 +1162,48 @@ namespace Acurus.Capella.UI.WebServices.API
                                                 }
                                                 else
                                                 {
-                                                    //Jira CAP-2608
-                                                    //iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "");
-                                                    iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "").Replace('"', '\"');
-                                                    sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
+                                                    //Jira CAP-3421
+                                                    if (iSectionValuesplit[iSectionValueCount].Contains("<table"))
+                                                    {
+                                                        iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("<b>", "").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "").Replace("\r\n", "").Replace("\n", "").Replace("\t", "").Replace('"', '\"');
+                                                        XmlDocument xmlDocumentForTable = new XmlDocument();
+                                                        xmlDocumentForTable.LoadXml("<?xml version=\"1.0\" encoding=\"utf-8\"?> <content>" + iSectionValuesplit[iSectionValueCount] + "</content>");
+                                                        string sRowContent = string.Empty;
+                                                        string sInnerContent = string.Empty;
+                                                        string sTableContent = string.Empty;
+
+                                                        for (int iCountX = 1; iCountX < xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes.Count; iCountX++)
+                                                        {
+                                                            //Row
+                                                            int iTagCount = xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes.Count;
+                                                            sRowContent = string.Empty;
+                                                            sInnerContent = string.Empty;
+                                                            for (int iCountY = 1; iCountY < iTagCount - 2; iCountY++)
+                                                            {
+                                                                sInnerContent = sInnerContent + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iCountY].InnerText.TrimStart().TrimEnd() + " ";
+                                                            }
+                                                            if ((xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes.Count - 1) == iCountX)
+                                                            {
+                                                                sRowContent = "{\"Total Score\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 1].InnerText + "\"}";
+                                                            }
+                                                            else
+                                                            {
+                                                                sRowContent = "{\"MinLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[0].InnerText +
+                                                                "\",\"Range\":\"" + sInnerContent.TrimEnd() +
+                                                                "\",\"MaxLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 2].InnerText +
+                                                                "\",\"Score\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 1].InnerText + "\"}";
+                                                            }
+                                                            sTableContent = sTableContent + ((sTableContent != string.Empty) ? "," + sRowContent : sRowContent);
+                                                        }
+                                                        sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + sTableContent;
+                                                    }
+                                                    else
+                                                    {
+                                                        //Jira CAP-2608
+                                                        //iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", "").Replace("<br/>", "");
+                                                        iSectionValuesplit[iSectionValueCount] = iSectionValuesplit[iSectionValueCount].Replace("\"", "'").Replace("</b>", "").TrimStart().TrimEnd().Replace("<br />", @"\n").Replace("<br/>", @"\n").Replace("\r\n", @"\n").Replace("\n", @"\n").Replace("\t", "").Replace('"', '\"');
+                                                        sSectioncontent = sSectioncontent + ((sSectioncontent != string.Empty && sSectioncontent.Substring(sSectioncontent.LastIndexOf(":[")) == ":[") ? "" : ",") + "\"" + iSectionValuesplit[iSectionValueCount] + "\"";
+                                                    }
                                                 }
 
                                             }
