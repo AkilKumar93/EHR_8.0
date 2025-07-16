@@ -5751,8 +5751,12 @@ function PerformMovetoNextProcess() {
     }
 }
 function disableSelectAllMove() {
-    $('.myQChkbxAll')[0].disabled = true;
+    //CAP-3406: Capturing the element in a separate variable for the sanity check to avoid the undefined reference exception
+    var checkboxElements = $('.myQChkbxAll');
 
+    if (checkboxElements?.length > 0 && checkboxElements[0]?.disabled != null && checkboxElements[0]?.disabled != undefined) {
+        checkboxElements[0].disabled = true;
+    }
 }
 
 function QRCodeClick(evt) {
