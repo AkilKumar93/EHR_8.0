@@ -829,7 +829,17 @@ ProblemApp.controller('ControllerManageProblem', function ($scope, $http) {
                 }
 
             }
-
+            //Cap - 3401
+            $("#chkNoKnownActiveProblem")[0].checked = false;
+            var table = $('#tblProblemList');
+            table.find('tr').each(function (rowIndex, r) {
+                if (rowIndex != 0) {
+                    var IcdVal = $(r).find('td').eq(2).text().trim();
+                    if (IcdVal == "0000") {
+                        $scope.DeleteCheck(rowIndex);
+                    }
+                }
+            })
         })
  .error(function (error, status, headers, config) {
 
