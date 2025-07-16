@@ -43,7 +43,8 @@ function dtpTestTakenDate_OnPopupClosing(sender, args) {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
         window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable.value = "true";
     localStorage.setItem("bSave", "false");
-    $find('btnSave').set_enabled(true);
+    // CAP-3415: Applying sanity check to avoid null reference exception
+    $find('btnSave')?.set_enabled(true);
 }
 function cboGroupType_DropDownClosed(sender, args) {
     if (window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != null && window.parent.parent.parent.parent.theForm.ctl00_C5POBody_hdnIsSaveEnable != undefined)
