@@ -24,20 +24,41 @@ namespace Acurus.Capella.UI.WebServices.API
         [HttpGet]
         public IHttpActionResult LoadCapellaHistoryData(string sHumanID, string sCategory = "", bool bIsForce = false)
         {
+            CDC_Audit_LogManager cDC_Audit_LogManager = new CDC_Audit_LogManager();
+            IList<CDC_Audit_Log> ilstCDC_Audit_Log = new List<CDC_Audit_Log>();
+            ilstCDC_Audit_Log[0].Human_ID = Convert.ToUInt64(sHumanID ?? "0");
+            ilstCDC_Audit_Log[0].API_Name = "LoadCapellaHistoryData";
+            ilstCDC_Audit_Log[0].Request = Request.RequestUri.ToString();
+            ilstCDC_Audit_Log[0].Created_By = "Acurus";
+            ilstCDC_Audit_Log[0].Created_Date_And_Time = DateTime.UtcNow;
+            cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
+
             try
             {
                 if (!VerifyToken())
                 {
+                    ilstCDC_Audit_Log[0].Response = @"status = ""Unauthorized"", ErrorDescription = ""The remote server returned an error: (403) Forbidden.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { status = "Unauthorized", ErrorDescription = "The remote server returned an error: (403) Forbidden." });
                 }
 
                 if (sHumanID == "")
                 {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", status = ""ValidationError"", ErrorDescription = ""HumanID is not valid. Cannot load Capella history data.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "HumanID is not valid. Cannot load Capella history data." });
                 }
                 sCategory = sCategory == null ? "" : sCategory;
                 if (sCategory.ToUpper() != "" && sCategory.ToUpper() != "ENCOUNTERS" && sCategory.ToUpper() != "FILES" && sCategory.ToUpper() != "LABRESULTS")
                 {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", status = ""ValidationError"", ErrorDescription = ""Category is not valid. Cannot load Capella history data.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { HumanID = sHumanID, status = "ValidationError", ErrorDescription = "Category is not valid. Cannot load Capella history data." });
                 }
                 //CAP-3112
@@ -61,8 +82,16 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             catch (Exception ex)
             {
+                ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", status = ""Error"", ErrorDescription = ""Error in processing the request. """ + ex.Message;
+                ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                 return Json(new { HumanID = sHumanID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
             }
+            ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", status = ""Acknowledged""";
+            ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+            ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+            cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
             return Json(new { HumanID = sHumanID, status = "Acknowledged" });
         }
 
@@ -244,13 +273,34 @@ namespace Acurus.Capella.UI.WebServices.API
         [HttpGet]
         public IHttpActionResult LoadProgressNotes(string sHumanID, string sEncounterID, string transactionBy, DateTime transactionDateTime)
         {
+            CDC_Audit_LogManager cDC_Audit_LogManager = new CDC_Audit_LogManager();
+            IList<CDC_Audit_Log> ilstCDC_Audit_Log = new List<CDC_Audit_Log>();
+            ilstCDC_Audit_Log.Add(new CDC_Audit_Log());
+            ilstCDC_Audit_Log[0].Human_ID = Convert.ToUInt64(sHumanID ?? "0");
+            ilstCDC_Audit_Log[0].Encounter_ID = Convert.ToUInt64(sEncounterID ?? "0");
+            ilstCDC_Audit_Log[0].API_Name = "LoadProgressNotes";
+            ilstCDC_Audit_Log[0].Request = Request.RequestUri.ToString();
+            ilstCDC_Audit_Log[0].Created_By = "Acurus";
+            ilstCDC_Audit_Log[0].Created_Date_And_Time = DateTime.UtcNow;
+            cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
+
             try
             {
                 if (!VerifyToken())
-                { return Unauthorized(); }
+                {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID=" + sHumanID + @",EncounterID=" + sEncounterID + ",Status=Unauthorized";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
+                    return Unauthorized();
+                }
 
                 if (sEncounterID == "")
                 {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", EncounterID = " + sEncounterID + @", status = ""ValidationError"", ErrorDescription = ""EncounterID is not valid. Cannot generate progress note.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "EncounterID is not valid. Cannot generate progress note." });
                 }
 
@@ -277,6 +327,10 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 if (result?.Tables == null || result.Tables[0].Rows.Count == 0)
                 {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", EncounterID = " + sEncounterID + @", status = ""ValidationError"", ErrorDescription = ""EncounterID is not present in DB. Cannot generate progress note.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "EncounterID is not present in DB. Cannot generate progress note." });
                 }
 
@@ -284,10 +338,18 @@ namespace Acurus.Capella.UI.WebServices.API
                 string Encounter_Provider_SignDate = Convert.ToDateTime(result.Tables[0].Rows[0]["Encounter_Provider_Signed_Date"]).ToString("yyyy-MM-dd");
                 if (current_Process != "DOCUMENT_COMPLETE")
                 {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", EncounterID = " + sEncounterID + @", status = ""ValidationError"", ErrorDescription = ""Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "Encounter is not in DOCUMENT_COMPLETE. Cannot generate progress note." });
                 }
                 else if (Encounter_Provider_SignDate.Contains("0001-01-01"))
                 {
+                    ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", EncounterID = " + sEncounterID + @", status = ""ValidationError"", ErrorDescription = ""Encounter is not Signed in Capella. Cannot generate progress note.""";
+                    ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                    ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                    cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                     return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "ValidationError", ErrorDescription = "Encounter is not Signed in Capella. Cannot generate progress note." });
                 }
                 //CAP-3112
@@ -305,8 +367,16 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             catch (Exception ex)
             {
+                ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", EncounterID = " + sEncounterID + @", status = ""Acknowledged"", ErrorDescription = ""Error in processing the request. " + ex.Message + @"""";
+                ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+                ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+                cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
                 return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
             }
+            ilstCDC_Audit_Log[0].Response = @"HumanID = " + sHumanID + @", EncounterID = " + sEncounterID + @", status = ""Acknowledged""";
+            ilstCDC_Audit_Log[0].Modified_By = "Acurus";
+            ilstCDC_Audit_Log[0].Modified_Date_And_Time = DateTime.UtcNow;
+            cDC_Audit_LogManager.SaveCDC_Audit_LogWithTransaction(ilstCDC_Audit_Log, string.Empty);
             return Json(new { HumanID = sHumanID, EncounterID = sEncounterID, status = "Acknowledged" });
         }
 
@@ -816,28 +886,22 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
                 else if (sStatus != "Time Out")
                 {
-
                     try
                     {
+                        ilstBlob_Progress_Note = BlobProgressNoteMngr.GetBlobProgressNotes(Convert.ToUInt64(sEncounterID));
                         ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
                         ilstBlob_Progress_Note[0].Human_ID = Convert.ToUInt64(sHumanID);
                         ilstBlob_Progress_Note[0].Progress_Note_Json = null;
                         ilstBlob_Progress_Note[0].Status = "Error";
                         ilstBlob_Progress_Note[0].Error_Description = (sStatus != "") ? "Error : " + sStatus : "Message : " + eex?.Message + "Stack Trace : " + eex?.StackTrace;
-                        if (isModified)
-                        {
-                            ilstBlob_Progress_Note[0].Modified_By = "";
-                            ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
-                        }
-                        else
-                        {
-                            ilstBlob_Progress_Note[0].Created_By = "";
-                            ilstBlob_Progress_Note[0].Created_Date_And_Time = DateTime.UtcNow;
-                        }
+                        ilstBlob_Progress_Note[0].Modified_By = "Acurus";
+                        ilstBlob_Progress_Note[0].Modified_Date_And_Time = DateTime.UtcNow;
                         BlobProgressNoteMngr.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
+                    }
+                    catch
+                    {
                         throw new Exception("Error : " + eex?.Message);
                     }
-                    catch { throw new Exception("Error : " + eex?.Message); }
                 }
             }
         }

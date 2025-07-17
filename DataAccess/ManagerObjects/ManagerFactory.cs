@@ -561,6 +561,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         ICDCEventTrackerManager GetCDCEventTrackerManager();
         ICDCEventTrackerManager GetCDCEventTrackerManager(INHibernateSession session);
+        ICDC_Audit_LogManager GetCDC_Audit_LogManager();
+        ICDC_Audit_LogManager GetCDC_Audit_LogManager(INHibernateSession session);
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2288,6 +2290,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public ICDCEventTrackerManager GetCDCEventTrackerManager(INHibernateSession session)
         {
             return new CDCEventTrackerManager(session);
+        }
+        public ICDC_Audit_LogManager GetCDC_Audit_LogManager()
+        {
+            return new CDC_Audit_LogManager();
+        }
+        public ICDC_Audit_LogManager GetCDC_Audit_LogManager(INHibernateSession session)
+        {
+            return new CDC_Audit_LogManager(session);
         }
         #endregion
     }

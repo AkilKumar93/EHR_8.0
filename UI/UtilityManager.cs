@@ -5201,11 +5201,29 @@ namespace Acurus.Capella.UI
                     bool bInsertCheck = false;
                     DateTime dt = DateTime.Now;
                 ln:
+                    bool isHumanDone = false;
                     TimeSpan tsDiffrence = DateTime.Now -  dt;
                     if (tsDiffrence.TotalHours < (ulTimeOut/3600000))
                     {
-                        bool ishumancount = GetList_human_progress_note();
-                        if (ishumancount)
+                        //bool ishumancount = GetList_human_progress_note();
+                        bool bIsReattempt = true;
+                        
+                        try
+                        {
+                            isHumanDone = InsertIntoList_human_progress_note(XML_ID);
+                            bIsReattempt = (isHumanDone) ? false : true;
+                        }
+                        catch(Exception ex)
+                        {
+                            if (ex.Message.Contains("Duplicate entry '1'") && ex.Message.Contains("PRIMARY'"))
+                            {
+                                bIsReattempt = true;
+                                isHumanDone = false;
+                            }
+                        }
+
+                        //Reattempting
+                        if (bIsReattempt)
                         {
                             if (!bInsertCheck)
                             {
@@ -5237,7 +5255,7 @@ namespace Acurus.Capella.UI
                         return sResult;
                     }
 
-                    bool isHumanDone = InsertIntoList_human_progress_note(XML_ID);
+                    //bool isHumanDone = InsertIntoList_human_progress_note(XML_ID);
                     if (isHumanDone)
                     {
                         ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
@@ -5350,12 +5368,29 @@ namespace Acurus.Capella.UI
                         bool sInsertcheckForEncounter = false;
                         DateTime dt = DateTime.Now;
                     ln:
+                        bool isEncDone = false;
                         TimeSpan tsDiffrence = DateTime.Now - dt;
                         if (tsDiffrence.TotalHours < (ulTimeOut / 3600000))
                         {
-                            bool ishumancount = GetList_encounter_progress_note(sTableName, XML_ID);
+                            //bool ishumancount = GetList_encounter_progress_note(sTableName, XML_ID);
+                            bool bIsReattempt = true;
 
-                            if (ishumancount)
+                            try
+                            {
+                                isEncDone = InsertIntoListEncounterCurrOrArcForCDC(XML_ID, sTableName);
+                                bIsReattempt = (isEncDone) ? false : true;
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.Message.Contains("Duplicate entry '1'") && ex.Message.Contains("PRIMARY'"))
+                                {
+                                    bIsReattempt = true;
+                                    isEncDone = false;
+                                }
+                            }
+
+                            //Reattempting
+                            if (bIsReattempt)
                             {
                                 if (!sInsertcheckForEncounter)
                                 {
@@ -5386,7 +5421,7 @@ namespace Acurus.Capella.UI
                             blobProgressNoteManager.SaveBlobProgressNotesWithTransaction(ilstBlob_Progress_Note, string.Empty);
                             return sResult;
                         }
-                        bool isEncDone = InsertIntoListEncounterCurrOrArcForCDC(XML_ID, sTableName);
+                        //bool isEncDone = InsertIntoListEncounterCurrOrArcForCDC(XML_ID, sTableName);
                         if (isEncDone)
                         {
                             ilstBlob_Progress_Note[0].Id = Convert.ToUInt64(sEncounterID);
@@ -5571,10 +5606,10 @@ namespace Acurus.Capella.UI
                     {
                         string sQuery = string.Empty;
                         if (sTable.ToUpper() == "ENCOUNTER_CURRENT")
-                            sQuery = "insert into list_encounter_progress_note values(" + EncID.ToString() + ", current_timestamp());";
+                            sQuery = "insert into list_encounter_progress_note values('1'," + EncID.ToString() + ", current_timestamp());";
                         else
                             if (sTable.ToUpper() == "ENCOUNTER_ARCHIVE")
-                            sQuery = "insert into list_encounter_arc_progress_note values(" + EncID.ToString() + ", current_timestamp());";
+                            sQuery = "insert into list_encounter_arc_progress_note values('1'," + EncID.ToString() + ", current_timestamp());";
                         using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
                         {
                             cmdInsert.CommandText = sQuery;
@@ -5790,7 +5825,7 @@ namespace Acurus.Capella.UI
                     DBConnection.Open();
                     using (MySqlTransaction DBTransaction = DBConnection.BeginTransaction())
                     {
-                        string sQuery = "insert into list_human_progress_note values(" + humanID.ToString() + ");";
+                        string sQuery = "insert into list_human_progress_note values('1'," + humanID.ToString() + ");";
                         using (MySqlCommand cmdInsert = new MySqlCommand(sQuery, DBConnection, DBTransaction))
                         {
                             cmdInsert.CommandText = sQuery;

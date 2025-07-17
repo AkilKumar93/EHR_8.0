@@ -148,6 +148,7 @@
     </Compile>
     <Compile Include="ManagerObjects\CarrierManager.cs" />
     <Compile Include="ManagerObjects\CDCEventTrackerManager.cs" />
+    <Compile Include="ManagerObjects\CDC_Audit_LogManager.cs" />
     <Compile Include="ManagerObjects\CDSRuleMasterManager.cs" />
     <Compile Include="ManagerObjects\ChargeHeaderManager.cs">
       <SubType>Code</SubType>
