@@ -319,6 +319,10 @@ $(document).ready(function () {
         EnableProviderSearch(document.getElementById("hdnEnableProviderSearch").value.toLowerCase());
     }
 
+    if ($('#hdnHideScheduleAppointment').val() == "true") {
+        $('#txtProviderSearch').prop('disabled', true);
+        $('#chkSelfReferred').prop('disabled', true);
+    }
 });
 
 function ProviderSelected(event, ui) {
