@@ -609,8 +609,7 @@ function ConvertDate(utcDate) {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     //CAP-3378
     //var now = new Date(utcDate + ' UTC');
-    utcDate = utcDate + 'Z';
-    var now = new Date(utcDate.replace(' ', 'T'));
+    var now = new Date(utcDate.replace(' ', 'T') + 'Z');
     var then = '';
     var month = (now.getMonth() + 1).toString().padStart(2, '0'); 
     if (utcDate == '0001-01-01 00:00:00')
