@@ -1650,7 +1650,7 @@ namespace Acurus.Capella.UI
                     }
                     else if (newly_selected.Count != selected.Count)
                         FillAllAppointmentsForDate();
-                    else if (newly_selected.Any(a => selected.Any(x => x.Text == a.Text)))
+                    else if (!newly_selected.Any(a => selected.Any(x => x.Text == a.Text)))
                         FillAllAppointmentsForDate();
                 }
             }
