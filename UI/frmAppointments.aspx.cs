@@ -4350,7 +4350,16 @@ namespace Acurus.Capella.UI
                     //XmlNode nodeMatchingFacility = xmldoc.SelectSingleNode("/ROOT/PhyList/Facility[@name='" + cboFacilityName.SelectedItem.Text.Trim() + "']");
                     var matchingFacility = physicianFacilityMappingList.PhysicianFacility.FirstOrDefault(x=> x.name == cboFacilityName.SelectedItem.Text.Trim());
                     if (matchingFacility != null)
+                    {
                         sDefaultPhysicians = matchingFacility.defaultphysicianid;
+                    }
+                    else
+                    {
+                        PhysicianManager physicianManager = new PhysicianManager();
+                        var lstMatchingFacility = physicianManager.GetDefaultPhysicianByFacility(cboFacilityName.SelectedItem.Text.Trim());
+                        matchingFacility = lstMatchingFacility.FirstOrDefault();
+                        sDefaultPhysicians = matchingFacility.defaultphysicianid;
+                    }
                 }
                 string[] lstDefaultPhysicians = sDefaultPhysicians.Split(',');
 
