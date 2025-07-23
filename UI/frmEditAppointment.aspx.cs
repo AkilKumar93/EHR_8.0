@@ -783,7 +783,18 @@ namespace Acurus.Capella.UI
                 //logger.Debug("Loading Physician List for Facility='" + hdnFacilityName.Value.Trim().ToUpper() + "'");
                 IList<PhysicianLibrary> PhysicianList = null;
                 if (hdnFacilityName.Value != null)
+                {
                     PhysicianList = UtilityManager.GetPhysicianList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg);//PhyMngr.GetPhysicianandUser(true, hdnFacilityName.Value);
+                    //CAP-3499
+                    if (PhysicianList != null)
+                    {
+                        var otherPhysicianList = UtilityManager.GetInActiveProviderList(hdnFacilityName.Value.Trim(), ClientSession.LegalOrg, true);
+                        foreach (var physician in otherPhysicianList)
+                        {
+                            PhysicianList.Add(physician);
+                        }
+                    }
+                }
 
                 //if (hdnFacilityName.Value.ToUpper().Trim() == System.Configuration.ConfigurationManager.AppSettings["CMGFacilityName"].Trim().ToUpper())
                 //{
