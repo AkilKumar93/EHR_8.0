@@ -8,6 +8,7 @@ using NHibernate.Criterion;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Linq;
+using Acurus.Capella.Core.DTOJson;
 
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
@@ -22,6 +23,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PhysicianLibrary> GetPhysicianListbyFacilityForRCM(string FacName, string sActive);
         IList<PhysicianLibrary> GetInActiveProviderList(string FacName, string sLegalOrg, bool isActive);
         IList<MapFacilityPhysician> GetFacilityListMappedByPhysician(ulong physician_id);
+        IList<PhysicianFacility> GetDefaultPhysicianByFacility(string facilityName);
         ulong SavePhysicians(PhysicianLibrary libraries, string sMacAddress);//vinoth 15/04/2010
         IList<PhysicianLibrary> GetPhysicianListbyFacility(string FacName, string sActive);
         IList<PhysicianLibrary> GetInActivePhysicianById(ulong physician_id);
@@ -380,6 +382,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 }
                 iMySession.Close();
                 facilityPhysician = facilityPhysician.OrderByDescending(a => a.Status).ThenBy(a => a.Facility_Name).ToList();
+            }
+            return facilityPhysician;
+        }
+
+        public IList<PhysicianFacility> GetDefaultPhysicianByFacility(string facilityName)
+        {
+            IList<PhysicianFacility> facilityPhysician = new List<PhysicianFacility>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ISQLQuery sq = iMySession.CreateSQLQuery($"SELECT Facility_Name,group_concat(Physician_ID) as phyid FROM `map_default_fac_phy` where Facility_Name = '{facilityName}' group by Facility_Name;");
+
+                foreach (IList<Object> l in sq.List())
+                {
+                    facilityPhysician.Add(new PhysicianFacility()
+                    {
+                        name = Convert.ToString(l[0]),
+                        defaultphysicianid = Convert.ToString(l[1]),
+                    });
+                }
+                iMySession.Close();
             }
             return facilityPhysician;
         }

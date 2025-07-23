@@ -4353,6 +4353,7 @@ namespace Acurus.Capella.UI
                     {
                         sDefaultPhysicians = matchingFacility.defaultphysicianid;
                     }
+                    //CAP-3500
                     else
                     {
                         PhysicianManager physicianManager = new PhysicianManager();
