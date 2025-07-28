@@ -649,7 +649,8 @@ namespace Acurus.Capella.UI
             {
                 cboFacilityName.Enabled = false;
                 chklstProviders.Enabled = false;
-                chkShowActive.Enabled = false;
+                //CAP-3491
+                //chkShowActive.Enabled = false;
             }
             schAppointmentScheduler.EnableAjaxSkinRendering = true;
             //OverAllPageLoad.Stop();
@@ -664,31 +665,37 @@ namespace Acurus.Capella.UI
                 rdoInActiveProviders.Checked = false;
                 rdoActiveProviders.Checked = true;
             }
+            //CAP-3491
+            if (rdoInActivePhysicians.Checked)
+            {
+                chkShowActive.Checked = true;
+            }
             #region New Code
             //if (System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"] != null)
             //{
             //    sAncillary = System.Configuration.ConfigurationManager.AppSettings["AncillaryTestClinic"].ToString();
             //}
-            if (ApplicationObject.facilityLibraryList != null && cboFacilityName.SelectedItem != null)
-            {
-                var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
-                IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
-                if (cboFacilityName.SelectedItem != null)
-                {
-                    //if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
-                    if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
-                    {
-                        chkShowActive.Enabled = true;
-                    }
-                    else
-                    {
-                        chkShowActive.Enabled = false;
-                    }
-                }
+            //CAP-3491
+            //if (ApplicationObject.facilityLibraryList != null && cboFacilityName.SelectedItem != null)
+            //{
+            //    var facAncillary = from f in ApplicationObject.facilityLibraryList where f.Fac_Name == cboFacilityName.SelectedItem.Text select f;
+            //    IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
+            //    if (cboFacilityName.SelectedItem != null)
+            //    {
+            //        //if (sAncillary.Trim() != cboFacilityName.SelectedItem.Text.Trim())
+            //        if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary != "Y")
+            //        {
+            //            chkShowActive.Enabled = true;
+            //        }
+            //        else
+            //        {
+            //            chkShowActive.Enabled = false;
+            //        }
+            //    }
 
-                else
-                    chkShowActive.Enabled = true;
-            }
+            //    else
+            //        chkShowActive.Enabled = true;
+            //}
             if (hdnSourceScreen.Value == "AppointmentFacility" || ClientSession.UserRole.ToUpper() == "PHYSICIAN" || ClientSession.UserRole.ToUpper() == "PHYSICIAN ASSISTANT")
                 FillCheckListBoxForPhysicianSetUp(hdnApptFacName.Value, true);
             else
@@ -2281,12 +2288,13 @@ namespace Acurus.Capella.UI
             
             if (rdoInActivePhysicians.Checked)
             {
-                chkShowActive.Enabled = true;
                 chkShowActive.Checked = true;
             }
             else
             {
-                chkShowActive.Enabled = false;
+                //CAP-3491
+                //chkShowActive.Enabled = false;
+                chkShowActive.Checked = false;
             }
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "StopLoading", " {sessionStorage.setItem('StartLoading', 'false');StopLoadFromPatChart();}", true);
         }
@@ -4203,7 +4211,8 @@ namespace Acurus.Capella.UI
                 var fac = from f in facilityList where f.Fac_Name == facList[0].Facility_Name select f;
                 TempFac = fac.ToList<FacilityLibrary>();
                 schAppointmentScheduler.Visible = true;
-                chkShowActive.Checked = false;
+                //CAP-3491
+                //chkShowActive.Checked = false;
             }
 
             DateTime dtStart = new DateTime();
