@@ -93,7 +93,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         FillHumanDTO PatientInsuredBag(ulong HumanId);
         FillHumanDTO GetHumanByIdForCheckout(ulong HumanId, ulong ulEncounterID);
         IList<Orders> GetOrdersByOrderID(ulong[] uOrderID);
-        IList<string> GetOrderByHuman(ulong ulHumanID, string sFacility, ulong ulLabID);
+        IList<string> GetOrderByHuman(ulong ulHumanID, string sFacility, ulong ulLabID, bool bIsAncAllLabs = false);
         string GetFaxOrders(string ordersubmitid);
     }
 
@@ -131,8 +131,25 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             IList<OrdersSubmit> ilstOrdersSubmitnew = new List<OrdersSubmit>();
             IList<OrdersAssessment> ordAssList = new List<OrdersAssessment>();
             IList<OrdersSubmit> lstchildorderssubmit = new List<OrdersSubmit>();
+            //Cap - 3361
+            IList<LabLocation> ilstLabLocation = new List<LabLocation>();   
+            Lab objLab = new Lab();
+            FacilityLibrary objFacility = new FacilityLibrary();  
+            
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
+                //Cap - 3361
+                ISQLQuery sqlquery = iMySession.CreateSQLQuery("select f.*,l.* from facility_library f left join lab l on f.Short_Name = l.Lab_Name  where f.Facility_Name='"+sFacilityName+"' ").AddEntity("f", typeof(FacilityLibrary)).AddEntity("l", typeof(Lab));
+                var queryoutput = sqlquery.List();
+               
+                foreach (IList<object> l in queryoutput)
+                {
+                    objLab = (Lab)l[1];
+                    objFacility = (FacilityLibrary)l[0];
+                }
+                ICriteria iLabLocation = iMySession.CreateCriteria(typeof(LabLocation)).Add(Expression.Eq("Lab_ID", objLab.Id)).Add(Expression.Eq("City", objFacility.Fac_City));
+                ilstLabLocation = iLabLocation.List<LabLocation>();
+                
                 ICriteria critOrdSub1 = iMySession.CreateCriteria(typeof(OrdersSubmit)).Add(Expression.Eq("Encounter_ID", EncounterId));
                 lstchildorderssubmit = critOrdSub1.List<OrdersSubmit>();
                 if (lstchildorderssubmit.Count == 0)
@@ -153,6 +170,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             objord = OrdersBySubmitID[i];
                             objord.Id = 0;
                             objord.Encounter_ID = EncounterId;
+                            //Cap - 3361
+                            objord.Order_Code_Type = objLab.Lab_Name;
                             objord.Version = 1;
                             objord.Created_By = sUserName;
                             objord.Created_Date_And_Time = DateTime.UtcNow;
@@ -179,6 +198,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 objordsub.Modified_Date_And_Time = DateTime.MinValue;
                                 objordsub.Facility_Name = sFacilityName;
                                 objordsub.Is_Task_Created = "N";
+                                //Cap - 3361
+                                objordsub.Order_Code_Type = objLab.Lab_Name;
+                                objordsub.Lab_ID = objLab.Id;
+                                objordsub.Lab_Name = objLab.Lab_Name;
+                                objordsub.Lab_Location_Name = ilstLabLocation?[0].Location_Name;
                                 ilstOrdersSubmitnew.Add(objordsub);
                             }
                         }
@@ -8229,18 +8253,31 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return objFillHuman;
         }
 
-        public IList<string> GetOrderByHuman(ulong ulHumanID, string sFacility, ulong ulLabID)
+        public IList<string> GetOrderByHuman(ulong ulHumanID, string sFacility, ulong ulLabID,bool bIsAncAllLabs=false)
         {
             IList<string> ilstOrders = new List<string>();
             ArrayList orderList = null;
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                IQuery query2 = iMySession.GetNamedQuery("GetOrderGenerateOrderbyHuman");
-                query2.SetString(0, ulLabID.ToString());
-                query2.SetString(1, sFacility.ToString());
-                query2.SetString(2, ulHumanID.ToString());
-                query2.SetString(3, ulLabID.ToString());
-                query2.SetString(4, ulHumanID.ToString());
+                //Cap - 3361
+                IQuery query2 ;
+                if (bIsAncAllLabs==true)
+                {
+                    query2 = iMySession.GetNamedQuery("GetOrderGenerateOrderbyHumanOnly");
+                    query2.SetString(0, sFacility.ToString());
+                    query2.SetString(1, ulHumanID.ToString());
+                    query2.SetString(2, ulHumanID.ToString());
+                }
+                else
+                {
+                    query2 = iMySession.GetNamedQuery("GetOrderGenerateOrderbyHuman");
+                    query2.SetString(0, ulLabID.ToString());
+                    query2.SetString(1, sFacility.ToString());
+                    query2.SetString(2, ulHumanID.ToString());
+                    query2.SetString(3, ulLabID.ToString());
+                    query2.SetString(4, ulHumanID.ToString());
+                }
+                
                 orderList = new ArrayList(query2.List());
                 if (orderList != null && orderList.Count > 0)
                 {

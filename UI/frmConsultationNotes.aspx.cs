@@ -71,6 +71,7 @@ namespace Acurus.Capella.UI
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                     //Jira #CAP-115
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
+                    sXMLEncounterDoc = UtilityManager.ReplaceHexadecimal(sXMLEncounterDoc);
                 }
                 FileNames = "Encounter" + "_" + Encounter_Id + ".xml";
                 //Jira #CAP-855
@@ -110,6 +111,7 @@ namespace Acurus.Capella.UI
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                     //Jira #CAP-115
                     sXMLEncounterDoc = UtilityManager.ReplaceSpecialCharaters(sXMLEncounterDoc);
+                    sXMLEncounterDoc = UtilityManager.ReplaceHexadecimal(sXMLEncounterDoc);
                 }
                 //Jira #CAP-855
                 string sIsCapellaEncounter = string.Empty;
@@ -3323,6 +3325,7 @@ margin:0in 0in 0in 9in;
             {
                 objHumanblob = ilstHumanBlob[0];
                 sXMLContent = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
+                sXMLContent = UtilityManager.ReplaceHexadecimal(sXMLContent);
                 if (sXMLContent.Substring(0, 1) != "<")
                     sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                 itemDoc.LoadXml(sXMLContent);
