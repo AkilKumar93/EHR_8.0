@@ -16121,6 +16121,25 @@ FROM orders_submit OS , wf_object W,orders o
  OS.Human_Id=? and OS.Order_Type='DIAGNOSTIC ORDER' group by os.order_submit_id) a order by a.order_submit_id desc]]>
 	</sql-query>
 
+	<sql-query name="GetOrderGenerateOrderbyHumanOnly">
+		<![CDATA[select a.ord from(SELECT concat(os.order_submit_id,' | ', if(os.Test_Date<>'',Date_Format(os.Test_Date,'%d-%b-%Y'),''),' | ', p.physician_prefix,' ',
+p.physician_First_Name,' ',p.physician_Middle_Name,' ',p.physician_Last_Name,' | [',
+group_concat(concat(o.lab_procedure,' - ',o.lab_procedure_description) SEPARATOR ' ; ' ),']','^',p.physician_prefix,' ',
+p.physician_First_Name,' ',p.physician_Last_Name,' ', p.Physician_suffix, '@',p.physician_npi,
+'@', os.Facility_Name,'@',p.physician_Address1,'@',p.physician_telephone,'@',p.physician_Fax,'@',os.order_submit_id) as ord,os.order_submit_id
+FROM orders_submit OS , wf_object W,orders o,Physician_library p
+ WHERE W.obj_system_id=OS.Order_Submit_Id and o.order_submit_id=os.order_submit_id and os.physician_id=p.physician_library_id and
+ W.Current_Process='ORDER_GENERATE' And W.Obj_Type='DIAGNOSTIC ORDER' AND OS.Facility_Name<>? AND OS.Is_Paper_Order='N' AND
+ OS.Human_Id=? and OS.Order_Type='DIAGNOSTIC ORDER' group by os.order_submit_id
+union
+SELECT concat(os.order_submit_id,' | ', if(os.Test_Date<>'',Date_Format(os.Test_Date,'%d-%b-%Y'),''),' | ', ' | [',
+group_concat(concat(o.lab_procedure,' - ',o.lab_procedure_description) SEPARATOR ' ; ' ),']','^','@','','@','','@','','@','','@','','@',os.order_submit_id) as ord,os.order_submit_id
+FROM orders_submit OS , wf_object W,orders o
+ WHERE W.obj_system_id=OS.Order_Submit_Id and o.order_submit_id=os.order_submit_id and 
+ W.Current_Process='ORDER_GENERATE' And W.Obj_Type='DIAGNOSTIC ORDER' AND OS.Is_Paper_Order='N' and os.Physician_id='0' AND
+ OS.Human_Id=? and OS.Order_Type='DIAGNOSTIC ORDER' group by os.order_submit_id) a order by a.order_submit_id desc]]>
+	</sql-query>
+
 
 
 	<sql-query name="GetOrderbyOrderSubmitID">

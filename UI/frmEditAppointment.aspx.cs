@@ -4496,7 +4496,9 @@ namespace Acurus.Capella.UI
                         cboOrder.Items.Add(new RadComboBoxItem());
                         cboOrder.Items.Add("Akido Order");
                     }
-                    ilstOrder = objorder.GetOrderByHuman(ulHuman, cboFacility.SelectedItem.Text, Convert.ToUInt64(xmlValue));                    
+                    //Cap - 3361
+                    //ilstOrder = objorder.GetOrderByHuman(ulHuman, cboFacility.SelectedItem.Text, Convert.ToUInt64(xmlValue));                    
+                    ilstOrder = objorder.GetOrderByHuman(ulHuman, cboFacility.SelectedItem.Text, Convert.ToUInt64(xmlValue),true);
                     if (ilstOrder != null && ilstOrder.Count() > 0)
                     {
                         //Cap - 2505
