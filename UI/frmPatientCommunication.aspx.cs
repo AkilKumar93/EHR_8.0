@@ -407,10 +407,10 @@ namespace Acurus.Capella.UI
             {
                 MessageDetails = objPatNotesMngr.GetPatientNotesByMsgID(Convert.ToUInt32(MessageID));
                 IList<string> patientlst = new List<string>();
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg, sExcludeUserRole: "Auditor");
                 if (MessageDetails.Count > 0 && !patientlst.Any(a=>a.Contains(MessageDetails[0].Assigned_To)))
                 {
-                    patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL", ClientSession.LegalOrg);
+                    patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("SHOW ALL", ClientSession.LegalOrg, sExcludeUserRole: "Auditor");
                 }
                 var result = new { DropDown = ilstStaticLookUp, Message = MessageDetails, Facility = MessageDetails[0].Facility_Name, AssignedTo = patientlst };
                 return JsonConvert.SerializeObject(result);
@@ -418,7 +418,7 @@ namespace Acurus.Capella.UI
             else
             {
                 IList<string> patientlst = new List<string>();
-                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg);
+                patientlst = objPatNotesMngr.MapPhysicianUserListForFacility(ClientSession.FacilityName, ClientSession.LegalOrg, sExcludeUserRole: "Auditor");
                 var Result = new { DropDown = ilstStaticLookUp, Message = MessageDetails, Facility = ClientSession.FacilityName, AssignedTo = patientlst };
                 return JsonConvert.SerializeObject(Result);
             }
@@ -477,8 +477,7 @@ namespace Acurus.Capella.UI
             }
             IList<string> patientlst = new List<string>();
             PatientNotesManager objPatNotesMngr = new PatientNotesManager();
-
-            patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("ALL", ClientSession.LegalOrg, sUserName, sUserRole);
+            patientlst = objPatNotesMngr.MapPhysicianUserListForFacility("ALL", ClientSession.LegalOrg, sUserName, sUserRole, "Auditor");
             var Result = new { AssignedTo = patientlst };
             return JsonConvert.SerializeObject(Result);
         }

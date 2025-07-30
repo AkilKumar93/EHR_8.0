@@ -26,7 +26,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IList<PatientNotes> GetPatientNotesByMsgID(ulong ulMsgID);
         void SavePatientNotes(IList<PatientNotes> SaveList, string MacAddress);
         void UpdatePatientMessage(PatientNotes messages, string ObjType, int CloseType, string owner, DateTime startTime, string MacAddress);
-        IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg, string sUsername,string sUserRole);
+        IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg, string sUsername,string sUserRole, string sExcludeUserRole);
         IList<PatientNotes> GetMessageDetails(string MessageDescription, string MessageNotes, string humanid);
         IList<PatientNotes> GetFilteredMessageDetailsByEncounterId(string MessageDescription, string MessageNotes, string EncounterID, string HumanID);
         IList<PatientNotes> GetFilteredLineItemMessages(string MessageDescription, string MessageNotes, string HumanID, string ChargeLineID, string ChargeHeaderID);
@@ -901,10 +901,17 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         }
         //Jira CAP-579
         //public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg)
-        public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg,string sUsername="",string sUserRole="")
+        public IList<string> MapPhysicianUserListForFacility(string sFacilityName, string sLegalOrg,string sUsername="",string sUserRole="", string sExcludeUserRole = "")
         { 
             IList<string> UserList = new List<string>();
             string sPhyName = string.Empty;
+
+            // CAP-3501: Adding the filter to exclude specific roles such as 'Auditor'
+            if (!string.IsNullOrEmpty(sExcludeUserRole))
+                sExcludeUserRole = $" and u.Role <> '{sExcludeUserRole}'";
+            else
+                sExcludeUserRole = "";
+
             //Jira CAP-579 - Adding new condition
             if (sFacilityName == "ALL")
             {
@@ -920,7 +927,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     IList<object> objLst = new List<object>();
                     if (sUserRole == "")
                     {
-                        objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0 and u.Person_Name like'%" + sUsername + "%' union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID and (p.Physician_Last_Name like'%" + sUsername + "%' or p.Physician_Middle_Name like '%" + sUsername + "%' or p.Physician_First_Name like '%" + sUsername + "%')) as a order by LastName,FirstName").List<object>();
+                        objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0 and u.Person_Name like'%" + sUsername + "%'" + sExcludeUserRole + " union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID and (p.Physician_Last_Name like'%" + sUsername + "%' or p.Physician_Middle_Name like '%" + sUsername + "%' or p.Physician_First_Name like '%" + sUsername + "%')" + sExcludeUserRole + ") as a order by LastName,FirstName").List<object>();
                     }
                     else
                     {
@@ -961,7 +968,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 //Gitlab# 2485 - Physician Name Display Change
                 using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
                 {
-                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0 union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID) as a order by LastName,FirstName").List<object>();
+                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from user u where status = 'a' and u.Legal_Org='" + sLegalOrg + "' and u.physician_library_id = 0" + sExcludeUserRole + " union all select u.user_name as UserName,p.Physician_Last_Name as LastName, Physician_First_Name as FirstName, Physician_Middle_Name as MI,Physician_Suffix as Suffix from user u, physician_library p where status = 'a' and u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_Library_ID" + sExcludeUserRole + ") as a order by LastName,FirstName").List<object>();
 
                     for (int i = 0; i < objLst.Count; i++)
                     {
@@ -996,7 +1003,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                     //IList<object> objLst = iMySession.CreateSQLQuery("select u.user_name ,'',u.person_name,'','' from Map_facility_user f,user u where u.Physician_Library_Id = 0 and u.user_name = f.user_name and f.facility_Name = '" + sFacilityName + "' group by u.user_name union all select u.user_name, phy.Physician_Last_Name, phy.Physician_First_Name, phy.Physician_Middle_Name, phy.Physician_Suffix from user u, map_facility_physician p, physician_library phy, Map_facility_user where  u.physician_library_id <> 0 and u.Physician_Library_ID = p.Physician_ID and u.physician_library_id = phy.physician_library_id  and   p.facility_Name = '" + sFacilityName + "' group by user_name").List<object>();
 
-                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from Map_facility_user f,user u where u.Physician_Library_Id = 0 and u.Legal_Org='" + sLegalOrg + "' and  u.user_name = f.user_name and f.facility_Name = '" + sFacilityName + "' group by UserName union all select u.user_name as UserName, phy.Physician_Last_Name as LastName, phy.Physician_First_Name as FirstName, phy.Physician_Middle_Name as MI, phy.Physician_Suffix as Suffix from user u, map_facility_physician p, physician_library phy, Map_facility_user where  u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_ID and u.physician_library_id = phy.physician_library_id  and   p.facility_Name = '" + sFacilityName + "' group by UserName) as a order by LastName,FirstName").List<object>();
+                    IList<object> objLst = iMySession.CreateSQLQuery("select * from (select u.user_name as UserName,u.person_name as LastName,'' as FirstName,'' as MI,'' as Suffix from Map_facility_user f,user u where u.Physician_Library_Id = 0 and u.Legal_Org='" + sLegalOrg + "' and  u.user_name = f.user_name and f.facility_Name = '" + sFacilityName + "'" + sExcludeUserRole + " group by UserName union all select u.user_name as UserName, phy.Physician_Last_Name as LastName, phy.Physician_First_Name as FirstName, phy.Physician_Middle_Name as MI, phy.Physician_Suffix as Suffix from user u, map_facility_physician p, physician_library phy, Map_facility_user where  u.physician_library_id <> 0 and u.Legal_Org='" + sLegalOrg + "' and u.Physician_Library_ID = p.Physician_ID and u.physician_library_id = phy.physician_library_id  and   p.facility_Name = '" + sFacilityName + "'" + sExcludeUserRole + " group by UserName) as a order by LastName,FirstName").List<object>();
 
                     for (int i = 0; i < objLst.Count; i++)
                     {
