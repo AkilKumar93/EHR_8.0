@@ -448,7 +448,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
                     //Jira CAP-3393
-                    sXMLEncounterDoc = ReplaceHexadecimal(sXMLEncounterDoc);
+                    sXMLEncounterDoc = UtilityManager.ReplaceHexadecimal(sXMLEncounterDoc);
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                     //Jira #CAP-115
@@ -470,7 +470,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Human_XML);
                     //Jira CAP-3393
-                    sXMLHumanDoc = ReplaceHexadecimal(sXMLHumanDoc);
+                    sXMLHumanDoc = UtilityManager.ReplaceHexadecimal(sXMLHumanDoc);
                 }
                 else
                 {
@@ -482,7 +482,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     {
                         sXMLHumanDoc = System.Text.Encoding.UTF8.GetString(ilstHumanBlob[0].Human_XML);
                         //Jira CAP-3393
-                        sXMLHumanDoc = ReplaceHexadecimal(sXMLHumanDoc);
+                        sXMLHumanDoc = UtilityManager.ReplaceHexadecimal(sXMLHumanDoc);
                     }
                 }
 
@@ -1547,16 +1547,16 @@ namespace Acurus.Capella.UI.WebServices.API
             DataSet UserByPHYIDResult = DBConnector.ReadData(string.Format(qryUserByPHYID, sProviderUserID));
             return DBConnector.DataTableToList<User>(UserByPHYIDResult.Tables[0]) ?? new List<User>();
         }
-        //Jira CAP-3393
-        public string ReplaceHexadecimal(string sInputString)
-        {
-            string sHtmlEntitiesRegx = @"&#x?[0-9a-fA-F]+;?";
-            sInputString = Regex.Replace(sInputString, sHtmlEntitiesRegx, " ");
+        ////Jira CAP-3393
+        //public string ReplaceHexadecimal(string sInputString)
+        //{
+        //    string sHtmlEntitiesRegx = @"&#x?[0-9a-fA-F]+;?";
+        //    sInputString = Regex.Replace(sInputString, sHtmlEntitiesRegx, " ");
 
-            string sHexadecimalRegx = @"^0x[0-9a-fA-F]+$|^[0-9a-fA-F]{2,}$";
-            sInputString = Regex.Replace(sInputString, sHexadecimalRegx, " ");
-            return sInputString;
-        }
+        //    string sHexadecimalRegx = @"^0x[0-9a-fA-F]+$|^[0-9a-fA-F]{2,}$";
+        //    sInputString = Regex.Replace(sInputString, sHexadecimalRegx, " ");
+        //    return sInputString;
+        //}
     }
 
     public static class DBConnector

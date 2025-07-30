@@ -57,6 +57,7 @@ namespace Acurus.Capella.UI
                 if (ilstEncounterBlob.Count > 0)
                 {
                     sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    sXMLEncounterDoc = UtilityManager.ReplaceHexadecimal(sXMLEncounterDoc);
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                     //Jira #CAP-115
@@ -103,6 +104,7 @@ namespace Acurus.Capella.UI
                 if (ilstEncounterBlob.Count > 0)
                 {
                     sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                    sXMLEncounterDoc = UtilityManager.ReplaceHexadecimal(sXMLEncounterDoc);
                     if (sXMLEncounterDoc.Substring(0, 1) != "<")
                         sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                     //Jira #CAP-115
@@ -476,6 +478,7 @@ namespace Acurus.Capella.UI
             if (ilstEncounterBlob.Count > 0)
             {
                 sXMLEncounterDoc = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                sXMLEncounterDoc = UtilityManager.ReplaceHexadecimal(sXMLEncounterDoc);
                 if (sXMLEncounterDoc.Substring(0, 1) != "<")
                     sXMLEncounterDoc = sXMLEncounterDoc.Substring(1, sXMLEncounterDoc.Length - 1);
                 //Jira #CAP-115
