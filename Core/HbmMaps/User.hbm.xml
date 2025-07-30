@@ -31,6 +31,7 @@
 	<property name="Is_All_Facilities" column="Is_All_Facilities" />
 	<property name="Is_Direct_Login" column="Is_Direct_Login" />
 	<property name="Is_EMail_Login_Mandatory" column="Is_EMail_Login_Mandatory" />
+	<property name="Default_Legal_Org" column="Default_Legal_Org" />
   </class>
 </hibernate-mapping>
 
