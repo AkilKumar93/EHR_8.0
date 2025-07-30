@@ -195,7 +195,7 @@ namespace Acurus.Capella.LabAgent
                                         {
                                             StringBuilder logmsg = new StringBuilder();
                                             logmsg.Append("Error :Order Web Service Send Failed Detalis : " + DateTime.Now.ToString() + Environment.NewLine);
-                                            logmsg.Append(objWebResult[0].ToString() + " - " + objWebResult[1].ToString() + " - " + objWebResult[2].ToString() + Environment.NewLine);
+                                            logmsg.Append(objWebResult[0]?.ToString() ?? "" + " - " + objWebResult[1]?.ToString() ?? "" + " - " + objWebResult[2]?.ToString() ?? "" + Environment.NewLine);
                                             using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
                                             {
                                                 tx.WriteLine(logmsg);
@@ -292,7 +292,7 @@ namespace Acurus.Capella.LabAgent
                                 {
                                     StringBuilder logmsg = new StringBuilder();
                                     logmsg.Append("Error :Order Web Service Send Failed Detalis : " + DateTime.Now.ToString() + Environment.NewLine);
-                                    logmsg.Append(objWebResult[0].ToString() + " - " + objWebResult[1].ToString() + " - " + objWebResult[2].ToString() + Environment.NewLine);
+                                    logmsg.Append(objWebResult[0]?.ToString() ?? "" + " - " + objWebResult[1]?.ToString() ?? "" + " - " + objWebResult[2]?.ToString() ?? "" + Environment.NewLine);
                                     using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
                                     {
                                         tx.WriteLine(logmsg);
