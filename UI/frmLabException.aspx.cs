@@ -1276,7 +1276,7 @@ namespace Acurus.Capella.UI
 
             HumanManager HumanMngr = new HumanManager();
             Human objhm = HumanMngr.GetHumanFromHumanID(Convert.ToUInt32(HumanID));
-            string sPatientname = (objhm.Last_Name + "," + objhm.First_Name + " " + objhm.MI + " | DOB: " + objhm.Date_Of_Death.ToString("dd-MMM-yyyy") + " | " + objhm.Sex + " | ACC#: " + objhm.Id.ToString() + " | EX.ACC#: " + objhm.Patient_Account_External.ToString() + " | ADDR: " + objhm.Street_Address1.ToString() + " | Ph: " + objhm.Home_Phone_No.ToString() + " | PATIENT TYPE: " + objhm.Human_Type.ToString());
+            string sPatientname = (objhm.Last_Name + "," + objhm.First_Name + " " + objhm.MI + " | DOB: " + objhm.Birth_Date.ToString("dd-MMM-yyyy") + " | " + objhm.Sex + " | ACC#: " + objhm.Id.ToString() + " | EX.ACC#: " + objhm.Patient_Account_External.ToString() + " | ADDR: " + objhm.Street_Address1.ToString() + " | Ph: " + objhm.Home_Phone_No.ToString() + " | PATIENT TYPE: " + objhm.Human_Type.ToString());
 
             var result = new { HumanDetails = sPatientname, listOrders = listOrders };
             
