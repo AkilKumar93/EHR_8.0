@@ -300,6 +300,7 @@ Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function (sender, a
 
 $(document).ready(function () {
     //Jira Cap - 3206
+    $find("btnDemographics").set_enabled(false);    
     $("#UnassignedResults").empty();
     $("#UnassignedResults").append(`
     <table id=EncounterTable2 class='table table-bordered Gridbodystyle'  style='table-layout: fixed;'>
@@ -380,7 +381,8 @@ function initializeAutocomplete() {
         arrPatient = [];
         $(".ui-autocomplete").hide();
         sessionStorage.setItem("valuepatientsearch", "");
-        sessionStorage.setItem("labelpatientsearch", "")
+        sessionStorage.setItem("labelpatientsearch", "");
+        sessionStorage.setItem("HumanId", "");
         $("#imgClearPatientText").removeClass("disabled");
         $('#txtPatientSearch').prop('disabled', false);
         document.getElementById("hdnHumanID").value = 0;
@@ -780,7 +782,7 @@ function FindPatientenabled(val, sPatientname) {
         $('#txtPatientSearch').prop('disabled', true);
         $("#imgClearPatientText").addClass("disabled");
         sessionStorage.setItem("valuepatientsearch", "");
-        sessionStorage.setItem("labelpatientsearch", "");
+        sessionStorage.setItem("labelpatientsearch", "");        
         txtPatientSearch.value = "";
         txtPatientSearch.attributes['data-human-id'].value = "";
         sessionStorage.setItem('StartLoading', 'false');
@@ -792,7 +794,7 @@ function FindPatientenabled(val, sPatientname) {
         //$('#imgClearPatientText').prop('disabled', false);
         $("#imgClearPatientText").removeClass("disabled");
         sessionStorage.setItem("valuepatientsearch", "");
-        sessionStorage.setItem("labelpatientsearch", "");
+        sessionStorage.setItem("labelpatientsearch", "");       
         txtPatientSearch.value = sPatientname;
         txtPatientSearch.attributes['data-human-id'].value = sPatientname;
         document.getElementById('hdnHumanID').value = HumanId;
@@ -1172,7 +1174,7 @@ function Load() {
         }
         else {
             $find("btnMatchOrders").set_enabled(true);
-
+            $find("btnDemographics").set_enabled(true);
             $.ajax({
                 type: "GET",
                 url: "./frmLabException.aspx/FillOutstandingorders?ResultMasterID=" + ResultId,
@@ -1350,7 +1352,7 @@ function Load() {
                         $("#imgClearPatientText").removeClass("disabled");
                         document.getElementById("hdnHumanID").value = 0;
                         sessionStorage.setItem("valuepatientsearch", "");
-                        sessionStorage.setItem("labelpatientsearch", "");
+                        sessionStorage.setItem("labelpatientsearch", "");                        
                     }
 
 
@@ -1591,6 +1593,7 @@ function OnClientCloseOrderManagement(oWindow, args) {
         if (sessionStorage.getItem("HumanId") != null && sessionStorage.getItem("HumanId") != undefined) {
             document.getElementById(GetClientId("hdnHumanID")).value = sessionStorage.getItem("HumanId");
             vHumanID = sessionStorage.getItem("HumanId").toString();
+            sessionStorage.setItem("HumanId", "");
         }
     }
 
