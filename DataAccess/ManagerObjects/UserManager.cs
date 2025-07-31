@@ -10,6 +10,7 @@ using System.Collections;
 using System.Web;
 using System.IO;
 using System.DirectoryServices;
+using System.Linq;
 
 namespace Acurus.Capella.DataAccess.ManagerObjects
 {
@@ -838,6 +839,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 if (UserList.Count > 0)
                 {
+                    //CAP-3340
+                    if (UserList.Count > 1)
+                    {
+                        string default_Legal_Org = UserList.FirstOrDefault()?.Default_Legal_Org ?? "";
+                        UserList = UserList.Where(a => a.Legal_Org.ToUpper() == default_Legal_Org).ToList();
+                        objLoginDTO.User = UserList;
+                    }
                     ScnTabManager objScnTabmngr = new ScnTabManager();
                     objLoginDTO.UserPermissionDTO = objScnTabmngr.GetUserPermisssions(UserList[0].user_name, bIsScnTabLoad);
 

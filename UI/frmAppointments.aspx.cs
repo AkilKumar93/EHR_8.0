@@ -2339,7 +2339,7 @@ namespace Acurus.Capella.UI
             }
             ModalWindow.Height = 540;
             ModalWindow.VisibleOnPageLoad = true;
-            ModalWindow.Width = 1150;
+            ModalWindow.Width = 1250;
             ModalWindow.CenterIfModal = true;
             ModalWindow.VisibleTitlebar = true;
             ModalWindow.VisibleStatusbar = false;

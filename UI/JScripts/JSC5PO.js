@@ -277,7 +277,7 @@ function OpenModal(data) {
         var obj = new Array();
         //Cap - 1547
         //var result = openModal("frmBlockDays.aspx", 540, 1230, obj, "ctl00_ModalWindow");
-        var result = openModal("frmBlockDays.aspx", 540, 1230, obj, "ctl00_C5POBody_ModalWindow");
+        var result = openModal("frmBlockDays.aspx", 540, 1250, obj, "ctl00_C5POBody_ModalWindow");
         var WindowName = $find('ctl00_ModalWindow');
         //CAP-3311 - Applying null safety check
         WindowName?.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);

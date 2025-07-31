@@ -1224,6 +1224,7 @@ namespace Acurus.Capella.UI
                         {
                             objEncounterblob = ilstEncounterBlob[0];
                             sXMLContent = System.Text.Encoding.UTF8.GetString(ilstEncounterBlob[0].Encounter_XML);
+                            sXMLContent = UtilityManager.ReplaceHexadecimal(sXMLContent);
                             if (sXMLContent.Substring(0, 1) != "<")
                                 sXMLContent = sXMLContent.Substring(1, sXMLContent.Length - 1);
                             itemDoc.LoadXml(sXMLContent);
