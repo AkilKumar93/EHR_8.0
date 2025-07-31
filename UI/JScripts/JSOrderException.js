@@ -300,6 +300,7 @@ Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function (sender, a
 
 $(document).ready(function () {
     //Jira Cap - 3206
+    $find("btnDemographics").set_enabled(false);
     $("#UnassignedResults").empty();
     $("#UnassignedResults").append(`
     <table id=EncounterTable2 class='table table-bordered Gridbodystyle'  style='table-layout: fixed;'>
@@ -380,7 +381,8 @@ function initializeAutocomplete() {
         arrPatient = [];
         $(".ui-autocomplete").hide();
         sessionStorage.setItem("valuepatientsearch", "");
-        sessionStorage.setItem("labelpatientsearch", "")
+        sessionStorage.setItem("labelpatientsearch", "");
+        sessionStorage.setItem("HumanId", "");
         $("#imgClearPatientText").removeClass("disabled");
         $('#txtPatientSearch').prop('disabled', false);
         document.getElementById("hdnHumanID").value = 0;
@@ -1172,7 +1174,7 @@ function Load() {
         }
         else {
             $find("btnMatchOrders").set_enabled(true);
-
+            $find("btnDemographics").set_enabled(true);
             $.ajax({
                 type: "GET",
                 url: "./frmLabException.aspx/FillOutstandingorders?ResultMasterID=" + ResultId,
