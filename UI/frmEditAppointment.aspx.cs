@@ -4400,7 +4400,8 @@ namespace Acurus.Capella.UI
             IList<FacilityLibrary> ilstFacAncillary = facAncillary.ToList<FacilityLibrary>();
             if (ilstFacAncillary.Count > 0 && ilstFacAncillary[0].Is_Ancillary == "Y")
             {
-                ChangeproviderforCMGAncillary(true);
+                //Cap - 3361
+                //ChangeproviderforCMGAncillary(true);
                 hdnFacility.Value = "true";
             }
             else
