@@ -33,7 +33,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 RCopiaSessionManager rcopiaSessionMngr = new RCopiaSessionManager(sLegalOrg);
 
                 string downloadAddress = "";
-                sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(downloadAddress, "AcurusApi", string.Empty, DateTime.UtcNow, sFacilityName, 0, Convert.ToUInt64(sHumanID), sLegalOrg);
+                sErrorMessage = objUpdateInfoMngr.DownloadRCopiaInfo(downloadAddress, "AcurusAPI", string.Empty, DateTime.UtcNow, sFacilityName, 0, Convert.ToUInt64(sHumanID), sLegalOrg);
             }
             catch (Exception ex)
             {
