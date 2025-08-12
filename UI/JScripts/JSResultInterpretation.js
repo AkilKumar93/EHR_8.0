@@ -200,6 +200,8 @@ function GetRadWindow() {
 function DeleteClick() {
     var ErrorMessage = window.confirm("Are you sure you want to delete?");
     if (ErrorMessage == true) {
+        //Cap - 3385
+        localStorage.setItem("IsInterpretationFilled", "N");
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         return true;
     }
