@@ -139,7 +139,7 @@ function ddlTemplate_Onchange() {
     var IsFilled = localStorage.getItem("IsInterpretationFilled");
 
     if (IsFilled == "Y") {
-        DisplayErrorMessage('1105003');
+        DisplayErrorMessage('1105010');
         return false;
     }         
 
@@ -160,7 +160,7 @@ function ddlTemplate_Alert() {
     var IsFilled = localStorage.getItem("IsInterpretationFilled");
 
     if (IsFilled == "Y") {
-        DisplayErrorMessage('1105003');
+        DisplayErrorMessage('1105010');
         return false;
     }
     else {
