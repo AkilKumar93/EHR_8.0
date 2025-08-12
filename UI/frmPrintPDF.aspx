@@ -43,8 +43,7 @@
     </style>
     <title>PDF</title>
     <%--<script src="https://logrocket.acurussolutions.io/LogRocket.js"; crossorigin="anonymous"></script> <script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>--%>
-    <meta name="viewport" content="width=device-width,
-         initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <base target="_self" />
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <link href="CSS/style.css" rel="stylesheet" type="text/css" />

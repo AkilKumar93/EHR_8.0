@@ -92,8 +92,8 @@ namespace Acurus.Capella.UI
                         ds.Tables.Add(dt);
                         grdLabLocations.DataSource = ds.Tables[0];
                         grdLabLocations.DataBind();
-                        //CAP-2385
-                        grdLabLocations.Columns[6].Visible = false;
+                        //CAP-2385, CAP-2621
+                        grdLabLocations.Columns[6].Display = false;
                         if (loclist.Count > 0)
                         {
                             lblResult.Text = mpnLabLocation.TotalNoofDBRecords.ToString() + " Result(s) found";

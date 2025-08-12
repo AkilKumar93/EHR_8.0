@@ -607,7 +607,9 @@ function DOBConvert(DOB) {
 function ConvertDate(utcDate) {
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var now = new Date(utcDate + ' UTC');
+    //CAP-3378
+    //var now = new Date(utcDate + ' UTC');
+    var now = new Date(utcDate.toString().replace(' ', 'T') + 'Z');
     var then = '';
     var month = (now.getMonth() + 1).toString().padStart(2, '0'); 
     if (utcDate == '0001-01-01 00:00:00')
