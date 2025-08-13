@@ -204,7 +204,7 @@
                             <td style="width:6%;">{{ a.CPTCode  }}</td>
                             <td style="width:55%;">{{ a.CPTDesc  }}</td>
                             <td style="width:4%;" align="center">
-                                <input id="txtUnits" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtUnits_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" value="{{a.Units}}" />
+                                <input id="txtUnits" style="width:42px;height:20px;" type="text" maxlength="6" ng-keypress="txtUnits_KeyPress($event)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" value="{{a.Units}}" />
                             </td>
                             <td style="width:20%;">
                                 <select ng-model="a.Modifier1" style="width:51.25px;" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" onchange="EnableSaveButton()">

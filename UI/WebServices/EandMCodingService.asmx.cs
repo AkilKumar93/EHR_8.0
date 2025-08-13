@@ -336,7 +336,7 @@ namespace Acurus.Capella.UI.WebServices
                 CPTCode = a.Split('~')[0],
                 CPTDesc = a.Split('~')[1],
                 EandMCPTID = a.Split('~')[2],
-                Units = a.Split('~')[3],
+                Units = Convert.ToDecimal(a.Split('~')[3]).ToString(),
                 Modifier1 = a.Split('~')[4],
                 Modifier2 = a.Split('~')[5],
                 Modifier3 = a.Split('~')[6],
@@ -347,7 +347,7 @@ namespace Acurus.Capella.UI.WebServices
                 btnDelete = btnDelete,
                 Order = Convert.ToInt32(a.Split('~')[16]),
                 RVU = Convert.ToDouble(a.Split('~')[17]),
-                Amount = (Convert.ToInt32(a.Split('~')[3]) * Convert.ToDouble(a.Split('~')[18])).ToString(),
+                Amount = (Convert.ToDouble(a.Split('~')[3]) * Convert.ToDouble(a.Split('~')[18])).ToString(),
                 DiaPointer1 = a.Split('~')[10],
                 DiaPointer2 = a.Split('~')[11],
                 DiaPointer3 = a.Split('~')[12],
@@ -1133,7 +1133,7 @@ namespace Acurus.Capella.UI.WebServices
                         }
                     }
                     if (objCPT.ToString().Split('~')[2] != "")
-                        eandmCPTList[0].Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
+                        eandmCPTList[0].Units = Convert.ToDecimal(objCPT.ToString().Split('~')[2]);
 
                     eandmCPTList[0].Diagnosis_Pointer_1 = objCPT.ToString().Split('~')[12];
                     eandmCPTList[0].Diagnosis_Pointer_2 = objCPT.ToString().Split('~')[13];
@@ -1159,7 +1159,7 @@ namespace Acurus.Capella.UI.WebServices
                     objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
                     objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
                     if (objCPT.ToString().Split('~')[2] != "")
-                        objEandMCoding.Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
+                        objEandMCoding.Units = Convert.ToDecimal(objCPT.ToString().Split('~')[2]);
                     objEandMCoding.Modifier1 = objCPT.ToString().Split('~')[3];
                     objEandMCoding.Modifier2 = objCPT.ToString().Split('~')[4];
                     objEandMCoding.Modifier3 = objCPT.ToString().Split('~')[5];
@@ -1252,7 +1252,7 @@ namespace Acurus.Capella.UI.WebServices
                     objEandMCoding.Procedure_Code = objCPT.ToString().Split('~')[0];
                     objEandMCoding.Procedure_Code_Description = objCPT.ToString().Split('~')[1];
                     if (objCPT.ToString().Split('~')[2] != "")
-                        objEandMCoding.Units = Convert.ToInt32(objCPT.ToString().Split('~')[2]);
+                        objEandMCoding.Units = Convert.ToDecimal(objCPT.ToString().Split('~')[2]);
                     objEandMCoding.Modifier1 = objCPT.ToString().Split('~')[3];
                     objEandMCoding.Modifier2 = objCPT.ToString().Split('~')[4];
                     objEandMCoding.Modifier3 = objCPT.ToString().Split('~')[5];

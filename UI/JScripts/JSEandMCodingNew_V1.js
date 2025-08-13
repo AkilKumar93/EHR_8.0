@@ -3796,12 +3796,25 @@ myapp.controller('EandMCodingCtrl', function ($scope, $http) {
             // alert(error.Message + ".Please Contact Support!");
         });
     }
-    $scope.txtUnits_KeyPress = function (keyCode) {
+    $scope.txtUnits_KeyPress = function (event) {
+        //Cap- 3504
+        let currentTd = event.target.closest('td');
+        let prevTd = currentTd.previousElementSibling?.innerText; 
 
-        if (event.keyCode < 48 || event.keyCode > 57) {
-            event.returnValue = false;
-            $scope.EnableSaveButton();
+        
+        if (prevTd.includes("___")) {
+            if ((event.keyCode < 48 || event.keyCode > 57) && event.keyCode != 46) {
+                event.preventDefault();
+                $scope.EnableSaveButton();
+            }
         }
+        else {
+            if (event.keyCode < 48 || event.keyCode > 57) {
+                event.preventDefault();
+                $scope.EnableSaveButton();
+            }
+        }
+        
     }
     $scope.validation = function (keyCode) {
         var Units = document.getElementById("txtUnits").value;
