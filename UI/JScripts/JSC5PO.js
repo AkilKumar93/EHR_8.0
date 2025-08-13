@@ -1099,7 +1099,8 @@ function OpenModal(data) {
         }
         if (ID == undefined || ID == "") {
             var result = openModal("frmFindPatient.aspx", 251, 1200, obj, "ctl00_ERXWindow");
-            $find('ctl00_ERXWindow').add_close(OnClientCloseEPRES);
+            //CAP-3543: Applying the sanity check to avoid null and undefined exceptions.
+            $find('ctl00_ERXWindow')?.add_close(OnClientCloseEPRES);
         }
         else {
             OpenERXFromMENU();
@@ -3107,9 +3108,18 @@ function OnSuccessRCopia(response) {
         if (ctTsRefill?.style?.display != null && ctTsRefill?.style?.display != undefined)
             ctTsRefill.style.display = "none";
 
-        document.getElementById("tsRx_Pending").style.display = "none";
-        document.getElementById("tsRx_Need_Signing").style.display = "none";
-        document.getElementById("tsRx_Change").style.display = "none";
+        // CAP-3544: Capturing the element in a separate variable for the sanity check to avoid the null reference exception
+        var tsRx_Pending = document.getElementById("tsRx_Pending");
+        if (tsRx_Pending?.style?.display != null && tsRx_Pending?.style?.display != undefined)
+            tsRx_Pending.style.display = "none";
+
+        var tsRx_Need_Signing = document.getElementById("tsRx_Need_Signing");
+        if (tsRx_Need_Signing?.style?.display != null && tsRx_Need_Signing?.style?.display != undefined)
+            tsRx_Need_Signing.style.display = "none";
+
+        var tsRx_Change = document.getElementById("tsRx_Change");
+        if (tsRx_Change?.style?.display != null && tsRx_Change?.style?.display != undefined)
+            tsRx_Change.style.display = "none";
     }
     else if (responseValues != null && responseValues.length >= 3) {
         if (document.getElementById("tsRefill") != null && document.getElementById("tsRefill") != undefined)
