@@ -20,7 +20,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private DateTime _Modified_Date_And_Time = DateTime.MinValue;
         private DateTime _Created_Date_And_Time = DateTime.MinValue;
         private int _Version = 0;
-        private int _Units = 0;
+        private decimal _Units = 0;
         private string _Modifier1 = string.Empty;
         private string _Modifier2 = string.Empty;
         private string _Modifier3 = string.Empty;
@@ -150,7 +150,7 @@ namespace Acurus.Capella.Core.DomainObjects
             }
         }
         [DataMember]
-        public virtual int Units
+        public virtual decimal Units
         {
             get { return _Units; }
             set { _Units = value; }

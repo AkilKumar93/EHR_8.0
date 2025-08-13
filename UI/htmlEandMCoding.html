@@ -4,6 +4,7 @@
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--<script src="https://logrocket.acurussolutions.io/LogRocket.js" ; crossorigin="anonymous"></script><script>window.LogRocket && window.LogRocket.init('akido/akido-test', { mergeIframes: true }, { enableVerboseLogging: true });</script>-->
+    <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <script>document.write("<script src='JScripts/jquery.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <script>document.write("<script src='JScripts/jQueryAngular.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <script>document.write("<script src='JScripts/jquery-ui.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
@@ -204,7 +205,7 @@
                             <td style="width:6%;">{{ a.CPTCode  }}</td>
                             <td style="width:55%;">{{ a.CPTDesc  }}</td>
                             <td style="width:4%;" align="center">
-                                <input id="txtUnits" style="width:42px;height:20px;" type="text" maxlength="3" ng-keypress="txtUnits_KeyPress(event.keyCode)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" value="{{a.Units}}" />
+                                <input id="txtUnits" style="width:42px;height:20px;" type="text" maxlength="6" ng-keypress="txtUnits_KeyPress($event)" ng-keyup="validation(event.keyCode)" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" value="{{a.Units}}" />
                             </td>
                             <td style="width:20%;">
                                 <select ng-model="a.Modifier1" style="width:51.25px;" ng-disabled="a.EnableScreen=='disabled'?'disabled':''" onchange="EnableSaveButton()">
