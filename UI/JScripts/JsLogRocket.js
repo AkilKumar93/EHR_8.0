@@ -14,7 +14,7 @@ if (sIsEnableLogRocket == "Y") {
         LogRocket.init(sLogRocketClientID,
             {
                 mergeIframes: true,
-                parentDomain: window.location.host,
+                parentDomain: "https://" +window.location.host,
                 release: sVersion,
             });
 
