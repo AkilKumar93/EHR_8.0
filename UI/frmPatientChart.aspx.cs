@@ -1683,20 +1683,34 @@ namespace Acurus.Capella.UI
                     li.Text = string.Concat(strPatientstriptext.Substring(0, 195), "...");
                 }
 
-                //Jira CAP-3559
-                string sPrivateString = strPatientstriptext.Substring(0, strPatientstriptext.IndexOf("|   Acct #"));
+                ////Jira CAP-3559
+                //if (strPatientstriptext.Contains("Med Rec #"))
+                //{
+                //    string sPrivateString = strPatientstriptext.Substring(0, strPatientstriptext.IndexOf("Med Rec #"));
+                //    HtmlGenericControl span = new HtmlGenericControl("span");
+                //    span.InnerText = sPrivateString;
+                //    span.Attributes.Add("data-private", "");
+                //    li.Text = li.Text.Replace(sPrivateString, "");
+                //    lblPatientStrip.Controls.Add(span);
+                //}
+                
+                
+                //lblPatientStrip.Controls.Add(li);
+                //lblPatientStrip.Controls.Add(icon);
+                //lblPatientStrip.Controls.Add(imgWAIT);
+                //lblPatientStrip.Controls.Add(tooltp);
+                //lblPatientStrip.Controls.Add(sqre);
+
                 HtmlGenericControl span = new HtmlGenericControl("span");
-                span.InnerText = sPrivateString;
                 span.Attributes.Add("data-private", "");
-                li.Text = li.Text.Replace(sPrivateString, "");
+                span.Controls.Add(li);
+                span.Controls.Add(li);
+                span.Controls.Add(icon);
+                span.Controls.Add(imgWAIT);
+                span.Controls.Add(tooltp);
+                span.Controls.Add(sqre);
                 lblPatientStrip.Controls.Add(span);
                 //Jira CAP-3559 - End
-
-                lblPatientStrip.Controls.Add(li);
-                lblPatientStrip.Controls.Add(icon);
-                lblPatientStrip.Controls.Add(imgWAIT);
-                lblPatientStrip.Controls.Add(tooltp);
-                lblPatientStrip.Controls.Add(sqre);
             }
 
             string patientName = string.Empty;
