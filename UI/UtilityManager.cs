@@ -7592,7 +7592,9 @@ namespace Acurus.Capella.UI
                     }
                     else if (IsAkidoNoteURLVersion.ToUpper() == "V2")
                     {
-                        listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
+                        //Jira CAP-3571
+                        //listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
+                        listJson = jsonObject.First.FirstOrDefault().Where(a => a["capella_encounter_id"].ToString() == sEncounterID).ToList();
                     }
 
                     if (listJson.Count > 0)
