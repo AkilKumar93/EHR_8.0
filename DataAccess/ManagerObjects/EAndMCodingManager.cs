@@ -1843,21 +1843,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 {
                                     string Lab_Procedure = lstorder[i].Lab_Procedure.ToString().Trim();
                                     string Lab_Procedure_Description = lstorder[i].Lab_Procedure_Description.ToString().Trim();
-                                    //Cap - 3504
-                                    string Units = string.Empty;
-                                    if (lstorder[i].Lab_Procedure_Description.ToString().Split(new[] { "___" }, StringSplitOptions.None).Length>1 && lstorder[i].Lab_Procedure_Description.ToString().Split(new[] { "___" }, StringSplitOptions.None)[1] != "")
-                                    {
-                                        Units = lstorder[i].Lab_Procedure_Description.ToString().Split(new[] { "___" }, StringSplitOptions.None)[1];
-                                    }
-                                    else
-                                    {
-                                        Units = "1";
-                                    }
-
+                                   
                                     OrderCPT.Add(Lab_Procedure);
-                                    //Cap - 3504
-                                    //TempProcedureListOrdersList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
-                                    TempProcedureListOrdersList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + Units + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
+                                    TempProcedureListOrdersList.Add(Lab_Procedure + "~" + Lab_Procedure_Description + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "");
                                     OrdersIDLst.Add(lstorder[i].Id.ToString().Trim());
                                 }
                             }
@@ -1876,10 +1864,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     string new1 = ProcListNew[0];
 
                                     ProcList = (from m in ProcList where m.Split('~')[0] != OrderCPT[i].ToString() select m).ToList<string>();
-                                    //Cap- 3504
-                                    //ProcList.Add(new1.Split('~')[0] + "~" + FinalProcedurelist[0].Split('~')[1] + "~" + new1.Split('~')[2] + "~" + new1.Split('~')[3] + "~" + new1.Split('~')[4] + "~" + new1.Split('~')[5] + "~" + new1.Split('~')[6] + "~" + new1.Split('~')[7] + "~" + new1.Split('~')[8] + "~" + new1.Split('~')[9] + "~" + new1.Split('~')[10] + "~" + new1.Split('~')[11] + "~" + new1.Split('~')[12] + "~" + new1.Split('~')[13] + "~" + new1.Split('~')[14] + "~" + new1.Split('~')[15] + "~" + new1.Split('~')[16] + "~" + new1.Split('~')[17]);
-                                    ProcList.Add(new1.Split('~')[0] + "~" + FinalProcedurelist[0].Split('~')[1] + "~" + new1.Split('~')[2] + "~" + FinalProcedurelist[0].Split('~')[3] + "~" + new1.Split('~')[4] + "~" + new1.Split('~')[5] + "~" + new1.Split('~')[6] + "~" + new1.Split('~')[7] + "~" + new1.Split('~')[8] + "~" + new1.Split('~')[9] + "~" + new1.Split('~')[10] + "~" + new1.Split('~')[11] + "~" + new1.Split('~')[12] + "~" + new1.Split('~')[13] + "~" + new1.Split('~')[14] + "~" + new1.Split('~')[15] + "~" + new1.Split('~')[16] + "~" + new1.Split('~')[17]);
-                                }
+                                   
+                                    ProcList.Add(new1.Split('~')[0] + "~" + FinalProcedurelist[0].Split('~')[1] + "~" + new1.Split('~')[2] + "~" + new1.Split('~')[3] + "~" + new1.Split('~')[4] + "~" + new1.Split('~')[5] + "~" + new1.Split('~')[6] + "~" + new1.Split('~')[7] + "~" + new1.Split('~')[8] + "~" + new1.Split('~')[9] + "~" + new1.Split('~')[10] + "~" + new1.Split('~')[11] + "~" + new1.Split('~')[12] + "~" + new1.Split('~')[13] + "~" + new1.Split('~')[14] + "~" + new1.Split('~')[15] + "~" + new1.Split('~')[16] + "~" + new1.Split('~')[17]);
+                                                                   }
                                 //Cap - 2112 - End
 
 
@@ -2692,11 +2679,26 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             {
                                 //BugID:48904 - A CPT which is present in E_M_Coding table will not be autosuggested anymore for the reasons that (Is_delete='Y' - user has deleted it, Is_delete='N' - already present in CPT list)
                                 var check = (from m in Immcptunit where m.Split('~').Contains(DistinctProcedureList[iDis].ToString().Split('~')[0]) select m).ToArray();
+
+                                //Cap - 3504
+                                string Units = string.Empty;
+                                if (DistinctProcedureList[iDis].ToString().Split(new[] { "___" }, StringSplitOptions.None).Length > 1 && DistinctProcedureList[iDis].ToString().Split(new[] { "___" }, StringSplitOptions.None)[1] != "" && DistinctProcedureList[iDis].ToString().Split(new[] { "___" }, StringSplitOptions.None)[1]!="0.00")
+                                {
+                                    Units = DistinctProcedureList[iDis].ToString().Split(new[] { "___" }, StringSplitOptions.None)[1];
+                                }
+                                else
+                                {
+                                    Units = "1";
+                                }
+
+
                                 if (check.Count() > 0)
                                     ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + check[0].Split('~')[1].ToString() + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[3]);
                                 else
-
-                                    ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[3]);
+                                {
+                                    // ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + "1" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[3]);
+                                    ProcList.Add(DistinctProcedureList[iDis].ToString().Split('~')[0] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[1] + "~" + "" + "~" + Units + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "6" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + "" + "~" + DistinctProcedureList[iDis].ToString().Split('~')[2] + "~" + DistinctProcedureList[iDis].ToString().Split('~')[3]);
+                                }
                             }
                         }
                     }
