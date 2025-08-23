@@ -7594,7 +7594,17 @@ namespace Acurus.Capella.UI
                     {
                         //Jira CAP-3571
                         //listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
-                        listJson = jsonObject.First.FirstOrDefault().Where(a => a["capella_encounter_id"].ToString() == sEncounterID).ToList();
+                        //CAP-3603
+                        if (jsonObject.First.FirstOrDefault().Any(obj => obj["capella_encounter_id"] != null))
+                        {
+                            listJson = jsonObject.First.FirstOrDefault().Where(a => a["capella_encounter_id"].ToString() == sEncounterID).ToList();
+                        }
+                        //CAP-3603
+                        else if (jsonObject.First.FirstOrDefault().Any(obj => obj["resourceIdType"] != null)
+                            && jsonObject.First.FirstOrDefault().Any(obj => obj["resourceIdType"].ToString() == "capella_encounter_id"))
+                        {
+                            listJson = jsonObject.First.FirstOrDefault().Where(a => a["resourceId"].ToString() == sEncounterID).ToList();
+                        }
                     }
 
                     if (listJson.Count > 0)
