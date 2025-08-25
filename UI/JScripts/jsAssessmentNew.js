@@ -1350,9 +1350,9 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
     //});
     $.get("htmICD10.html?version=" + localStorage.getItem("ScriptVersion").split('|')[0].trim(), function (data) {
         $('#dlstICD10').html(data);
-        arrICD10Codes = $.map($('#dlstICD10 option'), function (li) {
-            return $(li).attr("value");
-        });
+        arrICD10Codes = $('#dlstICD10 option').map(function () {
+            return this.value;
+        }).get();
     });
 
     $("#txtICD10").autocomplete({
