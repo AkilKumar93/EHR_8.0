@@ -108,7 +108,7 @@
                                                         </td>
                                                         <td width="17%">
                                                             <telerik:RadButton ID="btnFindDx" runat="server" Text="Find Dx" AccessKey="D" Width="83%"
-                                                                Font-Bold="False" AutoPostBack="false" OnClientClicked="DxClicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle">
+                                                                Font-Bold="False" AutoPostBack="false" OnClientClicked="DxClicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle" Style="padding:0px !important;font-size: 14px !important;">
                                                             </telerik:RadButton>
                                                         </td>
                                                         <td width="3%">
@@ -128,7 +128,7 @@
                                                         </td>
                                                         <td width="17%">
                                                             <telerik:RadButton ID="btnFindRx" runat="server" Text="Find Rx" Width="83%" AccessKey="R"
-                                                                AutoPostBack="false" Font-Bold="False" OnClientClicked="RxClicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle">
+                                                                AutoPostBack="false" Font-Bold="False" OnClientClicked="RxClicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle" Style="padding:0px !important;font-size: 14px !important;">
                                                             </telerik:RadButton>
                                                         </td>
                                                         <td width="3%">
@@ -150,7 +150,7 @@
                                                         </td>
                                                         <td width="17%">
                                                             <telerik:RadButton ID="btnRxAllergy" runat="server" Text="Find Rx" AccessKey="x"
-                                                                Width="83%" AutoPostBack="false" Font-Bold="False" OnClientClicked="RAndXClicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle">
+                                                                Width="83%" AutoPostBack="false" Font-Bold="False" OnClientClicked="RAndXClicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle" Style="padding:0px !important;font-size: 14px !important;">
                                                             </telerik:RadButton>
                                                         </td>
                                                         <td width="3%">
@@ -172,7 +172,7 @@
                                                         </td>
                                                         <td width="17%">
                                                             <telerik:RadButton ID="btnFindLabResult" runat="server" Text="Find Lab Result" AccessKey="L"
-                                                                Width="83%" AutoPostBack="false" Font-Bold="False" OnClientClicked="LabResultClicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle">
+                                                                Width="83%" AutoPostBack="false" Font-Bold="False" OnClientClicked="LabResultClicked" ButtonType="LinkButton" CssClass="bluebutton teleriknormalbuttonstyle" Style="padding:0px !important;font-size: 14px !important;">
                                                             </telerik:RadButton >
                                                         </td>
                                                         <td width="3%">
