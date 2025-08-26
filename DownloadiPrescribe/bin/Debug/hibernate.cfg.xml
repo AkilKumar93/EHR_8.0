@@ -306,6 +306,7 @@
 			<mapping resource="Acurus.Capella.Core.HbmMaps.RCopiaDeduplicateLog.hbm.xml" assembly="Acurus.Capella.Core" />
 			<mapping resource="Acurus.Capella.Core.HbmMaps.Blob_Progress_Note.hbm.xml" assembly="Acurus.Capella.Core" />
 			<mapping resource="Acurus.Capella.Core.HbmMaps.CDCEventTracker.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationUsageLog.hbm.xml" assembly="Acurus.Capella.Core" />
 		</session-factory>
 	</hibernate-configuration>
 
