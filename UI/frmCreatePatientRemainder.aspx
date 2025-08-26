@@ -461,7 +461,7 @@
                     <tr style="height: 5%; right: 20px">
                         <td width="100%" align="right">
                             <telerik:RadButton ID="btnClose" runat="server" AutoPostBack="true" Text="Close" Width="10%" OnClientClicked="btnClose_Clicked" ButtonType="LinkButton" CssClass="redbutton teleriknormalbuttonstyle"
-                                 Style="margin-left:782px;margin-top: 6px;">
+                                 Style="margin-left:782px;margin-top: 6px;padding:0px !important;">
                             </telerik:RadButton>
                         </td>
                     </tr>
