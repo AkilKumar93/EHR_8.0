@@ -533,7 +533,7 @@ function OpenModal(data) {
             } else {
                 obj.push("openingfrom=" + "Menu");
                 obj.push("MyHumanID=" + ID);
-                var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
+                var result = openModal("HtmlPhoneEncounter.html", 835, 1230, obj, "ctl00_ModalWindow");
                 var Window = GetRadWindow();
                 if (Window != undefined && Window != null)
                     Window.add_close(function ClosePhoneEnc(oWindow, args) {
@@ -1931,7 +1931,7 @@ function OnClientButtonClicked(sender, args) {
             } else {
                 obj.push("openingfrom=" + "Menu");
                 obj.push("MyHumanID=" + ID);
-                var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
+                var result = openModal("HtmlPhoneEncounter.html", 835, 1230, obj, "ctl00_ModalWindow");
                 var Window = $find('ctl00_ModalWindow');
                 Window.add_close(function ClosePhoneEnc(oWindow, args) {
                     window.location.href = "frmPatientChart.aspx"
@@ -2042,7 +2042,7 @@ function OnClientClickedSubMenu(data) {
                 } else {
                     obj.push("openingfrom=" + "Menu");
                     obj.push("MyHumanID=" + ID);
-                    var result = openModal("HtmlPhoneEncounter.html", 800, 1230, obj, "ctl00_ModalWindow");
+                    var result = openModal("HtmlPhoneEncounter.html", 835, 1230, obj, "ctl00_ModalWindow");
                     var Window = GetRadWindow();
                     if (Window != undefined && Window != null)
                         Window.add_close(function ClosePhoneEnc(oWindow, args) {
@@ -2710,7 +2710,7 @@ function OnClientClosePhoneEncounter(oWindow, args) {
                         if (src?.indexOf("frmEncounter.aspx") >= 0) {
                             DisplayErrorMessage('1011198');
                         } else {
-                            var result = openModal("HtmlPhoneEncounter.html?openingfrom=Menu&MyHumanID=" + HumanId + "&LoadPatientChart=False", 800, 1230, obj, "ctl00_ModalWindow");
+                            var result = openModal("HtmlPhoneEncounter.html?openingfrom=Menu&MyHumanID=" + HumanId + "&LoadPatientChart=False", 835, 1230, obj, "ctl00_ModalWindow");
                             var WindowName = $find('ctl00_ModalWindow');
                             WindowName.set_behaviors(-Telerik.Web.UI.WindowAutoSizeBehaviors.Close);
                         }

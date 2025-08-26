@@ -2199,6 +2199,8 @@
 	<Message number="7430010" Type="OK" Text="Please enter Call Duration."></Message>
 	<Message number="7430011" Type="OK" Text="Please Select Physician." />
 	<Message number="7430012" Type="OK" Text="Batch is created. Phone Encounter cannot be cancelled." />
+	<Message number="7430013" Type="OK" Text="Please enter the Owner." />
+	<Message number="7430014" Type="OK" Text="Please enter the Signed Date Time." />
 
 	<Message number="851001" Type="OKCANCEL" Text="Would you like to clear all the fields without saving?" />
 	<Message number="851002" Type="OKCANCEL" Text="There are unsaved changes.&#xD;Click &apos;OK&apos; to go back &amp; save the changes or&#xD;Click &apos;Cancel&apos; to proceed without saving." />

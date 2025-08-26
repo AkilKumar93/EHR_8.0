@@ -177,8 +177,6 @@ function pageLoad() {
 
 function CalldateMethod() {
     $("#txtCalldate")[0].value = getLocalTime();
-    //Cap - 3582
-    $("#txtSigneddate")[0].value = getLocalTime();
 }
 function getLocalTime() {
     var e = new Date,
