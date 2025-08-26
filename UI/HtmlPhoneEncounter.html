@@ -143,11 +143,11 @@
             <tr>
                 <td style="width: 100%; border: hidden;" align="center" valign="top">
                     <!--id="tdPhEnc"-->
-                    <fieldset class="panel panel-success" style="border-color: black !important; text-align: left; padding: 10px; vertical-align: top; width: 1170px; height: 185px; margin-left: 11px;" id="fldsetPhEnc">
+                    <fieldset class="panel panel-success" style="border-color: black !important; text-align: left; padding: 10px; vertical-align: top; width: 1170px; height: 230px; margin-left: 11px;" id="fldsetPhEnc">
                         <legend style="font-size: small; font-weight: bold; width: 110px; height: 13px; border-bottom: none; vertical-align: top;">Phone Encounter</legend>
                         <div id="divPatientstrip" runat="server" class=" pnlBarGroup Editabletxtbox " style="height: 21px; margin-top: -28px; vertical-align: middle; padding-top: 4px; position: relative; padding-left: 0px; border: 0px !important;"></div>
                         <div id="divContactDetailstrip" runat="server" class=" pnlBarGroup Editabletxtbox " style="height: 21px; margin-top: 0px; vertical-align: middle; padding-top: 4px; position: relative; padding-left: 0px; border: 0px !important;"></div>
-                        <table style="width: 100%; height: 125px; margin-top: 7px;" id="tbl">
+                        <table style="width: 100%; height: 125px; margin-top: 12px;" id="tbl">
                             <tr>
                                 <td style="font-size: small;width: 9%;">
                                     <label id="lblCallSpokenTo" class="Editabletxtbox">Relationship</label>
@@ -207,11 +207,11 @@
                             <tr>
 
                                 <td style="width: 9%;">
-                                    <div style="margin-top: -28px !important;">
+                                    <div style="margin-top: -23px !important;">
                                         <label id="lblSelectPhysician" class="Editabletxtbox">DOS - Physician</label>
                                     </div>
                                 <td colspan="3">
-                                    <div style="margin-top: -32px !important;">
+                                    <div style="margin-top: -23px !important;">
                                         <select id="cboSelectPhysician" style="width:83%;height: 21px;" class="Editabletxtbox"></select><!--onchange="CboPhysicianChange();"-->
                                         <input type="checkbox" id="chkPhyShowall" onchange="PhysicianShowall();" />
                                         <label id="lblShowAll" class="Editabletxtbox">ShowAll</label>
@@ -219,18 +219,43 @@
                                 </td>
                                 <td style="width:2%;"></td>
                                 <td style="width: 6%;">
-                                    <div style="margin-top: -29px !important;">
-                                        <label id="lblPlan" style="margin-left: 15px;" class="Editabletxtbox">Plan</label>
+                                    <div style="margin-top: -23px !important;">
+                                        <label id="lblPlan" style="margin-left: 20px;" class="Editabletxtbox">Plan</label>
                                         <input type="hidden" id="hdnMessageType" />
                                     </div>
                                 </td>
                                 <td colspan="4">
-                                    <textarea class=" followup editabletxtbox" style="width: 94%;margin-left: 0px;height: 62px;resize: none;vertical-align:bottom;" id="txtNotes" data-src="TREATMENT PLAN NOTES" onclick="EnableSave();"></textarea>
-                                    <div class="col-6-btns" style="float:right !important;margin-top: 13px !important; margin-right: 0px;">
+                                    <textarea class=" followup editabletxtbox" style="width: 94%; margin-left: 0px; height: 62px; resize: none; vertical-align: bottom; margin-top: 15px !important;" id="txtNotes" data-src="TREATMENT PLAN NOTES" onclick="EnableSave();"></textarea>
+                                    <div class="col-6-btns" style="float:right !important;margin-top: 25px !important; margin-right: 0px;">
                                         <a class="fa fa-plus pbDropdownBackground" style="text-decoration:none;" id="pbDropdown" align="centre" font-bold="false" title="Drop down" onclick="FollowupNotes(this, 'TREATMENT PLAN NOTES', 'txtNotes');"> </a>
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input type="checkbox" id="chkSignedAkidoNote" ng-click="chkSignedAkidoNote($event)" style="margin-left: 0px;">
+                                    <label id="lblSignedAkidoNote" for="chkSignedAkidoNote" style="font-size: 13px;font-weight:500;">Signed in Akido Chart</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-size: small;width: 9%;">
+                                    <label id="lblOwner" class="Editabletxtbox">Owner</label>
+                                </td>
+                                <td colspan="3">
+                                    <input type="text" id="txtAssignedTo" onkeypress="EnableSave()" class="Editabletxtbox" style="width: 410px;" />
+                                </td>
+                                <td style="font-size: small;width:2%;">
+                                    <img id="imgclearAssignTo" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top: -4px; width: 50%; height: 55%; margin-left: -80px;" />
+                                </td>
+                                
+                                <td style="font-size: small;width:6%;">
+                                    <label id="lblcabture" class="MandLabelstyle">Signed at*</label>
+                                </td>
+                                <td style="width: 15%;">
+                                    <input type="text" style="width: 95%;" id="txtSigneddate" onkeydown="return false" textmode="Date" autocomplete="off" class="Editabletxtbox" onkeypress="EnableSave();" />
+                                </td>
+                            </tr>
+                            
                         </table>
                     </fieldset>
                 </td>
@@ -242,7 +267,7 @@
         </div>-->
         <div id="divCPTPanel" class="panel panel-default" style="padding:0px;height: 304px;width:1170px;margin-left: 11px;">
             <div class="panel-headingserv">
-                <div style="transform: rotate(270deg);margin-left: -124px;display: inline-block;font-size: 13px;width: 245px;font-weight: bold;letter-spacing: 1px;margin-top: 35px;color:red;">CPTs</div>
+                <div style="transform: rotate(270deg);margin-left: -124px;display: inline-block;font-size: 13px;width: 245px;font-weight: bold;letter-spacing: 1px;margin-top: 57px;color:red;">CPTs</div>
             </div>
             <div class="panel-body">
                 <table id="CPTDetails" style="width:100%;">

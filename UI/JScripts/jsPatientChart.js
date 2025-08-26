@@ -66,7 +66,7 @@ function OpenPhoneEncounter() {
     if (src?.indexOf("frmEncounter.aspx") >= 0) {
         DisplayErrorMessage('1011198');
     } else {
-        var result = openModal("HtmlPhoneEncounter.html", 800, 1200, obj, "PhoneEncounter");
+        var result = openModal("HtmlPhoneEncounter.html", 835, 1200, obj, "PhoneEncounter");
     }
 }
 
