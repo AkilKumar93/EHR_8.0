@@ -2824,6 +2824,12 @@ namespace Acurus.Capella.UI
             bool bSelectDefault = true;
             //PhysicianList = physicianMngr.GetPhysicianListbyFacility(ddlFacilityName.SelectedItem.Text, "Y");
             PhysicianList = UtilityManager.GetPhysicianList(ddlFacilityName.SelectedItem.Text.Trim(),ClientSession.LegalOrg);
+            //CAP-3590
+            var otherPhysicianList = UtilityManager.GetInActiveProviderList(ddlFacilityName.SelectedItem.Text.Trim(), ClientSession.LegalOrg, true);
+            foreach (var item in otherPhysicianList)
+            {
+                PhysicianList.Add(item);
+            }
             IList<string> PhyIDs = new List<string>();
             PhyIDs = PhysicianList.Select(a => Convert.ToString(a.Id)).ToList<string>();
             XmlDocument xmldoc = new XmlDocument();

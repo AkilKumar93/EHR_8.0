@@ -1348,12 +1348,12 @@ myapp.controller('assessmentCtrl', function ($scope, $http) {
     //    });
 
     //});
-    $.get("htmICD10.html?version=" + localStorage.getItem("ScriptVersion").split('|')[0].trim(), function (data) {
-        $('#dlstICD10').html(data);
-        arrICD10Codes = $.map($('#dlstICD10 option'), function (li) {
-            return $(li).attr("value");
-        });
-    });
+    $("#dlstICD10").load("htmICD10.html?version=" + localStorage.getItem("ScriptVersion").split('|')[0].trim(),
+        function () {
+            var select = document.getElementById("dlstICD10");
+            arrICD10Codes = Array.from(select.options, opt => opt.value);
+        }
+    );
 
     $("#txtICD10").autocomplete({
         source:

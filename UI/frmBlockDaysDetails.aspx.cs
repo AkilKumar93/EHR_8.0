@@ -274,6 +274,12 @@ namespace Acurus.Capella.UI
                 lblProvider.Text = "Machine - Technician*";
                 PhysicianList = new List<PhysicianLibrary>();
                 PhysicianList = UtilityManager.GetPhysicianList(ddlFacilityName.SelectedItem.Text.Trim(),ClientSession.LegalOrg);
+                //CAP-3590
+                var otherPhysicianList = UtilityManager.GetInActiveProviderList(ddlFacilityName.SelectedItem.Text.Trim(), ClientSession.LegalOrg, true);
+                foreach (var item in otherPhysicianList)
+                {
+                    PhysicianList.Add(item);
+                }
                 //Jira CAP-2777
                 //XmlDocument xmldoc = new XmlDocument();
                 //xmldoc = new XmlDocument();
