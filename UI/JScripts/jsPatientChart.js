@@ -396,6 +396,35 @@ function CheckMe(MenuName, e) {
         var akidoChartProfileURL = document.getElementById('ctl00_C5POBody_hdnAkidoChartProfileURL').value;
         akidoChartProfileURL = akidoChartProfileURL.replace("[capella_patientid]", capella_patientid);
         window.open(akidoChartProfileURL, "_blank");
+        $.ajax({
+            type: "POST",
+            url: "WebServices/LogService.asmx/LogApplicationUsage",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: true,
+            data: '{sApplicationScreenName: "frmAkidoPatientProfile" }',
+            success: function (data) {
+            },
+            error: function OnError(xhr) {
+                if (xhr.status == 999)
+                    window.location = "/frmSessionExpired.aspx";
+                else {
+                    //CAP-792
+                    if (isValidJSON(xhr.responseText)) {
+                        var log = JSON.parse(xhr.responseText);
+                        console.log(log);
+                        alert("USER MESSAGE:\n" + xhr.status + "-" + xhr.statusText +
+                            ". \nCannot process request. Please Login again and retry. If issue persists, Please contact Support.\n\nEXCEPTION DETAILS: \nException Type" +
+                            log.ExceptionType + " \nMessage: " + log.Message);
+                    }
+                    else {
+                        alert("USER MESSAGE:\n" +
+                            ". Cannot process request. Please Login again and retry.");
+                    }
+                }
+                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+            }
+        });
     }
     else {
         if (MenuName != 'Exam') {

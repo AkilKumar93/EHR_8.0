@@ -268,6 +268,7 @@
     <Compile Include="ManagerObjects\ProviderReviewTrackerManager.cs" />
     <Compile Include="ManagerObjects\QuestionnaireLookupManager.cs" />
     <Compile Include="ManagerObjects\Quest_Lab_Response_LogManager.cs" />
+    <Compile Include="ManagerObjects\ApplicationUsageLogManager.cs" />
     <Compile Include="ManagerObjects\Rcopia_AllergyManager.cs" />
     <Compile Include="ManagerObjects\RCopiaDeduplicateLogManager.cs" />
     <Compile Include="ManagerObjects\Rcopia_MedicationManager.cs" />

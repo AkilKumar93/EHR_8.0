@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+	<class name="Acurus.Capella.Core.DomainObjects.ApplicationUsageLog, Acurus.Capella.Core" table="application_usage_log" lazy="true">
+		<id name="Id" column="Application_Usage_Log_ID">
+			<generator class="identity" />
+		</id>
+		<version name="Version"></version>
+		<property name="Application_Screen_Name" column="Application_Screen_Name" />
+		<property name="Legal_Org" column="Legal_Org" />
+		<property name="Created_By" column="Created_By" />
+		<property name="Created_Date_and_Time" column="Created_Date_and_Time" />
+	</class>
+</hibernate-mapping>
