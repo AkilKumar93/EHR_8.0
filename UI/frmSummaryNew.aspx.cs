@@ -1044,8 +1044,8 @@ namespace Acurus.Capella.UI
                         sCreatedBy= Encounter.Attribute("Created_By").Value;
                         
                         //CAP-3610
-                        sIsSignedAkidoNote = Encounter.Attribute("Is_Signed_in_Akido_Note").Value;
-                        sPhoneEncounterOwner = Encounter.Attribute("Phone_Encounter_Owner").Value;
+                        sIsSignedAkidoNote = Encounter.Attribute("Is_Signed_in_Akido_Note")?.Value ?? "";
+                        sPhoneEncounterOwner = Encounter.Attribute("Phone_Encounter_Owner")?.Value ?? "";
                     }
 
                     //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
@@ -2174,8 +2174,8 @@ margin:0in 0in 0in 9in;
                     sCreatedBy = Encounter.Attribute("Created_By").Value;
 
                     //CAP-3610
-                    sIsSignedAkidoNote = Encounter.Attribute("Is_Signed_in_Akido_Note").Value;
-                    sPhoneEncounterOwner = Encounter.Attribute("Phone_Encounter_Owner").Value;
+                    sIsSignedAkidoNote = Encounter.Attribute("Is_Signed_in_Akido_Note")?.Value ?? "";
+                    sPhoneEncounterOwner = Encounter.Attribute("Phone_Encounter_Owner")?.Value ?? "";
                 }
 
                 //if (Encounter_signedDate == "" || Encounter_signedDate == "01-Jan-0001 12:00:00 AM")
