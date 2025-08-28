@@ -1106,7 +1106,10 @@ namespace Acurus.Capella.UI
                     }
                     else
                     {
-                        lblSignedPhysician.InnerText = "Electronically Signed by " + sPhoneEncounterOwner + " at " + Encounter_signedDate;
+                        UserManager userManager = new UserManager();
+                        var users = userManager.GetUser(sPhoneEncounterOwner);
+                        string sPersonName = users.FirstOrDefault()?.person_name ?? "";
+                        lblSignedPhysician.InnerText = "Electronically Signed by " + sPersonName + " at " + Encounter_signedDate;
                     }
                 }
 
@@ -2299,7 +2302,10 @@ margin:0in 0in 0in 9in;
                 }
                 else
                 {
-                    lblSignedPhysician.InnerText = "Electronically Signed by " + sPhoneEncounterOwner + " at " + Encounter_signedDate;
+                    UserManager userManager = new UserManager();
+                    var users = userManager.GetUser(sPhoneEncounterOwner);
+                    string sPersonName = users.FirstOrDefault()?.person_name ?? "";
+                    lblSignedPhysician.InnerText = "Electronically Signed by " + sPersonName + " at " + Encounter_signedDate;
                 }
             }
             //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
