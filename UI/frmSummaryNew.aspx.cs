@@ -2305,7 +2305,7 @@ margin:0in 0in 0in 9in;
                     UserManager userManager = new UserManager();
                     var users = userManager.GetUser(sPhoneEncounterOwner);
                     string sPersonName = users.FirstOrDefault()?.person_name ?? "";
-                    lblSignedPhysician.InnerText = "Electronically Signed by " + sPersonName + " at " + Encounter_signedDate;
+                    strfooterProvider = "Electronically Signed by " + sPersonName + " at " + Encounter_signedDate;
                 }
             }
             //string strfooterProviderReviewed = "I " + Encounter_Reviewed_Name + " at " + Encounter_Reviewed_signedDate +
