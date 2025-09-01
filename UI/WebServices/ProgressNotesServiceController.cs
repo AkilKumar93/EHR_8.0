@@ -1087,6 +1087,10 @@ namespace Acurus.Capella.UI.WebServices.API
                                     string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "").Replace(": " + sNotesName, "") : "";
                                     sCreatedAt = (sCreatedAt.IndexOf(" PM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" PM: ")), "") : sCreatedAt;
                                     sCreatedAt = (sCreatedAt.IndexOf(" AM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" AM: ")), "") : sCreatedAt;
+                                    //Jira CAP-3617
+                                    sCreatedAt = (sCreatedAt.IndexOf("PM:") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf("PM:")), "PM") : sCreatedAt;
+                                    sCreatedAt = (sCreatedAt.IndexOf("AM:") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf("AM:")), "AM") : sCreatedAt;
+                                    //Jira CAP-3617 - End
                                     //Get ProviderUserID
                                     string sProviderUserID = string.Empty;
                                     if (sectopns[i].IndexOf("<AddendumProviderID>") > -1)
@@ -1177,6 +1181,10 @@ namespace Acurus.Capella.UI.WebServices.API
                                     string sCreatedAt = sTempCreatedAt.Length > 1 ? sTempCreatedAt[1].Replace(":" + sNotesName, "").Replace(": " + sNotesName, "") : "";
                                     sCreatedAt = (sCreatedAt.IndexOf(" PM: ") > -1)? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" PM: ")), ""): sCreatedAt;
                                     sCreatedAt = (sCreatedAt.IndexOf(" AM: ") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf(" AM: ")), "") : sCreatedAt;
+                                    //Jira CAP-3617
+                                    sCreatedAt = (sCreatedAt.IndexOf("PM:") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf("PM:")), "PM") : sCreatedAt;
+                                    sCreatedAt = (sCreatedAt.IndexOf("AM:") > -1) ? sCreatedAt.Replace(sCreatedAt.Substring(sCreatedAt.IndexOf("AM:")), "AM") : sCreatedAt;
+                                    //Jira CAP-3617 - End
                                     string[] tempCreatedByFinal = sectopns[i].Split(new string[] { " Signed by " }, System.StringSplitOptions.RemoveEmptyEntries);
 
                                     string tempCreatedBy = tempCreatedByFinal.Length > 1 ? tempCreatedByFinal[1].Split(new string[] { " on " }, System.StringSplitOptions.RemoveEmptyEntries)[0] : "";
