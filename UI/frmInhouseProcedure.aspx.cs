@@ -592,6 +592,13 @@ namespace Acurus.Capella.UI
             lstUpdate = objOtherProDTO.OtherProcedure.Where(a => a.In_House_Procedure_Group_ID == Convert.ToUInt64(hdnDelImmuniztionId.Value)).ToList<InHouseProcedure>();
             ViewState["lstUpdate"] = lstUpdate;
 
+            //CAP-3614
+            foreach (var item in lstUpdate)
+            {
+                item.Modified_By = ClientSession.UserName;
+                item.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                item.Is_Deleted = "Y";
+            }
             objOtherProDTO = ObjInHouse_Mgr.DeleteInHouseProcedureBYList(lstUpdate, "", "", ClientSession.LegalOrg);
             ViewState["Procedure"] = objOtherProDTO;
             if (lstUpdate.Count > 0)

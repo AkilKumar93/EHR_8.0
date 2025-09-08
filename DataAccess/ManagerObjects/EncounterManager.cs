@@ -8279,7 +8279,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
             #region InHouseSubmit
             InHouseProcedureManager objInHouseMngr = new InHouseProcedureManager();
-            InHouseProcedureDTO otherDTO = objInHouseMngr.FillInHouseProcedure(ulMyEncounterID, ulMyPhysicianID, ulMyHumanID);
+            //CAP-3614
+            //InHouseProcedureDTO otherDTO = objInHouseMngr.FillInHouseProcedure(ulMyEncounterID, ulMyPhysicianID, ulMyHumanID);
+            InHouseProcedureDTO otherDTO = objInHouseMngr.FillInHouseProcedureWithDelete(ulMyEncounterID, ulMyPhysicianID, ulMyHumanID);
             IList<InHouseProcedure> otherProSubmitList = new List<InHouseProcedure>();
             if (otherDTO != null && otherDTO.OtherProcedure.Count > 0)
             {

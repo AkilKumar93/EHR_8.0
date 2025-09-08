@@ -36,5 +36,6 @@
     <property name="Rubber_Content" column="Rubber_Content" />
     <property name="Is_Active" column="Is_Active" />
     <property name="GMDN_PT_Definition" column="GMDN_PT_Definition" />
+	  <property name="Is_Deleted" column="Is_Deleted" />
   </class>
 </hibernate-mapping>

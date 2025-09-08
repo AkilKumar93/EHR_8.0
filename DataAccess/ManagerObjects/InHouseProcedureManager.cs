@@ -20,6 +20,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     {
         InHouseProcedureDTO LoadInHouseProcedure(ulong EncounterId, ulong PhysicianID, ulong HumanID, string sLegalOrg);
         InHouseProcedureDTO FillInHouseProcedure(ulong EncounterId, ulong Physician_Id, ulong HumanId);
+        InHouseProcedureDTO FillInHouseProcedureWithDelete(ulong EncounterId, ulong Physician_Id, ulong HumanId);
         InHouseProcedureDTO InsertInHouseProcedure(IList<InHouseProcedure> savelist, WFObject wfObj, string MACAddress, string sOtherProcedure, string sLocalTime, string sLegalOrg);
        // InHouseProcedureDTO UpdateInHouseProcedure(InHouseProcedure obj, string MACAddress, string sPlanText, string sOtherProcedure);
         InHouseProcedureDTO UpdateAndDeleteAndSaveInHouseProcedure(IList<InHouseProcedure> lstSave, IList<InHouseProcedure> lstUpdate, IList<InHouseProcedure> lstDelete, bool IsFileMgnt_delete, string MACAddress, string sLocalTime, string sLegalOrg);
@@ -64,9 +65,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             InHouseProcedureDTO objDTO = new InHouseProcedureDTO();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
+                //CAP-3614
+                //objDTO.OtherProcedure = iMySession.CreateCriteria(typeof(InHouseProcedure))
+                //                                  .Add(Expression.Eq("Encounter_ID", EncounterId))
+                //                                  .Add(Expression.Eq("Human_ID", HumanId))
+                //                                  .AddOrder(Order.Desc("Modified_Date_And_Time")).List<InHouseProcedure>();
                 objDTO.OtherProcedure = iMySession.CreateCriteria(typeof(InHouseProcedure))
                                                   .Add(Expression.Eq("Encounter_ID", EncounterId))
                                                   .Add(Expression.Eq("Human_ID", HumanId))
+                                                  .Add(Expression.Eq("Is_Deleted", "N"))
                                                   .AddOrder(Order.Desc("Modified_Date_And_Time")).List<InHouseProcedure>();
                 iMySession.Close();
 
@@ -76,6 +83,43 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
         public InHouseProcedureDTO FillInHouseProcedure(ulong EncounterId, ulong Physician_Id, ulong HumanId)
+        {
+            InHouseProcedureDTO objDTO = new InHouseProcedureDTO();
+            SpirometryManager ObjSpirometryMgr = new SpirometryManager();
+            ABI_ResultsManager ObjABIMgr = new ABI_ResultsManager();
+            ArrayList arrList = new ArrayList();
+            IList<string> procedureList = new List<string>();
+            IList<object> grpId = new List<object>();
+            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
+            {
+                ICriteria crit = null;
+                if (EncounterId == 0)
+                {
+                    //CAP-3614
+                    //crit = iMySession.CreateCriteria(typeof(InHouseProcedure)).Add(Expression.Eq("Encounter_ID", EncounterId)).Add(Expression.Eq("Human_ID", HumanId)).Add(Expression.Eq("Physician_ID", Physician_Id)).AddOrder(Order.Desc("Modified_Date_And_Time"));
+                    crit = iMySession.CreateCriteria(typeof(InHouseProcedure)).Add(Expression.Eq("Encounter_ID", EncounterId)).Add(Expression.Eq("Human_ID", HumanId)).Add(Expression.Eq("Physician_ID", Physician_Id)).Add(Expression.Eq("Is_Deleted", "N")).AddOrder(Order.Desc("Modified_Date_And_Time"));
+                }
+                else
+                {
+                    //CAP-3614
+                    //crit = iMySession.CreateCriteria(typeof(InHouseProcedure)).Add(Expression.Eq("Encounter_ID", EncounterId)).Add(Expression.Eq("Human_ID", HumanId)).AddOrder(Order.Desc("Modified_Date_And_Time"));
+                    crit = iMySession.CreateCriteria(typeof(InHouseProcedure)).Add(Expression.Eq("Encounter_ID", EncounterId)).Add(Expression.Eq("Human_ID", HumanId)).Add(Expression.Eq("Is_Deleted", "N")).AddOrder(Order.Desc("Modified_Date_And_Time"));
+                }
+                objDTO.OtherProcedure = crit.List<InHouseProcedure>();
+                ICriteria critGrpID = iMySession.CreateCriteria(typeof(WFObject)).Add(Expression.Eq("Obj_Type", "INTERNAL ORDER"))
+                    .SetProjection(Projections.Max("Obj_System_Id"));
+                grpId = critGrpID.List<object>();
+                if (grpId != null && grpId.Count > 0)
+                    objDTO.MaxGroupId = Convert.ToUInt64(grpId[0]);
+                else
+                    objDTO.MaxGroupId = 0;
+                arrList.Clear();
+                iMySession.Close();
+            }
+            return objDTO;
+        }
+        //CAP-3614
+        public InHouseProcedureDTO FillInHouseProcedureWithDelete(ulong EncounterId, ulong Physician_Id, ulong HumanId)
         {
             InHouseProcedureDTO objDTO = new InHouseProcedureDTO();
             SpirometryManager ObjSpirometryMgr = new SpirometryManager();
@@ -837,8 +881,357 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             objInHouseProcdureDTO = LoadInHouseProcedure(lstProcedure[0].Encounter_ID, lstProcedure[0].Physician_ID, lstProcedure[0].Human_ID,sLegalOrg);
             return objInHouseProcdureDTO;
         }
+        //CAP-3614
+        //public InHouseProcedureDTO DeleteInHouseProcedureBYList(IList<InHouseProcedure> lstDelete, string MACAddress, string sPln, string sLegalOrg)
+        //{
+        //    IList<InHouseProcedure> Savelist = new List<InHouseProcedure>();
+        //    IList<InHouseProcedure> updatelist = new List<InHouseProcedure>();
+        //    IList<InHouseProcedure> deletelist = new List<InHouseProcedure>();
+        //    IList<InHouseProcedure> ListProcedure_old = new List<InHouseProcedure>();
+        //    FileManagementIndexManager filemanagementmgr = new FileManagementIndexManager();
+        //    IList<FileManagementIndex> addlist = new List<FileManagementIndex>();
+        //    IList<FileManagementIndex> lstupdate = new List<FileManagementIndex>();
+        //    IList<FileManagementIndex> lstdelete = new List<FileManagementIndex>();
+        //    FileManagementIndex obj_fileManagement = new FileManagementIndex();
+        //    InHouseProcedureDTO objInHouseProcdureDTO = new InHouseProcedureDTO();
+        //    //ulong uIn_House_Procedure_Group_ID = 0;
+        //    ulong EncounterID = lstDelete[0].Encounter_ID;
+        //    TreatmentPlanManager objTreatmentPlanManager = new TreatmentPlanManager();
+        //    IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
+        //    GenerateXml ObjXmlHuman = new GenerateXml();
+        //    GenerateXml ObjXmlEncounter = new GenerateXml();
+        //    IList<TreatmentPlan> Insert_Tplan = new List<TreatmentPlan>();
+        //    IList<TreatmentPlan> Update_Tplan = new List<TreatmentPlan>();
+        //    IList<TreatmentPlan> Delete_Tplan = new List<TreatmentPlan>();
+        //    iTryCount = 0;
+        //    #region TplanGet
 
-        public InHouseProcedureDTO DeleteInHouseProcedureBYList(IList<InHouseProcedure> lstDelete, string MACAddress, string sPln, string sLegalOrg)
+        //    IList<string> ilstProcedureTagList = new List<string>();
+        //    ilstProcedureTagList.Add("TreatmentPlanList");
+
+        //    IList<object> ilstProcedureFinal = new List<object>();
+        //    ilstProcedureFinal = ReadBlob(EncounterID, ilstProcedureTagList);
+
+        //    if (ilstProcedureFinal != null && ilstProcedureFinal.Count > 0)
+        //    {
+        //        if (ilstProcedureFinal[0] != null)
+        //        {
+        //            for (int iCount = 0; iCount < ((IList<object>)ilstProcedureFinal[0]).Count; iCount++)
+        //            {
+        //                objTreatmentPlan.Add((TreatmentPlan)((IList<object>)ilstProcedureFinal[0])[iCount]);
+        //            }
+        //        }
+        //    }
+
+        ////    string FileName = "Encounter" + "_" + EncounterID + ".xml";
+        ////string strXmlFilePath = Path.Combine(System.Configuration.ConfigurationSettings.AppSettings["XMLPath"], FileName);
+        ////XmlTextReader XmlText = null;
+        ////try
+        ////{
+        ////    if (File.Exists(strXmlFilePath) == true)
+        ////    {
+        ////        XmlDocument itemDoc = new XmlDocument();
+        ////        XmlText = new XmlTextReader(strXmlFilePath);
+        ////        XmlNodeList xmlTagName = null;
+        ////        // itemDoc.Load(XmlText);
+        ////        using (FileStream fs = new FileStream(strXmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+        ////        {
+        ////            itemDoc.Load(fs);
+
+        ////            XmlText.Close();
+        ////            #region Treatment_plan
+        ////            if (itemDoc.GetElementsByTagName("TreatmentPlanList")[0] != null)
+        ////            {
+        ////                xmlTagName = itemDoc.GetElementsByTagName("TreatmentPlanList")[0].ChildNodes;
+
+        ////                if (xmlTagName.Count > 0)
+        ////                {
+        ////                    for (int j = 0; j < xmlTagName.Count; j++)
+        ////                    {
+        ////                        if (Convert.ToUInt64(xmlTagName[j].Attributes.GetNamedItem("Encounter_Id").Value) == EncounterID && Convert.ToString(xmlTagName[j].Attributes.GetNamedItem("Plan_Type").Value).Equals("PROCEDURES"))
+        ////                        {
+
+        ////                            string TagName = xmlTagName[j].Name;
+        ////                            XmlSerializer xmlserializer = new XmlSerializer(typeof(TreatmentPlan));
+        ////                            TreatmentPlan TreatmentPlan = xmlserializer.Deserialize(new XmlNodeReader(xmlTagName[j])) as TreatmentPlan;
+        ////                            IEnumerable<PropertyInfo> propInfo = null;
+        ////                            TreatmentPlan = (TreatmentPlan)TreatmentPlan;
+        ////                            propInfo = from obji in ((TreatmentPlan)TreatmentPlan).GetType().GetProperties() select obji;
+
+        ////                            for (int i = 0; i < xmlTagName[j].Attributes.Count; i++)
+        ////                            {
+
+        ////                                XmlNode nodevalue = xmlTagName[j].Attributes[i];
+        ////                                {
+        ////                                    foreach (PropertyInfo property in propInfo)
+        ////                                    {
+        ////                                        if (property.Name == nodevalue.Name)
+        ////                                        {
+        ////                                            if (property.PropertyType.Name.ToUpper() == "UINT64")
+        ////                                                property.SetValue(TreatmentPlan, Convert.ToUInt64(nodevalue.Value), null);
+        ////                                            else if (property.PropertyType.Name.ToUpper() == "STRING")
+        ////                                                property.SetValue(TreatmentPlan, Convert.ToString(nodevalue.Value), null);
+        ////                                            else if (property.PropertyType.Name.ToUpper() == "DATETIME")
+        ////                                                property.SetValue(TreatmentPlan, Convert.ToDateTime(nodevalue.Value), null);
+        ////                                            else if (property.PropertyType.Name.ToUpper() == "INT32")
+        ////                                                property.SetValue(TreatmentPlan, Convert.ToInt32(nodevalue.Value), null);
+        ////                                            else
+        ////                                                property.SetValue(TreatmentPlan, nodevalue.Value, null);
+        ////                                        }
+        ////                                    }
+        ////                                }
+
+        ////                            }
+        ////                            objTreatmentPlan.Add(TreatmentPlan);
+        ////                        }
+        ////                    }
+        ////                }
+        ////            }
+        ////            #endregion
+        ////            fs.Close();
+        ////            fs.Dispose();
+        ////        }
+        ////    }
+        ////}
+        ////catch(Exception Ex)
+        ////{
+        ////    if (XmlText != null)
+        ////        XmlText.Close();
+        ////    throw Ex;
+        ////}
+        //#endregion
+        //TryAgain:
+        //    int iResult = 0;
+        //    Session.GetISession().Clear();
+        //    ISession MySession = Session.GetISession();
+        //    try
+        //    {
+        //        using (ITransaction trans = MySession.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+        //        {
+        //            try
+        //            {
+        //                if (lstDelete != null && lstDelete.Count > 0)
+        //                {
+        //                    iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Savelist, ref updatelist, lstDelete, MySession, MACAddress, true, true, lstDelete[0].Human_ID, string.Empty, ref ObjXmlHuman);
+
+        //                    if (iResult == 2)
+        //                    {
+        //                        if (iTryCount < 5)
+        //                        {
+        //                            iTryCount++;
+        //                            goto TryAgain;
+        //                        }
+        //                        else
+        //                        {
+        //                            trans.Rollback();
+        //                            throw new Exception("Deadlock is occured. Transaction failed");
+        //                        }
+        //                    }
+        //                    else if (iResult == 1)
+        //                    {
+        //                        trans.Rollback();
+        //                        throw new Exception("Exception is occured. Transaction failed");
+        //                    }
+        //                    Delete_Tplan = (from obj in objTreatmentPlan where lstDelete.Any(a => a.Id == obj.Source_ID) select obj).ToList<TreatmentPlan>();
+        //                    if (Delete_Tplan != null && Delete_Tplan.Count > 0)
+        //                    {
+        //                        iResult = objTreatmentPlanManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Insert_Tplan, ref Update_Tplan, Delete_Tplan, MySession, MACAddress, true, true, EncounterID, string.Empty, ref ObjXmlEncounter);
+
+        //                        if (iResult == 2)
+        //                        {
+        //                            if (iTryCount < 5)
+        //                            {
+        //                                iTryCount++;
+        //                                goto TryAgain;
+        //                            }
+        //                            else
+        //                            {
+        //                                trans.Rollback();
+        //                                MySession.Close();
+        //                                throw new Exception("Deadlock occurred. Transaction failed.");
+        //                            }
+        //                        }
+        //                        else if (iResult == 1)
+        //                        {
+        //                            trans.Rollback();
+        //                            MySession.Close();
+        //                            throw new Exception("Exception occurred. Transaction failed.");
+        //                        }
+        //                    }
+        //                    try
+        //                    {
+        //                        if (ObjXmlHuman != null)
+        //                        {
+        //                            // ObjXmlHuman.itemDoc.Save(ObjXmlHuman.strXmlFilePath);
+        //                            int trycount = 0;
+        //                        trytosaveagain:
+        //                            try
+        //                            {
+        //                                // ObjXmlHuman.itemDoc.Save(ObjXmlHuman.strXmlFilePath);
+        //                                WriteBlob(lstDelete[0].Human_ID, ObjXmlHuman.itemDoc, MySession, null, null, lstDelete, ObjXmlHuman, false);
+        //                            }
+        //                            catch (Exception xmlexcep)
+        //                            {
+        //                                trycount++;
+        //                                if (trycount <= 3)
+        //                                {
+        //                                    int TimeMilliseconds = 0;
+        //                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+        //                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+        //                                    Thread.Sleep(TimeMilliseconds);
+        //                                    string sMsg = string.Empty;
+        //                                    string sExStackTrace = string.Empty;
+
+        //                                    string version = "";
+        //                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+        //                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+        //                                    string[] server = version.Split('|');
+        //                                    string serverno = "";
+        //                                    if (server.Length > 1)
+        //                                        serverno = server[1].Trim();
+
+        //                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+        //                                        sMsg = xmlexcep.InnerException.Message;
+        //                                    else
+        //                                        sMsg = xmlexcep.Message;
+
+        //                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
+        //                                        sExStackTrace = xmlexcep.StackTrace;
+
+        //                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+        //                                    string ConnectionData;
+        //                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+        //                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+        //                                    {
+        //                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+        //                                        {
+        //                                            cmd.Connection = con;
+        //                                            try
+        //                                            {
+        //                                                con.Open();
+        //                                                cmd.ExecuteNonQuery();
+        //                                                con.Close();
+        //                                            }
+        //                                            catch
+        //                                            {
+        //                                            }
+        //                                        }
+        //                                    }
+        //                                    goto trytosaveagain;
+        //                                }
+        //                            }
+        //                        }
+        //                        if (ObjXmlEncounter != null)
+        //                        {
+        //                            // ObjXmlEncounter.itemDoc.Save(ObjXmlEncounter.strXmlFilePath);
+
+        //                            int trycount = 0;
+        //                        trytosaveagain:
+        //                            try
+        //                            {
+        //                                //ObjXmlEncounter.itemDoc.Save(ObjXmlEncounter.strXmlFilePath);
+        //                                objTreatmentPlanManager.WriteBlob(EncounterID, ObjXmlEncounter.itemDoc, MySession, Insert_Tplan, Update_Tplan, Delete_Tplan, ObjXmlEncounter, false);
+        //                            }
+        //                            catch (Exception xmlexcep)
+        //                            {
+        //                                trycount++;
+        //                                if (trycount <= 3)
+        //                                {
+        //                                    int TimeMilliseconds = 0;
+        //                                    if (System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"] != null)
+        //                                        TimeMilliseconds = Convert.ToInt32(System.Configuration.ConfigurationSettings.AppSettings["ThreadSleepTime"]);
+
+        //                                    Thread.Sleep(TimeMilliseconds);
+        //                                    string sMsg = string.Empty;
+        //                                    string sExStackTrace = string.Empty;
+
+        //                                    string version = "";
+        //                                    if (System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+        //                                        version = System.Configuration.ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+
+        //                                    string[] server = version.Split('|');
+        //                                    string serverno = "";
+        //                                    if (server.Length > 1)
+        //                                        serverno = server[1].Trim();
+
+        //                                    if (xmlexcep.InnerException != null && xmlexcep.InnerException.Message != null)
+        //                                        sMsg = xmlexcep.InnerException.Message;
+        //                                    else
+        //                                        sMsg = xmlexcep.Message;
+
+        //                                    if (xmlexcep != null && xmlexcep.StackTrace != null)
+        //                                        sExStackTrace = xmlexcep.StackTrace;
+
+        //                                    string insertQuery = "insert into  stats_apperrorlog values(0,'" + sMsg.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + Environment.NewLine + " Retry: " + trycount + "', '" + serverno + "','" + DateTime.Now + "','','0','0','0','" + sExStackTrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+        //                                    string ConnectionData;
+        //                                    ConnectionData = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+        //                                    using (MySqlConnection con = new MySqlConnection(ConnectionData))
+        //                                    {
+        //                                        using (MySqlCommand cmd = new MySqlCommand(insertQuery))
+        //                                        {
+        //                                            cmd.Connection = con;
+        //                                            try
+        //                                            {
+        //                                                con.Open();
+        //                                                cmd.ExecuteNonQuery();
+        //                                                con.Close();
+        //                                            }
+        //                                            catch
+        //                                            {
+        //                                            }
+        //                                        }
+        //                                    }
+        //                                    goto trytosaveagain;
+        //                                }
+        //                            }
+        //                        }
+        //                        trans.Commit();
+        //                    }
+        //                    catch (XmlException xmlexcep)
+        //                    {
+        //                        //CAP-1942
+        //                        throw new Exception(xmlexcep.Message, xmlexcep);
+        //                    }
+        //                    catch (IOException ex)
+        //                    {
+        //                        //CAP-1942
+        //                        throw new Exception(ex.Message, ex);
+        //                    }
+
+        //                }
+        //            }
+
+        //            catch (NHibernate.Exceptions.GenericADOException ex)
+        //            {
+        //                trans.Rollback();
+        //                //CAP-1942
+        //                throw new Exception(ex.Message, ex);
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                trans.Rollback();
+        //                //CAP-1942
+        //                throw new Exception(e.Message, e);
+        //            }
+        //            finally
+        //            {
+        //                MySession.Close();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //CAP-1942
+        //        throw new Exception(ex.Message, ex);
+        //    }
+
+        //    objInHouseProcdureDTO = LoadInHouseProcedure(lstDelete[0].Encounter_ID, lstDelete[0].Physician_ID, lstDelete[0].Human_ID, sLegalOrg);
+        //    return objInHouseProcdureDTO;
+
+        //}
+        public InHouseProcedureDTO DeleteInHouseProcedureBYList(IList<InHouseProcedure> lstUpdate, string MACAddress, string sPln, string sLegalOrg)
         {
             IList<InHouseProcedure> Savelist = new List<InHouseProcedure>();
             IList<InHouseProcedure> updatelist = new List<InHouseProcedure>();
@@ -851,7 +1244,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             FileManagementIndex obj_fileManagement = new FileManagementIndex();
             InHouseProcedureDTO objInHouseProcdureDTO = new InHouseProcedureDTO();
             //ulong uIn_House_Procedure_Group_ID = 0;
-            ulong EncounterID = lstDelete[0].Encounter_ID;
+            ulong EncounterID = lstUpdate[0].Encounter_ID;
             TreatmentPlanManager objTreatmentPlanManager = new TreatmentPlanManager();
             IList<TreatmentPlan> objTreatmentPlan = new List<TreatmentPlan>();
             GenerateXml ObjXmlHuman = new GenerateXml();
@@ -966,9 +1359,11 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 {
                     try
                     {
-                        if (lstDelete != null && lstDelete.Count > 0)
+                        if (lstUpdate != null && lstUpdate.Count > 0)
                         {
-                            iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Savelist, ref updatelist, lstDelete, MySession, MACAddress, true, true, lstDelete[0].Human_ID, string.Empty, ref ObjXmlHuman);
+                            //CAP-3614
+                            //iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Savelist, ref updatelist, lstDelete, MySession, MACAddress, true, true, lstDelete[0].Human_ID, string.Empty, ref ObjXmlHuman);
+                            iResult = SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Savelist, ref lstUpdate, deletelist, MySession, MACAddress, true, true, lstUpdate[0].Human_ID, string.Empty, ref ObjXmlHuman);
 
                             if (iResult == 2)
                             {
@@ -988,7 +1383,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                 trans.Rollback();
                                 throw new Exception("Exception is occured. Transaction failed");
                             }
-                            Delete_Tplan = (from obj in objTreatmentPlan where lstDelete.Any(a => a.Id == obj.Source_ID) select obj).ToList<TreatmentPlan>();
+                            Delete_Tplan = (from obj in objTreatmentPlan where lstUpdate.Any(a => a.Id == obj.Source_ID) select obj).ToList<TreatmentPlan>();
                             if (Delete_Tplan != null && Delete_Tplan.Count > 0)
                             {
                                 iResult = objTreatmentPlanManager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref Insert_Tplan, ref Update_Tplan, Delete_Tplan, MySession, MACAddress, true, true, EncounterID, string.Empty, ref ObjXmlEncounter);
@@ -1024,7 +1419,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     try
                                     {
                                        // ObjXmlHuman.itemDoc.Save(ObjXmlHuman.strXmlFilePath);
-                                        WriteBlob(lstDelete[0].Human_ID, ObjXmlHuman.itemDoc, MySession, null, null, lstDelete, ObjXmlHuman, false);
+                                        WriteBlob(lstUpdate[0].Human_ID, ObjXmlHuman.itemDoc, MySession, null, null, lstUpdate, ObjXmlHuman, false);
                                     }
                                     catch (Exception xmlexcep)
                                     {
@@ -1183,7 +1578,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 throw new Exception(ex.Message,ex);
             }
           
-            objInHouseProcdureDTO = LoadInHouseProcedure(lstDelete[0].Encounter_ID, lstDelete[0].Physician_ID, lstDelete[0].Human_ID,sLegalOrg);
+            objInHouseProcdureDTO = LoadInHouseProcedure(lstUpdate[0].Encounter_ID, lstUpdate[0].Physician_ID, lstUpdate[0].Human_ID,sLegalOrg);
             return objInHouseProcdureDTO;
 
         }
@@ -1368,7 +1763,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             InHouseProcedureDTO objDTO = new InHouseProcedureDTO();
             using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
             {
-                objDTO.OtherProcedure = iMySession.CreateCriteria(typeof(InHouseProcedure)).Add(Expression.Eq("Encounter_ID", EncounterId)).Add(Expression.Eq("Human_ID", HumanId)).AddOrder(Order.Desc("Modified_Date_And_Time")).List<InHouseProcedure>();
+                //CAP-3614
+                //objDTO.OtherProcedure = iMySession.CreateCriteria(typeof(InHouseProcedure)).Add(Expression.Eq("Encounter_ID", EncounterId)).Add(Expression.Eq("Human_ID", HumanId)).AddOrder(Order.Desc("Modified_Date_And_Time")).List<InHouseProcedure>();
+                objDTO.OtherProcedure = iMySession.CreateCriteria(typeof(InHouseProcedure)).Add(Expression.Eq("Encounter_ID", EncounterId)).Add(Expression.Eq("Human_ID", HumanId)).Add(Expression.Eq("Is_Deleted", "N")).AddOrder(Order.Desc("Modified_Date_And_Time")).List<InHouseProcedure>();
 
                 //For fill the fileName
                 for (int k = 0; k < objDTO.OtherProcedure.Count; k++)

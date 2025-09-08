@@ -44,7 +44,8 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Rubber_Content = string.Empty;
         private string _Is_Active = string.Empty;
         private string _GMDN_PT_Definition = string.Empty;
-        
+        private string _Is_Deleted = "N";
+
         #endregion
 
         #region Constructors
@@ -92,7 +93,8 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Rubber_Content);
             sb.Append(_Is_Active);
             sb.Append(_GMDN_PT_Definition);
-            
+            sb.Append(_Is_Deleted);
+
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -426,7 +428,16 @@ namespace Acurus.Capella.Core.DomainObjects
                 _GMDN_PT_Definition = value;
             }
         }
-        
+
+        [DataMember]
+        public virtual string Is_Deleted
+        {
+            get { return _Is_Deleted; }
+            set
+            {
+                _Is_Deleted = value;
+            }
+        }
 
         #endregion
 
