@@ -107,6 +107,16 @@ function datetime() {
             }, ampm: true
         });
     }
+    $("#txtSigneddate").on("blur", function () {
+        var value = $(this).val();
+        var parsed = $.datetimepicker.parseDate('d-M-Y h:i A', value);
+        if (parsed) {
+            $(this).val($.datetimepicker.formatDate('d-M-Y h:i A', parsed));
+        } else {
+            $("#txtSigneddate")[0].value = getLocalTime();
+        }
+    });
+    $("#txtSigneddate").prop("readonly", false);
 }
 function GetWin() {
     var wind = GetRadWindow();
@@ -138,6 +148,87 @@ function GetWin() {
 
         }, ampm: true
     });
+   
+    $('#txtSigneddate').on('blur', function () {
+        
+        var value = $(this).val();
+        if (!value) {
+            $("#txtSigneddate")[0].value = getLocalTime();
+            return false;
+        }
+
+        const formate = value.replace(/-/g, " ");
+        const parsedDate = new Date(formate);
+        if (parsedDate > new Date()) {
+            $("#txtSigneddate")[0].value = getLocalTime();
+            return false;
+        }
+
+        var parsed = new Date(value);
+
+        if (!isNaN(parsed.getTime())) {
+           
+            var day = ('0' + parsed.getDate()).slice(-2);
+            var month = parsed.toLocaleString('en-US', { month: 'short' }); // e.g. Sep
+            var year = parsed.getFullYear();
+
+            var hours = parsed.getHours();
+            var minutes = ('0' + parsed.getMinutes()).slice(-2);
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 12h clock
+
+            var formatted = day + '-' + month + '-' + year + ' ' +
+                ('0' + hours).slice(-2) + ':' + minutes + ' ' + ampm;
+
+            $(this).val(formatted);
+        }
+        else {
+            $("#txtSigneddate")[0].value = getLocalTime()
+        }
+       
+    });
+
+    $('#txtCalldate').on('blur', function () {
+
+        var value = $(this).val();
+        if (!value) {
+            $("#txtCalldate")[0].value = getLocalTime();
+            return false;
+        }
+        const formate = value.replace(/-/g, " ");
+        const parsedDate = new Date(formate);  
+        if (parsedDate > new Date()) {
+            $("#txtCalldate")[0].value = getLocalTime();
+            return false;
+        }
+
+        var parsed = new Date(value);
+
+        if (!isNaN(parsed.getTime())) {
+
+            var day = ('0' + parsed.getDate()).slice(-2);
+            var month = parsed.toLocaleString('en-US', { month: 'short' }); // e.g. Sep
+            var year = parsed.getFullYear();
+
+            var hours = parsed.getHours();
+            var minutes = ('0' + parsed.getMinutes()).slice(-2);
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 12h clock
+
+            var formatted = day + '-' + month + '-' + year + ' ' +
+                ('0' + hours).slice(-2) + ':' + minutes + ' ' + ampm;
+
+            $(this).val(formatted);
+        }
+        else {
+            $("#txtCalldate")[0].value = getLocalTime();
+        }
+
+    });
+    $("#txtCalldate").prop("readonly", false);
+    $("#txtSigneddate").prop("readonly", false);
 
     $("span[mand=Yes]").addClass('MandLabelstyle');
     $("span[mand=Yes]").each(function () {
@@ -173,6 +264,16 @@ function pageLoad() {
 
         }, ampm: true
     });
+    $("#txtSigneddate").on("blur", function () {
+        var value = $(this).val();
+        var parsed = $.datetimepicker.parseDate('d-M-Y h:i A', value);
+        if (parsed) {
+            $(this).val($.datetimepicker.formatDate('d-M-Y h:i A', parsed));
+        } else {
+            $("#txtSigneddate")[0].value = getLocalTime();
+        }
+    });
+    $("#txtSigneddate").prop("readonly", false);
 }
 
 function CalldateMethod() {
@@ -1742,6 +1843,9 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             $('#lblOwner').removeClass('spanstyle');
             $('#lblOwner').addClass('MandLabelstyle');
             document.getElementById("lblOwner").innerHTML = "Owner*";
+            $('#lblsigned').removeClass('spanstyle');
+            $('#lblsigned').addClass('MandLabelstyle');
+            document.getElementById("lblsigned").innerHTML = "Signed at*";
         }
         else {
             $("#imgclearAssignTo").trigger("click");
@@ -1753,7 +1857,9 @@ myapp.controller('PhoneEncounterCtrl', function ($scope, $http) {
             $('#lblOwner').removeClass('MandLabelstyle');
             $('#lblOwner').addClass('spanstyle')
             document.getElementById("lblOwner").innerHTML = "Owner";
-           
+            $('#lblsigned').removeClass('MandLabelstyle');
+            $('#lblsigned').addClass('spanstyle')
+            document.getElementById("lblsigned").innerHTML = "Signed at";           
         }
         document.getElementById("chkElectronicallySigned").checked = false;
         

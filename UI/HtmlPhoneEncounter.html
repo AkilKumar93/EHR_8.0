@@ -20,7 +20,7 @@
     <script type="text/javascript">
         ["JSErrorMessage.js", "JSModalWindow.js", "JSPhoneEncounter.js"].forEach(script => document.write(`<script src="JScripts/${script}?version=${sessionStorage.getItem("ScriptVersion")}"><\/script>`));
     </script>
-    <!--<script src="JScripts/JSPhoneEncounter.js?v=37.00"></script>-->
+     <!--<script src="JScripts/JSPhoneEncounter.js?v=37.00"></script>-->
     <style>
         @media screen and (min-width: 0px) and (max-width: 720px) {
 
@@ -189,7 +189,7 @@
                                     <label id="lblcabture" class="MandLabelstyle">Call Date*</label>
                                 </td>
                                 <td style="width: 15%;">
-                                    <input type="text" style="width: 95%;" id="txtCalldate" onkeydown="return false" textmode="Date" autocomplete="off" class="Editabletxtbox" onkeypress="EnableSave();" />
+                                    <input type="text" style="width: 95%;" id="txtCalldate"  class="Editabletxtbox" onkeypress="EnableSave();" />
                                 </td>
                                 <td style="width: 8%;">
                                     <label id="lblCallDuration" class="MandLabelstyle">Call Duration*</label>
@@ -249,10 +249,10 @@
                                 </td>
                                 
                                 <td style="font-size: small;width:6%;">
-                                    <label id="lblcabture" class="MandLabelstyle">Signed at*</label>
+                                    <label id="lblsigned" class="Editabletxtbox">Signed at</label>
                                 </td>
                                 <td style="width: 15%;">
-                                    <input type="text" style="width: 95%;" id="txtSigneddate" onkeydown="return false" textmode="Date" autocomplete="off" class="Editabletxtbox" onkeypress="EnableSave();" />
+                                    <input type="text" style="width: 95%;" id="txtSigneddate"class="Editabletxtbox" onkeypress="EnableSave();" />
                                 </td>
                             </tr>
                             
