@@ -615,8 +615,12 @@ namespace Acurus.Capella.UI
                                 //CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, ilistSocHis[0].Is_Mandatory, ilistSocHis[0]);//For BUg id:63606
                                 //Cap - 3604
                                 //CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, Is_Mandatory, ilistSocHis[0]);
-                                CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, Is_Mandatory, ilistSocHis[0], objStaticLookup[i].Default_Value);
-                                dictionary.Add(ilistSocHis[0].Social_Info, ilistSocHis[0].Id.ToString());
+                                //Cap - 3594
+                                if (objStaticLookup[i].Doc_Type == "" || objStaticLookup[i].Doc_Type.ToUpper() == ClientSession.PatientPaneList[0].Sex.ToUpper())
+                                {
+                                    CreateDynamicControlsForSocial(ilistSocHis[0].Social_Info, Is_Mandatory, ilistSocHis[0], objStaticLookup[i].Default_Value);
+                                    dictionary.Add(ilistSocHis[0].Social_Info, ilistSocHis[0].Id.ToString());
+                                }
                             }
                         }
                         else
@@ -628,8 +632,12 @@ namespace Acurus.Capella.UI
                             {
                                 //Cap - 3604
                                 //CreateDynamicControlsForSocial(objStaticLookup[i].Value, Is_Mandatory, null);
-                                CreateDynamicControlsForSocial(objStaticLookup[i].Value, Is_Mandatory, null, objStaticLookup[i].Default_Value);
-                                dictionary.Add(objStaticLookup[i].Value, "0");
+                                //Cap - 3594
+                                if (objStaticLookup[i].Doc_Type == "" || objStaticLookup[i].Doc_Type.ToUpper() == ClientSession.PatientPaneList[0].Sex.ToUpper())
+                                {
+                                    CreateDynamicControlsForSocial(objStaticLookup[i].Value, Is_Mandatory, null, objStaticLookup[i].Default_Value);
+                                    dictionary.Add(objStaticLookup[i].Value, "0");
+                                }
                             }
                         }
                     }
@@ -654,8 +662,12 @@ namespace Acurus.Capella.UI
                         //CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Is_Mandatory, SocialHistoryDetails[i]); //For BUg id:63606
                         //Cap - 3604
                         //CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i]);
-                        CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i], ilistSLookup[0].Default_Value);
-                        dictionary.Add(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Id.ToString());
+                        //Cap - 3594
+                        if (ilistSLookup[0].Doc_Type == "" || ilistSLookup[0].Doc_Type.ToUpper() == ClientSession.PatientPaneList[0].Sex.ToUpper())
+                        {
+                            CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i], ilistSLookup[0].Default_Value);
+                            dictionary.Add(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Id.ToString());
+                        }
                     }
                 }
                 if (!ctrl)
@@ -862,214 +874,252 @@ namespace Acurus.Capella.UI
 
         public void CreateDynamicControlsForSocial(string HistoryInfo, string Is_Mandatory, SocialHistory pastMedicalList, string Default_Value)
         {
-            TableCell tc = new TableCell();
-            TableRow tr1 = new TableRow();
-            TableRow tr3 = new TableRow();
-            Label lblsocial = new Label();
+                TableCell tc = new TableCell();
+                TableRow tr1 = new TableRow();
+                TableRow tr3 = new TableRow();
+                Label lblsocial = new Label();
 
-            lblsocial.ID = "lbl" + HistoryInfo.Replace(" ", "");
-            lblsocial.Text = HistoryInfo;
-            lblsocial.EnableViewState = false;
-            //lblsocial.CssClass = "Editabletxtbox";
-            //lblsocial.Font.Name = FontFamily.GenericSansSerif.ToString();
+                lblsocial.ID = "lbl" + HistoryInfo.Replace(" ", "");
+                lblsocial.Text = HistoryInfo;
+                lblsocial.EnableViewState = false;
+                //lblsocial.CssClass = "Editabletxtbox";
+                //lblsocial.Font.Name = FontFamily.GenericSansSerif.ToString();
 
-            // lblsocial.Font.Size = new FontUnit("8.5pt");
+                // lblsocial.Font.Size = new FontUnit("8.5pt");
 
-            if (DOB == DateTime.MinValue)
-            {
-                if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
-                    DOB = ClientSession.PatientPaneList[0].Birth_Date;
-            }
-            if (Is_Mandatory == "Y" && UtilityManager.CalculateAge(DOB) >= 13)
-            {
-                lblsocial.Text += " *";
-                lblsocial.Attributes.Add("mand", "Yes");
-                // lblsocial.ForeColor = Color.Red;
-                mandatoryList.Add("lblsocial" + HistoryInfo);
-            }
-            else
-            {
-                // lblsocial.ForeColor = Color.Black;
-                lblsocial.Attributes.Add("mand", "No");
-            }
-            lblsocial.Width = 175;
-            tc.Controls.Add(lblsocial);
-            tr1.Cells.Add(tc);
-
-            tc = new TableCell();
-            CheckBox chkBoxYes = new CheckBox();
-            chkBoxYes.ID = "chkYes" + HistoryInfo.Replace(" ", "");
-
-            chkBoxYes.Width = 40;
-            if (pastMedicalList != null)
-            {
-                if (pastMedicalList.Is_Present == "Y")
-                    chkBoxYes.Checked = true;
-            }
-            //changed by vaishali on 19-11-2015
-            if (!HistoryInfo.ToUpper().Contains("TOBACCO"))
-                chkBoxYes.Attributes.Add("onclick", "return enableField('" + chkBoxYes.ID + "');");
-            else
-            {
-                chkBoxYes.Attributes.Add("onclick", "return LoadTobaccoList();");
-            }
-
-            tc.Controls.Add(chkBoxYes);
-            tr1.Cells.Add(tc);
-
-            tc = new TableCell();
-            CheckBox chkBoxNo = new CheckBox();
-            chkBoxNo.ID = "chkNo" + HistoryInfo.Replace(" ", "");
-            chkBoxNo.Width = 50;
-            if (pastMedicalList != null)
-            {
-                if (pastMedicalList.Is_Present == "N")
-                    chkBoxNo.Checked = true;
-            }
-            //changed by vaishali on 19-11-2015
-            if (!(HistoryInfo.ToUpper().Contains("TOBACCO")))
-                chkBoxNo.Attributes.Add("onclick", "return enableField('" + chkBoxNo.ID + "');");
-            else
-            {
-                chkBoxNo.Attributes.Add("onclick", "return LoadTobaccoList();");
-            }
-            tc.Controls.Add(chkBoxNo);
-            tr1.Cells.Add(tc);
-            //Cap - 3604
-            var options = new HtmlSelect();
-            if (Default_Value == "TEXTBOX")
-            {
-                tc = new TableCell();
-                TextBox txt = new TextBox();
-                txt.ID = "txt" + HistoryInfo.Replace(" ", "");
-                txt.Text = "";
-                txt.Attributes.Add("class", "Editabletxtbox");
-                txt.Attributes.Add("onkeyup", "myAutocomplete(this);");
-                txt.Attributes.Add("onkeypress", "myAutocomplete(this);");
-                txt.EnableViewState = false;
-                txt.Width = Unit.Pixel(310);
-                if (chkBoxYes.Checked == true)
-                    txt.Enabled = true;
+                if (DOB == DateTime.MinValue)
+                {
+                    if (ClientSession.PatientPaneList != null && ClientSession.PatientPaneList.Count > 0)
+                        DOB = ClientSession.PatientPaneList[0].Birth_Date;
+                }
+                if (Is_Mandatory == "Y" && UtilityManager.CalculateAge(DOB) >= 13)
+                {
+                    lblsocial.Text += " *";
+                    lblsocial.Attributes.Add("mand", "Yes");
+                    // lblsocial.ForeColor = Color.Red;
+                    mandatoryList.Add("lblsocial" + HistoryInfo);
+                }
                 else
                 {
-                    txt.Enabled = false;
-                    txt.Text = "";
+                    // lblsocial.ForeColor = Color.Black;
+                    lblsocial.Attributes.Add("mand", "No");
                 }
-
-                System.Web.UI.WebControls.Image img = new System.Web.UI.WebControls.Image();
-                img.ID = "img" + HistoryInfo.Replace(" ", "");
-                img.ImageUrl = "Resources/Delete-Blue.png";
-                img.Width = 12;
-                img.Height = 12;
-                img.Style.Add("margin-left", "-15px");
-                img.Attributes.Add("onclick", "ClearTextbox(event);");
-
-                if (chkBoxYes.Checked == true)
-                    img.Enabled = true;
-                else
-                {
-                    img.Enabled = false;
-                    txt.Text = "";
-                }
-
-                tc.Controls.Add(txt);
-                tc.Controls.Add(img);
+                lblsocial.Width = 175;
+                tc.Controls.Add(lblsocial);
                 tr1.Cells.Add(tc);
-            }
-            else
-            {
 
                 tc = new TableCell();
-                //RadComboBox options = new RadComboBox();
-                //options.ID = "cbo" + HistoryInfo.Replace(" ", "");
-                //options.AutoPostBack = false;
-                //options.AllowCustomText = false;
-                //options.Attributes.Add("onkeypress", "EnableSave();");
-                //options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
-                //options.CssClass = "Editabletxtbox";
+                CheckBox chkBoxYes = new CheckBox();
+                chkBoxYes.ID = "chkYes" + HistoryInfo.Replace(" ", "");
 
-                options.ID = "cbo" + HistoryInfo.Replace(" ", "");
-                //options.AutoPostBack = false;
-                //options.AllowCustomText = false;
-                options.Attributes.Add("onchange", "OnClientSelectedIndex();");
-                // options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
-                //options.Attributes.Add("onSelectedIndexChanged", "OnClientSelectedIndex();");
-                options.Attributes.Add("class", "Editabletxtbox");
-                if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
+                chkBoxYes.Width = 40;
+                if (pastMedicalList != null)
                 {
+                    if (pastMedicalList.Is_Present == "Y")
+                        chkBoxYes.Checked = true;
+                }
+                //changed by vaishali on 19-11-2015
+                if (!HistoryInfo.ToUpper().Contains("TOBACCO"))
+                    chkBoxYes.Attributes.Add("onclick", "return enableField('" + chkBoxYes.ID + "');");
+                else
+                {
+                    chkBoxYes.Attributes.Add("onclick", "return LoadTobaccoList();");
+                }
+
+                tc.Controls.Add(chkBoxYes);
+                tr1.Cells.Add(tc);
+
+                tc = new TableCell();
+                CheckBox chkBoxNo = new CheckBox();
+                chkBoxNo.ID = "chkNo" + HistoryInfo.Replace(" ", "");
+                chkBoxNo.Width = 50;
+                if (pastMedicalList != null)
+                {
+                    if (pastMedicalList.Is_Present == "N")
+                        chkBoxNo.Checked = true;
+                }
+                //changed by vaishali on 19-11-2015
+                if (!(HistoryInfo.ToUpper().Contains("TOBACCO")))
+                    chkBoxNo.Attributes.Add("onclick", "return enableField('" + chkBoxNo.ID + "');");
+                else
+                {
+                    chkBoxNo.Attributes.Add("onclick", "return LoadTobaccoList();");
+                }
+                tc.Controls.Add(chkBoxNo);
+                tr1.Cells.Add(tc);
+                //Cap - 3604
+                var options = new HtmlSelect();
+                if (Default_Value == "TEXTBOX")
+                {
+                    tc = new TableCell();
+                    TextBox txt = new TextBox();
+                    txt.ID = "txt" + HistoryInfo.Replace(" ", "");
+                    txt.Text = "";
+                    txt.Attributes.Add("class", "Editabletxtbox");
+                    txt.Attributes.Add("onkeyup", "myAutocomplete(this);");
+                    txt.Attributes.Add("onkeypress", "myAutocomplete(this);");
+                    txt.EnableViewState = false;
+                    txt.Width = Unit.Pixel(310);
                     if (chkBoxYes.Checked == true)
-                        //options.Enabled = true;
-                        options.Disabled = false;
+                        txt.Enabled = true;
                     else
-                        //options.Enabled = false;
-                        options.Disabled = true;
+                    {
+                        txt.Enabled = false;
+                        txt.Text = "";
+                    }
+
+                    System.Web.UI.WebControls.Image img = new System.Web.UI.WebControls.Image();
+                    img.ID = "img" + HistoryInfo.Replace(" ", "");
+                    img.ImageUrl = "Resources/Delete-Blue.png";
+                    img.Width = 12;
+                    img.Height = 12;
+                    img.Style.Add("margin-left", "-15px");
+                    img.Attributes.Add("onclick", "ClearTextbox(event);");
+
+                    if (chkBoxYes.Checked == true)
+                        img.Enabled = true;
+                    else
+                    {
+                        img.Enabled = false;
+                        img.Attributes.Add("onclick", "");
+                        txt.Text = "";
+                    }
+
+                    tc.Controls.Add(txt);
+                    tc.Controls.Add(img);
+                    tr1.Cells.Add(tc);
                 }
                 else
                 {
-                    if (chkBoxYes.Checked || chkBoxNo.Checked)
-                        // options.Enabled = true;
-                        options.Disabled = false;
+
+                    tc = new TableCell();
+                    //RadComboBox options = new RadComboBox();
+                    //options.ID = "cbo" + HistoryInfo.Replace(" ", "");
+                    //options.AutoPostBack = false;
+                    //options.AllowCustomText = false;
+                    //options.Attributes.Add("onkeypress", "EnableSave();");
+                    //options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
+                    //options.CssClass = "Editabletxtbox";
+
+                    options.ID = "cbo" + HistoryInfo.Replace(" ", "");
+                    //options.AutoPostBack = false;
+                    //options.AllowCustomText = false;
+                    options.Attributes.Add("onchange", "OnClientSelectedIndex();");
+                    // options.OnClientSelectedIndexChanged = "OnClientSelectedIndex";
+                    //options.Attributes.Add("onSelectedIndexChanged", "OnClientSelectedIndex();");
+                    options.Attributes.Add("class", "Editabletxtbox");
+                    if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
+                    {
+                        if (chkBoxYes.Checked == true)
+                            //options.Enabled = true;
+                            options.Disabled = false;
+                        else
+                            //options.Enabled = false;
+                            options.Disabled = true;
+                    }
                     else
-                        //options.Enabled = false;
-                        options.Disabled = true;
-                    //options.Attributes.Add("Style", "Height:320px;");
-                    //options.Height = Unit.Pixel(320);
+                    {
+                        if (chkBoxYes.Checked || chkBoxNo.Checked)
+                            // options.Enabled = true;
+                            options.Disabled = false;
+                        else
+                            //options.Enabled = false;
+                            options.Disabled = true;
+                        //options.Attributes.Add("Style", "Height:320px;");
+                        //options.Height = Unit.Pixel(320);
+                    }
+
+                    // options.Width = 320;
+                    //options.BackColor = Color.White;
+
+                    //options.Attributes.Add("Style", "");
+                    options.Attributes.Add("Style", "BackColor:White;Width:320px;");
+
+                    tc.Controls.Add(options);
+                    tr1.Cells.Add(tc);
                 }
 
-                // options.Width = 320;
-                //options.BackColor = Color.White;
-
-                //options.Attributes.Add("Style", "");
-                options.Attributes.Add("Style", "BackColor:White;Width:320px;");
-
-                tc.Controls.Add(options);
+                CustomDLCNew userCtrl = (CustomDLCNew)LoadControl("~/UserControls/customDLCNew.ascx");
+                tc = new TableCell();
+                Panel objPanel = new Panel();
+                objPanel.Style.Add(HtmlTextWriterStyle.Width, "100%");
+                objPanel.Style.Add(HtmlTextWriterStyle.Height, "100%");
+                objPanel.Style.Add(HtmlTextWriterStyle.FontSize, "Small");
+                tc.Controls.Add(objPanel);
+                userCtrl.ID = "DLC" + HistoryInfo.Replace(" ", ""); ;
+                userCtrl.txtDLC.Attributes.Add("onkeypress", "EnableSave('" + userCtrl.txtDLC.ClientID + "');");
+                userCtrl.txtDLC.Attributes.Add("onkeyup", "AddUsersKeyDown(event);");
+                userCtrl.txtDLC.Attributes.Add("onchange", "EnableSave('" + userCtrl.txtDLC.ClientID + "');");
+                userCtrl.TextControlID = chkBoxNo.ID + "," + chkBoxYes.ID + "," + HistoryInfo;
+                //userCtrl.pbDropdown.Attributes.Add("onclick", "return pbDropDown('" + userCtrl.ID + "_pbDropdown','" + userCtrl.ID + "_listDLC','" + HistoryInfo + "')");
+                userCtrl.ListboxHeight = (Unit)50;
+                userCtrl.TextboxHeight = new Unit("40px");
+                userCtrl.TextboxWidth = new Unit("500px");
+                userCtrl.Value = HistoryInfo;
+                //userCtrl.Enable = false;            
+                objPanel.Controls.Add(userCtrl);
                 tr1.Cells.Add(tc);
-            }
+                if (chkBoxYes.Checked == true || chkBoxNo.Checked == true)
+                    userCtrl.Enable = true;
+                tc = new TableCell();
+                Label lblLine = new Label();
+                lblLine.ID = "lblLine" + HistoryInfo;
+                lblLine.EnableViewState = false;
+                tc.ColumnSpan = 10;
+                tc.Controls.Add(lblLine);
+                tr3.Cells.Add(tc);
+                tbldynamic.Rows.Add(tr1);
+                tbldynamic.Rows.Add(tr3);
+                divSocialHistoryControls.Controls.Add(tbldynamic);
+                if (options.Items.Count > 1 && !options.Items[1].Value.Contains(HistoryInfo.Replace(" ", "")))
+                {
+                    LoadOptionForCombo(HistoryInfo);
+                }
 
-            CustomDLCNew userCtrl = (CustomDLCNew)LoadControl("~/UserControls/customDLCNew.ascx");
-            tc = new TableCell();
-            Panel objPanel = new Panel();
-            objPanel.Style.Add(HtmlTextWriterStyle.Width, "100%");
-            objPanel.Style.Add(HtmlTextWriterStyle.Height, "100%");
-            objPanel.Style.Add(HtmlTextWriterStyle.FontSize, "Small");
-            tc.Controls.Add(objPanel);
-            userCtrl.ID = "DLC" + HistoryInfo.Replace(" ", ""); ;
-            userCtrl.txtDLC.Attributes.Add("onkeypress", "EnableSave('" + userCtrl.txtDLC.ClientID + "');");
-            userCtrl.txtDLC.Attributes.Add("onkeyup", "AddUsersKeyDown(event);");
-            userCtrl.txtDLC.Attributes.Add("onchange", "EnableSave('" + userCtrl.txtDLC.ClientID + "');");
-            userCtrl.TextControlID = chkBoxNo.ID + "," + chkBoxYes.ID + "," + HistoryInfo;
-            //userCtrl.pbDropdown.Attributes.Add("onclick", "return pbDropDown('" + userCtrl.ID + "_pbDropdown','" + userCtrl.ID + "_listDLC','" + HistoryInfo + "')");
-            userCtrl.ListboxHeight = (Unit)50;
-            userCtrl.TextboxHeight = new Unit("40px");
-            userCtrl.TextboxWidth = new Unit("500px");
-            userCtrl.Value = HistoryInfo;
-            //userCtrl.Enable = false;            
-            objPanel.Controls.Add(userCtrl);
-            tr1.Cells.Add(tc);
-            if (chkBoxYes.Checked == true || chkBoxNo.Checked == true)
-                userCtrl.Enable = true;
-            tc = new TableCell();
-            Label lblLine = new Label();
-            lblLine.ID = "lblLine" + HistoryInfo;
-            lblLine.EnableViewState = false;
-            tc.ColumnSpan = 10;
-            tc.Controls.Add(lblLine);
-            tr3.Cells.Add(tc);
-            tbldynamic.Rows.Add(tr1);
-            tbldynamic.Rows.Add(tr3);
-            divSocialHistoryControls.Controls.Add(tbldynamic);
-            if (options.Items.Count > 1 && !options.Items[1].Value.Contains(HistoryInfo.Replace(" ", "")))
-            {
-                LoadOptionForCombo(HistoryInfo);
-            }
+                userCtrl.pbDropdown.Attributes.Add("onclick", "return pbDropDown('" + userCtrl.ID + "_pbDropdown','" + userCtrl.ID + "_listDLC','" + HistoryInfo + "')");
+                string chkYes = Request.Form["chkYes" + HistoryInfo.Replace(" ", "")];
+                string chkNo = Request.Form["chkNo" + HistoryInfo.Replace(" ", "")];
+                if (pastMedicalList != null)
+                {
+                    userCtrl.txtDLC.Text = pastMedicalList.Description;
+                    if (IsPostBack)
+                    {
+                        if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
+                        {
+                            if (chkYes == "on")
+                                //options.Enabled = true;
+                                options.Disabled = false;
+                            else
+                                //options.Enabled = false;
+                                options.Disabled = true;
+                        }
+                        else
+                        {
+                            if (chkYes == "on" || chkNo == "on")
+                                // options.Enabled = true;
+                                options.Disabled = false;
+                            else
+                                //options.Enabled = false;
+                                options.Disabled = true;
+                            //options.Attributes.Add("Style", "Height:320px;");
+                            //options.Height = Unit.Pixel(320);
+                        }
+                        //if (chkYes == "on" || chkNo == "on")
+                        //{
+                        //    ////userCtrl.Enable = true;
+                        //    //options.Enabled = true;
+                        //    //options.Attributes.Add("Enabled", "true");
 
-            userCtrl.pbDropdown.Attributes.Add("onclick", "return pbDropDown('" + userCtrl.ID + "_pbDropdown','" + userCtrl.ID + "_listDLC','" + HistoryInfo + "')");
-            string chkYes = Request.Form["chkYes" + HistoryInfo.Replace(" ", "")];
-            string chkNo = Request.Form["chkNo" + HistoryInfo.Replace(" ", "")];
-            if (pastMedicalList != null)
-            {
-                userCtrl.txtDLC.Text = pastMedicalList.Description;
-                if (IsPostBack)
+                        //}
+                        //else
+                        //{
+                        //    //options.Enabled = false;
+                        //    //options.Attributes.Add("Enabled", "false");
+                        //    options.Disabled = true;
+                        //}
+                    }
+                }
+                else
                 {
                     if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
                     {
@@ -1093,105 +1143,69 @@ namespace Acurus.Capella.UI
                     }
                     //if (chkYes == "on" || chkNo == "on")
                     //{
-                    //    ////userCtrl.Enable = true;
+                    //    //userCtrl.Enable = true;
                     //    //options.Enabled = true;
                     //    //options.Attributes.Add("Enabled", "true");
-                        
+                    //    options.Disabled = false;
                     //}
                     //else
                     //{
                     //    //options.Enabled = false;
                     //    //options.Attributes.Add("Enabled", "false");
-                    //    options.Disabled = true;
+                    //    options.Disabled= true;
                     //}
                 }
-            }
-            else
-            {
-                if (!(HistoryInfo.Replace(" ", "").ToUpper().Contains("TOBACCO")))
+                //Cap - 3604
+                //if (!IsPostBack || options.Items.Count == 0)
+                if ((!IsPostBack || options.Items.Count == 0) && Default_Value != "TEXTBOX")
                 {
-                    if (chkYes == "on")
-                        //options.Enabled = true;
-                        options.Disabled = false;
-                    else
-                        //options.Enabled = false;
-                        options.Disabled = true;
+                    LoadOptionForCombo(HistoryInfo);
                 }
-                else
+                else if (Default_Value == "TEXTBOX" && pastMedicalList != null)
                 {
-                    if (chkYes == "on" || chkNo == "on")
-                        // options.Enabled = true;
-                        options.Disabled = false;
-                    else
-                        //options.Enabled = false;
-                        options.Disabled = true;
-                    //options.Attributes.Add("Style", "Height:320px;");
-                    //options.Height = Unit.Pixel(320);
+                    TextBox txt = divSocialHistoryControls.FindControl("txt" + HistoryInfo.Replace(" ", "")) as TextBox;
+                    txt.Text = pastMedicalList.Value;
+                    txt.Attributes.Add("OccupationVal", pastMedicalList.Value);
                 }
-                //if (chkYes == "on" || chkNo == "on")
-                //{
-                //    //userCtrl.Enable = true;
-                //    //options.Enabled = true;
-                //    //options.Attributes.Add("Enabled", "true");
-                //    options.Disabled = false;
-                //}
-                //else
-                //{
-                //    //options.Enabled = false;
-                //    //options.Attributes.Add("Enabled", "false");
-                //    options.Disabled= true;
-                //}
-            }
-            //Cap - 3604
-            //if (!IsPostBack || options.Items.Count == 0)
-            if ((!IsPostBack || options.Items.Count == 0) && Default_Value != "TEXTBOX")
-            {
-                LoadOptionForCombo(HistoryInfo);
-            }
-            else if (Default_Value == "TEXTBOX" && pastMedicalList != null)
-            {
-                TextBox txt = divSocialHistoryControls.FindControl("txt" + HistoryInfo.Replace(" ", "")) as TextBox;
-                txt.Text = pastMedicalList.Value;
-            }
 
-            if (HistoryInfo.ToUpper().Contains("TOBACCO"))
-            {
-                if (chkBoxYes.Checked == true)
+                if (HistoryInfo.ToUpper().Contains("TOBACCO"))
                 {
-                    LoadTobacco(true, HistoryInfo);
+                    if (chkBoxYes.Checked == true)
+                    {
+                        LoadTobacco(true, HistoryInfo);
+                    }
+                    else if (chkBoxNo.Checked == true)
+                    {
+                        LoadTobacco(false, HistoryInfo);
+                    }
+                    else
+                        LoadTobacco(null, HistoryInfo);
                 }
-                else if (chkBoxNo.Checked == true)
+
+                if (pastMedicalList != null && pastMedicalList.Is_Present == "Y" && !(HistoryInfo.ToUpper().Contains("TOBACCO")))
                 {
-                    LoadTobacco(false, HistoryInfo);
+                    if (options.Items.Count > 0)
+                        //options.SelectedIndex = options.Items.IndexOf(options.Items.FindItemByText(pastMedicalList.Value));
+                        options.SelectedIndex = options.Items.IndexOf(options.Items.FindByText(pastMedicalList.Value));
+                    //options.Enabled = true;
+                    //options.Attributes.Add("Enabled", "true");
+                    //options.Disabled= false;
                 }
-                else
-                    LoadTobacco(null, HistoryInfo);
-            }
-            
-            if (pastMedicalList != null && pastMedicalList.Is_Present == "Y" && !(HistoryInfo.ToUpper().Contains("TOBACCO")))
-            {
-                if (options.Items.Count > 0)
-                    //options.SelectedIndex = options.Items.IndexOf(options.Items.FindItemByText(pastMedicalList.Value));
-                    options.SelectedIndex = options.Items.IndexOf(options.Items.FindByText(pastMedicalList.Value));
-                //options.Enabled = true;
-                //options.Attributes.Add("Enabled", "true");
-                //options.Disabled= false;
-            }
-            else if (pastMedicalList != null && (pastMedicalList.Is_Present == "N" || pastMedicalList.Is_Present == "Y"))
-            {
-                if (options.Items.Count > 0)
-                    //options.SelectedIndex = options.Items.IndexOf(options.Items.FindItemByText(pastMedicalList.Value));
-                    options.SelectedIndex = options.Items.IndexOf(options.Items.FindByText(pastMedicalList.Value));
-            }
-            
-            if (ClientSession.UserRole.Trim() == "Coder" || ClientSession.UserPermission == "R" || ClientSession.UserCurrentProcess == "CHECK_OUT" || (ClientSession.UserCurrentProcess.Trim() == string.Empty && ClientSession.UserCurrentOwner.Trim() == string.Empty))
-            {
-                userCtrl.Enable = false;
-                //options.Enabled = false;
-                options.Disabled = true;
-                chkBoxYes.Enabled = false;
-                chkBoxNo.Enabled = false;
-            }
+                else if (pastMedicalList != null && (pastMedicalList.Is_Present == "N" || pastMedicalList.Is_Present == "Y"))
+                {
+                    if (options.Items.Count > 0)
+                        //options.SelectedIndex = options.Items.IndexOf(options.Items.FindItemByText(pastMedicalList.Value));
+                        options.SelectedIndex = options.Items.IndexOf(options.Items.FindByText(pastMedicalList.Value));
+                }
+
+                if (ClientSession.UserRole.Trim() == "Coder" || ClientSession.UserPermission == "R" || ClientSession.UserCurrentProcess == "CHECK_OUT" || (ClientSession.UserCurrentProcess.Trim() == string.Empty && ClientSession.UserCurrentOwner.Trim() == string.Empty))
+                {
+                    userCtrl.Enable = false;
+                    //options.Enabled = false;
+                    options.Disabled = true;
+                    chkBoxYes.Enabled = false;
+                    chkBoxNo.Enabled = false;
+                }
         }
 
         public void LoadOptionForCombo(string fieldName)
@@ -1305,6 +1319,7 @@ namespace Acurus.Capella.UI
                 CheckBox chkNo = ((CheckBox)divSocialHistoryControls.FindControl("chkNo" + item.Key.Replace(" ", "")));
                 //RadComboBox rcb = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", "") + "ReasonNotPerformed"));//added by Shilpa-reason_not_performed cbo
                 CustomDLCNew sSnomed = ((CustomDLCNew)divSocialHistoryControls.FindControl("DLC" + item.Key.Replace(" ", "")));
+                TextBox txt = divSocialHistoryControls.FindControl("txt" + item.Key.Replace(" ", "")) as TextBox;
 
                 if (chk.ID.Contains("chkYes"))
                 {
@@ -1370,9 +1385,21 @@ namespace Acurus.Capella.UI
                 }
                 else
                     SocialHistoryObject.Snomed_Reason_Not_Performed = string.Empty;
+                
+                //Cap - 3594
+                if ( chk.ID.Contains("chkYes") && chk.Checked == true && chk.ID == "chkYesPregnancyStatus")
+                {
+                    SocialHistoryObject.Is_Present = "Y";
+                    SocialHistoryObject.Recodes = "77386006";
+                }
+                else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true && chkNo.ID == "chkNoPregnancyStatus")
+                {
+                    SocialHistoryObject.Is_Present = "N";
+                    SocialHistoryObject.Recodes = "60001007";
+                }
                 //Cap - 3604
                 //if (chk.ID.Contains("chkYes") && chk.Checked == true)
-                if (chk.ID.Contains("chkYes") && chk.Checked == true && chk.ID != "chkYesOccupationIndustry")
+                else if (chk.ID.Contains("chkYes") && chk.Checked == true && txt ==null)
                 {
                     SocialHistoryObject.Is_Present = "Y";
                     //SocialHistoryObject.Value = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Text : string.Empty;
@@ -1386,18 +1413,19 @@ namespace Acurus.Capella.UI
 
                 }
                 //Cap - 3604                
-                else if (chk.ID.Contains("chkYes") && chk.Checked == true && chk.ID == "chkYesOccupationIndustry")
+                else if (chk.ID.Contains("chkYes") && chk.Checked == true && txt!= null)
                 {
+                    string hdnId = "hdn" + item.Key.Replace(" ", "");
+                    HiddenField hdn = divSocialHistoryControls.FindControl(hdnId) as HiddenField;
                     SocialHistoryObject.Is_Present = "Y";
-                    TextBox txt = divSocialHistoryControls.FindControl("txt" + item.Key.Replace(" ", "")) as TextBox;
                     SocialHistoryObject.Value = txt.Text;
-
+                    SocialHistoryObject.Recodes = hdn.Value;
                     SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo
 
                 }
                 //Cap - 3604
                 //else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true)
-                else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true && chkNo.ID != "chkNoOccupationIndustry")
+                else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true && txt == null)
                 {
                     SocialHistoryObject.Is_Present = "N";
                     //SocialHistoryObject.Value = ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).Items.Count > 0 ? ((RadComboBox)divSocialHistoryControls.FindControl("cbo" + item.Key.Replace(" ", ""))).SelectedItem.Text : string.Empty;
@@ -1411,10 +1439,9 @@ namespace Acurus.Capella.UI
 
                 }
                 //Cap - 3604
-                else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true && chkNo.ID == "chkNoOccupationIndustry")
+                else if (chkNo.ID.Contains("chkNo") && chkNo.Checked == true && txt != null)
                 {
                     SocialHistoryObject.Is_Present = "N";
-                    TextBox txt = divSocialHistoryControls.FindControl("txt" + item.Key.Replace(" ", "")) as TextBox;
                     SocialHistoryObject.Value = txt.Text;
                     SocialHistoryObject.Recodes = "";
                     SocialHistoryObject.Snomed_Reason_Not_Performed = "";//added by Shilpa-reason_not_performed cbo

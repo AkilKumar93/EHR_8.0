@@ -130,11 +130,13 @@ function disable(ctrlId, ctrlName) {
 
     if (ctrlName == "chkYes" && ctrlId == 'chkYesOccupationIndustry') {
         txtbox.disabled = false;
-        document.getElementById(ctrlimg).removeAttribute("disabled");
+        document.getElementById(ctrlimg).setAttribute("onclick", "ClearTextbox(event);");
+        $("#" + ctrlimg).show();
     }
     else if (ctrlName == "chkNo" && ctrlId == 'chkNoOccupationIndustry') {
         txtbox.disabled = true;
-        document.getElementById(ctrlimg).setAttribute("disabled", "disabled");
+        document.getElementById(ctrlimg).setAttribute("onclick", "");
+        $("#"+ctrlimg).hide();
         txtbox.value = "";
     }
     else {
@@ -159,19 +161,22 @@ function disable(ctrlId, ctrlName) {
 //Cap - 3604
 function ClearTextbox(e) {
     var Idval = e.target.id.replace("img", "txt");
+    var HdnId = Idval.replace("txt", "");
     document.getElementById(Idval).value = "";
-    $("#txtOccupationIndustry").attr("OccupationVal", "");
-    $("#txtOccupationIndustry").val = "";
-    document.getElementById("txtOccupationIndustry").disabled = false;
+    $("#" + Idval).attr("OccupationVal", "");
+    $("#" + Idval).val = "";
+    document.getElementById("hdn" + HdnId).value = "";
+    document.getElementById(Idval).disabled = false;
 }
 
 //Cap - 3604
-function myAutocomplete() {
-    $("#txtOccupationIndustry").autocomplete({
+function myAutocomplete(e) {
+    var AutocompleteId = e.id
+    $("#" + AutocompleteId).autocomplete({
         source: function (request, response) {
-            if ($("#txtOccupationIndustry").val().trim().length > 2) {
+            if ($("#" + AutocompleteId).val().trim().length > 2) {
                 { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
-                var strkeyWords = $("#txtOccupationIndustry").val().split(' ');
+                var strkeyWords = $("#" + AutocompleteId).val().split(' ');
                 var bMoreThanOneKeyword = (strkeyWords.length >= 2 && strkeyWords[1].trim() != "") ? true : false;
                 arrPatient = [];
                 var WSData = {
@@ -213,7 +218,7 @@ function myAutocomplete() {
                             response($.map(results, function (item) {
                                 return {
                                     label: item.Value,
-                                    val: JSON.stringify(item.Value),
+                                    val: item.Description,
                                     value: item.Value
                                 }
                             }));
@@ -245,7 +250,7 @@ function myAutocomplete() {
             $('.ui-autocomplete.ui-menu.ui-widget').css("left", "19.7%");
             $('.ui-autocomplete.ui-menu.ui-widget').find('li').css({ "border-bottom": "1px solid #ccc", "font-size": "11px", "margin-bottom": "3px", "padding-bottom": "3px" });
             //$('.ui-autocomplete.ui-menu.ui-widget').find('li:last').css("border-bottom", "0px");
-            $('#txtOccupationIndustry').focus();
+            $('#' + AutocompleteId).focus();
         },
         focus: function () { return false; }
     }).on("paste", function (e) {
@@ -262,7 +267,7 @@ function myAutocomplete() {
 
     })
 
-    $("#txtOccupationIndustry").data("ui-autocomplete")._renderItem = function (ul, item) {
+    $("#" + AutocompleteId).data("ui-autocomplete")._renderItem = function (ul, item) {
 
         if (item.label != "No matches found.") {
 
@@ -286,9 +291,14 @@ function myAutocomplete() {
 }
 
 function OccupationSelect(event, ui) {
-    $("#txtOccupationIndustry").val = ui.item.value;
-    $("#txtOccupationIndustry").attr("OccupationVal", ui.item.value);
-    document.getElementById("txtOccupationIndustry").disabled = true;
+
+    var EventId = event.target.id;
+    var HdnId = EventId.replace("txt", "");
+
+    $("#" + EventId).val = ui.item.value;
+    $("#" + EventId).attr("OccupationVal", ui.item.value);
+    document.getElementById("hdn" + HdnId).value = ui.item.val;
+    document.getElementById(EventId).disabled = true;
     EnableSave();
 }
 
@@ -347,12 +357,14 @@ function enable(testId, chkName) {
 
     if (chkName == "chkYes" && testId == 'chkYesOccupationIndustry') {
         txtbox.disabled = true;
-        document.getElementById(ctrlimg).setAttribute("disabled", "disabled");
+        document.getElementById(ctrlimg).setAttribute("onclick", "ClearTextbox(event);");
+        $("#" + ctrlimg).show();
         txtbox.value = "";
     }
     else if (chkName == "chkNo" && testId == 'chkNoOccupationIndustry') {
         txtbox.disabled = true;
-        document.getElementById(ctrlimg).setAttribute("disabled", "disabled");
+        document.getElementById(ctrlimg).setAttribute("onclick", "");
+        $("#" + ctrlimg).hide();
         txtbox.value = "";
     }
     else {
