@@ -878,19 +878,24 @@ namespace Acurus.Capella.UI.WebServices.API
                 {
                     strSignedAt = Convert.ToDateTime(strSignedAt).ToString("o");
                 }
+                string sEncounter_Reviewed_signedDate = string.Empty;
+                if (Encounter_Reviewed_signedDate != "")
+                {
+                    sEncounter_Reviewed_signedDate = Convert.ToDateTime(Encounter_Reviewed_signedDate).ToString("O");
+                }
                 //Jira CAP-3642
                 var FinalJson = JObject.Parse(sFinalOutPut + "}");
 
                 if (bIsPaEncounter && strfooterP != string.Empty)
                 {
                     string sNewammentment = "{\"" + "text" + "\":\"" + strfooterP.Replace("\r\n", @"\n").Replace("\n", @"\n") + "\"," +
-                                            "\"" + "createdBy" + "\":\"" + "" + "\"," +
-                                            "\"" + "UserID" + "\":\"" + "" + "\"," +
-                                            "\"" + "ProviderID" + "\":\"" + "" + "\"," +
+                                            "\"" + "createdBy" + "\":\"" + strReviewedBy + "\"," +
+                                            "\"" + "UserID" + "\":\"" + strReviewedUserEmail + "\"," +
+                                            "\"" + "ProviderID" + "\":\"" + strProviderUserId + "\"," +
                                             "\"" + "ReviewedBy" + "\":\"" + "" + "\"," +
                                             "\"" + "ReviewedUserID" + "\":\"" + "" + "\"," +
                                             "\"" + "ReviewedProviderID" + "\":\"" + "" + "\"," +
-                                            "\"" + "createdAt" + "\":\"" + "" + "\"}";
+                                            "\"" + "createdAt" + "\":\"" + (sEncounter_Reviewed_signedDate?.Trim() ?? "") + "\"}";
                     var NewJson = JObject.Parse(sNewammentment);
                     if (FinalJson["Amendment Notes"]?.Children() != null)
                     {
