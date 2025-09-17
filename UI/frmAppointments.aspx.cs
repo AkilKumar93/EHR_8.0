@@ -1638,7 +1638,11 @@ namespace Acurus.Capella.UI
                                         continue;
                                     }
                                 }
-
+                                //CAP-3662
+                                else
+                                {
+                                    continue;
+                                }
                             }
                             else
                             {
@@ -2309,6 +2313,16 @@ namespace Acurus.Capella.UI
                                         continue;
                                     }
                                 }
+                                //CAP-3662
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+                            //CAP-3662
+                            else
+                            {
+                                continue;
                             }
                         }
                         else
@@ -4224,7 +4238,7 @@ namespace Acurus.Capella.UI
                 //CAP-3635
                 if (cboFacilityName.SelectedItem.Value.Contains("|"))
                 {
-                    hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.Split('|')[0].ToString();
+                    hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.Split('|')[1].ToString();
                 }
                 else
                 {
@@ -4335,8 +4349,13 @@ namespace Acurus.Capella.UI
             {
                 //facList = UtilityManager.GetFacilityListMappedToPhysician(hdnApptPhyId.Value);
                 PhysicianManager physicianManager = new PhysicianManager();
-                //CAP-3493
-                facList = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(string.IsNullOrEmpty(hdnApptPhyId.Value) ? "0" : hdnApptPhyId.Value));
+                //CAP-3493, CAP-3661
+                string apptPhyId = hdnApptPhyId.Value;
+                if (cboFacilityName.SelectedItem != null && cboFacilityName.SelectedItem.Value.Contains("|"))
+                {
+                    apptPhyId = cboFacilityName.SelectedItem.Value.Split('|')[0].ToString();
+                }
+                facList = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(string.IsNullOrEmpty(apptPhyId) ? "0" : apptPhyId));
                 for (int i = 0; i < facList.Count; i++)
                 {
                     System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
@@ -4547,6 +4566,11 @@ namespace Acurus.Capella.UI
                                 {
                                     continue;
                                 }
+                            }
+                            //CAP-3662
+                            else
+                            {
+                                continue;
                             }
                         }
                         else
