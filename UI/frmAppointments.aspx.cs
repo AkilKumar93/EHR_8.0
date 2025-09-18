@@ -398,7 +398,7 @@ namespace Acurus.Capella.UI
                                                 cboItem.Text += "," + PhyList1[i].PhySuffix;
                                             //CAP-3635
                                             //cboItem.Value = PhyList1[i].Id.ToString();
-                                            cboItem.Value = PhyList1[i].Id.ToString() + "|0";
+                                            cboItem.Value = PhyList1[i].Id.ToString() + "|" + PhyList1[i].Id.ToString();
                                             cboItem.Attributes.Add("title", cboItem.Text);
                                         }
                                         this.cboFacilityName.Items.Add(cboItem); ;
@@ -1628,17 +1628,8 @@ namespace Acurus.Capella.UI
                                             item.Text = text; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
                                             item.Value = machinetechnicians[0].machine_technician_library_id;
                                         }
-                                        else
-                                        {
-                                            continue;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        continue;
                                     }
                                 }
-
                             }
                             else
                             {
@@ -2304,10 +2295,6 @@ namespace Acurus.Capella.UI
                                         //item.Value = machinetechnicians[0].machine_technician_library_id;
                                         item.Value = PhysicianList[i].Id.ToString() + "|" + machinetechnicians[0].machine_technician_library_id;
                                     }
-                                    else
-                                    {
-                                        continue;
-                                    }
                                 }
                             }
                         }
@@ -2331,7 +2318,7 @@ namespace Acurus.Capella.UI
                                 item.Text += "," + PhysicianList[i].PhySuffix;
                             //CAP-3635
                             //item.Value = PhysicianList[i].Id.ToString();
-                            item.Value = PhysicianList[i].Id.ToString() + "|0";
+                            item.Value = PhysicianList[i].Id.ToString() + "|" + PhysicianList[i].Id.ToString();
                         }
                         this.cboFacilityName.Items.Add(item);
                     }
@@ -4224,7 +4211,7 @@ namespace Acurus.Capella.UI
                 //CAP-3635
                 if (cboFacilityName.SelectedItem.Value.Contains("|"))
                 {
-                    hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.Split('|')[0].ToString();
+                    hdnApptPhyId.Value = cboFacilityName.SelectedItem.Value.Split('|')[1].ToString();
                 }
                 else
                 {
@@ -4335,8 +4322,13 @@ namespace Acurus.Capella.UI
             {
                 //facList = UtilityManager.GetFacilityListMappedToPhysician(hdnApptPhyId.Value);
                 PhysicianManager physicianManager = new PhysicianManager();
-                //CAP-3493
-                facList = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(string.IsNullOrEmpty(hdnApptPhyId.Value) ? "0" : hdnApptPhyId.Value));
+                //CAP-3493, CAP-3661
+                string apptPhyId = hdnApptPhyId.Value;
+                if (cboFacilityName.SelectedItem != null && cboFacilityName.SelectedItem.Value.Contains("|"))
+                {
+                    apptPhyId = cboFacilityName.SelectedItem.Value.Split('|')[0].ToString();
+                }
+                facList = physicianManager.GetFacilityListMappedByPhysician(Convert.ToUInt64(string.IsNullOrEmpty(apptPhyId) ? "0" : apptPhyId));
                 for (int i = 0; i < facList.Count; i++)
                 {
                     System.Web.UI.WebControls.ListItem item = new System.Web.UI.WebControls.ListItem();
@@ -4538,14 +4530,6 @@ namespace Acurus.Capella.UI
                                         item.Text = text; //PhysicianList[i].PhyPrefix + " " + PhysicianList[i].PhyFirstName + " " + PhysicianList[i].PhyMiddleName + " " + PhysicianList[i].PhyLastName;
                                         item.Value = machinetechnicians[0].machine_technician_library_id;
                                     }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }
-                                else
-                                {
-                                    continue;
                                 }
                             }
                         }
@@ -4590,13 +4574,13 @@ namespace Acurus.Capella.UI
             {
                 var comboBoxItems = chklstProviders.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
                 chklstProviders.Items.Clear();
-                chklstProviders.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
+                chklstProviders.Items.AddRange(comboBoxItems.Where(a => !string.IsNullOrWhiteSpace(a.Text)).OrderBy(a => a.Text.Trim()).ToArray());
             }
             else
             {
                 var comboBoxItems = cboFacilityName.Items.Cast<System.Web.UI.WebControls.ListItem>().ToList();
                 cboFacilityName.Items.Clear();
-                cboFacilityName.Items.AddRange(comboBoxItems.OrderBy(a => a.Text.Trim()).ToArray());
+                cboFacilityName.Items.AddRange(comboBoxItems.Where(a => !string.IsNullOrWhiteSpace(a.Text)).OrderBy(a => a.Text.Trim()).ToArray());
             }
         }
         #endregion
