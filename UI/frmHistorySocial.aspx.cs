@@ -686,7 +686,7 @@ namespace Acurus.Capella.UI
                     {
                         if (ilistSLookup[0].Description == "MANDATORY")
                             Is_Mandatory = "Y";
-                    }
+
                     if (!dictionary.Keys.Contains(SocialHistoryDetails[i].Social_Info))
                     {
                         //CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Is_Mandatory, SocialHistoryDetails[i]); //For BUg id:63606
@@ -696,6 +696,15 @@ namespace Acurus.Capella.UI
                         if (ilistSLookup[0].Doc_Type == "" || ilistSLookup[0].Doc_Type.ToUpper() == humanSex.ToUpper())
                         {
                             CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i], ilistSLookup[0].Default_Value);
+                            dictionary.Add(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Id.ToString());
+                        }
+                    }
+                }
+                    else
+                    {
+                        if (!dictionary.Keys.Contains(SocialHistoryDetails[i].Social_Info))
+                        {
+                            CreateDynamicControlsForSocial(SocialHistoryDetails[i].Social_Info, Is_Mandatory, SocialHistoryDetails[i], "");
                             dictionary.Add(SocialHistoryDetails[i].Social_Info, SocialHistoryDetails[i].Id.ToString());
                         }
                     }
