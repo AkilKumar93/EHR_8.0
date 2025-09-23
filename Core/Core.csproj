@@ -163,6 +163,7 @@
     <Compile Include="DomainObjects\FamilyDiseaseMaster.cs" />
     <Compile Include="DomainObjects\FamilyHistoryMaster.cs" />
     <Compile Include="DomainObjects\HospitalizationHistoryMaster.cs" />
+    <Compile Include="DomainObjects\Human_Address.cs" />
     <Compile Include="DomainObjects\Human_Blob.cs" />
     <Compile Include="DomainObjects\Human_Token.cs" />
     <Compile Include="DomainObjects\ICD9ICD10Mapping.cs" />
@@ -773,6 +774,7 @@
     <EmbeddedResource Include="HbmMaps\CDCEventTracker.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Blob_Progress_Note.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\CDC_Audit_Log.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Human_Address.hbm.xml" />
     <Content Include="HbmMaps\ErrorLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Token.hbm.xml" />

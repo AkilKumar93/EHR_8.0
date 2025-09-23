@@ -2146,8 +2146,20 @@
                 </div>
             </div>
         </div>
-
-
+        <div id="TabAdressHistory" class="modal fade" style="margin-top: 0px; margin-left: 0px; padding-left: 55px; overflow: hidden; background-color: rgba(0, 0, 0, 0.13);z-index: 8889;">
+            <div id="TabAdressHistorylg" class="modal-dialog" style="width: 95%; margin-left:20%; margin-top: 70px; position: absolute!important;">
+                <div class=" modal-content" style="height: 100%;">
+                    <div class="modal-header" style="height: 52px">
+                        <button type="button" class="close" id="btnAdressHistoryClose"  onclick="btnAddressHistoryClose_Click();"  style="font-size: 30px !important;"  data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" style="font-family: sans-serif; font-weight: bold; font-size: medium" id="TabModalAdressHistoryTitle"></h3>
+                    </div>
+                    <div class="modal-body" style="width: 100%; margin-top: -10px; padding-top: 0px;height:96%;">
+                        <iframe style="width: 100%; margin-top: 1px; margin-left: 0px; border: none;height:95%;" id="TabAdressHistoryFrame"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
         <div id="TabFindPatient" class="modal fade" style="display:none; margin-top: 50px; margin-left: 0px; padding-left: 55px; background-color: rgba(0, 0, 0, 0.13); z-index: 5001;">
             <div id="TabmdldlgFindPatient" class="modal-dialog" style="width: 94%;margin-top: 15%;">
                 <div class=" modal-content" style="height: 82%">

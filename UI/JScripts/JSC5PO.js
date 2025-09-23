@@ -3757,3 +3757,6 @@ $("#btnReportClose").click(function () {
 $("#ctl00_ulwindow").click(function () {
     localStorage.setItem("OpenFeedbackCoding", "YES");
 });
+function btnAddressHistoryClose_Click() {
+    top.window.document.getElementById("TabAdressHistoryFrame").contentWindow.document.getElementById("hdnbtnClose").click();
+}

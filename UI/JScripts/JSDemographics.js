@@ -1950,7 +1950,6 @@ $(document).ready(function () {
     //CAP-2062
     var rpatient = $("#ctl00_C5POBody_ddlPatientRelation");
     if (rpatient.val() == '1') {
-        debugger;
         $("#ctl00_C5POBody_txtSelectinsured").prop("disabled", true);
         //Cap - 3373
         document.getElementById('imginsuredText').display = "none";
@@ -4105,4 +4104,23 @@ function SpecificEthnicityImageButton(sender, args) {
 }
 function ClearEthnicityChange() {
     document.getElementById(GetClientId("txtSpecificEthnicity")).value = "";
+}
+});
+
+function OpenAddrHistory() {
+    if (document.getElementById("ctl00_C5POBody_txtAccountNo")?.value == "") {
+        alert("Please add the patient.");
+        return false;
+    }
+    $(top.window.document).find("#TabAdressHistory").modal({ backdrop: "static", keyboard: false }, 'show');
+    $(top.window.document).find("#TabModalAdressHistoryTitle")[0].textContent = "Address History";
+    $(top.window.document).find("#TabAdressHistorylg")[0].style.width = "890px";
+    $(top.window.document).find("#TabAdressHistorylg")[0].style.height = "600px";
+    var sPath = "HtmlAddressHistory.html?HumanID=" + (document.getElementById("ctl00_C5POBody_txtAccountNo")?.value ?? "") + "&DOB=" + (document.getElementById("ctl00_C5POBody_dtpPatientDOB")?.value ?? "");
+    $(top.window.document).find("#TabAdressHistoryFrame")[0].contentDocument.location.href = sPath;
+    $(top.window.document).find("#TabAdressHistory")[0].style.display = "block";
+    $(top.window.document).find("#TabAdressHistory").modal("show");
+    $(top.window.document).find("#TabAdressHistory").one("hidden.bs.modal", function (e) {});
+    return false;
+
 }

@@ -546,7 +546,7 @@
             var DLCWindow = "<%=DLCWindow.ClientID %>";
             var ModalWndw = "<%=DemographicsModalWindow.ClientID %>";
         </script>
-
+         
         <form id="frmPatientDemographics">
             <div>
                 <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableViewState="false">
@@ -631,6 +631,10 @@
                                 <td style="width:11%">
                                     <asp:Button ID="btnEditName" runat="server" OnClick="btnEditName_Click" Text="Edit Name" CssClass="aspresizedbluebutton"
                                         AccessKey="E" Style="margin-right: 1px; margin-bottom: 0px;" Width="80px" />
+                                </td>
+                                <td style="width:11%">
+                                    <asp:Button ID="btnOpenAddressHistory" runat="server" OnClientClick="return OpenAddrHistory();" Text="Address History" CssClass="aspresizedbluebutton"
+                                        AccessKey="A" Style="margin-right: 1px; margin-bottom: 0px;" Width="120px" />
                                 </td>
                             </tr>
                             <tr style="width:100%" >

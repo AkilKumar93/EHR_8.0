@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+	<class name="Acurus.Capella.Core.DomainObjects.Human_Address, Acurus.Capella.Core" table="Human_Address" lazy="true">
+		<id name="Id" column="Human_Address_ID">
+			<generator class="assigned" />
+		</id>
+		<version name="Version"/>
+
+		<property name="Human_ID" column="Human_ID" />
+		<property name="Street_Address1" column="Street_Address1" />
+		<property name="Street_Address2" column="Street_Address2" />
+		<property name="City" column="City" />
+		<property name="State" column="State" />
+		<property name="ZipCode" column="ZipCode" />
+		<property name="Start_Date" column="Start_Date" />
+		<property name="End_Date" column="End_Date" />
+		<property name="Created_By" column="Created_By" />
+		<property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+		<property name="Modified_By" column="Modified_By" />
+		<property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+
+	</class>
+</hibernate-mapping>

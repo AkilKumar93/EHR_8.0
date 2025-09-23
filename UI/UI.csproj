@@ -423,6 +423,7 @@
     <Content Include="frmTest.aspx" />
     <Content Include="General_With_Specialty.html" />
     <Content Include="htmICD9.html" />
+    <Content Include="HtmlAddressHistory.html" />
     <Content Include="htmlAssessment.html" />
     <Content Include="HtmlEFaxManagement.html" />
     <Content Include="JScripts\bootstrap.min.js" />
@@ -431,9 +432,11 @@
     <Content Include="JScripts\jquery-1.9.1.js" />
     <Content Include="JScripts\jquery-ui.js" />
     <Content Include="JScripts\jquery.dataTables.min.js" />
+    <Content Include="JScripts\jquery.inputmask.bundle.min.js" />
     <Content Include="JScripts\jquery.table2excel.min.js" />
     <Content Include="JScripts\jquery.ui.autocomplete.js" />
     <Content Include="JScripts\jQueryAngular.js" />
+    <Content Include="JScripts\JsAddressHistory.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
     <Content Include="JScripts\JSErroredSignedReports.js" />
     <Content Include="JScripts\JSEFaxManagement.js" />
@@ -1944,6 +1947,10 @@
     <Compile Include="webfrmRegistration.aspx.designer.cs">
       <DependentUpon>webfrmRegistration.aspx</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\AddressHistoryService.asmx.cs">
+      <DependentUpon>AddressHistoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WebServices\DrugAllergyService.asmx.cs">
       <DependentUpon>DrugAllergyService.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -2679,6 +2686,7 @@
     <Content Include="UserControls\PageNavigator.ascx" />
     <Content Include="ViewImg.aspx" />
     <Content Include="webfrmRegistration.aspx" />
+    <Content Include="WebServices\AddressHistoryService.asmx" />
     <Content Include="WebServices\DrugAllergyService.asmx" />
     <Content Include="WebServices\EandMCodingService.asmx" />
     <Content Include="WebServices\ExamService.asmx" />
