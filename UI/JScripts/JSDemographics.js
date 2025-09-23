@@ -4105,7 +4105,6 @@ function SpecificEthnicityImageButton(sender, args) {
 function ClearEthnicityChange() {
     document.getElementById(GetClientId("txtSpecificEthnicity")).value = "";
 }
-});
 
 function OpenAddrHistory() {
     if (document.getElementById("ctl00_C5POBody_txtAccountNo")?.value == "") {
