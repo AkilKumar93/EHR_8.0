@@ -127,6 +127,8 @@ namespace Acurus.Capella.UI
             {
                 txtRace.Attributes.Add("ReadOnly", "true");
                 txtGranularity.Attributes.Add("ReadOnly", "true");
+                //CAP-3659
+                txtSpecificEthnicity.Attributes.Add("ReadOnly", "true");
                 //Cap - 1394
                 //dtpDateOfDeath.Attributes.Add("Readonly", "true");
                 //Cap - 1529
@@ -2177,7 +2179,8 @@ namespace Acurus.Capella.UI
                     ListGranularity.Items[ListGranularity.Items.Count - 1].Value = i.Sort_Order + "-" + i.Description;//i.Description;
                     ListGranularity.Items[ListGranularity.Items.Count - 1].Attributes["title"] = i.Value;
                 }
-            }
+            }            
+
             iStaticlookuplist.Clear();
             iStaticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("ETHNICITY");
             if (iStaticlookuplist != null && iStaticlookuplist.Count > 0)
@@ -2201,6 +2204,24 @@ namespace Acurus.Capella.UI
                         ddlEthnicity.SelectedIndex = i;
                         break;
                     }
+                }
+            }
+
+            //CAP-3659
+            iStaticlookuplist.Clear();
+            iStaticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SPECIFIC ETHINICITY");
+            if (iStaticlookuplist != null && iStaticlookuplist.Count > 0)
+            {
+                List = from h in iStaticlookuplist orderby h.Sort_Order select h;
+            }
+            listSpecificEthnicity.Items.Add("[Empty]");
+            if (List != null)
+            {
+                foreach (var i in List)
+                {
+                    listSpecificEthnicity.Items.Add(i.Value);
+                    listSpecificEthnicity.Items[listSpecificEthnicity.Items.Count - 1].Value = i.Sort_Order + "-" + i.Description;//i.Description;
+                    listSpecificEthnicity.Items[listSpecificEthnicity.Items.Count - 1].Attributes["title"] = i.Value;
                 }
             }
 
@@ -2717,8 +2738,14 @@ namespace Acurus.Capella.UI
                     chkReqTranslator.Checked = true;
                 }
                 txtRace.Text = objHumanDTO.HumanDetails.Race.ToString();
+                //CAP-3659
+                txtRace.ToolTip = objHumanDTO.HumanDetails.Race.ToString();
                 txtGranularity.Text = objHumanDTO.HumanDetails.Granularity.ToString();
-
+                //CAP-3659
+                txtGranularity.ToolTip = objHumanDTO.HumanDetails.Granularity.ToString();
+                //CAP-3659
+                txtSpecificEthnicity.Text = objHumanDTO.HumanDetails.Specific_Ethnicity.ToString();
+                txtSpecificEthnicity.ToolTip = objHumanDTO.HumanDetails.Specific_Ethnicity.ToString();
                 TxtPreviousName.Text = objHumanDTO.HumanDetails.Previous_Name.ToString();
 
                 for (int i = 0; i < ddlEthnicity.Items.Count; i++)
@@ -3445,6 +3472,8 @@ namespace Acurus.Capella.UI
             }
             objHuman.Race = txtRace.Text;
             objHuman.Granularity = txtGranularity.Text;
+            //CAP-3659
+            objHuman.Specific_Ethnicity = txtSpecificEthnicity.Text;    
             objHuman.Previous_Name = TxtPreviousName.Text;
             objHuman.Ethnicity = ddlEthnicity.SelectedItem.Text;
             if (ddlEthnicity.SelectedItem.Text != string.Empty && ddlEthnicity.SelectedIndex != -1)

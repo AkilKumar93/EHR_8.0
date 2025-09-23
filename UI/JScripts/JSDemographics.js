@@ -1658,6 +1658,7 @@ function listRaceChange(listId) {
             document.getElementById(ID1).value = txtbox;
         }
     }
+    $("#ctl00_C5POBody_txtRace").attr("title", txtbox)
     document.getElementById(GetClientId("btnSave")).disabled = false;
     document.getElementById(GetClientId("hdnRaceTag")).value = RaceTag;
 }
@@ -1690,6 +1691,7 @@ function listGranularityChange(listId) {
             document.getElementById(ID1).value = txtbox;
         }
     }
+    $("#ctl00_C5POBody_txtGranularity").attr("title", txtbox)
     document.getElementById(GetClientId("btnSave")).disabled = false;
     document.getElementById(GetClientId("hdnGranularTag")).value = RaceTag;
 }
@@ -1776,13 +1778,15 @@ function GranularityImageButton(sender, args) {
     if (ImageType != "DropDown") {
         document.getElementById(GetClientId("ListGranularity")).style.display = "block";
         document.getElementById(GetClientId("ListGranularity")).style.position = "absolute";
-        document.getElementById(GetClientId("ListGranularity")).style.width = "120px";
+        //document.getElementById(GetClientId("ListGranularity")).style.width = "120px";
+        document.getElementById(GetClientId("ListGranularity")).style.width = "150px";
         document.getElementById(GetClientId("HdnGranular")).value = "DropDown";
     }
     else {
         document.getElementById(GetClientId("ListGranularity")).style.display = "none";
         document.getElementById(GetClientId("ListGranularity")).style.position = "absolute";
-        document.getElementById(GetClientId("ListGranularity")).style.width = "120px";
+        /*document.getElementById(GetClientId("ListGranularity")).style.width = "120px";*/
+        document.getElementById(GetClientId("ListGranularity")).style.width = "150px";
         document.getElementById(GetClientId("HdnGranular")).value = "";
     }
     SaveEnable();
@@ -4045,3 +4049,57 @@ $("#imgClearTribalAffn").on("click", function () {
     document.getElementById("ctl00_C5POBody_hdnTribalAffn").value = "";
     AutoSave();
 });
+var SpecificEthnicityTag = "", Tag = "";
+function listSpecificEthnicityChange(listId) {
+    var ID;
+    var ID1;
+    ID = listId.id;
+    ID1 = ID.replace("_listSpecificEthnicity", "_txtSpecificEthnicity");
+    //CAP-1471
+    var txtbox = document?.getElementById(ID1)?.value;
+    var txtValue = listId[listId.selectedIndex]?.text;
+    Tag = listId[listId.selectedIndex]?.value;
+    if (txtValue == "[Empty]") {
+        SpecificEthnicityTag = ""
+        ClearRace();
+    }
+    else {
+        if (SpecificEthnicityTag == "") {
+            SpecificEthnicityTag = Tag;
+        }
+        else {
+            SpecificEthnicityTag = SpecificEthnicityTag + "," + Tag;
+        }
+        if (txtbox == '' && txtbox.indexOf(txtValue) == -1) {
+            txtbox = txtValue;
+            document.getElementById(ID1).value = txtbox;
+        }
+        else if (txtbox.indexOf(txtValue) == -1) {
+            txtbox = txtbox + "," + txtValue;
+            document.getElementById(ID1).value = txtbox;
+        }
+    }
+    $("#ctl00_C5POBody_txtSpecificEthnicity").attr("title", txtbox)
+    document.getElementById(GetClientId("btnSave")).disabled = false;
+    //document.getElementById(GetClientId("hdntxtSpecificEthnicityTag")).value = SpecificEthnicityTag;
+}
+function textboxReleaveSpecificEthnicity(ctrl, e) {
+    document.getElementById(GetClientId("listSpecificEthnicity")).style.display = "none";
+}
+function SpecificEthnicityImageButton(sender, args) {
+    var ImageType = document.getElementById(GetClientId("hdnimgurl")).value;
+    if (ImageType != "DropDown") {
+        document.getElementById(GetClientId("listSpecificEthnicity")).style.display = "block";
+        document.getElementById(GetClientId("listSpecificEthnicity")).style.position = "absolute";
+        document.getElementById(GetClientId("listSpecificEthnicity")).style.width = "155px";
+        document.getElementById(GetClientId("hdnimgurl")).value = "DropDown";
+    }
+    else {
+        document.getElementById(GetClientId("listSpecificEthnicity")).style.display = "none";
+        document.getElementById(GetClientId("listSpecificEthnicity")).style.position = "absolute";
+        document.getElementById(GetClientId("listSpecificEthnicity")).style.width = "155px";
+        document.getElementById(GetClientId("hdnimgurl")).value = "";
+    }
+    SaveEnable();
+    return false;
+}

@@ -871,9 +871,7 @@
                             <tr style="width:100%">
                                
                                 <td style="width:11%">
-                                    <asp:Label ID="lblEthnicity" runat="server" Text="Ethnicity" CssClass="spanstyle" EnableViewState="false"></asp:Label>
-                                    <%--<asp:Label ID="lblEthnicity" runat="server" ForeColor="Red" Text="Ethnicity*" EnableViewState="false"></asp:Label>--%>
-                                   
+                                    <asp:Label ID="lblEthnicity" runat="server" Text="Ethnicity" CssClass="spanstyle" EnableViewState="false"></asp:Label>                                                                       
                                 </td>
                                  <td style="width:11%">
                                            <asp:DropDownList ID="ddlEthnicity" runat="server" onchange="showTip(this);" onmouseover="OnMouseHover(this);" CssClass="Editabletxtbox"
@@ -881,26 +879,43 @@
                                     </asp:DropDownList>  
                                      </td>
                                 <td style="width:11%">
-                                    <asp:Label ID="lblRace" runat="server" CssClass="spanstyle" Text="Race" EnableViewState="false"></asp:Label>
-                                    <%--<asp:Label ID="lblRace" runat="server" ForeColor="Red" Text="Race*" EnableViewState="false"></asp:Label>--%>
+                                    <asp:Label ID="lblSpecificEthnicity" runat="server" CssClass="spanstyle" Text="Specific Ethnicity" EnableViewState="false"></asp:Label>                                    
                                 </td>
+                                <td style="width:11%">                                   
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="width: 95%">
+                                                <asp:TextBox ID="txtSpecificEthnicity" runat="server" TextMode="MultiLine" Style="position: static; resize: none;" CssClass="Editabletxtbox"
+                                                    MaxLength="32767" nospell="true"
+                                                    Width="150px" oncopy="return false" onpaste="return false" oncut="return false"
+                                                    onblur="return textboxReleaveSpecificEthnicity(this,event);" />
+                                                <asp:ListBox ID="listSpecificEthnicity" runat="server" onblur="return textboxReleaveSpecificEthnicity(this,event);" CssClass="Editabletxtbox"
+                                                    Style="display: none; position: absolute; width: 155px;" Font-Bold="false" onclick="return listSpecificEthnicityChange(this);"></asp:ListBox>
+                                            </td>
+                                            <td style="width: 5%;">                                               
+                                                <asp:ImageButton ID="ImgbtnSpecificEthnicity" runat="server" AutoPostBack="false" OnClientClick="return SpecificEthnicityImageButton();"
+                                                    ImageUrl="~/Resources/Dropdownimg.jpg" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
                                 <td style="width:11%">
-                                    <%--<asp:DropDownList ID="ddlRace" runat="server" onchange="showTip(this);" onmouseover="OnMouseHover(this);"
-                                    Width="99%">
-                                </asp:DropDownList>--%>
+                                    <asp:Label ID="lblRace" runat="server" CssClass="spanstyle" Text="Race" EnableViewState="false"></asp:Label>                                    
+                                </td>
+                                <td style="width:11%">                                   
                                     <table width="100%">
                                         <tr>
                                             <td style="width: 95%">
                                                 <asp:TextBox ID="txtRace" runat="server" TextMode="MultiLine" Style="position: static; resize: none;" CssClass="Editabletxtbox"
                                                     MaxLength="32767" nospell="true"
-                                                    Width="150px" oncopy="return false" onpaste="return false" oncut="return false"
+                                                    Width="130px" oncopy="return false" onpaste="return false" oncut="return false"
                                                     onblur="return textboxReleave(this,event);" />
                                                 <asp:ListBox ID="listRace" runat="server" onblur="return textboxReleave(this,event);" CssClass="Editabletxtbox"
-                                                    Style="display: none; position: absolute; width: 155px;" Font-Bold="false" onclick="return listRaceChange(this);"></asp:ListBox>
+                                                    Style="display: none; position: absolute; width: 130px;" Font-Bold="false" onclick="return listRaceChange(this);"></asp:ListBox>
                                             </td>
-                                            <td style="width: 5%;">
-                                                <%-- <asp:Button ID ="btnDropdown" runat ="server" Text ="+" OnClientClick=" return btnDropDown();" />--%>
-                                                <asp:ImageButton ID="ImgbtnDropdown" runat="server" AutoPostBack="false" OnClientClick="return RaceImageButton();"
+                                            <td style="width: 5%;">                                               
+                                                <asp:ImageButton ID="ImgbtnDropdown" runat="server" AutoPostBack="false" style="margin-left: 0px;" OnClientClick="return RaceImageButton();"
                                                     ImageUrl="~/Resources/Dropdownimg.jpg" />
                                             </td>
                                         </tr>
@@ -908,8 +923,7 @@
                                 </td>
                               
                               <td style="width:11%">
-                                    <asp:Label ID="lblgra" runat="server" Text="Granularity" CssClass="spanstyle" EnableViewState="false"></asp:Label>
-                                    <%--<asp:Label ID="lblRace" runat="server" ForeColor="Red" Text="Race*" EnableViewState="false"></asp:Label>--%>
+                                    <asp:Label ID="lblgra" runat="server" Text="Specific Race"  CssClass="spanstyle" EnableViewState="false"></asp:Label>                                   
                                 </td>
                                 <td style="width:11%">
                                    
@@ -918,13 +932,12 @@
                                             <td style="width: 95%">
                                                 <asp:TextBox ID="txtGranularity" runat="server" TextMode="MultiLine" Style="position: static; resize: none;"
                                                     MaxLength="32767" nospell="true" CssClass="Editabletxtbox"
-                                                    Width="120px" oncopy="return false" onpaste="return false" oncut="return false"
+                                                    Width="147px" oncopy="return false" onpaste="return false" oncut="return false"
                                                     onblur="return textboxReleaveGranular(this,event);" />
                                                 <asp:ListBox ID="ListGranularity" runat="server" onblur="return textboxReleaveGranular(this,event);" CssClass="Editabletxtbox"
-                                                    Style="display: none; position: absolute; width: 120px;" Font-Bold="false" onclick="return listGranularityChange(this);"></asp:ListBox>
+                                                    Style="display: none; position: absolute; width: 147px;" Font-Bold="false" onclick="return listGranularityChange(this);"></asp:ListBox>
                                             </td>
-                                            <td style="width: 5%;">
-                                                <%-- <asp:Button ID ="btnDropdown" runat ="server" Text ="+" OnClientClick=" return btnDropDown();" />--%>
+                                            <td style="width: 5%;">                                               
                                                 <asp:ImageButton ID="ImageGranularity" runat="server" AutoPostBack="false" OnClientClick="return GranularityImageButton();"
                                                     ImageUrl="~/Resources/Dropdownimg.jpg" />
                                             </td>
@@ -932,16 +945,43 @@
                                         </tr>
                                     </table>
                                 </td>
-                                     <td>
-                                         <asp:Label ID="lblTribalAffn" runat="server" Text="Tribal Affiliation" CssClass="spanstyle" EnableViewState="false"></asp:Label>
-                                     </td>
-                                <td style="width:11%">
-                                    <%--<input id="txtTribalAffn" onchange="AutoSave();" class="Editabletxtbox" style="width: 160px;" runat="server" EnableViewState="false"/>--%>
-                                    <asp:TextBox ID="txtTribalAffn" runat="server" onkeypress="AutoSave();" CssClass="Editabletxtbox" EnableViewState="false" Style="width: 160px;"></asp:TextBox>
+                                   <td>
                                 </td>
                                 <td>
-                                    <img id="imgClearTribalAffn" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top: -5px;position: absolute;right: 75px;cursor: pointer;width: 10px;"/>
+                                </td>  
+                            </tr>
+                            <tr>
+                                 <td  style="padding-top: 10px;">
+                                    <asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang" CssClass="spanstyle" EnableViewState="false"></asp:Label>
                                 </td>
+                                <td  colspan="2" style="padding-top: 10px;">
+                                    <asp:DropDownList ID="ddlPreferredLanguage" onchange="showTip(this);" runat="server" CssClass="Editabletxtbox" onmouseover="OnMouseHover(this);" Width="80%" >
+                                    </asp:DropDownList>
+                                </td>
+                                <td style="width:100%;padding-top: 10px;" >
+                                    <asp:CheckBox ID="chkReqTranslator" runat="server"  onclick="AutoSave();" CssClass="spanstyle" />
+                                    <asp:Label ID="Translator" runat="server" Text="Req. Translator" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                </td>
+
+                                <td style="padding-top: 10px;">
+                                         <asp:Label ID="lblTribalAffn" runat="server" Text="Tribal Affiliation" CssClass="spanstyle" EnableViewState="false"></asp:Label>
+                                     </td>
+                                <td style="padding-top: 10px;">                                    
+                                    <asp:TextBox ID="txtTribalAffn" runat="server" onkeypress="AutoSave();" CssClass="Editabletxtbox" EnableViewState="false" Style="width: 150px;"></asp:TextBox>
+                                </td>
+                                <td style="padding-top: 10px;">
+                                    <img id="imgClearTribalAffn" src="Resources/Delete-Blue.png" alt="X" title="Click to clear the text field." style="margin-top: -5px;position: absolute;right: 356px;cursor: pointer;width: 10px;"/>
+                                </td>
+
+                                <%-- <td>
+                                </td>
+                                <td colspan="5">
+                                </td>--%>
+                               
+                                
+                                                               
+
+
                             </tr>
                             <tr style="width:100%">
                                 <td style="width:11%">
@@ -1158,7 +1198,7 @@
                                 </td>--%>
                             </tr>
                             <tr style="width:100%">
-                                <td style="width:11%">
+                                <%--<td style="width:11%">
                                     <asp:Label ID="lblPreferredLanguage" runat="server" Text="Pref.Lang" CssClass="spanstyle" EnableViewState="false"></asp:Label>
                                 </td>
                                 <td style="width:11%" colspan="2">
@@ -1168,7 +1208,7 @@
                                 <td style="width:11%">
                                     <asp:CheckBox ID="chkReqTranslator" runat="server"  onclick="AutoSave();" CssClass="spanstyle" />
                                     <asp:Label ID="Translator" runat="server" Text="Req. Translator" CssClass="spanstyle" EnableViewState="false"></asp:Label>
-                                </td>
+                                </td>--%>
                             </tr>
                             <%--<tr>
                                 <td class="style199">
@@ -2004,7 +2044,8 @@
                 <asp:HiddenField ID="hdnFirstDateAndTime" runat="server" EnableViewState="false" />
                 <asp:HiddenField ID="hdnNextDateAndTime" runat="server" EnableViewState="false" />
                 <asp:HiddenField ID="hdnEndLocalTime" runat="server" EnableViewState="false" />
-                <asp:HiddenField ID="hdnRaceTag" runat="server" EnableViewState="false" />
+                <asp:HiddenField ID="hdnRaceTag" runat="server" EnableViewState="false" />                
+                <%--<asp:HiddenField ID="hdntxtSpecificEthnicityTag" runat="server" EnableViewState="false" />--%>
                  <asp:HiddenField ID="hdnGranularTag" runat="server" EnableViewState="false" />
                 <asp:HiddenField ID="hdnimgurl" runat="server" EnableViewState="false" />
                  <asp:HiddenField ID="HdnGranular" runat="server" EnableViewState="false" />

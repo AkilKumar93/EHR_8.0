@@ -483,6 +483,42 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.WebControls.DropDownList ddlEthnicity;
 
         /// <summary>
+        /// lblSpecificEthnicity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSpecificEthnicity;
+
+        /// <summary>
+        /// txtSpecificEthnicity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSpecificEthnicity;
+
+        /// <summary>
+        /// listSpecificEthnicity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox listSpecificEthnicity;
+
+        /// <summary>
+        /// ImgbtnSpecificEthnicity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ImgbtnSpecificEthnicity;
+
+        /// <summary>
         /// lblRace control.
         /// </summary>
         /// <remarks>
@@ -553,6 +589,42 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImageGranularity;
+
+        /// <summary>
+        /// lblPreferredLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPreferredLanguage;
+
+        /// <summary>
+        /// ddlPreferredLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPreferredLanguage;
+
+        /// <summary>
+        /// chkReqTranslator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkReqTranslator;
+
+        /// <summary>
+        /// Translator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Translator;
 
         /// <summary>
         /// lblTribalAffn control.
@@ -886,42 +958,6 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadMaskedTextBox msktxtFaxNumber;
-
-        /// <summary>
-        /// lblPreferredLanguage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPreferredLanguage;
-
-        /// <summary>
-        /// ddlPreferredLanguage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPreferredLanguage;
-
-        /// <summary>
-        /// chkReqTranslator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkReqTranslator;
-
-        /// <summary>
-        /// Translator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Translator;
 
         /// <summary>
         /// pnlCareGiverInfo control.

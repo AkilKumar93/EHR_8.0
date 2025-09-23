@@ -1,171 +1,171 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
-  <class name="Acurus.Capella.Core.DomainObjects.Human, Acurus.Capella.Core" table="human" lazy="true">
-    <id name="Id" column="Human_ID">
-      <generator class="identity" />
-    </id>
-    <version name ="Version"/>
-    <!--Latha - Branch_52_production_for_Rcopia - Start - 4 Jul 2011-->
-    <!--<property name="Human_ID" column="Human_ID" />-->
-    <!--Latha - Branch_52_production_for_Rcopia - End - 4 Jul 2011-->
-    <property name="Prefix" column="Prefix" />
-    <property name="Last_Name" column="Last_Name" />
-    <property name="First_Name" column="First_Name" />
-    <property name="MI" column="MI" />
-    <property name="Suffix" column="Suffix" />
-    <property name="Birth_Date" column="Birth_Date" />
-    <property name="Street_Address1" column="Street_Address1" />
-    <property name="City" column="City" />
-    <property name="Sex" column="Sex" />
-    <property name="State" column="State" />
-    <property name="ZipCode" column="ZipCode" />
-    <property name="Home_Phone_No" column="Home_Phone_No" />
-    <property name="SigOn_File" column="SigOn_File" />
-    <property name="Encounter_Provider_ID" column="Encounter_Provider_ID" />
-    <property name="Facility_Name" column="Facility_Name" />
-    <property name="Marital_Status" column="Marital_Status" />
-    <property name="Employment_Status" column="Employment_Status" />
-    <property name="Account_Status" column="Account_Status" />
-    <property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
-    <property name="Created_Date_And_Time" column="Created_Date_And_Time" />
-    <property name="Patient_Notes" column="Patient_Notes" />
-    <property name="Street_Address2" column="Street_Address2" />
-    <property name="Patient_Statement_Format" column="Patient_Statement_Format" />
-    <property name="EMail" column="EMail" />
-    <property name="Work_Phone_No" column="Work_Phone_No" />
-    <property name="Work_Phone_Ext" column="Work_Phone_Ext" />
-    <property name="SSN" column="SSN" />
-    <property name="Patient_Date_Last_Billed" column="Patient_Date_Last_Billed" />
-    <property name="Employer_Name" column="Employer_Name" />
-    <property name="Patient_Account_External" column="Patient_Account_External" />
-    <property name="Driver_State" column="Driver_State" />
-    <property name="Driver_License_Num" column="Driver_License_Num" />
-    <property name="Guarantor_Last_Name" column="Guarantor_Last_Name" />
-    <property name="Guarantor_First_Name" column="Guarantor_First_Name" />
-    <property name="Guarantor_MI" column="Guarantor_MI" />
-    <property name="Guarantor_Birth_Date" column="Guarantor_Birth_Date" />
-    <property name="Guarantor_Street_Address1" column="Guarantor_Street_Address1" />
-    <property name="Guarantor_Street_Address2" column="Guarantor_Street_Address2" />
-    <property name="Guarantor_City" column="Guarantor_City" />
-    <property name="Guarantor_Sex" column="Guarantor_Sex" />
-    <property name="Guarantor_State" column="Guarantor_State" />
-    <property name="Guarantor_Zip_Code" column="Guarantor_Zip_Code" />
-    <property name="Guarantor_Home_Phone_Number" column="Guarantor_Home_Phone_Number" />
-    <property name="Patient_UnApplied_Payments" column="Patient_UnApplied_Payments" />
-    
+	<class name="Acurus.Capella.Core.DomainObjects.Human, Acurus.Capella.Core" table="human" lazy="true">
+		<id name="Id" column="Human_ID">
+			<generator class="identity" />
+		</id>
+		<version name ="Version"/>
+		<!--Latha - Branch_52_production_for_Rcopia - Start - 4 Jul 2011-->
+		<!--<property name="Human_ID" column="Human_ID" />-->
+		<!--Latha - Branch_52_production_for_Rcopia - End - 4 Jul 2011-->
+		<property name="Prefix" column="Prefix" />
+		<property name="Last_Name" column="Last_Name" />
+		<property name="First_Name" column="First_Name" />
+		<property name="MI" column="MI" />
+		<property name="Suffix" column="Suffix" />
+		<property name="Birth_Date" column="Birth_Date" />
+		<property name="Street_Address1" column="Street_Address1" />
+		<property name="City" column="City" />
+		<property name="Sex" column="Sex" />
+		<property name="State" column="State" />
+		<property name="ZipCode" column="ZipCode" />
+		<property name="Home_Phone_No" column="Home_Phone_No" />
+		<property name="SigOn_File" column="SigOn_File" />
+		<property name="Encounter_Provider_ID" column="Encounter_Provider_ID" />
+		<property name="Facility_Name" column="Facility_Name" />
+		<property name="Marital_Status" column="Marital_Status" />
+		<property name="Employment_Status" column="Employment_Status" />
+		<property name="Account_Status" column="Account_Status" />
+		<property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+		<property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+		<property name="Patient_Notes" column="Patient_Notes" />
+		<property name="Street_Address2" column="Street_Address2" />
+		<property name="Patient_Statement_Format" column="Patient_Statement_Format" />
+		<property name="EMail" column="EMail" />
+		<property name="Work_Phone_No" column="Work_Phone_No" />
+		<property name="Work_Phone_Ext" column="Work_Phone_Ext" />
+		<property name="SSN" column="SSN" />
+		<property name="Patient_Date_Last_Billed" column="Patient_Date_Last_Billed" />
+		<property name="Employer_Name" column="Employer_Name" />
+		<property name="Patient_Account_External" column="Patient_Account_External" />
+		<property name="Driver_State" column="Driver_State" />
+		<property name="Driver_License_Num" column="Driver_License_Num" />
+		<property name="Guarantor_Last_Name" column="Guarantor_Last_Name" />
+		<property name="Guarantor_First_Name" column="Guarantor_First_Name" />
+		<property name="Guarantor_MI" column="Guarantor_MI" />
+		<property name="Guarantor_Birth_Date" column="Guarantor_Birth_Date" />
+		<property name="Guarantor_Street_Address1" column="Guarantor_Street_Address1" />
+		<property name="Guarantor_Street_Address2" column="Guarantor_Street_Address2" />
+		<property name="Guarantor_City" column="Guarantor_City" />
+		<property name="Guarantor_Sex" column="Guarantor_Sex" />
+		<property name="Guarantor_State" column="Guarantor_State" />
+		<property name="Guarantor_Zip_Code" column="Guarantor_Zip_Code" />
+		<property name="Guarantor_Home_Phone_Number" column="Guarantor_Home_Phone_Number" />
+		<property name="Patient_UnApplied_Payments" column="Patient_UnApplied_Payments" />
 
-    <!--Removed by Thamizh To remove Collection_Priority-->
-    <!--<property name="Collection_Priority" column="Collection_Priority" />-->
-    <property name="Emergency_Cnt_Last_Name" column="Emergency_Cnt_Last_Name" />
-    <property name="Emergency_Cnt_First_Name" column="Emergency_Cnt_First_Name" />
-    <property name="Emergency_Cnt_MI" column="Emergency_Cnt_MI" />
-    <property name="Emergency_Cnt_StreetAddr1" column="Emergency_Cnt_StreetAddr1" />
-    <property name="Emergency_Cnt_StreetAddr2" column="Emergency_Cnt_StreetAddr2" />
-    <property name="Emergency_Cnt_City" column="Emergency_Cnt_City" />
-    <property name="Emergency_Cnt_Sex" column="Emergency_Cnt_Sex" />
-    <property name="Emergency_Cnt_State" column="Emergency_Cnt_State" />
-    <property name="Emergency_Cnt_ZipCode" column="Emergency_Cnt_ZipCode" />
-    <property name="Emergency_Cnt_Home_Phone_Number" column="Emergency_Cnt_Home_Phone_Number" />
-    <property name="Guarantor_Is_Patient" column="Guarantor_Is_Patient" />
-    <property name="Emergency_BirthDate" column="Emergency_BirthDate" />
-    <property name="Cell_Phone_Number" column="Cell_Phone_Number" />
-    <property name="Guarantor_CellPhone_Number" column="Guarantor_CellPhone_Number" />
-    <property name="Emergency_Cnt_CellPhone_Number" column="Emergency_Cnt_CellPhone_Number" />
-    <property name="Emer_Relation" column="Emergency_Relation" />
-    <property name="Demo_Update_Time_Stamp" column="Demo_Update_Time_Stamp" />
-    <property name="Medical_Record_Number" column="Medical_Record_Number" />
-    <property name="Batch_ID" column="Batch_ID" />
-    <property name="Past_Due" column="Past_Due" />
-    <property name="Created_By" column="Created_By" />
-    <property name="Modified_By" column="Modified_By" />
-    <property name="Demo_Status" column="Demo_Status" />
-    <property name="People_In_Collection" column="People_In_Collection" />
-    <property name="Preferred_Language" column="Preferred_Language" />
-    <property name="Race" column="Race" />
-    <property name="Ethnicity" column="Ethnicity" />
-    <property name="Pharmacy_Location_ID" column="Pharmacy_Location_ID" />
-    <property name="Pharmacy_ID" column="Pharmacy_ID" />
-    <property name="Photo_Path" column="Photo_Path" />
-    <property name="Race_No" column="Race_No" />
-    <property name="Ethnicity_No" column="Ethnicity_No" />
-    <property name="Guarantor_Relationship" column="Guarantor_Relationship" />
-    <property name="Is_Sent_To_Rcopia" column="Is_Sent_To_Rcopia" />
-    <property name="Guarantor_Relationship_No" column="Guarantor_Relationship_No" />
-    <!--Latha - Rcopia Branch - Start-->
-    <property name="Is_Mail_Sent" column="Is_Mail_Sent" />
-    <property name="Mail_Sent_Date" column="Mail_Sent_Date" />
-    <property name="Preferred_Confidential_Correspodence_Mode" column="Preferred_Confidential_Correspodence_Mode" />
-    <property name="Password" column="Password" />
-    <!--Latha - Rcopia Branch - End-->
-    <property name="Fax_Number" column="Fax_Number" />
-    <property name="Reminder_Date" column="Reminder_Date" />
-    <property name="Race_Alias" column="Race_Alias" />
-    <property name="Patient_Status" column="Patient_Status" />
-    <property name="Date_Of_Death" column="Date_Of_Death" />
-    <property name="Reason_For_Death" column="Reason_For_Death" />
-    <property name="Human_Type" column="Human_Type" />
-    <property name="Declared_Bankruptcy" column="Declared_Bankruptcy" />
 
-    <property name="ACO_Is_Eligible_Patient" column="ACO_Is_Eligible_Patient" />
-    <property name="Patient_Discussed" column="ACO_Patient_Discussed" />
-    <property name="Patient_Accepted" column="ACO_Patient_Accepted" />
-    <property name="Discussed_By" column="ACO_Patient_Discussed_By" />
-    <property name="PCP_Name" column="PCP_Name" />
-    <property name="PCP_NPI" column="PCP_NPI" />
+		<!--Removed by Thamizh To remove Collection_Priority-->
+		<!--<property name="Collection_Priority" column="Collection_Priority" />-->
+		<property name="Emergency_Cnt_Last_Name" column="Emergency_Cnt_Last_Name" />
+		<property name="Emergency_Cnt_First_Name" column="Emergency_Cnt_First_Name" />
+		<property name="Emergency_Cnt_MI" column="Emergency_Cnt_MI" />
+		<property name="Emergency_Cnt_StreetAddr1" column="Emergency_Cnt_StreetAddr1" />
+		<property name="Emergency_Cnt_StreetAddr2" column="Emergency_Cnt_StreetAddr2" />
+		<property name="Emergency_Cnt_City" column="Emergency_Cnt_City" />
+		<property name="Emergency_Cnt_Sex" column="Emergency_Cnt_Sex" />
+		<property name="Emergency_Cnt_State" column="Emergency_Cnt_State" />
+		<property name="Emergency_Cnt_ZipCode" column="Emergency_Cnt_ZipCode" />
+		<property name="Emergency_Cnt_Home_Phone_Number" column="Emergency_Cnt_Home_Phone_Number" />
+		<property name="Guarantor_Is_Patient" column="Guarantor_Is_Patient" />
+		<property name="Emergency_BirthDate" column="Emergency_BirthDate" />
+		<property name="Cell_Phone_Number" column="Cell_Phone_Number" />
+		<property name="Guarantor_CellPhone_Number" column="Guarantor_CellPhone_Number" />
+		<property name="Emergency_Cnt_CellPhone_Number" column="Emergency_Cnt_CellPhone_Number" />
+		<property name="Emer_Relation" column="Emergency_Relation" />
+		<property name="Demo_Update_Time_Stamp" column="Demo_Update_Time_Stamp" />
+		<property name="Medical_Record_Number" column="Medical_Record_Number" />
+		<property name="Batch_ID" column="Batch_ID" />
+		<property name="Past_Due" column="Past_Due" />
+		<property name="Created_By" column="Created_By" />
+		<property name="Modified_By" column="Modified_By" />
+		<property name="Demo_Status" column="Demo_Status" />
+		<property name="People_In_Collection" column="People_In_Collection" />
+		<property name="Preferred_Language" column="Preferred_Language" />
+		<property name="Race" column="Race" />
+		<property name="Ethnicity" column="Ethnicity" />
+		<property name="Pharmacy_Location_ID" column="Pharmacy_Location_ID" />
+		<property name="Pharmacy_ID" column="Pharmacy_ID" />
+		<property name="Photo_Path" column="Photo_Path" />
+		<property name="Race_No" column="Race_No" />
+		<property name="Ethnicity_No" column="Ethnicity_No" />
+		<property name="Guarantor_Relationship" column="Guarantor_Relationship" />
+		<property name="Is_Sent_To_Rcopia" column="Is_Sent_To_Rcopia" />
+		<property name="Guarantor_Relationship_No" column="Guarantor_Relationship_No" />
+		<!--Latha - Rcopia Branch - Start-->
+		<property name="Is_Mail_Sent" column="Is_Mail_Sent" />
+		<property name="Mail_Sent_Date" column="Mail_Sent_Date" />
+		<property name="Preferred_Confidential_Correspodence_Mode" column="Preferred_Confidential_Correspodence_Mode" />
+		<property name="Password" column="Password" />
+		<!--Latha - Rcopia Branch - End-->
+		<property name="Fax_Number" column="Fax_Number" />
+		<property name="Reminder_Date" column="Reminder_Date" />
+		<property name="Race_Alias" column="Race_Alias" />
+		<property name="Patient_Status" column="Patient_Status" />
+		<property name="Date_Of_Death" column="Date_Of_Death" />
+		<property name="Reason_For_Death" column="Reason_For_Death" />
+		<property name="Human_Type" column="Human_Type" />
+		<property name="Declared_Bankruptcy" column="Declared_Bankruptcy" />
 
-    <property name="Security_Question1" column="Security_Question1" />
-    <property name="Answer1" column="Answer1" />
-    <property name="Security_Question2" column="Security_Question2" />
-    <property name="Answer2" column="Answer2" />
-    <property name="Mothers_Maiden_Name" column="Mothers_Maiden_Name" />
-    <property name="Immunization_Registry_Status" column="Immunization_Registry_Status" />
-    <property name="Publicity_Code" column="Publicity_Code" />
-    <property name="Representative_Email" column="Representative_Email" />
-    <property name="Representative_Password" column="Representative_Password" />
-    <property name="Representative_Security_Question1" column="Representative_Security_Question1" />
-    <property name="Representative_Answer1" column="Representative_Answer1" />
-    <property name="Representative_Security_Question2" column="Representative_Security_Question2" />
-    <property name="Representative_Answer2" column="Representative_Answer2" />
+		<property name="ACO_Is_Eligible_Patient" column="ACO_Is_Eligible_Patient" />
+		<property name="Patient_Discussed" column="ACO_Patient_Discussed" />
+		<property name="Patient_Accepted" column="ACO_Patient_Accepted" />
+		<property name="Discussed_By" column="ACO_Patient_Discussed_By" />
+		<property name="PCP_Name" column="PCP_Name" />
+		<property name="PCP_NPI" column="PCP_NPI" />
 
-    <property name="Gaurantor_Email" column="Guarantor_Email" />
+		<property name="Security_Question1" column="Security_Question1" />
+		<property name="Answer1" column="Answer1" />
+		<property name="Security_Question2" column="Security_Question2" />
+		<property name="Answer2" column="Answer2" />
+		<property name="Mothers_Maiden_Name" column="Mothers_Maiden_Name" />
+		<property name="Immunization_Registry_Status" column="Immunization_Registry_Status" />
+		<property name="Publicity_Code" column="Publicity_Code" />
+		<property name="Representative_Email" column="Representative_Email" />
+		<property name="Representative_Password" column="Representative_Password" />
+		<property name="Representative_Security_Question1" column="Representative_Security_Question1" />
+		<property name="Representative_Answer1" column="Representative_Answer1" />
+		<property name="Representative_Security_Question2" column="Representative_Security_Question2" />
+		<property name="Representative_Answer2" column="Representative_Answer2" />
 
-    <property name="Sexual_Orientation" column="Sexual_Orientation" />
-    <property name="Sexual_Orientation_Specify" column="Sexual_Orientation_Specify" />
-    <property name="Gender_Identity" column="Gender_Identity" />
-    <property name="Gender_Identity_Specify" column="Gender_Identity_Specify" />
+		<property name="Gaurantor_Email" column="Guarantor_Email" />
 
-    <property name="Data_Sharing_Preference" column="Data_Sharing_Preference" />
-    <property name="Birth_Indicator" column="Birth_Indicator" />
-    <property name="Birth_Order" column="Birth_Order" />
-    
-    <property name="Previous_Name" column="Previous_Name" />
-    <property name="Granularity" column="Granularity" />
-    <property name="Is_Medicaid" column="Is_Medicaid" />
-    <property name="Original_Eligibility_Due_To_Disability" column="Original_Eligibility_Due_To_Disability" />
-    <property name="Is_Institutional" column="Is_Institutional" />
-    <property name="Current_Eligibility_Due_To" column="Current_Eligibility_Due_To" />
-    <property name="Enrollment_Status" column="Enrollment_Status" />
-    <property name="Appointment_Status" column="Appointment_Status" />
-    <property name="Care_Giver_First_Name" column="Care_Giver_First_Name" />
-    <property name="Care_Giver_Last_Name" column="Care_Giver_Last_Name" />
-    <property name="Care_Giver_Relation" column="Care_Giver_Relation" />
-    <property name="Care_Giver_Phone_Number" column="Care_Giver_Phone_Number" />
-    <property name="RAF_Status" column="RAF_Status" />
-    <property name="Is_Cerner_Registered" column="Is_Cerner_Registered" />
-    <property name="Cerner_Universal_Patient_ID" column="Cerner_Universal_Patient_ID" />
-    <property name="RCopia_Allergy_Last_Updated_Date_Time" column="RCopia_Allergy_Last_Updated_Date_Time" />
-    <property name="RCopia_Medication_Last_Updated_Date_Time" column="RCopia_Medication_Last_Updated_Date_Time" />
-    <property name="RCopia_Prescription_Last_Updated_Date_Time" column="RCopia_Prescription_Last_Updated_Date_Time" />
-    <property name="Legal_Org" column="Legal_Org" />
-    <property name="Primary_Carrier_ID" column="Primary_Carrier_ID" />
-	<property name="Is_Translator_Required" column="Is_Translator_Required" />
-	  <property name="Dynamics_Number" column="Dynamics_Number" />
-	  <property name="Tribal_Affiliation" column="Tribal_Affiliation" />
+		<property name="Sexual_Orientation" column="Sexual_Orientation" />
+		<property name="Sexual_Orientation_Specify" column="Sexual_Orientation_Specify" />
+		<property name="Gender_Identity" column="Gender_Identity" />
+		<property name="Gender_Identity_Specify" column="Gender_Identity_Specify" />
 
-    <bag name="PatientInsuredBag" cascade="all" lazy="false" inverse="true" >
-      <key column="Human_ID" />
-      <one-to-many class="Acurus.Capella.Core.DomainObjects.PatientInsuredPlan, Acurus.Capella.Core" />
-    </bag>
-  </class>
+		<property name="Data_Sharing_Preference" column="Data_Sharing_Preference" />
+		<property name="Birth_Indicator" column="Birth_Indicator" />
+		<property name="Birth_Order" column="Birth_Order" />
+
+		<property name="Previous_Name" column="Previous_Name" />
+		<property name="Granularity" column="Granularity" />
+		<property name="Is_Medicaid" column="Is_Medicaid" />
+		<property name="Original_Eligibility_Due_To_Disability" column="Original_Eligibility_Due_To_Disability" />
+		<property name="Is_Institutional" column="Is_Institutional" />
+		<property name="Current_Eligibility_Due_To" column="Current_Eligibility_Due_To" />
+		<property name="Enrollment_Status" column="Enrollment_Status" />
+		<property name="Appointment_Status" column="Appointment_Status" />
+		<property name="Care_Giver_First_Name" column="Care_Giver_First_Name" />
+		<property name="Care_Giver_Last_Name" column="Care_Giver_Last_Name" />
+		<property name="Care_Giver_Relation" column="Care_Giver_Relation" />
+		<property name="Care_Giver_Phone_Number" column="Care_Giver_Phone_Number" />
+		<property name="RAF_Status" column="RAF_Status" />
+		<property name="Is_Cerner_Registered" column="Is_Cerner_Registered" />
+		<property name="Cerner_Universal_Patient_ID" column="Cerner_Universal_Patient_ID" />
+		<property name="RCopia_Allergy_Last_Updated_Date_Time" column="RCopia_Allergy_Last_Updated_Date_Time" />
+		<property name="RCopia_Medication_Last_Updated_Date_Time" column="RCopia_Medication_Last_Updated_Date_Time" />
+		<property name="RCopia_Prescription_Last_Updated_Date_Time" column="RCopia_Prescription_Last_Updated_Date_Time" />
+		<property name="Legal_Org" column="Legal_Org" />
+		<property name="Primary_Carrier_ID" column="Primary_Carrier_ID" />
+		<property name="Is_Translator_Required" column="Is_Translator_Required" />
+		<property name="Dynamics_Number" column="Dynamics_Number" />
+		<property name="Tribal_Affiliation" column="Tribal_Affiliation" />
+		<property name="Specific_Ethnicity" column="Specific_Ethnicity" />
+		<bag name="PatientInsuredBag" cascade="all" lazy="false" inverse="true" >
+			<key column="Human_ID" />
+			<one-to-many class="Acurus.Capella.Core.DomainObjects.PatientInsuredPlan, Acurus.Capella.Core" />
+		</bag>
+	</class>
 </hibernate-mapping>
