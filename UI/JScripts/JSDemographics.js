@@ -1404,6 +1404,11 @@ function OnMouseHover(ddl) {
 
     document.getElementById(GetClientId(ddl.id)).title = document.getElementById(GetClientId(ddl.id)).options[document.getElementById(GetClientId(ddl.id)).selectedIndex].text;
 }
+
+function OnMouseHoverText(ddl) {
+
+    document.getElementById(GetClientId(ddl.id)).title = document.getElementById(GetClientId(ddl.id)).value;
+}
 function ShowLoading() {
 }
 
@@ -4108,7 +4113,7 @@ function ClearEthnicityChange() {
 
 function OpenAddrHistory() {
     if (document.getElementById("ctl00_C5POBody_txtAccountNo")?.value == "") {
-        alert("Please add the patient.");
+        DisplayErrorMessage("10113701");
         return false;
     }
     $(top.window.document).find("#TabAdressHistory").modal({ backdrop: "static", keyboard: false }, 'show');

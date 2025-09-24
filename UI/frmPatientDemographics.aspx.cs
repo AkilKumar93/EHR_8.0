@@ -73,10 +73,7 @@ namespace Acurus.Capella.UI
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (ClientSession.UserName.ToUpper() != "SSELVA")
-            {
-                btnOpenAddressHistory.Visible = false;
-            }
+            
             this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "Startloadcursor", "{ sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart();}", true);
 
             txtNotes.txtDLC.Attributes.Add("onkeypress", "change(this);");
@@ -2743,14 +2740,9 @@ namespace Acurus.Capella.UI
                     chkReqTranslator.Checked = true;
                 }
                 txtRace.Text = objHumanDTO.HumanDetails.Race.ToString();
-                //CAP-3659
-                txtRace.ToolTip = objHumanDTO.HumanDetails.Race.ToString();
                 txtGranularity.Text = objHumanDTO.HumanDetails.Granularity.ToString();
                 //CAP-3659
-                txtGranularity.ToolTip = objHumanDTO.HumanDetails.Granularity.ToString();
-                //CAP-3659
                 txtSpecificEthnicity.Text = objHumanDTO.HumanDetails.Specific_Ethnicity.ToString();
-                txtSpecificEthnicity.ToolTip = objHumanDTO.HumanDetails.Specific_Ethnicity.ToString();
                 TxtPreviousName.Text = objHumanDTO.HumanDetails.Previous_Name.ToString();
 
                 for (int i = 0; i < ddlEthnicity.Items.Count; i++)
