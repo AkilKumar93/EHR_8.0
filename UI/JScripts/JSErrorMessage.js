@@ -1695,7 +1695,10 @@ function LoadNotification(Value) {
             if ($(top.window.document).find("#divNotifyPullUp")[0] != undefined && $(top.window.document).find("#divNotifyPullUp")[0] != null) {
                 $(top.window.document).find("#divNotifyPullUp")[0].style.display = "block";//BugID:48010
             }
-            $(top.window.document).find("#divNotify")[0].style.display = "block";
+            //CAP-3683
+            if ($(top.window.document).find("#divNotify")[0]?.style != undefined && $(top.window.document).find("#divNotify")[0]?.style != null) {
+                $(top.window.document).find("#divNotify")[0].style.display = "block";
+            }
             if ($('#notificationpopup')[0] != null) {
                 $('#notificationpopup')[0].innerText = "NOTIFICATION : Loading...";
             }
@@ -1998,11 +2001,19 @@ function CreateAuditLogEntryForTransactions(TransactionType, EntityName, HumanID
             if (xhr.status == 999)
                 window.location = "/frmSessionExpired.aspx";
             else {
-                var log = JSON.parse(xhr.responseText);
-                console.log(log);
-                alert("USER MESSAGE:\n" +
-                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                    "Message: " + log.Message);
+                //CAP-3684
+                if (isValidJSON(xhr.responseText)) {
+                    var log = JSON.parse(xhr.responseText);
+                    console.log(log);
+
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                        "Message: " + log.Message);
+                }
+                else {
+                    alert("USER MESSAGE:\n" +
+                        ". Cannot process request. Please Login again and retry.");
+                }
             }
         }
     });
