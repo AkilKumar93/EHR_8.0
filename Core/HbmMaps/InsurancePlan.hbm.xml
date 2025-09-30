@@ -36,6 +36,9 @@
     <property name="Claim_City" column="Claim_City" />
     <property name="Claim_State" column="Claim_State" />
     <property name="Claim_ZipCode" column="Claim_ZipCode" />
+	<property name="Health_Insurance_Type" column="Health_Insurance_Type" />
+	<property name="Health_Insurance_Description" column="Health_Insurance_Description" />
+	  
     <bag name="CarrierBag" cascade="all" lazy="false" inverse="true">
       <key column="Carrier_ID" />
       <one-to-many class="Acurus.Capella.Core.DomainObjects.Carrier, Acurus.Capella.Core" />
