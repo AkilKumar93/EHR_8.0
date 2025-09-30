@@ -8,14 +8,17 @@ $(document).ready(function () {
     document.getElementById("btnAdd").disabled = true;
     $('#btnAdd').attr("Autosave", "");
     loadPatientStrip();
-    $("input.DateInput").inputmask({
-        //mask: ["99-aaa-9999", "99-aaa-____", "__-aaa-9999", "99-___-9999", "99-___-____", "__-aaa-____", "__-__-9999"]
-        //mask: ["9999-aaa-99", "9999-___-99", "9999-aaa-__", "9999-___-__", "____-aaa-99", "____-___-99"],
-        mask: ["9999-aaa-99"],
-        placeholder: "____-___-__",
-        casing: "lower",
-        clearMaskOnLostFocus: false
-    });
+    //$("input.DateInput").inputmask({
+    //    //mask: ["99-aaa-9999", "99-aaa-____", "__-aaa-9999", "99-___-9999", "99-___-____", "__-aaa-____", "__-__-9999"]
+    //    //mask: ["9999-aaa-99", "9999-___-99", "9999-aaa-__", "9999-___-__", "____-aaa-99", "____-___-99"],
+    //    mask: ["9999?-aaa-99"],
+    //    placeholder: "____-___-__",
+    //    casing: "lower",
+    //    clearMaskOnLostFocus: false
+    //});
+
+    $("input.DateInput").mask("9999?-aaa-99");
+
     $("input.ZipCode").inputmask({
         mask: ["99999-9999", "99999"]
     });
@@ -115,9 +118,18 @@ function Validation() {
     var StartDate = document.getElementById("dtStartDate").value;
     var EndDate = document.getElementById("dtEndDate").value;
     let [startyear, startmon, startday] = StartDate.replaceAll("_", "").split("-");
+    startyear = startyear ?? "";
+    startmon = startmon?.toLowerCase() ?? "";
+    startday = startday ?? "";
     let [endyear, endmon, endday] = EndDate.replaceAll("_", "").split("-");
+    endyear = endyear ?? "";
+    endmon = endmon?.toLowerCase() ?? "";
+    endday = endday ?? "";
     var sDOB = new URLSearchParams(document.URL.split("?")[1]).get('DOB');
     let [DOBDate, DOBMonth, DOBYear ] = sDOB.replaceAll("_", "").split("-");
+    DOBDate = DOBDate ?? "";
+    DOBMonth = DOBMonth?.toLowerCase() ?? "";
+    DOBYear = DOBYear ?? "";
 
     if (Address?.value != undefined && Address.value == "") {
         DisplayErrorMessage("10113702");
@@ -330,7 +342,9 @@ function IsValidDate(vDate) {
     if (vDate == "") { return true; }
     vDate = vDate.replaceAll("_", "");
     let [year, mon, day] = vDate.split("-");
-
+    year = year ?? "";
+    mon = mon?.toLowerCase() ?? "";
+    day = day ?? "";
     var aryMonths = ["jan", "feb", "mar", "apr", "may", "jun",
         "jul", "aug", "sep", "oct", "nov", "dec"];
 
