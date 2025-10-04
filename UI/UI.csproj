@@ -2464,6 +2464,7 @@
     <Content Include="ConfigXML\LabLocationList.json" />
     <Content Include="ConfigXML\LookupList_CCDAErrors.json" />
     <Content Include="ConfigXML\XsltTransformSplitup.json" />
+    <Content Include="ConfigXML\StaticLookupPlan.json" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %281%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2810%29.pdf" />
     <None Include="Documents\Physician_Specific_Documents\Patient Education\2011-02-17 %2811%29.pdf" />
