@@ -39,8 +39,8 @@ function callweb(icon, List, id) {
         $(icon).removeClass("fa fa-plus").addClass("fa fa-minus");
 
         var ListValue = List;
-        if ((check == "" || (check == 'No' && ListValue.toUpperCase().indexOf("SDOH GOALS") > -1) || (ListValue.toUpperCase().indexOf("TOBACCO") > -1 && localStorage.getItem('Tobacco').toString().toUpperCase() == "NO") || bpstatus == "NORMAL" || bmistatus == "NORMAL" )&&
-            (ListValue.toUpperCase().indexOf("HOSPICE") < 0 && ListValue.toUpperCase().indexOf("PALLIATIVE")) < 0 && (check.toUpperCase() != 'YES' || ListValue.toUpperCase().indexOf("SDOH GOALS") < 0)) {
+        if ((check == "" || (check == 'No' && ListValue.toUpperCase().indexOf("SDOH GOALS") > -1) || (check == 'No' && ListValue.toUpperCase().indexOf("SDOH INTERVENTION") > -1) || (ListValue.toUpperCase().indexOf("TOBACCO") > -1 && localStorage.getItem('Tobacco').toString().toUpperCase() == "NO") || bpstatus == "NORMAL" || bmistatus == "NORMAL" )&&
+            (ListValue.toUpperCase().indexOf("HOSPICE") < 0 && ListValue.toUpperCase().indexOf("PALLIATIVE")) < 0 && (check.toUpperCase() != 'YES' || ListValue.toUpperCase().indexOf("SDOH GOALS") < 0) && (check.toUpperCase() != 'YES' || ListValue.toUpperCase().indexOf("SDOH INTERVENTION") < 0)) {
             $.ajax({
                 type: "POST",
                 url: "frmDLC.aspx/GetListBoxValues",
