@@ -27,6 +27,7 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Short_Description = string.Empty;
         private string _ICD_ID = string.Empty;
         private double _HCC_Value = 0;
+        private string _Is_SDOH = string.Empty; 
         #endregion
 
         #region Constructors
@@ -57,6 +58,7 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Short_Description);
             sb.Append(_ICD_ID);
             sb.Append(_HCC_Value);
+            sb.Append(_Is_SDOH);    
             return sb.ToString().GetHashCode();
         }
 
@@ -161,8 +163,14 @@ namespace Acurus.Capella.Core.DomainObjects
             get { return _HCC_Value; }
             set { _HCC_Value = value; }
         }
+        [DataMember]
+        public virtual string Is_SDOH
+        {
+            get { return _Is_SDOH; }
+            set { _Is_SDOH = value; }
+        }
 
-        
+
         #endregion
     }
 }
