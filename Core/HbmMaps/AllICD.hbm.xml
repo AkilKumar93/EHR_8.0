@@ -19,5 +19,6 @@
     <property name="Sort_Order" column="Sort_Order" />
     <property name="ICD_ID" column="ICD_ID" />
     <property name="HCC_Value" column="HCC_Value" />
+	  <property name="Is_SDOH" column="Is_SDOH" />
   </class>
 </hibernate-mapping>
