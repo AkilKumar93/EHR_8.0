@@ -519,17 +519,29 @@ function Autosave() {
 
 function FillCurrentAddress() {
     document.getElementById("btnAdd").disabled = false;
-    if (top?.window?.document?.getElementsByName("ctl00_ModalWindow")[0]?.contentWindow.document != undefined
-        && top?.window?.document?.getElementsByName("ctl00_ModalWindow")[0]?.contentWindow.document != null) {
+    var DomElement = null;
+    if (top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[0]?.contentWindow?.document != undefined
+        && top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[0]?.contentWindow?.document != null
+        && top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[0].getBoundingClientRect().x != 0) {
+
+        DomElement = top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[0]?.contentWindow?.document;
+    }
+    else if (top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[1]?.contentWindow?.document != undefined
+        && top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[1]?.contentWindow?.document != null
+        && top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[1].getBoundingClientRect().x != 0) {
+
+        DomElement = top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[1]?.contentWindow?.document;
+    }
+    if (DomElement != undefined && DomElement != null) {
         document.getElementById("btnAdd").value = 'Add';
         document.getElementById("btnClearAll").value = 'Clear All';
         document.getElementById("btnAdd").setAttribute("Human_Address_ID", "");
         document.getElementById("btnAdd").setAttribute("Autosave", "");
-        document.getElementById("txtAddressLineOne").value = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_txtPatientAddress").value;
-        document.getElementById("txtAddressLineTwo").value = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_txtPatientAddressLine2").value;
-        document.getElementById("txtCity").value = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_txtCity").value;
-        document.getElementById("cboState").value = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_ddlState").value;
-        document.getElementById("txtZipCode").value = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_msktxtZipcode").value;
+        document.getElementById("txtAddressLineOne").value = DomElement.querySelectorAll("input[id*='txtPatientAddress")[0].value;
+        document.getElementById("txtAddressLineTwo").value = DomElement.querySelectorAll("input[id*='txtPatientAddressLine2")[0].value;
+        document.getElementById("txtCity").value = DomElement.querySelectorAll("input[id*='txtCity")[0].value;
+        document.getElementById("cboState").value = DomElement.querySelectorAll("select[id*='ddlState")[0].value;
+        document.getElementById("txtZipCode").value = DomElement.querySelectorAll("input[id*='msktxtZipcode")[0].value;
     }
 }
 
@@ -584,25 +596,37 @@ function closepopup() {
 }
 
 function loadPatientStrip() {
-    if (top?.window?.document?.getElementsByName("ctl00_ModalWindow")[0]?.contentWindow.document != undefined
-        && top?.window?.document?.getElementsByName("ctl00_ModalWindow")[0]?.contentWindow.document != null) {
+    var DomElement = null;
+    if (top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[0]?.contentWindow?.document != undefined
+        && top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[0]?.contentWindow?.document != null
+        && top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[0].getBoundingClientRect().x != 0) {
 
-        var patFirstName = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_txtPatientfirstname").value;
-        var PatLastName = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_txtPatientlastname").value;
-        var PatDOB = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_dtpPatientDOB").value;
-        var PatSex = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_HiddenPatientSex").value;
-        var PatHumanID = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_txtAccountNo").value;
-        var PatMedRecNumber = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_txtMedicalRecordno").value;
-        var PatHomePhoneNumber = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_msktxtHomePhno").value;
-        var PatCellPhoneNumber = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_msktxtCellPhno").value;
-        var PatType = top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_cboHumanType").value;
+        DomElement = top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[0]?.contentWindow?.document;
+    }
+    else if (top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[1]?.contentWindow?.document != undefined
+        && top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[1]?.contentWindow?.document != null
+        && top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[1].getBoundingClientRect().x != 0) {
+
+        DomElement = top?.window?.document?.querySelectorAll('iframe[src^="frmPatientDemographics"]')[1]?.contentWindow?.document;
+    }
+    if (DomElement != undefined && DomElement != null)
+    { 
+        var patFirstName = DomElement.querySelectorAll("input[id*='txtPatientfirstname")[0].value;
+        var PatLastName = DomElement.querySelectorAll("input[id*='txtPatientlastname")[0].value;
+        var PatDOB = DomElement.querySelectorAll("input[id*='dtpPatientDOB")[0].value;
+        var PatSex = DomElement.querySelectorAll("input[id*='HiddenPatientSex")[0].value;
+        var PatHumanID = DomElement.querySelectorAll("input[id*='txtAccountNo")[0].value;
+        var PatMedRecNumber = DomElement.querySelectorAll("input[id*='txtMedicalRecordno")[0].value;
+        var PatHomePhoneNumber = DomElement.querySelectorAll("input[id*='msktxtHomePhno")[0].value;
+        var PatCellPhoneNumber = DomElement.querySelectorAll("input[id*='msktxtCellPhno")[0].value;
+        var PatType = DomElement.querySelectorAll("select[id*='cboHumanType")[0].value;
         var PatAge = 0;
         var aryDOB = [date, month, year] = PatDOB.replaceAll("_","").split("-");
         var aryCurrentDate = [cDate, cMonth, cYear] = [new Date().getDate().toString(), new Date().getMonth().toString(), new Date().getFullYear().toString()];
-        if (top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_msktxtHomePhno").value.replaceAll("_", '').replaceAll("()", "").trim().length == 1) {
+        if (DomElement.querySelectorAll("input[id*='msktxtHomePhno")[0].value.replaceAll("_", '').replaceAll("()", "").trim().length == 1) {
             PatHomePhoneNumber = "";
         }
-        if (top.window.document.getElementsByName("ctl00_ModalWindow")[0].contentWindow.document.getElementById("ctl00_C5POBody_msktxtCellPhno").value.replaceAll("_", '').replaceAll("()", "").trim().length == 1) {
+        if (DomElement.querySelectorAll("input[id*='msktxtCellPhno")[0].value.replaceAll("_", '').replaceAll("()", "").trim().length == 1) {
             PatCellPhoneNumber = "";
         }
 
