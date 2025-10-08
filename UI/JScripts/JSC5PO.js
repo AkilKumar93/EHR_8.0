@@ -1889,7 +1889,7 @@ function OpenERX(MyType) {
     obj.push("IsSentToRCopia=" + "Y");
     obj.push("LocalTime=" + document.getElementById(GetClientId('hdnLocalTime')).value);
 
-    var result = openModal("frmRCopiaWebBrowser.aspx", 1100, 960, obj, "ctl00_ModalWindow");
+    var result = openModal("frmRCopiaWebBrowser.aspx", 700, 1350, obj, "ctl00_ModalWindow");
     var WindowName = $find('ctl00_ModalWindow');
     //CAP-776 Cannot read properties of null 
     WindowName?.set_behaviors(Telerik.Web.UI.WindowBehaviors.Close);
