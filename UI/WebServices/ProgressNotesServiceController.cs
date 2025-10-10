@@ -884,7 +884,8 @@ namespace Acurus.Capella.UI.WebServices.API
                     sEncounter_Reviewed_signedDate = Convert.ToDateTime(Encounter_Reviewed_signedDate).ToString("O");
                 }
                 //Jira CAP-3738
-                sFinalOutPut = Regex.Replace(sFinalOutPut, @"\\(?![""\\/bfnrtu])", @"\\");
+                //sFinalOutPut = Regex.Replace(sFinalOutPut, @"\\(?![""\\/bfnrtu])", @"\\");
+                sFinalOutPut = Regex.Replace(sFinalOutPut, @"\\(?![""/bfnrtu])", @"\\");
                 //Jira CAP-3738 - End
                 //Jira CAP-3642
                 var FinalJson = JObject.Parse(sFinalOutPut + "}");
@@ -900,7 +901,8 @@ namespace Acurus.Capella.UI.WebServices.API
                                             "\"" + "ReviewedProviderID" + "\":\"" + "" + "\"," +
                                             "\"" + "createdAt" + "\":\"" + (sEncounter_Reviewed_signedDate?.Trim() ?? "") + "\"}";
                     //Jira CAP-3738
-                    sNewammentment = Regex.Replace(sNewammentment, @"\\(?![""\\/bfnrtu])", @"\\");
+                    //sFinalOutPut = Regex.Replace(sFinalOutPut, @"\\(?![""\\/bfnrtu])", @"\\");
+                    sNewammentment = Regex.Replace(sNewammentment, @"\\(?![""/bfnrtu])", @"\\");
                     //Jira CAP-3738 - End
                     var NewJson = JObject.Parse(sNewammentment);
                     if (FinalJson["Amendment Notes"]?.Children() != null)

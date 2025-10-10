@@ -2485,7 +2485,7 @@ function ScriptErrorLogEntry(sErrorMessage, sErrorLineNo, sErrorColumnNo, sError
             ErrorLineNo: sErrorLineNo,
             ErrorColumnNo: sErrorColumnNo,
             ErrorUrl: sErrorUrl,
-            ErrorStack: sErrorStack
+            ErrorStack: sErrorStack ?? ""
         }
         $.ajax({
             type: "POST",

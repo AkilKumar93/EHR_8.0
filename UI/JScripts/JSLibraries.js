@@ -791,49 +791,46 @@ function openDemographicsRadGrid() {
            var childWindow = oWnd.BrowserWindow.radopen("frmPatientDemographics.aspx?HumanId=" + Humanid, 1230, 1130, "ModalWindow");
            //AuditLog Entry when opening Patient (MyQ) Modify/View Patient
            CreateAuditLogEntryForTransactions("ACCESS", "Human", Humanid);//BugID:49685
-           setRadWindowProperties(childWindow, 1230, 1130);
+            setRadWindowProperties(childWindow, 1230, 1130);
+            childWindow.add_close(function (oWindow, args) {
+                var WSData = {
+                    //HumanID: document.getElementById("txtPatientSearch").attributes['data-human-id'].value
+                    HumanID: Humanid,
+                    FullDetails: ""
+                }
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json;RemoveSessions charset=utf-8",
+                    url: "./frmFindPatient.aspx/GetHumanDetails",
+                    data: JSON.stringify(WSData),
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        var SelectedPatient = JSON.parse(data.d);
+                        // $("#txtPatientSearch").val(SelectedPatient.DisplayString).attr("data-human-details", JSON.stringify(SelectedPatient.HumanDetails));
+                        if (IsQuickorSlow != undefined && IsQuickorSlow == "txtPatientSearch") {
 
-           childWindow.add_close(FindPatientClick)
-           {
-               function FindPatientClick(oWindow, args) {
-                   var WSData = {
-                       //HumanID: document.getElementById("txtPatientSearch").attributes['data-human-id'].value
-                       HumanID: Humanid
-                   }
-                   $.ajax({
-                       type: "POST",
-                       contentType: "application/json;RemoveSessions charset=utf-8",
-                       url: "./frmFindPatient.aspx/GetHumanDetails",
-                       data: JSON.stringify(WSData),
-                       dataType: "json",
-                       async: true,
-                       success: function (data) {
-                           var SelectedPatient = JSON.parse(data.d);
-                           // $("#txtPatientSearch").val(SelectedPatient.DisplayString).attr("data-human-details", JSON.stringify(SelectedPatient.HumanDetails));
-                           if (IsQuickorSlow != undefined && IsQuickorSlow == "txtPatientSearch") {
+                            $("#txtPatientSearch").val(SelectedPatient.DisplayString).attr("data-human-details", JSON.stringify(SelectedPatient.HumanDetails));
+                        }
+                        else if (IsQuickorSlow != undefined && IsQuickorSlow == "txtPatientSearchQuick") {
 
-                               $("#txtPatientSearch").val(SelectedPatient.DisplayString).attr("data-human-details", JSON.stringify(SelectedPatient.HumanDetails));
-                           }
-                           else if (IsQuickorSlow != undefined && IsQuickorSlow == "txtPatientSearchQuick") {
-
-                               $("#txtPatientSearchQuick").val(SelectedPatient.DisplayString).attr("data-human-details", JSON.stringify(SelectedPatient.HumanDetails));
-                           }
-                       },
-                       error: function OnError(xhr) {
-                           { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                           if (xhr.status == 999)
-                               window.location = "/frmSessionExpired.aspx";
-                           else {
-                               var log = JSON.parse(xhr.responseText);
-                               console.log(log);
-                               alert("USER MESSAGE:\n" +
-                                    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                                   "Message: " + log.Message);
-                           }
-                       }
-                   });
-               }
-           }
+                            $("#txtPatientSearchQuick").val(SelectedPatient.DisplayString).attr("data-human-details", JSON.stringify(SelectedPatient.HumanDetails));
+                        }
+                    },
+                    error: function OnError(xhr) {
+                        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                        if (xhr.status == 999)
+                            window.location = "/frmSessionExpired.aspx";
+                        else {
+                            var log = JSON.parse(xhr.responseText);
+                            console.log(log);
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                                "Message: " + log.Message);
+                        }
+                    }
+                });
+            });
        }, 0);
 
     return false;
