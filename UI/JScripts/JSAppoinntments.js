@@ -10,8 +10,14 @@ var SelectedDate;
 window.top.setInterval(function () {
     //Jira #CAP-768
     //if ($(top.window.document).find("#CheckAlert") != undefined)
-    if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert") != null && $(top.window.document).find("#CheckAlert").length > 0 && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null)
-        $(top.window.document).find("#CheckAlert")[0].style.display = "none";
+    //if ($(top.window.document).find("#CheckAlert") != undefined && $(top.window.document).find("#CheckAlert") != null && $(top.window.document).find("#CheckAlert").length > 0 && $(top.window.document).find("#CheckAlert")[0] != undefined && $(top.window.document).find("#CheckAlert")[0] != null)
+    //    $(top.window.document).find("#CheckAlert")[0].style.display = "none";
+    try {
+        var checkAlert = $(top.window.document).find("#CheckAlert");
+        if (checkAlert?.length > 0 && checkAlert[0]?.style?.display) {
+            checkAlert[0].style.display = "none";
+        }
+    } catch { }
 }, 6500);
 function showTime() {
     var dt = new Date();
