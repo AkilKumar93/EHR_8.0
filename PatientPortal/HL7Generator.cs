@@ -1609,8 +1609,11 @@ namespace Acurus.Capella.PatientPortal
                         }
                         else
                         {
-                            xmlReqNode[0].Attributes[0].Value = ClinicalSummary.lookupList[Race].Default_Value.ToString();
-                            xmlReqNode[0].Attributes[1].Value = ClinicalSummary.lookupList[Race].Value.ToString();
+                            //Cap - 3616
+                            if (xmlReqNode[0].Attributes.Count > 0)
+                                xmlReqNode[0].Attributes[0].Value = ClinicalSummary.lookupList[Race].Default_Value.ToString();
+                            if (xmlReqNode[0].Attributes.Count > 1)
+                                xmlReqNode[0].Attributes[1].Value = ClinicalSummary.lookupList[Race].Value.ToString();
                         }
                     }
                     else if (ClinicalSummary.lookupList[Race].Field_Name == "RACE")

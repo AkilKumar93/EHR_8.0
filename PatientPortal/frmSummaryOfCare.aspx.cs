@@ -2832,20 +2832,20 @@ namespace Acurus.Capella.PatientPortal
                     {
                         try
                         {
-                            if (elemParent.ChildNodes[i].Attributes["use"].Value == "MC")
+                            if (elemParent.ChildNodes[i].Attributes["use"] != null && elemParent.ChildNodes[i].Attributes["use"].Value == "MC")
                             {
                                 pat_Cellphone = elemParent.ChildNodes[i].Attributes["value"].Value;
                             }
-                            else if (elemParent.ChildNodes[i].Attributes["use"].Value == "HP")
+                            else if (elemParent.ChildNodes[i].Attributes["use"] != null && elemParent.ChildNodes[i].Attributes["use"].Value == "HP")
                             {
                                 if (pat_Telephone == string.Empty)
                                     pat_Telephone = elemParent.ChildNodes[i].Attributes["value"].Value;
                                 else
                                     pat_Telephone = pat_Telephone + ", " + elemParent.ChildNodes[i].Attributes["value"].Value;
                             }
-                            else if (elemParent.ChildNodes[i].Attributes["use"].Value == "WP")
+                            else if (elemParent.ChildNodes[i].Attributes["use"] != null && elemParent.ChildNodes[i].Attributes["use"].Value == "WP")
                             {
-                                pat_Workphone = elemParent.ChildNodes[i].Attributes["value"].Value;
+                                pat_Workphone = elemParent.ChildNodes[i].Attributes["value"].Value; 
                             }
                         }
                         catch
