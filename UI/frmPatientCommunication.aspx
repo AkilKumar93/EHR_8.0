@@ -312,7 +312,9 @@
             overflow-y: auto;
         }
 
-
+        .hide-important {
+            display: none !important;
+        }
     </style>
     <link href="CSS/jquery-ui.css" rel="stylesheet" />
     <%-- <link href="CSS/ElementStyles.css" rel="stylesheet" />--%>
@@ -553,6 +555,7 @@
                     </tr>
                 </table>
             </asp:panel>
+            <asp:HiddenField ID="hdnPatientTaskCreateDisabled" runat="server" />
         </div>
          <asp:placeholder id="PlaceHolder1" runat="server">
             <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>

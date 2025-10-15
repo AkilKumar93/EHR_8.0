@@ -322,6 +322,8 @@ namespace Acurus.Capella.UI
                 ChkPatientChart.Visible = true;
                 //FillMessageGrid();
                 RowForHide.Style.Add("display", "none");
+                //CAP-3750
+                hdnPatientTaskCreateDisabled.Value = ConfigurationSettings.AppSettings["IsPatientTaskCreateDisabled"]?.ToString() ?? "";
             }
             if (txtAccount.Text == "0")
             {
