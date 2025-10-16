@@ -37,6 +37,8 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             catch (Exception ex)
             {
+                //CAP-3727
+                LogError(ex, sHumanID);
                 return Json(new { HumanID = sHumanID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
             }
             return Json(new { HumanID = sHumanID, status = "Acknowledged" });
@@ -74,6 +76,8 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             catch (Exception ex)
             {
+                //CAP-3727
+                LogError(ex, sHumanID);
                 return Json(new { HumanID = sHumanID, status = "Error", ErrorDescription = "Error in processing the request. " + ex.Message });
             }
             return Json(new { HumanID = sHumanID, status = "Acknowledged" });
@@ -90,6 +94,45 @@ namespace Acurus.Capella.UI.WebServices.API
                 return false;
             }
             return true;
+        }
+        //CAP-3727
+        private void LogError(Exception exc, string sHumanID)
+        {
+            string version = "";
+            if (ConfigurationSettings.AppSettings["VersionConfiguration"] != null)
+            {
+                version = ConfigurationSettings.AppSettings["VersionConfiguration"].ToString();
+            }
+
+            string[] server = version.Split('|');
+            string serverno = "";
+            if (server.Length > 1)
+                serverno = server[1].Trim();
+
+            string sMessage = "";
+            string statserrorlogstacktrace = "";
+
+            if (exc != null && exc.Message != null)
+                sMessage = exc.Message;
+
+            if (exc != null && exc.StackTrace != null)
+                statserrorlogstacktrace = exc.StackTrace;
+            if (exc != null && exc.InnerException != null && exc.InnerException.Message != null && sMessage == string.Empty)
+            {
+                sMessage += exc.InnerException.Message;
+            }
+            if (exc != null && exc.InnerException != null && exc.InnerException.StackTrace != null && sMessage == string.Empty)
+            {
+                statserrorlogstacktrace += exc.InnerException.StackTrace;
+            }
+
+            if (exc != null && exc.Message != null)
+            {
+                string userName = string.Empty;
+                ulong physicianId = 0;
+                string insertQuery = "insert into stats_apperrorlog values(0,'" + sMessage.Replace(@"\\", @"\\\\").Replace(@"\", @"\\").Replace(@"\\\\\\\\", @"\\\\").Replace("'", "") + "', '" + serverno + "','" + DateTime.Now + "','" + userName + "','" + 0 + "','" + sHumanID + "','" + physicianId + "','" + statserrorlogstacktrace.Replace("'", "") + "','" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "')";
+                DBConnector.WriteData(insertQuery);
+            }
         }
     }
 }

@@ -357,6 +357,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlTableRow Tr1ForHide;
 
         /// <summary>
+        /// hdnPatientTaskCreateDisabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnPatientTaskCreateDisabled;
+
+        /// <summary>
         /// PlaceHolder1 control.
         /// </summary>
         /// <remarks>

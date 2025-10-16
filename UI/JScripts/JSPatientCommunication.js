@@ -224,6 +224,9 @@ function SaveMenuClick() {
                 FillMessageGrid();
                 AfterSaveClear();
                 Assingnmethod();
+                if ($('#hdnPatientTaskCreateDisabled').val() == "Y") {
+                    PatientTaskCreateDisabled();
+                }
                 localStorage.setItem('bSave', 'true');
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
                 return false;
@@ -718,6 +721,10 @@ function ClearClick() {
     return false;
 }
 $(document).ready(function () {
+    if ($('#hdnPatientTaskCreateDisabled').val() == "Y") {
+        PatientTaskCreateDisabled();
+    }
+
     //Jira CAP-579
     SearchAssignedTo();
     //Jira CAP-579 - End
@@ -1516,6 +1523,9 @@ function EditAssingnmethod(row) {
     document.getElementById("txtAssignedTo").attributes["val"] = "";
     document.getElementById("txtAssignedTo").title = "";
     var wfobjectid = row.cells[23].innerHTML;
+    if ($('#hdnPatientTaskCreateDisabled').val() == "Y") {
+        PatientTaskCreateDisabled();
+    }
     LoadAssignedTo(wfobjectid, "");
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
   //Jira CAP-579 - End
@@ -1584,6 +1594,9 @@ function ClearAllMenu() {
             $("#btnClearAll").val("Clear All");
             $('#btnSaveMenu').attr("disabled", true);
             localStorage.setItem('bSave', 'true');
+            if ($('#hdnPatientTaskCreateDisabled').val() == "Y") {
+                PatientTaskCreateDisabled();
+            }
         }
 
     }
@@ -1816,7 +1829,11 @@ function LoadAssignedTo(WfobjectId, UserName) {
                     document.getElementById("txtAssignedTo").disabled = true;
                 }
                 else {
-                    document.getElementById("txtAssignedTo").disabled = false;
+                    if ($('#hdnPatientTaskCreateDisabled').val() == "Y" && $('#btnSaveMenu').val() == 'Add') {
+                        document.getElementById("txtAssignedTo").disabled = true;
+                    } else {
+                        document.getElementById("txtAssignedTo").disabled = false;
+                    }
                 }
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
             },
@@ -1844,3 +1861,39 @@ $("#imgclearAssignTo").css({
     document.getElementById("txtAssignedTo").title = "";
     document.getElementById("txtAssignedTo").disabled = false;
 });
+
+function PatientTaskCreateDisabled() {
+    if ($('#hdnPatientTaskCreateDisabled').val() == "Y" && $('#btnSaveMenu').val() == 'Add') {
+        $('#ddlType').prop('disabled', true);
+        $('#ddlRelationship').prop('disabled', true);
+        $('#txtCallerName').prop('disabled', true);
+        $('#ddlMessageOrigin').prop('disabled', true);
+        $('#ddlFacilityName').prop('disabled', true);
+        $('#txtAssignedTo').prop('disabled', true);
+        $('#ddlPriority').prop('disabled', true);
+        $('#ddlMessageType').prop('disabled', true);
+        $('#txtMessageDate').prop('disabled', true);
+        $('#DLC_txtDLC').prop('disabled', true);
+        $('#DLC_pbDropdown').prop('disabled', true);
+        $('#ChkPatientChart').prop('disabled', true);
+        $('#btnSaveMenu').prop('disabled', true);
+        $('#btnClearAll').prop('disabled', true);
+        $('#imgclearAssignTo').addClass('hide-important');
+    } else {
+        $('#ddlType').prop('disabled', false);
+        $('#ddlRelationship').prop('disabled', false);
+        $('#txtCallerName').prop('disabled', false);
+        $('#ddlMessageOrigin').prop('disabled', false);
+        $('#ddlFacilityName').prop('disabled', false);
+        $('#txtAssignedTo').prop('disabled', false);
+        $('#ddlPriority').prop('disabled', false);
+        $('#ddlMessageType').prop('disabled', false);
+        $('#txtMessageDate').prop('disabled', false);
+        $('#DLC_txtDLC').prop('disabled', false);
+        $('#DLC_pbDropdown').prop('disabled', false);
+        $('#ChkPatientChart').prop('disabled', false);
+        $('#btnSaveMenu').prop('disabled', false);
+        $('#btnClearAll').prop('disabled', false);
+        $('#imgclearAssignTo').removeClass('hide-important');
+    }
+}
