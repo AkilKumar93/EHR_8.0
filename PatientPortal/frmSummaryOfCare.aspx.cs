@@ -2917,7 +2917,11 @@ namespace Acurus.Capella.PatientPortal
                                 //bool test = Regex.IsMatch(pat_Sex, @"\d");
                                 //if (test == true)
                                 //    pat_Sex = elemParent.ChildNodes[i].ChildNodes[j].Attributes[1].Value;
-                                pat_Sex = elemParent.ChildNodes[i].ChildNodes[j].Attributes.GetNamedItem("code").Value;
+                               //Cap - 3616
+                                if(elemParent.ChildNodes[i].ChildNodes[j].Attributes.GetNamedItem("code").Value != null)
+                                {
+                                    pat_Sex = elemParent.ChildNodes[i].ChildNodes[j].Attributes.GetNamedItem("code").Value;
+                                }                               
 
                                 if (pat_Sex.ToUpper() == "M")
                                 {
