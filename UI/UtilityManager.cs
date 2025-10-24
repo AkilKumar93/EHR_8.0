@@ -1665,7 +1665,18 @@ namespace Acurus.Capella.UI
 
             IList<MasterVitals> masterlist = new List<MasterVitals>();
             MapVitalsPhysicianManager objMapMngr = new MapVitalsPhysicianManager();
-            IList<MapVitalsPhysician> mapVitalList = objMapMngr.GetVitalsForPhysician(ClientSession.PhysicianId);
+            //Cap - 3701
+            IList<MapVitalsPhysician> mapVitalList = new List<MapVitalsPhysician>();
+            if (ilstVitalsList.Count>0)
+            {
+                mapVitalList = objMapMngr.GetVitalsForPhysician(ilstVitalsList[0].Physician_ID);
+            }
+            else
+            {
+                mapVitalList = objMapMngr.GetVitalsForPhysician(ClientSession.PhysicianId);
+            }
+            
+            
             mapVitalList = mapVitalList.OrderBy(a => a.Sort_Order).ToList<MapVitalsPhysician>();
             VitalsManager objVMngr = new VitalsManager();
             IList<DynamicScreen> dynamicScreenlst = new List<DynamicScreen>();
