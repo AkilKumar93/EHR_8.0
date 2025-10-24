@@ -78,6 +78,24 @@ namespace Acurus.Capella.PatientPortal
         protected global::Telerik.Web.UI.RadWindow MessageWindow;
 
         /// <summary>
+        /// RadWindowManagerPhiDisclosure control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadWindowManager RadWindowManagerPhiDisclosure;
+
+        /// <summary>
+        /// RadWindowPhiDisclosure control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadWindow RadWindowPhiDisclosure;
+
+        /// <summary>
         /// lblEmailIDActual0 control.
         /// </summary>
         /// <remarks>
@@ -112,6 +130,15 @@ namespace Acurus.Capella.PatientPortal
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMessage;
+
+        /// <summary>
+        /// lnkPHIDisclosure control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkPHIDisclosure;
 
         /// <summary>
         /// lnkadddocument control.

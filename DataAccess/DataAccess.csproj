@@ -191,6 +191,7 @@
     <Compile Include="ManagerObjects\HumanBlobManager.cs" />
     <Compile Include="ManagerObjects\HumanManager.cs" />
     <Compile Include="ManagerObjects\Human_AddressManager.cs" />
+    <Compile Include="ManagerObjects\Human_PHI_DisclosureManager.cs" />
     <Compile Include="ManagerObjects\Human_TokenManager.cs" />
     <Compile Include="ManagerObjects\ImmunizationHistoryManager.cs" />
     <Compile Include="ManagerObjects\ImmunizationManager.cs" />

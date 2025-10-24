@@ -1009,6 +1009,13 @@ function ChangePasswordClick() {
     return false;
 }
 
+function OpenPhiDisclosureScreen() {
+    var obj = new Array();
+    obj.push("PatientID=" + document.getElementById("HumanID").value);
+    openModal("frmPHIDisclosure.aspx", 665 , 1370, obj, "RadWindowPhiDisclosure");
+    return false;
+    
+}
 
 function PatientAccountClick(human_ID, PatientName, PatientEMail) {
     var Role = document.getElementById("hdnRole").value;

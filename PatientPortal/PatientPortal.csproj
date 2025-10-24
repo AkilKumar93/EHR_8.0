@@ -206,6 +206,7 @@
     <Content Include="frmMailBox.aspx" />
     <Content Include="frmMailMessage.aspx" />
     <Content Include="frmOnlineDocuments.aspx" />
+    <Content Include="frmPHIDisclosure.aspx" />
     <Content Include="frmPrintPDF.aspx" />
     <Content Include="frmSendHealthRecord.aspx" />
     <Content Include="frmSessionExpired.aspx" />
@@ -233,6 +234,7 @@
     <Content Include="JScripts\JSModalWindow.js" />
     <Content Include="JScripts\JSOnlineDocuments.js" />
     <Content Include="JScripts\JSPatientPortal.js" />
+    <Content Include="JScripts\JSPHIDisclosure.js" />
     <Content Include="JScripts\JSPrintPDF.js" />
     <Content Include="JScripts\JSValidationArea.js" />
     <Content Include="JScripts\Lazyload.js" />
@@ -539,6 +541,13 @@
     </Compile>
     <Compile Include="frmOnlineDocuments.aspx.designer.cs">
       <DependentUpon>frmOnlineDocuments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmPHIDisclosure.aspx.cs">
+      <DependentUpon>frmPHIDisclosure.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmPHIDisclosure.aspx.designer.cs">
+      <DependentUpon>frmPHIDisclosure.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmPrintPDF.aspx.cs">
       <DependentUpon>frmPrintPDF.aspx</DependentUpon>

@@ -429,6 +429,13 @@
                 </telerik:RadWindow>
             </Windows>
         </telerik:RadWindowManager>
+         <telerik:RadWindowManager ID="RadWindowManagerPhiDisclosure" runat="server">
+            <Windows>
+                <telerik:RadWindow ID="RadWindowPhiDisclosure" ShowContentDuringLoad="true" runat="server"
+                    Behaviors="None" Title="PHI Disclosure" IconUrl="Resources/16_16.ico">
+                </telerik:RadWindow>
+            </Windows>
+        </telerik:RadWindowManager>
         <div align="left">
             <asp:Label ID="lblEmailIDActual0" runat="server" Font-Bold="True" Font-Italic="True"
                 Font-Size="XX-Large" ForeColor="#000099" Text="Patient Online Access Portal"></asp:Label>
@@ -442,6 +449,7 @@
                 Text=""></asp:Label>
         </div>
         <div align="right">
+            <asp:LinkButton ID="lnkPHIDisclosure" runat="server" Style="font-weight: 700; font-size: small;" OnClientClick="return OpenPhiDisclosureScreen();">PHI Disclosure Restriction Form</asp:LinkButton>&nbsp;
             <asp:LinkButton ID="lnkadddocument" runat="server" Style="font-weight: 700; font-size: small;">Add Document</asp:LinkButton>&nbsp;
             <asp:LinkButton ID="lnkPatientAccount" runat="server" Style="font-weight: 700; font-size: small">Patient Account</asp:LinkButton>&nbsp;
             <asp:LinkButton ID="lnkActiveHistory" runat="server" Style="font-weight: 700; font-size: small;">Activity History</asp:LinkButton>&nbsp;

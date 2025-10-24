@@ -568,6 +568,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         IApplicationUsageLogManager GetApplicationUsageLogManager(INHibernateSession session);
         IHuman_AddressManager GetHumanAddressManager();
         IHuman_AddressManager GetHumanAddressManager(INHibernateSession session);
+
+        IHuman_PHI_DisclosureManager GetHumanPHIDisclosureManager();
+        IHuman_PHI_DisclosureManager GetHumanPHIDisclosureManager(INHibernateSession session);
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2319,6 +2322,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IHuman_AddressManager GetHumanAddressManager(INHibernateSession session)
         {
             return new Human_AddressManager(session);
+        }
+        public IHuman_PHI_DisclosureManager GetHumanPHIDisclosureManager()
+        {
+            return new Human_PHI_DisclosureManager();
+        }
+        public IHuman_PHI_DisclosureManager GetHumanPHIDisclosureManager(INHibernateSession session)
+        {
+            return new Human_PHI_DisclosureManager(session);
         }
         #endregion
     }

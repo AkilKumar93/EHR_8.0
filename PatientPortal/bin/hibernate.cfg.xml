@@ -298,6 +298,17 @@
 		<mapping resource="Acurus.Capella.Core.HbmMaps.CQMSummary.hbm.xml" assembly="Acurus.Capella.Core" />
 		<mapping resource="Acurus.Capella.Core.HbmMaps.CQMDetail.hbm.xml" assembly="Acurus.Capella.Core" />
 		<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationAccessLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Encounter_Blob.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.MapXMLBlob.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ProcedureModifierLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.RCopiaDeduplicateLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Blob_Progress_Note.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CDCEventTracker.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.CDC_Audit_Log.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationUsageLog.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Address.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Phi_Disclosure.hbm.xml" assembly="Acurus.Capella.Core" />
 	</session-factory>
   </hibernate-configuration>
 

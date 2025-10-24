@@ -165,6 +165,7 @@
     <Compile Include="DomainObjects\HospitalizationHistoryMaster.cs" />
     <Compile Include="DomainObjects\Human_Address.cs" />
     <Compile Include="DomainObjects\Human_Blob.cs" />
+    <Compile Include="DomainObjects\Human_Phi_Disclosure.cs" />
     <Compile Include="DomainObjects\Human_Token.cs" />
     <Compile Include="DomainObjects\ICD9ICD10Mapping.cs" />
     <Compile Include="DomainObjects\ImmunizationMasterHistory.cs" />
@@ -790,6 +791,7 @@
     <EmbeddedResource Include="HbmMaps\MapUserCarrierFacility.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Blob.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\MapXMLBlob.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\Human_Phi_Disclosure.hbm.xml" />
     <Content Include="HbmMaps\PatientMessage.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\PhysicianPatientMaster.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\SocialHistoryMaster.hbm.xml" />
