@@ -951,7 +951,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     byte[] bytesKeep = null;
                     try
                     {
-                        //Jira CAP-3786
+                        //Jira CAP-3796
                         //bytesKeep = System.Text.Encoding.Default.GetBytes(sFinalOutPut);
                         bytesKeep = System.Text.Encoding.UTF8.GetBytes(sFinalOutPut);
                     }
