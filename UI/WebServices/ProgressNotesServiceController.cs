@@ -1360,9 +1360,13 @@ namespace Acurus.Capella.UI.WebServices.API
                                                             }
                                                             else
                                                             {
-                                                                sRowContent = "{\"MinLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[0].InnerText.Replace("\"", "\\\"") +
+                                                                //Jira CAP-3873
+                                                                //sRowContent = "{\"MinLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[0].InnerText.Replace("\"", "\\\"") +
+                                                                sRowContent = "{\"MinLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[0].InnerText.Replace("\"", "\\\"").TrimStart() +
                                                                 "\",\"Range\":\"" + sInnerContent.TrimEnd() +
-                                                                "\",\"MaxLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 2].InnerText.Replace("\"", "\\\"") +
+                                                                //Jira CAP-3873
+                                                                //"\",\"MaxLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 2].InnerText.Replace("\"", "\\\"") +
+                                                                "\",\"MaxLabel\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 2].InnerText.Replace("\"", "\\\"").TrimStart() +
                                                                 "\",\"Score\":\"" + xmlDocumentForTable.SelectSingleNode("content/table").ChildNodes[iCountX].ChildNodes[iTagCount - 1].InnerText + "\"}";
                                                             }
                                                             sTableContent = sTableContent + ((sTableContent != string.Empty) ? "," + sRowContent : sRowContent);
