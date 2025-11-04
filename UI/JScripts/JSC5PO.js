@@ -921,16 +921,21 @@ function OpenModal(data) {
             var result = openModal("frmPatientDemographics.aspx", 1230, 1182, obj, "ctl00_ModalWindow");
             //audit log entry for Encounter based Access
             CreateAuditLogEntryForTransactions("ACCESS", "Human", Humanid);//BugID:49685
-            var Window = $find('ctl00_ModalWindow');
-            Window.add_close(function CloseDemoGraphics(oWindow, args) {
-                //CAP-1969
-                if (document.getElementById("ctl00_hdnIsOpenPatientChart")?.value != null && document.getElementById("ctl00_hdnIsOpenPatientChart")?.value != undefined && document.getElementById("ctl00_hdnIsOpenPatientChart").value == "Y" && document.URL.indexOf("frmPatientchart.aspx?") > -1 && document.URL.indexOf("ScreenMode=Menu") > -1) {
-                    top.location.reload();
-                }
-                else {
-                    window.location.href = "frmPatientChart.aspx";
-                }
-            });
+
+            //CAP-3819
+            var modalWindow = $find('ctl00_ModalWindow');
+
+            if (modalWindow != null && modalWindow != undefined) {
+                modalWindow.add_close(function CloseDemoGraphics(oWindow, args) {
+                    //CAP-1969
+                    if (document.getElementById("ctl00_hdnIsOpenPatientChart")?.value != null && document.getElementById("ctl00_hdnIsOpenPatientChart")?.value != undefined && document.getElementById("ctl00_hdnIsOpenPatientChart").value == "Y" && document.URL.indexOf("frmPatientchart.aspx?") > -1 && document.URL.indexOf("ScreenMode=Menu") > -1) {
+                        top.location.reload();
+                    }
+                    else {
+                        window.location.href = "frmPatientChart.aspx";
+                    }
+                });
+            }
         }
     }
     else if (itemValue == "Manage Authorization") {
