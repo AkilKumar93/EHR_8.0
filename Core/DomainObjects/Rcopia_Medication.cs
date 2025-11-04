@@ -85,8 +85,10 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Stop_Notes = string.Empty;
         private string _Retain_Notes = string.Empty;
         private string _Status = string.Empty;
+        private string _Provider_Rcopia_User_Name = string.Empty;
+        private string _Preparer_Rcopia_User_Name = string.Empty;
         
-
+        
 
 
         #endregion
@@ -177,6 +179,8 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Stop_Notes);
             sb.Append(_Retain_Notes);
             sb.Append(_Status);
+            sb.Append(_Provider_Rcopia_User_Name);
+            sb.Append(_Preparer_Rcopia_User_Name);
             return sb.ToString().GetHashCode();
         }
         #endregion
@@ -718,6 +722,18 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Status; }
             set { _Status = value; }
+        }
+        [DataMember]
+        public virtual string Provider_Rcopia_User_Name
+        {
+            get { return _Provider_Rcopia_User_Name; }
+            set { _Provider_Rcopia_User_Name = value; }
+        }
+        [DataMember]
+        public virtual string Preparer_Rcopia_User_Name
+        {
+            get { return _Preparer_Rcopia_User_Name; }
+            set { _Preparer_Rcopia_User_Name = value; }
         }
 
 

@@ -54,7 +54,8 @@ namespace Acurus.Capella.Core.DomainObjects
         private string _Deleted=string.Empty ;
         private int _Formulary_ID = 0;
         private string _Electronic = string.Empty;
-
+        private string _Provider_Rcopia_User_Name = string.Empty;
+        private string _Preparer_Rcopia_User_Name = string.Empty;
         #endregion
 
         #region Constructors
@@ -113,6 +114,8 @@ namespace Acurus.Capella.Core.DomainObjects
             sb.Append(_Deleted);
             sb.Append(_Formulary_ID);
             sb.Append(_Electronic);
+            sb.Append(_Provider_Rcopia_User_Name);
+            sb.Append(_Preparer_Rcopia_User_Name);
             return sb.ToString().GetHashCode();
 
         }
@@ -497,6 +500,18 @@ namespace Acurus.Capella.Core.DomainObjects
         {
             get { return _Electronic; }
             set { _Electronic = value; }
+        }
+        [DataMember]
+        public virtual string Provider_Rcopia_User_Name
+        {
+            get { return _Provider_Rcopia_User_Name; }
+            set { _Provider_Rcopia_User_Name = value; }
+        }
+        [DataMember]
+        public virtual string Preparer_Rcopia_User_Name
+        {
+            get { return _Preparer_Rcopia_User_Name; }
+            set { _Preparer_Rcopia_User_Name = value; }
         }
         #endregion
 
