@@ -166,7 +166,9 @@ function loadplanTabs(event) {
             else if (PrevTab[0].innerText == "Individualized CarePlan") {
                 event.preventDefault();
                 event.stopPropagation();
-                $('.clsIframe').contents()[1].all.namedItem('btnSave').click();
+
+                //CAP-3821
+                $('.clsIframe')?.contents()[1]?.all?.namedItem('btnSave')?.click();
                 if (localStorage.getItem("bSave") == "true") {
                     paneID = $(event.target).attr('href');
                     src = $(paneID).attr('data-src');
