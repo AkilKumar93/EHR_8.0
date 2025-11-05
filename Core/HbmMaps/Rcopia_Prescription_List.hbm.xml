@@ -47,6 +47,8 @@
     <property name="Deleted" column="Deleted" />
     <property name="Formulary_ID" column="Formulary_ID" />
     <property name="Electronic" column="Electronic" />
-    <property name="External_ID" column="External_ID" />    
+    <property name="External_ID" column="External_ID" />
+	<property name="Provider_Rcopia_User_Name" column="Provider_Rcopia_User_Name" />
+	<property name="Preparer_Rcopia_User_Name" column="Preparer_Rcopia_User_Name" />
   </class>
 </hibernate-mapping>
