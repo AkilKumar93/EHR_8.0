@@ -571,6 +571,12 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         IHuman_PHI_DisclosureManager GetHumanPHIDisclosureManager();
         IHuman_PHI_DisclosureManager GetHumanPHIDisclosureManager(INHibernateSession session);
+
+        IIndexingFileLookupManager GetIndexingFileLookupManager();
+        IIndexingFileLookupManager GetIndexingFileLookupManager(INHibernateSession session);
+
+        IIndexingExceptionLogManager GetIndexingExceptionLogManager();
+        IIndexingExceptionLogManager GetIndexingExceptionLogManager(INHibernateSession session);
     }
 
     public class ManagerFactory : IManagerFactory
@@ -2330,6 +2336,22 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         public IHuman_PHI_DisclosureManager GetHumanPHIDisclosureManager(INHibernateSession session)
         {
             return new Human_PHI_DisclosureManager(session);
+        }
+        public IIndexingFileLookupManager GetIndexingFileLookupManager()
+        {
+            return new IndexingFileLookupManager();
+        }
+        public IIndexingFileLookupManager GetIndexingFileLookupManager(INHibernateSession session)
+        {
+            return new IndexingFileLookupManager(session);
+        }
+        public IIndexingExceptionLogManager GetIndexingExceptionLogManager()
+        {
+            return new IndexingExceptionLogManager();
+        }
+        public IIndexingExceptionLogManager GetIndexingExceptionLogManager(INHibernateSession session)
+        {
+            return new IndexingExceptionLogManager(session);
         }
         #endregion
     }

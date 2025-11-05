@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+	<class name="Acurus.Capella.Core.DomainObjects.IndexingExceptionLog, Acurus.Capella.Core" table="indexing_exception_log" lazy="true">
+		<id name="Id" column="indexing_exception_log_id">
+			<generator class="identity" />
+		</id>
+		<version name ="Version"/>
+		<property name="File_Name" column="File_Name" />
+		<property name="Scan_ID" column="Scan_ID" />
+		<property name="Reason_Code" column="Reason_Code" />
+		<property name="Reason_Description" column="Reason_Description" />
+		<property name="Created_By" column="Created_By" />
+		<property name="Created_Date_And_Time" column="Created_Date_And_Time" />
+		<property name="Modified_By" column="Modified_By" />
+		<property name="Modified_Date_And_Time" column="Modified_Date_And_Time" />
+		<property name="No_of_Pages" column="No_of_Pages" />
+		<property name="Patient_MRN" column="Patient_MRN" />
+		<property name="Patient_First_Name" column="Patient_First_Name" />
+		<property name="Patient_Last_Name" column="Patient_Last_Name" />
+		<property name="Patient_MI_Name" column="Patient_MI_Name" />
+		<property name="Patient_DOB" column="Patient_DOB" />
+		<property name="Document_Type" column="Document_Type" />
+		<property name="Document_Sub_Type" column="Document_Sub_Type" />
+		<property name="Document_Date" column="Document_Date" />
+		<property name="Order_Number" column="Order_Number" />
+		<property name="Order_Date" column="Order_Date" />
+		<property name="Encounter_Number" column="Encounter_Number" />
+		<property name="Provider_ID" column="Provider_ID" />
+		<property name="Is_Active" column="Is_Active" />
+	</class>
+</hibernate-mapping>

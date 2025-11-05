@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" namespace="Acurus.Capella.Core.DomainObjects" assembly="Acurus.Capella">
+	<class name="Acurus.Capella.Core.DomainObjects.IndexingFileLookup, Acurus.Capella.Core" table="indexing_file_lookup" lazy="true">
+		<id name="Id" column="Indexing_file_lookup_id ">
+			<generator class="identity" />
+		</id>
+		<property name="Segment_Name" column="Segment_Name" />
+		<property name="Segment_Field" column="Segment_Field" />
+		<property name="Segment_Sub_Field" column="Segment_Sub_Field" />
+		<property name="Table_Name" column="Table_Name" />
+		<property name="Column_Name" column="Column_Name" />
+		<property name="Field_Description" column="Field_Description" />
+		<property name="Domain_Object" column="Domain_Object" />
+		<property name="Sort_Order" column="Sort_Order" />
+		<property name="Segment_Type" column="Segment_Type" />
+	</class>
+</hibernate-mapping>
