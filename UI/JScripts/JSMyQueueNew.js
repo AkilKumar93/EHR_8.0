@@ -1722,7 +1722,8 @@ function LoadMyTask() {
             { data: 'Created_By', searchable: false, sWidth: '11%' },
             {
                 data: 'Modified_Date_Time', render: function (data, type, row) {
-                    if (row.Modified_Date_Time == "0001-01-01T00:00:00" || !$("#chkMyTask14")[0].checked)
+                    //CAP-3822
+                    if (row.Modified_Date_Time == "0001-01-01T00:00:00" || !$("#chkMyTask14")[0]?.checked)
                         return "";
                     else
                         return ConvertDate(row.Modified_Date_Time.replace("T", " "));
