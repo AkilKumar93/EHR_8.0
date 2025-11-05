@@ -41,7 +41,8 @@ function closeWindow() {
     self.close(); return false;
 }
 function cancel() {
-    if ($(top.window.document).find("#txtPatientInformation") != null) {
+    //CAP-3825
+    if ($(top.window.document)?.find("#txtPatientInformation") != null && $(top.window.document)?.find("#txtPatientInformation") != undefined && $(top.window.document)?.find("#txtPatientInformation")[0] != null && $(top.window.document)?.find("#txtPatientInformation")[0] != undefined) {
         $(top.window.document).find("#txtPatientInformation")[0].value = "";
         $(top.window.document).find("#btnFindPatientClose").click();
     }
@@ -754,7 +755,11 @@ function CloseFindPatientRadGrid() {
             if (window.opener) { window.opener.returnValue = result; }
             window.returnValue = result;
 
-            $(top.window.document).find("#txtPatientInformation")[0].value = JSON.stringify(result);
+            //CAP-3826
+            if ($(top.window.document)?.find("#txtPatientInformation") != null && $(top.window.document)?.find("#txtPatientInformation") != undefined && $(top.window.document)?.find("#txtPatientInformation")[0] != null && $(top.window.document)?.find("#txtPatientInformation")[0] != undefined) {
+                $(top.window.document).find("#txtPatientInformation")[0].value = JSON.stringify(result);
+            }
+
             $(top.window.document).find("#btnFindPatientClose").click();
             returnToParent(result);
             return true;
