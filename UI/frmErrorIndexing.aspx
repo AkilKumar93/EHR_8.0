@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>View Error Indexing Reports</title>
+    <title>View Errored Indexing Documents</title>
     <script type="text/javascript">document.write("<script src='JScripts/JsLogRocket.js?version=" + sessionStorage.getItem("ScriptVersion") + "'><\/script>")</script>
     <base target="_self" />
     <link href="CSS/ScanningAndIndexing.css" rel="stylesheet" />
