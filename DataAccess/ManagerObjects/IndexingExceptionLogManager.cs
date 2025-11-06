@@ -10,7 +10,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
     public partial interface IIndexingExceptionLogManager : IManagerBase<IndexingExceptionLog,int>
     {
         void DeleteErrorLogByResultMasterID(int ResultMasterId, string MacAddress);
-        void UpdateErrorLogByResultMasterID(int ResultMasterId, string Username, string MacAddress);
+        void UpdateIndexingExceptionLog(IList<IndexingExceptionLog> UpdateList);
+        IList<IndexingExceptionLog> GetIndexingExceptionLogById(ulong ulIndexingExceptionLogId);
     }
 
     public partial class IndexingExceptionLogManager : ManagerBase<IndexingExceptionLog, int>, IIndexingExceptionLogManager
@@ -59,26 +60,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             }
         }
 
-        public void UpdateErrorLogByResultMasterID(int ResultMasterId, string Username, string MacAddress)
+        public void UpdateIndexingExceptionLog(IList<IndexingExceptionLog> UpdateList)
         {
-            IList<IndexingExceptionLog> ReturnList = new List<IndexingExceptionLog>();
-            using (ISession iMySession = NHibernateSessionManager.Instance.CreateISession())
-            {
-                ICriteria critOrders = iMySession.CreateCriteria(typeof(IndexingExceptionLog)).Add(Expression.Eq("Result_Master_ID", ResultMasterId));
-                 ReturnList = critOrders.List<IndexingExceptionLog>();
-                 iMySession.Close();
-            }
-            IList<IndexingExceptionLog> UpdateList = new List<IndexingExceptionLog>();
             IList<IndexingExceptionLog> SaveList = new List<IndexingExceptionLog>();
+            SaveUpdateDelete_DBAndXML_WithTransaction(ref SaveList, ref UpdateList, null, string.Empty, false, false, 0, "");
+        }
 
-            for (int iCount = 0; iCount <= ReturnList.Count - 1; iCount++)
-            {
-                ReturnList[iCount].Is_Active = "Y";
-                ReturnList[iCount].Modified_By = Username;
-                ReturnList[iCount].Modified_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
-                UpdateList.Add(ReturnList[iCount]);
-            }
-            SaveUpdateDelete_DBAndXML_WithTransaction(ref SaveList, ref UpdateList, null, MacAddress, false, false, 0, "");
+        public IList<IndexingExceptionLog> GetIndexingExceptionLogById(ulong ulIndexingExceptionLogId)
+        {
+            IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
+            session.GetISession().Close();
+            ICriteria crit = session.GetISession().CreateCriteria(typeof(IndexingExceptionLog)).Add(Expression.Eq("Id", ulIndexingExceptionLogId));
+            ilstIndexingExceptionLog = crit.List<IndexingExceptionLog>();
+
+            return ilstIndexingExceptionLog;
         }
     }
 }

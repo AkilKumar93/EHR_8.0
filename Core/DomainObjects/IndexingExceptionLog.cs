@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Acurus.Capella.Core.DomainObjects
 {
     [DataContract]
-    public partial class IndexingExceptionLog : BusinessBase<int>
+    public partial class IndexingExceptionLog : BusinessBase<ulong>
     {
         private string _File_Name = string.Empty;
         private int _Scan_ID = 0;

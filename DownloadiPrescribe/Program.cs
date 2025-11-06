@@ -982,7 +982,7 @@ namespace DownloadiPrescribe
         public static void ImportIndexedDocumentsJob()
         {
             IList<IndexingFileLookup> indexingFileLookupList = new IndexingFileLookupManager().GetIndexingFileLookup();
-            string sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["Incoming_IndexingFilePath"];
+            string sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["ImportIndexingFilePath"];
 
             FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.txt");
             if (sFiles.Length > 0)
@@ -1404,7 +1404,7 @@ namespace DownloadiPrescribe
         public static void ImportIndexingExceptionLogJob()
         {
             IList<IndexingFileLookup> indexingFileLookupList = new IndexingFileLookupManager().GetIndexingFileLookup();
-            string sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["Incoming_IndexingExceptionLogFilePath"];
+            string sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["ExceptionIndexingFilePath"];
 
             FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.txt");
             if (sFiles.Length > 0)
