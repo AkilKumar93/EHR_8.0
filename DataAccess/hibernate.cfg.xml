@@ -310,6 +310,8 @@
 			<mapping resource="Acurus.Capella.Core.HbmMaps.ApplicationUsageLog.hbm.xml" assembly="Acurus.Capella.Core" />
 			<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Address.hbm.xml" assembly="Acurus.Capella.Core" />
 			<mapping resource="Acurus.Capella.Core.HbmMaps.Human_Phi_Disclosure.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.IndexingFileLookup.hbm.xml" assembly="Acurus.Capella.Core" />
+			<mapping resource="Acurus.Capella.Core.HbmMaps.IndexingExceptionLog.hbm.xml" assembly="Acurus.Capella.Core" />
 		</session-factory>
 	</hibernate-configuration>
 

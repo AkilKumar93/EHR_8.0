@@ -302,7 +302,7 @@ Deploy PRODUCTION Job 10.1.0.11 :
   tags:
     - Azure_Prod_11
   rules:
-    - if: '$SERVER_PRODUCTION_10 =="10.1.0.11"'
+    - if: '$SERVER_PRODUCTION_11 =="10.1.0.11"'
   environment:
     name: Capella_Test
     url: https://cmg.capellaehr.com/frmlogin.aspx

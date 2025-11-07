@@ -19,7 +19,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
 
         FileManagementDTO LoadFileIndex_and_ViewResult(ulong ulEncounterID, ulong ulHumanID, ulong ulOrder_Id, string Source, bool IsCmg);
-        void SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(IList<FileManagementIndex> addfileList, ulong[] scanID, string macAddress, DateTime transcationTime);
+        void SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(IList<FileManagementIndex> addfileList, ulong[] scanID, string macAddress, DateTime transcationTime, IList<IndexingExceptionLog> ilstIndexingExceptionLog = null);
         IList<FileManagementIndex> GetIndexedListByHumanId(ulong ulhumanID, string Source);
         void SaveUpdateDeleteFileManagementIndex(string macAddress, string ftpUserID, string ftpPassword, string ftpServerIP);
         void SaveUpdateDeleteFileManagementIndexForOnline(IList<FileManagementIndex> addfileList, IList<FileManagementIndex> updatefileList, IList<FileManagementIndex> deletefileList, string macAddress);
@@ -601,7 +601,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             return fileIndex;
 
         }
-        public void SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(IList<FileManagementIndex> saveList, ulong[] uscanID, string macAddress, DateTime TransactionTime)
+        public void SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(IList<FileManagementIndex> saveList, ulong[] uscanID, string macAddress, DateTime TransactionTime,IList<IndexingExceptionLog> ilstIndexingExceptionLog = null)
         {
 
             int iResult = 0;
@@ -617,6 +617,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                 IList<FileManagementIndex> scanList = new List<FileManagementIndex>();
                 IList<FileManagementIndex> updateList = new List<FileManagementIndex>();
+                IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
+
                 GenerateXml objGenerateXML = new GenerateXml();
                 try
                 {
@@ -627,6 +629,10 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         {
                             WFObjectManager wfObjectManager = new WFObjectManager();
                             wfObjectManager.MoveToNextProcess(scanID, "SCAN", 3, "UNKNOWN", TransactionTime, string.Empty, new string[] { "INDEX" }, MySession);
+                        }
+                        if (ilstIndexingExceptionLog != null && ilstIndexingExceptionLog.Count > 0)
+                        {
+                            indexingExceptionLogManager.UpdateIndexingExceptionLog(ilstIndexingExceptionLog);
                         }
                     }
                     if (iResult == 2)

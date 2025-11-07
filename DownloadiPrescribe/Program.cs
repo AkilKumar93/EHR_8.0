@@ -16,6 +16,9 @@ using System.IO;
 using System.Net;
 using Acurus.Capella.Core.DTOJson;
 using Newtonsoft.Json;
+using System.Collections;
+using System.Reflection;
+using iTextSharp.text.pdf;
 
 namespace DownloadiPrescribe
 {
@@ -29,7 +32,7 @@ namespace DownloadiPrescribe
         
         //Jira CAP-3038
         static Document_Sub_Type_Lookup_List ilstDocument_Sub_type = new Document_Sub_Type_Lookup_List();
-
+        public static string LabAgentLog = string.Empty;
         //static async Task Main(string[] args)
         static void Main(string[] args)
         {
@@ -54,6 +57,16 @@ namespace DownloadiPrescribe
                     Console.WriteLine("CDCXmlRegenerateJob Started.");
                     CDCXmlRegenerateJob();
                     Console.WriteLine("CDCXmlRegenerateJob Method Invoked.");
+                    break;
+                case "ImportIndexedDocuments":
+                    Console.WriteLine("ImportIndexedDocuments Started.");
+                    ImportIndexedDocumentsJob();
+                    Console.WriteLine("ImportIndexedDocuments Method Invoked.");
+                    break;
+                case "ImportIndexingExceptionLog":
+                    Console.WriteLine("ImportIndexingExceptionLog Started.");
+                    ImportIndexingExceptionLogJob();
+                    Console.WriteLine("ImportIndexingExceptionLog Method Invoked.");
                     break;
             }
             //Console.WriteLine("Order Task Creation Started.");
@@ -964,6 +977,662 @@ namespace DownloadiPrescribe
                                            sErrorMessage.Contains("trailer not found"));
             return bCheckFileNotFoundException;
 
+        }
+
+        public static void ImportIndexedDocumentsJob()
+        {
+            IList<IndexingFileLookup> indexingFileLookupList = new IndexingFileLookupManager().GetIndexingFileLookup();
+            string sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["ImportIndexingFilePath"];
+
+            FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.txt");
+            if (sFiles.Length > 0)
+            {
+                FileInfo[] rgFiles = sFiles;
+                foreach (FileInfo fi in rgFiles)
+                {
+                    bool bUnimportedFile = false;
+                    try
+                    {
+                        ArrayList myResults = new ArrayList();
+                        TextReader trs = new StreamReader(@fi.DirectoryName + "\\" + fi.Name);
+                        string sOutput = trs.ReadToEnd();
+                        trs.Close();
+                        trs.Dispose();
+
+                        string[] newarray = sOutput.Split('\n');
+                        if (newarray != null)
+                        {
+                            for (int g = 0; g < newarray.Length; g++)
+                            {
+                                if (newarray[g].Contains("\r") == false)
+                                {
+                                    newarray[g] += "\r";
+                                }
+                            }
+                        }
+                        string sCurrentResult = string.Empty;
+                        int j = 0;
+                        string segmentField = string.Empty;
+                        string segmentSubField = string.Empty;
+                        string propName = string.Empty;
+
+                        foreach (var item in newarray)
+                        {
+                            myResults.Add(item);
+                        }
+
+                        for (int k = 0; k < myResults.Count; k++)
+                        {
+                            string lineData = myResults[k].ToString().Replace("\r", "");
+                            string[] line = { lineData };
+                            if (line.Length > 0)
+                            {
+                                for (int l = 0; l < line.Length; l++)
+                                {
+                                    string[] segments = line[l].Split('|');
+                                    if (segments.Length > 0)
+                                    {
+                                        object instance = null;
+                                        object humanInstance = null;
+                                        var humanResultLookupList = indexingFileLookupList.Where(a => a.Segment_Name == "HHH").ToList();
+                                        if (humanResultLookupList.Any())
+                                        {
+                                            string domain = humanResultLookupList[0].Domain_Object;
+                                            var currentAssembly = Assembly.Load("Acurus.Capella.Core");
+                                            var myType = currentAssembly.GetType(domain);
+                                            humanInstance = Activator.CreateInstance(myType);
+                                        }
+                                        else if (humanResultLookupList.Count == 0)
+                                        {
+                                            humanInstance = null;
+                                        }
+                                        var fileResultLookupList = indexingFileLookupList.Where(a => a.Segment_Name == "FMI").ToList();
+                                        if (fileResultLookupList.Any())
+                                        {
+                                            string domain = fileResultLookupList[0].Domain_Object;
+                                            var currentAssembly = Assembly.Load("Acurus.Capella.Core");
+                                            var myType = currentAssembly.GetType(domain);
+                                            instance = Activator.CreateInstance(myType);
+                                        }
+                                        else if (fileResultLookupList.Count == 0)
+                                        {
+                                            instance = null;
+                                        }
+                                        Human humanData = new Human();
+                                        if (humanInstance != null && humanResultLookupList.Any())
+                                        {
+                                            for (int i = 0; i < segments.Length; i++)
+                                            {
+                                                IndexingFileLookup re = null;
+                                                string segmentName = humanResultLookupList[0].Segment_Name;
+                                                segmentField = segmentName + "-" + (i + 1).ToString();
+
+                                                IList<IndexingFileLookup> reList = humanResultLookupList.Where(res => res.Segment_Name == segmentName
+                                                                                                    && res.Segment_Field == segmentField
+                                                                                                    && res.Segment_Sub_Field.Trim() == string.Empty).ToList();
+                                                if (reList.Count != 0)
+                                                {
+                                                    re = reList[0];
+                                                }
+                                                if (re != null)
+                                                {
+                                                    /*With the column name the property can be found and value can be assigned.*/
+                                                    PropertyInfo propInfo = humanInstance.GetType().GetProperty(re.Column_Name);
+                                                    object value = segments[i];
+                                                    if (propInfo.PropertyType == typeof(DateTime))
+                                                    {
+                                                        value = DateTime.ParseExact(segments[i], "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                                                    }
+                                                    else if (propInfo.PropertyType != typeof(string))
+                                                    {
+                                                        value = Convert.ChangeType(value, propInfo.PropertyType);
+                                                    }
+                                                    propInfo.SetValue(humanInstance, value, null);
+                                                }
+                                            }
+
+                                            if (instance != null && humanInstance != null)
+                                            {
+                                                Human human = (Human)humanInstance;
+                                                HumanManager humanManager = new HumanManager();
+                                                humanData = humanManager.GetAll().FirstOrDefault(a => a.Id == human.Id
+                                                                                                 && a.Last_Name.Trim().ToUpper() == human.Last_Name.Trim().ToUpper()
+                                                                                                 && a.First_Name.Trim().ToUpper() == human.First_Name.Trim().ToUpper()
+                                                                                                 && a.Birth_Date == human.Birth_Date);
+                                            }
+                                        }
+
+                                        if (instance != null && humanData != null)
+                                        {
+                                            for (int i = 0; i < segments.Length; i++)
+                                            {
+                                                IndexingFileLookup re = null;
+                                                string segmentName = fileResultLookupList[0].Segment_Name;
+                                                segmentField = segmentName + "-" + (i + 1).ToString();
+
+                                                IList<IndexingFileLookup> reList = fileResultLookupList.Where(res => res.Segment_Name == segmentName
+                                                                                                    && res.Segment_Field == segmentField
+                                                                                                    && res.Segment_Sub_Field.Trim() == string.Empty).ToList();
+                                                if (reList.Count != 0)
+                                                {
+                                                    re = reList[0];
+                                                }
+                                                if (re != null)
+                                                {
+                                                    /*With the column name the property can be found and value can be assigned.*/
+                                                    PropertyInfo propInfo = instance.GetType().GetProperty(re.Column_Name);
+                                                    object value = segments[i];
+                                                    if (propInfo.PropertyType == typeof(DateTime))
+                                                    {
+                                                        value = DateTime.ParseExact(segments[i], "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                                                    }
+                                                    else if (propInfo.PropertyType != typeof(string))
+                                                    {
+                                                        if (propInfo.PropertyType.Name.ToLower().Contains("int") && string.IsNullOrEmpty(value.ToString()))
+                                                        {
+                                                            value = Convert.ChangeType("0", propInfo.PropertyType);
+                                                        }
+                                                        else
+                                                        {
+                                                            value = Convert.ChangeType(value, propInfo.PropertyType);
+                                                        }
+                                                    }
+                                                    propInfo.SetValue(instance, value, null);
+                                                }
+                                            }
+                                            if (instance != null)
+                                            {
+                                                FileManagementIndex fileManagementIndex = (FileManagementIndex)instance;
+                                                if (string.IsNullOrEmpty(fileManagementIndex.Document_Type))
+                                                {
+                                                    Console.WriteLine("Document_Type is required.");
+                                                    continue;
+                                                }
+                                                else
+                                                {
+                                                    doctypeList objDoctypeList = new doctypeList();
+                                                    StaticLookupManager staticLookupManager = new StaticLookupManager();
+                                                    var docType = staticLookupManager.getStaticLookupByFieldName("document type");
+                                                    if (docType == null || !docType.Any(a => a.Value.ToLower() == fileManagementIndex.Document_Type.ToLower()))
+                                                    {
+                                                        Console.WriteLine("Document_Type does not exist in the lookup.");
+                                                        continue;
+                                                    }
+                                                }
+                                                if (string.IsNullOrEmpty(fileManagementIndex.Document_Sub_Type))
+                                                {
+                                                    Console.WriteLine("Document_Sub_Type is required.");
+                                                    continue;
+                                                }
+                                                else
+                                                {
+                                                    doctypeList objDoctypeList = new doctypeList();
+                                                    StaticLookupManager staticLookupManager = new StaticLookupManager();
+                                                    var subDoc = staticLookupManager.getStaticLookupByFieldName(fileManagementIndex.Document_Type);
+                                                    if (subDoc == null || !subDoc.Any(a => a.Value.ToLower() == fileManagementIndex.Document_Sub_Type.ToLower()))
+                                                    {
+                                                        Console.WriteLine("Document_Sub_Type does not exist in the lookup.");
+                                                        continue;
+                                                    }
+                                                }
+                                                if (fileManagementIndex.Document_Date == DateTime.MinValue)
+                                                {
+                                                    Console.WriteLine("Document_Date is required.");
+                                                    continue;
+                                                }
+                                                if (fileManagementIndex.Document_Date < humanData.Birth_Date)
+                                                {
+                                                    Console.WriteLine("Document_Date cannot be less than the Patient DOB.");
+                                                    continue;
+                                                }
+                                                if (fileManagementIndex.Document_Date > TimeZoneInfo.ConvertTimeToUtc(DateTime.Now))
+                                                {
+                                                    Console.WriteLine("Document_Date cannot be the future date to the current date.");
+                                                    continue;
+                                                }
+
+                                                string ftpServerIP = ConfigurationManager.AppSettings["ftpServerIP"];
+                                                string indexingLocalFilePath = ConfigurationManager.AppSettings["IndexingLocalFilePath"];
+                                                string localFilePath = indexingLocalFilePath + fileManagementIndex.File_Path;
+                                                //fileManagementIndex.File_Path = UploadToImageServer(humanData.Id.ToString(), ftpServerIP, string.Empty, string.Empty, localFilePath, string.Empty, out string sCheckFileNotFoundExceptions);
+                                                fileManagementIndex.File_Path = localFilePath;
+
+                                                #region Scan
+                                                IList<Scan> scanList = new List<Scan>();
+                                                Scan scan = new Scan();
+                                                scan.Scanned_File_Path = fileManagementIndex.File_Path;
+                                                scan.Scanned_Date = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                                scan.Facility_Name = "TEST FACILITY";
+                                                scan.No_of_Pages = 1;
+                                                PdfReader pdfReader = null;
+                                                if (Path.GetExtension(scan.Scanned_File_Path).ToUpper() == "PDF")
+                                                {
+                                                    pdfReader = new PdfReader(scan.Scanned_File_Path);
+                                                }
+                                                string scannedFileName = Path.GetFileName(fileManagementIndex.File_Path);
+                                                scan.Scanned_File_Name = scannedFileName;
+                                                scan.Scan_Type = "Online Chart - LOCAL";
+                                                scan.Created_By = "IndexAgent";
+                                                scan.Created_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                                scanList.Add(scan);
+                                                ScanManager scanManager = new ScanManager();
+                                                scanManager.SaveUpdateDeleteWithTransaction(ref scanList, new List<Scan>(), new List<Scan>(), "");
+                                                ulong uScan_ID = Convert.ToUInt64(scanList[0].Id);
+                                                #endregion
+
+                                                #region orders_submit
+                                                ulong uOrder_ID = 0;
+                                                if (fileManagementIndex.Document_Type.ToUpper() == "RESULTS")
+                                                {
+                                                    IList<OrdersSubmit> ordersSubmitList = new List<OrdersSubmit>();
+                                                    OrdersSubmit ordersSubmit = new OrdersSubmit();
+
+                                                    ordersSubmit.Human_ID = humanData.Id;
+                                                    ordersSubmit.Physician_ID = 4387;
+                                                    ordersSubmit.Order_Type = "DIAGNOSTIC ORDER";
+                                                    ordersSubmit.Facility_Name = "TEST FACILITY";
+                                                    ordersSubmit.Specimen_Collection_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                                    ordersSubmit.Created_By = "IndexAgent";
+                                                    ordersSubmit.Created_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+
+                                                    ordersSubmitList.Add(ordersSubmit);
+                                                    OrdersSubmitManager ordersSubmitManager = new OrdersSubmitManager();
+                                                    ordersSubmitManager.SaveUpdateDeleteWithTransaction(ref ordersSubmitList, new List<OrdersSubmit>(), new List<OrdersSubmit>(), "");
+                                                    uOrder_ID = ordersSubmitList[0].Id;
+                                                }
+                                                #endregion
+
+                                                #region scan_index_conversion
+                                                IList<scan_index> scanIndexList = new List<scan_index>();
+                                                scan_index scanIndex = new scan_index();
+                                                scanIndex.Human_ID = humanData.Id;
+                                                scanIndex.Scan_ID = uScan_ID;
+                                                scanIndex.Document_Date = fileManagementIndex.Document_Date;
+                                                scanIndex.Document_Type = fileManagementIndex.Document_Type;
+                                                scanIndex.Document_Sub_Type = fileManagementIndex.Document_Sub_Type;
+                                                scanIndex.Indexed_File_Path = fileManagementIndex.File_Path;
+                                                scanIndex.Page_Selected = "1-1";
+                                                if (pdfReader != null)
+                                                {
+                                                    scanIndex.Page_Selected = string.Format("1-{0}", pdfReader.NumberOfPages);
+                                                }
+                                                scanIndex.Created_By = "IndexAgent";
+                                                scanIndex.Created_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                                scanIndex.Order_ID = uOrder_ID;
+                                                scanIndex.Encounter_ID = fileManagementIndex.Encounter_ID;
+                                                scanIndex.Facility_Name = "TEST FACILITY";
+                                                scanIndex.Appointment_Provider_ID = 4387;
+                                                scanIndex.Is_Manually_Reviewed_And_Signed = "N";
+                                                scanIndex.Is_External_Medical_Record = "N";
+                                                scanIndexList.Add(scanIndex);
+                                                Scan_IndexManager scanIndexManager = new Scan_IndexManager();
+                                                scanIndexManager.SaveUpdateDeleteWithTransaction(ref scanIndexList, new List<scan_index>(), new List<scan_index>(), "");
+                                                ulong Scan_Index_Conversion_ID = scanIndexList[0].Id;
+                                                #endregion
+
+                                                #region file_management_index
+                                                IList<FileManagementIndex> fileManagementIndexList = new List<FileManagementIndex>();
+
+                                                fileManagementIndex.Scan_Index_Conversion_ID = Scan_Index_Conversion_ID;
+                                                fileManagementIndex.Human_ID = humanData.Id;
+                                                fileManagementIndex.Source = "SCAN";
+                                                fileManagementIndex.Printed_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                                fileManagementIndex.Created_By = "IndexAgent";
+                                                fileManagementIndex.Created_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                                fileManagementIndex.Order_ID = uOrder_ID;
+                                                if (fileManagementIndex.Document_Sub_Type.Trim().ToUpper() == "ADVANCE DIRECTIVE" || fileManagementIndex.Document_Sub_Type.Trim().ToUpper() == "BIRTH PLAN")
+                                                {
+                                                    fileManagementIndex.Generate_Link_File_Path = fileManagementIndex.File_Path;
+                                                }
+                                                fileManagementIndex.Is_Delete = "N";
+                                                fileManagementIndex.Batch_Status = "OPEN";
+
+                                                fileManagementIndexList.Add(fileManagementIndex);
+                                                FileManagementIndexManager fileManagementIndexManager = new FileManagementIndexManager();
+                                                fileManagementIndexManager.SaveUpdateDeleteWithTransaction(ref fileManagementIndexList, new List<FileManagementIndex>(), new List<FileManagementIndex>(), "");
+                                                #endregion
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!Directory.Exists(fi.DirectoryName + "\\Imported\\"))
+                            Directory.CreateDirectory(fi.DirectoryName + "\\Imported\\");
+
+                        if (bUnimportedFile == true)
+                        {
+                            if (!Directory.Exists(fi.DirectoryName + "\\UnImported\\"))
+                                Directory.CreateDirectory(fi.DirectoryName + "\\UnImported\\");
+                        }
+                        try
+                        {
+                            if (bUnimportedFile != true)
+                            {
+                                System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\Imported\\" + fi.Name);
+                            }
+                            else
+                            {
+                                System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
+                                StringBuilder logmsg = new StringBuilder();
+                                logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
+                                using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                                {
+                                    tx.WriteLine(logmsg);
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            //if(File.Exists(fi.DirectoryName + "\\Imported\\" + fi.Name))
+
+                            if (bUnimportedFile != true)
+                            {
+                                //System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\Imported\\" + fi.Name.Replace(fi.Name, fi.Name.Replace(".dat", "") + "_" + DateTime.Now.ToString("dd-MMM-yyyy hh:mmttss")+fi.Extension));
+                                System.IO.File.Move(fi.FullName, fi.DirectoryName + @"\Imported\" + fi.Name.Replace(fi.Extension, "") + DateTime.Now.ToString("_dd-MM-yyyy_HHmmss") + fi.Extension);
+                            }
+                            else
+                            {
+                                System.IO.File.Move(fi.FullName, fi.DirectoryName + @"\UnImported\" + fi.Name.Replace(fi.Extension, "") + DateTime.Now.ToString("_dd-MM-yyyy_HHmmss") + fi.Extension);
+                                StringBuilder logmsg = new StringBuilder();
+                                logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
+                                using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                                {
+                                    tx.WriteLine(logmsg);
+                                }
+                            }
+
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+
+                        if (!Directory.Exists(fi.DirectoryName + "\\UnImported\\"))
+                            Directory.CreateDirectory(fi.DirectoryName + "\\UnImported\\");
+
+                        try
+                        {
+
+                            System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
+                            StringBuilder logmsg = new StringBuilder();
+                            logmsg.Append("Unidentified Exception " + Environment.NewLine);
+
+                            logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
+
+                            logmsg.Append("Error Date and Time : " + DateTime.Now.ToString() + " - ");
+                            logmsg.Append("Error Message : " + e.Message.ToString() + " - ");
+                            if (e.InnerException != null)
+                                logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + " - " : "");
+                            else
+                                logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
+
+                            logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
+                            using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                            {
+                                tx.WriteLine(logmsg);
+                            }
+
+                        }
+                        catch
+                        {
+                            System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
+                            StringBuilder logmsg = new StringBuilder();
+                            logmsg.Append("Unidentified Exception " + Environment.NewLine);
+
+                            logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
+
+                            logmsg.Append("Error Date and Time : " + DateTime.Now.ToString() + " - ");
+                            logmsg.Append("Error Message : " + e.Message.ToString() + " - ");
+                            if (e.InnerException != null)
+                                logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + " - " : "");
+                            else
+                                logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
+
+                            logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
+                            using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                            {
+                                tx.WriteLine(logmsg);
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        public static void ImportIndexingExceptionLogJob()
+        {
+            IList<IndexingFileLookup> indexingFileLookupList = new IndexingFileLookupManager().GetIndexingFileLookup();
+            string sIncoming_StudiesFilePath = ConfigurationManager.AppSettings["ExceptionIndexingFilePath"];
+
+            FileInfo[] sFiles = new DirectoryInfo(sIncoming_StudiesFilePath).GetFiles("*.txt");
+            if (sFiles.Length > 0)
+            {
+                FileInfo[] rgFiles = sFiles;
+                foreach (FileInfo fi in rgFiles)
+                {
+                    bool bUnimportedFile = false;
+                    try
+                    {
+                        ArrayList myResults = new ArrayList();
+                        TextReader trs = new StreamReader(@fi.DirectoryName + "\\" + fi.Name);
+                        string sOutput = trs.ReadToEnd();
+                        trs.Close();
+                        trs.Dispose();
+
+                        string[] newarray = sOutput.Split('\n');
+                        if (newarray != null)
+                        {
+                            for (int g = 0; g < newarray.Length; g++)
+                            {
+                                if (newarray[g].Contains("\r") == false)
+                                {
+                                    newarray[g] += "\r";
+                                }
+                            }
+                        }
+                        string sCurrentResult = string.Empty;
+                        int j = 0;
+                        string segmentField = string.Empty;
+                        string segmentSubField = string.Empty;
+                        string propName = string.Empty;
+
+                        foreach (var item in newarray)
+                        {
+                            myResults.Add(item);
+                        }
+
+                        for (int k = 0; k < myResults.Count; k++)
+                        {
+                            string lineData = myResults[k].ToString().Replace("\r", "");
+                            string[] line = { lineData };
+                            if (line.Length > 0)
+                            {
+                                for (int l = 0; l < line.Length; l++)
+                                {
+                                    string[] segments = line[l].Split('|');
+                                    if (segments.Length > 0)
+                                    {
+                                        object instance = null;
+                                        var fileResultLookupList = indexingFileLookupList.Where(a => a.Segment_Name == "IEL").ToList();
+                                        if (fileResultLookupList.Any())
+                                        {
+                                            string domain = fileResultLookupList[0].Domain_Object;
+                                            var currentAssembly = Assembly.Load("Acurus.Capella.Core");
+                                            var myType = currentAssembly.GetType(domain);
+                                            instance = Activator.CreateInstance(myType);
+                                        }
+                                        else if (fileResultLookupList.Count == 0)
+                                        {
+                                            instance = null;
+                                        }
+
+                                        if (instance != null)
+                                        {
+                                            for (int i = 0; i < segments.Length; i++)
+                                            {
+                                                IndexingFileLookup re = null;
+                                                string segmentName = fileResultLookupList[0].Segment_Name;
+                                                segmentField = segmentName + "-" + (i + 1).ToString();
+
+                                                IList<IndexingFileLookup> reList = fileResultLookupList.Where(res => res.Segment_Name == segmentName
+                                                                                                    && res.Segment_Field == segmentField
+                                                                                                    && res.Segment_Sub_Field.Trim() == string.Empty).ToList();
+                                                if (reList.Count != 0)
+                                                {
+                                                    re = reList[0];
+                                                }
+                                                if (re != null)
+                                                {
+                                                    /*With the column name the property can be found and value can be assigned.*/
+                                                    PropertyInfo propInfo = instance.GetType().GetProperty(re.Column_Name);
+                                                    object value = segments[i];
+                                                    if (propInfo.PropertyType == typeof(DateTime))
+                                                    {
+                                                        value = DateTime.ParseExact(segments[i], "dd-MM-yyyy", CultureInfo.InvariantCulture);
+                                                    }
+                                                    else if (propInfo.PropertyType != typeof(string))
+                                                    {
+                                                        if (propInfo.PropertyType.Name.ToLower().Contains("int") && string.IsNullOrEmpty(value.ToString()))
+                                                        {
+                                                            value = Convert.ChangeType("0", propInfo.PropertyType);
+                                                        }
+                                                        else
+                                                        {
+                                                            value = Convert.ChangeType(value, propInfo.PropertyType);
+                                                        }
+                                                    }
+                                                    propInfo.SetValue(instance, value, null);
+                                                }
+                                            }
+                                            if (instance != null)
+                                            {
+                                                IndexingExceptionLog indexingExceptionLog = (IndexingExceptionLog)instance;
+                                                IList<IndexingExceptionLog> indexingExceptionLogList = new List<IndexingExceptionLog>();
+
+                                                string indexingLocalFilePath = ConfigurationManager.AppSettings["IndexingLocalFilePath"];
+                                                indexingExceptionLog.File_Name = indexingLocalFilePath + indexingExceptionLog.File_Name;
+
+                                                indexingExceptionLog.No_of_Pages = 1;
+                                                if (Path.GetExtension(indexingExceptionLog.File_Name).ToUpper() == "PDF")
+                                                {
+                                                    var pdfReader = new PdfReader(indexingExceptionLog.File_Name);
+                                                    indexingExceptionLog.No_of_Pages = pdfReader.NumberOfPages;
+                                                }
+                                                indexingExceptionLog.Order_Number = "Paper Order";
+                                                indexingExceptionLog.Created_By = "IndexAgent";
+                                                indexingExceptionLog.Created_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                                indexingExceptionLog.Is_Active = "Y";
+
+                                                indexingExceptionLogList.Add(indexingExceptionLog);
+                                                IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
+                                                indexingExceptionLogManager.SaveUpdateDeleteWithTransaction(ref indexingExceptionLogList, new List<IndexingExceptionLog>(), new List<IndexingExceptionLog>(), "");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!Directory.Exists(fi.DirectoryName + "\\Imported\\"))
+                            Directory.CreateDirectory(fi.DirectoryName + "\\Imported\\");
+
+                        if (bUnimportedFile == true)
+                        {
+                            if (!Directory.Exists(fi.DirectoryName + "\\UnImported\\"))
+                                Directory.CreateDirectory(fi.DirectoryName + "\\UnImported\\");
+                        }
+                        try
+                        {
+                            if (bUnimportedFile != true)
+                            {
+                                System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\Imported\\" + fi.Name);
+                            }
+                            else
+                            {
+                                System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
+                                StringBuilder logmsg = new StringBuilder();
+                                logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
+                                using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                                {
+                                    tx.WriteLine(logmsg);
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            if (bUnimportedFile != true)
+                            {
+                                System.IO.File.Move(fi.FullName, fi.DirectoryName + @"\Imported\" + fi.Name.Replace(fi.Extension, "") + DateTime.Now.ToString("_dd-MM-yyyy_HHmmss") + fi.Extension);
+                            }
+                            else
+                            {
+                                System.IO.File.Move(fi.FullName, fi.DirectoryName + @"\UnImported\" + fi.Name.Replace(fi.Extension, "") + DateTime.Now.ToString("_dd-MM-yyyy_HHmmss") + fi.Extension);
+                                StringBuilder logmsg = new StringBuilder();
+                                logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
+                                using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                                {
+                                    tx.WriteLine(logmsg);
+                                }
+                            }
+
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+
+                        if (!Directory.Exists(fi.DirectoryName + "\\UnImported\\"))
+                            Directory.CreateDirectory(fi.DirectoryName + "\\UnImported\\");
+
+                        try
+                        {
+
+                            System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
+                            StringBuilder logmsg = new StringBuilder();
+                            logmsg.Append("Unidentified Exception " + Environment.NewLine);
+
+                            logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
+
+                            logmsg.Append("Error Date and Time : " + DateTime.Now.ToString() + " - ");
+                            logmsg.Append("Error Message : " + e.Message.ToString() + " - ");
+                            if (e.InnerException != null)
+                                logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + " - " : "");
+                            else
+                                logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
+
+                            logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
+                            using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                            {
+                                tx.WriteLine(logmsg);
+                            }
+
+                        }
+                        catch
+                        {
+                            System.IO.File.Move(fi.FullName, fi.DirectoryName + "\\UnImported\\" + fi.Name);
+                            StringBuilder logmsg = new StringBuilder();
+                            logmsg.Append("Unidentified Exception " + Environment.NewLine);
+
+                            logmsg.Append("Warning : File Moved to Unimported Folder " + fi.Name + " " + DateTime.Now.ToString() + Environment.NewLine);
+
+                            logmsg.Append("Error Date and Time : " + DateTime.Now.ToString() + " - ");
+                            logmsg.Append("Error Message : " + e.Message.ToString() + " - ");
+                            if (e.InnerException != null)
+                                logmsg.Append(e.InnerException.Message != null ? "InnerException Message : " + e.InnerException.Message.ToString() + " - " : "");
+                            else
+                                logmsg.Append("Error : " + e.ToString() + Environment.NewLine);
+
+                            logmsg.Append("Stack Trace : " + e.StackTrace.ToString() + Environment.NewLine);
+                            using (TextWriter tx = new StreamWriter(Program.LabAgentLog, true))
+                            {
+                                tx.WriteLine(logmsg);
+                            }
+                        }
+
+                    }
+                }
+            }
         }
     }
 }

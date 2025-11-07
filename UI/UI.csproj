@@ -393,6 +393,7 @@
     <Content Include="frmBlockDaysDetails.aspx" />
     <Content Include="frmCancelAppointment.aspx" />
     <Content Include="frmCarrierLibrary.aspx" />
+    <Content Include="frmErrorIndexing.aspx" />
     <Content Include="frmErroredSignedReports.aspx" />
     <Content Include="frmExchange.aspx" />
     <Content Include="frmFindAllAppointments.aspx" />
@@ -438,6 +439,7 @@
     <Content Include="JScripts\jQueryAngular.js" />
     <Content Include="JScripts\JsAddressHistory.js" />
     <Content Include="JScripts\jsAssessmentNew.js" />
+    <Content Include="JScripts\JSErrorIndexing.js" />
     <Content Include="JScripts\JSErroredSignedReports.js" />
     <Content Include="JScripts\JSEFaxManagement.js" />
     <Content Include="JScripts\JsLogRocket.js" />
@@ -740,6 +742,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmErrorIndexing.aspx.cs">
+      <DependentUpon>frmErrorIndexing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmErrorIndexing.aspx.designer.cs">
+      <DependentUpon>frmErrorIndexing.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmErroredSignedReports.aspx.cs">
       <DependentUpon>frmErroredSignedReports.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

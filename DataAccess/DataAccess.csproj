@@ -170,6 +170,7 @@
     <Compile Include="ManagerObjects\Eligibility_VerficationManager.cs" />
     <Compile Include="ManagerObjects\EncounterBlobManager.cs" />
     <Compile Include="ManagerObjects\EncounterManager.cs" />
+    <Compile Include="ManagerObjects\IndexingExceptionLogManager.cs" />
     <Compile Include="ManagerObjects\ErrorLogManager.cs" />
     <Compile Include="ManagerObjects\ExaminationManager.cs" />
     <Compile Include="ManagerObjects\ExamLookupManager.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="ManagerObjects\RegistryLogManager.cs" />
     <Compile Include="ManagerObjects\RequestSentLogManager.cs" />
     <Compile Include="ManagerObjects\ResponseReceivedLogManager.cs" />
+    <Compile Include="ManagerObjects\IndexingFileLookupManager.cs" />
     <Compile Include="ManagerObjects\ResultLookupManager.cs" />
     <Compile Include="ManagerObjects\ResultMasterManager.cs" />
     <Compile Include="ManagerObjects\ResultNTEManager.cs" />

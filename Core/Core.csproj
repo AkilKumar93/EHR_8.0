@@ -159,6 +159,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DomainObjects\Encounter_Blob.cs" />
+    <Compile Include="DomainObjects\IndexingExceptionLog.cs" />
     <Compile Include="DomainObjects\ErrorLog.cs" />
     <Compile Include="DomainObjects\FamilyDiseaseMaster.cs" />
     <Compile Include="DomainObjects\FamilyHistoryMaster.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="DomainObjects\RegistryLog.cs" />
     <Compile Include="DomainObjects\Request_Sent_Log.cs" />
     <Compile Include="DomainObjects\Response_Received_Log.cs" />
+    <Compile Include="DomainObjects\IndexingFileLookup.cs" />
     <Compile Include="DomainObjects\ResultLookup.cs" />
     <Compile Include="DomainObjects\ResultMaster.cs" />
     <Compile Include="DomainObjects\ResultNTE.cs" />
@@ -776,6 +778,7 @@
     <EmbeddedResource Include="HbmMaps\Blob_Progress_Note.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\CDC_Audit_Log.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Address.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\IndexingExceptionLog.hbm.xml" />
     <Content Include="HbmMaps\ErrorLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ModifierLibrary.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\Human_Token.hbm.xml" />
@@ -803,6 +806,7 @@
     <EmbeddedResource Include="HbmMaps\ProcedureModifierLookup.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\RCopiaDeduplicateLog.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\ApplicationUsageLog.hbm.xml" />
+    <EmbeddedResource Include="HbmMaps\IndexingFileLookup.hbm.xml" />
     <Content Include="HbmMaps\UserScnTab.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\VisitPaymentArc.hbm.xml" />
     <EmbeddedResource Include="HbmMaps\VisitPaymentHistory.hbm.xml" />

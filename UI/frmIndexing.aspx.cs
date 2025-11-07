@@ -55,6 +55,7 @@ namespace Acurus.Capella.UI
         IList<Scan> lstScanList = new List<Scan>();
         DateTime selectedDate = DateTime.MinValue;
         ulong scan_ID = 0;
+        ulong IndexingExceptionLogId = 0;
         ulong human_id = 0;
 
         StringBuilder file_name = new StringBuilder();
@@ -113,6 +114,10 @@ namespace Acurus.Capella.UI
                 if (Request.QueryString["ScanId"] != null && Request.QueryString["ScanId"].Trim() != "")
                 {
                     scan_ID = Convert.ToUInt32(Request.QueryString["ScanId"]);
+                }
+                if (Request.QueryString["IndexingExceptionLogId"] != null && Request.QueryString["IndexingExceptionLogId"].Trim() != "")
+                {
+                    IndexingExceptionLogId = Convert.ToUInt32(Request.QueryString["IndexingExceptionLogId"]);
                 }
                 if (Request.QueryString["UserRole"] != null && Request.QueryString["UserRole"].Trim() != "")
                 {
@@ -288,6 +293,45 @@ namespace Acurus.Capella.UI
                         bigImagePDF.Style.Add("display", "none");
                         imgholder.Style.Add("display", "block");
                         // _plcImgsThumbs.Style.Add("display", "block");
+                    }
+                }
+                //Errored Indexing
+                else if (IndexingExceptionLogId != 0)
+                {
+                    hdnIsMyScan.Value = "true";
+                    btnSave.Enabled = false;
+                    SelectDir.Attributes.Add("disabled", "disabled");
+
+                    IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
+                    IList<IndexingExceptionLog> ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(IndexingExceptionLogId);
+                    LoadDocType();
+
+                    Session["FileName"] = ilstIndexingExceptionLog.FirstOrDefault().File_Name;
+
+                    hdnfilepath.Value = Path.GetDirectoryName(ilstIndexingExceptionLog.FirstOrDefault().File_Name);
+                    hdnFileName.Value = Path.GetFileName(ilstIndexingExceptionLog.FirstOrDefault().File_Name);
+                    file_name = new StringBuilder();
+                    file_name.Append(ilstIndexingExceptionLog.FirstOrDefault().File_Name);
+                    rdbLocalDir.Checked = true;
+
+                    hdnPagecount.Value = ilstIndexingExceptionLog.FirstOrDefault().No_of_Pages.ToString();
+                    btnMoveToNextProcess.Disabled = true;
+                    dtpDocumentDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+                    dtpScannedDate.Value = DateTime.Now.ToString("dd-MMM-yyyy");
+                    Session.Remove("IndexList");
+                    grdIndexing.DataSource = new string[] { };
+                    grdIndexing.DataBind();
+                    if (Path.GetFileName(file_name.ToString()).Split('.')[1].ToUpper() == "PDF")
+                    {
+                        PDFholder.Style.Add("display", "block");
+                        bigImagePDF.Style.Add("display", "block");
+                        imgholder.Style.Add("display", "none");
+                    }
+                    else
+                    {
+                        PDFholder.Style.Add("display", "none");
+                        bigImagePDF.Style.Add("display", "none");
+                        imgholder.Style.Add("display", "block");
                     }
                 }
                 //online Documents//
@@ -3065,8 +3109,18 @@ namespace Acurus.Capella.UI
 
 
             // fileManagementIndexmanager.SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(fileManagementIndexList.ToArray(), scan_ID, string.Empty, UtilityManager.ConvertToUniversal());
-
-            fileManagementIndexmanager.SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(fileManagementIndexList.ToArray(), uScanID, string.Empty, UtilityManager.ConvertToUniversal());//, scanIndexList, (IDictionary<ulong, string>)Session["usernameIDMap"]);
+            IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
+            if (IndexingExceptionLogId > 0)
+            {
+                IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
+                ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(IndexingExceptionLogId);
+                if (ilstIndexingExceptionLog.Count > 0) {
+                    ilstIndexingExceptionLog[0].Is_Active = "N";
+                    ilstIndexingExceptionLog[0].Modified_By = ClientSession.UserName;
+                    ilstIndexingExceptionLog[0].Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                }
+            }
+            fileManagementIndexmanager.SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(fileManagementIndexList.ToArray(), uScanID, string.Empty, UtilityManager.ConvertToUniversal(), ilstIndexingExceptionLog);//, scanIndexList, (IDictionary<ulong, string>)Session["usernameIDMap"]);
             //for Bug id :65117 
 
             if (IsOrder == true)
@@ -3222,6 +3276,10 @@ namespace Acurus.Capella.UI
 
                     }
                 }
+                if (IndexingExceptionLogId > 0)
+                {
+                    MoveAndReplace(ilstIndexingExceptionLog.FirstOrDefault().File_Name, ilstIndexingExceptionLog.FirstOrDefault().File_Name.Replace(ConfigurationManager.AppSettings["ExceptionIndexingFilePath"], ConfigurationManager.AppSettings["ImportIndexingFilePath"]));
+                }
             }
             catch (Exception ex)
             {
@@ -3303,7 +3361,20 @@ namespace Acurus.Capella.UI
 
             //ScriptManager.RegisterStartupScript(this, this.Page.GetType(), "CloseAndDisplayAlert", "CloseAndDisplayAlert();", true);
         }
+        public static bool MoveAndReplace(string sSourceFile, string sDestinationFile)
+        {
+            if (File.Exists(sDestinationFile))
+            {
+                File.Delete(sDestinationFile);
+                File.Move(sSourceFile, sDestinationFile);
+            }
+            else
+            {
+                File.Move(sSourceFile, sDestinationFile);
+            }
 
+            return true;
+        }
         public bool MoveToNextWorkFlow(ulong Order_Submit_ID, string Obj_Type, string Physician_Name)
         {
             string[] current_process = new string[] { "ORDER_GENERATE" };
