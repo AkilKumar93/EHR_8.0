@@ -204,7 +204,8 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             objPrescription.ICD_Code = UpdatePrescriptionObj.ICD_Code;
             objPrescription.ICD_Code_Description = UpdatePrescriptionObj.ICD_Code_Description;
             objPrescription.Deleted = UpdatePrescriptionObj.Deleted;
-
+            objPrescription.Provider_Rcopia_User_Name = UpdatePrescriptionObj.Provider_Rcopia_User_Name;
+            objPrescription.Preparer_Rcopia_User_Name = UpdatePrescriptionObj.Preparer_Rcopia_User_Name;
             return objPrescription;
         }
 
