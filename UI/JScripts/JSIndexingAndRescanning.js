@@ -1628,7 +1628,6 @@ function LoadSubDocType() {
 
     //CAP-2767
     $.get("ConfigXML/Doctype.json", {}, function (jsonobject) {
-        debugger;
         if (jsonobject != null) {
             for (var i = 0; i < jsonobject.DocType.length; i++) {
                 var vdoctype = jsonobject.DocType[i];

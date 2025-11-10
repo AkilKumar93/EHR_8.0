@@ -22,8 +22,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         //IList<Encounter> GetEncounterDetails(ulong ulhumanID);
         scan_index GetscanIndexDetails(string sImagePathname);
         void scan_index_Table_update(string strfacility);
-        Scan_IndexDTO SaveUpdateDeleteOnlineDocuments(IList<scan_index> InsertList, IList<scan_index> UpdateList, IList<scan_index> DeleteList, ulong humanID, ulong scan_ID, string macAddress, string Owner, string Facility, string filePath, int pageCount, string fileName, DateTime dtScanReceivedDate, string sScanType);
-
+        Scan_IndexDTO SaveUpdateDeleteOnlineDocuments(IList<scan_index> InsertList, IList<scan_index> UpdateList, IList<scan_index> DeleteList, ulong humanID, ulong scan_ID, string macAddress, string Owner, string Facility, string filePath, int pageCount, string fileName, DateTime dtScanReceivedDate, string sScanType, string hdnIndexingExceptionLogId = "");
         Scan_IndexDTO GetScannedListByScanID(ulong scanID, ulong ulWorksetID);
         IList<Orders> GetOutStandingOrders(ulong humanID);
 
@@ -364,10 +363,14 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
         }
 
-        public Scan_IndexDTO SaveUpdateDeleteOnlineDocuments(IList<scan_index> InsertList, IList<scan_index> UpdateList, IList<scan_index> DeleteList, ulong humanID, ulong scan_ID, string macAddress, string Owner, string Facility, string filePath, int pageCount, string fileName, DateTime dtScanReceivedDate, string sScanType)
+        public Scan_IndexDTO SaveUpdateDeleteOnlineDocuments(IList<scan_index> InsertList, IList<scan_index> UpdateList, IList<scan_index> DeleteList, ulong humanID, ulong scan_ID, string macAddress, string Owner, string Facility, string filePath, int pageCount, string fileName, DateTime dtScanReceivedDate, string sScanType,string hdnIndexingExceptionLogId = "")
         {
-
-
+            IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
+            IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
+            if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId)))
+            {
+                ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(Convert.ToUInt64(hdnIndexingExceptionLogId));
+            }
             ulong scan_id = 0;
 
             IList<Scan> lstscan = new List<Scan>();
@@ -404,10 +407,20 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                     objscan.Created_Date_And_Time = InsertList[0].Created_Date_And_Time;
                     lstscan.Add(objscan);
                     IList<Scan> UpdateScanList = null;
-
+                    
                     iResult = objscanmanager.SaveUpdateDelete_DBAndXML_WithoutTransaction(ref lstscan, ref UpdateScanList, null, MySession, macAddress, false, false, 0, string.Empty, ref XMLObj);
                     scan_id = Convert.ToUInt64(lstscan[0].Id);
-
+                    if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId)))
+                    {
+                        if (ilstIndexingExceptionLog.Count > 0 && ilstIndexingExceptionLog[0].Is_Active == "Y")
+                        {
+                            ilstIndexingExceptionLog[0].Is_Active = "N";
+                            ilstIndexingExceptionLog[0].Scan_ID = lstscan[0].Id;
+                            ilstIndexingExceptionLog[0].Modified_By = Owner;
+                            ilstIndexingExceptionLog[0].Modified_Date_And_Time = InsertList[0].Created_Date_And_Time;
+                            indexingExceptionLogManager.UpdateIndexingExceptionLog(ilstIndexingExceptionLog, MySession);
+                        }
+                    }
                     if (iResult == 2)
                     {
                         if (iTryCount < 5)

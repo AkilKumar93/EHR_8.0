@@ -1,11 +1,11 @@
 ﻿var dataTable;
 var Id = 0;
 $(document).ready(function () {
-    OnLoadGrid();
+    LoadErrorIndexingGrid();
 });
 
 $('#btnRefreshMyScan').click(function () {
-    OnLoadGrid();
+    LoadErrorIndexingGrid();
 });
 
 $('#btnProcessScan').click(function () {
@@ -16,7 +16,7 @@ $('#btnProcessScan').click(function () {
     OpenIndexing();
 });
 
-function OnLoadGrid() {
+function LoadErrorIndexingGrid() {
     { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
 
     $('#divErrorIndexing').empty();
@@ -30,61 +30,65 @@ function OnLoadGrid() {
                                 </tr>
                             </thead>
                         </table>`);
-
-    dataTable = new DataTable('#tblErrorIndexing', {
-        serverSide: false,
-        lengthChange: false,
-        searching: true,
-        processing: false,
-        scrollCollapse: true,
-        scrollY: '420px',
-        ordering: true,
-        autoWidth: false,
-        order: [],
-        pageLength: 15,
-        language: {
-            search: "",
-            searchPlaceholder: "Search by File Name or Exception",
-            infoFiltered: ""
-        },
-        dom: '<"top"ipf>rt<"bottom"l><"clear">',
-        ajax: {
-            url: '/frmErrorIndexing.aspx/LoadGrid',
-            contentType: "application/json",
-            type: "GET",
-            dataType: "JSON",
-            deferRender: true,
-            //data: function (d) {
-            //    d.extra_search = extra_search;
-            //    return d;
-            //},
-            dataSrc: function (json) {
-                var objdata = json.d;
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                json.data = JSON.parse(objdata.data);
-                return json.data;
+    try {
+        dataTable = new DataTable('#tblErrorIndexing', {
+            serverSide: false,
+            lengthChange: false,
+            searching: true,
+            processing: false,
+            scrollCollapse: true,
+            scrollY: '420px',
+            ordering: true,
+            autoWidth: false,
+            order: [],
+            pageLength: 15,
+            language: {
+                search: "",
+                searchPlaceholder: "Search by File Name or Exception",
+                infoFiltered: ""
             },
-            error: function (xhr, error, code) {
-                { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-                if (xhr.status == 999)
-                    window.location = "frmSessionExpired.aspx";
-                else {
-                    var log = JSON.parse(xhr.responseText);
-                    ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
+            dom: '<"top"ipf>rt<"bottom"l><"clear">',
+            ajax: {
+                url: '/frmErrorIndexing.aspx/LoadGrid',
+                contentType: "application/json",
+                type: "GET",
+                dataType: "JSON",
+                deferRender: true,
+                //data: function (d) {
+                //    d.extra_search = extra_search;
+                //    return d;
+                //},
+                dataSrc: function (json) {
+                    var objdata = json.d;
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    json.data = JSON.parse(objdata.data);
+                    return json.data;
+                },
+                error: function (xhr, error, code) {
+                    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+                    if (xhr.status == 999)
+                        window.location = "frmSessionExpired.aspx";
+                    else {
+                        var log = JSON.parse(xhr.responseText);
+                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
+                    }
                 }
+            },
+            columns: [
+                { data: 'File_Name', sWidth: '40%' },
+                { data: 'No_of_Pages', sWidth: '10%', searchable: false },
+                { data: 'Reason_Description', sWidth: '50%' },
+                { data: 'Id', sWidth: '0%', sClass: "hide_column", searchable: false },
+            ],
+            initComplete: function (settings, json) {
+                $("#tblErrorIndexing_filter input")[0].classList.add('searchicon');
             }
-        },
-        columns: [
-            { data: 'File_Name', sWidth: '40%' },
-            { data: 'No_of_Pages', sWidth: '10%', searchable: false },
-            { data: 'Reason_Description', sWidth: '50%' },
-            { data: 'Id', sWidth: '0%', sClass: "hide_column", searchable: false },
-        ],
-        initComplete: function (settings, json) {
-            $("#tblErrorIndexing_filter input")[0].classList.add('searchicon');
-        }
-    });
-
+        });
+    }
+    catch
+    {
+        { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+    }
     $('#tblErrorIndexing_filter').css({
         'float': 'left',
         'text-align': 'left',
@@ -143,6 +147,6 @@ function OpenIndexing() {
 
     childWindow.add_close(function (oWindow, args) {
         { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
-        OnLoadGrid();
+        LoadErrorIndexingGrid();
     });
 }

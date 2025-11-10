@@ -307,8 +307,9 @@ namespace Acurus.Capella.UI
 
                     Session["FileName"] = ilstIndexingExceptionLog.FirstOrDefault().File_Name;
 
-                    hdnfilepath.Value = Path.GetDirectoryName(ilstIndexingExceptionLog.FirstOrDefault().File_Name);
                     hdnFileName.Value = Path.GetFileName(ilstIndexingExceptionLog.FirstOrDefault().File_Name);
+                    hdnfilepath.Value = ilstIndexingExceptionLog.FirstOrDefault().File_Name.Replace("\\\\" + hdnFileName.Value, "");
+                    
                     file_name = new StringBuilder();
                     file_name.Append(ilstIndexingExceptionLog.FirstOrDefault().File_Name);
                     rdbLocalDir.Checked = true;
@@ -1705,7 +1706,7 @@ namespace Acurus.Capella.UI
                 {
                     ipagecount = Convert.ToInt32(hdnPagecount.Value);
                 }
-                AddedListOfScanIndex = scanIndesmanager.SaveUpdateDeleteOnlineDocuments(insertList.ToArray<scan_index>(), new List<scan_index>(), new List<scan_index>(), ClientSession.HumanId, scan_ID, string.Empty, ClientSession.UserName, sFacilityName.ToString(), full_path.ToString(), ipagecount, Path.GetFileName(full_path.ToString()), dtScanReceivedDate, sScan_Type.ToString());
+                AddedListOfScanIndex = scanIndesmanager.SaveUpdateDeleteOnlineDocuments(insertList.ToArray<scan_index>(), new List<scan_index>(), new List<scan_index>(), ClientSession.HumanId, scan_ID, string.Empty, ClientSession.UserName, sFacilityName.ToString(), full_path.ToString(), ipagecount, Path.GetFileName(full_path.ToString()), dtScanReceivedDate, sScan_Type.ToString(),hdnIndexingExceptionLogId.Value);
                 if (insertList.Count > 0)
                     scan_ID = insertList[0].Scan_ID;
 
@@ -3109,7 +3110,7 @@ namespace Acurus.Capella.UI
 
             // fileManagementIndexmanager.SaveUpdateDeleteFileManagementIndexForOnline_and_Wfobject(fileManagementIndexList.ToArray(), scan_ID, string.Empty, UtilityManager.ConvertToUniversal());
             IList<IndexingExceptionLog> ilstIndexingExceptionLog = new List<IndexingExceptionLog>();
-            if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)))
+            if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)) || hdnfilepath.Value.Replace(@"\", "") == ConfigurationManager.AppSettings["ExceptionIndexingFilePath"].ToString().Replace(@"\",""))
             {
                 IndexingExceptionLogManager indexingExceptionLogManager = new IndexingExceptionLogManager();
                 ilstIndexingExceptionLog = indexingExceptionLogManager.GetIndexingExceptionLogById(Convert.ToUInt64(hdnIndexingExceptionLogId.Value));
@@ -3275,9 +3276,10 @@ namespace Acurus.Capella.UI
 
                     }
                 }
-                if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)))
+                if (!(new string[] { "", "0" }.Contains(hdnIndexingExceptionLogId.Value)) || hdnfilepath.Value.Replace(@"\", "") == ConfigurationManager.AppSettings["ExceptionIndexingFilePath"].ToString().Replace(@"\", ""))
                 {
-                    MoveAndReplace(ilstIndexingExceptionLog.FirstOrDefault().File_Name, ilstIndexingExceptionLog.FirstOrDefault().File_Name.Replace(ConfigurationManager.AppSettings["ExceptionIndexingFilePath"], ConfigurationManager.AppSettings["ImportIndexingFilePath"]));
+                    string filepath = ilstIndexingExceptionLog.FirstOrDefault().File_Name.Replace("\\\\", "\\");
+                    MoveAndReplace(filepath, filepath.Replace(ConfigurationManager.AppSettings["ExceptionIndexingFilePath"], ConfigurationManager.AppSettings["ImportIndexingFilePath"]));
                 }
             }
             catch (Exception ex)
