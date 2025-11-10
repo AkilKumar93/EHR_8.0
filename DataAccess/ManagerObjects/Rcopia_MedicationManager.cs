@@ -401,7 +401,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
             objMedication.Pharmacy_Phone = objUpdateMedication.Pharmacy_Phone;
             objMedication.Pharmacy_State = objUpdateMedication.Pharmacy_State;
             objMedication.Pharmacy_Zip = objUpdateMedication.Pharmacy_Zip;
-            objMedication.Provider_Rcopia_User_Name = objUpdateMedication.Provider_Rcopia_User_Name;s
+            objMedication.Provider_Rcopia_User_Name = objUpdateMedication.Provider_Rcopia_User_Name;
             objMedication.Preparer_Rcopia_User_Name = objUpdateMedication.Preparer_Rcopia_User_Name;
             
 
