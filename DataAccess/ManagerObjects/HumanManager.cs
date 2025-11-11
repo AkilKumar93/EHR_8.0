@@ -114,7 +114,7 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
         FillQuickPatientArc GetVisitPaymentDetailsArc(string VisitID, string PPHeaderID, string PPLineItemID, string CheckID);
 
         //IList<Encounter> GetAutoIncreamentVoucherNo(ulong Human);
-
+        Human GetHumanIdbyname(ulong ulHumanID, string sFirstname, string sLastname, string sDob);
 
         #endregion
     }
@@ -6191,6 +6191,19 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                 iMysession.Close();
             }
             return Is_Mail;
+        }
+        public Human GetHumanIdbyname(ulong ulHumanID, string sFirstname, string sLastname, string sDob)
+        {
+            IList<Human> ilstHuman = new List<Human>();
+            if (sDob.Length == 8)
+                sDob = sDob.Insert(4, "-").Insert(7, "-");
+            else if (sDob.Length == 7)
+                sDob = sDob.Insert(4, "-").Insert(6, "-");
+
+            ISQLQuery sql = session.GetISession().CreateSQLQuery("select h.* from Human h  where h.human_id = " + ulHumanID + " and h.First_Name = '" + sFirstname.Replace("'", "''") + "' and h.Last_Name= '" + sLastname.Replace("'", "''") + "' and h.Birth_Date='" + sDob + "';").AddEntity("h", typeof(Human));
+            ilstHuman = sql.List<Human>();
+            
+            return ilstHuman.FirstOrDefault();
         }
         #endregion
     }
