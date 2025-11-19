@@ -1662,8 +1662,8 @@ namespace Acurus.Capella.DataAccess
                     xmlWriter.WriteElementString("Deleted", "");
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteStartElement("Severity");
-                    xmlWriter.WriteElementString("Description", insertList[i].Severity);
-                    xmlWriter.WriteElementString("SNOMED-CTConceptID", insertList[i].Severity_Snomed_Code);
+                    xmlWriter.WriteElementString("Description", deleteList[i].Severity.ToString());
+                    xmlWriter.WriteElementString("SNOMED-CTConceptID", deleteList[i].Severity_Snomed_Code);
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteStartElement("Patient");
                     xmlWriter.WriteElementString("RcopiaID", "");
@@ -1821,8 +1821,8 @@ namespace Acurus.Capella.DataAccess
                     xmlWriter.WriteElementString("Active", "");
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteStartElement("Severity");
-                    xmlWriter.WriteElementString("Description", insertList[i].Severity);
-                    xmlWriter.WriteElementString("SNOMED-CTConceptID", insertList[i].Severity_Snomed_Code);
+                    xmlWriter.WriteElementString("Description", UpdateList[i].Severity.ToString());
+                    xmlWriter.WriteElementString("SNOMED-CTConceptID", UpdateList[i].Severity_Snomed_Code);
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteElementString("OnsetDate", UpdateList[i].OnsetDate.ToString());
                     xmlWriter.WriteEndElement();
