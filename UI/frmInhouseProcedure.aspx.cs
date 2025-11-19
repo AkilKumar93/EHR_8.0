@@ -153,6 +153,8 @@ namespace Acurus.Capella.UI
 
                         objOtherProc.Procedure_Code_Description = lstChecked[x].Text.ToString().Substring(lstChecked[x].Text.ToString().IndexOf('-') + 1).Trim();
                         objOtherProc.Procedure_Code = lstChecked[x].Value.ToString().Split('-')[0].Trim();
+                        //Cap - 3891
+                        objOtherProc.Facility_Name = ClientSession.FacilityName;
 
                         sLocalTime = UtilityManager.ConvertToLocal(objOtherProc.Created_Date_And_Time).ToString("yyyy-MM-dd hh:mm:ss tt");
 
@@ -195,6 +197,8 @@ namespace Acurus.Capella.UI
                             objSave.Modified_By = ClientSession.UserName;
                             string strtime = hdnLocalTime.Value.ToString().Split('G').ElementAt(0).ToString();
                             objSave.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                            //Cap - 3891
+                            objSave.Facility_Name = ClientSession.FacilityName;
                             UpdateList.Add(objSave);
                         }
                         else
@@ -216,6 +220,8 @@ namespace Acurus.Capella.UI
                             //objUpdate.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
                             objUpdate.Procedure_Code_Description = lstChecked[x].Text.ToString().Trim().Substring(lstChecked[x].Text.ToString().Trim().IndexOf('-') + 1);
                             objUpdate.Procedure_Code = lstChecked[x].Text.ToString().Split('-')[0].Trim();
+                            //Cap - 3891
+                            objUpdate.Facility_Name = ClientSession.FacilityName;
 
                             lstSave.Add(objUpdate);
                         }
