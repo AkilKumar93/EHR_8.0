@@ -1,4 +1,5 @@
 ﻿using Acurus.Capella.Core.DomainObjects;
+using Acurus.Capella.Core.DTO;
 using Acurus.Capella.Core.DTOJson;
 using Acurus.Capella.DataAccess;
 using Acurus.Capella.DataAccess.ManagerObjects;
@@ -30,6 +31,11 @@ namespace Acurus.Capella.UI.WebServices.API
                     return Json(new { status = "Unauthorized", ErrorDescription = "The remote server returned an error: (403) Forbidden." });
                 }
 
+                if (string.IsNullOrEmpty(objHuman.Account_Status))
+                {
+                    objHuman.Account_Status = "Active";
+                }
+
                 string errorMsg = Validation(objHuman);
                 if (!string.IsNullOrEmpty(errorMsg))
                 {
@@ -45,7 +51,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     listCDCDuplicateHumanTracker.Add(new CDCDuplicateHumanTracker()
                     {
                         Human_ID = 0,
-                        Error_Description = "Duplicate patient found.",
+                        Error_Description = "Duplicate patient exists.",
                         Status = "Error",
                         Created_By = objHuman.Created_By,
                         Created_Date_And_Time = localTime
@@ -53,7 +59,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     CDCDuplicateHumanTrackerManager cDCDuplicateHumanTrackerManager = new CDCDuplicateHumanTrackerManager();
                     cDCDuplicateHumanTrackerManager.SaveCDCDuplicateHumanTrackerWithTransaction(listCDCDuplicateHumanTracker, string.Empty);
 
-                    return Json(new { HumanID = CheckHuman.HumanDetails.Id, status = "ValidationError", ErrorDescription = "Duplicate patient found." });
+                    return Json(new { HumanID = 0, status = "ValidationError", ErrorDescription = "Duplicate patient exists." });
                 }
 
                 if (objHuman.Guarantor_Is_Patient != "Y")
@@ -168,6 +174,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     Care_Giver_Phone_Number = objHuman.Care_Giver_Phone_Number,
                     Created_By = objHuman.Created_By,
                     Created_Date_And_Time = localTime,
+                    Gender_Identity = objHuman.Sex //TODO: When Gender_Identity is provided as input, a priority should be set.
                 };
 
                 string sCarrier = string.Empty;
@@ -216,6 +223,28 @@ namespace Acurus.Capella.UI.WebServices.API
                 if (humanData == null || humanData.Id == 0)
                 {
                     return Json(new { HumanID = objUpdateHuman.humanID, status = "ValidationError", ErrorDescription = "HumanID is invalid." });
+                }
+
+                if (objUpdateHuman.human_data.ContainsKey("medical_Record_Number")
+                    && objUpdateHuman.human_data.ContainsKey("patient_Account_External"))
+                {
+                    string medical_Record_Number = objUpdateHuman.human_data["medical_Record_Number"]?.ToString();
+                    string patient_Account_External = objUpdateHuman.human_data["patient_Account_External"]?.ToString();
+
+                    HumanDTO CheckHuman = new HumanDTO();
+                    if (medical_Record_Number.ToUpper() != humanData.Medical_Record_Number.ToUpper()
+                        && patient_Account_External.ToUpper() != humanData.Patient_Account_External.ToUpper())
+                    {
+                        CheckHuman = humanManager.GetPatientDetailsUsingPatientDetails(string.Empty, string.Empty, DateTime.MinValue, string.Empty, medical_Record_Number, patient_Account_External, ClientSession.LegalOrg);
+                    }
+                    if (medical_Record_Number.ToUpper() != humanData.Medical_Record_Number.ToUpper() && CheckHuman.MedicalRecordNoList == true)
+                    {
+                        return Json(new { HumanID = humanData.Id, status = "ValidationError", ErrorDescription = "Medical Record # already exists." });
+                    }
+                    if (patient_Account_External.ToUpper() != humanData.Patient_Account_External.ToUpper() && CheckHuman.Patient_Account_External == true)
+                    {
+                        return Json(new { HumanID = humanData.Id, status = "ValidationError", ErrorDescription = "External Account # already exists." });
+                    }
                 }
 
                 foreach (var item in objUpdateHuman.human_data)
@@ -328,7 +357,7 @@ namespace Acurus.Capella.UI.WebServices.API
             StaticLookupManager staticLookUpMngr = new StaticLookupManager();
             if (string.IsNullOrEmpty(objHuman.Legal_Org))
             {
-                return "LegalOrg is not present in the request.";
+                return "Legal_Org is not present in the request.";
             }
             if (string.IsNullOrEmpty(objHuman.Last_Name))
             {
@@ -351,7 +380,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEX");
                 if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Sex.ToLower().Trim()))
                 {
-                    return "Sex is not part of the lookup data.";
+                    return "Sex is invalid in the request.";
                 }
             }
             if (string.IsNullOrEmpty(objHuman.Street_Address1))
@@ -372,7 +401,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 var statelist = StateMngr.Getstate();
                 if (!statelist.Any(a => a.State_Code.ToLower().Trim() == objHuman.State.ToLower().Trim()))
                 {
-                    return "State is not part of the lookup data.";
+                    return "State is invalid in the request.";
                 }
             }
             if (string.IsNullOrEmpty(objHuman.ZipCode))
@@ -381,7 +410,7 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             if (objHuman.ZipCode.Length != 5 && objHuman.ZipCode.Length != 9)
             {
-                return "ZipCode is invalid.";
+                return "ZipCode is invalid in the request.";
             }
             if (string.IsNullOrEmpty(objHuman.Cell_Phone_Number))
             {
@@ -389,14 +418,14 @@ namespace Acurus.Capella.UI.WebServices.API
             }
             if (objHuman.Cell_Phone_Number.Length != 10)
             {
-                return "Cell_Phone_Number is invalid.";
+                return "Cell_Phone_Number is invalid in the request.";
             }
             if (!string.IsNullOrEmpty(objHuman.Account_Status))
             {
                 var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("ACCOUNT STATUS");
                 if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Account_Status.ToLower().Trim()))
                 {
-                    return "Account_Status is not part of the lookup data.";
+                    return "Account_Status is invalid in the request.";
                 }
             }
             if (!string.IsNullOrEmpty(objHuman.Marital_Status))
@@ -404,7 +433,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("MARITAL STATUS DEMOGRAPHICS");
                 if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Marital_Status.ToLower().Trim()))
                 {
-                    return "Marital_Status is not part of the lookup data.";
+                    return "Marital_Status is invalid in the request.";
                 }
             }
             if (!string.IsNullOrEmpty(objHuman.Patient_Status))
@@ -412,7 +441,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("PATIENT STATUS DEMOGRAPHICS");
                 if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Patient_Status.ToLower().Trim()))
                 {
-                    return "Patient_Status is not part of the lookup data.";
+                    return "Patient_Status is invalid in the request.";
                 }
             }
             if (!string.IsNullOrEmpty(objHuman.Reason_For_Death))
@@ -420,24 +449,7 @@ namespace Acurus.Capella.UI.WebServices.API
                 var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("REASON FOR DEATH DEMOGRAPHICS");
                 if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Reason_For_Death.ToLower().Trim()))
                 {
-                    return "Reason_For_Death is not part of the lookup data.";
-                }
-            }
-            if (!string.IsNullOrEmpty(objHuman.Guarantor_State))
-            {
-                StateManager StateMngr = new StateManager();
-                var statelist = StateMngr.Getstate();
-                if (!statelist.Any(a => a.State_Code.ToLower().Trim() == objHuman.Guarantor_State.ToLower().Trim()))
-                {
-                    return "Guarantor_State is not part of the lookup data.";
-                }
-            }
-            if (!string.IsNullOrEmpty(objHuman.Guarantor_Sex))
-            {
-                var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEX");
-                if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Guarantor_Sex.ToLower().Trim()))
-                {
-                    return "Guarantor_Sex is not part of the lookup data.";
+                    return "Reason_For_Death is invalid in the request.";
                 }
             }
             if (string.IsNullOrEmpty(objHuman.Created_By))
@@ -445,6 +457,82 @@ namespace Acurus.Capella.UI.WebServices.API
                 return "Created_By is not present in the request.";
             }
 
+            if (objHuman.Guarantor_Is_Patient == "Y")
+            {
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Last_Name))
+                {
+                    return "Guarantor_Last_Name is not present in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_First_Name))
+                {
+                    return "Guarantor_First_Name is not present in the request.";
+                }
+                if (objHuman.Guarantor_Birth_Date == null || objHuman.Guarantor_Birth_Date == DateTime.MinValue)
+                {
+                    return "Guarantor_Birth_Date is not present in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Street_Address1))
+                {
+                    return "Guarantor_Street_Address1 is not present in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_City))
+                {
+                    return "Guarantor_City is not present in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Sex))
+                {
+                    return "Guarantor_Sex is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEX");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Guarantor_Sex.ToLower().Trim()))
+                    {
+                        return "Guarantor_Sex is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_State))
+                {
+                    return "Guarantor_State is not present in the request.";
+                }
+                else
+                {
+                    StateManager StateMngr = new StateManager();
+                    var statelist = StateMngr.Getstate();
+                    if (!statelist.Any(a => a.State_Code.ToLower().Trim() == objHuman.Guarantor_State.ToLower().Trim()))
+                    {
+                        return "Guarantor_State is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Zip_Code))
+                {
+                    return "Guarantor_Zip_Code is not present in the request.";
+                }
+                if (objHuman.Guarantor_Zip_Code.Length != 5 && objHuman.Guarantor_Zip_Code.Length != 9)
+                {
+                    return "Guarantor_Zip_Code is invalid in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_CellPhone_Number))
+                {
+                    return "Guarantor_CellPhone_Number is not present in the request.";
+                }
+                if (objHuman.Guarantor_CellPhone_Number.Length != 10)
+                {
+                    return "Guarantor_CellPhone_Number is invalid in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Relationship))
+                {
+                    return "Guarantor_Relationship is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RELATIONSHIP");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Guarantor_Relationship.ToLower().Trim()))
+                    {
+                        return "Guarantor_Relationship is invalid in the request.";
+                    }
+                }
+            }
             return "";
         }
 
@@ -504,7 +592,7 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 var sexList = staticLookUpMngr.getStaticLookupByFieldName("SEX");
                 if (!sexList.Any(a => a.Value.Equals(objHuman.Sex, StringComparison.OrdinalIgnoreCase)))
-                    return "Sex is not part of the lookup data.";
+                    return "Sex is invalid in the request.";
             }
 
             if (human_data.ContainsKey("street_Address1") && string.IsNullOrEmpty(objHuman.Street_Address1))
@@ -520,7 +608,7 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 var stateList = new StateManager().Getstate();
                 if (!stateList.Any(a => a.State_Code.Equals(objHuman.State, StringComparison.OrdinalIgnoreCase)))
-                    return "State is not part of the lookup data.";
+                    return "State is invalid in the request.";
             }
 
             if (human_data.ContainsKey("zipCode"))
@@ -529,7 +617,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "ZipCode is not present in the request.";
 
                 if (objHuman.ZipCode.Length != 5 && objHuman.ZipCode.Length != 9)
-                    return "ZipCode is invalid.";
+                    return "ZipCode is invalid in the request.";
             }
 
             if (human_data.ContainsKey("cell_Phone_Number"))
@@ -538,54 +626,112 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "Cell_Phone_Number is not present in the request.";
 
                 if (objHuman.Cell_Phone_Number.Length != 10)
-                    return "Cell_Phone_Number is invalid.";
+                    return "Cell_Phone_Number is invalid in the request.";
             }
 
             if (human_data.ContainsKey("account_Status") && !string.IsNullOrEmpty(objHuman.Account_Status))
             {
                 var lookup = staticLookUpMngr.getStaticLookupByFieldName("ACCOUNT STATUS");
                 if (!lookup.Any(a => a.Value.Equals(objHuman.Account_Status, StringComparison.OrdinalIgnoreCase)))
-                    return "Account_Status is not part of the lookup data.";
+                    return "Account_Status is invalid in the request.";
             }
 
             if (human_data.ContainsKey("marital_Status") && !string.IsNullOrEmpty(objHuman.Marital_Status))
             {
                 var lookup = staticLookUpMngr.getStaticLookupByFieldName("MARITAL STATUS DEMOGRAPHICS");
                 if (!lookup.Any(a => a.Value.Equals(objHuman.Marital_Status, StringComparison.OrdinalIgnoreCase)))
-                    return "Marital_Status is not part of the lookup data.";
+                    return "Marital_Status is invalid in the request.";
             }
 
             if (human_data.ContainsKey("patient_Status") && !string.IsNullOrEmpty(objHuman.Patient_Status))
             {
                 var lookup = staticLookUpMngr.getStaticLookupByFieldName("PATIENT STATUS DEMOGRAPHICS");
                 if (!lookup.Any(a => a.Value.Equals(objHuman.Patient_Status, StringComparison.OrdinalIgnoreCase)))
-                    return "Patient_Status is not part of the lookup data.";
+                    return "Patient_Status is invalid in the request.";
             }
 
             if (human_data.ContainsKey("reason_For_Death") && !string.IsNullOrEmpty(objHuman.Reason_For_Death))
             {
                 var lookup = staticLookUpMngr.getStaticLookupByFieldName("REASON FOR DEATH DEMOGRAPHICS");
                 if (!lookup.Any(a => a.Value.Equals(objHuman.Reason_For_Death, StringComparison.OrdinalIgnoreCase)))
-                    return "Reason_For_Death is not part of the lookup data.";
+                    return "Reason_For_Death is invalid in the request.";
             }
-
-            if (human_data.ContainsKey("guarantor_State") && !string.IsNullOrEmpty(objHuman.Guarantor_State))
+            if (human_data.ContainsKey("guarantor_Is_Patient") && objHuman.Guarantor_Is_Patient == "Y")
             {
-                var stateList = new StateManager().Getstate();
-                if (!stateList.Any(a => a.State_Code.Equals(objHuman.Guarantor_State, StringComparison.OrdinalIgnoreCase)))
-                    return "Guarantor_State is not part of the lookup data.";
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Last_Name))
+                {
+                    return "Guarantor_Last_Name is not present in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_First_Name))
+                {
+                    return "Guarantor_First_Name is not present in the request.";
+                }
+                if (objHuman.Guarantor_Birth_Date == null || objHuman.Guarantor_Birth_Date == DateTime.MinValue)
+                {
+                    return "Guarantor_Birth_Date is not present in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Street_Address1))
+                {
+                    return "Guarantor_Street_Address1 is not present in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_City))
+                {
+                    return "Guarantor_City is not present in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Sex))
+                {
+                    return "Guarantor_Sex is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("SEX");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Guarantor_Sex.ToLower().Trim()))
+                    {
+                        return "Guarantor_Sex is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_State))
+                {
+                    return "Guarantor_State is not present in the request.";
+                }
+                else
+                {
+                    StateManager StateMngr = new StateManager();
+                    var statelist = StateMngr.Getstate();
+                    if (!statelist.Any(a => a.State_Code.ToLower().Trim() == objHuman.Guarantor_State.ToLower().Trim()))
+                    {
+                        return "Guarantor_State is invalid in the request.";
+                    }
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Zip_Code))
+                {
+                    return "Guarantor_Zip_Code is not present in the request.";
+                }
+                if (objHuman.Guarantor_Zip_Code.Length != 5 && objHuman.Guarantor_Zip_Code.Length != 9)
+                {
+                    return "Guarantor_Zip_Code is invalid in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_CellPhone_Number))
+                {
+                    return "Guarantor_CellPhone_Number is not present in the request.";
+                }
+                if (objHuman.Guarantor_CellPhone_Number.Length != 10)
+                {
+                    return "Guarantor_CellPhone_Number is invalid in the request.";
+                }
+                if (string.IsNullOrEmpty(objHuman.Guarantor_Relationship))
+                {
+                    return "Guarantor_Relationship is not present in the request.";
+                }
+                else
+                {
+                    var staticlookuplist = staticLookUpMngr.getStaticLookupByFieldName("RELATIONSHIP");
+                    if (!staticlookuplist.Any(a => a.Value.ToLower().Trim() == objHuman.Guarantor_Relationship.ToLower().Trim()))
+                    {
+                        return "Guarantor_Relationship is invalid in the request.";
+                    }
+                }
             }
-
-            if (human_data.ContainsKey("guarantor_Sex") && !string.IsNullOrEmpty(objHuman.Guarantor_Sex))
-            {
-                var lookup = staticLookUpMngr.getStaticLookupByFieldName("SEX");
-                if (!lookup.Any(a => a.Value.Equals(objHuman.Guarantor_Sex, StringComparison.OrdinalIgnoreCase)))
-                    return "Guarantor_Sex is not part of the lookup data.";
-            }
-
-            if (human_data.ContainsKey("created_By") && string.IsNullOrEmpty(objHuman.Created_By))
-                return "Created_By is not present in the request.";
-
             return "";
         }
 
