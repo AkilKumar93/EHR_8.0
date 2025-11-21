@@ -1916,3 +1916,7 @@ function OpenAkidoCreateTask() {
 
     { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
 }
+function StartLoadingcursor() {
+    { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
+    return true;
+}
