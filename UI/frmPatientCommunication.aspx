@@ -472,7 +472,10 @@
                                                 <table style="width: 100%">
                                                     <tr id="RowForAll" runat="server" style="width: 100%">
                                                         <td align="right" style="width: 50%">
-                                                            
+                                                            <button id="btnAkidoCreateTask" class="aspresizedbluebutton"
+                                                                value="" runat="server" onclick="if(StartLoadingcursor()); OpenAkidoCreateTask(); ">
+                                                                Create Task <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+                                                            </button>
                                                            <input type="button" id="btnFindAllAppointmentsMenu" value="Find All Appointments" onclick="return OpenFindAllAppointments();" class="aspresizedbluebutton" />
                                                            <button id="btnOpenPatientChartMenu" runat="server" onclick="return btnpatientChart_Click();" visible="true" class="aspresizedbluebutton">Open Patient Chart</button>
                                                              <input type="button" id="btnSaveMenu" value="Add" onclick="return SaveMenuClick(this);" class="aspresizedgreenbutton" />
@@ -557,6 +560,7 @@
                 </table>
             </asp:panel>
             <asp:HiddenField ID="hdnPatientTaskCreateDisabled" runat="server" />
+            <asp:HiddenField ID="hdnAkidoCreateTask" runat="server" />
         </div>
          <asp:placeholder id="PlaceHolder1" runat="server">
             <script src="JScripts/jquery-2.1.3.js" type="text/javascript"></script>

@@ -276,6 +276,15 @@ namespace Acurus.Capella.UI
         protected global::System.Web.UI.HtmlControls.HtmlTableRow RowForAll;
 
         /// <summary>
+        /// btnAkidoCreateTask control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnAkidoCreateTask;
+
+        /// <summary>
         /// btnOpenPatientChartMenu control.
         /// </summary>
         /// <remarks>
@@ -364,6 +373,15 @@ namespace Acurus.Capella.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPatientTaskCreateDisabled;
+
+        /// <summary>
+        /// hdnAkidoCreateTask control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnAkidoCreateTask;
 
         /// <summary>
         /// PlaceHolder1 control.

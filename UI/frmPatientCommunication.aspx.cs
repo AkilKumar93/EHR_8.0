@@ -334,6 +334,17 @@ namespace Acurus.Capella.UI
                 {
                     hdnPatientTaskCreateDisabled.Value = "Y";
                 }
+                var userAkidoCreateTask = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101146 && u.user_name == ClientSession.UserName select u;
+                //CAP-3918 Patient Task - Create Task Button to open Akido Chart
+                if (userAkidoCreateTask.ToList().Count > 0)
+                {
+                    btnAkidoCreateTask.Visible = true;
+                    hdnAkidoCreateTask.Value = System.Configuration.ConfigurationSettings.AppSettings["AkidoCreateTaskURL"];
+                }
+                else
+                {
+                    btnAkidoCreateTask.Visible = false;
+                }
             }
             if (txtAccount.Text == "0")
             {

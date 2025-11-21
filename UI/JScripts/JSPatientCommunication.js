@@ -1897,3 +1897,22 @@ function PatientTaskCreateDisabled() {
         $('#imgclearAssignTo').removeClass('hide-important');
     }
 }
+
+function OpenAkidoCreateTask() {
+
+    var CLegalOrg = "";
+    var cookies = document.cookie.split(';');
+    for (var l = 0; l < cookies.length; l++) {
+        if (cookies[l].indexOf("CLegalOrg") > -1)
+            CLegalOrg = cookies[l].split("=")[1].toLowerCase();
+    }
+    var FindHumanID = document.getElementById(GetClientId("txtAccount")).value;
+    var AkidoCreateTaskURL = document.getElementById('hdnAkidoCreateTask').value.replace("[CapellaHumanID]", FindHumanID);
+    $('#resultLoading').css("display", "none");
+    event.preventDefault();
+    sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart();
+
+    window.open(AkidoCreateTaskURL, '_blank');
+
+    { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
+}
