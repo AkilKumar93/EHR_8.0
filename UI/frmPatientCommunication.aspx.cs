@@ -322,8 +322,18 @@ namespace Acurus.Capella.UI
                 ChkPatientChart.Visible = true;
                 //FillMessageGrid();
                 RowForHide.Style.Add("display", "none");
-                //CAP-3750
-                hdnPatientTaskCreateDisabled.Value = ConfigurationSettings.AppSettings["IsPatientTaskCreateDisabled_" + ClientSession.LegalOrg ]?.ToString() ?? "";
+                ////CAP-3750
+                //hdnPatientTaskCreateDisabled.Value = ConfigurationSettings.AppSettings["IsPatientTaskCreateDisabled_" + ClientSession.LegalOrg ]?.ToString() ?? "";
+                var userAkidoTask = from u in ClientSession.UserPermissionDTO.Userscntab where u.scn_id == 101145 && u.user_name == ClientSession.UserName select u;
+                //CAP-3919 Patient Task - Enable Flag at the user level
+                if (userAkidoTask.ToList().Count > 0)
+                {
+                    hdnPatientTaskCreateDisabled.Value = "N";
+                }
+                else
+                {
+                    hdnPatientTaskCreateDisabled.Value = "Y";
+                }
             }
             if (txtAccount.Text == "0")
             {
