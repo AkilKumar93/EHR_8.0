@@ -228,11 +228,11 @@ namespace Acurus.Capella.UI.WebServices.API
                     return Json(new { HumanID = objUpdateHuman.humanID, status = "ValidationError", ErrorDescription = "HumanID is invalid." });
                 }
 
-                if (objUpdateHuman.human_data.ContainsKey("medical_Record_Number")
-                    && objUpdateHuman.human_data.ContainsKey("patient_Account_External"))
+                if (objUpdateHuman.human_data.ContainsKey("Medical_Record_Number")
+                    && objUpdateHuman.human_data.ContainsKey("Patient_Account_External"))
                 {
-                    string medical_Record_Number = objUpdateHuman.human_data["medical_Record_Number"]?.ToString();
-                    string patient_Account_External = objUpdateHuman.human_data["patient_Account_External"]?.ToString();
+                    string medical_Record_Number = objUpdateHuman.human_data["Medical_Record_Number"]?.ToString();
+                    string patient_Account_External = objUpdateHuman.human_data["Patient_Account_External"]?.ToString();
 
                     HumanDTO CheckHuman = new HumanDTO();
                     if (medical_Record_Number.ToUpper() != humanData.Medical_Record_Number.ToUpper()
@@ -281,7 +281,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     }
                 }
 
-                if (objUpdateHuman.human_data.ContainsKey("guarantor_Relationship"))
+                if (objUpdateHuman.human_data.ContainsKey("Guarantor_Relationship"))
                 {
                     objPatguarantor.Relationship = humanData.Guarantor_Relationship;
                     if (!string.IsNullOrEmpty(humanData.Guarantor_Relationship))
@@ -296,37 +296,37 @@ namespace Acurus.Capella.UI.WebServices.API
                     }
                 }
 
-                if (objUpdateHuman.human_data.ContainsKey("zipCode") && humanData.ZipCode.Length == 9)
+                if (objUpdateHuman.human_data.ContainsKey("ZipCode") && humanData.ZipCode.Length == 9)
                 {
                     humanData.ZipCode = $"{humanData.ZipCode.Substring(0, 5)}-{humanData.ZipCode.Substring(5, 4)}";
                 }
 
-                if (objUpdateHuman.human_data.ContainsKey("cell_Phone_Number"))
+                if (objUpdateHuman.human_data.ContainsKey("Cell_Phone_Number"))
                 {
                     humanData.Cell_Phone_Number = FormatPhone(humanData.Cell_Phone_Number);
                 }
 
-                if (objUpdateHuman.human_data.ContainsKey("care_Giver_Phone_Number") && humanData.Care_Giver_Phone_Number?.Length == 10)
+                if (objUpdateHuman.human_data.ContainsKey("Care_Giver_Phone_Number") && humanData.Care_Giver_Phone_Number?.Length == 10)
                 {
                     humanData.Care_Giver_Phone_Number = FormatPhone(humanData.Care_Giver_Phone_Number);
                 }
-                if (objUpdateHuman.human_data.ContainsKey("guarantor_CellPhone_Number") && humanData.Guarantor_CellPhone_Number?.Length == 10)
+                if (objUpdateHuman.human_data.ContainsKey("Guarantor_CellPhone_Number") && humanData.Guarantor_CellPhone_Number?.Length == 10)
                 {
                     humanData.Guarantor_CellPhone_Number = FormatPhone(humanData.Guarantor_CellPhone_Number);
                 }
-                if (objUpdateHuman.human_data.ContainsKey("guarantor_Home_Phone_Number") && humanData.Guarantor_Home_Phone_Number?.Length == 10)
+                if (objUpdateHuman.human_data.ContainsKey("Guarantor_Home_Phone_Number") && humanData.Guarantor_Home_Phone_Number?.Length == 10)
                 {
                     humanData.Guarantor_Home_Phone_Number = FormatPhone(humanData.Guarantor_Home_Phone_Number);
                 }
-                if (objUpdateHuman.human_data.ContainsKey("home_Phone_No") && humanData.Home_Phone_No?.Length == 10)
+                if (objUpdateHuman.human_data.ContainsKey("Home_Phone_No") && humanData.Home_Phone_No?.Length == 10)
                 {
                     humanData.Home_Phone_No = FormatPhone(humanData.Home_Phone_No);
                 }
-                if (objUpdateHuman.human_data.ContainsKey("work_Phone_Ext") && humanData.Work_Phone_Ext?.Length == 10)
+                if (objUpdateHuman.human_data.ContainsKey("Work_Phone_Ext") && humanData.Work_Phone_Ext?.Length == 10)
                 {
                     humanData.Work_Phone_Ext = FormatPhone(humanData.Work_Phone_Ext);
                 }
-                if (objUpdateHuman.human_data.ContainsKey("work_Phone_No") && humanData.Work_Phone_No?.Length == 10)
+                if (objUpdateHuman.human_data.ContainsKey("Work_Phone_No") && humanData.Work_Phone_No?.Length == 10)
                 {
                     humanData.Work_Phone_No = FormatPhone(humanData.Work_Phone_No);
                 }
@@ -725,9 +725,9 @@ namespace Acurus.Capella.UI.WebServices.API
 
             StaticLookupManager staticLookUpMngr = new StaticLookupManager();
             // 2. Validation only for fields included in human_data
-            if (human_data.ContainsKey("legal_Org") && string.IsNullOrEmpty(objHuman.Legal_Org))
+            if (human_data.ContainsKey("Legal_Org") && string.IsNullOrEmpty(objHuman.Legal_Org))
                 return "Legal_Org is not present in the request.";
-            else if (human_data.ContainsKey("legal_Org") && !string.IsNullOrEmpty(objHuman.Legal_Org))
+            else if (human_data.ContainsKey("Legal_Org") && !string.IsNullOrEmpty(objHuman.Legal_Org))
             {
                 //var stringList = new List<string>() { "CMG", "WC", "RJ" };
                 var stringList = new List<string>() { "CMG" };
@@ -735,13 +735,13 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "Legal_Org is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("last_Name") && string.IsNullOrEmpty(objHuman.Last_Name))
+            if (human_data.ContainsKey("Last_Name") && string.IsNullOrEmpty(objHuman.Last_Name))
                 return "Last_Name is not present in the request.";
 
-            if (human_data.ContainsKey("first_Name") && string.IsNullOrEmpty(objHuman.First_Name))
+            if (human_data.ContainsKey("First_Name") && string.IsNullOrEmpty(objHuman.First_Name))
                 return "First_Name is not present in the request.";
 
-            if (human_data.ContainsKey("birth_Date"))
+            if (human_data.ContainsKey("Birth_Date"))
             {
                 if (objHuman.Birth_Date == DateTime.MinValue)
                     return "Birth_Date is not present in the request.";
@@ -749,7 +749,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "Birth_Date can not be future date.";
             }
 
-            if (human_data.ContainsKey("sex"))
+            if (human_data.ContainsKey("Sex"))
             {
                 if (string.IsNullOrEmpty(objHuman.Sex))
                     return "Sex is not present in the request.";
@@ -759,13 +759,13 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "Sex is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("street_Address1") && string.IsNullOrEmpty(objHuman.Street_Address1))
+            if (human_data.ContainsKey("Street_Address1") && string.IsNullOrEmpty(objHuman.Street_Address1))
                 return "Street_Address1 is not present in the request.";
 
-            if (human_data.ContainsKey("city") && string.IsNullOrEmpty(objHuman.City))
+            if (human_data.ContainsKey("City") && string.IsNullOrEmpty(objHuman.City))
                 return "City is not present in the request.";
 
-            if (human_data.ContainsKey("state"))
+            if (human_data.ContainsKey("State"))
             {
                 if (string.IsNullOrEmpty(objHuman.State))
                     return "State is not present in the request.";
@@ -775,7 +775,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "State is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("zipCode"))
+            if (human_data.ContainsKey("ZipCode"))
             {
                 if (string.IsNullOrEmpty(objHuman.ZipCode))
                     return "ZipCode is not present in the request.";
@@ -784,14 +784,14 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "ZipCode is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("suffix") && !string.IsNullOrEmpty(objHuman.Suffix))
+            if (human_data.ContainsKey("Suffix") && !string.IsNullOrEmpty(objHuman.Suffix))
             {
                 var stringList = new List<string>() { "JR", "SR" };
                 if (!stringList.Any(a => a.Equals(objHuman.Suffix.Trim().ToUpper())))
                     return "Suffix is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("cell_Phone_Number"))
+            if (human_data.ContainsKey("Cell_Phone_Number"))
             {
                 if (string.IsNullOrEmpty(objHuman.Cell_Phone_Number))
                     return "Cell_Phone_Number is not present in the request.";
@@ -800,42 +800,42 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "Cell_Phone_Number is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("home_Phone_No")
+            if (human_data.ContainsKey("Home_Phone_No")
                 && !string.IsNullOrEmpty(objHuman.Home_Phone_No)
                 && (objHuman.Home_Phone_No.Length != 10
                 || !Regex.IsMatch(objHuman.Home_Phone_No, @"^\d+$")))
             {
                 return "Home_Phone_No is invalid in the request.";
             }
-            if (human_data.ContainsKey("work_Phone_No")
+            if (human_data.ContainsKey("Work_Phone_No")
                 && !string.IsNullOrEmpty(objHuman.Work_Phone_No)
                 && (objHuman.Work_Phone_No.Length != 10
                 || !Regex.IsMatch(objHuman.Work_Phone_No, @"^\d+$")))
             {
                 return "Work_Phone_No is invalid in the request.";
             }
-            if (human_data.ContainsKey("guarantor_Home_Phone_Number")
+            if (human_data.ContainsKey("Guarantor_Home_Phone_Number")
                 && !string.IsNullOrEmpty(objHuman.Guarantor_Home_Phone_Number)
                 && (objHuman.Guarantor_Home_Phone_Number.Length != 10
                 || !Regex.IsMatch(objHuman.Guarantor_Home_Phone_Number, @"^\d+$")))
             {
                 return "Guarantor_Home_Phone_Number is invalid in the request.";
             }
-            if (human_data.ContainsKey("care_Giver_Phone_Number")
+            if (human_data.ContainsKey("Care_Giver_Phone_Number")
                 && !string.IsNullOrEmpty(objHuman.Care_Giver_Phone_Number)
                 && (objHuman.Care_Giver_Phone_Number.Length != 10
                 || !Regex.IsMatch(objHuman.Care_Giver_Phone_Number, @"^\d+$")))
             {
                 return "Care_Giver_Phone_Number is invalid in the request.";
             }
-            if (human_data.ContainsKey("fax_Number")
+            if (human_data.ContainsKey("Fax_Number")
                 && !string.IsNullOrEmpty(objHuman.Fax_Number)
                 && !Regex.IsMatch(objHuman.Fax_Number, @"^\d+$"))
             {
                 return "Fax_Number is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("account_Status"))
+            if (human_data.ContainsKey("Account_Status"))
             {
                 if (string.IsNullOrEmpty(objHuman.Account_Status))
                     return "Account_Status is not present in the request.";
@@ -845,7 +845,7 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "Account_Status is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("patient_Status"))
+            if (human_data.ContainsKey("Patient_Status"))
             {
                 if (string.IsNullOrEmpty(objHuman.Patient_Status))
                     return "Patient_Status is not present in the request.";
@@ -855,29 +855,29 @@ namespace Acurus.Capella.UI.WebServices.API
                     return "Patient_Status is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("marital_Status") && !string.IsNullOrEmpty(objHuman.Marital_Status))
+            if (human_data.ContainsKey("Marital_Status") && !string.IsNullOrEmpty(objHuman.Marital_Status))
             {
                 var lookup = staticLookUpMngr.getStaticLookupByFieldName("MARITAL STATUS DEMOGRAPHICS");
                 if (!lookup.Any(a => a.Value.Equals(objHuman.Marital_Status, StringComparison.OrdinalIgnoreCase)))
                     return "Marital_Status is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("reason_For_Death") && !string.IsNullOrEmpty(objHuman.Reason_For_Death))
+            if (human_data.ContainsKey("Reason_For_Death") && !string.IsNullOrEmpty(objHuman.Reason_For_Death))
             {
                 var lookup = staticLookUpMngr.getStaticLookupByFieldName("REASON FOR DEATH DEMOGRAPHICS");
                 if (!lookup.Any(a => a.Value.Equals(objHuman.Reason_For_Death, StringComparison.OrdinalIgnoreCase)))
                     return "Reason_For_Death is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("guarantor_Is_Patient") && string.IsNullOrEmpty(objHuman.Guarantor_Is_Patient))
+            if (human_data.ContainsKey("Guarantor_Is_Patient") && string.IsNullOrEmpty(objHuman.Guarantor_Is_Patient))
                 return "Guarantor_Is_Patient is not present in the request.";
 
-            if (human_data.ContainsKey("guarantor_Is_Patient") && (objHuman.Guarantor_Is_Patient.ToUpper() != "Y" && objHuman.Guarantor_Is_Patient.ToUpper() != "N"))
+            if (human_data.ContainsKey("Guarantor_Is_Patient") && (objHuman.Guarantor_Is_Patient.ToUpper() != "Y" && objHuman.Guarantor_Is_Patient.ToUpper() != "N"))
             {
                 return "Guarantor_Is_Patient is invalid in the request.";
             }
 
-            if (human_data.ContainsKey("guarantor_Is_Patient") && objHuman.Guarantor_Is_Patient.ToUpper() == "N")
+            if (human_data.ContainsKey("Guarantor_Is_Patient") && objHuman.Guarantor_Is_Patient.ToUpper() == "N")
             {
                 if (string.IsNullOrEmpty(objHuman.Guarantor_Last_Name))
                 {
@@ -890,6 +890,10 @@ namespace Acurus.Capella.UI.WebServices.API
                 if (objHuman.Guarantor_Birth_Date == null || objHuman.Guarantor_Birth_Date == DateTime.MinValue)
                 {
                     return "Guarantor_Birth_Date is not present in the request.";
+                }
+                else if (objHuman.Guarantor_Birth_Date > localTime)
+                {
+                    return "Guarantor_Birth_Date can not be a future date.";
                 }
                 if (string.IsNullOrEmpty(objHuman.Guarantor_Street_Address1))
                 {
@@ -955,87 +959,87 @@ namespace Acurus.Capella.UI.WebServices.API
             }
 
             #region LengthValidation
-            if (human_data.ContainsKey("last_Name") && !string.IsNullOrEmpty(objHuman.Last_Name) && objHuman.Last_Name.Length > 35)
+            if (human_data.ContainsKey("Last_Name") && !string.IsNullOrEmpty(objHuman.Last_Name) && objHuman.Last_Name.Length > 35)
             {
                 return "Last_Name exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("first_Name") && !string.IsNullOrEmpty(objHuman.First_Name) && objHuman.First_Name.Length > 25)
+            if (human_data.ContainsKey("First_Name") && !string.IsNullOrEmpty(objHuman.First_Name) && objHuman.First_Name.Length > 25)
             {
                 return "First_Name exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("mi") && !string.IsNullOrEmpty(objHuman.MI) && objHuman.MI.Length > 25)
+            if (human_data.ContainsKey("MI") && !string.IsNullOrEmpty(objHuman.MI) && objHuman.MI.Length > 25)
             {
                 return "MI exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("street_Address1") && !string.IsNullOrEmpty(objHuman.Street_Address1) && objHuman.Street_Address1.Length > 55)
+            if (human_data.ContainsKey("Street_Address1") && !string.IsNullOrEmpty(objHuman.Street_Address1) && objHuman.Street_Address1.Length > 55)
             {
                 return "Street_Address1 exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("street_Address2") && !string.IsNullOrEmpty(objHuman.Street_Address2) && objHuman.Street_Address2.Length > 55)
+            if (human_data.ContainsKey("Street_Address2") && !string.IsNullOrEmpty(objHuman.Street_Address2) && objHuman.Street_Address2.Length > 55)
             {
                 return "Street_Address2 exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("city") && !string.IsNullOrEmpty(objHuman.City) && objHuman.City.Length > 35)
+            if (human_data.ContainsKey("City") && !string.IsNullOrEmpty(objHuman.City) && objHuman.City.Length > 35)
             {
                 return "City exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("work_Phone_Ext") && !string.IsNullOrEmpty(objHuman.Work_Phone_Ext) && objHuman.Work_Phone_Ext.Length > 15)
+            if (human_data.ContainsKey("Work_Phone_Ext") && !string.IsNullOrEmpty(objHuman.Work_Phone_Ext) && objHuman.Work_Phone_Ext.Length > 15)
             {
                 return "Work_Phone_Ext exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("ssn") && !string.IsNullOrEmpty(objHuman.SSN) && objHuman.SSN.Length > 11)
+            if (human_data.ContainsKey("SSN") && !string.IsNullOrEmpty(objHuman.SSN) && objHuman.SSN.Length > 11)
             {
                 return "SSN exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("medical_Record_Number") && !string.IsNullOrEmpty(objHuman.Medical_Record_Number) && objHuman.Medical_Record_Number.Length > 25)
+            if (human_data.ContainsKey("Medical_Record_Number") && !string.IsNullOrEmpty(objHuman.Medical_Record_Number) && objHuman.Medical_Record_Number.Length > 25)
             {
                 return "Medical_Record_Number exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("eMail") && !string.IsNullOrEmpty(objHuman.EMail) && objHuman.EMail.Length > 100)
+            if (human_data.ContainsKey("EMail") && !string.IsNullOrEmpty(objHuman.EMail) && objHuman.EMail.Length > 100)
             {
                 return "EMail exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("employer_Name") && !string.IsNullOrEmpty(objHuman.Employer_Name) && objHuman.Employer_Name.Length > 100)
+            if (human_data.ContainsKey("Employer_Name") && !string.IsNullOrEmpty(objHuman.Employer_Name) && objHuman.Employer_Name.Length > 100)
             {
                 return "Employer_Name exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("patient_Account_External") && !string.IsNullOrEmpty(objHuman.Patient_Account_External) && objHuman.Patient_Account_External.Length > 50)
+            if (human_data.ContainsKey("Patient_Account_External") && !string.IsNullOrEmpty(objHuman.Patient_Account_External) && objHuman.Patient_Account_External.Length > 50)
             {
                 return "Patient_Account_External exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("guarantor_Last_Name") && !string.IsNullOrEmpty(objHuman.Guarantor_Last_Name) && objHuman.Guarantor_Last_Name.Length > 35)
+            if (human_data.ContainsKey("Guarantor_Last_Name") && !string.IsNullOrEmpty(objHuman.Guarantor_Last_Name) && objHuman.Guarantor_Last_Name.Length > 35)
             {
                 return "Guarantor_Last_Name exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("guarantor_First_Name") && !string.IsNullOrEmpty(objHuman.Guarantor_First_Name) && objHuman.Guarantor_First_Name.Length > 25)
+            if (human_data.ContainsKey("Guarantor_First_Name") && !string.IsNullOrEmpty(objHuman.Guarantor_First_Name) && objHuman.Guarantor_First_Name.Length > 25)
             {
                 return "Guarantor_First_Name exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("guarantor_MI") && !string.IsNullOrEmpty(objHuman.Guarantor_MI) && objHuman.Guarantor_MI.Length > 25)
+            if (human_data.ContainsKey("Guarantor_MI") && !string.IsNullOrEmpty(objHuman.Guarantor_MI) && objHuman.Guarantor_MI.Length > 25)
             {
                 return "Guarantor_MI exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("guarantor_Street_Address1") && !string.IsNullOrEmpty(objHuman.Guarantor_Street_Address1) && objHuman.Guarantor_Street_Address1.Length > 55)
+            if (human_data.ContainsKey("Guarantor_Street_Address1") && !string.IsNullOrEmpty(objHuman.Guarantor_Street_Address1) && objHuman.Guarantor_Street_Address1.Length > 55)
             {
                 return "Guarantor_Street_Address1 exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("guarantor_Street_Address2") && !string.IsNullOrEmpty(objHuman.Guarantor_Street_Address2) && objHuman.Guarantor_Street_Address2.Length > 55)
+            if (human_data.ContainsKey("Guarantor_Street_Address2") && !string.IsNullOrEmpty(objHuman.Guarantor_Street_Address2) && objHuman.Guarantor_Street_Address2.Length > 55)
             {
                 return "Guarantor_Street_Address2 exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("guarantor_City") && !string.IsNullOrEmpty(objHuman.Guarantor_City) && objHuman.Guarantor_City.Length > 35)
+            if (human_data.ContainsKey("Guarantor_City") && !string.IsNullOrEmpty(objHuman.Guarantor_City) && objHuman.Guarantor_City.Length > 35)
             {
                 return "Guarantor_City exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("gaurantor_Email") && !string.IsNullOrEmpty(objHuman.Gaurantor_Email) && objHuman.Gaurantor_Email.Length > 50)
+            if (human_data.ContainsKey("Gaurantor_Email") && !string.IsNullOrEmpty(objHuman.Gaurantor_Email) && objHuman.Gaurantor_Email.Length > 50)
             {
                 return "Gaurantor_Email exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("care_Giver_First_Name") && !string.IsNullOrEmpty(objHuman.Care_Giver_First_Name) && objHuman.Care_Giver_First_Name.Length > 35)
+            if (human_data.ContainsKey("Care_Giver_First_Name") && !string.IsNullOrEmpty(objHuman.Care_Giver_First_Name) && objHuman.Care_Giver_First_Name.Length > 35)
             {
                 return "Care_Giver_First_Name exceeds the maximum length in the request.";
             }
-            if (human_data.ContainsKey("care_Giver_Last_Name") && !string.IsNullOrEmpty(objHuman.Care_Giver_Last_Name) && objHuman.Care_Giver_Last_Name.Length > 35)
+            if (human_data.ContainsKey("Care_Giver_Last_Name") && !string.IsNullOrEmpty(objHuman.Care_Giver_Last_Name) && objHuman.Care_Giver_Last_Name.Length > 35)
             {
                 return "Care_Giver_Last_Name exceeds the maximum length in the request.";
             }
