@@ -471,13 +471,15 @@
                                             <asp:Panel runat="server" ID="PnlForSave">
                                                 <table style="width: 100%">
                                                     <tr id="RowForAll" runat="server" style="width: 100%">
-                                                        <td align="right" style="width: 50%">
+                                                        <td align="left">
                                                             <button id="btnAkidoManageTasks" class="aspresizedbluebutton" value="" runat="server" onclick="OpenManageTasksClick();"> Manage Tasks <i class="fa fa-external-link"></i>
                                                             </button>
                                                             <button id="btnAkidoCreateTask" class="aspresizedbluebutton"
                                                                 value="" runat="server" onclick="if(StartLoadingcursor()); OpenAkidoCreateTask(); ">
                                                                 Create Task <i class="fa fa-external-link"></i>
                                                             </button>
+                                                        </td>
+                                                        <td align="right" style="width: 50%">
                                                            <input type="button" id="btnFindAllAppointmentsMenu" value="Find All Appointments" onclick="return OpenFindAllAppointments();" class="aspresizedbluebutton" />
                                                            <button id="btnOpenPatientChartMenu" runat="server" onclick="return btnpatientChart_Click();" visible="true" class="aspresizedbluebutton">Open Patient Chart</button>
                                                              <input type="button" id="btnSaveMenu" value="Add" onclick="return SaveMenuClick(this);" class="aspresizedgreenbutton" />
