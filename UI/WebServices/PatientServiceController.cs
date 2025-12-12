@@ -242,11 +242,11 @@ namespace Acurus.Capella.UI.WebServices.API
                     }
                     if (medical_Record_Number.ToUpper() != humanData.Medical_Record_Number.ToUpper() && CheckHuman.MedicalRecordNoList == true)
                     {
-                        return Json(new { HumanID = humanData.Id, DuplicatePatientID = CheckHuman?.HumanDetails?.Id, status = "ValidationError", ErrorDescription = "Medical Record # already exists." });
+                        return Json(new { HumanID = humanData.Id, DuplicatePatientID = CheckHuman?.ulMedicalRecordID, status = "ValidationError", ErrorDescription = "Medical Record # already exists." });
                     }
                     if (patient_Account_External.ToUpper() != humanData.Patient_Account_External.ToUpper() && CheckHuman.Patient_Account_External == true)
                     {
-                        return Json(new { HumanID = humanData.Id, DuplicatePatientID = CheckHuman?.HumanDetails?.Id, status = "ValidationError", ErrorDescription = "External Account # already exists." });
+                        return Json(new { HumanID = humanData.Id, DuplicatePatientID = CheckHuman?.ulPatientAccountExternalID, status = "ValidationError", ErrorDescription = "External Account # already exists." });
                     }
                 }
 
