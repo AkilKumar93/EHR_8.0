@@ -6902,7 +6902,7 @@ namespace Acurus.Capella.UI
                             sResult = sResult + "\n" + "RXA|" + "0|1|" + ClinicalSummary.ImmunizationList[i].Given_Date.ToString("yyyyMMdd") + "||"
                                    + ClinicalSummary.ImmunizationList[i].NDC + "^" +
                                    ClinicalSummary.ImmunizationList[i].Immunization_Description + "^NDC|" + ClinicalSummary.ImmunizationList[i].Administered_Amount + "|" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier + "^" + ClinicalSummary.ImmunizationList[i].Administered_Unit_Identifier
-                                   + "^UCUM||" + "00" + "^" + ClinicalSummary.ImmunizationList[i].Notes + "^NIP001|" +
+                                   + "^UCUM||" + "00" + "^" + ClinicalSummary.ImmunizationList[i].Immunization_Information_Source + "^NIP001|" +
                                    "" + phyID + "^" + PhyFirstName + "^" + PhyLastName + "^" + PhyMIName + "^^^^^NIST-PI-1&2.16.840.1.113883.3.72.5.40.7&ISO^L^^^PRN" + "|^^^" + sRXA11 + "&2.16.840.1.113883.3.72.5.40.12&ISO" + "||||" +
                                    ClinicalSummary.ImmunizationList[i].Lot_Number + "|" + ClinicalSummary.ImmunizationList[i].Expiry_Date.ToString("yyyyMMdd")
                                    + "|" + VaccineCode
