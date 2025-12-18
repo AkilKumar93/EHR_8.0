@@ -4835,7 +4835,9 @@ namespace Acurus.Capella.PatientPortal
                                 ////decimal remainInch = decimal.Round((inch % 12m), 2);
                                 ////string sHeight = feet.ToString() + "." + remainInch.ToString();
                                 //elemValue.Attributes[1].Value = sHeight;
-                                if (ilstPatientResult1[i].Value == string.Empty)
+                                //CAP-4019
+                                if (!int.TryParse(ilstPatientResult1[i].Value, out int _)
+                                    && !decimal.TryParse(ilstPatientResult1[i].Value, out decimal _))
                                 {
                                     ilstPatientResult1[i].Value = "0";
                                 }
@@ -4845,7 +4847,7 @@ namespace Acurus.Capella.PatientPortal
                                 string sFormula = "2.54";
                                 if (ilstPatientResult1[i].Value != "")
                                 {
-                                    heigntCM = Convert.ToInt32(ilstPatientResult1[i].Value) * Convert.ToDecimal(sFormula);
+                                    heigntCM = Convert.ToDecimal(ilstPatientResult1[i].Value) * Convert.ToDecimal(sFormula);
                                 }
                                 if (Convert.ToString(heigntCM).Contains('.') == true)
                                 {
