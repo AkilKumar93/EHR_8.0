@@ -6400,6 +6400,8 @@ namespace Acurus.Capella.UI
             string sResult = string.Empty;
             string CityCode = string.Empty;
             string LocalNumber = string.Empty;
+            //CAP-4032
+            string LocalNumberType = string.Empty;
             string RaceIdentifier = string.Empty;
             string RaceValue = string.Empty;
             string EthnicityIdentifier = string.Empty;
@@ -6686,11 +6688,82 @@ namespace Acurus.Capella.UI
 
             if (hn.Guarantor_Relationship != "Self")
             {
+                //CAP-4032
+                LocalNumber = string.Empty;
+                if (hn.Guarantor_Home_Phone_Number != String.Empty)
+                {
+                    if (hn.Guarantor_Home_Phone_Number.Contains(')'))
+                    {
+                        string[] Phone_No = hn.Guarantor_Home_Phone_Number.Split(')');
+                        if (Phone_No.Length > 0)
+                        {
+                            if (hn.Guarantor_Home_Phone_Number.Contains('('))
+                            {
+                                string[] Code_No = Phone_No[0].ToString().Split('(');
+                                if (Code_No.Length > 0)
+                                {
+                                    CityCode = Code_No[1].ToString();
+                                    if (Phone_No[1].Contains("-"))
+                                    {
+                                        LocalNumber = Phone_No[1].Replace("-", "").Trim().ToString();
+                                        LocalNumberType = "PH";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (hn.Guarantor_Home_Phone_Number.Length == 10)
+                        {
+                            CityCode = hn.Guarantor_Home_Phone_Number.Substring(0, 3);
+                            LocalNumber = hn.Guarantor_Home_Phone_Number.Substring(2, 8);
+                            LocalNumberType = "PH";
+                        }
+                    }
+                }
+                if (string.IsNullOrEmpty(LocalNumber) && hn.Guarantor_CellPhone_Number != String.Empty)
+                {
+                    if (hn.Guarantor_CellPhone_Number.Contains(')'))
+                    {
+                        string[] Phone_No = hn.Guarantor_CellPhone_Number.Split(')');
+                        if (Phone_No.Length > 0)
+                        {
+                            if (hn.Guarantor_CellPhone_Number.Contains('('))
+                            {
+                                string[] Code_No = Phone_No[0].ToString().Split('(');
+                                if (Code_No.Length > 0)
+                                {
+                                    CityCode = Code_No[1].ToString();
+                                    if (Phone_No[1].Contains("-"))
+                                    {
+                                        LocalNumber = Phone_No[1].Replace("-", "").Trim().ToString();
+                                        LocalNumberType = "CP";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (hn.Guarantor_CellPhone_Number.Length == 10)
+                        {
+                            CityCode = hn.Guarantor_CellPhone_Number.Substring(0, 3);
+                            LocalNumber = hn.Guarantor_CellPhone_Number.Substring(2, 8);
+                            LocalNumberType = "CP";
+                        }
+                    }
+                }
+
                 int sval = 1;
                 if ((hn.Guarantor_Last_Name != string.Empty || hn.Guarantor_First_Name != string.Empty) && (hn.Guarantor_MI != string.Empty))
-                    sResult = sResult + "\n" + "NK1|" + sval + "|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^" + hn.Guarantor_MI + "^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P|^PRN^PH^^^" + CityCode + "^" + LocalNumber + "";
+                    //CAP-4032
+                    //sResult = sResult + "\n" + "NK1|" + sval + "|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^" + hn.Guarantor_MI + "^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P|^PRN^PH^^^" + CityCode + "^" + LocalNumber + "";
+                    sResult = sResult + "\n" + "NK1|" + sval + "|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^" + hn.Guarantor_MI + "^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P|^PRN^" + LocalNumberType + "^^^" + CityCode + "^" + LocalNumber + "";
                 else if (hn.Guarantor_Last_Name != string.Empty || hn.Guarantor_First_Name != string.Empty)
-                    sResult = sResult + "\n" + "NK1|" + sval + "|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P|^PRN^PH^^^" + CityCode + "^" + LocalNumber + "";
+                    //CAP-4032
+                    //sResult = sResult + "\n" + "NK1|" + sval + "|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P|^PRN^PH^^^" + CityCode + "^" + LocalNumber + "";
+                    sResult = sResult + "\n" + "NK1|" + sval + "|" + hn.Guarantor_Last_Name + "^" + hn.Guarantor_First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + hn.Guarantor_Relationship + "^HL70063|" + hn.Street_Address1 + "^^" + hn.City + "^" + hn.State + "^" + hn.ZipCode + "^USA^P|^PRN^" + LocalNumberType + "^^^" + CityCode + "^" + LocalNumber + "";
 
                 if (ClinicalSummary.PatGuarantor.Count > 0)
                 {
@@ -6714,7 +6787,10 @@ namespace Acurus.Capella.UI
                                             {
                                                 CityCode = Code_No[1].ToString();
                                                 if (Phone_No[1].Contains("-"))
+                                                {
                                                     LocalNumber = Phone_No[1].Replace("-", "").Trim().ToString();
+                                                    LocalNumberType = "PH";
+                                                }
                                             }
                                         }
                                     }
@@ -6725,6 +6801,40 @@ namespace Acurus.Capella.UI
                                     {
                                         CityCode = objHuman[0].Home_Phone_No.Substring(0, 3);
                                         LocalNumber = objHuman[0].Home_Phone_No.Substring(2, 8);
+                                        LocalNumberType = "PH";
+                                    }
+                                }
+                            }
+                            //CAP-4032
+                            if (string.IsNullOrEmpty(LocalNumber) && objHuman[0].Cell_Phone_Number != String.Empty)
+                            {
+                                if (objHuman[0].Cell_Phone_Number.Contains(')'))
+                                {
+                                    string[] Phone_No = objHuman[0].Cell_Phone_Number.Split(')');
+                                    if (Phone_No.Length > 0)
+                                    {
+                                        if (objHuman[0].Cell_Phone_Number.Contains('('))
+                                        {
+                                            string[] Code_No = Phone_No[0].ToString().Split('(');
+                                            if (Code_No.Length > 0)
+                                            {
+                                                CityCode = Code_No[1].ToString();
+                                                if (Phone_No[1].Contains("-"))
+                                                {
+                                                    LocalNumber = Phone_No[1].Replace("-", "").Trim().ToString();
+                                                    LocalNumberType = "CP";
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (objHuman[0].Cell_Phone_Number.Length == 10)
+                                    {
+                                        CityCode = objHuman[0].Cell_Phone_Number.Substring(0, 3);
+                                        LocalNumber = objHuman[0].Cell_Phone_Number.Substring(2, 8);
+                                        LocalNumberType = "CP";
                                     }
                                 }
                             }
@@ -6738,9 +6848,13 @@ namespace Acurus.Capella.UI
                             }
                             sval = sval + 1;
                             if ((objHuman[0].Last_Name != string.Empty || hn.Guarantor_First_Name != string.Empty) && (hn.Guarantor_MI != string.Empty))
-                                sResult = sResult + "\n" + "NK1|" + sval + "|" + objHuman[0].Last_Name + "^" + objHuman[0].First_Name + "^" + objHuman[0].MI + "^^^^L|" + RelationshipIdentifier + "^" + ClinicalSummary.PatGuarantor[i].Relationship + "^HL70063|" + objHuman[0].Street_Address1 + "^^" + objHuman[0].City + "^" + objHuman[0].State + "^" + objHuman[0].ZipCode + "^USA^P|^PRN^CP^^^" + CityCode + "^" + LocalNumber + "";
+                                //CAP-4032
+                                //sResult = sResult + "\n" + "NK1|" + sval + "|" + objHuman[0].Last_Name + "^" + objHuman[0].First_Name + "^" + objHuman[0].MI + "^^^^L|" + RelationshipIdentifier + "^" + ClinicalSummary.PatGuarantor[i].Relationship + "^HL70063|" + objHuman[0].Street_Address1 + "^^" + objHuman[0].City + "^" + objHuman[0].State + "^" + objHuman[0].ZipCode + "^USA^P|^PRN^CP^^^" + CityCode + "^" + LocalNumber + "";
+                                sResult = sResult + "\n" + "NK1|" + sval + "|" + objHuman[0].Last_Name + "^" + objHuman[0].First_Name + "^" + objHuman[0].MI + "^^^^L|" + RelationshipIdentifier + "^" + ClinicalSummary.PatGuarantor[i].Relationship + "^HL70063|" + objHuman[0].Street_Address1 + "^^" + objHuman[0].City + "^" + objHuman[0].State + "^" + objHuman[0].ZipCode + "^USA^P|^PRN^"+ LocalNumberType + "^^^" + CityCode + "^" + LocalNumber + "";
                             else if (hn.Guarantor_Last_Name != string.Empty || hn.Guarantor_First_Name != string.Empty)
-                                sResult = sResult + "\n" + "NK1|" + sval + "|" + objHuman[0].Last_Name + "^" + objHuman[0].First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + ClinicalSummary.PatGuarantor[i].Relationship + "^HL70063|" + objHuman[0].Street_Address1 + "^^" + objHuman[0].City + "^" + objHuman[0].State + "^" + objHuman[0].ZipCode + "^USA^P|^PRN^CP^^^" + CityCode + "^" + LocalNumber + "";
+                                //CAP-4032
+                                //sResult = sResult + "\n" + "NK1|" + sval + "|" + objHuman[0].Last_Name + "^" + objHuman[0].First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + ClinicalSummary.PatGuarantor[i].Relationship + "^HL70063|" + objHuman[0].Street_Address1 + "^^" + objHuman[0].City + "^" + objHuman[0].State + "^" + objHuman[0].ZipCode + "^USA^P|^PRN^CP^^^" + CityCode + "^" + LocalNumber + "";
+                                sResult = sResult + "\n" + "NK1|" + sval + "|" + objHuman[0].Last_Name + "^" + objHuman[0].First_Name + "^^^^^L|" + RelationshipIdentifier + "^" + ClinicalSummary.PatGuarantor[i].Relationship + "^HL70063|" + objHuman[0].Street_Address1 + "^^" + objHuman[0].City + "^" + objHuman[0].State + "^" + objHuman[0].ZipCode + "^USA^P|^PRN^"+ LocalNumberType + "^^^" + CityCode + "^" + LocalNumber + "";
                         }
                     }
                 }
