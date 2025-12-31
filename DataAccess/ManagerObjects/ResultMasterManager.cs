@@ -952,7 +952,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
 
                         if (CheckORCList.Count > 0)
                         {
-                            IList<PhysicianLibrary> CheckPhylist = objPhyLibraryManager.GetPhysicianByNPI(CheckORCList[0].ORC_Ordering_Provider_ID);
+                            //CAP-3450
+                            //IList<PhysicianLibrary> CheckPhylist = objPhyLibraryManager.GetPhysicianByNPI(CheckORCList[0].ORC_Ordering_Provider_ID);
+                            IList<PhysicianLibrary> CheckPhylist = new List<PhysicianLibrary>();
+                            if (!string.IsNullOrEmpty(CheckORCList[0].ORC_Ordering_Provider_ID))
+                            {
+                                CheckPhylist = objPhyLibraryManager.GetPhysicianByNPI(CheckORCList[0].ORC_Ordering_Provider_ID);
+                            }
                             if (CheckPhylist.Count > 0)
                             {
                                 //IList<User> checkOwnerDetail = objUserManager.GetUserbyPhysicianLibraryID(CheckPhylist[0].Id);
@@ -1347,9 +1353,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                         for (int i = 0; i < resultOrcCheckList.Count; i++)
                         {
                             IList<ResultMaster> FinalResultList = new List<ResultMaster>();
-                            IList<PhysicianLibrary> OwnerDetailList = objPhyLibraryManager.GetPhysicianByNPI(resultOrcCheckList[i].ORC_Ordering_Provider_ID);// (from p in phyLibraryList
+                            //CAP-3450
+                            //IList<PhysicianLibrary> OwnerDetailList = objPhyLibraryManager.GetPhysicianByNPI(resultOrcCheckList[i].ORC_Ordering_Provider_ID);// (from p in phyLibraryList
                             //where p.PhyNPI == resultOrcCheckList[i].ORC_Ordering_Provider_ID
                             //select p).ToList<PhysicianLibrary>();
+                            IList<PhysicianLibrary> OwnerDetailList = new List<PhysicianLibrary>();
+                            if (!string.IsNullOrEmpty(resultOrcCheckList[i].ORC_Ordering_Provider_ID))
+                            {
+                                OwnerDetailList = objPhyLibraryManager.GetPhysicianByNPI(resultOrcCheckList[i].ORC_Ordering_Provider_ID);
+                            }
                             if (OwnerDetailList.Count > 0)
                             {
                                 //IList<User> OwnerDetailUser = objUserManager.GetUserbyPhysicianLibraryID(OwnerDetailList[0].Id);
@@ -1549,9 +1561,13 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                             IList<ResultMaster> ResultMatchList = ResultMasterAfterPatientMapping.Where(a => a.Order_ID == ilstResultProcess[i].Obj_System_Id).ToList<ResultMaster>();
                             if (ResultMatchList.Count > 0)
                                 ResultORCAfterList = ResultORCAfterInsert.Where(a => a.Result_Master_ID == ResultMatchList[0].Id).ToList<ResultORC>();
-                            if (ResultORCAfterList.Count > 0)
+                            //CAP-3450
+                            //if (ResultORCAfterList.Count > 0)
+                            //    PhyLibraryList = objPhyLibraryManager.GetPhysicianByNPI(ResultORCAfterList[0].ORC_Ordering_Provider_ID);
+                            if (ResultORCAfterList.Count > 0 && !string.IsNullOrEmpty(ResultORCAfterList[0].ORC_Ordering_Provider_ID))
+                            {
                                 PhyLibraryList = objPhyLibraryManager.GetPhysicianByNPI(ResultORCAfterList[0].ORC_Ordering_Provider_ID);
-
+                            }
                             if (PhyLibraryList.Count > 0)
                             {
                                 //IList<User> OwnerDetail = objUserManager.GetUserbyPhysicianLibraryID(PhyLibraryList[0].Id);
