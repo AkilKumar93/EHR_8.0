@@ -165,8 +165,18 @@ namespace Acurus.Capella.UI.WebServices.API
                     Care_Giver_Phone_Number = objHuman.Care_Giver_Phone_Number,
                     Created_By = created_By,
                     Created_Date_And_Time = localTime,
-                    Gender_Identity = objHuman.Sex.ToUpper() //TODO: When Gender_Identity is provided as input, a priority should be set.
                 };
+                //CAP-4048
+                if (string.IsNullOrEmpty(objHuman.Gender_Identity)
+                    && !string.IsNullOrEmpty(objHuman.Sex)
+                    && objHuman.Sex.ToUpper() != "UNKNOWN")
+                {
+                    human.Gender_Identity = objHuman.Sex;
+                }
+                else
+                {
+                    human.Gender_Identity = objHuman.Gender_Identity;
+                }
 
                 if (version.ToUpper() == "V2")
                 {
