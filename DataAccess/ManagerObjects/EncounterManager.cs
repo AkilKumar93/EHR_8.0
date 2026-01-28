@@ -8909,7 +8909,9 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                         currentOwner = criteria.List<User>()[0].user_name;
                                     }
                                 }
-                                if(objDocWfObject.Current_Process=="AKIDO_REVIEW_CODING")
+                                //Cap - 3640
+                                //if (objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING")
+                                if (objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING" || objDocWfObject.Current_Process == "AKIDO_REVIEW_CODING_QC")
                                 {
                                     EncRecord.Is_EandM_Submitted = "Y";
                                     EncRecord.E_M_Submitted_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
@@ -8925,7 +8927,15 @@ namespace Acurus.Capella.DataAccess.ManagerObjects
                                     objBillingWfObj = objWfMngr.GetByObjectSystemId(objDocWfObject.Obj_System_Id, "BILLING");
                                     if (objBillingWfObj.Current_Process == "BATCHING_WAIT")
                                         objWfMngr.MoveToNextProcess(objBillingWfObj.Obj_System_Id, objBillingWfObj.Obj_Type, 1, "UNKNOWN", currentDate, MACAddress, null, null);
-
+                                    //Cap - 3640
+                                    if (EncRecord.Is_EandM_Submitted != "Y")
+                                    {
+                                        EncRecord.Is_EandM_Submitted = "Y";
+                                        EncRecord.E_M_Submitted_Date_And_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                        EncRecord.Modified_By = UserName;
+                                        EncRecord.Modified_Date_and_Time = System.TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+                                        UpdateEncounter(EncRecord, string.Empty, new object[] { "false" });
+                                    }
                                     //Jira CAP-340
                                     EncounterBlobManager objEncblobmngr = new EncounterBlobManager();
                                     objEncblobmngr.LockEncounter(ulMyEncounterID, ulMyHumanID, UserName, currentDate);
