@@ -293,7 +293,10 @@ function OnCheckoutClosePrintDocuments(oWindow, args) {
                 __doPostBack('btnPhysiciancorrection', 'OnClick');
             }
         } else {
-            $('#btnPhysiciancorrection')[0].disabled = false;
+            //CAP-4095
+            if ($('#btnPhysiciancorrection')[0] != undefined && $('#btnPhysiciancorrection')[0] != null) {
+                $('#btnPhysiciancorrection')[0].disabled = false;
+            }
             document.getElementById('hdnChkOut').value = "true";
         }
         localStorage.setItem("bSave", "true");
