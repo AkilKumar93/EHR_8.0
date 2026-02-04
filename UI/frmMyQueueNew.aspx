@@ -194,6 +194,9 @@ table.dataTable > thead > tr > td {
                                     <td>
                                         <button type="button" class="btn btn-primary btncolor" id="btnChangeExamRoom" style="background-color: none;">Change Exam Room</button>
                                     </td>
+                                    <td style="padding-right:1px;">
+                                        <select id="cmbYears" class="form-control" style="display:none;"></select>
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-primary btncolor" onclick="chkShowAllClick(this)" id="RefreshMyQ" style="background-color: none; margin-left: 1px;">Refresh My Encounters</button>
                                     </td>

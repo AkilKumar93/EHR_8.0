@@ -484,8 +484,11 @@ namespace Acurus.Capella.UI
             }
             string sGroup_ID_Log = ClientSession.EncounterId.ToString() + "-" + ClientSession.HumanId.ToString() + "-" + ClientSession.PhysicianId.ToString() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFF");
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : Start", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
-
-            string sShowall = HttpContext.Current.Request.Params["extra_search"];
+            //CAP-2824, 2866, 2885
+            string searchResult = HttpContext.Current.Request.Params["extra_search"];
+            var extra_search = JsonConvert.DeserializeObject<MyOrderFilter>(searchResult);
+            string sShowall = extra_search.Showall ?? "";
+            string sYear = extra_search.Year ?? "";
             bool bValue = false;
             if (ConfigurationSettings.AppSettings["IsShowAllMyOrdersQueue"] == "Y")
             {
@@ -521,9 +524,15 @@ namespace Acurus.Capella.UI
             //MyOrdersQ = (from g in MyOrdersQ  select g).OrderByDescending(a => a.Created_Date_And_Time).ThenByDescending(b => b.Is_Abnormal);
             UtilityManager.inserttologgingtable(ClientSession.EncounterId.ToString(), ClientSession.HumanId.ToString(), ClientSession.UserName, ClientSession.PhysicianId.ToString(), "MyQueue LoadMyOrder : End", DateTime.Now, sGroup_ID_Log, "frmMyQueueNew");
             var result = MyOrdersQ.ToList<MyQ>();
+            //CAP-2824, 2866, 2885
+            var yearList = result.GroupBy(a => a.Created_Date_And_Time.ToString("yyyy")).Select(a => a.Key).OrderByDescending(a => a).ToList();
+            sYear = sYear == "" ? yearList[0] : sYear;
+            var newResult = result.Where(a => a.Created_Date_And_Time.ToString("yyyy") == sYear).ToList();
+
             var resultNew = new
             {
-                data = Compress(JsonConvert.SerializeObject(result)),
+                data = Compress(JsonConvert.SerializeObject(newResult)),
+                yearList
             };
             return resultNew;
         }
@@ -1951,5 +1960,11 @@ namespace Acurus.Capella.UI
                 return Convert.ToBase64String(outputStream.ToArray());
             }
         }
+    }
+
+    public class MyOrderFilter
+    {
+        public string Showall { get; set; }
+        public string Year { get; set; }
     }
 }
