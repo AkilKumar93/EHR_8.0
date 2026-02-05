@@ -574,12 +574,8 @@ namespace Acurus.Capella.UI.WebServices.API
                     Group_Number = insuredPlan_Akido.Group_Number,
                     Active = insuredPlan_Akido.Active,
                     Other_Insurance_Comments = insuredPlan_Akido.Other_Insurance_Comments,
-
                     PCP_ID = insuredPlan_Akido.PCP_ID,
-                    PCP_Name = insuredPlan_Akido.PCP_Name,
-                    PCP_NPI = insuredPlan_Akido.PCP_NPI,
                     PCP_Copay = insuredPlan_Akido.PCP_Copay,
-
                     Specialist_Copay = insuredPlan_Akido.Specialist_Copay,
                     Deductible = insuredPlan_Akido.Deductible,
                     Co_Insurance = insuredPlan_Akido.Co_Insurance,
@@ -590,6 +586,18 @@ namespace Acurus.Capella.UI.WebServices.API
                     Created_By = "Acurus API",
                     Created_Date_And_Time = DateTime.Now,
                 };
+
+                if (insuredPlan_Akido.PCP_ID > 0)
+                {
+                    PhysicianManager objPhysicianManager = new PhysicianManager();
+                    var physician_dto = objPhysicianManager.GetphysiciannameByPhyID(insuredPlan_Akido.PCP_ID);
+                    var physician = physician_dto.FirstOrDefault();
+                    if (physician != null && physician.PhyId == 0)
+                    {
+                        patientInsuredPlan.PCP_Name = physician.PhyPrefix + " " + physician.PhyFirstName + " " + physician.PhyMiddleName + (string.IsNullOrWhiteSpace(physician.PhyLastName) ? " " : ", " + physician.PhyLastName) + " " + physician.PhySuffix;
+                        patientInsuredPlan.PCP_NPI = physician.PhyNPI;
+                    }
+                }
 
                 if (!string.IsNullOrEmpty(patientInsuredPlan.Relationship))
                 {
@@ -631,8 +639,8 @@ namespace Acurus.Capella.UI.WebServices.API
                                 {
                                     lstUpdateHuman[0].Primary_Carrier_ID = Convert.ToUInt64(insList[0].Carrier_ID);
                                 }
-                                lstUpdateHuman[0].PCP_Name = insuredPlan_Akido.PCP_Name;
-                                lstUpdateHuman[0].PCP_NPI = insuredPlan_Akido.PCP_NPI;
+                                lstUpdateHuman[0].PCP_Name = patientInsuredPlan.PCP_Name;
+                                lstUpdateHuman[0].PCP_NPI = patientInsuredPlan.PCP_NPI;
                                 CarrierManager CarrierMngr = new CarrierManager();
                                 Carrier objcarrierName = CarrierMngr.GetCarrierUsingId(Convert.ToUInt64(lstUpdateHuman[0].Primary_Carrier_ID));
                                 if (objcarrierName != null)
@@ -722,6 +730,19 @@ namespace Acurus.Capella.UI.WebServices.API
 
                 patientInsuredPlan.Modified_By = "Acurus API";
                 patientInsuredPlan.Modified_Date_And_Time = DateTime.Now;
+
+                if (updateInsuredPlan_Akido.Pat_Insured_Plan_Data.ContainsKey("PCP_ID"))
+                {
+                    ulong PCP_ID = Convert.ToUInt64(updateInsuredPlan_Akido.Pat_Insured_Plan_Data["PCP_ID"] ?? "0");
+                    PhysicianManager objPhysicianManager = new PhysicianManager();
+                    var physician_dto = objPhysicianManager.GetphysiciannameByPhyID(PCP_ID);
+                    var physician = physician_dto.FirstOrDefault();
+                    if (physician != null && physician.PhyId != 0)
+                    {
+                        patientInsuredPlan.PCP_Name = physician.PhyPrefix + " " + physician.PhyFirstName + " " + physician.PhyMiddleName + (string.IsNullOrWhiteSpace(physician.PhyLastName) ? " " : ", " + physician.PhyLastName) + " " + physician.PhySuffix;
+                        patientInsuredPlan.PCP_NPI = physician.PhyNPI;
+                    }
+                }
 
                 updateInsurancePolicies = updateInsurancePolicies.Where(a => a.Id != patientInsuredPlan.Id).ToList();
                 updateInsurancePolicies.Add(patientInsuredPlan);
@@ -2240,6 +2261,15 @@ namespace Acurus.Capella.UI.WebServices.API
             {
                 return "Human_ID is not present in the request.";
             }
+            else
+            {
+                HumanManager objHumanManager = new HumanManager();
+                var human = objHumanManager.GetById(objInsuredPlan_Akido.Human_ID);
+                if (human == null || human.Id == 0)
+                {
+                    return "Human_ID is invalid in the request.";
+                }
+            }
             if (string.IsNullOrEmpty(objInsuredPlan_Akido.Insurance_Type))
             {
                 return "Insurance_Type is not present in the request.";
@@ -2254,9 +2284,40 @@ namespace Acurus.Capella.UI.WebServices.API
             {
                 return "Insurance_Plan_ID is not present in the request.";
             }
+            else
+            {
+                InsurancePlanManager objPlanManager = new InsurancePlanManager();
+                List<ulong> ids = new List<ulong>() { objInsuredPlan_Akido.Insurance_Plan_ID };
+                var lstInsurancePlan = objPlanManager.GetInsDetails(ids);
+                if (lstInsurancePlan == null || !lstInsurancePlan.Any())
+                {
+                    return "Insurance_Plan_ID is invalid in the request.";
+                }
+            }
+
+            if (objInsuredPlan_Akido.Insured_Human_ID > 0)
+            {
+                HumanManager objHumanManager = new HumanManager();
+                var human = objHumanManager.GetById(objInsuredPlan_Akido.Insured_Human_ID);
+                if (human == null || human.Id == 0 || human.Patient_Status.ToUpper() != "ALIVE" || human.Human_Type.ToUpper() != "REGULAR" || human.Account_Status.ToUpper() != "ACTIVE")
+                {
+                    return "Insured_Human_ID is invalid in the request.";
+                }
+            }
+
+            if (objInsuredPlan_Akido.PCP_ID > 0)
+            {
+                PhysicianManager objPhysicianManager = new PhysicianManager();
+                var physician_dto = objPhysicianManager.GetphysiciannameByPhyID(objInsuredPlan_Akido.PCP_ID);
+                var physician = physician_dto.FirstOrDefault();
+                if (physician == null || physician.PhyId == 0)
+                {
+                    return "PCP_ID is invalid in the request.";
+                }
+            }
 
             if (objInsuredPlan_Akido.Insurance_Plan_ID == 6930
-                && string.IsNullOrEmpty(objInsuredPlan_Akido.Other_Insurance_Comments))
+            && string.IsNullOrEmpty(objInsuredPlan_Akido.Other_Insurance_Comments))
             {
                 return "Other_Insurance_Comments is not present in the request.";
             }
@@ -2290,6 +2351,11 @@ namespace Acurus.Capella.UI.WebServices.API
             if (objInsuredPlan_Akido.Effective_Start_Date > objInsuredPlan_Akido.Termination_Date)
             {
                 return "Effective_Start_Date should be greater than Termination_Date. Please enter a valid date.";
+            }
+
+            if (!string.IsNullOrEmpty(objInsuredPlan_Akido.Policy_Holder_ID) && objInsuredPlan_Akido.Policy_Holder_ID.Length > 25)
+            {
+                return "Policy_Holder_ID exceeds the maximum length in the request.";
             }
 
             return "";
@@ -2340,8 +2406,23 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
             }
 
-            if (insuredPlan_data.ContainsKey("Insurance_Plan_ID") && objInsuredPlan.Insurance_Plan_ID == 0)
-                return "Insurance_Plan_ID is not present in the request.";
+            if (insuredPlan_data.ContainsKey("Insurance_Plan_ID"))
+            {
+                if (objInsuredPlan.Insurance_Plan_ID == 0)
+                {
+                    return "Insurance_Plan_ID is not present in the request.";
+                }
+                else
+                {
+                    InsurancePlanManager objPlanManager = new InsurancePlanManager();
+                    List<ulong> ids = new List<ulong>() { objInsuredPlan.Insurance_Plan_ID };
+                    var lstInsurancePlan = objPlanManager.GetInsDetails(ids);
+                    if (lstInsurancePlan == null || !lstInsurancePlan.Any())
+                    {
+                        return "Insurance_Plan_ID is invalid in the request.";
+                    }
+                }
+            }
 
             if (insuredPlan_data.ContainsKey("Insurance_Plan_ID")
                 && objInsuredPlan.Insurance_Plan_ID == 6930
@@ -2372,12 +2453,32 @@ namespace Acurus.Capella.UI.WebServices.API
                 }
             }
 
-            if ((insuredPlan_data.ContainsKey("Insured_Human_ID")
-                || insuredPlan_data.ContainsKey("Relationship"))
-                && objInsuredPlan.Relationship.Trim().ToUpper() != "SELF"
-                && objInsuredPlan.Insured_Human_ID == 0)
+            if (insuredPlan_data.ContainsKey("Insured_Human_ID")
+                && insuredPlan_data.ContainsKey("Relationship")
+                && objInsuredPlan.Relationship.Trim().ToUpper() != "SELF")
             {
-                return "Insured_Human_ID is not present in the request.";
+                if (objInsuredPlan.Insured_Human_ID == 0)
+                    return "Insured_Human_ID is not present in the request.";
+                else
+                {
+                    HumanManager objHumanManager = new HumanManager();
+                    var human = objHumanManager.GetById(objInsuredPlan.Insured_Human_ID);
+                    if (human == null || human.Id == 0 || human.Patient_Status.ToUpper() != "ALIVE" || human.Human_Type.ToUpper() != "REGULAR" || human.Account_Status.ToUpper() != "ACTIVE")
+                    {
+                        return "Insured_Human_ID is invalid in the request.";
+                    }
+                }
+            }
+
+            if (insuredPlan_data.ContainsKey("PCP_ID") && objInsuredPlan.PCP_ID > 0)
+            {
+                PhysicianManager objPhysicianManager = new PhysicianManager();
+                var physician_dto = objPhysicianManager.GetphysiciannameByPhyID(objInsuredPlan.PCP_ID);
+                var physician = physician_dto.FirstOrDefault();
+                if (physician == null || physician.PhyId == 0)
+                {
+                    return "PCP_ID is invalid in the request.";
+                }
             }
 
             if (insuredPlan_data.ContainsKey("Active"))
@@ -2392,6 +2493,13 @@ namespace Acurus.Capella.UI.WebServices.API
                 && objInsuredPlan.Effective_Start_Date > objInsuredPlan.Termination_Date)
             {
                 return "Effective_Start_Date should be greater than Termination_Date. Please enter a valid date.";
+            }
+
+            if (insuredPlan_data.ContainsKey("Policy_Holder_ID")
+                && !string.IsNullOrEmpty(objInsuredPlan.Policy_Holder_ID)
+                && objInsuredPlan.Policy_Holder_ID.Length > 25)
+            {
+                return "Policy_Holder_ID exceeds the maximum length in the request.";
             }
 
             return "";
@@ -2599,8 +2707,6 @@ namespace Acurus.Capella.UI.WebServices.API
         public virtual string Active { get; set; } = string.Empty;
         public virtual ulong PCP_ID { get; set; } = 0;
         public virtual int Sort_Order { get; set; } = 0;
-        public virtual string PCP_Name { get; set; } = string.Empty;
-        public virtual string PCP_NPI { get; set; } = string.Empty;
         public virtual double Deductible_Met_So_Far { get; set; } = 0;
         public virtual string Other_Insurance_Comments { get; set; } = string.Empty;
         public virtual string CCV_Name { get; set; } = string.Empty;
