@@ -1783,6 +1783,7 @@ function loadMyorder() {
     } else {
         $('#chkMyShowAll,#lblMyShowAll').css("display", "");
     }
+    $('#cmbYears').css("display", "");
     $('#MyQTable').empty();
     $('#GeneralQTable').empty();
     $("#MyQTable").append(`
@@ -1843,13 +1844,23 @@ function loadMyorder() {
             dataType: "JSON",
             deferRender: true,
             data: function (d) {
-                d.extra_search = Showall;
+                d.extra_search = JSON.stringify({ Showall: Showall, Year: $("#cmbYears").val() });
                 return d;
             },
             dataSrc: function (json) {
                 var objdata = json.d;
                 objdata.data = Decompress(objdata.data);
 
+                var year = $("#cmbYears").val();
+                $("#cmbYears").empty();
+                $.each(objdata.yearList, function (index, value) {
+                    if (year == value) {
+                        $("#cmbYears").append($("<option selected></option>").val(value).text(value));
+                    } else {
+                        $("#cmbYears").append($("<option></option>").val(value).text(value));
+                    }
+                });
+                
                 $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.data.length + ")";
                 if (Showall != "Checked") {
                     sessionStorage.setItem("My_Order_Count", objdata.data.length);
@@ -2058,6 +2069,10 @@ function loadMyorder() {
             MyQclick();
         }
         sessionStorage.setItem('MyQRemoveIdList', '');
+    });
+
+    $("#cmbYears").change(function () {
+        dataTable.ajax.reload();
     });
 }
 function loadMyscan() {
@@ -3990,6 +4005,7 @@ function ChangeTableForTabs(sender) {
     $('#lbl14days').css("display", "none");
     $('#chkOpenTask').css("display", "none");
     $('#lblOpenTask').css("display", "none");
+    $('#cmbYears').css("display", "none");
     if (sender.innerText.indexOf("My Encounter") > -1) {
         { sessionStorage.setItem('StartLoading', 'true'); StartLoadFromPatChart(); }
         $("#btnMyEnc").removeClass("default");
