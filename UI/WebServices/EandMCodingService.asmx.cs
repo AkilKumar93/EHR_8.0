@@ -1285,11 +1285,19 @@ namespace Acurus.Capella.UI.WebServices
             {
                 EandMCodingICD objEandMCodingICD = null;
                 IList<EandMCodingICD> eandmICDList = null;
+                //Cap - 2354
+                Boolean bICDCheck = false;
 
                 var eandmList = from eandmicd in EAndMICDTempList where Convert.ToString(eandmicd.ICD).Trim() == objICD.ToString().Split('~')[0].Trim() && Convert.ToString(eandmicd.Source).Trim() == objICD.ToString().Split('~')[11].Trim() select eandmicd;
                 eandmICDList = eandmList.ToList<EandMCodingICD>();
-
-                if (eandmICDList.Count > 0)
+                //Cap - 2354
+                if (arylstDelICD.Contains(objICD.ToString().Split('~')[0].Trim()))
+                {
+                    bICDCheck = true;
+                }
+                //Cap - 2354
+                //if (eandmICDList.Count > 0)
+                if (eandmICDList.Count > 0 && !bICDCheck)
                 {
                     objEandMCodingICD = eandmICDList[0];
 
@@ -1376,20 +1384,20 @@ namespace Acurus.Capella.UI.WebServices
                 eandmICDList = eandmList.ToList<EandMCodingICD>();
 
                 if (eandmICDList.Count > 0)
-                {
+                    {
                     objEandMCodingICD = eandmICDList[0];
 
-                    //if (arylstICD[2] == "Y")
-                    //{
-                    //    objEandMCodingICD.ICD_Category = "Primary";
-                    //}
-                    //else
-                    //{
-                    //    objEandMCodingICD.ICD_Category = "None";
-                    //}
-                    objEandMCodingICD.Modified_By = ClientSession.UserName;
-                    objEandMCodingICD.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
-                    objEandMCodingICD.Is_Delete = "Y";
+                        //if (arylstICD[2] == "Y")
+                        //{
+                        //    objEandMCodingICD.ICD_Category = "Primary";
+                        //}
+                        //else
+                        //{
+                        //    objEandMCodingICD.ICD_Category = "None";
+                        //}
+                        objEandMCodingICD.Modified_By = ClientSession.UserName;
+                        objEandMCodingICD.Modified_Date_And_Time = UtilityManager.ConvertToUniversal();
+                        objEandMCodingICD.Is_Delete = "Y";
                     EAndMICDUpdateList.Add(objEandMCodingICD); //UpdateICD List
                 }
             }
