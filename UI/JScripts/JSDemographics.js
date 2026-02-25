@@ -1865,6 +1865,15 @@ function parseMyDate(s) {
 
 var uPatientId = "";
 $(document).ready(function () {
+    {
+        var Closebutton = top?.window?.$("#RadWindowWrapper_ctl00_ModalWindow")?.find(".rwCloseButton")[0];
+        const clone = Closebutton.cloneNode(true);
+        clone.addEventListener('click', (e) => {
+            NewCloseWindow();
+            return false;
+        }, true);
+        Closebutton.parentNode.replaceChild(clone, Closebutton);
+    }
     vRowID = "";
     if (document.getElementById('ctl00_C5POBody_rdbPRI')?.disabled == true) {
         document.getElementById('btnAdd').disabled = true;
