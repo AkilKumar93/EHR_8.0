@@ -1866,15 +1866,21 @@ function parseMyDate(s) {
 var uPatientId = "";
 $(document).ready(function () {
     {
-        var Closebuttons = $(top?.window?.$("iframe[src*='frmPatientDemographics.aspx']")[0].radWindow._titlebarElement).find('.rwCloseButton');
-        if (Closebuttons != null && Closebuttons != undefined && Closebuttons.length > 0) {
-            var Closebutton = $(top?.window?.$("iframe[src*='frmPatientDemographics.aspx']")[0].radWindow._titlebarElement).find('.rwCloseButton')[0];
-            const clone = Closebutton.cloneNode(true);
-            clone.addEventListener('click', (e) => {
-                NewCloseWindow();
-                return false;
-            }, true);
-            Closebutton.parentNode.replaceChild(clone, Closebutton);
+        if ($(top?.window?.document).find("iframe[src*='frmPatientDemographics.aspx']").length > 0) {
+            $(top?.window?.document).find("iframe[src*='frmPatientDemographics.aspx']").each((e) => {
+
+                var Closebuttons = $($(top?.window?.document).find("iframe[src*='frmPatientDemographics.aspx']")[e].radWindow._titlebarElement).find('.rwCloseButton');
+                if (Closebuttons != null && Closebuttons != undefined && Closebuttons.length > 0) {
+                    var Closebutton = Closebuttons[0];
+                    const clone = Closebutton.cloneNode(true);
+                    clone.addEventListener('click', (e) => {
+                        NewCloseWindow();
+                        return false;
+                    }, true);
+                    Closebutton.parentNode.replaceChild(clone, Closebutton);
+                }
+
+            });
         }
     }
     vRowID = "";
