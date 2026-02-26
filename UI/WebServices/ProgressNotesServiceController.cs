@@ -436,7 +436,7 @@ namespace Acurus.Capella.UI.WebServices.API
             IList<Human_Blob> ilstHumanBlob = new List<Human_Blob>();
             Blob_Progress_Note objBlobProgressNotesInitiated = new Blob_Progress_Note();
             //ilstBlob_Progress_Note = BlobProgressNoteMngr.GetBlobProgressNotes(Convert.ToUInt64(sEncounterID));
-            string blobProgressNotesQry = "SELECT Encounter_ID AS Id, Human_ID, Progress_Note_Json, Status, Error_Description, Created_By, Created_Date_And_Time, Modified_By, Modified_Date_And_Time, Version FROM cdc_progress_note WHERE Encounter_ID = {0};";
+            string blobProgressNotesQry = "SELECT Encounter_ID AS Id, Human_ID, Progress_Note_Json, Status, Error_Description, Created_By, Created_Date_And_Time, Modified_By, Modified_Date_And_Time, Version, Retry_Count FROM cdc_progress_note WHERE Encounter_ID = {0};";
             DataSet BlobProgressNotesResult = DBConnector.ReadData(string.Format(blobProgressNotesQry, sEncounterID));
             ilstBlob_Progress_Note = DBConnector.DataTableToList<Blob_Progress_Note>(BlobProgressNotesResult.Tables[0]) ?? new List<Blob_Progress_Note>();
             bool isModified = false;
