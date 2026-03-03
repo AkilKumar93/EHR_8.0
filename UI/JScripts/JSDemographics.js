@@ -1866,13 +1866,22 @@ function parseMyDate(s) {
 var uPatientId = "";
 $(document).ready(function () {
     {
-        var Closebutton = top?.window?.$("#RadWindowWrapper_ctl00_ModalWindow")?.find(".rwCloseButton")[0];
-        const clone = Closebutton.cloneNode(true);
-        clone.addEventListener('click', (e) => {
-            NewCloseWindow();
-            return false;
-        }, true);
-        Closebutton.parentNode.replaceChild(clone, Closebutton);
+        if ($(top?.window?.document).find("iframe[src*='frmPatientDemographics.aspx']").length > 0) {
+            $(top?.window?.document).find("iframe[src*='frmPatientDemographics.aspx']").each((e) => {
+
+                var Closebuttons = $($(top?.window?.document).find("iframe[src*='frmPatientDemographics.aspx']")[e].radWindow._titlebarElement).find('.rwCloseButton');
+                if (Closebuttons != null && Closebuttons != undefined && Closebuttons.length > 0) {
+                    var Closebutton = Closebuttons[0];
+                    const clone = Closebutton.cloneNode(true);
+                    clone.addEventListener('click', (e) => {
+                        NewCloseWindow();
+                        return false;
+                    }, true);
+                    Closebutton.parentNode.replaceChild(clone, Closebutton);
+                }
+
+            });
+        }
     }
     vRowID = "";
     if (document.getElementById('ctl00_C5POBody_rdbPRI')?.disabled == true) {
