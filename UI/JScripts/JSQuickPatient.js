@@ -622,7 +622,10 @@ function Exit(args) {
         returnToParent(null);
     }
 
-    $(top.window.document).find("#txtPatientInformation")[0].value = JSON.stringify(Result);
+    //CAP-4183-Cannot set properties of undefined (setting value)
+    if ($(top?.window?.document)?.find("#txtPatientInformation") != undefined && $(top?.window?.document)?.find("#txtPatientInformation") != null && $(top?.window?.document)?.find("#txtPatientInformation").length > 0 && $(top?.window?.document)?.find("#txtPatientInformation")[0] != undefined && $(top?.window?.document)?.find("#txtPatientInformation")[0] != null && $(top?.window?.document)?.find("#txtPatientInformation")[0]?.value) {
+        $(top.window.document).find("#txtPatientInformation")[0].value = JSON.stringify(Result);
+    }
     $(top.window.document).find("#btnQuickPatientClose").click();
     $(top.window.document).find("#btnFindPatientClose").click();
 
