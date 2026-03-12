@@ -961,7 +961,8 @@ function printActual() {
     var iCount = 1, totCount = 0;
     var imgsource = [];
     var icnt = 0;
-    if (imgsrc[0].src.indexOf("EXAM") > -1) {
+    //CAP-4182-Cannot read properties of undefined (reading src)
+    if (imgsrc != undefined && imgsrc != null && imgsrc.length > 0 && imgsrc[0].src != undefined && imgsrc[0].src != null && imgsrc[0].src.indexOf("EXAM") > -1) {
         var lm = imgsrc[0].src.split("EXAM")[1].split("&")[0].split("_")[3].split('.')[0];
 
         if (imgsrc[0].src.split("EXAM")[1].split("&")[0].split("_")[3].split('.')[0].indexOf('0') == 0)
