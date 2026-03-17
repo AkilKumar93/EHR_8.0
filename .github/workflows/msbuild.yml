@@ -1,0 +1,67 @@
+name: Capella MSBuild Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+env:
+  NUGET_PATH: "C:\\Program Files\\Nuget\\nuget.exe"
+  MSBUILD_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe"
+
+jobs:
+
+  build-test-4:
+    name: Build Solution (Testing 10.0.0.4)
+    runs-on: [self-hosted, IIS-2022-Testing-1]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Restore NuGet Packages
+        run: |
+          echo "Nuget script..start"
+          & "$env:NUGET_PATH" restore EHR-Capella5.0.sln
+          echo "Nuget script..Completed"
+        shell: powershell
+
+      - name: Build Solution
+        run: |
+          echo "UI Building..start"
+          & "$env:MSBUILD_PATH" EHR-Capella5.0.sln `
+          /p:DeployOnBuild=true `
+          /p:Configuration=Release `
+          /p:DeleteExistingFiles=True `
+          /p:Platform="Any CPU" `
+          /p:PublishProfile=FolderProfile.pubxml
+          echo "Building..Completed"
+        shell: powershell
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: capella-build
+          path: EHR-Capella5.0/
+
+  deploy-test-4:
+    name: Deploy to Testing 10.0.0.4
+    runs-on: [self-hosted, IIS-2022-Testing-1]
+    needs: build-test-4
+    environment:
+      name: Capella_Test
+      url: https://cmgtest10.capellaehr.com:8081/frmlogin.aspx
+
+    steps:
+      - name: Backup CMG MT
+        run: |
+          echo "Backup CMG MT..Start.."
+          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+          echo "Backup CMG MT..Completed.."
+        shell: cmd
+
+      - name: Deploy CMG MT
+        run: |
+          echo "Deploy CMG MT..Start.."
+          xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+          echo "Deploy CMG MT..Completed.."
+        shell: cmd
