@@ -9,8 +9,8 @@ on:
         default: "10.0.0.4"
 
 env:
-  NUGET_PATH: "C:\\Program Files\\Nuget\\nuget.exe"
-  MSBUILD_PATH: "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe"
+  NUGET_PATH: "C:\Program Files\Nuget\nuget.exe"
+  MSBUILD_PATH: "C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe"
 
 jobs:
 
