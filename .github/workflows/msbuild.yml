@@ -1,9 +1,12 @@
-name: Capella MSBuild Pipeline
+name: Capella CI/CD
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
+    inputs:
+      SERVER:
+        description: "Target Server IP"
+        required: true
+        default: "10.0.0.4"
 
 env:
   NUGET_PATH: "C:\\Program Files\\Nuget\\nuget.exe"
@@ -11,57 +14,126 @@ env:
 
 jobs:
 
-  build-test-4:
-    name: Build Solution (Testing 10.0.0.4)
-    runs-on: [self-hosted, local]
+# ================= BUILD ================= #
+
+  build:
+    runs-on: windows-latest
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Restore NuGet Packages
+      - name: Restore NuGet
         run: |
           echo "Nuget script..start"
           & "$env:NUGET_PATH" restore EHR-Capella5.0.sln
           echo "Nuget script..Completed"
-        shell: powershell
 
       - name: Build Solution
         run: |
           echo "UI Building..start"
           & "$env:MSBUILD_PATH" EHR-Capella5.0.sln `
-          /p:DeployOnBuild=true `
-          /p:Configuration=Release `
-          /p:DeleteExistingFiles=True `
-          /p:Platform="Any CPU" `
-          /p:PublishProfile=FolderProfile.pubxml
+            /p:DeployOnBuild=true `
+            /p:Configuration=Release `
+            /p:DeleteExistingFiles=True `
+            /p:Platform="Any CPU" `
+            /p:PublishProfile=FolderProfile.pubxml
           echo "Building..Completed"
-        shell: powershell
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: capella-build
-          path: EHR-Capella5.0/
+          path: EHR-Capella5.0\
 
-  deploy-test-4:
-    name: Deploy to Testing 10.0.0.4
-    runs-on: [self-hosted, local]
-    needs: build-test-4
-    environment:
-      name: Capella_Test
-      url: https://cmgtest10.capellaehr.com:8081/frmlogin.aspx
+# ================= DEPLOY TEST ================= #
+
+  deploy_test_4:
+    needs: build
+    runs-on: windows-latest
+    if: ${{ github.event.inputs.SERVER == '10.0.0.4' }}
 
     steps:
-      - name: Backup CMG MT
+      - uses: actions/download-artifact@v4
+        with:
+          name: capella-build
+
+      - name: Deploy to TEST 10.0.0.4
         run: |
           echo "Backup CMG MT..Start.."
-          xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
-          echo "Backup CMG MT..Completed.."
-        shell: cmd
+          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+          echo "Backup Completed"
 
-      - name: Deploy CMG MT
+          echo "Deploy Start"
+          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+          echo "Deploy Completed"
+
+# ================= DEPLOY TEST 11 ================= #
+
+  deploy_test_11:
+    needs: build
+    runs-on: windows-latest
+    if: ${{ github.event.inputs.SERVER == '10.0.0.11' }}
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: capella-build
+
+      - name: Deploy to TEST 10.0.0.11
         run: |
-          echo "Deploy CMG MT..Start.."
-          xcopy /y /s "E:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
-          echo "Deploy CMG MT..Completed.."
-        shell: cmd
+          echo "Backup CMG MT..Start.."
+          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+
+          echo "Deploy Start"
+          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+
+# ================= DEPLOY PROD ================= #
+
+  deploy_prod_6:
+    needs: build
+    runs-on: windows-latest
+    if: ${{ github.event.inputs.SERVER == '10.1.0.6' }}
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: capella-build
+
+      - name: Deploy PROD 10.1.0.6
+        run: |
+          echo "Backup Start"
+          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+
+          echo "Deploy Start"
+          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+
+  deploy_prod_10:
+    needs: build
+    runs-on: windows-latest
+    if: ${{ github.event.inputs.SERVER == '10.1.0.10' }}
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: capella-build
+
+      - name: Deploy PROD 10.1.0.10
+        run: |
+          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
+
+  deploy_prod_11:
+    needs: build
+    runs-on: windows-latest
+    if: ${{ github.event.inputs.SERVER == '10.1.0.11' }}
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: capella-build
+
+      - name: Deploy PROD 10.1.0.11
+        run: |
+          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\CMG"
+          xcopy /y /s "EHR-Capella5.0\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_ehr\"
