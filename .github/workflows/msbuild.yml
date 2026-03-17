@@ -13,7 +13,7 @@ jobs:
 
   build-test-4:
     name: Build Solution (Testing 10.0.0.4)
-    runs-on: [self-hosted, IIS-2022-Testing-1]
+    runs-on: [self-hosted, local]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -45,7 +45,7 @@ jobs:
 
   deploy-test-4:
     name: Deploy to Testing 10.0.0.4
-    runs-on: [self-hosted, IIS-2022-Testing-1]
+    runs-on: [self-hosted, local]
     needs: build-test-4
     environment:
       name: Capella_Test
@@ -55,13 +55,13 @@ jobs:
       - name: Backup CMG MT
         run: |
           echo "Backup CMG MT..Start.."
-          xcopy /y /s "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "F:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
+          xcopy /y /s "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\*.*" "E:\Acurus_Web\Deployee\Backup-do not delete\Git\capella_cmg_mt"
           echo "Backup CMG MT..Completed.."
         shell: cmd
 
       - name: Deploy CMG MT
         run: |
           echo "Deploy CMG MT..Start.."
-          xcopy /y /s "F:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "F:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
+          xcopy /y /s "E:\Acurus_Web\Deployee\builds\Capella_publish\*.*" "E:\Acurus_Web\capella_cmg_project\capella_cmg_mt\"
           echo "Deploy CMG MT..Completed.."
         shell: cmd
