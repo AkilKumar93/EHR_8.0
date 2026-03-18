@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: capella-build
-          path: publish\
+          path: E:\\Acurus_Web\\Deployee\\builds\\Capella_publish
 
 # ================= DEPLOY TEST 10.0.0.4 ================= #
   deploy_test_4:
