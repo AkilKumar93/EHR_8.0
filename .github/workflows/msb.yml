@@ -37,9 +37,11 @@ jobs:
 
       # Ensure publish folder exists
       - name: Ensure publish folder exists
+        shell: cmd
         run: mkdir "${{ github.workspace }}\publish"
 
       - name: Build & Publish
+        shell: cmd
         run: |
           msbuild  EHR-Capella5.0.sln `
           /p:Configuration=Release `
