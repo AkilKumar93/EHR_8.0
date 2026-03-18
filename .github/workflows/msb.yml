@@ -40,13 +40,14 @@ jobs:
        # Build and Publish
       - name: Build Solution
         run: |
-         msbuild EHR-Capella5.0.sln ^
-          /p:DeployOnBuild=true ^
-          /p:Configuration=Release ^
-          /p:WebPublishMethod=FileSystem ^
-          /p:PublishUrl="${{ github.workspace }}\publish" ^
-          /p:DeleteExistingFiles=True ^
-          /p:Platform="Any CPU"
+         echo "Build start"
+         msbuild EHR-Capella5.0.sln `
+         /p:DeployOnBuild=true `
+         /p:Configuration=Release `
+         /p:DeleteExistingFiles=True `
+         /p:Platform="Any CPU" `
+         /p:PublishProfile=FolderProfile.pubxml
+         echo "Build completed"
 
      # Upload published files
       - name: Upload Artifact
