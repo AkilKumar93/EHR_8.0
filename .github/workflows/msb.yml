@@ -37,23 +37,23 @@ jobs:
           nuget restore EHR-Capella5.0.sln
           echo "Nuget restore completed"
 
+       # Build and Publish
       - name: Build Solution
         run: |
-          echo "Build start"
-          msbuild EHR-Capella5.0.sln `
-          /p:DeployOnBuild=true `
-          /p:Configuration=Release `
-          /p:DeleteExistingFiles=True `
-          /p:Platform="Any CPU" `
-          /p:publishUrl=$env:PUBLISH_PATH `
-          /p:PublishProfile=FolderProfile.pubxml
-          echo "Build completed"
+         msbuild EHR-Capella5.0.sln ^
+          /p:DeployOnBuild=true ^
+          /p:Configuration=Release ^
+          /p:WebPublishMethod=FileSystem ^
+          /p:PublishUrl="${{ github.workspace }}\publish" ^
+          /p:DeleteExistingFiles=True ^
+          /p:Platform="Any CPU"
 
+     # Upload published files
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: capella-build
-          path: EHR-Capella5.0\
+         name: published-app
+         path: ${{ github.workspace }}\publish
 
 # ================= DEPLOY TEST 10.0.0.4 ================= #
 
