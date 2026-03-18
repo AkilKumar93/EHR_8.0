@@ -40,15 +40,15 @@ jobs:
 
       # Build + Publish
       - name: Build & Publish Solution
+        shell: cmd
         run: |
-          echo "Build start"
           msbuild EHR-Capella5.0.sln ^
-            /p:DeployOnBuild=true ^
-            /p:Configuration=Release ^
-            /p:WebPublishMethod=FileSystem ^
-            /p:PublishUrl="${{ github.workspace }}\publish" ^
-            /p:DeleteExistingFiles=True ^
-            /p:Platform="Any CPU" ^
+          /p:DeployOnBuild=true ^
+          /p:Configuration=Release ^
+          /p:WebPublishMethod=FileSystem ^
+          /p:PublishUrl="${{ github.workspace }}\publish" ^
+          /p:DeleteExistingFiles=True ^
+          /p:Platform="Any CPU"
             /verbosity:minimal
           echo "Build completed"
 
