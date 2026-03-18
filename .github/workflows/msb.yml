@@ -42,6 +42,7 @@ jobs:
 
       - name: Build & Publish
         run: |
+        shell: cmd
           msbuild  EHR-Capella5.0.sln `
           /p:Configuration=Release `
           /p:DeployOnBuild=true `
