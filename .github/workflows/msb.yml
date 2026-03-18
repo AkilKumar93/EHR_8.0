@@ -30,7 +30,6 @@ jobs:
       # Restore NuGet packages
       - name: Restore NuGet Packages
         run: |
-        shell: cmd
           echo "NuGet restore start"
           nuget restore EHR-Capella5.0.sln
           echo "NuGet restore completed"
