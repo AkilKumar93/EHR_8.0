@@ -41,9 +41,16 @@ jobs:
         run: mkdir "${{ github.workspace }}\publish"
 
       - name: Build Solution
+        shell: cmd
         run: |
-         msbuild EHR-Capella5.0.sln /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PublishUrl="${{ github.workspace }}\publish" /p:DeleteExistingFiles=true /p:Platform="Any CPU"
-
+         msbuild EHR-Capella5.0.sln ^
+         /p:Configuration=Release ^
+         /p:DeployOnBuild=true ^
+         /p:WebPublishMethod=FileSystem ^
+         /p:PublishUrl="%GITHUB_WORKSPACE%\publish" ^
+         /p:DeleteExistingFiles=true ^
+         /p:Platform="Any CPU"
+         
       # Upload published artifact
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -54,10 +61,10 @@ jobs:
       - name: Verify Publish Output
         run: |
          if (Test-Path "${{ github.workspace }}\publish") {
-          echo "✅ Publish folder exists"
+          echo "Publish folder exists"
          dir "${{ github.workspace }}\publish"
          } else {
-         echo "❌ Publish folder NOT created"
+         echo "Publish folder NOT created"
          exit 1
          }
 
