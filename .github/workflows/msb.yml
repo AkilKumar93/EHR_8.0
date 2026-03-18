@@ -40,7 +40,7 @@ jobs:
 
       - name: Build & Publish
         run: |
-          msbuild UI\UI.csproj `
+          msbuild  EHR-Capella5.0.sln `
           /p:Configuration=Release `
           /p:DeployOnBuild=true `
           /p:PublishProfile=FolderProfile `
