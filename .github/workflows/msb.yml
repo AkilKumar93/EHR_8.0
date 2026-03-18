@@ -59,6 +59,7 @@ jobs:
           path: ${{ github.workspace }}\publish
 
       - name: Verify Publish Output
+        shell: cmd
         run: |
          if (Test-Path "${{ github.workspace }}\publish") {
           echo "Publish folder exists"
