@@ -36,12 +36,12 @@ jobs:
       - name: Build Solution
         run: |
           echo "Build start"
-          msbuild EHR-Capella5.0.sln ^
-            /p:DeployOnBuild=true ^
-            /p:Configuration=Release ^
-            /p:DeleteExistingFiles=True ^
-            /p:Platform="Any CPU" ^
-            /p:PublishProfile=FolderProfile.pubxml
+          msbuild EHR-Capella5.0.sln `
+          /p:DeployOnBuild=true `
+          /p:Configuration=Release `
+          /p:DeleteExistingFiles=True `
+          /p:Platform="Any CPU" `
+          /p:PublishProfile=FolderProfile.pubxml
           echo "Build completed"
 
       - name: Upload Artifact
