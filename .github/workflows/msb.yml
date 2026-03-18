@@ -29,6 +29,7 @@ jobs:
 
       # Restore NuGet packages
       - name: Restore NuGet Packages
+        shell: cmd
         run: |
           echo "NuGet restore start"
           nuget restore EHR-Capella5.0.sln
