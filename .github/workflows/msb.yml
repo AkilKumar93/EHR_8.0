@@ -29,20 +29,18 @@ jobs:
 
       # Restore NuGet packages
       - name: Restore NuGet Packages
-        shell: cmd
         run: |
+        shell: cmd
           echo "NuGet restore start"
           nuget restore EHR-Capella5.0.sln
           echo "NuGet restore completed"
 
       # Ensure publish folder exists
       - name: Ensure publish folder exists
-        shell: cmd
         run: mkdir "${{ github.workspace }}\publish"
 
       - name: Build & Publish
         run: |
-        shell: cmd
           msbuild  EHR-Capella5.0.sln `
           /p:Configuration=Release `
           /p:DeployOnBuild=true `
