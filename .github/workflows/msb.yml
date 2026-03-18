@@ -40,17 +40,9 @@ jobs:
         shell: cmd
         run: mkdir "${{ github.workspace }}\publish"
 
-      - name: Build & Publish
-        shell: cmd
+      - name: Build Solution
         run: |
-          msbuild  EHR-Capella5.0.sln `
-          /p:Configuration=Release `
-          /p:DeployOnBuild=true `
-          /p:PublishProfile=FolderProfile `
-          /p:WebPublishMethod=FileSystem `
-          /p:PublishUrl="${{ github.workspace }}\publish" `
-          /p:DeleteExistingFiles=true `
-          /p:Platform="Any CPU"
+         msbuild EHR-Capella5.0.sln /p:Configuration=Release /p:DeployOnBuild=true /p:WebPublishMethod=FileSystem /p:PublishUrl="${{ github.workspace }}\publish" /p:DeleteExistingFiles=true /p:Platform="Any CPU"
 
       # Upload published artifact
       - name: Upload Build Artifact
