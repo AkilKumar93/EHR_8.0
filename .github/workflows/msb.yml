@@ -59,15 +59,15 @@ jobs:
           path: ${{ github.workspace }}\publish
 
       - name: Verify Publish Output
-        shell: cmd
+        shell: powershell
         run: |
-         if (Test-Path "${{ github.workspace }}\publish") {
-          echo "Publish folder exists"
-         dir "${{ github.workspace }}\publish"
-         } else {
-         echo "Publish folder NOT created"
-         exit 1
-         }
+          if (Test-Path "C:\actions-runner\_work\EHR_8.0\EHR_8.0\publish") {
+              Write-Host "Publish folder exists"
+              Get-ChildItem "C:\actions-runner\_work\EHR_8.0\EHR_8.0\publish"
+          } else {
+              Write-Host "Publish folder NOT found"
+              exit 1
+          }
 
   # ================= DEPLOY ================= #
   deploy:
