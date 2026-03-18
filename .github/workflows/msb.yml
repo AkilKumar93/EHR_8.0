@@ -40,9 +40,10 @@ jobs:
 
       - name: Build & Publish
         run: |
-          msbuild EHR-Capella5.0.sln `
+          msbuild UI\UI.csproj `
           /p:Configuration=Release `
           /p:DeployOnBuild=true `
+          /p:PublishProfile=FolderProfile `
           /p:WebPublishMethod=FileSystem `
           /p:PublishUrl="${{ github.workspace }}\publish" `
           /p:DeleteExistingFiles=true `
