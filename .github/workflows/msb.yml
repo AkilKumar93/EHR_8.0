@@ -38,12 +38,15 @@ jobs:
       - name: Ensure publish folder exists
         run: mkdir "${{ github.workspace }}\publish"
 
-      # Build + Publish
-      - name: Build & Publish Solution
+      - name: Build & Publish
         run: |
-          echo "Build start"
-          msbuild EHR-Capella5.0.sln /p:DeployOnBuild=true /p:Configuration=Release /p:WebPublishMethod=FileSystem /p:PublishUrl="${{ github.workspace }}\publish" /p:DeleteExistingFiles=True /p:Platform="Any CPU" /p:TreatWarningsAsErrors=false /verbosity:detailed
-          echo "Build completed"
+          msbuild EHR-Capella5.0.sln `
+          /p:Configuration=Release `
+          /p:DeployOnBuild=true `
+          /p:WebPublishMethod=FileSystem `
+          /p:PublishUrl="${{ github.workspace }}\publish" `
+          /p:DeleteExistingFiles=true `
+          /p:Platform="Any CPU"
 
       # Upload published artifact
       - name: Upload Build Artifact
@@ -51,6 +54,16 @@ jobs:
         with:
           name: capella-build
           path: ${{ github.workspace }}\publish
+
+      - name: Verify Publish Output
+        run: |
+         if (Test-Path "${{ github.workspace }}\publish") {
+          echo "✅ Publish folder exists"
+         dir "${{ github.workspace }}\publish"
+         } else {
+         echo "❌ Publish folder NOT created"
+         exit 1
+         }
 
   # ================= DEPLOY ================= #
   deploy:
