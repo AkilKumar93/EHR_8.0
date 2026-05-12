@@ -546,7 +546,7 @@ namespace DownloadiPrescribe
             string sDuration = ConfigurationSettings.AppSettings["Duration"]?.ToString() ?? "";
             string sRestTime = ConfigurationSettings.AppSettings["TimeOut"]?.ToString() ?? "0";
             int iNumberOfRetryAllowed = Convert.ToInt32(ConfigurationSettings.AppSettings["NumberOfRetry"]?.ToString() ?? "0");
-            IList<string> lstStatus = new List<string>() { "System.OutOfMemoryException", "Message : Transaction not successfully", "Message : Timeout expired" };
+            IList<string> lstStatus = new List<string>() { "System.OutOfMemoryException", "Message : Transaction not successfully", "Message : Timeout expired", "Message : Timeout in IO", "Message : Row was updated or deleted" };
             IList<string> lstNotStatus = new List<string>() { "'Error'", "'Completed'" };
             ilstBlopProgressNote = blobProgressNoteManager.GetBlobProgressNotesByStatus(lstNotStatus, lstStatus, iNumberOfRetryAllowed, sDuration);
             Console.WriteLine("Total encounters : " + ilstBlopProgressNote.Count);
@@ -557,7 +557,7 @@ namespace DownloadiPrescribe
                 {
                     iCount = 0;
                     int iTime = Convert.ToInt32(sRestTime) * 60000;
-                    Console.WriteLine($"Time out start. Wait for {iTime} min");
+                    Console.WriteLine($"Time out start. Wait for {sRestTime} min");
                     System.Threading.Thread.Sleep(iTime);
                     Console.WriteLine("Time out end.");
                 }

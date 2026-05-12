@@ -579,12 +579,19 @@ function MyQclick() {
                     if (xhr.status == 999)
                         window.location = "/frmSessionExpired.aspx";
                     else {
-                        var log = JSON.parse(xhr.responseText);
-                        console.log(log);
-                        //alert("USER MESSAGE:\n" +
-                        //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
-                        //    "Message: " + log.Message);
-                        ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
+                        //CAP-4176 "undefined" is not valid JSON
+                        if (isValidJSON(xhr.responseText)) {
+                            var log = JSON.parse(xhr.responseText);
+                            console.log(log);
+                            //alert("USER MESSAGE:\n" +
+                            //    ". Cannot process request. Please Login again and retry. \nEXCEPTION DETAILS: \n" +
+                            //    "Message: " + log.Message);
+                            ScriptErrorLogEntry(log.Message, "", "", document.URL, log.StackTrace, true);
+                        }
+                        else {
+                            alert("USER MESSAGE:\n" +
+                                ". Cannot process request. Please Login again and retry.");
+                        }
                     }
                 }
             });
@@ -1864,10 +1871,10 @@ function loadMyorder() {
                     });
                 }
                 
-                $("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.data.length + ")";
-                if (Showall != "Checked") {
-                    sessionStorage.setItem("My_Order_Count", objdata.data.length);
-                }
+                //$("#btnMyOrder")[0].innerText = "My Orders " + "(" + objdata.data.length + ")";
+                //if (Showall != "Checked") {
+                //    sessionStorage.setItem("My_Order_Count", objdata.data.length);
+                //}
                 localStorage.setItem("Myorderscount", objdata.data.length);
                 $("#ctl00_C5POBody_lblcount")[0].innerHTML = "Note:All abnormal results are in <span style='color:red'> RED</span> color font.";
                 { sessionStorage.setItem('StartLoading', 'false'); StopLoadFromPatChart(); }
